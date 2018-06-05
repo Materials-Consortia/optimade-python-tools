@@ -8,3 +8,6 @@ among databases such as
 [the Materials Project](https://materialsproject.org)
 that contain calculated properties of
 existing and hypothetical materials.
+
+### Status
+This library is under development. Progress is expected during the [CECAM Workshop on Open Databases Integration for Materials Design](https://www.cecam.org/workshop-4-1525.html) during the week of June 11, 2018 to June 15, 2018.
