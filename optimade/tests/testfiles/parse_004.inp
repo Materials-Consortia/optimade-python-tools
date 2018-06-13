@@ -1,0 +1,1 @@
+filter=_mp_bandgap > 5.0 AND _cod_molecular_weight < 350

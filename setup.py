@@ -19,6 +19,7 @@ setup(
         "marshmallow-jsonapi>=0.19.0",
         "marshmallow>=2.15.3",
         "pymongo>=3.6.1",
+        "lark-parser>=0.5.6",
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
