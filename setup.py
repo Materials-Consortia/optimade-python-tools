@@ -1,13 +1,14 @@
 import os
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 module_dir = os.path.dirname(os.path.abspath(__file__))
 
 setup(
     name='optimade',
-    version="0.1.2",
-    packages=["optimade"],
+    version="0.1.10",
+    packages=find_packages(),
+    include_package_data=True,
     url='https://github.com/materialsproject/optimade/',
     license='modified BSD',
     author='MP Team',

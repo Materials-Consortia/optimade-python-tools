@@ -19,7 +19,7 @@ class Parser:
         if version is None:
             self.lark = parser[sorted(parser.keys())[-1]]
         elif version in parser:
-            self.lark = Lark(parser[version])
+            self.lark = parser[version]
         else:
             raise ValueError("Unknown parser grammar version: {}"
                              .format(version))

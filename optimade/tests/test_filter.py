@@ -28,4 +28,8 @@ class ParserTest(TestCase):
                 tree = self.parser.parse(tf)
                 self.assertTrue(tree, Tree)
 
+    def test_parser_version(self):
+        p = Parser(version=(0, 9, 5))
+        self.assertIsInstance(p.parse("filter=n<3"), Tree)
+
 
