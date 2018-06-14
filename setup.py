@@ -6,7 +6,7 @@ module_dir = os.path.dirname(os.path.abspath(__file__))
 
 setup(
     name='optimade',
-    version="0.1.0",
+    version="0.1.1",
     packages=["optimade"],
     url='https://github.com/materialsproject/optimade/',
     license='modified BSD',
@@ -21,6 +21,7 @@ setup(
         "pymongo>=3.6.1",
         "lark-parser>=0.5.6",
     ],
+    tests_require=["pytest>=3.6"],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python :: 3',
