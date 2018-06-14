@@ -41,6 +41,6 @@ from lark.tree import pydot__tree_to_png
 tree = p.parse('filter=_mp_bandgap > 5.0 AND _cod_molecular_weight < 350')
 pydot__tree_to_png(tree, "exampletree.png")
 ```
-![example tree](exmpletree.png)
+![example tree](exampletree.png)
 
 
