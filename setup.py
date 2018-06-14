@@ -6,7 +6,7 @@ module_dir = os.path.dirname(os.path.abspath(__file__))
 
 setup(
     name='optimade',
-    version="0.1.10",
+    version="0.1.11",
     packages=find_packages(),
     include_package_data=True,
     url='https://github.com/materialsproject/optimade/',
