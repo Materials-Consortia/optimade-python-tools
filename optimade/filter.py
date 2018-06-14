@@ -17,9 +17,11 @@ for name in glob(os.path.join(os.path.dirname(__file__), "grammar", "*.g")):
 class Parser:
     def __init__(self, version=None):
         if version is None:
-            self.lark = parser[sorted(parser.keys())[-1]]
+            self.version = sorted(parser.keys())[-1]
+            self.lark = parser[self.version]
         elif version in parser:
             self.lark = parser[version]
+            self.version = version
         else:
             raise ValueError("Unknown parser grammar version: {}"
                              .format(version))

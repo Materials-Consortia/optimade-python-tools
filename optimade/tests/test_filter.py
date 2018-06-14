@@ -29,7 +29,9 @@ class ParserTest(TestCase):
                 self.assertTrue(tree, Tree)
 
     def test_parser_version(self):
-        p = Parser(version=(0, 9, 5))
+        v = (0, 9, 5)
+        p = Parser(version=v)
         self.assertIsInstance(p.parse("filter=n<3"), Tree)
+        self.assertEqual(p.version, v)
 
 
