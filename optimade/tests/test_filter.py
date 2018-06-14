@@ -31,7 +31,12 @@ class ParserTest(TestCase):
     def test_parser_version(self):
         v = (0, 9, 5)
         p = Parser(version=v)
-        self.assertIsInstance(p.parse("filter=n<3"), Tree)
+        self.assertIsInstance(p.parse(self.test_filters[0]), Tree)
         self.assertEqual(p.version, v)
+
+    def test_repr(self):
+        self.assertIsNotNone(repr(self.parser))
+        self.parser.parse(self.test_filters[0])
+        self.assertIsNotNone(repr(self.parser))
 
 

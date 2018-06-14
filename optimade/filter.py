@@ -2,7 +2,7 @@ import os
 import re
 from glob import glob
 
-from lark import Lark
+from lark import Lark, Tree
 
 parser = {}
 for name in glob(os.path.join(os.path.dirname(__file__), "grammar", "*.g")):
@@ -34,4 +34,7 @@ class Parser:
         return self.tree
 
     def __repr__(self):
-        return self.tree.pretty()
+        if isinstance(self.tree, Tree):
+            return self.tree.pretty()
+        else:
+            return repr(self.lark)
