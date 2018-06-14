@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/materialsproject/optimade.svg?branch=master)](https://travis-ci.org/materialsproject/optimade)
+[![Build Status](https://travis-ci.org/Materials-Consortia/optimade-python-tools.svg?branch=master)](https://travis-ci.org/Materials-Consortia/optimade-python-tools)
 
 A library of tools for implementing and consuming
 [OPTiMaDe](http://www.optimade.org) APIs in Python.
