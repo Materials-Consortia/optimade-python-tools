@@ -35,10 +35,31 @@ p.version
 (0, 9, 5)
 ```
 ```python
+tree = p.parse('filter=_mp_bandgap > 5.0 AND _cod_molecular_weight < 350')
+print(p)
+```
+```
+start
+  filter=
+  expression
+    term
+      term
+        atom
+          comparison
+            _mp_bandgap
+            >
+            5.0
+      AND
+      atom
+        comparison
+          _cod_molecular_weight
+          <
+          350
+```
+```python
 # Assumes graphviz installed on system and `pip install pydot`
 from lark.tree import pydot__tree_to_png
 
-tree = p.parse('filter=_mp_bandgap > 5.0 AND _cod_molecular_weight < 350')
 pydot__tree_to_png(tree, "exampletree.png")
 ```
 ![example tree](exampletree.png)
