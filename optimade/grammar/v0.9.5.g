@@ -2,15 +2,13 @@
 
 start: KEYWORD expression
 KEYWORD: "filter="
-expression: [expression CONJUNCTION] term 
-term: [term CONJUNCTION] atom | "(" [term CONJUNCTION] term
-
-atom: [NOT] comparison 
-
-comparison: VALUE OPERATOR VALUE [")"]
+expression: [expression OR] term
+term: [term AND] atom
+atom: [NOT] comparison | [NOT] "(" (andcomparison OR)* andcomparison ")"
+andcomparison: [NOT] (NOT comparison AND)* comparison
+comparison: VALUE OPERATOR VALUE
 OPERATOR: /<=?|>=?|!?=/
-VALUE: CNAME | SIGNED_FLOAT | SIGNED_INT | ESCAPED_STRING 
-CONJUNCTION: AND | OR
+VALUE: CNAME | SIGNED_FLOAT | SIGNED_INT | ESCAPED_STRING
 AND: /and/i
 OR: /or/i
 NOT: /not/i
