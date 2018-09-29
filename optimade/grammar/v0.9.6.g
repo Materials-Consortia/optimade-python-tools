@@ -1,4 +1,4 @@
-// optimade v0.9.5 grammar spec in lark grammar format
+// optimade v0.9.6 grammar spec in lark grammar format
 
 start: KEYWORD expression
 KEYWORD: "filter="
