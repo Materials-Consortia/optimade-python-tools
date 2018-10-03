@@ -1,15 +1,19 @@
 // optimade v0.9.6 grammar spec in lark grammar format
 
 start: KEYWORD expression
-KEYWORD: "filter="
+KEYWORD: "filter=" | "filter ="
 expression: [expression CONJUNCTION] term 
 term: [term CONJUNCTION] atom | "(" [term CONJUNCTION] term
 
 atom: [NOT] comparison 
 
-comparison: VALUE OPERATOR VALUE [")"]
+comparison: VALUE OPERATOR VALUE [")"] | VALUE OPERATOR "'" (combined)* "'"
 OPERATOR: /<=?|>=?|!?=/
-VALUE: CNAME | SIGNED_FLOAT | SIGNED_INT | ESCAPED_STRING 
+
+combined: VALUE ", " | VALUE "," | VALUE
+
+VALUE: CNAME | SIGNED_FLOAT | SIGNED_INT | ESCAPED_STRING
+
 CONJUNCTION: AND | OR
 AND: /and/i
 OR: /or/i
