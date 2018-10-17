@@ -1,0 +1,7 @@
+test_one_input | filter=a<0 | {'a': {'$lt': 0.0}}
+test_two_inputs_with_and | filter=a<0 and b>2 | {'$and': [{'a': {'$lt': 0.0}}, {'b': {'$gt': 2.0}}]}
+test_two_inputs_with_or | filter=a<0 or b>2 | {'$or': [{'a': {'$lt': 0.0}}, {'b': {'$gt': 2.0}}]}
+test_multiple_entries | filter = elements='Si,O' | {'elements': {'$all': ['si', 'o']}}
+test_mixing_upper_case_and_lower_case | filter = a < 0 AND elements='Si,O' or y < 1 | {'$or': [{'$and': [{'a': {'$lt': 0.0}}, {'elements': {'$all': ['si', 'o']}}]}, {'y': {'$lt': 1.0}}]}
+test_parenthesis | filter = (a<1 or b<2) or c < 3 | {'$or': [{'$or': [{'a': {'$lt': 1.0}}, {'b': {'$lt': 2.0}}]}, {'c': {'$lt': 3.0}}]}
+test_parenthesis2 | filter = a<1 and (b<2 or c < 3) | {'$and': [{'a': {'$lt': 1.0}}, {'$or': [{'b': {'$lt': 2.0}}, {'c': {'$lt': 3.0}}]}]}

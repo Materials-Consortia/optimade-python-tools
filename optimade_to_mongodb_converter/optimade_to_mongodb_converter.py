@@ -1,5 +1,7 @@
 import pql
-from optimade.filter import Parser
+import sys, os
+sys.path.insert(0,os.path.join(os.path.dirname(os.getcwd()), "optimade"))
+from filter import Parser
 from lark import Transformer
 
 # data for pql to mongodb symbol
@@ -13,37 +15,47 @@ optiMadeToPQLOperatorSwitch = {
     ">":">",
 }
 
-# convert pql to mongodb symbol
 def OptiMadeToPQLOperatorValidator(x):
+    """
+    convert pql to mongodb symbol
+    """
     return optiMadeToPQLOperatorSwitch[x]
 
-# @param string -- input raw optimade input
-# @param index -- index in which "," was found
-# Procedure:
-# 1. find the first and last quote centering from the index of the ","
-# 2. get everything between first and last quote
-# 3. split the string into individual elements
-# 4. put them into Python Query Language format
-def combineMultiple(string, index):
-    firstQuoteIndex = 0
-    for firstQuoteIndex in reversed(range(0, index)):
-        if(ord(string[firstQuoteIndex]) == 34):
-            firstQuoteIndex = firstQuoteIndex + 1
+def combineMultiple(PQL, index):
+    """
+     @param string -- input raw optimade input
+     @param index -- index in which "," was found
+     Procedure:
+         1. find the first and last quote centering from the index of the ","
+         2. get everything between first and last quote
+         3. split the string into individual elements
+         4. put them into Python Query Language format
+    """
+    for i in reversed(range(index)):
+        if(PQL[i] == "'" or PQL[i] == '"'):
+            firstIndex = i
             break
-    lastQuoteIndex = index
-    for lastQuoteIndex in range(index, len(string)):
-        if(ord(string[lastQuoteIndex])== 34):
+    for i in range(index, len(PQL)):
+        if(PQL[i] == "'" or PQL[i]== '"'):
+            lastIndex = i
             break
-    insertion = string[firstQuoteIndex:lastQuoteIndex]
+    insertion = PQL[firstIndex + 1 : lastIndex] # since the first index is inclusive, need to exclude the quote
     insertion = insertion.split(",")
-    return string[:firstQuoteIndex - 1] + 'all({})'.format(insertion) + string[lastQuoteIndex + 1:], lastQuoteIndex + 1
+    # remove the preceding 0 for all individual entries, insert those as array format into the original PQL query
+    result = PQL[:firstIndex] + "all({})".format([item.lstrip() for item in insertion])
+    # update pointer to after the combined sequence
+    result_index = len(result)
+    result = result +  PQL[lastIndex + 1:]
+    return result, result_index
 
-# @param PQL: raw PQL
-# Procedure:
-# 1. go through PQL, find "," to find where i need to combine multiple elements
-# 2. combine multiple
-# 3. return the cleaned PQL
-def parseInput(PQL):
+def cleanPQL(PQL):
+    """
+     @param PQL: raw PQL
+     Procedure:
+         1. go through PQL, find "," to find where i need to combine multiple elements
+         2. combine multiple
+         3. return the cleaned PQL
+    """
     length = len(PQL)
     i = 0
     while(i < length):
@@ -53,10 +65,13 @@ def parseInput(PQL):
         i = i + 1
     return PQL
 
-# @param rawMongoDbQuery -- input that needs to be cleaned
-# Procedure:
-# recursively go through the rawMongoDbQuery, turn string into float if possible in the value field
+
 def cleanMongo(rawMongoDbQuery):
+    """
+    @param rawMongoDbQuery -- input that needs to be cleaned
+    Procedure:
+        recursively go through the rawMongoDbQuery, turn string into float if possible in the value field
+    """
     if(type(rawMongoDbQuery) != dict):
         return
     for k in rawMongoDbQuery:
@@ -72,11 +87,15 @@ def cleanMongo(rawMongoDbQuery):
                 rawMongoDbQuery[k] = float(value)
             except:
                 f = value
-        else:
-            raise Exception('Unable to parse through rawMongoDbQuery')
 
-# class for transforming Lark tree into PQL format
+        else:
+            print("value", value)
+
+
 class OptimadeToPQLTransformer(Transformer):
+    """
+     class for transforming Lark tree into PQL format
+    """
     def comparison(self, args):
         A = str(args[0])
         B = ""
@@ -111,34 +130,24 @@ class OptimadeToPQLTransformer(Transformer):
         return args[0]
 
 
-# main function for converting optimade query to mongoDB query
-# Procedure:
-# 1. converting optimadeQuery into Lark tree
-# 2. converting tree into raw PQL
-# 3. parsing the rawPQL into cleaned PQL (putting combined item in place)
-# 4. parse cleaned PQL into raw MongoDB query
-# 5. parse raw MongoDB Query into cleaned MongoDb Query (turn values in string into float if possible)
-def optimadeToMongoDBConverter(optimadeQuery):
-    p = Parser(version=(0, 9, 6))
-
-    tree=""
+def optimadeToMongoDBConverter(optimadeQuery, version=None):
+    """
+    main function for converting optimade query to mongoDB query
+    Procedure:
+     1. converting optimadeQuery into Lark tree
+     2. converting tree into raw PQL
+     3. parsing the rawPQL into cleaned PQL (putting combined item in place)
+     4. parse cleaned PQL into raw MongoDB query
+     5. parse raw MongoDB Query into cleaned MongoDb Query (turn values in string into float if possible)
+    """
+    p = Parser(version=version)
     try:
         tree = p.parse(optimadeQuery)
-    except:
-        return "ERROR: Unable to parse {} into rawPQL".format(optimadeQuery)
-
-    cleanedPQL = ""
-    try:
         rawPQL = OptimadeToPQLTransformer().transform(tree)
-        cleanedPQL = parseInput(rawPQL)
-    except:
-        return "ERROR: Unable to transform tree to PQL {}".format(tree)
-
-    mongoDbQuery = {}
-    try:
+        cleanedPQL = cleanPQL(rawPQL)
         mongoDbQuery = pql.find(cleanedPQL)
-    except:
-        return "ERROR: Unable parse PQL to MongoDB execute conversion"
+    except Exception as e:
+        return "ERROR: Unable to PQL to MongoDB execute conversion"
 
     cleanMongo(mongoDbQuery)
     return mongoDbQuery

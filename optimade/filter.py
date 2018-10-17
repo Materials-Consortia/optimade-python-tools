@@ -13,6 +13,8 @@ for name in glob(os.path.join(os.path.dirname(__file__), "grammar", "*.g")):
         )
         parser[ver] = Lark(f.read())
 
+class ParserError(Exception):
+    pass
 
 class Parser:
     def __init__(self, version=None):
@@ -23,15 +25,18 @@ class Parser:
             self.lark = parser[version]
             self.version = version
         else:
-            raise ValueError("Unknown parser grammar version: {}"
+            raise ParserError("Unknown parser grammar version: {}"
                              .format(version))
         self.tree = None
         self.filter = None
 
     def parse(self, filter_):
-        self.tree = self.lark.parse(filter_)
-        self.filter = filter_
-        return self.tree
+        try:
+            self.tree = self.lark.parse(filter_)
+            self.filter = filter_
+            return self.tree
+        except Exception as e:
+            raise ParserError(str(e))
 
     def __repr__(self):
         if isinstance(self.tree, Tree):

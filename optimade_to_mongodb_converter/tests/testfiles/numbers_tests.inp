@@ -1,0 +1,6 @@
+test_valid_numbers_with_positive_sign | filter= a=+1 | {'a': 1.0}
+test_float | filter =a < 2.2 | {'a': {'$lt': 2.2}}
+test_scientific_number | filter =a < 2E100 | {'a': {'$lt': 2e+100}}
+test_negative_number | filter =a < -2E-100 | {'a': {'$lt': -2e-100}}
+test_scientific_num_with_decimal | filter = a=6.03e23 | {'a': 6.03e+23}
+test_large_num | filter = a =10000000000000.E1000000000 | {'a': inf} 
