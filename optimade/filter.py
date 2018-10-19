@@ -36,7 +36,7 @@ class Parser:
             self.filter = filter_
             return self.tree
         except Exception as e:
-            raise ParserError(str(e))
+            raise ParserError(e)
 
     def __repr__(self):
         if isinstance(self.tree, Tree):

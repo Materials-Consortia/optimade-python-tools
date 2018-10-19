@@ -65,6 +65,8 @@ def cleanPQL(PQL):
         i = i + 1
     return PQL
 
+class UnknownMongoDBQueryError(Exception):
+    pass
 
 def cleanMongo(rawMongoDbQuery):
     """
@@ -87,9 +89,8 @@ def cleanMongo(rawMongoDbQuery):
                 rawMongoDbQuery[k] = float(value)
             except:
                 f = value
-
         else:
-            print("value", value)
+            raise UnknownMongoDBQueryError("Unrecognized MongoDB Query \n {}".format(rawMongoDbQuery))
 
 
 class OptimadeToPQLTransformer(Transformer):
@@ -113,15 +114,12 @@ class OptimadeToPQLTransformer(Transformer):
         for arg in args:
             if arg.lower() == "and" or arg.lower() == "or":
                 arg = arg.lower()
-            result = result + " " + arg.lower()
+            result = result + " " + arg
         return "(" + result.lstrip() + ")"
 
     def expression(self, args):
         result = ""
         for arg in args:
-            lower = arg.lower()
-            if(lower == "and" or lower == "or"):
-                arg = lower
             result = result + " " + arg
         return result.lstrip()
     def start(self, args):
@@ -147,7 +145,7 @@ def optimadeToMongoDBConverter(optimadeQuery, version=None):
         cleanedPQL = cleanPQL(rawPQL)
         mongoDbQuery = pql.find(cleanedPQL)
     except Exception as e:
-        return "ERROR: Unable to PQL to MongoDB execute conversion"
+        return e
 
     cleanMongo(mongoDbQuery)
     return mongoDbQuery
