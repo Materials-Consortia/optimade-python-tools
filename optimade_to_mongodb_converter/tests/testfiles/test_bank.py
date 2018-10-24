@@ -149,6 +149,17 @@ syntax_tests = [
                 ]
             }
     },
+    {
+        "name": "test_alias",
+        "query": "filter = formula_prototype='Si'",
+        "aliases": {
+                "formula_prototype":"formula_anonymous",
+                "chemical_formula":"pretty_formula",
+            },
+        "answer": {
+            'formula_anonymous': 'Si'
+            }
+    },
 ]
 
 raiseErrors = [

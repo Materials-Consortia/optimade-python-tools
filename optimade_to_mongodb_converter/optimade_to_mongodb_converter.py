@@ -1,7 +1,5 @@
 import pql
-import sys, os
-sys.path.insert(0,os.path.join(os.path.dirname(os.getcwd()), "optimade"))
-from filter import Parser
+from optimade.filter import Parser
 from lark import Transformer
 
 # data for pql to mongodb symbol
@@ -127,8 +125,20 @@ class OptimadeToPQLTransformer(Transformer):
     def combined(self, args):
         return args[0]
 
-
-def optimadeToMongoDBConverter(optimadeQuery, version=None):
+def parseAlias(optimadeQuery, aliases):
+    """
+    @param optimadeQuery -- the query to be parsed
+    @param aliases -- dictionary with structure {"OPTIMADE_STRUCTURE_NAME": "YOUR_DB_STRUCTURE_NAME"}
+    Procedure:
+        1. loop through all aliases
+        2. replace all occurences of OPTIMADE_STRUCTURE_NAME with YOUR_DB_STRUCTURE_NAME
+        3. return the resultant optimadeQuery
+    """
+    if(aliases != None):
+        for alias in aliases:
+            optimadeQuery = optimadeQuery.replace(alias,aliases[alias])
+    return optimadeQuery
+def optimadeToMongoDBConverter(optimadeQuery, version=None, aliases=None):
     """
     main function for converting optimade query to mongoDB query
     Procedure:
@@ -138,6 +148,8 @@ def optimadeToMongoDBConverter(optimadeQuery, version=None):
      4. parse cleaned PQL into raw MongoDB query
      5. parse raw MongoDB Query into cleaned MongoDb Query (turn values in string into float if possible)
     """
+
+    optimadeQuery = parseAlias(optimadeQuery, aliases)
     p = Parser(version=version)
     try:
         tree = p.parse(optimadeQuery)
