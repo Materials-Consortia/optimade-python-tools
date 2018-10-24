@@ -160,6 +160,17 @@ syntax_tests = [
             'formula_anonymous': 'Si'
             }
     },
+    {
+        "name": "test_alias_word_boundary",
+        "query": "filter = formula_prototypes='Si'",
+        "aliases": {
+                "formula_prototype":"formula_anonymous",
+                "chemical_formula":"pretty_formula",
+            },
+        "answer": {
+            'formula_prototypes': 'Si'
+            }
+    },
 ]
 
 raiseErrors = [
