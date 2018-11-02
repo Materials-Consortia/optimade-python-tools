@@ -149,7 +149,7 @@ def optimadeToMongoDBConverter(optimadeQuery, version=None, aliases=None):
      4. parse cleaned PQL into raw MongoDB query
      5. parse raw MongoDB Query into cleaned MongoDb Query (turn values in string into float if possible)
     """
-    
+
     p = Parser(version=version)
     optimadeQuery = parseAlias(optimadeQuery, aliases)
     try:
