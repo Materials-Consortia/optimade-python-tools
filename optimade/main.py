@@ -1,6 +1,7 @@
 from optimade.converter.mongo import optimadeToMongoDBConverter
 import argparse
 from ast import literal_eval
+import re
 
 ap = argparse.ArgumentParser()
 ap.add_argument("Query", help="Query with quotation mark around it. ex: 'filter= a < 0'")
