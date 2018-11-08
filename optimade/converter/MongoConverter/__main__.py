@@ -1,9 +1,11 @@
 import sys, os
+import configparser
 # below is a hack, not too sure why without this line the program would crash at from mongo...
 sys.path.append(os.path.dirname(__file__))
 from mongo import optimadeToMongoDBConverter
+import json
 import argparse
-from ast import literal_eval
+import ast
 import re
 
 def main(args=None):
@@ -18,6 +20,10 @@ def main(args=None):
     ap.add_argument("-a", "--Alias", required=False, help='Aliases with quotation mark around it. ex: "{}"'.format("{'a':'b'}"))
     args=ap.parse_args()
 
+
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
     def prepVersion(v):
         """
         @param v: user input Version
@@ -28,7 +34,7 @@ def main(args=None):
             4. And change string to int
             5. turn the resulting list into a tuple
         """
-        if(v == None):
+        if(v == None or v == ""):
             return None
         else:
             array = v.split(",")
@@ -48,10 +54,23 @@ def main(args=None):
         if(a == None):
             return None
         else:
-            return literal_eval(a)
+            return ast.literal_eval(a)
 
 
-    print(optimadeToMongoDBConverter(args.Query, prepVersion(args.Version), prepAlias(args.Alias)))
+    alias = None
+    if(config['params']['alias'] != None):
+        alias = prepAlias(config['params']['alias'])
+    if(args.Alias != None):
+        alias = prepAlias(args.Alias)
+
+    if(config['params'].get('version') != None):
+        v = prepVersion(config['params'].get('version'))
+    if(args.Version != None):
+        v = prepVersion(args.Version)
+
+    result = optimadeToMongoDBConverter(args.Query, prepVersion(args.Version), alias)
+    print(result)
+    return result
 
 
 
