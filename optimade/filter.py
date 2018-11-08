@@ -25,7 +25,6 @@ class Parser:
             self.lark = parser[version]
             self.version = version
         else:
-            print(parser)
             raise ParserError("Unknown parser grammar version: {}"
                              .format(version))
         self.tree = None
