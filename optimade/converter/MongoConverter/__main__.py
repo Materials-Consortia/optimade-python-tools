@@ -57,19 +57,22 @@ def main(args=None):
             return ast.literal_eval(a)
 
 
-    alias = None
-    if(config['params']['alias'] != None):
-        alias = prepAlias(config['params']['alias'])
+    alias = dict()
+    if(config['aliases'] != None):
+        for key in config['aliases']:
+            alias[key] = config['aliases'][key]
     if(args.Alias != None):
         alias = prepAlias(args.Alias)
 
-    if(config['params'].get('version') != None):
-        v = prepVersion(config['params'].get('version'))
+    if(config['version'] != None):
+        a = config['version']['major']
+        b = config['version']['minor']
+        c = config['version']['patch']
+        v = (int(a), int(b) , int(c))
     if(args.Version != None):
         v = prepVersion(args.Version)
 
-    result = optimadeToMongoDBConverter(args.Query, prepVersion(args.Version), alias)
-    print(result)
+    result = optimadeToMongoDBConverter(args.Query, v, alias)
     return result
 
 
