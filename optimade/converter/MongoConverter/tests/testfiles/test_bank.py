@@ -203,3 +203,97 @@ raiseErrors = [
         "query": "filter = x < [1,2]"
     },
 ]
+
+optiMadeToPQLOperatorValidatorTest = [
+    {
+        "name": "=",
+        "input": "=",
+        "answer": "==",
+    },
+    {
+        "name": "<=",
+        "input": "<=",
+        "answer": "<=",
+    },
+    {
+        "name": ">=",
+        "input": ">=",
+        "answer": ">=",
+    },
+    {
+        "name": "!=",
+        "input": "!=",
+        "answer": "!=",
+    },
+    {
+        "name": "<",
+        "input": "<",
+        "answer": "<",
+    },
+    {
+        "name": ">",
+        "input": ">",
+        "answer": ">",
+    },
+]
+
+optiMadeToPQLOperatorValidatorErrors = [
+    {
+        "name": "=<",
+        "input": "=<",
+    },
+    {
+        "name": "=>",
+        "input": "=>",
+    },
+    {
+        "name": "x",
+        "input": "x",
+    },
+]
+
+cleanPQLTest = [
+    {
+        "name": "simple case",
+        "input": " elements='a,b,c' ",
+        "answer": " elements=all(['a', 'b', 'c']) ",
+    },
+    {
+        "name": "simple case",
+        "input": " elements='a,B' ",
+        "answer": " elements=all(['a', 'B']) ",
+    },
+    {
+        "name": "simple case",
+        "input": " elements='aE,B' ",
+        "answer": " elements=all(['aE', 'B']) ",
+    },
+
+]
+
+cleanMongoTest = [
+    {
+        "input": "{'a': '+1'}",
+        "answer": {'a': 1.0},
+    },
+    {
+        "input": "{'a': {'$lt': '2.2'}}",
+        "answer": {'a': {'$lt': 2.2}},
+    },
+    {
+        "input": "{'a': {'$lt': '2E100'}}",
+        "answer": {'a': {'$lt': 2e+100}},
+    },
+    {
+        "input": "{'a': {'$lt': '-2E-100'}}",
+        "answer": {'a': {'$lt': -2e-100}},
+    },
+    {
+        "input": "{'a': '6.03e23'}",
+        "answer": {'a': 6.03e+23},
+    },
+    {
+        "input": "{'a': '10000000000000.E1000000000'}",
+        "answer": {'a': float('inf')},
+    },
+]

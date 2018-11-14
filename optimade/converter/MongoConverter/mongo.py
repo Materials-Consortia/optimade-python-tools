@@ -10,17 +10,24 @@ optiMadeToPQLOperatorSwitch = {
     "=":"==",
     "<=":"<=",
     ">=":">=",
-    "=>":">=",
     "!=": "!=",
     "<":"<",
     ">":">",
 }
 
+class OperatorError(Exception):
+    pass
+
 def OptiMadeToPQLOperatorValidator(x):
     """
     convert pql to mongodb symbol
     """
-    return optiMadeToPQLOperatorSwitch[x]
+    item = optiMadeToPQLOperatorSwitch.get(x)
+    if(type(item) != None):
+        return item
+    else:
+        raise OperatorError("<{}> is not a valid operator".format(x))
+
 
 def combineMultiple(PQL, index):
     """
