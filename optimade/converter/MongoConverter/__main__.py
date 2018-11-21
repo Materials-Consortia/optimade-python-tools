@@ -18,11 +18,12 @@ def main(args=None):
     ap.add_argument("Query", help="Query with quotation mark around it. ex: 'filter= a < 0'")
     ap.add_argument("-v", "--Version", required=False, help="The version of the Lark grammer desired, surrounded by quotation mark. ex: {}".format(' "(1,2,3)" '))
     ap.add_argument("-a", "--Alias", required=False, help='Aliases with quotation mark around it. ex: "{}"'.format("{'a':'b'}"))
+    
     args=ap.parse_args()
 
 
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
 
     def prepVersion(v):
         """
@@ -56,14 +57,15 @@ def main(args=None):
         else:
             return ast.literal_eval(a)
 
-
     alias = dict()
-    if(config['aliases'] != None):
-        for key in config['aliases']:
+    if(config['aliases']!=None):
+        d = dict(config.items('aliases'))
+        for key in d:
             alias[key] = config['aliases'][key]
     if(args.Alias != None):
         alias = prepAlias(args.Alias)
 
+    v = None
     if(config['version'] != None):
         a = config['version']['major']
         b = config['version']['minor']

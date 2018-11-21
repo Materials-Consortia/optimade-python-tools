@@ -8,4 +8,6 @@ setup(name='MongoConverter',
               'MongoConverter = MongoConverter.__main__:main'
           ]
       },
+      include_package_data=True,
+
       )
