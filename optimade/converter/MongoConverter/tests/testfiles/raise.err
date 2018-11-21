@@ -1,6 +1,0 @@
-filter=1<2
-filter=1
-filter=1<
-filter=<2
-filter = x <? 2
-filter = x < [1,2]
