@@ -4,7 +4,8 @@ start: KEYWORD expression
 KEYWORD: "filter="
 expression: [expression OR] term
 term: [term AND] atom
-atom: [NOT] comparison | [NOT] "(" (andcomparison OR)* andcomparison ")"
+atom: [NOT] comparison
+    | [NOT] "(" (andcomparison OR)* andcomparison ")"
 andcomparison: [NOT] (NOT comparison AND)* comparison
 comparison: VALUE OPERATOR VALUE
 OPERATOR: /<=?|>=?|!?=/

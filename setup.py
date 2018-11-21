@@ -34,4 +34,9 @@ setup(
     ],
     keywords='optimade jsonapi materials',
     python_requires='>=3',
+    entry_points={
+        'console_scripts': [
+            'mongoconverter = optimade.converter.mongoconverter.__main__:main'
+        ]
+    },
 )

@@ -1,8 +1,10 @@
 import os
-from testfiles.test_bank import number_test,syntax_tests, raiseErrors
-from optimade.converter.mongo import optimadeToMongoDBConverter
-from glob import glob
+from optimade.converter.mongoconverter.tests.test_bank import number_test, syntax_tests, raiseErrors
+from optimade.converter.mongoconverter.mongo import optimadeToMongoDBConverter
+
 from unittest import TestCase
+
+
 class OptimadeToMongoDBConverterTest(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -12,7 +14,7 @@ class OptimadeToMongoDBConverterTest(TestCase):
         self.testFilesPath = os.path.join(os.getcwd(),"testfiles")
         
     def test_all(self):
-        #test for numerical correctness
+        # test for numerical correctness
         for t in number_test:
             self.assertEqual(optimadeToMongoDBConverter(t['query'], aliases=t.get('aliases')), t['answer'], t['name'])
         # test for syntax correctness

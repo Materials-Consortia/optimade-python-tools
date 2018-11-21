@@ -1,2 +1,1 @@
-recursive-include *.txt *.g *.py
-include optimade/grammar/*.g
+recursive-include *.txt *.g *.py *.ini
