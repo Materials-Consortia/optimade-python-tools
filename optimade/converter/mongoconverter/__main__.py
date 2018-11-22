@@ -12,19 +12,6 @@ def main(args=None):
     """The main routine."""
     if args is None:
         args = sys.argv[1:]
-
-
-    ap = argparse.ArgumentParser()
-    ap.add_argument("Query", help="Query with quotation mark around it. ex: 'filter= a < 0'")
-    ap.add_argument("-v", "--Version", required=False, help="The version of the Lark grammer desired, surrounded by quotation mark. ex: {}".format(' "(1,2,3)" '))
-    ap.add_argument("-a", "--Alias", required=False, help='Aliases with quotation mark around it. ex: "{}"'.format("{'a':'b'}"))
-    
-    args=ap.parse_args()
-
-
-    config = configparser.ConfigParser()
-    config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
-
     def prepVersion(v):
         """
         @param v: user input Version
@@ -57,24 +44,40 @@ def main(args=None):
         else:
             return ast.literal_eval(a)
 
+
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("Query", help="Query with quotation mark around it. ex: 'filter= a < 0'")
+    ap.add_argument("-config", "--Config", required=False, help="Path to customized config file. Please see config.ini for example config file format")
+    args=ap.parse_args()
+
+    config = configparser.ConfigParser()
+    if(args.Config != None):
+        path = args.Config
+        config.read(path)
+        class ConfigFileNotFoundException(Exception):
+            pass
+        if(not (config.has_section('aliases') or config.has_section('version'))):
+            raise ConfigFileNotFoundException("Config File Not Found at Location: {}".format(args.Config))
+    else:
+        config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
+
     alias = dict()
-    if(config['aliases']!=None):
+    v = None
+
+    if(config.has_section('aliases')):
         d = dict(config.items('aliases'))
         for key in d:
             alias[key] = config['aliases'][key]
-    if(args.Alias != None):
-        alias = prepAlias(args.Alias)
 
-    v = None
-    if(config['version'] != None):
+    if(config.has_section('version')):
         a = config['version']['major']
         b = config['version']['minor']
         c = config['version']['patch']
         v = (int(a), int(b) , int(c))
-    if(args.Version != None):
-        v = prepVersion(args.Version)
 
     result = optimadeToMongoDBConverter(args.Query, v, alias)
+    print(result)
     return result
 
 
