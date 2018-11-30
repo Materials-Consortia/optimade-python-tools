@@ -77,7 +77,6 @@ def main(args=None):
         v = (int(a), int(b) , int(c))
 
     result = optimadeToMongoDBConverter(args.Query, v, alias)
-    print(result)
     return result
 
 
