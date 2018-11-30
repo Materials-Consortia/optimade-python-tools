@@ -63,12 +63,12 @@ pydot__tree_to_png(tree, "exampletree.png")
 ```
 ![example tree](exampletree.png)
 
-### General Procedure
+### Flow for Parsing User-Supplied Filter and Converting to Backend Query
 `Parser` will take user input to generate a tree and feed that to a `Converter` which will turn that tree into your desired query language.
 ![Optimade General Procedure](optimade_general_procedure.jpg)
 
 
-###### Example: Optimade to MongoDB Procedure
+###### Example: Comnverting to MongoDB Query Syntax
 The `Parser` class from `optimade/filter.py` will transform user input into a `Lark` tree using  [lark-parser](https://github.com/lark-parser/lark).
 
 The `Lark` tree will then be passed into a desired `converter`, for instance, the `mongoconverter` located at `optimade/converter/mongoconverter` for transformation into your desired database query language. We have adapted our mongoconverter by using the [python query language(pql)](https://github.com/alonho/pql)
@@ -76,7 +76,7 @@ The `Lark` tree will then be passed into a desired `converter`, for instance, th
 ![Optimade to Mongodb Procedure](optimade_to_mongodb_procedure.jpg)
 
 
-### For Developers
+### Developing New Filter Converters
 If you would like to add your converter, for instance, a OPTIMade to NoSQL converter, please
 1. add your project in the `optimade/converter` folder,
 2. add any requirements in the `requirements.txt`,
