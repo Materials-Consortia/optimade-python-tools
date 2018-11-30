@@ -63,50 +63,6 @@ pydot__tree_to_png(tree, "exampletree.png")
 ```
 ![example tree](exampletree.png)
 
-### File Structure
-```
-.
-|____optimade
-| |______init__.py
-| |____filter.py
-| |____grammar
-| | |______init__.py
-| | |____v0.9.5.g
-| | |____...
-| |____converter
-| | |______init__.py
-| | |____mongoconverter
-| | | |____mongo.py
-| | | |____tests
-| | | | |____test_bank.py
-| | | | |______init__.py
-| | | | |____test_converter.py
-| | | |______init__.py
-| | | |______pycache__
-| | | |____config.ini
-| | | |______main__.py
-| |____tests
-| | |____testfiles
-| | | |____parse_005.inp
-| | | |____...
-| | |____test_filter.py
-| | |______init__.py
-|____optimade.egg-info
-| |____PKG-INFO
-| |____SOURCES.txt
-| |____entry_points.txt
-| |____requires.txt
-| |____top_level.txt
-| |____dependency_links.txt
-|____tasks.py
-|____LICENSE
-|____requirements.txt
-|____MANIFEST.in
-|____requirements-optional.txt
-|____README.md
-|____setup.py
-|____exampletree.png
-```
 ### General Procedure
 `Parser` will take user input to generate a tree and feed that to a `Converter` which will turn that tree into your desired query language.
 ![Optimade General Procedure](Optimade General Procedure.jpg)
