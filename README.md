@@ -75,6 +75,13 @@ The `Lark` tree will then be passed into a desired `converter`, for instance, th
 
 ![Optimade to Mongodb Procedure](optimade_to_mongodb_procedure.jpg)
 
+Usage examples for `mongoconverter` script:
+```bash
+$ mongoconverter "filter=a<3"
+{'a': {'$lt': 3.0}}
+$ mongoconverter "filter=_mp_bandgap > 5.0 AND _cod_molecular_weight < 350"
+{'$and': [{'_mp_bandgap': {'$gt': 5.0}}, {'_cod_molecular_weight': {'$lt': 350.0}}]}
+```
 
 ### Developing New Filter Converters
 If you would like to add your converter, for instance, a OPTIMade to NoSQL converter, please
