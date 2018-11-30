@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from lark import Tree, UnexpectedInput
 
-from optimade.filter import Parser
+from optimade.filter import Parser, ParserError
 
 testfile_dir = os.path.join(os.path.dirname(__file__), "testfiles")
 
@@ -18,12 +18,12 @@ class ParserTest(TestCase):
                 cls.test_filters.append(f.read().strip())
 
     def setUp(self):
-        self.parser = Parser()
+        self.parser = Parser(version=(0, 9, 5))
 
     def test_inputs(self):
         for tf in self.test_filters:
             if tf == "filter=number=0.0.1":
-                self.assertRaises(UnexpectedInput, self.parser.parse, tf)
+                self.assertRaises(ParserError, self.parser.parse, tf)
             else:
                 tree = self.parser.parse(tf)
                 self.assertTrue(tree, Tree)

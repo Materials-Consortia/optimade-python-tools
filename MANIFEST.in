@@ -1,1 +1,1 @@
-recursive-include *.txt *.g *.py
+recursive-include *.txt *.g *.py *.ini

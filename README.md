@@ -63,4 +63,29 @@ pydot__tree_to_png(tree, "exampletree.png")
 ```
 ![example tree](exampletree.png)
 
+### Flow for Parsing User-Supplied Filter and Converting to Backend Query
+`Parser` will take user input to generate a tree and feed that to a `Converter` which will turn that tree into your desired query language.
+![Optimade General Procedure](optimade_general_procedure.jpg)
 
+
+###### Example: Comnverting to MongoDB Query Syntax
+The `Parser` class from `optimade/filter.py` will transform user input into a `Lark` tree using  [lark-parser](https://github.com/lark-parser/lark).
+
+The `Lark` tree will then be passed into a desired `converter`, for instance, the `mongoconverter` located at `optimade/converter/mongoconverter` for transformation into your desired database query language. We have adapted our mongoconverter by using the [python query language(pql)](https://github.com/alonho/pql)
+
+![Optimade to Mongodb Procedure](optimade_to_mongodb_procedure.jpg)
+
+Usage examples for `mongoconverter` script:
+```bash
+$ mongoconverter "filter=a<3"
+{'a': {'$lt': 3.0}}
+$ mongoconverter "filter=_mp_bandgap > 5.0 AND _cod_molecular_weight < 350"
+{'$and': [{'_mp_bandgap': {'$gt': 5.0}}, {'_cod_molecular_weight': {'$lt': 350.0}}]}
+```
+
+### Developing New Filter Converters
+If you would like to add your converter, for instance, a OPTIMade to NoSQL converter, please
+1. add your project in the `optimade/converter` folder,
+2. add any requirements in the `requirements.txt`,
+3. if you wish to have a console entry point, add the that to the `console_scripts` in the `setup.py` file
+4. and run `pip install -r requirements.txt` and `pip install -e .`
