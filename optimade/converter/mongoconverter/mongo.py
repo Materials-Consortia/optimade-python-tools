@@ -93,9 +93,15 @@ def cleanMongo(rawMongoDbQuery):
             cleanMongo(value)
         elif(type(value) == str):
             try:
-                value = float(value)
-                rawMongoDbQuery[k] = float(value)
+                # TODO: convert to int if possible
+                value = int(value)
+                rawMongoDbQuery[k] = value
             except:
+                try:
+                    value = float(value)
+                    rawMongoDbQuery[k] = value
+                except:
+                    f = value
                 f = value
         else:
             raise UnknownMongoDBQueryError("Unrecognized MongoDB Query \n {}".format(rawMongoDbQuery))
