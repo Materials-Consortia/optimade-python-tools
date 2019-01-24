@@ -93,7 +93,6 @@ def cleanMongo(rawMongoDbQuery):
             cleanMongo(value)
         elif(type(value) == str):
             try:
-                # TODO: convert to int if possible
                 value = int(value)
                 rawMongoDbQuery[k] = value
             except:
