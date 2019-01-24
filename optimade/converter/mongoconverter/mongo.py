@@ -100,8 +100,7 @@ def cleanMongo(rawMongoDbQuery):
                     value = float(value)
                     rawMongoDbQuery[k] = value
                 except:
-                    f = value
-                f = value
+                    pass
         else:
             raise UnknownMongoDBQueryError("Unrecognized MongoDB Query \n {}".format(rawMongoDbQuery))
 
