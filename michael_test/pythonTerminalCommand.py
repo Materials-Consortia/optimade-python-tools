@@ -3,6 +3,7 @@ from urllib.parse import urlparse,quote_plus,parse_qs
 import pymongo
 from pymongo import MongoClient
 from urllib.parse import urlparse, quote_plus, urlencode, parse_qs
+import ast
 def parseURL(url):
     """
     @param url: input url
@@ -41,7 +42,15 @@ def parseURL(url):
     query.pop('filter',None)
 
     # calling mongo converter to convert query['query'], but that is not working, so temporary solution:
-    query['query'] = {'nelements': {'$lt': 3.0}}
+    out = subprocess.Popen(['mongoconverter', query['query']],
+               stdout=subprocess.PIPE,
+               stderr=subprocess.STDOUT)
+    stdout,stderr = out.communicate()
+    # print(stdout.decode("ascii"))
+    # do i need to do try/except and throw custom error here?
+    query['query'] = ast.literal_eval(stdout.decode("ascii"))
+
+    # query['query'] = {'nelements': {'$lt': 3.0}}
     return query
 def concatinator(endpoint, params):
     return f"{endpoint}?{urlencode(params)}"
@@ -51,7 +60,7 @@ params = {
     "filter": "nelements<3",
     "response_format": "json",
     "email_address": "dwinston@lbl.gov",
-    "response_limit": "5",
+    "response_limit": "10",
     "response_fields": "id,nelements,chemical_formula",
     "sort": "-nelements",
 }
@@ -68,9 +77,10 @@ test_collection = db.test_collection
 cursor = test_collection.find(result['query'], projection=result['response_fields'])\
                         .sort([result['sort']])\
                         .limit(result['response_limit'])
-
-for i in cursor:
-    print(i)
+# TODO: ask winston what does pagination do?
+# i read up a little bit and it seems like this sort is already doing pagination by doing the limit thing
+# for i in cursor:
+#     print(i)
 
 
 ### BELOW IS MARSHMALLOW MODEL ###
@@ -100,15 +110,16 @@ class CompoundSchema(Schema):
 compound_schema = CompoundSchema()
 
 
-import pymongo
-from pymongo import MongoClient
-client = MongoClient()
-db=client.test_database
-test_collection = db.test_collection
-cursor = test_collection.find()
-counter = 0
-data = []
+# import pymongo
+# from pymongo import MongoClient
+# client = MongoClient()
+# db=client.test_database
+# test_collection = db.test_collection
+# cursor = test_collection.find()
+# counter = 0
+# data = []
 for document in cursor:
+    print(document) #todo: build compound according to what user passed in
     d = CompoundSchema().dump( Compound(
                                     document["elements"],
                                     document["nelements"],
@@ -116,5 +127,16 @@ for document in cursor:
                                     document["formula_anonymous"],
                                     document["material_id"]))
     data.append(d)
+## TODO: build a more generic return type that contains
+# {
+# 	"endpoint": "https://materialsproject.org/optimade/0.9.6/structures"
+# 	"email_address": "dwinston@lbl.gov",
+# 	"response_format": "json",
+# 	"data": [
+# 		{CompoundSceheme}
+# 		{CompoundScheme}
+# 	]
+#
+# }
 
-# print(data)
+print(data)
