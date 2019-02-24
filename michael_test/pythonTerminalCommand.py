@@ -17,7 +17,7 @@ def parseURL(url):
     query = parse_qs(parsed.query)
     alias = {
         "chemical_formula":"formula_anonymous",
-        "pretty_formula": "formula_prototype",
+        "formula_prototype": "pretty_formula",
     }
     query['response_limit'] = int(query['response_limit'][0])
     query['response_fields'] = query['response_fields'][0].split(",")
@@ -61,7 +61,7 @@ params = {
     "response_format": "json",
     "email_address": "dwinston@lbl.gov",
     "response_limit": "10",
-    "response_fields": "id,nelements,chemical_formula",
+    "response_fields": "id,nelements,chemical_formula,material_id,elements,formula_prototype",
     "sort": "-nelements",
 }
 url = concatinator(endpoint, params)
@@ -93,6 +93,7 @@ class Compound():
         self.formula_anonymous = formula_anonymous
         self.material_id = material_id
         self.id = material_id
+    def __init__()
 
 class CompoundSchema(Schema):
 #     chemsys = fields.Str()
@@ -118,15 +119,15 @@ compound_schema = CompoundSchema()
 # cursor = test_collection.find()
 # counter = 0
 # data = []
-for document in cursor:
-    print(document) #todo: build compound according to what user passed in
-    d = CompoundSchema().dump( Compound(
-                                    document["elements"],
-                                    document["nelements"],
-                                    document["pretty_formula"],
-                                    document["formula_anonymous"],
-                                    document["material_id"]))
-    data.append(d)
+# for document in cursor:
+#     # print(document) #todo: build compound according to what user passed in
+#     d = CompoundSchema().dump( Compound(
+#                                     document["elements"],
+#                                     document["nelements"],
+#                                     document["pretty_formula"],
+#                                     document["formula_anonymous"],
+#                                     document["material_id"]))
+#     data.append(d)
 ## TODO: build a more generic return type that contains
 # {
 # 	"endpoint": "https://materialsproject.org/optimade/0.9.6/structures"
@@ -139,4 +140,4 @@ for document in cursor:
 #
 # }
 
-print(data)
+# print(data)
