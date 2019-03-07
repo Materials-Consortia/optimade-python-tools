@@ -1,6 +1,17 @@
+class Structure():
+    def __init__(self, **kwargs):
+        content = kwargs['param']
+        self.id = content.get('material_id')
+        self.elements = content.get('elements')
+        self.nelements = content.get('nelements')
+        self.pretty_formula = content.get('pretty_formula')
+        self.formula_anonymous = content.get('formula_anonymous')
+
 class Data():
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, id, structures):
+        self.id = id
+        self.structures = structures
+
 class Links():
     def __init__(self, next, base_url):
         self.next = next
@@ -25,3 +36,9 @@ class Meta():
         self.more_data_available = more_data_available
         self.last_id = last_id
         self.response_message = response_message
+
+class Response():
+    def __init__(self, links, meta, data):
+        self.links = links
+        self.meta = meta
+        self.data = data

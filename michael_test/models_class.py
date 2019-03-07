@@ -6,9 +6,12 @@ class Structure():
         self.nelements = content.get('nelements')
         self.pretty_formula = content.get('pretty_formula')
         self.formula_anonymous = content.get('formula_anonymous')
+
 class Data():
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, id, structures):
+        self.id = id
+        self.structures = structures
+
 class Links():
     def __init__(self, next, base_url):
         self.next = next

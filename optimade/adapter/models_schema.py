@@ -32,3 +32,15 @@ class ResponseSchema(Schema):
     class Meta:
         type_ = "response"
         ordered = True
+
+class StructureSchema(Schema):
+    id = fields.Str(dump_only = True)
+    elements = fields.List(fields.Str())
+    nelements = fields.Integer()
+    pretty_formula = fields.Str()
+    formula_anonymous = fields.Str()
+
+    class Meta:
+        type_ = 'structure'
+        # randomstuff_ = "hi"
+        strict = True

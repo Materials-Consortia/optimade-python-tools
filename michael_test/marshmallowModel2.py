@@ -8,7 +8,6 @@ from urllib.parse import urlparse, quote_plus, urlencode, parse_qs
 import ast
 import datetime
 from models_schema import *
-from marshmallow_jsonschema import JSONSchema
 
 def parseURL(url, alias):
     """
@@ -74,7 +73,7 @@ alias = {
     "chemical_formula":"formula_anonymous",
     "formula_prototype": "pretty_formula",
 }
-endpoint = "https://materialsproject.org/optimade/0.9.6/structures"
+endpoint = "http://127.0.0.1:5000/optimade/0.9.6/structures"
 params = {
     "filter": "nelements<3",
     "response_format": "json",
@@ -87,6 +86,7 @@ params = {
 
 #### START OF PARSING URL ####
 url = generateSampleURL(endpoint, params)
+print(url)
 query = parseURL(url, alias)
 #### END OF PARSING URL ####
 
@@ -94,31 +94,43 @@ query = parseURL(url, alias)
 cursor = getDataFromDb(query)
 
 # organizing data into an array
-data = []
-data_returned_counter = 0
-for document in cursor:
-    # structure_schema = StructureSchema().dump(Structure(param=document))
-    data.append(document)
-    data_returned_counter += 1
+# data = []
+# data_returned_counter = 0
+# for document in cursor:
+    # print(Structure(param=document))
+    # structure = StructureSchema().dump(Structure(param=document))
+    # data.append(structure)
+    # data_returned_counter += 1
+
+# pprint(StructureSchema(many=True).dump(list(cursor)).data)
+data = StructureSchema(many=True).dump(list(cursor)).data
+pprint(data)
+# data = Data(1, data)
+# pprint(data.structure)
+# pprint(DataSchema().dump(data).data)
+
+
+
+
 
 # generating other information needed in the response per specification
-data = Data(data)
+# data = Data(data)
 # pprint(data.data)
 
 # print(data_schema.data)
-# print(data.data)
-links = Links(None, None)
-meta = Meta(
-            query = {"representation":"/structures/?filter=a=1 AND b=2"},
-            api_version = query.get("api_version"),
-            time_stamp = datetime.datetime.utcnow().isoformat(),
-            data_returned = data_returned_counter,
-            more_data_available = True,
-            )
-#
-#
-links_schema = LinksSchema()
-meta_schema = MetaSchema()
+# # print(data.data)
+# links = Links(None, None)
+# meta = Meta(
+#             query = {"representation":"/structures/?filter=a=1 AND b=2"},
+#             api_version = query.get("api_version"),
+#             time_stamp = datetime.datetime.utcnow().isoformat(),
+#             data_returned = data_returned_counter,
+#             more_data_available = True,
+#             )
+# #
+# #
+# links_schema = LinksSchema()
+# meta_schema = MetaSchema()
 # data_schema = DataSchema()
 #
 #
@@ -135,9 +147,9 @@ meta_schema = MetaSchema()
 # #
 # # # TODO: how to dump data...
 # pprint(response_schema.dump(response).data)
-result = {
-        "links":links_schema.dump(links).data['data']['attributes'],
-        "data":data.data,
-        "meta":meta_schema.dump(meta).data}
-
-pprint(result)
+# result = {
+#         "links":links_schema.dump(links).data['data']['attributes'],
+#         "data":data.data,
+#         "meta":meta_schema.dump(meta).data}
+#
+# pprint(result)

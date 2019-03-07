@@ -4,6 +4,8 @@ import pymongo
 from pymongo import MongoClient
 from util import *
 import os, subprocess
+from models_class import *
+from models_schema import *
 
 app = Flask(__name__)
 app.config['TESTING'] = True
@@ -17,8 +19,13 @@ def find():
     client = MongoClient()
     db=client.test_database
     test_collection = db.test_collection
-    args = dict(request.args)
-    return str(parseArgs('/optimade/0.9.6/structures/', args))
+    query = dict(request.args)
+    result = getData(test_collection, \
+                        "http://127.0.0.1:5000/optimade/0.9.6/structures",\
+                        query)
+    pprint(result)
+
+    return str(result)
     # return parseArgs(args)
 
 
