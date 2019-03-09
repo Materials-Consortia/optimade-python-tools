@@ -1,44 +1,66 @@
-class Structure():
-    def __init__(self, **kwargs):
-        content = kwargs['param']
-        self.id = content.get('material_id')
-        self.elements = content.get('elements')
-        self.nelements = content.get('nelements')
-        self.pretty_formula = content.get('pretty_formula')
-        self.formula_anonymous = content.get('formula_anonymous')
-
-class Data():
-    def __init__(self, id, structures):
-        self.id = id
-        self.structures = structures
-
-class Links():
-    def __init__(self, next, base_url):
-        self.next = next
-        self.base_url = base_url
-
 class Meta():
-    def __init__(self,
-                query, # must be a dictionary with "representation": "/structures/?filter=a=1 AND b=2",
-                api_version,
-                time_stamp,
-                data_returned,
-                more_data_available,
-                data_available=None, # optional
-                last_id=None, # optional
-                response_message=None #optional
-                ):
-        # TODO: check each type of each attribute based on the specification
-        self.query = query
-        self.api_version = api_version
-        self.time_stamp = time_stamp
-        self.data_returned = data_returned
-        self.more_data_available = more_data_available
-        self.last_id = last_id
-        self.response_message = response_message
+    def __init__(self, collection, cursor, parsed_args):
+        self.collection = collection
+        self.parsed_args = parsed_args
+        self.cursor = cursor
+        self.constructMetaData()
+    def __repr__(self):
+        return str({"meta": {
+                    "query":self.query,
+                    "api_version":self.api_version,
+                    "data_returned":self.data_returned,
+                    "data_available":self.data_available,
+                    "more_data_available":self.more_data_available,
+                    "last_id":self.last_id,
+                    "response_message":self.response_message,
+                    }
+                })
+    def constructMetaData(self):
+        total_entries = self.collection.count()
+        self.query = {'representation': self.parsed_args.get('representation')}
+        self.more_data_available = True if self.collection.count() > self.cursor.count() else False
+        self.api_version = self.parsed_args.get('api_version')
+        self.data_returned = self.cursor.count()
+        self.parsed_args['data_returned'] = self.data_returned
+        self.data_available = self.collection.count()
+        self.more_data_available = True if  self.data_available > self.data_returned else False
+        self.last_id = "NOT IMPLEMENTED YET"
+        self.response_message = "NOT IMPLEMENTED YET"
+    def getMetaData(self):
+        return {"meta": {
+                    "query":self.query,
+                    "api_version":self.api_version,
+                    "data_returned":self.data_returned,
+                    "data_available":self.data_available,
+                    "more_data_available":self.more_data_available,
+                    "last_id":self.last_id,
+                    "response_message":self.response_message,
+                    }
+                }
 
-class Response():
-    def __init__(self, links, meta, data):
-        self.links = links
-        self.meta = meta
-        self.data = data
+class Link():
+    def __init__(self, collection, cursor, parsed_args):
+        self.collection = collection
+        self.cursor = cursor
+        self.parsed_args = parsed_args
+        self.constructLinkData()
+    def __repr__(self):
+        return str({"link": {
+                        "next":self.next,
+                        "base_url":self.base_url
+                    }
+                  })
+    def constructLinkData(self):
+        self.next = None #HOW TO DO THIS???
+        self.base_url = {
+            "href":self.parsed_args.get('base_url'),
+                "meta":{
+                    "version":self.parsed_args.get('api_version') #???
+                }
+            }
+    def getLinkData(self):
+        return {"link": {
+                        "next":self.next,
+                        "base_url":self.base_url
+                    }
+                  }

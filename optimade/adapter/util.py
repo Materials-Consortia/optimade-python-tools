@@ -8,66 +8,118 @@ from urllib.parse import urlparse, quote_plus, urlencode, parse_qs
 import ast
 import datetime
 from models_schema import *
+import sys
 
-def parseArgs(path,args, alias={}):
-    result = {}
-    result['response_limit'] = int(args['response_limit'])
-    result['response_fields'] = args['response_fields'].split(",")
+#### Start of Helper methods for parseURL ####
+def initializeParsedResult(queryParam):
+        queryParam['filter'] = None
+        queryParam['response_format'] = None
+        queryParam['email_address'] = None
+        queryParam['response_limit'] = 10; # default response_limit = 10
+        queryParam['response_fields'] = []
+def fillFilter(queryParam, args):
+    queryParam['query'] = None
+    if(args.get('filter') != None):
+        queryParam['query'] = "filter = %s" % args['filter'][0]
+        queryParam.pop('filter',None)
+        # get output from your converter
+        out = subprocess.Popen(['mongoconverter', queryParam['query']],
+                   stdout=subprocess.PIPE,
+                   stderr=subprocess.STDOUT)
+        stdout,stderr = out.communicate()
+        # do i need to do try/except and throw custom error here?
+        queryParam['query'] = ast.literal_eval(stdout.decode("ascii"))
+def fillResponseFormat(queryParam, args):
+    queryParam['response_format'] = args['response_format'][0] if args.get('response_format') != None else None
+def fillEmailAddress(queryParam, args):
+    queryParam['email_address'] = args['email_address'][0] if args.get('email_address') != None else  None
+def fillResponseLimit(queryParam, args):
+    queryParam['response_limit'] = int(args['response_limit'][0]) if args.get('response_limit') != None else sys.maxsize
+def fillResponseFields(queryParam, args, alias):
+    queryParam['response_fields'] = None
+    if(args.get('response_fields') != None):
+        fields = args['response_fields'][0].split(",")
+        queryParam['response_fields'] = [alias[field] if field in alias  else field for field in fields ]
 
-    # swap content in query['response_fields'] to format in alias
-    for i in range(len(args['response_fields'])):
-        if(args['response_fields'][i] in alias):
-            result['response_fields'][i] = alias[args['response_fields'][i]]
-
+def fillSortFields(queryParam, args):
     # change from json sorting format to mongoDB sorting method, TODO: change to support multiple sort objects
-    json_sort_query = args.get('sort')
-    if(json_sort_query!= None):
+    if(args.get('sort') != None):
+        json_sort_query = args.get('sort')[0]
         if(json_sort_query.find("-") > -1):
-            result['sort'] = (json_sort_query[json_sort_query.find("-")+1:], pymongo.ASCENDING)
+            queryParam['sort'] = (json_sort_query[json_sort_query.find("-")+1:], pymongo.ASCENDING)
         else:
-            result['sort'] = (json_sort_query, pymongo.DESCENDING)
+            queryParam['sort'] = (json_sort_query, pymongo.DESCENDING)
     else:
-        result['sort'] = []
+        queryParam['sort'] = []
+def fillOtherOptionalFields(url, queryParam, path, args):
+    fillSortFields(queryParam, args)
     splitted = path.split("/")
-
     # adding contents in path.
-    result["endpoint"] = splitted[len(splitted)-3]
-    result["api_version"] = splitted[len(splitted)-2] # assuming that our grammar is our api version
-    result["entry"] = splitted[len(splitted)-1]
+    queryParam["endpoint"] = splitted[1]
+    queryParam["api_version"] = splitted[2] # assuming that our grammar is our api version
+    queryParam["entry"] = splitted[3]
 
-    result['query'] = "filter = %s" % args['filter']
-    result.pop('filter',None)
-    # get output from your converter
-    out = subprocess.Popen(['mongoconverter', result['query']],
-               stdout=subprocess.PIPE,
-               stderr=subprocess.STDOUT)
-    stdout,stderr = out.communicate()
-    # do i need to do try/except and throw custom error here?
-    result['query'] = ast.literal_eval(stdout.decode("ascii"))
-    return result
+
+    entry_point_index = url.find(splitted[3])
+    queryParam["representation"] = url[entry_point_index:]
+    queryParam["base_url"] = url[:entry_point_index]
+
+#### End of Helper methods for parseURL ####
+
+def parseURL(url, alias):
+    """
+    @param url: input url
+    @return 1. path -- the path of user's request, ex: /optimade/0.9.6/structures
+            2. query -- user's query fields which is a dictionary with keys filter,
+                        response_format, email_address, response limit, response_fields,
+                        and sort
+    """
+    parsed = urlparse(url)
+    path = parsed.path
+    args = parse_qs(parsed.query)
+
+    queryParam = {}
+    initializeParsedResult(queryParam)
+    fillFilter(queryParam, args)
+    fillResponseFormat(queryParam, args)
+    fillEmailAddress(queryParam, args)
+    fillResponseLimit(queryParam, args)
+    fillResponseFields(queryParam, args, alias)
+    fillOtherOptionalFields(url, queryParam, path, args)
+    return queryParam
 
 def getDataFromCollection(collection, query):
-    # print(result['sort'])
-    q = query.get('query')
-    proj = query.get('response_fields')
-    sorting = query.get('sort')
-    limit = query.get('response_limit')
-    cursor = None
-    if(sorting == None):
-        if(limit == None):
-            cursor = collection.find(query.get('query'), projection=query.get('response_fields'))
-        else:
-            cursor = collection.find(query.get('query'), projection=query.get('response_fields'))\
-                    .limit(query.get('response_limit'))
-    else:
-        cursor = collection.find(query.get('query'), projection=query.get('response_fields'))\
-                            .sort([query.get('sort')])\
-                            .limit(query.get('response_limit'))
+    cursor = collection.find(filter=query.get('query'),
+                             projection=query.get('response_fields'),
+                             limit=query.get('response_limit'),)
+                             # sort=[query.get('sort')])
+    if(query.get('sort')):
+        cursor.sort([query.get('sort')])
     return cursor
 
-def getData(collection, path, query):
-    parsed_args = parseArgs(path,query, query)
-    pprint(parsed_args)
+
+def getResponse(collection, url, alias={}):
+    parsed_args = parseURL(url, alias)
     cursor = getDataFromCollection(collection, parsed_args)
     data = StructureSchema(many=True).dump(list(cursor)).data
-    return data
+    meta = Meta(collection, cursor, parsed_args)
+    link = Link(collection, cursor, parsed_args)
+
+
+    # debugPrinting(parsed_args, data)
+    return {"data": data['data'], "meta":meta.getMetaData()["meta"], "link":link.getLinkData()["link"]}
+
+def debugPrinting(parsed_args, data):
+    print("########## START OF DEBUGGING  ##########")
+    print()
+    print("### START OF parsed_args  ###")
+    pprint(parsed_args)
+    print("### END OF parsed_args  ###")
+    print()
+
+    print()
+    print("### START OF data  ###")
+    pprint(data)
+    print("### END OF data  ###")
+    print()
+    print("########## END OF DEBUGGING  ##########")
