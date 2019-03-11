@@ -12,6 +12,7 @@ params = {
     "response_limit": "10",
     "response_fields": "id,nelements,material_id,elements,formula_prototype",
     "sort": "-nelements",
+    "page[number]": "1", # TODO what is the query param here??? not listed in the optimade api
 }
 #### END SAMPLE DATA ####
 print(f"{endpoint}?{urlencode(params)}")
