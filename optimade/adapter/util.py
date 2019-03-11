@@ -12,11 +12,13 @@ import sys
 
 #### Start of Helper methods for parseURL ####
 def initializeParsedResult(queryParam):
+        ## the must haves in the spec, set to default values if not later overwrote
         queryParam['filter'] = None
         queryParam['response_format'] = None
         queryParam['email_address'] = None
         queryParam['response_limit'] = 10; # default response_limit = 10
         queryParam['response_fields'] = []
+
 def fillFilter(queryParam, args):
     queryParam['query'] = None
     if(args.get('filter') != None):
@@ -99,15 +101,17 @@ def getDataFromCollection(collection, query):
 
 def getResponse(collection, url, alias={}):
     parsed_args = parseURL(url, alias)
-    cursor = getDataFromCollection(collection, parsed_args)
-    data = StructureSchema(many=True).dump(list(cursor)).data
-    meta = Meta(collection, cursor, parsed_args, data)
-    link = Link(collection, cursor, parsed_args)
-
-
-    # debugPrinting(parsed_args, data)
-    return {"data": data['data'], "meta":meta.getMetaData()["meta"], "link":link.getLinkData()["link"]}
-
+    if(parsed_args.get('response_format') == 'jsonapi'):
+        cursor = getDataFromCollection(collection, parsed_args)
+        data = StructureSchema(many=True).dump(list(cursor)).data
+        meta = Meta(collection, cursor, parsed_args, data)
+        link = Link(collection, cursor, parsed_args)
+        # debugPrinting(parsed_args, data)
+        return {"data": data['data'], "meta":meta.getMetaData()["meta"], "link":link.getLinkData()["link"]}
+    else:
+        class FormatNotImplementedError(Exception):
+            pass
+        raise FormatNotImplementedError("Format <{}> is not implemented".format(parsed_args.get('response_format')))
 def debugPrinting(parsed_args, data):
     print("########## START OF DEBUGGING  ##########")
     print()
