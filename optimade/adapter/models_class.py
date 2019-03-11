@@ -1,13 +1,10 @@
 import datetime
-from marshmallow import pprint
 class Meta():
     def __init__(self, collection, cursor, parsed_args,data):
         self.collection = collection
         self.parsed_args = parsed_args
         self.cursor = cursor
         self.data = data
-        print("data = ")
-        pprint(data)
         self.constructMetaData()
     def __repr__(self):
         return str({"meta": {
@@ -30,7 +27,7 @@ class Meta():
         self.parsed_args['data_returned'] = self.data_returned
         self.data_available = self.collection.count()
         self.more_data_available = True if  self.data_available > self.data_returned else False
-        self.last_id = "NOT IMPLEMENTED YET"
+        self.last_id = self.data.get('data')[len(self.data.get('data'))-1].get('attributes').get('material_id')
         self.response_message = "NOT IMPLEMENTED YET"
         self.time_stamp = datetime.datetime.utcnow().isoformat()
     def getMetaData(self):
