@@ -1,8 +1,13 @@
+import datetime
+from marshmallow import pprint
 class Meta():
-    def __init__(self, collection, cursor, parsed_args):
+    def __init__(self, collection, cursor, parsed_args,data):
         self.collection = collection
         self.parsed_args = parsed_args
         self.cursor = cursor
+        self.data = data
+        print("data = ")
+        pprint(data)
         self.constructMetaData()
     def __repr__(self):
         return str({"meta": {
@@ -13,6 +18,7 @@ class Meta():
                     "more_data_available":self.more_data_available,
                     "last_id":self.last_id,
                     "response_message":self.response_message,
+                    "time_stamp":self.time_stamp
                     }
                 })
     def constructMetaData(self):
@@ -20,12 +26,13 @@ class Meta():
         self.query = {'representation': self.parsed_args.get('representation')}
         self.more_data_available = True if self.collection.count() > self.cursor.count() else False
         self.api_version = self.parsed_args.get('api_version')
-        self.data_returned = self.cursor.count()
+        self.data_returned = len(self.data.get('data'))
         self.parsed_args['data_returned'] = self.data_returned
         self.data_available = self.collection.count()
         self.more_data_available = True if  self.data_available > self.data_returned else False
         self.last_id = "NOT IMPLEMENTED YET"
         self.response_message = "NOT IMPLEMENTED YET"
+        self.time_stamp = datetime.datetime.utcnow().isoformat()
     def getMetaData(self):
         return {"meta": {
                     "query":self.query,
@@ -35,6 +42,7 @@ class Meta():
                     "more_data_available":self.more_data_available,
                     "last_id":self.last_id,
                     "response_message":self.response_message,
+                    "time_stamp":self.time_stamp
                     }
                 }
 

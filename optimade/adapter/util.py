@@ -91,8 +91,7 @@ def parseURL(url, alias):
 def getDataFromCollection(collection, query):
     cursor = collection.find(filter=query.get('query'),
                              projection=query.get('response_fields'),
-                             limit=query.get('response_limit'),)
-                             # sort=[query.get('sort')])
+                             limit=query.get('response_limit'))
     if(query.get('sort')):
         cursor.sort([query.get('sort')])
     return cursor
@@ -102,7 +101,7 @@ def getResponse(collection, url, alias={}):
     parsed_args = parseURL(url, alias)
     cursor = getDataFromCollection(collection, parsed_args)
     data = StructureSchema(many=True).dump(list(cursor)).data
-    meta = Meta(collection, cursor, parsed_args)
+    meta = Meta(collection, cursor, parsed_args, data)
     link = Link(collection, cursor, parsed_args)
 
 
