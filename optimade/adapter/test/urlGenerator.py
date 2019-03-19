@@ -4,18 +4,19 @@ alias = {
     "chemical_formula":"formula_anonymous",
     "formula_prototype": "pretty_formula",
 }
-endpoint = "http://127.0.0.1:5000/optimade/0.9.6/structures"
+base_url = "http://127.0.0.1:5000/optimade/0.9.6/"
+entry_point = "structures"
 params = {
     "filter": "nelements<3",
     "response_format": "jsonapi",
     "email_address": "dwinston@lbl.gov",
-    "response_limit": "10",
+    "response_limit": 500,
     "response_fields": "id,nelements,material_id,elements,formula_prototype",
     "sort": "-nelements",
-    "page[number]": "1", # TODO what is the query param here??? not listed in the optimade api
+    "page": 5,
 }
 #### END SAMPLE DATA ####
-print(f"{endpoint}?{urlencode(params)}")
+print(f"{base_url}{entry_point}?{urlencode(params)}")
 
-def generate(endpoint, params):
-    return f"{endpoint}?{urlencode(params)}"
+def generate(base_url, entry_point, params):
+    return f"{base_url}{entry_point}?{urlencode(params)}"
