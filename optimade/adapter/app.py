@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 import pymongo
 from pymongo import MongoClient
@@ -24,7 +24,7 @@ def find():
     # Test 5(no limit) --> http://127.0.0.1:5000/optimade/0.9.6/structures?filter=nelements%3C3&response_format=jsonapi&email_address=dwinston%40lbl.gov&response_fields=id%2Cnelements%2Cmaterial_id%2Celements%2Cformula_prototype&sort=-nelements
     # Test 6(pagination) -->http://127.0.0.1:5000/optimade/0.9.6/structures?filter=nelements%3C3&response_format=jsonapi&email_address=dwinston%40lbl.gov&response_limit=10&response_fields=id%2Cnelements%2Cmaterial_id%2Celements%2Cformula_prototype&sort=-nelements&page%5Bnumber%5D=1
 
-    # current --> http://127.0.0.1:5000/optimade/0.9.6/structures?filter=nelements%3C3&response_format=jsonapi&email_address=dwinston%40lbl.gov&response_limit=10&response_fields=id%2Cnelements%2Cmaterial_id%2Celements%2Cformula_prototype&sort=-nelements&page%5Bnumber%5D=1
+    # current --> http://127.0.0.1:5000/optimade/0.9.6/structures?filter=nelements%3C3&response_format=jsonapi&email_address=dwinston%40lbl.gov&response_limit=10&response_fields=id%2Cnelements%2Cmaterial_id%2Celements%2Cformula_prototype&sort=-nelements&page=1
     # TODO: CONFIG PARSER
     # alias = {
     #     "chemical_formula":"formula_anonymous",
@@ -54,7 +54,8 @@ def find():
 
     result = getResponse(test_collection, request.url, alias)
 
-    return str(result)
+    # return jsonify(result)
+    return jsonify(response=result, status=200)
 
 
 if __name__ == '__main__':

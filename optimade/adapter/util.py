@@ -8,17 +8,15 @@ from urllib.parse import urlparse, quote_plus, urlencode, parse_qs
 import ast
 import datetime
 from models_schema import *
-import sys
+from GlobalVar import PAGE_LIMIT
+# from models_class import PAGE_LIMIT
+# PAGE_LIMIT = 10 # Global variable for pymongo pagination, the number of data displayed per page.
 
 #### Start of Helper methods for parseURL ####
-def initializeParsedResult(queryParam):
-        ## the must haves in the spec, set to default values if not later overwrote
-        queryParam['filter'] = None
-        queryParam['response_format'] = None
-        queryParam['email_address'] = None
-        queryParam['response_limit'] = 10; # default response_limit = 10
-        queryParam['response_fields'] = []
-
+def initalizeQueryParam(queryParam):
+    queryParam['response_message'] = []
+    queryParam['status'] = 200
+    queryParam['error_message'] = []
 def fillFilter(queryParam, args):
     queryParam['query'] = None
     if(args.get('filter') != None):
@@ -36,23 +34,31 @@ def fillResponseFormat(queryParam, args):
 def fillEmailAddress(queryParam, args):
     queryParam['email_address'] = args['email_address'][0] if args.get('email_address') != None else  None
 def fillResponseLimit(queryParam, args):
-    queryParam['response_limit'] = int(args['response_limit'][0]) if args.get('response_limit') != None else sys.maxsize
+    queryParam['response_limit'] = int(args['response_limit'][0]) if args.get('response_limit') != None else PAGE_LIMIT
+    if(queryParam['response_limit'] > PAGE_LIMIT):
+        queryParam['response_message'].append("Input response_limit is <{}>, greater than database page limit <{}>, will default to database page limit.".format(queryParam['response_limit'], PAGE_LIMIT))
 def fillResponseFields(queryParam, args, alias):
     queryParam['response_fields'] = None
     if(args.get('response_fields') != None):
         fields = args['response_fields'][0].split(",")
         queryParam['response_fields'] = [alias[field] if field in alias  else field for field in fields ]
-
+def fillPagination(queryParam, args):
+    queryParam['page'] = int(args['page'][0]) if args.get('page') != None else 1
+    if(queryParam['page'] <= 0):
+        queryParam['status'] = 400
+        queryParam['error_message'].append(\
+                                    "Page = {} but have to Page has to be greater than or equal to 1"\
+                                    .format(queryParam['page']))
 def fillSortFields(queryParam, args):
     # change from json sorting format to mongoDB sorting method, TODO: change to support multiple sort objects
     if(args.get('sort') != None):
         json_sort_query = args.get('sort')[0]
         if(json_sort_query.find("-") > -1):
-            queryParam['sort'] = (json_sort_query[json_sort_query.find("-")+1:], pymongo.ASCENDING)
+            queryParam['sort'] = [(json_sort_query[json_sort_query.find("-")+1:], pymongo.ASCENDING)]
         else:
-            queryParam['sort'] = (json_sort_query, pymongo.DESCENDING)
+            queryParam['sort'] = [(json_sort_query, pymongo.DESCENDING)]
     else:
-        queryParam['sort'] = []
+        queryParam['sort'] = None
 def fillOtherOptionalFields(url, queryParam, path, args):
     fillSortFields(queryParam, args)
     splitted = path.split("/")
@@ -81,48 +87,54 @@ def parseURL(url, alias):
     args = parse_qs(parsed.query)
 
     queryParam = {}
-    initializeParsedResult(queryParam)
+    initalizeQueryParam(queryParam)
     fillFilter(queryParam, args)
     fillResponseFormat(queryParam, args)
     fillEmailAddress(queryParam, args)
     fillResponseLimit(queryParam, args)
     fillResponseFields(queryParam, args, alias)
     fillOtherOptionalFields(url, queryParam, path, args)
+    fillPagination(queryParam, args)
     return queryParam
 
 def getDataFromCollection(collection, query):
+    pageSize = query.get('response_limit') if query.get('response_limit') <= PAGE_LIMIT else PAGE_LIMIT
     cursor = collection.find(filter=query.get('query'),
                              projection=query.get('response_fields'),
-                             limit=query.get('response_limit'))
-    if(query.get('sort')):
-        cursor.sort([query.get('sort')])
+                             limit= pageSize,
+                             sort = query.get('sort'),
+                             skip = (query.get('page')) * pageSize,
+                             )
     return cursor
-
-
 def getResponse(collection, url, alias={}):
     parsed_args = parseURL(url, alias)
     if(parsed_args.get('response_format') == 'jsonapi'):
-        cursor = getDataFromCollection(collection, parsed_args)
-        data = StructureSchema(many=True).dump(list(cursor)).data
-        meta = Meta(collection, cursor, parsed_args, data)
-        link = Link(collection, cursor, parsed_args)
-        # debugPrinting(parsed_args, data)
-        return {"data": data['data'], "meta":meta.getMetaData()["meta"], "link":link.getLinkData()["link"]}
+        if(parsed_args.get('status', None) != 200):
+            cursor = getDataFromCollection(collection, parsed_args)
+            data = StructureSchema(many=True).dump(list(cursor)).data
+            meta = Meta(collection, parsed_args, data)
+            link = Links(collection, parsed_args)
+            result = {"data": data['data'], "meta":meta.getMetaData()["meta"], "link":link.getLinkData()["links"]}
+            debugPrinting(parsed_args, data, result)
+            return result
+        else:
+            return {"ERROR": parsed_args}
     else:
         class FormatNotImplementedError(Exception):
             pass
         raise FormatNotImplementedError("Format <{}> is not implemented".format(parsed_args.get('response_format')))
-def debugPrinting(parsed_args, data):
+def debugPrinting(parsed_args, data, result):
     print("########## START OF DEBUGGING  ##########")
-    print()
-    print("### START OF parsed_args  ###")
-    pprint(parsed_args)
-    print("### END OF parsed_args  ###")
-    print()
-
-    print()
-    print("### START OF data  ###")
-    pprint(data)
-    print("### END OF data  ###")
-    print()
+    # print()
+    # print("### START OF parsed_args  ###")
+    # pprint(parsed_args)
+    # print("### END OF parsed_args  ###")
+    # print()
+    #
+    # print()
+    # print("### START OF data  ###")
+    # pprint(data)
+    # print("### END OF data  ###")
+    # print()
+    # pprint(result)
     print("########## END OF DEBUGGING  ##########")
