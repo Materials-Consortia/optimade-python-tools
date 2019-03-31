@@ -55,7 +55,7 @@ def find():
     result = getResponse(test_collection, request.url, alias)
 
     # return jsonify(result)
-    return jsonify(response=result, status=200)
+    return jsonify(response=result)
 
 
 if __name__ == '__main__':

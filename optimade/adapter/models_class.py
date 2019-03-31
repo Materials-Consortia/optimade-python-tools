@@ -1,27 +1,28 @@
 import datetime
+from marshmallow import pprint
 from urlGenerator import generateFromString, generateFromDict
 from urllib.parse import urlparse,quote_plus,parse_qs
 import pymongo
 from GlobalVar import PAGE_LIMIT
 class Meta():
-    def __init__(self, collection, parsed_args,data):
+    def __init__(self, collection, parsed_args,data, cursor):
         self.collection = collection
         self.parsed_args = parsed_args
         self.data = data
+        self.cursor = cursor
         self.constructMetaData()
     def __repr__(self):
         return str(getMetaData(self))
     def constructMetaData(self):
-        total_entries = self.collection.count()
+        total_entries = self.cursor.count()
         self.query = {'representation': self.parsed_args.get('representation')}
         self.api_version = self.parsed_args.get('api_version')
         self.data_returned = len(self.data.get('data'))
         self.parsed_args['data_returned'] = self.data_returned
-        self.data_available = self.collection.count()
+        self.data_available = self.cursor.count()
         self.more_data_available = True if self.data_returned < self.data_available else False
         data = self.data.get('data')
-        self.last_id = data[len(data)-1].get("attributes").get("material_id")#self.data.get("data").get("data")#self.data[len(self.data)-1][0].get("material_id","not found")
-        self.response_message = " ".join(str(m) for m in self.parsed_args.get("response_message"))
+        self.last_id = data[len(data)-1].get("attributes").get("material_id")
         self.time_stamp = datetime.datetime.utcnow().isoformat()
     def getMetaData(self):
         return {"meta": {
@@ -31,15 +32,15 @@ class Meta():
                     "data_available":self.data_available,
                     "more_data_available":self.more_data_available,
                     "last_id":self.last_id,
-                    "response_message":self.response_message,
                     "time_stamp":self.time_stamp
                     }
                 }
 
 class Links():
-    def __init__(self, collection, parsed_args):
+    def __init__(self, collection, parsed_args, cursor):
         self.collection = collection
         self.parsed_args = parsed_args
+        self.cursor = cursor
         self.constructLinkData()
     def __repr__(self):
         return str(getLinkData(self))
@@ -61,9 +62,9 @@ class Links():
         if(args.get('page') != None):
             currentPage = int(args.get('page')[0])
         # finding max page
-        maxPage = self.collection.count() // int(self.parsed_args.get("response_limit")) \
-                    if self.parsed_args.get("response_limit") != None and int(self.parsed_args.get("response_limit")) < PAGE_LIMIT \
-                    else self.collection.count() // PAGE_LIMIT
+        maxPage = self.cursor.count() // int(self.parsed_args.get("response_limit")) + 1
+
+        print("maxPage=", maxPage)
 
         ## settomg next page
         if currentPage + 1 > maxPage:

@@ -10,7 +10,7 @@ params = {
     "filter": "nelements<3",
     "response_format": "jsonapi",
     "email_address": "dwinston@lbl.gov",
-    "response_limit": 500,
+    "response_limit": 20,
     "response_fields": "id,nelements,material_id,elements,formula_prototype",
     "sort": "-nelements",
     "page": 5,
