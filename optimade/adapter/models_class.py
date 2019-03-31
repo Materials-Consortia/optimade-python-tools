@@ -2,8 +2,10 @@ import datetime
 from marshmallow import pprint
 from urlGenerator import generateFromString, generateFromDict
 from urllib.parse import urlparse,quote_plus,parse_qs
+import urllib
 import pymongo
 from GlobalVar import PAGE_LIMIT
+from furl import furl
 class Meta():
     def __init__(self, collection, parsed_args,data, cursor):
         self.collection = collection
@@ -37,10 +39,11 @@ class Meta():
                 }
 
 class Links():
-    def __init__(self, collection, parsed_args, cursor):
+    def __init__(self, collection, parsed_args, cursor, url):
         self.collection = collection
         self.parsed_args = parsed_args
         self.cursor = cursor
+        self.url = url
         self.constructLinkData()
     def __repr__(self):
         return str(getLinkData(self))
@@ -54,37 +57,36 @@ class Links():
         query = self.parsed_args.get("representation")
         filterString = query[query.find("?")+1:]
         entry_point = query[:query.find("?")-1]
-        url = generateFromString(self.parsed_args.get('base_url'),entry_point, filterString)
-        parsed = urlparse(url)
-        args = parse_qs(parsed.query)
+        # parsed = urlparse(self.url)
+        # args = parse_qs(parsed.query)
+        f = furl(self.url)
+        args = f.args
         # finding current page
         currentPage = 1
         if(args.get('page') != None):
             currentPage = int(args.get('page')[0])
         # finding max page
         maxPage = self.cursor.count() // int(self.parsed_args.get("response_limit")) + 1
-
-        print("maxPage=", maxPage)
-
         ## settomg next page
         if currentPage + 1 > maxPage:
             self.next = None
         else:
-            args['page'] = currentPage + 1
-            self.next = generateFromDict(self.parsed_args.get('base_url'), entry_point, args)
+            f = f.remove('page')
+            self.next = f.add({'page':currentPage + 1}).url
+            print("self.next = ", self.next)
         # setting prev page
         if currentPage - 1 <= 0:
             self.prev = None
         else:
-            args['page'] = currentPage - 1  #calculate prev page index
-            self.prev = generateFromDict(self.parsed_args.get('base_url'),entry_point, args)
+            f = f.remove('page')
+            self.prev = f.add({'page':currentPage - 1}).url
 
         # setting first page
-        args['page'] = 1
-        self.first = generateFromDict(self.parsed_args.get('base_url'),entry_point, args)
+        f = f.remove('page')
+        self.first = f.add({'page':1}).url
         # setting last page
-        args['page'] = maxPage
-        self.last = generateFromDict(self.parsed_args.get('base_url'),entry_point, args)
+        f = f.remove('page')
+        self.last = f.add({'page':maxPage}).url
     def getLinkData(self):
         return {"links": {
                         "next":self.next,

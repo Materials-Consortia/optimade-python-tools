@@ -49,7 +49,7 @@ def fillResponseFields(queryParam, args, alias):
         queryParam['response_fields'] = [alias[field] if field in alias  else field for field in fields ]
     args.pop('response_fields', None)
 def fillPagination(queryParam, args):
-    queryParam['page'] = int(args['page'][0]) if args.get('page') != None else 0
+    queryParam['page'] = int(args['page'][0]) if args.get('page') != None else 1
     if(queryParam['page'] <= 0):
         queryParam['status'] = 400
         queryParam['error_message'].append(\
@@ -137,10 +137,9 @@ def getResponse(collection, url, alias={}):
             # pprint(parsed_args)
             # print("data=",data)
             meta = Meta(collection, parsed_args, data, cursor.clone())
-            link = Links(collection, parsed_args, cursor.clone())
+            link = Links(collection, parsed_args, cursor.clone(), url)
             result = {"data": data['data'], "meta":meta.getMetaData()["meta"], "link":link.getLinkData()["links"]}
             debugPrinting(parsed_args, data, result)
-            print("cursor.count=",cursor.count())
             return result
         else:
             return {"ERROR": parsed_args}
