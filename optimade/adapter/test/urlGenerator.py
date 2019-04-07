@@ -14,6 +14,7 @@ params = {
     "response_fields": "id,nelements,material_id,elements,formula_prototype",
     "sort": "-nelements",
     "page": 5,
+    "mp_show_record_id":True
 }
 #### END SAMPLE DATA ####
 print(f"{base_url}{entry_point}?{urlencode(params)}")

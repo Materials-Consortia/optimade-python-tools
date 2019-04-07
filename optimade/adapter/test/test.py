@@ -24,4 +24,4 @@ class OptimadeTest(TestCase):
         response = rv.json()['response']
         self.assertEqual(('data' in response) and \
                          ('links' in response) and \
-                         ('meta' in response), True)
+                         ('meta' in response), True) # assert in
