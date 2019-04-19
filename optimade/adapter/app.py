@@ -50,8 +50,7 @@ def find():
     client = MongoClient()
     db=client.test_database
     test_collection = db.test_collection
-    #### END OF DATABASE CONNECTION  ####
-
+    #### END OF DATABASE CONNECTION  ####    
     result = getResponse(test_collection, request.url, alias)
 
     # return jsonify(result)

@@ -8,16 +8,14 @@ from urllib.parse import urlparse, quote_plus, urlencode, parse_qs
 import ast
 import datetime
 from models_schema import *
-from GlobalVar import PAGE_LIMIT
-# from models_class import PAGE_LIMIT
-# PAGE_LIMIT = 10 # Global variable for pymongo pagination, the number of data displayed per page.
+from globals import PAGE_LIMIT
 
 #### Start of Helper methods for parseURL ####
 def initalizeQueryParam(queryParam):
     # queryParam['response_message'] = []
     queryParam['status'] = 200
     queryParam['error_message'] = []
-def fillFilter(queryParam, args):
+def fillFilter(queryParam, args, alias):
     queryParam['query'] = None
     if(args.get('filter') != None):
         queryParam['query'] = "filter = %s" % args['filter'][0]
@@ -29,10 +27,14 @@ def fillFilter(queryParam, args):
         stdout,stderr = out.communicate()
         # do i need to do try/except and throw custom error here?
         queryParam['query'] = ast.literal_eval(stdout.decode("ascii"))
+        print("curernt query = ", queryParam['query'])
     args.pop('filter', None)
 def fillResponseFormat(queryParam, args):
-    queryParam['response_format'] = args['response_format'][0] if args.get('response_format') != None else None
+    queryParam['response_format'] = args['response_format'][0] if args.get('response_format') != None else "jsonapi"
     args.pop('response_format',None)
+    if(queryParam.get('response_format','jsonapi') != 'jsonapi'):
+        queryParam['status'] = 400
+        queryParam['error_message'].append("Currently only support jsonapi response format, but resquested <{}>".format(queryParam.get('response_format')))
 def fillEmailAddress(queryParam, args):
     queryParam['email_address'] = args['email_address'][0] if args.get('email_address') != None else  None
     args.pop('email_address',None)
@@ -80,11 +82,16 @@ def fillOtherOptionalFields(url, queryParam, path, args):
     queryParam["representation"] = url[entry_point_index:]
     queryParam["base_url"] = url[:entry_point_index]
 def fillMPSpecificParams(queryParam, args):
+    matching_db_list = []
     for arg in args:
-        start_index = arg.find("_mp_")
-        if(start_index > 0):
-            print("start_index=",start_index)
-        print("arg=",arg)
+        start_index = arg.find("mp_")
+        if(arg[0:3] == "mp_"):
+            key = arg[3:]
+            queryParam[key] = args[arg][0]
+            matching_db_list.append(arg)
+    for match in matching_db_list:
+        args.pop(match)
+
 #### End of Helper methods for parseURL ####
 
 def parseURL(url, alias):
@@ -101,7 +108,7 @@ def parseURL(url, alias):
 
     queryParam = {}
     initalizeQueryParam(queryParam)
-    fillFilter(queryParam, args)
+    fillFilter(queryParam, args, alias)
     fillResponseFormat(queryParam, args)
     fillEmailAddress(queryParam, args)
     fillResponseLimit(queryParam, args)
@@ -109,44 +116,49 @@ def parseURL(url, alias):
     fillOtherOptionalFields(url, queryParam, path, args)
     fillPagination(queryParam, args)
     fillMPSpecificParams(queryParam, args)
+
     if(len(args) > 0):
         queryParam['status'] = 400
         queryParam['error_message'].append("Unknown Params detected: {}".format(str(args)))
-    # TODO: implement mp_specific itmes
-    # TODO: implement if there's still args left, error out
-    # TODO: research pymongo skip param, it does not skip according to the number of items, for checking, try 133976
     return queryParam
 
 def getDataFromCollection(collection, query):
     pageSize = query.get('response_limit')
-    # print("im going to skip <{}> items".format((query.get('page')-1) * pageSize))
-    cursor = collection.find(filter=query.get('query'),
-                             projection=query.get('response_fields'),
-                             limit= pageSize,
-                             sort = query.get('sort'),
-                             skip = (query.get('page')-1) * pageSize,
-                             )
+    cursor = collection.find(filter=query.get('query',None),
+                            projection=query.get('response_fields', None),
+                            skip=(query.get('page')-1) * pageSize,
+                            limit=pageSize,
+                            no_cursor_timeout=query.get('no_cursor_timeout', False),
+                            sort=query.get('sort', None),
+                            allow_partial_results=query.get('allow_partial_results', False),
+                            oplog_replay=query.get('oplog_replay', False),
+                            modifiers=query.get('modifiers', None),
+                            batch_size=query.get('batch_size', 0),
+                            manipulate=query.get('manipulate', True),
+                            collation=query.get('collation', None),
+                            hint=query.get('hint', None),
+                            max_scan=query.get('max_scan', None),
+                            max_time_ms=query.get('max_time_ms', None),
+                            max=query.get('max', None),
+                            min=query.get('min', None),
+                            return_key=query.get('return_key', False),
+                            show_record_id= query.get('show_record_id', False) == "True" or query.get('show_record_id', False) == "true",
+                            snapshot=query.get('snapshot', False),
+                            comment=query.get('comment', None),
+                            session=query.get('session', None)
+                            )
     return cursor
 def getResponse(collection, url, alias={}):
     parsed_args = parseURL(url, alias)
-    if(parsed_args.get('response_format') == 'jsonapi'):
-        if(parsed_args.get('status', None) == 200):
-            cursor = getDataFromCollection(collection, parsed_args)
-            data = StructureSchema(many=True).dump(list(cursor)).data
-            # print("parsed_args=")
-            # pprint(parsed_args)
-            # print("data=",data)
-            meta = Meta(collection, parsed_args, data, cursor.clone())
-            link = Links(collection, parsed_args, cursor.clone(), url)
-            result = {"data": data['data'], "meta":meta.getMetaData()["meta"], "link":link.getLinkData()["links"]}
-            debugPrinting(parsed_args, data, result)
-            return result
-        else:
-            return {"ERROR": parsed_args}
+    if(parsed_args.get('status', None) == 200):
+        cursor = getDataFromCollection(collection, parsed_args)
+        data = StructureSchema(many=True).dump(list(cursor)).data
+        meta = Meta(collection, parsed_args, data, cursor.clone())
+        link = Links(collection, parsed_args, cursor.clone(), url)
+        result = {"data": data['data'], "meta":meta.getMetaData()["meta"], "links":link.getLinkData()["links"]}
+        return result
     else:
-        class FormatNotImplementedError(Exception):
-            pass
-        raise FormatNotImplementedError("Format <{}> is not implemented".format(parsed_args.get('response_format')))
+        return {"ERROR": parsed_args}
 def debugPrinting(parsed_args, data, result):
     # print("########## START OF DEBUGGING  ##########")
     # print()

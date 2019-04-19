@@ -1,10 +1,9 @@
 import datetime
-from marshmallow import pprint
 from urlGenerator import generateFromString, generateFromDict
 from urllib.parse import urlparse,quote_plus,parse_qs
 import urllib
 import pymongo
-from GlobalVar import PAGE_LIMIT
+from globals import PAGE_LIMIT
 from furl import furl
 class Meta():
     def __init__(self, collection, parsed_args,data, cursor):
@@ -24,7 +23,12 @@ class Meta():
         self.data_available = self.cursor.count()
         self.more_data_available = True if self.data_returned < self.data_available else False
         data = self.data.get('data')
-        self.last_id = data[len(data)-1].get("attributes").get("material_id")
+        # If no data is returned at all
+        try:
+            self.last_id = data[len(data)-1].get("attributes").get("material_id")
+        except Exception as e:
+            self.last_id = None
+
         self.time_stamp = datetime.datetime.utcnow().isoformat()
     def getMetaData(self):
         return {"meta": {
@@ -73,7 +77,6 @@ class Links():
         else:
             f = f.remove('page')
             self.next = f.add({'page':currentPage + 1}).url
-            print("self.next = ", self.next)
         # setting prev page
         if currentPage - 1 <= 0:
             self.prev = None
