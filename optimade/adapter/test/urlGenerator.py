@@ -7,11 +7,11 @@ alias = {
 base_url = "http://127.0.0.1:5000/optimade/0.9.6/"
 entry_point = "structures"
 params = {
-            "filter": "nelements<3",
+            "filter": "chemical_formula = 'A'",
             "response_format": "jsonapi",
             "email_address": "dwinston@lbl.gov",
             "response_limit": "5",
-            "response_fields": "id,nelements,material_id,elements,formula_prototype",
+            "response_fields": "id,nelements,material_id,elements,chemical_formula,formula_prototype",
             "sort": "-nelements",
             "page": 5
 }
