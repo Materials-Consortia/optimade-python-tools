@@ -6,6 +6,12 @@ import pymongo
 from globals import PAGE_LIMIT
 from furl import furl
 class Meta():
+    """Class to facilitate generation of Meta data
+
+    Follows closely with OptimadeAPI's JSON API response Schema
+    http://www.optimade.org/optimade#h.4
+
+    """
     def __init__(self, collection, parsed_args,data, cursor):
         self.collection = collection
         self.parsed_args = parsed_args
@@ -43,6 +49,12 @@ class Meta():
                 }
 
 class Links():
+    """Class to facilitate generation of Meta data
+
+    Follows closely with OptimadeAPI's JSON API response Schema
+    http://www.optimade.org/optimade#h.4
+
+    """
     def __init__(self, collection, parsed_args, cursor, url):
         self.collection = collection
         self.parsed_args = parsed_args

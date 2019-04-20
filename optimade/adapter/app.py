@@ -31,27 +31,19 @@ def find():
     #     "formula_prototype": "pretty_formula",
     # }
 
-
-    #### START OF READING ALIAS FROM CONFIG  ####
-    config = configparser.ConfigParser()
-    config.read("./config.ini")
-    class ConfigFileNotFoundException(Exception):
-        pass
-    if(not (config.has_section('aliases') )):
-        raise ConfigFileNotFoundException("Config File Not Found at Location: {}".format(args.Config))
-    alias = dict()
-    if(config.has_section('aliases')):
-        d = dict(config.items('aliases'))
-        for key in d:
-            alias[key] = config['aliases'][key]
-    #### END OF READING ALIAS FROM CONFIG  ####
+    # if the current workign directory contains config.ini
+    alias_file_path = None
+    for File in os.listdir("."):
+        if File == "config.ini":
+            alias_file_path = os.getcwd() + "/config.ini"
+    
 
     #### START OF DATABASE CONNECTION  ####
     client = MongoClient()
     db=client.test_database
     test_collection = db.test_collection
-    #### END OF DATABASE CONNECTION  ####    
-    result = getResponse(test_collection, request.url, alias)
+    #### END OF DATABASE CONNECTION  ####
+    result = getResponse(test_collection, request.url, alias_file_path)
 
     # return jsonify(result)
     return jsonify(response=result)
