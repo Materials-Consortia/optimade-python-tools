@@ -1,12 +1,7 @@
-from flask import Flask, jsonify
-from flask import request
-import pymongo
+from flask import Flask, jsonify, request
 from pymongo import MongoClient
-from util import *
-import os, subprocess
-from models_class import *
-from models_schema import *
-import configparser
+from optimade.adapter.util import getResponse
+import os
 
 app = Flask(__name__)
 app.config['TESTING'] = True
