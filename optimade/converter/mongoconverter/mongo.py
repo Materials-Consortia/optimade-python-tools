@@ -135,6 +135,12 @@ class OptimadeToPQLTransformer(Transformer):
     def combined(self, args):
         return args[0]
 
+
+class MongoTransformer(Transformer):
+    """ Transform an optimade filter to a MongoDB filter"""
+    pass
+
+
 def parseAlias(query, aliases):
     """
     @param optimadeQuery -- the query to be parsed
