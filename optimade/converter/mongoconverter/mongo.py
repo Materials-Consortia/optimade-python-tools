@@ -136,9 +136,51 @@ class OptimadeToPQLTransformer(Transformer):
         return args[0]
 
 
+op_expr = {
+    "<": "$lt",
+    "<=": "$lte",
+    ">": "$gt",
+    ">=": "$gte",
+    "!=": "$ne",
+    "=": "$eq",
+}
+
 class MongoTransformer(Transformer):
-    """ Transform an optimade filter to a MongoDB filter"""
-    pass
+    """
+     class for transforming Lark tree into MongoDB format
+    """
+    def start(self, args):
+        return args[0]
+    def expression(self, args):
+        # TODO handle conjunctions etc.
+        return args[0]
+    def term(self, args):
+        # TODO handle conjunctions etc.
+        return args[0]
+    def atom(self, args):
+        """Optionally negate a comparison."""
+        # Two cases:
+        # 1. args is parsed comparison, or
+        # 2. args is NOT token and parsed comparison
+        #     - [ Token(NOT, 'not'), {field: {op: val}} ]
+        #        -> {field: {$not: {op: val}}}
+        if len(args) == 2:
+            field, predicate = next(((k, v) for k, v in args[1].items()))
+            return {field: {"$not": predicate}}
+        else:
+            return args[0]
+    def comparison(self, args):
+        # TODO account for parens and `combined` subexpression.
+        field = args[0].value
+        op = op_expr[args[1].value]
+        val_tok = args[2]
+        if val_tok.isnumeric():
+            val = float(val_tok.value)
+        else:
+            val = val_tok.value
+        return {field: {op: val}}
+    def combined(self, args):
+        pass
 
 
 def parseAlias(query, aliases):
