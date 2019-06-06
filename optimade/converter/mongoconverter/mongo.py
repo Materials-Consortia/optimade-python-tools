@@ -107,16 +107,17 @@ class OptimadeToPQLTransformer(Transformer):
     """
     def comparison(self, args):
         A = str(args[0])
-        B = ""
-        for b in args[2:]:
-            if B == "":
-                B = b
-            else:
-                B = B + ", " + b
+        B = args[2]
+#        B = ""
+#        for b in args[2:]:
+#            if B == "":
+#                B = b
+#            else:
+#                B = B + ", " + b
         operator = OptiMadeToPQLOperatorValidator(args[1])
         return A + operator + '"' + B + '"'
     def atom(self, args):
-        return args[0]
+        return ' '.join(args) if len(args) == 2 else args[0]
     def term(self, args):
         result = ""
         for arg in args:
@@ -124,7 +125,6 @@ class OptimadeToPQLTransformer(Transformer):
                 arg = arg.lower()
             result = result + " " + arg
         return "(" + result.lstrip() + ")"
-
     def expression(self, args):
         result = ""
         for arg in args:
@@ -145,6 +145,7 @@ op_expr = {
     "=": "$eq",
 }
 
+
 class MongoTransformer(Transformer):
     """
      class for transforming Lark tree into MongoDB format
@@ -152,11 +153,54 @@ class MongoTransformer(Transformer):
     def start(self, args):
         return args[0]
     def expression(self, args):
+        result = ""
+        for i in range(len(args)):
+            if i%2 == 1:
+                args.insert(i-1,args.pop(i))
+        for arg in args:
+            result = result + " " + str(arg)
+        print (result)
+        return result
         # TODO handle conjunctions etc.
-        return args[0]
+        # return args[0]
     def term(self, args):
-        # TODO handle conjunctions etc.
-        return args[0]
+        if len(args)>1:
+            for i in range (len(args)):
+                if i%2 == 1:
+                    args[i] = "$"+str(args[i]).lower()
+                    args.insert(i-1, args.pop(i))
+        temp = []
+        final_result = {}
+        for i in (args):
+            i = i[0] if type(i) == list else i
+            temp.append(i)
+        temp.reverse()
+        temp = temp
+        cont = []
+        if len(temp) <= 3:
+            i = 2
+        elif len(temp) >= 7:
+            i = 4
+        else:
+            i = 3
+        for m in range(len(temp) - i):
+            n = m + 1
+            cont.append({temp[m + n + 1]: [temp[m + n], temp[m]]}) if m == 0 \
+                else cont.append({temp[m+n+1]:[temp[m+n],cont[m-1]]})
+            # if m == 0:
+            #     cont.append({temp[m+n+1]:[temp[m+n],temp[m]]})
+            # else:
+            #     cont.append({temp[m+n+1]:[temp[m+n],cont[m-1]]})
+        result = temp
+        # this conditional statement handles the result
+        # 1. there is only 1 conjunction
+        if (len(cont))==1:
+            result = (cont[-1])
+        # 2. there is 2 or more conjunction
+        elif (len(cont))>1:
+            result = (cont[-1][0])
+        return result
+
     def atom(self, args):
         """Optionally negate a comparison."""
         # Two cases:
@@ -166,7 +210,7 @@ class MongoTransformer(Transformer):
         #        -> {field: {$not: {op: val}}}
         if len(args) == 2:
             field, predicate = next(((k, v) for k, v in args[1].items()))
-            return {field: {"$not": predicate}}
+            return {field: {"$not":predicate}}
         else:
             return args[0]
     def comparison(self, args):
@@ -174,11 +218,8 @@ class MongoTransformer(Transformer):
         field = args[0].value
         op = op_expr[args[1].value]
         val_tok = args[2]
-        if val_tok.isnumeric():
-            val = float(val_tok.value)
-        else:
-            val = val_tok.value
-        return {field: {op: val}}
+        val = float(val_tok.value) if val_tok.isnumeric() else val_tok.value
+        return {field:{op:val}}
     def combined(self, args):
         pass
 
