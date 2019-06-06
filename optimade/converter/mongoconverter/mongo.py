@@ -152,54 +152,45 @@ class MongoTransformer(Transformer):
     """
     def start(self, args):
         return args[0]
+
     def expression(self, args):
-        result = ""
-        for i in range(len(args)):
-            if i%2 == 1:
-                args.insert(i-1,args.pop(i))
-        for arg in args:
-            result = result + " " + str(arg)
-        print (result)
-        return result
-        # TODO handle conjunctions etc.
-        # return args[0]
+        if len(args) == 1:
+            return args[0]
+
+        # Conjunct expressions together from left to right,
+        # finally conjuncting to terminal term.
+        #
+        # Example scenarios:
+        #
+        # expression CONJUNCTION term
+        # ...(nothing)
+        # expression CONJUNCTION expression CONJUNCTION term
+        # ...CONJUNCTION term
+        # expression CONJUNCTION expression CONJUNCTION expression CONJUNCTION term
+        # ...CONJUNCTION expression CONJUNCTION term
+        # ...CONJUNCTION term
+        args_to_process = args.copy()
+        conj = f'${args_to_process[1].value.lower()}'
+        output = {conj: [args_to_process[0], args_to_process[2]]}
+        args_to_process = args_to_process[3:]
+        while len(args_to_process) > 3:
+            conj = f'${args_to_process[0].value.lower()}'
+            output = {conj: [output, args_to_process[1]]}
+            args_to_process = args_to_process[2:]
+        if args_to_process:
+            conj = f'${args_to_process[0].value.lower()}'
+            output = {conj: [output, args_to_process[1]]}
+        return output
+
     def term(self, args):
-        if len(args)>1:
-            for i in range (len(args)):
-                if i%2 == 1:
-                    args[i] = "$"+str(args[i]).lower()
-                    args.insert(i-1, args.pop(i))
-        temp = []
-        final_result = {}
-        for i in (args):
-            i = i[0] if type(i) == list else i
-            temp.append(i)
-        temp.reverse()
-        temp = temp
-        cont = []
-        if len(temp) <= 3:
-            i = 2
-        elif len(temp) >= 7:
-            i = 4
-        else:
-            i = 3
-        for m in range(len(temp) - i):
-            n = m + 1
-            cont.append({temp[m + n + 1]: [temp[m + n], temp[m]]}) if m == 0 \
-                else cont.append({temp[m+n+1]:[temp[m+n],cont[m-1]]})
-            # if m == 0:
-            #     cont.append({temp[m+n+1]:[temp[m+n],temp[m]]})
-            # else:
-            #     cont.append({temp[m+n+1]:[temp[m+n],cont[m-1]]})
-        result = temp
-        # this conditional statement handles the result
-        # 1. there is only 1 conjunction
-        if (len(cont))==1:
-            result = (cont[-1])
-        # 2. there is 2 or more conjunction
-        elif (len(cont))>1:
-            result = (cont[-1][0])
-        return result
+        if args[0] == "(":
+            raise NotImplementedError("openparen")
+        if len(args) == 1:
+            return args[0]
+
+        # TODO refactor args>=3 case of self.expression to call fn that this
+        # method can also call in that case.
+        raise NotImplementedError("recursion")
 
     def atom(self, args):
         """Optionally negate a comparison."""
@@ -210,16 +201,26 @@ class MongoTransformer(Transformer):
         #        -> {field: {$not: {op: val}}}
         if len(args) == 2:
             field, predicate = next(((k, v) for k, v in args[1].items()))
-            return {field: {"$not":predicate}}
+            return {field: {"$not": predicate}}
         else:
             return args[0]
+
     def comparison(self, args):
         # TODO account for parens and `combined` subexpression.
+        if args[-1] == ")":
+            raise NotImplementedError("end paren")
+        if args[-1] == "'":
+            raise NotImplementedError("combined")
+
         field = args[0].value
         op = op_expr[args[1].value]
         val_tok = args[2]
-        val = float(val_tok.value) if val_tok.isnumeric() else val_tok.value
-        return {field:{op:val}}
+        if val_tok.isnumeric():
+            val = float(val_tok.value)
+        else:
+            val = val_tok.value
+        return {field: {op: val}}
+
     def combined(self, args):
         pass
 

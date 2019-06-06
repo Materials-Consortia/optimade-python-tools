@@ -19,7 +19,7 @@ setup(
     install_requires=[
         "marshmallow-jsonapi>=0.19.0",
         "marshmallow>=2.15.3",
-        "pymongo>=3.6.1",
+        "pymongo>=3.7",
         "lark-parser>=0.5.6",
     ],
     tests_require=["pytest>=3.6"],
