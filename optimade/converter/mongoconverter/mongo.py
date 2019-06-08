@@ -169,17 +169,16 @@ class MongoTransformer(Transformer):
         # expression CONJUNCTION expression CONJUNCTION expression CONJUNCTION term
         # ...CONJUNCTION expression CONJUNCTION term
         # ...CONJUNCTION term
+
         args_to_process = args.copy()
-        conj = f'${args_to_process[1].value.lower()}'
-        output = {conj: [args_to_process[0], args_to_process[2]]}
-        args_to_process = args_to_process[3:]
-        while len(args_to_process) > 3:
-            conj = f'${args_to_process[0].value.lower()}'
-            output = {conj: [output, args_to_process[1]]}
-            args_to_process = args_to_process[2:]
-        if args_to_process:
-            conj = f'${args_to_process[0].value.lower()}'
-            output = {conj: [output, args_to_process[1]]}
+        while len(args_to_process) >= 2:
+            looper = 1
+            cont = args_to_process[0] if looper == 1 else output
+            conj = f'${args_to_process[1].value.lower()}'
+            output = {conj: [cont, args_to_process[2]]}
+            args_to_process = args_to_process[3:]
+            looper += 1
+
         return output
 
     def term(self, args):
@@ -187,10 +186,13 @@ class MongoTransformer(Transformer):
             raise NotImplementedError("openparen")
         if len(args) == 1:
             return args[0]
+        args_to_process = args.copy()
+        output = self.expression(args)
+        return output
 
         # TODO refactor args>=3 case of self.expression to call fn that this
         # method can also call in that case.
-        raise NotImplementedError("recursion")
+        # raise NotImplementedError("recursion")
 
     def atom(self, args):
         """Optionally negate a comparison."""
