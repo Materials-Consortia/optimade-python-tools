@@ -146,6 +146,21 @@ op_expr = {
 }
 
 
+def conjoin_args(args):
+    """ Conjoin from left to right.
+
+    Args:
+        args (list): [<something> CONJUNCTION] <something>
+
+    Returns:
+        dict: MongoDB filter
+    """
+    if len(args) == 1:
+        return args[0]
+    conj = f'${args[1].value.lower()}'
+    return {conj: [args[0], args[2]]}
+
+
 class MongoTransformer(Transformer):
     """
      class for transforming Lark tree into MongoDB format
@@ -154,43 +169,12 @@ class MongoTransformer(Transformer):
         return args[0]
 
     def expression(self, args):
-        if len(args) == 1:
-            return args[0]
-
-        # Conjunct expressions together from left to right,
-        # finally conjuncting to terminal term.
-        #
-        # Example scenarios:
-        #
-        # expression CONJUNCTION term
-        # ...(nothing)
-        # expression CONJUNCTION expression CONJUNCTION term
-        # ...CONJUNCTION term
-        # expression CONJUNCTION expression CONJUNCTION expression CONJUNCTION term
-        # ...CONJUNCTION expression CONJUNCTION term
-        # ...CONJUNCTION term
-        args_to_process = args.copy()
-        conj = f'${args_to_process[1].value.lower()}'
-        output = {conj: [args_to_process[0], args_to_process[2]]}
-        args_to_process = args_to_process[3:]
-        while len(args_to_process) > 3:
-            conj = f'${args_to_process[0].value.lower()}'
-            output = {conj: [output, args_to_process[1]]}
-            args_to_process = args_to_process[2:]
-        if args_to_process:
-            conj = f'${args_to_process[0].value.lower()}'
-            output = {conj: [output, args_to_process[1]]}
-        return output
+        return conjoin_args(args)
 
     def term(self, args):
         if args[0] == "(":
-            raise NotImplementedError("openparen")
-        if len(args) == 1:
-            return args[0]
-
-        # TODO refactor args>=3 case of self.expression to call fn that this
-        # method can also call in that case.
-        raise NotImplementedError("recursion")
+            return conjoin_args(args[1:-1])
+        return conjoin_args(args)
 
     def atom(self, args):
         """Optionally negate a comparison."""
@@ -206,23 +190,35 @@ class MongoTransformer(Transformer):
             return args[0]
 
     def comparison(self, args):
-        # TODO account for parens and `combined` subexpression.
-        if args[-1] == ")":
-            raise NotImplementedError("end paren")
-        if args[-1] == "'":
-            raise NotImplementedError("combined")
-
         field = args[0].value
+        if isinstance(args[2], list):
+            if args[1].value != "=":
+                raise NotImplementedError(
+                    "x,y,z values only supported for '=' operator"
+                )
+            return {field: {"$all": args[2]}}
+
         op = op_expr[args[1].value]
         val_tok = args[2]
-        if val_tok.isnumeric():
+        try:
             val = float(val_tok.value)
-        else:
+        except ValueError:
             val = val_tok.value
+            if val.startswith("\"") and val.endswith("\""):
+                val = val[1:-1]
         return {field: {op: val}}
 
     def combined(self, args):
-        pass
+        elements = []
+        for val_tok in args:
+            try:
+                val = float(val_tok.value)
+            except ValueError:
+                val = val_tok.value
+                if val.startswith("\"") and val.endswith("\""):
+                    val = val[1:-1]
+            elements.append(val)
+        return elements
 
 
 def parseAlias(query, aliases):

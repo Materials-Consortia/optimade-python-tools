@@ -2,15 +2,16 @@
 // CHANGED start to not require KEYWORD filter=
 
 start: expression
-expression: [expression CONJUNCTION] term 
-term: [term CONJUNCTION] atom | "(" [term CONJUNCTION] term
+expression: [expression OR] term
+term: [term CONJUNCTION] atom | "(" [term CONJUNCTION] term ")"
 
 atom: [NOT] comparison 
 
-comparison: VALUE OPERATOR VALUE [")"] | VALUE OPERATOR "'" (combined)* "'"
+comparison: VALUE OPERATOR VALUE | VALUE OPERATOR "'" combined "'"
+
 OPERATOR: /<=?|>=?|!?=/
 
-combined: VALUE ", " | VALUE "," | VALUE
+combined: (VALUE ",")* VALUE
 
 VALUE: CNAME | SIGNED_FLOAT | SIGNED_INT | ESCAPED_STRING
 
