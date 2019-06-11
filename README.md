@@ -13,6 +13,28 @@ existing and hypothetical materials.
 ### Status
 This library is under development. Progress is expected during the [CECAM Workshop on Open Databases Integration for Materials Design](https://www.cecam.org/workshop-4-1525.html) during the week of June 11, 2018 to June 15, 2018.
 
+### Developing
+
+1. Clone this repository to your computer and install the requirements
+```
+git clone git@github.com:Materials-Consortia/optimade-python-tools.git
+cd optimade-python-tools
+
+# Ensure a Python>=3.6 (virtual) environment (example below using Anaconda/Miniconda)
+conda create -n optimade python=3.6
+conda activate optimade
+
+pip install -r requirements.txt
+
+# Start a development server (auto-reload on file changes at http://localhost:5000
+uvicorn optimade.server.main:app --reload --port 5000
+
+# View auto-generated docs
+open http://localhost:5000/docs
+# View Open API Schema
+open http://localhost:5000/openapi.json
+```
+
 ### Getting Started
 
 Install via `pip install optimade`. Example use:
