@@ -5,8 +5,8 @@ from typing import Collection, Tuple, List
 
 import pymongo.collection
 from fastapi import HTTPException
-from optimade.filter import Parser
-from optimade.converter.mongoconverter.mongo import MongoTransformer
+from optimade.filterparser import Parser
+from optimade.filtertransformers.mongo import MongoTransformer
 
 from .models import NonnegativeInt, Resource, StructureMapper
 from .deps import EntryListingQueryParams

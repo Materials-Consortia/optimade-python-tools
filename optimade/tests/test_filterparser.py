@@ -2,9 +2,9 @@ import os
 from glob import glob
 from unittest import TestCase
 
-from lark import Tree, UnexpectedInput
+from lark import Tree
 
-from optimade.filter import Parser, ParserError
+from optimade.filterparser import Parser, ParserError
 
 testfile_dir = os.path.join(os.path.dirname(__file__), "testfiles")
 

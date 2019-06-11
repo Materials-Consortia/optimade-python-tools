@@ -1,1 +1,0 @@
-PAGE_LIMIT = 100

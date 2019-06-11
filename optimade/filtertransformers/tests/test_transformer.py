@@ -4,8 +4,8 @@ import uuid
 
 from pymongo import MongoClient
 
-from optimade.filter import Parser
-from optimade.converter.mongoconverter.mongo import MongoTransformer
+from optimade.filterparser import Parser
+from optimade.filtertransformers.mongo import MongoTransformer
 
 
 class TestTransformer(TestCase):
