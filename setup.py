@@ -17,10 +17,10 @@ setup(
     long_description=open(os.path.join(module_dir, 'README.md')).read(),
     long_description_content_type="text/markdown",
     install_requires=[
-        "marshmallow-jsonapi>=0.19.0",
-        "marshmallow>=2.15.3",
-        "pymongo>=3.7",
+        "pymongo>=3.8",
         "lark-parser>=0.5.6",
+        "mongogrant",
+        "fastapi[all]",
     ],
     tests_require=["pytest>=3.6"],
     classifiers=[
@@ -33,7 +33,7 @@ setup(
         'Topic :: Database :: Front-Ends',
     ],
     keywords='optimade jsonapi materials',
-    python_requires='>=3',
+    python_requires='>=3.6',
     entry_points={
         'console_scripts': [
             'mongoconverter = optimade.converter.mongoconverter.__main__:main',

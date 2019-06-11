@@ -68,7 +68,7 @@ pydot__tree_to_png(tree, "exampletree.png")
 ![Optimade General Procedure](optimade_general_procedure.jpg)
 
 
-###### Example: Comnverting to MongoDB Query Syntax
+###### Example: Converting to MongoDB Query Syntax
 The `Parser` class from `optimade/filter.py` will transform user input into a `Lark` tree using  [lark-parser](https://github.com/lark-parser/lark).
 
 The `Lark` tree will then be passed into a desired `converter`, for instance, the `mongoconverter` located at `optimade/converter/mongoconverter` for transformation into your desired database query language. We have adapted our mongoconverter by using the [python query language(pql)](https://github.com/alonho/pql)

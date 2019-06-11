@@ -2,7 +2,7 @@
 // CHANGED start to not require KEYWORD filter=
 
 start: expression
-expression: [expression OR] term
+expression: [expression CONJUNCTION] term
 term: [term CONJUNCTION] atom | "(" [term CONJUNCTION] term ")"
 
 atom: [NOT] comparison 

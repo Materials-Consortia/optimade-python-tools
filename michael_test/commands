@@ -1,2 +1,0 @@
-brew services start mongodb
-source venv/bin/activate

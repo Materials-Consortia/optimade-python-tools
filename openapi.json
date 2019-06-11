@@ -1,0 +1,334 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": " OPTiMaDe API",
+    "version": "0.9",
+    "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API."
+  },
+  "paths": {
+    "/structures": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OptimadeStructureResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Structures",
+        "operationId": "get_structures_structures_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string"
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "jsonapi"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email"
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "response_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string"
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string"
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page[Offset]",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page[offset]",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page[Limit]",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page[limit]",
+            "in": "query"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Link": {
+        "title": "Link",
+        "required": [
+          "href"
+        ],
+        "type": "object",
+        "properties": {
+          "href": {
+            "title": "Href",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Links": {
+        "title": "Links",
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "OptimadeResponseMetaQuery": {
+        "title": "OptimadeResponseMetaQuery",
+        "required": [
+          "representation"
+        ],
+        "type": "object",
+        "properties": {
+          "representation": {
+            "title": "Representation",
+            "type": "string"
+          }
+        }
+      },
+      "OptimadeResponseMeta": {
+        "title": "OptimadeResponseMeta",
+        "required": [
+          "query",
+          "api_version",
+          "time_stamp",
+          "data_returned",
+          "more_data_available"
+        ],
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/OptimadeResponseMetaQuery"
+          },
+          "api_version": {
+            "title": "Api_Version",
+            "type": "string"
+          },
+          "time_stamp": {
+            "title": "Time_Stamp",
+            "type": "string",
+            "format": "date-time"
+          },
+          "data_returned": {
+            "title": "Data_Returned",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "more_data_available": {
+            "title": "More_Data_Available",
+            "type": "boolean"
+          }
+        }
+      },
+      "StructureResourceAttributes": {
+        "title": "StructureResourceAttributes",
+        "required": [
+          "local_id",
+          "last_modified"
+        ],
+        "type": "object",
+        "properties": {
+          "local_id": {
+            "title": "Local_Id",
+            "type": "string"
+          },
+          "last_modified": {
+            "title": "Last_Modified",
+            "type": "string",
+            "format": "date-time"
+          },
+          "immutable_id": {
+            "title": "Immutable_Id",
+            "type": "string"
+          },
+          "elements": {
+            "title": "Elements",
+            "type": "string"
+          },
+          "nelements": {
+            "title": "Nelements",
+            "type": "integer"
+          },
+          "chemical_formula": {
+            "title": "Chemical_Formula",
+            "type": "string"
+          },
+          "formula_prototype": {
+            "title": "Formula_Prototype",
+            "type": "string"
+          }
+        }
+      },
+      "StructureResource": {
+        "title": "StructureResource",
+        "required": [
+          "id",
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "default": "structure"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/StructureResourceAttributes"
+          }
+        }
+      },
+      "OptimadeStructureResponse": {
+        "title": "OptimadeStructureResponse",
+        "required": [
+          "links",
+          "meta",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/OptimadeResponseMeta"
+          },
+          "data": {
+            "title": "Data",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StructureResource"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StructureResource"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      }
+    }
+  }
+}
