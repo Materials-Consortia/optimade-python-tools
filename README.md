@@ -35,6 +35,8 @@ open http://localhost:5000/docs
 open http://localhost:5000/openapi.json
 ```
 
+### ===For now, be cautious about the below sections. They may not be up to date===
+
 ### Getting Started
 
 Install via `pip install optimade`. Example use:
