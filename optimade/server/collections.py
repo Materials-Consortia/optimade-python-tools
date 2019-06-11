@@ -94,6 +94,8 @@ class MongoCollection(EntryCollection):
         if params.filter:
             tree = self.parser.parse(params.filter)
             cursor_kwargs['filter'] = self.transformer.transform(tree)
+        else:
+            cursor_kwargs['filter'] = {}
 
         if params.response_format and params.response_format != 'jsonapi':
             raise HTTPException(status_code=400, detail="Only 'jsonapi' response_format supported")
