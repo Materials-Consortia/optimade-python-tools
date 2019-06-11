@@ -1,8 +1,9 @@
 from abc import abstractmethod
 from configparser import ConfigParser
 from pathlib import Path
-from typing import Collection, Tuple, List
+from typing import Collection, Tuple, List, Union
 
+import mongomock
 import pymongo.collection
 from fastapi import HTTPException
 from optimade.filterparser import Parser
@@ -54,7 +55,11 @@ class EntryCollection(Collection):
 
 class MongoCollection(EntryCollection):
 
-    def __init__(self, collection: pymongo.collection.Collection, resource_cls: Resource):
+    def __init__(
+            self,
+            collection: Union[pymongo.collection.Collection, mongomock.collection.Collection],
+            resource_cls: Resource
+    ):
         super().__init__(collection, resource_cls)
         self.transformer = MongoTransformer()
 

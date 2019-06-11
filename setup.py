@@ -20,6 +20,7 @@ setup(
         "pymongo>=3.8",
         "lark-parser>=0.5.6",
         "mongogrant",
+        "mongomock>=3.16",
         "fastapi[all]",
     ],
     tests_require=["pytest>=3.6"],
@@ -34,9 +35,4 @@ setup(
     ],
     keywords='optimade jsonapi materials',
     python_requires='>=3.6',
-    entry_points={
-        'console_scripts': [
-            'mongoconverter = optimade.converter.mongoconverter.__main__:main',
-        ]
-    },
 )

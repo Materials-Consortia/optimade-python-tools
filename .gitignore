@@ -109,3 +109,5 @@ venv.bak/
 
 .DS_Store
 .idea/
+
+optimade/server/test_structures.json
