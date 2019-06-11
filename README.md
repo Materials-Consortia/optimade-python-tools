@@ -37,9 +37,9 @@ open http://localhost:5000/openapi.json
 
 2. (optional) Have yourself some test MongoDB data:
 ```
-wget https://www.dropbox.com/s/v8rkfu4zfi6xl2o/optimade-structures-test.tar.gz?dl=0
+wget https://www.dropbox.com/s/v8rkfu4zfi6xl2o/optimade-structures-test.tar.gz?dl=0 -O optimade-structures-test.tar.gz
 tar zxvf optimade-structures-test.tar.gz
-mongorestore -d optimade -c structures --gzip
+mongorestore -d optimade -c structures dump/optimade/structures.bson.gz --gzip
 ```
 
 ### ===For now, be cautious about the below sections. They may not be up to date===
