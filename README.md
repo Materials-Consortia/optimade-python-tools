@@ -24,7 +24,7 @@ cd optimade-python-tools
 conda create -n optimade python=3.6
 conda activate optimade
 
-pip install -r requirements.txt
+pip install -e .
 
 # Start a development server (auto-reload on file changes at http://localhost:5000
 uvicorn optimade.server.main:app --reload --port 5000
