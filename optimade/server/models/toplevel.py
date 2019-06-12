@@ -1,11 +1,12 @@
 from datetime import datetime
-from typing import Union, List
+from typing import Union, List, Optional
 
 from pydantic import BaseModel, validator, UrlStr, Schema
 
 from optimade.server.models.jsonapi import Links, Resource
 from optimade.server.models.structures import StructureResource
 from optimade.server.models.util import NonnegativeInt
+from .errors import ErrorMsg
 
 
 class OptimadeResponseMetaQuery(BaseModel):
@@ -55,3 +56,9 @@ class OptimadeStructureResponse1(OptimadeResponse1):
 
 class OptimadeStructureResponseMany(OptimadeResponseMany):
     data: List[StructureResource]
+
+
+class OptimadeErrorResponse(BaseModel):
+    links: Optional[Links]
+    meta: OptimadeResponseMeta
+    errors: List[ErrorMsg]
