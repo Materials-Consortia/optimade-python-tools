@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, Union, List, Dict
 
-from pydantic import BaseModel, UrlStr, validator, ConstrainedInt
+from pydantic import BaseModel, UrlStr, validator, ConstrainedInt, Schema
 
 
 class Link(BaseModel):
@@ -54,8 +54,20 @@ class StructureResource(EntryResource):
 
 
 class OptimadeResponseMeta(BaseModel):
+    """
+    A JSON API meta member that contains JSON API meta objects of non-standard meta-information.
+
+    In addition to the required fields, it MAY contain
+
+    - `data_available`: an integer containing the total number of data objects available in the database.
+    - `last_id`: a string containing the last ID returned.
+    - `response_message`: response string from the server.
+
+    Other OPTIONAL additional information global to the query that is not specified in this document, MUST start with
+    a database-provider-specific prefix
+    """
     query: OptimadeResponseMetaQuery
-    api_version: str
+    api_version: str = Schema(..., description="a string containing the version of the API implementation.")
     time_stamp: datetime
     data_returned: NonnegativeInt
     more_data_available: bool

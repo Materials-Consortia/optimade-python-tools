@@ -2,13 +2,21 @@ from configparser import ConfigParser
 from pathlib import Path
 
 from fastapi import Query
-from pydantic import EmailStr
+from pydantic import EmailStr, Schema, BaseModel
 
 from .models import NonnegativeInt
 
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath('config.ini'))
 RESPONSE_LIMIT = config['DEFAULT'].getint('RESPONSE_LIMIT')
+
+
+filter_description = """\
+See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter
+query syntax.
+
+Example: `chemical_formula = "Al" OR (prototype_formula = "AB" AND elements HAS Si, Al, O)`.
+"""
 
 
 class EntryListingQueryParams:
@@ -23,7 +31,7 @@ class EntryListingQueryParams:
     def __init__(
             self,
             *,
-            filter: str = None,
+            filter: str = Query(None, description=filter_description),
             response_format: str = "jsonapi",
             email_address: EmailStr = None,
             response_limit: NonnegativeInt = RESPONSE_LIMIT,

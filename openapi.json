@@ -37,10 +37,12 @@
         "operationId": "get_structures_structures_get",
         "parameters": [
           {
+            "description": "See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter\nquery syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
             "required": false,
             "schema": {
               "title": "Filter",
-              "type": "string"
+              "type": "string",
+              "description": "See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter\nquery syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
             },
             "name": "filter",
             "in": "query"
@@ -122,6 +124,45 @@
   },
   "components": {
     "schemas": {
+      "StructureResourceAttributes": {
+        "title": "StructureResourceAttributes",
+        "required": [
+          "local_id",
+          "last_modified"
+        ],
+        "type": "object",
+        "properties": {
+          "local_id": {
+            "title": "Local_Id",
+            "type": "string"
+          },
+          "last_modified": {
+            "title": "Last_Modified",
+            "type": "string",
+            "format": "date-time"
+          },
+          "immutable_id": {
+            "title": "Immutable_Id",
+            "type": "string"
+          },
+          "elements": {
+            "title": "Elements",
+            "type": "string"
+          },
+          "nelements": {
+            "title": "Nelements",
+            "type": "integer"
+          },
+          "chemical_formula": {
+            "title": "Chemical_Formula",
+            "type": "string"
+          },
+          "formula_prototype": {
+            "title": "Formula_Prototype",
+            "type": "string"
+          }
+        }
+      },
       "Link": {
         "title": "Link",
         "required": [
@@ -168,19 +209,15 @@
         "title": "OptimadeResponseMeta",
         "required": [
           "query",
-          "api_version",
           "time_stamp",
           "data_returned",
-          "more_data_available"
+          "more_data_available",
+          "api_version"
         ],
         "type": "object",
         "properties": {
           "query": {
             "$ref": "#/components/schemas/OptimadeResponseMetaQuery"
-          },
-          "api_version": {
-            "title": "Api_Version",
-            "type": "string"
           },
           "time_stamp": {
             "title": "Time_Stamp",
@@ -195,47 +232,14 @@
           "more_data_available": {
             "title": "More_Data_Available",
             "type": "boolean"
-          }
-        }
-      },
-      "StructureResourceAttributes": {
-        "title": "StructureResourceAttributes",
-        "required": [
-          "local_id",
-          "last_modified"
-        ],
-        "type": "object",
-        "properties": {
-          "local_id": {
-            "title": "Local_Id",
-            "type": "string"
           },
-          "last_modified": {
-            "title": "Last_Modified",
+          "api_version": {
+            "title": "Api_Version",
             "type": "string",
-            "format": "date-time"
-          },
-          "immutable_id": {
-            "title": "Immutable_Id",
-            "type": "string"
-          },
-          "elements": {
-            "title": "Elements",
-            "type": "string"
-          },
-          "nelements": {
-            "title": "Nelements",
-            "type": "integer"
-          },
-          "chemical_formula": {
-            "title": "Chemical_Formula",
-            "type": "string"
-          },
-          "formula_prototype": {
-            "title": "Formula_Prototype",
-            "type": "string"
+            "description": "a string containing the version of the API implementation."
           }
-        }
+        },
+        "description": "A JSON API meta member that contains JSON API meta objects of non-standard meta-information.\n\nIn addition to the required fields, it MAY contain\n\n- `data_available`: an integer containing the total number of data objects available in the database.\n- `last_id`: a string containing the last ID returned.\n- `response_message`: response string from the server.\n\nOther OPTIONAL additional information global to the query that is not specified in this document, MUST start with\na database-provider-specific prefix"
       },
       "StructureResource": {
         "title": "StructureResource",
