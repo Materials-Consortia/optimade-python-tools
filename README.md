@@ -15,8 +15,8 @@ This library is under development. Progress is expected during the [CECAM Worksh
 
 ### Developing
 
-1. Clone this repository to your computer and install the requirements
 ```
+# Clone this repository to your computer
 git clone git@github.com:Materials-Consortia/optimade-python-tools.git
 cd optimade-python-tools
 
@@ -24,7 +24,15 @@ cd optimade-python-tools
 conda create -n optimade python=3.6
 conda activate optimade
 
+# Install package and requirements in editable mode.
 pip install -e .
+
+# Optional: Install MongoDB (and set `USE_REAL_MONGO = yes` in optimade/server/congig.ini)
+# Below method installs in conda environment and
+# - starts server in background
+# - ensures and uses ~/dbdata directory to store data
+conda install -c anaconda mongodb
+mkdir -p ~/dbdata && mongod --dbpath ~/dbdata --syslog --fork 
 
 # Start a development server (auto-reload on file changes at http://localhost:5000
 uvicorn optimade.server.main:app --reload --port 5000
@@ -35,13 +43,6 @@ open http://localhost:5000/docs
 open http://localhost:5000/openapi.json
 ```
 
-2. (optional) Have yourself some test MongoDB data:
-```
-wget https://www.dropbox.com/s/v8rkfu4zfi6xl2o/optimade-structures-test.tar.gz?dl=0 -O optimade-structures-test.tar.gz
-tar zxvf optimade-structures-test.tar.gz
-mongorestore -d optimade -c structures dump/optimade/structures.bson.gz --gzip
-```
-
 ### ===For now, be cautious about the below sections. They may not be up to date===
 
 ### Getting Started
@@ -49,28 +50,34 @@ mongorestore -d optimade -c structures dump/optimade/structures.bson.gz --gzip
 Install via `pip install optimade`. Example use:
 
 ```python
-from optimade.filter import Parser
+from optimade.filterparser import Parser
 
-p = Parser(version=(0, 9, 5))
-p.parse("filter=a<3")
+p = Parser(version=(0,9,7))
+tree = p.parse("nelements<3")
+print(tree)
 ```
 ```
 Tree(start, [Token(KEYWORD, 'filter='), Tree(expression, [Tree(term, [Tree(atom, [Tree(comparison, [Token(VALUE, 'a'), Token(OPERATOR, '<'), Token(VALUE, '3')])])])])])
 ```
 ```python
-p = Parser()
-p.version
-```
-```
-(0, 9, 5)
-```
-```python
-tree = p.parse('filter=_mp_bandgap > 5.0 AND _cod_molecular_weight < 350')
-print(p)
+print(tree.pretty())
 ```
 ```
 start
-  filter=
+  expression
+    term
+      atom
+        comparison
+          nelements
+          <
+          3
+```
+```python
+tree = p.parse('_mp_bandgap > 5.0 AND _cod_molecular_weight < 350')
+print(tree.pretty())
+```
+```
+start
   expression
     term
       term
@@ -87,7 +94,7 @@ start
           350
 ```
 ```python
-# Assumes graphviz installed on system and `pip install pydot`
+# Assumes graphviz installed on system (e.g. `conda install -c anaconda graphviz`) and `pip install pydot`
 from lark.tree import pydot__tree_to_png
 
 pydot__tree_to_png(tree, "exampletree.png")
@@ -95,28 +102,27 @@ pydot__tree_to_png(tree, "exampletree.png")
 ![example tree](exampletree.png)
 
 ### Flow for Parsing User-Supplied Filter and Converting to Backend Query
-`Parser` will take user input to generate a tree and feed that to a `Converter` which will turn that tree into your desired query language.
-![Optimade General Procedure](optimade_general_procedure.jpg)
 
+`optimade.filterparser.Parser` will take user input to generate a `lark.Tree` and feed that to a `lark.Transformer`
+(for example, `optimade.filtertransformers.mongo.MongoTransformer`), which will turn that tree into something useful
+to your backend (for example, a MongoDB query `dict`.)
 
-###### Example: Converting to MongoDB Query Syntax
-The `Parser` class from `optimade/filter.py` will transform user input into a `Lark` tree using  [lark-parser](https://github.com/lark-parser/lark).
+```python
+# Example: Converting to MongoDB Query Syntax
+from optimade.filtertransformers.mongo import MongoTransformer
 
-The `Lark` tree will then be passed into a desired `converter`, for instance, the `mongoconverter` located at `optimade/converter/mongoconverter` for transformation into your desired database query language. We have adapted our mongoconverter by using the [python query language(pql)](https://github.com/alonho/pql)
+transformer = MongoTransformer()
 
-![Optimade to Mongodb Procedure](optimade_to_mongodb_procedure.jpg)
-
-Usage examples for `mongoconverter` script:
-```bash
-$ mongoconverter "filter=a<3"
-{'a': {'$lt': 3.0}}
-$ mongoconverter "filter=_mp_bandgap > 5.0 AND _cod_molecular_weight < 350"
+tree = p.parse('_mp_bandgap > 5.0 AND _cod_molecular_weight < 350')
+query = transformer.transform(tree)
+print(query)
+```
+```
 {'$and': [{'_mp_bandgap': {'$gt': 5.0}}, {'_cod_molecular_weight': {'$lt': 350.0}}]}
 ```
 
-### Developing New Filter Converters
-If you would like to add your converter, for instance, a OPTIMade to NoSQL converter, please
-1. add your project in the `optimade/converter` folder,
-2. add any requirements in the `requirements.txt`,
-3. if you wish to have a console entry point, add the that to the `console_scripts` in the `setup.py` file
-4. and run `pip install -r requirements.txt` and `pip install -e .`
+### Developing New Filter Transformers
+If you would like to add a new transformer, please add
+1. a module (.py file) in the `optimade/filtertransformers` folder,
+2. any additional Python requirements in `setup.py` and `requirements.txt`,
+3. tests in `optimade/filtertransformers/tests`.
