@@ -37,11 +37,21 @@ class OptimadeResponseMeta(BaseModel):
     more_data_available: bool
 
 
-class OptimadeResponse(BaseModel):
+class OptimadeResponse1(BaseModel):
     links: Links
     meta: OptimadeResponseMeta
-    data: Union[Resource, List[Resource]]
+    data: Resource
 
 
-class OptimadeStructureResponse(OptimadeResponse):
-    data: Union[StructureResource, List[StructureResource]]
+class OptimadeResponseMany(BaseModel):
+    links: Links
+    meta: OptimadeResponseMeta
+    data: List[Resource]
+
+
+class OptimadeStructureResponse1(OptimadeResponse1):
+    data: StructureResource
+
+
+class OptimadeStructureResponseMany(OptimadeResponseMany):
+    data: List[StructureResource]
