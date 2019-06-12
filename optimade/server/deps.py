@@ -2,9 +2,9 @@ from configparser import ConfigParser
 from pathlib import Path
 
 from fastapi import Query
-from pydantic import EmailStr, Schema, BaseModel
+from pydantic import EmailStr
 
-from .models import NonnegativeInt
+from .models.util import NonnegativeInt
 
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath('config.ini'))

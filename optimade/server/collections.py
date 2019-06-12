@@ -9,7 +9,9 @@ from fastapi import HTTPException
 from optimade.filterparser import Parser
 from optimade.filtertransformers.mongo import MongoTransformer
 
-from .models import NonnegativeInt, Resource, StructureMapper
+from .models.util import NonnegativeInt
+from .models.jsonapi import Resource
+from .models.structures import StructureMapper
 from .deps import EntryListingQueryParams
 
 

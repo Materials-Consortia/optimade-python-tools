@@ -24,10 +24,9 @@ setup(
         "fastapi[all]",
     ],
     extras_require = {
-        "schema-validation": ["openapi-spec-validator"],
         "task_running": ["invoke", "twine"],
     },
-    tests_require=["pytest>=3.6"],
+    tests_require=["pytest>=3.6", "openapi-spec-validator"],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python :: 3',
