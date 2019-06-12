@@ -71,3 +71,9 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         data=results,
         meta=meta,
     )
+
+
+@app.on_event("startup")
+async def startup_event():
+    with open('local_openapi.json', 'w') as f:
+        json.dump(app.openapi(), f, indent=2)

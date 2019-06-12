@@ -34,3 +34,7 @@ def publish(c):
     c.run("rm dist/*.*", warn=True)
     c.run("python setup.py sdist bdist_wheel")
     c.run("twine upload dist/*")
+
+@task
+def update_openapijson(c):
+    c.run("cp local_openapi.json openapi.json")
