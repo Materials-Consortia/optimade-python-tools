@@ -16,13 +16,29 @@ class Links(BaseModel):
 class Resource(BaseModel):
     id: str
     type: str
-    attributes: Optional[Attributes]
-    relationships : Optional[Relationships]
     links: Optional[Links]
     meta: Optional[dict]
 
+class Jsonapi(BaseModel):
+    version: str
+    meta: Optional[dict]
+
+class Pagination(BaseModel):
+    first: Optional[Union[UrlStr, None]]
+    last: Optional[Union[UrlStr, None]]
+    prev: Optional[Union[UrlStr, None]]
+    next: Optional[Union[UrlStr, None]]
+
+class Error(BaseModel):
+    id: str
+    status: str
+    code: str
+    title: str
+    detail: str
+    meta: dict
+
 class Success(BaseModel):
-    data: Data
+    data: Union[None, Resource, List[Resource]]
     included: Optional[List[Resource]]
     uniqueItems: bool = True
     meta: Optional[dict]
@@ -40,40 +56,11 @@ class Info(BaseModel):
     jsonapi: Optional[Jsonapi]
     links: Optional[Links]
 
-class Data(List[Resource]):
-
 class RelationshipLinks(BaseModel):
     self: Optional[Link]
     related: Optional[Link]
-
-class Attributes(BaseModel):
-
-class Relationships(BaseModel):
-
-class RelationshipToOne(BaseModel):
-
-class RelationshipToMany(BaseModel):
-
-class Empty(None):
 
 class Linkage(BaseModel):
     type: str
     id: str
     meta: Optional[dict]
-
-class Pagination(BaseModel):
-    first: Optional[UrlStr, None]
-    last: Optional[UrlStr, None]
-    prev: Optional[UrlStr, None]
-    next: Optional[UrlStr, None]
-
-class Jsonapi(BaseModel):
-    version: str
-    meta: Optional[dict]
-class Error(BaseModel):
-    id: str
-    status: str
-    code: str
-    title: str
-    detail: str
-    meta: dict
