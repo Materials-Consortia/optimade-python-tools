@@ -23,6 +23,9 @@ setup(
         "mongomock>=3.16",
         "fastapi[all]",
     ],
+    extras_require = {
+        "schema-validation": [ "openapi-spec-validator" ]
+    },
     tests_require=["pytest>=3.6"],
     classifiers=[
         'Development Status :: 3 - Alpha',
