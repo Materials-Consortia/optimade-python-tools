@@ -124,45 +124,6 @@
   },
   "components": {
     "schemas": {
-      "StructureResourceAttributes": {
-        "title": "StructureResourceAttributes",
-        "required": [
-          "local_id",
-          "last_modified"
-        ],
-        "type": "object",
-        "properties": {
-          "local_id": {
-            "title": "Local_Id",
-            "type": "string"
-          },
-          "last_modified": {
-            "title": "Last_Modified",
-            "type": "string",
-            "format": "date-time"
-          },
-          "immutable_id": {
-            "title": "Immutable_Id",
-            "type": "string"
-          },
-          "elements": {
-            "title": "Elements",
-            "type": "string"
-          },
-          "nelements": {
-            "title": "Nelements",
-            "type": "integer"
-          },
-          "chemical_formula": {
-            "title": "Chemical_Formula",
-            "type": "string"
-          },
-          "formula_prototype": {
-            "title": "Formula_Prototype",
-            "type": "string"
-          }
-        }
-      },
       "Link": {
         "title": "Link",
         "required": [
@@ -188,7 +149,32 @@
         "type": "object",
         "properties": {
           "next": {
-            "$ref": "#/components/schemas/Link"
+            "title": "Next",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "$ref": "#/components/schemas/Link"
+              }
+            ]
+          },
+          "base_url": {
+            "title": "Base_Url",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "$ref": "#/components/schemas/Link"
+              }
+            ]
           }
         }
       },
@@ -240,6 +226,45 @@
           }
         },
         "description": "A JSON API meta member that contains JSON API meta objects of non-standard meta-information.\n\nIn addition to the required fields, it MAY contain\n\n- `data_available`: an integer containing the total number of data objects available in the database.\n- `last_id`: a string containing the last ID returned.\n- `response_message`: response string from the server.\n\nOther OPTIONAL additional information global to the query that is not specified in this document, MUST start with\na database-provider-specific prefix"
+      },
+      "StructureResourceAttributes": {
+        "title": "StructureResourceAttributes",
+        "required": [
+          "local_id",
+          "last_modified"
+        ],
+        "type": "object",
+        "properties": {
+          "local_id": {
+            "title": "Local_Id",
+            "type": "string"
+          },
+          "last_modified": {
+            "title": "Last_Modified",
+            "type": "string",
+            "format": "date-time"
+          },
+          "immutable_id": {
+            "title": "Immutable_Id",
+            "type": "string"
+          },
+          "elements": {
+            "title": "Elements",
+            "type": "string"
+          },
+          "nelements": {
+            "title": "Nelements",
+            "type": "integer"
+          },
+          "chemical_formula": {
+            "title": "Chemical_Formula",
+            "type": "string"
+          },
+          "formula_prototype": {
+            "title": "Formula_Prototype",
+            "type": "string"
+          }
+        }
       },
       "StructureResource": {
         "title": "StructureResource",
