@@ -5,5 +5,7 @@ python:
   - "3.6"
 script:
    - pip install -e .
+   - pip install -r requirements.txt
+   - pip install -r requirements-optional.txt
    - pytest
    - openapi-spec-validator openapi.json
