@@ -14,7 +14,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OptimadeStructureResponse"
+                  "$ref": "#/components/schemas/OptimadeStructureResponseMany"
                 }
               }
             }
@@ -124,45 +124,6 @@
   },
   "components": {
     "schemas": {
-      "StructureResourceAttributes": {
-        "title": "StructureResourceAttributes",
-        "required": [
-          "local_id",
-          "last_modified"
-        ],
-        "type": "object",
-        "properties": {
-          "local_id": {
-            "title": "Local_Id",
-            "type": "string"
-          },
-          "last_modified": {
-            "title": "Last_Modified",
-            "type": "string",
-            "format": "date-time"
-          },
-          "immutable_id": {
-            "title": "Immutable_Id",
-            "type": "string"
-          },
-          "elements": {
-            "title": "Elements",
-            "type": "string"
-          },
-          "nelements": {
-            "title": "Nelements",
-            "type": "integer"
-          },
-          "chemical_formula": {
-            "title": "Chemical_Formula",
-            "type": "string"
-          },
-          "formula_prototype": {
-            "title": "Formula_Prototype",
-            "type": "string"
-          }
-        }
-      },
       "Link": {
         "title": "Link",
         "required": [
@@ -246,7 +207,7 @@
                 ]
               }
             ],
-            "description": "a [JSON API links object](http://jsonapi.org/format/#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
+            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
           },
           "index_base_url": {
             "title": "Index_Base_Url",
@@ -278,7 +239,7 @@
                 ]
               }
             ],
-            "description": "a [JSON API links object](http://jsonapi.org/format/#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object."
+            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object."
           }
         },
         "description": "Stores information on the database provider of the\n   implementation."
@@ -373,7 +334,7 @@
               },
               "homepage": {
                 "title": "Homepage",
-                "description": "a [JSON API links object](http://jsonapi.org/format/#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object.",
+                "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object.",
                 "anyOf": [
                   {
                     "minLength": 1,
@@ -405,7 +366,7 @@
               },
               "index_base_url": {
                 "title": "Index_Base_Url",
-                "description": "a [JSON API links object](http://jsonapi.org/format/#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object.",
+                "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object.",
                 "anyOf": [
                   {
                     "minLength": 1,
@@ -454,7 +415,46 @@
             "description": "response string from the server"
           }
         },
-        "description": "A [JSON API meta member](https://jsonapi.org/format/#document-meta)\nthat contains JSON API meta objects of non-standard\nmeta-information.\n\nOPTIONAL additional information global to the query that is not\nspecified in this document, MUST start with a\ndatabase-provider-specific prefix."
+        "description": "A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)\nthat contains JSON API meta objects of non-standard\nmeta-information.\n\nOPTIONAL additional information global to the query that is not\nspecified in this document, MUST start with a\ndatabase-provider-specific prefix."
+      },
+      "StructureResourceAttributes": {
+        "title": "StructureResourceAttributes",
+        "required": [
+          "local_id",
+          "last_modified"
+        ],
+        "type": "object",
+        "properties": {
+          "local_id": {
+            "title": "Local_Id",
+            "type": "string"
+          },
+          "last_modified": {
+            "title": "Last_Modified",
+            "type": "string",
+            "format": "date-time"
+          },
+          "immutable_id": {
+            "title": "Immutable_Id",
+            "type": "string"
+          },
+          "elements": {
+            "title": "Elements",
+            "type": "string"
+          },
+          "nelements": {
+            "title": "Nelements",
+            "type": "integer"
+          },
+          "chemical_formula": {
+            "title": "Chemical_Formula",
+            "type": "string"
+          },
+          "formula_prototype": {
+            "title": "Formula_Prototype",
+            "type": "string"
+          }
+        }
       },
       "StructureResource": {
         "title": "StructureResource",
@@ -478,8 +478,8 @@
           }
         }
       },
-      "OptimadeStructureResponse": {
-        "title": "OptimadeStructureResponse",
+      "OptimadeStructureResponseMany": {
+        "title": "OptimadeStructureResponseMany",
         "required": [
           "links",
           "meta",
@@ -495,17 +495,10 @@
           },
           "data": {
             "title": "Data",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/StructureResource"
-              },
-              {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/StructureResource"
-                }
-              }
-            ]
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureResource"
+            }
           }
         }
       },
