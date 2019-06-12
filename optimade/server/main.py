@@ -10,7 +10,7 @@ from .deps import EntryListingQueryParams
 from .collections import MongoCollection
 from .models import (
     Link, Links, StructureResource, OptimadeResponseMeta, OptimadeResponseMetaQuery,
-    OptimadeStructureResponseMany, OptimadeInfoResponse, BaseInfoResource
+    OptimadeStructureResponseMany, OptimadeInfoResponse, BaseInfoResource, BaseInfoAttributes
 )
 
 config = ConfigParser()
@@ -48,17 +48,23 @@ if not USE_REAL_MONGO and test_structures_path.exists():
 
 @app.get("/info", response_model=BaseInfoResource, response_model_skip_defaults=True, tags=['Structure'])
 def get_info(request: Request, params: EntryListingQueryParams = Depends()):
+    parse_result = urllib.parse.urlparse(str(request.url))
     meta = OptimadeResponseMeta(
         query=OptimadeResponseMetaQuery(
             representation=f'{parse_result.path}?{parse_result.query}'),
         api_version='v0.9',
         time_stamp=datetime.utcnow(),
-        data_returned=len(results),
+        data_returned=1,
         more_data_available=False,
     )
     return OptimadeInfoResponse(
-        links=links,
-        data=BaseInfoResource()
+        meta=meta,
+        data=BaseInfoResource(
+            attributes=BaseInfoAttributes(
+                api_version='v0.9',
+                available_api_versions={'v0.9': 'http://localhost:5000/'},
+                entry_types_by_format={ 'json': ['structures'] }
+            ))
     )
 
 @app.get("/structures", response_model=OptimadeStructureResponseMany, response_model_skip_defaults=True, tags=['Structure'])
