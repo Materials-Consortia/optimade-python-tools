@@ -46,14 +46,14 @@ class OptimadeProvider(BaseModel):
 
     homepage: Optional[Union[UrlStr, Link]] = Schema(
         ...,
-        description="a [JSON API links object](http://jsonapi.org/format/#document-links) "
+        description="a [JSON API links object](http://jsonapi.org/format/1.0#document-links) "
                     "pointing to homepage of the database provider, either "
                     "directly as a string, or as a link object."
     )
 
     index_base_url: Optional[Union[UrlStr, Link]] = Schema(
         ...,
-        description="a [JSON API links object](http://jsonapi.org/format/#document-links) "
+        description="a [JSON API links object](http://jsonapi.org/format/1.0#document-links) "
                     "pointing to the base URL for the `index` meta-database as "
                     "specified in Appendix 1, either directly as a string, or "
                     "as a link object."
@@ -62,7 +62,7 @@ class OptimadeProvider(BaseModel):
 
 class OptimadeResponseMeta(BaseModel):
     """
-    A [JSON API meta member](https://jsonapi.org/format/#document-meta)
+    A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)
     that contains JSON API meta objects of non-standard
     meta-information.
 
