@@ -80,7 +80,7 @@ class OptimadeResponseMeta(BaseModel):
     api_version: str = Schema(
         ...,
         description="a string containing the version of the API "
-                    "implementation"
+                    "implementation, e.g. v0.9.5"
     )
 
     time_stamp: datetime = Schema(
