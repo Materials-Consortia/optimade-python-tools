@@ -124,6 +124,193 @@
   },
   "components": {
     "schemas": {
+      "Link": {
+        "title": "Link",
+        "required": [
+          "href"
+        ],
+        "type": "object",
+        "properties": {
+          "href": {
+            "title": "Href",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Links": {
+        "title": "Links",
+        "type": "object",
+        "properties": {
+          "next": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "OptimadeResponseMeta": {
+        "title": "OptimadeResponseMeta",
+        "required": [
+          "query",
+          "api_version",
+          "time_stamp",
+          "data_returned",
+          "more_data_available",
+          "provider"
+        ],
+        "type": "object",
+        "properties": {
+          "query": {
+            "title": "OptimadeResponseMetaQuery",
+            "required": [
+              "representation"
+            ],
+            "type": "object",
+            "properties": {
+              "representation": {
+                "title": "Representation",
+                "description": "a string with the part of the URL that follows the base URL.",
+                "type": "string"
+              }
+            },
+            "description": "Information on the query that was requested."
+          },
+          "api_version": {
+            "title": "Api_Version",
+            "type": "string",
+            "description": "a string containing the version of the API implementation"
+          },
+          "time_stamp": {
+            "title": "Time_Stamp",
+            "type": "string",
+            "description": "a string containing the date and time at which the query was exexcuted, in [ISO 8601](https://www.iso.org/standard/40874.html) format. Times MUST be time-zone aware (i.e. MUST NOT be local times), in one of the formats allowed by ISO 8601 (i.e. either be in UTC, and then end with a Z, or indicate explicitly the offset).",
+            "format": "date-time"
+          },
+          "data_returned": {
+            "title": "Data_Returned",
+            "minimum": 0.0,
+            "type": "integer",
+            "description": "an integer containing the number of data objects returned for the query."
+          },
+          "more_data_available": {
+            "title": "More_Data_Available",
+            "type": "boolean",
+            "description": "`false` if all data has been returned, and `true` if not."
+          },
+          "provider": {
+            "title": "OptimadeProvider",
+            "required": [
+              "name",
+              "description",
+              "prefix"
+            ],
+            "type": "object",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "description": "a short name for the database provider",
+                "type": "string"
+              },
+              "description": {
+                "title": "Description",
+                "description": "a longer description of the database provider",
+                "type": "string"
+              },
+              "prefix": {
+                "title": "Prefix",
+                "description": "database-provider-specific prefix as found in Appendix 1.",
+                "type": "string"
+              },
+              "homepage": {
+                "title": "Homepage",
+                "description": "a [JSON API links object](http://jsonapi.org/format/#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object.",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "index_base_url": {
+                "title": "Index_Base_Url",
+                "description": "a [JSON API links object](http://jsonapi.org/format/#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object.",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              }
+            },
+            "description": "Stores information on the database provider of the\n   implementation."
+          },
+          "data_available": {
+            "title": "Data_Available",
+            "type": "integer",
+            "description": "an integer containing the total number of data objects available in the database"
+          },
+          "last_id": {
+            "title": "Last_Id",
+            "type": "string",
+            "description": "a string containing the last ID returned"
+          },
+          "response_message": {
+            "title": "Response_Message",
+            "type": "string",
+            "description": "response string from the server"
+          }
+        },
+        "description": "A [JSON API meta member](https://jsonapi.org/format/#document-meta)\nthat contains JSON API meta objects of non-standard\nmeta-information.\n\nOPTIONAL additional information global to the query that is not\nspecified in this document, MUST start with a\ndatabase-provider-specific prefix."
+      },
       "StructureResourceAttributes": {
         "title": "StructureResourceAttributes",
         "required": [
@@ -162,84 +349,6 @@
             "type": "string"
           }
         }
-      },
-      "Link": {
-        "title": "Link",
-        "required": [
-          "href"
-        ],
-        "type": "object",
-        "properties": {
-          "href": {
-            "title": "Href",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          }
-        }
-      },
-      "Links": {
-        "title": "Links",
-        "type": "object",
-        "properties": {
-          "next": {
-            "$ref": "#/components/schemas/Link"
-          }
-        }
-      },
-      "OptimadeResponseMetaQuery": {
-        "title": "OptimadeResponseMetaQuery",
-        "required": [
-          "representation"
-        ],
-        "type": "object",
-        "properties": {
-          "representation": {
-            "title": "Representation",
-            "type": "string"
-          }
-        }
-      },
-      "OptimadeResponseMeta": {
-        "title": "OptimadeResponseMeta",
-        "required": [
-          "query",
-          "time_stamp",
-          "data_returned",
-          "more_data_available",
-          "api_version"
-        ],
-        "type": "object",
-        "properties": {
-          "query": {
-            "$ref": "#/components/schemas/OptimadeResponseMetaQuery"
-          },
-          "time_stamp": {
-            "title": "Time_Stamp",
-            "type": "string",
-            "format": "date-time"
-          },
-          "data_returned": {
-            "title": "Data_Returned",
-            "minimum": 0.0,
-            "type": "integer"
-          },
-          "more_data_available": {
-            "title": "More_Data_Available",
-            "type": "boolean"
-          },
-          "api_version": {
-            "title": "Api_Version",
-            "type": "string",
-            "description": "a string containing the version of the API implementation."
-          }
-        },
-        "description": "A JSON API meta member that contains JSON API meta objects of non-standard meta-information.\n\nIn addition to the required fields, it MAY contain\n\n- `data_available`: an integer containing the total number of data objects available in the database.\n- `last_id`: a string containing the last ID returned.\n- `response_message`: response string from the server.\n\nOther OPTIONAL additional information global to the query that is not specified in this document, MUST start with\na database-provider-specific prefix"
       },
       "StructureResource": {
         "title": "StructureResource",
@@ -293,6 +402,112 @@
             ]
           }
         }
+      },
+      "OptimadeResponseMetaQuery": {
+        "title": "OptimadeResponseMetaQuery",
+        "required": [
+          "representation"
+        ],
+        "type": "object",
+        "properties": {
+          "representation": {
+            "title": "Representation",
+            "type": "string",
+            "description": "a string with the part of the URL that follows the base URL."
+          }
+        },
+        "description": "Information on the query that was requested."
+      },
+      "OptimadeProvider": {
+        "title": "OptimadeProvider",
+        "required": [
+          "name",
+          "description",
+          "prefix"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "description": "a short name for the database provider"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "a longer description of the database provider"
+          },
+          "prefix": {
+            "title": "Prefix",
+            "type": "string",
+            "description": "database-provider-specific prefix as found in Appendix 1."
+          },
+          "homepage": {
+            "title": "Homepage",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "a [JSON API links object](http://jsonapi.org/format/#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
+          },
+          "index_base_url": {
+            "title": "Index_Base_Url",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "a [JSON API links object](http://jsonapi.org/format/#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object."
+          }
+        },
+        "description": "Stores information on the database provider of the\n   implementation."
       },
       "ValidationError": {
         "title": "ValidationError",
