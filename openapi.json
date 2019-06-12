@@ -6,6 +6,121 @@
     "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API."
   },
   "paths": {
+    "/info": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseInfoResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_info_get",
+        "parameters": [
+          {
+            "description": "See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter\nquery syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter\nquery syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "jsonapi"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email"
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "response_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string"
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string"
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page[Offset]",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page[offset]",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page[Limit]",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page[limit]",
+            "in": "query"
+          }
+        ]
+      }
+    },
     "/structures": {
       "get": {
         "responses": {
@@ -14,7 +129,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OptimadeStructureResponse"
+                  "$ref": "#/components/schemas/OptimadeStructureResponseMany"
                 }
               }
             }
@@ -163,6 +278,28 @@
           }
         }
       },
+      "StructureResource": {
+        "title": "StructureResource",
+        "required": [
+          "id",
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "default": "structure"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/StructureResourceAttributes"
+          }
+        }
+      },
       "Link": {
         "title": "Link",
         "required": [
@@ -188,7 +325,32 @@
         "type": "object",
         "properties": {
           "next": {
-            "$ref": "#/components/schemas/Link"
+            "title": "Next",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "$ref": "#/components/schemas/Link"
+              }
+            ]
+          },
+          "base_url": {
+            "title": "Base_Url",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "$ref": "#/components/schemas/Link"
+              }
+            ]
           }
         }
       },
@@ -233,6 +395,19 @@
             "title": "More_Data_Available",
             "type": "boolean"
           },
+          "data_available": {
+            "title": "Data_Available",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "last_id": {
+            "title": "Last_Id",
+            "type": "string"
+          },
+          "response_message": {
+            "title": "Response_Message",
+            "type": "string"
+          },
           "api_version": {
             "title": "Api_Version",
             "type": "string",
@@ -241,30 +416,8 @@
         },
         "description": "A JSON API meta member that contains JSON API meta objects of non-standard meta-information.\n\nIn addition to the required fields, it MAY contain\n\n- `data_available`: an integer containing the total number of data objects available in the database.\n- `last_id`: a string containing the last ID returned.\n- `response_message`: response string from the server.\n\nOther OPTIONAL additional information global to the query that is not specified in this document, MUST start with\na database-provider-specific prefix"
       },
-      "StructureResource": {
-        "title": "StructureResource",
-        "required": [
-          "id",
-          "attributes"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "type": "string",
-            "default": "structure"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/StructureResourceAttributes"
-          }
-        }
-      },
-      "OptimadeStructureResponse": {
-        "title": "OptimadeStructureResponse",
+      "OptimadeStructureResponseMany": {
+        "title": "OptimadeStructureResponseMany",
         "required": [
           "links",
           "meta",
@@ -280,17 +433,89 @@
           },
           "data": {
             "title": "Data",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/StructureResource"
-              },
-              {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/StructureResource"
-                }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureResource"
+            }
+          }
+        }
+      },
+      "BaseInfoAttributes": {
+        "title": "BaseInfoAttributes",
+        "required": [
+          "api_version",
+          "available_api_versions",
+          "entry_types_by_format"
+        ],
+        "type": "object",
+        "properties": {
+          "api_version": {
+            "title": "Api_Version",
+            "type": "string"
+          },
+          "available_api_versions": {
+            "title": "Available_Api_Versions",
+            "type": "object",
+            "additionalProperties": {
+              "minLength": 1,
+              "maxLength": 65536,
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "entry_types_by_format": {
+            "title": "Entry_Types_By_Format",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
               }
+            }
+          },
+          "formats": {
+            "title": "Formats",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "json"
             ]
+          },
+          "available_endpoints": {
+            "title": "Available_Endpoints",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "structure",
+              "all",
+              "info"
+            ]
+          }
+        }
+      },
+      "BaseInfoResource": {
+        "title": "BaseInfoResource",
+        "required": [
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/BaseInfoAttributes"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "default": "/"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "default": "info"
           }
         }
       },
