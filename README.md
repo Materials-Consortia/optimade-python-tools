@@ -35,6 +35,7 @@ conda install -c anaconda mongodb
 mkdir -p ~/dbdata && mongod --dbpath ~/dbdata --syslog --fork 
 
 # Start a development server (auto-reload on file changes at http://localhost:5000
+# You can also execute ./run.sh
 uvicorn optimade.server.main:app --reload --port 5000
 
 # View auto-generated docs
