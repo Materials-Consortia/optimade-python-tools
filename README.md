@@ -43,11 +43,9 @@ open http://localhost:5000/docs
 open http://localhost:5000/openapi.json
 ```
 
-### ===For now, be cautious about the below sections. They may not be up to date===
+### Getting Started with Filter Parsing and Transforming
 
-### Getting Started
-
-Install via `pip install optimade`. Example use:
+Example use:
 
 ```python
 from optimade.filterparser import Parser
@@ -101,7 +99,7 @@ pydot__tree_to_png(tree, "exampletree.png")
 ```
 ![example tree](exampletree.png)
 
-### Flow for Parsing User-Supplied Filter and Converting to Backend Query
+#### Flow for Parsing User-Supplied Filter and Converting to Backend Query
 
 `optimade.filterparser.Parser` will take user input to generate a `lark.Tree` and feed that to a `lark.Transformer`
 (for example, `optimade.filtertransformers.mongo.MongoTransformer`), which will turn that tree into something useful
@@ -121,7 +119,7 @@ print(query)
 {'$and': [{'_mp_bandgap': {'$gt': 5.0}}, {'_cod_molecular_weight': {'$lt': 350.0}}]}
 ```
 
-### Developing New Filter Transformers
+#### Developing New Filter Transformers
 If you would like to add a new transformer, please add
 1. a module (.py file) in the `optimade/filtertransformers` folder,
 2. any additional Python requirements in `setup.py` and `requirements.txt`,
