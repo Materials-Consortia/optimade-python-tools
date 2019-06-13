@@ -1,4 +1,6 @@
 import urllib
+import os
+import sys
 from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
@@ -64,6 +66,10 @@ def meta_values(url,data_returned, more_data_available=False):
             index_base_url=None)
     )
 
+def update_schema(app):
+    """Update OpenAPI schema in file 'local_openapi.json'"""
+    with open('local_openapi.json', 'w') as f:
+        json.dump(app.openapi(), f, indent=2)
 
 @app.get("/structures", response_model=OptimadeStructureResponseMany, response_model_skip_defaults=True, tags=['Structure'])
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
@@ -95,5 +101,4 @@ def get_info(request: Request, params: EntryListingQueryParams = Depends()):
 
 @app.on_event("startup")
 async def startup_event():
-    with open('local_openapi.json', 'w') as f:
-        json.dump(app.openapi(), f, indent=2)
+    update_schema(app)
