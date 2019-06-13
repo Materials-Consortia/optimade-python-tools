@@ -83,3 +83,7 @@ class Success(BaseModel):
     meta: Optional[dict]
     links: Optional[Union[Links, Pagination]]
     jsonapi: Optional[JsonAPI]
+
+# FIXME: PLACEHOLDER
+class Meta(BaseModel, Dict):
+    pass
