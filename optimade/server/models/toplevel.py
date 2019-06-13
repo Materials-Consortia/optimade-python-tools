@@ -7,6 +7,7 @@ from optimade.server.models.jsonapi import Link, Links, Resource
 from optimade.server.models.structures import StructureResource
 from .baseinfo import BaseInfoResource
 from optimade.server.models.util import NonnegativeInt
+from .errors import ErrorMsg
 
 
 class OptimadeResponseMetaQuery(BaseModel):
@@ -147,6 +148,12 @@ class OptimadeStructureResponse1(OptimadeResponse1):
 
 class OptimadeStructureResponseMany(OptimadeResponseMany):
     data: List[StructureResource]
+
+
+class OptimadeErrorResponse(BaseModel):
+    links: Optional[Links]
+    meta: OptimadeResponseMeta
+    errors: List[ErrorMsg]
 
 
 class OptimadeInfoResponse(OptimadeResponse1):
