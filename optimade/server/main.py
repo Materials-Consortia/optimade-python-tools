@@ -10,7 +10,9 @@ from .deps import EntryListingQueryParams
 from .collections import MongoCollection
 from .models.jsonapi import Link, Links
 from .models.structures import StructureResource
-from. models.toplevel import OptimadeResponseMeta, OptimadeResponseMetaQuery, OptimadeStructureResponse
+from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
+from .models.toplevel import OptimadeResponseMeta, OptimadeResponseMetaQuery, OptimadeStructureResponseMany, OptimadeInfoResponse, OptimadeProvider
+
 
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath('config.ini'))
@@ -45,7 +47,26 @@ if not USE_REAL_MONGO and test_structures_path.exists():
     print('done inserting test structures...')
 
 
-@app.get("/structures", response_model=OptimadeStructureResponse, response_model_skip_defaults=True, tags=['Structure'])
+def meta_values(url,data_returned, more_data_available=False):
+    """Helper to initialize the meta values"""
+    parse_result = urllib.parse.urlparse(url)
+    return OptimadeResponseMeta(
+        query=OptimadeResponseMetaQuery(
+            representation=f'{parse_result.path}?{parse_result.query}'),
+        api_version='v0.9',
+        time_stamp=datetime.utcnow(),
+        data_returned=data_returned,
+        more_data_available=more_data_available,
+        provider=OptimadeProvider(
+            name="test",
+            description="A test database provider",
+            prefix="tst",
+            homepage=None,
+            index_base_url=None)
+    )
+
+
+@app.get("/structures", response_model=OptimadeStructureResponseMany, response_model_skip_defaults=True, tags=['Structure'])
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
     results, more_data_available, data_available = structures.find(params)
     parse_result = urllib.parse.urlparse(str(request.url))
@@ -56,21 +77,22 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         links = Links(next=Link(href=f'{parse_result.scheme}://{parse_result.netloc}{parse_result.path}?{urlencoded}'))
     else:
         links = Links(next=None)
-
-    meta = OptimadeResponseMeta(
-        query=OptimadeResponseMetaQuery(
-            representation=f'{parse_result.path}?{parse_result.query}'),
-        api_version='v0.9',
-        time_stamp=datetime.utcnow(),
-        data_returned=len(results),
-        more_data_available=more_data_available,
-    )
-    return OptimadeStructureResponse(
+    return OptimadeStructureResponseMany(
         links=links,
         data=results,
-        meta=meta,
+        meta=meta_values(str(request.url), len(results), more_data_available),
     )
 
+@app.get("/info", response_model=OptimadeInfoResponse, response_model_skip_defaults=True, tags=['Structure'])
+def get_info(request: Request, params: EntryListingQueryParams = Depends()):
+    return OptimadeInfoResponse(
+        meta=meta_values(str(request.url), 1, more_data_available=False),
+        data=BaseInfoResource(attributes=BaseInfoAttributes(
+                api_version='v0.9',
+                available_api_versions={'v0.9': 'http://localhost:5000/'},
+                entry_types_by_format={ 'json': ['structures'] }
+            ))
+    )
 
 @app.on_event("startup")
 async def startup_event():
