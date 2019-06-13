@@ -9,9 +9,9 @@ class Link(BaseModel):
     href: UrlStr
     meta: Optional[dict]
 
-class Links(BaseModel):
-    next: Optional[Union[UrlStr,Link]]
-    base_url: Optional[Union[UrlStr,Link]]
+# class Links(BaseModel):
+#     next: Optional[Union[UrlStr,Link]]
+#     base_url: Optional[Union[UrlStr,Link]]
 
 class JsonAPI(BaseModel):
     version: str

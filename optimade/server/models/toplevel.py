@@ -3,7 +3,8 @@ from typing import Union, List, Optional
 
 from pydantic import BaseModel, validator, UrlStr, Schema
 
-from optimade.server.models.jsonapi import Link, Links, Resource
+from optimade.server.models.jsonapi import Link, Resource
+from optimade.server.models.links import Links
 from optimade.server.models.structures import StructureResource
 from .baseinfo import BaseInfoResource
 from optimade.server.models.util import NonnegativeInt

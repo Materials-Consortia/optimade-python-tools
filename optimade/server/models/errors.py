@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Union
 
-from .jsonapi import Link, Links
+from .jsonapi import Link
+from .links import Links
 from pydantic import BaseModel, UrlStr, Schema
 
 class ErrorSource(BaseModel):
