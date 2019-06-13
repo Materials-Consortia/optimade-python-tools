@@ -12,7 +12,7 @@ install:
 script:
    - pytest
    - openapi-spec-validator openapi.json
-     # start server to generate schema then kill it
-   - timeout 2 ./run.sh; if [ $? -eq 124 ]; then return 0; else return 1; fi
+     # update schema
+   - python -c "from optimade.server.main import app, update_schema; update_schema(app)"
      # check whether generated schema matches the committed version
    - .ci/openapi_diff.sh
