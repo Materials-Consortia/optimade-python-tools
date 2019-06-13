@@ -23,10 +23,14 @@ setup(
         "mongomock>=3.16",
         "fastapi[all]",
     ],
-    extras_require = {
+    extras_require={
         "task_running": ["invoke", "twine"],
     },
-    tests_require=["pytest>=3.6", "openapi-spec-validator"],
+    tests_require=[
+        "pytest>=3.6",
+        "openapi-spec-validator",
+        "jsondiff"
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python :: 3',
