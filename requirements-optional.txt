@@ -1,4 +1,6 @@
+# Extra packages required to test the tools
 invoke==1.0.0
 openapi-spec-validator==0.2.7
 twine==1.11.0
 pytest==4.0.0
+jsondiff==1.1.2

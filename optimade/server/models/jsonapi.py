@@ -1,8 +1,8 @@
 """
 This module should reproduce https://jsonapi.org/schema
 """
-from typing import Optional, Set, Union, Dict, Tuple, Any
 
+from typing import Optional, Set, Union, Dict, Any
 from pydantic import BaseModel, UrlStr, constr
 
 class Link(BaseModel):
@@ -10,7 +10,8 @@ class Link(BaseModel):
     meta: Optional[dict]
 
 class Links(BaseModel):
-    next: Optional[Link]
+    next: Optional[Union[UrlStr,Link]]
+    base_url: Optional[Union[UrlStr,Link]]
 
 class JsonAPI(BaseModel):
     version: str
