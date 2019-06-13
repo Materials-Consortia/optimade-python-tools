@@ -1,9 +1,9 @@
 """
 This module should reproduce https://jsonapi.org/schema
 """
-from typing import Optional, List, Union
+from typing import Optional, List, Union, Dict, Tuple, Any
 
-from pydantic import BaseModel, UrlStr
+from pydantic import BaseModel, UrlStr, constr
 
 
 class Link(BaseModel):
@@ -56,11 +56,31 @@ class Info(BaseModel):
     jsonapi: Optional[Jsonapi]
     links: Optional[Links]
 
+
+att_pat_prop = constr(regex=r'^(?!relationships$|links$|id$|type$)\\w[-\\w_]*$')
+class AttributeModel(BaseModel):
+    alias: str = ...
+
+class Attributes(BaseModel):
+    items: Optional[Dict[att_pat_prop, Any]]
+
 class RelationshipLinks(BaseModel):
     self: Optional[Link]
     related: Optional[Link]
+
 
 class Linkage(BaseModel):
     type: str
     id: str
     meta: Optional[dict]
+
+class Relationship(BaseModel):
+    links: Optional[RelationshipLinks]
+    data: Optional[Union[Linkage, List[Linkage]]]
+    meta: Optional[dict]
+
+rel_pat_prop = constr(regex=r"^(?!id$|type$)\\w[-\\w_]*$")
+class Relationships(BaseModel):
+    items : Optional[Dict[rel_pat_prop, Relationship]]
+
+
