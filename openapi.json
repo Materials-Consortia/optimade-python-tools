@@ -298,97 +298,6 @@
           }
         }
       },
-      "OptimadeProvider": {
-        "title": "OptimadeProvider",
-        "required": [
-          "name",
-          "description",
-          "prefix"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "title": "Name",
-            "type": "string",
-            "description": "a short name for the database provider"
-          },
-          "description": {
-            "title": "Description",
-            "type": "string",
-            "description": "a longer description of the database provider"
-          },
-          "prefix": {
-            "title": "Prefix",
-            "type": "string",
-            "description": "database-provider-specific prefix as found in Appendix 1."
-          },
-          "homepage": {
-            "title": "Homepage",
-            "anyOf": [
-              {
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              {
-                "title": "Link",
-                "type": "object",
-                "properties": {
-                  "href": {
-                    "title": "Href",
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "meta": {
-                    "title": "Meta",
-                    "type": "object"
-                  }
-                },
-                "required": [
-                  "href"
-                ]
-              }
-            ],
-            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
-          },
-          "index_base_url": {
-            "title": "Index_Base_Url",
-            "anyOf": [
-              {
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              {
-                "title": "Link",
-                "type": "object",
-                "properties": {
-                  "href": {
-                    "title": "Href",
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "meta": {
-                    "title": "Meta",
-                    "type": "object"
-                  }
-                },
-                "required": [
-                  "href"
-                ]
-              }
-            ],
-            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object."
-          }
-        },
-        "description": "Stores information on the database provider of the\n   implementation."
-      },
       "Links": {
         "title": "Links",
         "type": "object",
@@ -678,6 +587,112 @@
           }
         }
       },
+      "OptimadeProvider": {
+        "title": "OptimadeProvider",
+        "required": [
+          "name",
+          "description",
+          "prefix"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "description": "a short name for the database provider"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "a longer description of the database provider"
+          },
+          "prefix": {
+            "title": "Prefix",
+            "type": "string",
+            "description": "database-provider-specific prefix as found in Appendix 1."
+          },
+          "homepage": {
+            "title": "Homepage",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
+          },
+          "index_base_url": {
+            "title": "Index_Base_Url",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object."
+          }
+        },
+        "description": "Stores information on the database provider of the\n   implementation."
+      },
+      "OptimadeResponseMetaQuery": {
+        "title": "OptimadeResponseMetaQuery",
+        "required": [
+          "representation"
+        ],
+        "type": "object",
+        "properties": {
+          "representation": {
+            "title": "Representation",
+            "type": "string",
+            "description": "a string with the part of the URL that follows the base URL."
+          }
+        },
+        "description": "Information on the query that was requested."
+      },
       "StructureResource": {
         "title": "StructureResource",
         "required": [
@@ -723,21 +738,6 @@
             }
           }
         }
-      },
-      "OptimadeResponseMetaQuery": {
-        "title": "OptimadeResponseMetaQuery",
-        "required": [
-          "representation"
-        ],
-        "type": "object",
-        "properties": {
-          "representation": {
-            "title": "Representation",
-            "type": "string",
-            "description": "a string with the part of the URL that follows the base URL."
-          }
-        },
-        "description": "Information on the query that was requested."
       },
       "ValidationError": {
         "title": "ValidationError",

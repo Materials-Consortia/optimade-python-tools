@@ -13,7 +13,6 @@ from .models.structures import StructureResource
 from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
 from .models.toplevel import OptimadeResponseMeta, OptimadeResponseMetaQuery, OptimadeStructureResponseMany, OptimadeInfoResponse, OptimadeProvider
 
-
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath('config.ini'))
 USE_REAL_MONGO = config['DEFAULT'].getboolean('USE_REAL_MONGO')
