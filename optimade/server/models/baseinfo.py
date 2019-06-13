@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from pydantic import BaseModel, UrlStr
+from .jsonapi import Resource
 
 
 class BaseInfoAttributes(BaseModel):
@@ -11,7 +12,7 @@ class BaseInfoAttributes(BaseModel):
     available_endpoints: List[str] = ["structure", "all", "info"]
 
 
-class BaseInfoResource(BaseModel):
+class BaseInfoResource(Resource):
     id: str = "/"
     type: str = "info"
     attributes: BaseInfoAttributes

@@ -5,6 +5,7 @@ from pydantic import BaseModel, validator, UrlStr, Schema
 
 from optimade.server.models.jsonapi import Link, Links, Resource
 from optimade.server.models.structures import StructureResource
+from .baseinfo import BaseInfoResource
 from optimade.server.models.util import NonnegativeInt
 
 
@@ -146,3 +147,9 @@ class OptimadeStructureResponse1(OptimadeResponse1):
 
 class OptimadeStructureResponseMany(OptimadeResponseMany):
     data: List[StructureResource]
+
+
+class OptimadeInfoResponse(OptimadeResponse1):
+    links: Optional[Links]
+    meta: Optional[OptimadeResponseMeta]
+    data: BaseInfoResource
