@@ -1,24 +1,21 @@
-from optimade.server.models.jsonapi import(
-    Attributes,
-    Error as json_error,
-    Link,
-    Links,
-)
-
+"""
+Modified jsonapi for OptimadeAPI
+"""
+from optimade.server.models import jsonapi
 from datetime import datetime
 from pydantic import  UrlStr, BaseModel
 from typing import Optional, Union, Any
 
-class Attributes(Attributes):
+class Attributes(jsonapi.Attributes):
     local_id: UrlStr
     lad_modified: datetime
     immutable_id: Optional[UrlStr]
 
 class ErrorLinks(BaseModel):
-    about: Union[Link, UrlStr]
+    about: Union[jsonapi.Link, UrlStr]
 
-class Error(json_error):
+class Error(jsonapi.Error):
     links: Optional[ErrorLinks]
 
-class Links(Links):
-    base_rul: Optional[Union[Link, UrlStr]]
+class Links(jsonapi.Links):
+    base_rul: Optional[Union[jsonapi.Link, UrlStr]]
