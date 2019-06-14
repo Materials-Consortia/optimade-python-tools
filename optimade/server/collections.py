@@ -6,7 +6,7 @@ from typing import Collection, Tuple, List, Union
 import mongomock
 import pymongo.collection
 from fastapi import HTTPException
-from optimade.filterparser import Parser
+from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 
 from .models.util import NonnegativeInt
@@ -23,7 +23,7 @@ RESPONSE_LIMIT = config["DEFAULT"].getint("RESPONSE_LIMIT")
 class EntryCollection(Collection):
     def __init__(self, collection, resource_cls: Resource):
         self.collection = collection
-        self.parser = Parser()
+        self.parser = LarkParser()
         self.resource_cls = resource_cls
 
     def __len__(self):
