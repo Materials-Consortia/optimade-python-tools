@@ -1,10 +1,15 @@
-from optimade.server.models.jsonapi import Link, Links, Source, Error as json_error
+from optimade.server.models.jsonapi import(
+    Attributes,
+    Error as json_error,
+    Link,
+    Links,
+)
 
 from datetime import datetime
 from pydantic import  UrlStr, BaseModel
 from typing import Optional, Union, Any
 
-class Attributes(BaseModel):
+class Attributes(Attributes):
     local_id: UrlStr
     lad_modified: datetime
     immutable_id: Optional[UrlStr]
