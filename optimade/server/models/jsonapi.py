@@ -5,6 +5,7 @@ from typing import Optional, Set, Union, Dict, Any
 from pydantic import BaseModel, UrlStr, constr, Schema
 
 
+
 class Meta(Dict[str, Any]):
     """Non-standard meta-information that can not be represented as an attribute or relationship."""
 
@@ -17,6 +18,7 @@ class Link(BaseModel):
         ...,
         description="a meta object containing non-standard meta-information about the link.",
     )
+
 
 
 class Links(BaseModel):
@@ -34,12 +36,12 @@ class Links(BaseModel):
         description="a link that leads to further details about this particular occurrence of the problem.",
     )
 
-
 class JsonAPI(BaseModel):
     """An object describing the server's implementation"""
 
     version: str = Schema(..., description="Version of the json API used")
     meta: Optional[dict] = Schema(..., description="Non-standard meta information")
+
 
 
 class Pagination(BaseModel):
@@ -53,6 +55,7 @@ class Pagination(BaseModel):
     next: Optional[UrlStr] = Schema(..., description="The next page of data")
 
 
+
 class Source(BaseModel):
     """an object containing references to the source of the error"""
 
@@ -64,6 +67,7 @@ class Source(BaseModel):
         ...,
         description="a string indicating which URI query parameter caused the error.",
     )
+
 
 
 class Error(BaseModel):
@@ -101,6 +105,7 @@ class Error(BaseModel):
     )
 
 
+
 class Failure(BaseModel):
     """A failure object"""
 
@@ -115,6 +120,7 @@ class Failure(BaseModel):
     links: Optional[Links] = Schema(
         ..., description="Links associated with the failure"
     )
+
 
 
 class Info(BaseModel):
@@ -145,12 +151,12 @@ class Attributes(Dict[str, Any]):
         type
     """
 
-
 class RelationshipLinks(BaseModel):
     """A resource object **MAY** contain references to other resource objects (\"relationships\"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."""
 
     self: Optional[Link] = Schema(..., description="A link to itself")
     related: Optional[Link] = Schema(..., description="A related resource link")
+
 
 
 class Linkage(BaseModel):
@@ -161,6 +167,7 @@ class Linkage(BaseModel):
     meta: Optional[dict] = Schema(
         ..., description="The non-standard meta-information about the linkage"
     )
+
 
 
 class Relationship(BaseModel):
@@ -179,6 +186,7 @@ class Relationship(BaseModel):
     )
 
 
+
 # class Empty(None):
 #     """Describes an empty to-one relationship."""
 
@@ -195,15 +203,12 @@ rel_pat_prop = constr(regex=r"^(?!id$|type$)\\w[-\\w_]*$")
 
 
 class Relationships(Dict[str, Any]):
-    """
+  """
     Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.
     Keys MUST NOT be:
         type
         id
     """
-
-    # items : Optional[Dict[rel_pat_prop, Relationship]]
-
 
 class Resource(BaseModel):
     """\"Resource objects\" appear in a JSON:API document to represent resources."""
@@ -225,6 +230,7 @@ class Resource(BaseModel):
         ...,
         description="a relationships object describing relationships between the resource and other JSON:API resources.",
     )
+
 
 
 class Success(BaseModel):

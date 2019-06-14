@@ -7,8 +7,8 @@ from pydantic import EmailStr
 from .models.util import NonnegativeInt
 
 config = ConfigParser()
-config.read(Path(__file__).resolve().parent.joinpath('config.ini'))
-RESPONSE_LIMIT = config['DEFAULT'].getint('RESPONSE_LIMIT')
+config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
+RESPONSE_LIMIT = config["DEFAULT"].getint("RESPONSE_LIMIT")
 
 
 filter_description = """\
@@ -29,16 +29,16 @@ class EntryListingQueryParams:
     """
 
     def __init__(
-            self,
-            *,
-            filter: str = Query(None, description=filter_description),
-            response_format: str = "jsonapi",
-            email_address: EmailStr = None,
-            response_limit: NonnegativeInt = RESPONSE_LIMIT,
-            response_fields: str = None,
-            sort: str = None,
-            page_offset: NonnegativeInt = Query(0, alias="page[offset]"),
-            page_limit: NonnegativeInt = Query(RESPONSE_LIMIT, alias="page[limit]"),
+        self,
+        *,
+        filter: str = Query(None, description=filter_description),
+        response_format: str = "jsonapi",
+        email_address: EmailStr = None,
+        response_limit: NonnegativeInt = RESPONSE_LIMIT,
+        response_fields: str = None,
+        sort: str = None,
+        page_offset: NonnegativeInt = Query(0, alias="page[offset]"),
+        page_limit: NonnegativeInt = Query(RESPONSE_LIMIT, alias="page[limit]"),
     ):
         self.filter = filter
         self.response_format = response_format

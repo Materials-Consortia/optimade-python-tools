@@ -4,9 +4,8 @@ from .main import app
 
 client = TestClient(app)
 
-PREFIX = ''  # E.g. '', 'optimade/', 'optimade/v0.9', etc.
-
+PREFIX = ""  # E.g. '', 'optimade/', 'optimade/v0.9', etc.
 
 
 def test_info_endpoint():
-    response = client.get('/info')
+    response = client.get("/info")

@@ -23,6 +23,7 @@ class Attributes(jsonapi.Attributes):
     )
 
 
+
 class ErrorLinks(BaseModel):
     """Links with recast for Errors"""
 
@@ -32,12 +33,14 @@ class ErrorLinks(BaseModel):
     )
 
 
+
 class Error(jsonapi.Error):
     """Error where links uses ErrorLinks"""
 
     links: Optional[ErrorLinks] = Schema(
         ..., description="A links object containing about"
     )
+
 
 
 class Links(jsonapi.Links):
