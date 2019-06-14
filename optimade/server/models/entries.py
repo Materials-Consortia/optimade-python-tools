@@ -74,7 +74,7 @@ class EntryPropertyInfo(BaseModel):
 class EntryInfoAttributes(BaseModel):
 
     formats: List[str] = Schema(
-        ["json"], description="list of available output formats."
+        ["jsonapi"], description="list of available output formats."
     )
 
     description: str = Schema(..., description="description of the entry")

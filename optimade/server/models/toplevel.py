@@ -9,6 +9,7 @@ from .baseinfo import BaseInfoResource
 from optimade.server.models.util import NonnegativeInt
 from .modified_jsonapi import Error
 from .jsonapi import Success, Failure
+from .entries import EntryInfoResource
 
 
 class ResponseMetaQuery(BaseModel):
@@ -134,6 +135,11 @@ class StructureResponseMany(Success):
 class ErrorResponse(Failure):
     meta: Optional[ResponseMeta]
     errors: List[Error]
+
+
+class EntryInfoResponse(Success):
+    meta: Optional[ResponseMeta]
+    data: EntryInfoResource
 
 
 class InfoResponse(Success):
