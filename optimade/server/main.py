@@ -11,7 +11,8 @@ from starlette.requests import Request
 
 from .deps import EntryListingQueryParams
 from .collections import MongoCollection
-from .models.jsonapi import Link, Links
+from .models.jsonapi import Link
+from .models.modified_jsonapi import Links
 from .models.structures import StructureResource
 from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
 from .models.toplevel import OptimadeResponseMeta, OptimadeResponseMetaQuery, OptimadeStructureResponseMany, OptimadeInfoResponse, OptimadeProvider, OptimadeErrorResponse
