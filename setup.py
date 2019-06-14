@@ -22,7 +22,7 @@ setup(
         "mongogrant",
         "mongomock>=3.16",
         "fastapi[all]",
-        "Flask",
+        "flask",
     ],
     extras_require={
         "task_running": ["invoke", "twine"],

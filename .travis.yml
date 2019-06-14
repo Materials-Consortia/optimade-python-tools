@@ -12,23 +12,27 @@ install:
    - pip install -r requirements-optional.txt
    - docker pull quen2404/openapi-diff
 
-script:
-   - pytest
-   - openapi-spec-validator openapi.json
-     # update schema
-   - python -c "from optimade.server.main import app, update_schema; update_schema(app)"
-     # check whether generated schema matches the committed version
-   - .ci/openapi_diff.sh
+script: skip
+#   - pytest
+#   - openapi-spec-validator openapi.json
+#     # update schema
+#   - python -c "from optimade.server.main import app, update_schema; update_schema(app)"
+#     # check whether generated schema matches the committed version
+#   - .ci/openapi_diff.sh
 
 jobs:
   include:
     - stage: documentaition
-      branches:
-        only:
-          - master
+#      branches:
+#        only:
+#          - master
+
+      install:
+       - pip install -e .
 
       script:
         - optimade-api generate-doc -f openapi.json _build
+        - ls -ltra _build
         # - optimade-api generate-doc -u 'https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/openapi.json' _build
 
       deploy:
