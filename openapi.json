@@ -14,7 +14,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OptimadeStructureResponseMany"
+                  "title": "Response_Get_Structures",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/OptimadeStructureResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OptimadeErrorResponse"
+                    }
+                  ]
                 }
               }
             }
@@ -129,7 +137,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OptimadeInfoResponse"
+                  "title": "Response_Get_Info",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/OptimadeInfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OptimadeErrorResponse"
+                    }
+                  ]
                 }
               }
             }
@@ -239,6 +255,44 @@
   },
   "components": {
     "schemas": {
+      "ErrorLinks": {
+        "title": "ErrorLinks",
+        "required": [
+          "about"
+        ],
+        "type": "object",
+        "properties": {
+          "about": {
+            "title": "About",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "a link that leads to further details about this particular occurrence of the problem."
+          }
+        }
+      },
       "Link": {
         "title": "Link",
         "required": [
@@ -292,273 +346,6 @@
             ]
           }
         }
-      },
-      "BaseInfoAttributes": {
-        "title": "BaseInfoAttributes",
-        "required": [
-          "api_version",
-          "available_api_versions",
-          "entry_types_by_format"
-        ],
-        "type": "object",
-        "properties": {
-          "api_version": {
-            "title": "Api_Version",
-            "type": "string"
-          },
-          "available_api_versions": {
-            "title": "Available_Api_Versions",
-            "type": "object",
-            "additionalProperties": {
-              "minLength": 1,
-              "maxLength": 65536,
-              "type": "string",
-              "format": "uri"
-            }
-          },
-          "entry_types_by_format": {
-            "title": "Entry_Types_By_Format",
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "formats": {
-            "title": "Formats",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": [
-              "json"
-            ]
-          },
-          "available_endpoints": {
-            "title": "Available_Endpoints",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": [
-              "structure",
-              "all",
-              "info"
-            ]
-          }
-        }
-      },
-      "RelationshipLinks": {
-        "title": "RelationshipLinks",
-        "type": "object",
-        "properties": {
-          "self": {
-            "$ref": "#/components/schemas/Link"
-          },
-          "related": {
-            "$ref": "#/components/schemas/Link"
-          }
-        }
-      },
-      "Linkage": {
-        "title": "Linkage",
-        "required": [
-          "type",
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "title": "Type",
-            "type": "string"
-          },
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          }
-        }
-      },
-      "Relationship": {
-        "title": "Relationship",
-        "type": "object",
-        "properties": {
-          "links": {
-            "$ref": "#/components/schemas/RelationshipLinks"
-          },
-          "data": {
-            "title": "Data",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Linkage"
-              },
-              {
-                "type": "array",
-                "uniqueItems": true,
-                "items": {
-                  "$ref": "#/components/schemas/Linkage"
-                }
-              }
-            ]
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          }
-        }
-      },
-      "Relationships": {
-        "title": "Relationships",
-        "type": "object",
-        "properties": {
-          "items": {
-            "title": "Items",
-            "type": "object"
-          }
-        }
-      },
-      "BaseInfoResource": {
-        "title": "BaseInfoResource",
-        "required": [
-          "attributes"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "default": "/"
-          },
-          "type": {
-            "title": "Type",
-            "type": "string",
-            "default": "info"
-          },
-          "links": {
-            "$ref": "#/components/schemas/Links"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/BaseInfoAttributes"
-          },
-          "relationships": {
-            "$ref": "#/components/schemas/Relationships"
-          }
-        }
-      },
-      "OptimadeProvider": {
-        "title": "OptimadeProvider",
-        "required": [
-          "name",
-          "description",
-          "prefix"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "title": "Name",
-            "type": "string",
-            "description": "a short name for the database provider"
-          },
-          "description": {
-            "title": "Description",
-            "type": "string",
-            "description": "a longer description of the database provider"
-          },
-          "prefix": {
-            "title": "Prefix",
-            "type": "string",
-            "description": "database-provider-specific prefix as found in Appendix 1."
-          },
-          "homepage": {
-            "title": "Homepage",
-            "anyOf": [
-              {
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              {
-                "title": "Link",
-                "type": "object",
-                "properties": {
-                  "href": {
-                    "title": "Href",
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "meta": {
-                    "title": "Meta",
-                    "type": "object"
-                  }
-                },
-                "required": [
-                  "href"
-                ]
-              }
-            ],
-            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
-          },
-          "index_base_url": {
-            "title": "Index_Base_Url",
-            "anyOf": [
-              {
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              {
-                "title": "Link",
-                "type": "object",
-                "properties": {
-                  "href": {
-                    "title": "Href",
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "meta": {
-                    "title": "Meta",
-                    "type": "object"
-                  }
-                },
-                "required": [
-                  "href"
-                ]
-              }
-            ],
-            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object."
-          }
-        },
-        "description": "Stores information on the database provider of the\n   implementation."
-      },
-      "OptimadeResponseMetaQuery": {
-        "title": "OptimadeResponseMetaQuery",
-        "required": [
-          "representation"
-        ],
-        "type": "object",
-        "properties": {
-          "representation": {
-            "title": "Representation",
-            "type": "string",
-            "description": "a string with the part of the URL that follows the base URL."
-          }
-        },
-        "description": "Information on the query that was requested."
       },
       "OptimadeResponseMeta": {
         "title": "OptimadeResponseMeta",
@@ -718,24 +505,6 @@
         },
         "description": "A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)\nthat contains JSON API meta objects of non-standard\nmeta-information.\n\nOPTIONAL additional information global to the query that is not\nspecified in this document, MUST start with a\ndatabase-provider-specific prefix."
       },
-      "OptimadeInfoResponse": {
-        "title": "OptimadeInfoResponse",
-        "required": [
-          "data"
-        ],
-        "type": "object",
-        "properties": {
-          "links": {
-            "$ref": "#/components/schemas/Links"
-          },
-          "meta": {
-            "$ref": "#/components/schemas/OptimadeResponseMeta"
-          },
-          "data": {
-            "$ref": "#/components/schemas/BaseInfoResource"
-          }
-        }
-      },
       "StructureResourceAttributes": {
         "title": "StructureResourceAttributes",
         "required": [
@@ -775,6 +544,78 @@
           }
         }
       },
+      "RelationshipLinks": {
+        "title": "RelationshipLinks",
+        "type": "object",
+        "properties": {
+          "self": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "related": {
+            "$ref": "#/components/schemas/Link"
+          }
+        }
+      },
+      "Linkage": {
+        "title": "Linkage",
+        "required": [
+          "type",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Relationship": {
+        "title": "Relationship",
+        "type": "object",
+        "properties": {
+          "links": {
+            "$ref": "#/components/schemas/RelationshipLinks"
+          },
+          "data": {
+            "title": "Data",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Linkage"
+              },
+              {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "$ref": "#/components/schemas/Linkage"
+                }
+              }
+            ]
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "Relationships": {
+        "title": "Relationships",
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "object"
+          }
+        }
+      },
       "StructureResource": {
         "title": "StructureResource",
         "required": [
@@ -807,29 +648,449 @@
           }
         }
       },
-      "OptimadeStructureResponseMany": {
-        "title": "OptimadeStructureResponseMany",
+      "Attributes": {
+        "title": "Attributes",
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "object"
+          }
+        }
+      },
+      "Resource": {
+        "title": "Resource",
         "required": [
-          "links",
-          "meta",
-          "data"
+          "id",
+          "type"
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
           "links": {
             "$ref": "#/components/schemas/Links"
           },
           "meta": {
-            "$ref": "#/components/schemas/OptimadeResponseMeta"
+            "title": "Meta",
+            "type": "object"
           },
+          "attributes": {
+            "$ref": "#/components/schemas/Attributes"
+          },
+          "relationships": {
+            "$ref": "#/components/schemas/Relationships"
+          }
+        }
+      },
+      "Pagination": {
+        "title": "Pagination",
+        "type": "object",
+        "properties": {
+          "first": {
+            "title": "First",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "title": "Last",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "title": "Prev",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "title": "Next",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "JsonAPI": {
+        "title": "JsonAPI",
+        "required": [
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "version": {
+            "title": "Version",
+            "type": "string"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          }
+        }
+      },
+      "OptimadeStructureResponseMany": {
+        "title": "OptimadeStructureResponseMany",
+        "required": [
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
           "data": {
             "title": "Data",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/StructureResource"
             }
+          },
+          "included": {
+            "title": "Included",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/OptimadeResponseMeta"
+          },
+          "links": {
+            "title": "Links",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Links"
+              },
+              {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            ]
+          },
+          "jsonapi": {
+            "$ref": "#/components/schemas/JsonAPI"
           }
         }
+      },
+      "Source": {
+        "title": "Source",
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "title": "Pointer",
+            "type": "string"
+          },
+          "parmeter": {
+            "title": "Parmeter",
+            "type": "string"
+          }
+        }
+      },
+      "ErrorMsg": {
+        "title": "ErrorMsg",
+        "required": [
+          "links"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ErrorLinks"
+          }
+        }
+      },
+      "OptimadeErrorResponse": {
+        "title": "OptimadeErrorResponse",
+        "required": [
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "title": "Errors",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMsg"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/OptimadeResponseMeta"
+          },
+          "jsonapi": {
+            "$ref": "#/components/schemas/JsonAPI"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "BaseInfoAttributes": {
+        "title": "BaseInfoAttributes",
+        "required": [
+          "api_version",
+          "available_api_versions",
+          "entry_types_by_format"
+        ],
+        "type": "object",
+        "properties": {
+          "api_version": {
+            "title": "Api_Version",
+            "type": "string"
+          },
+          "available_api_versions": {
+            "title": "Available_Api_Versions",
+            "type": "object",
+            "additionalProperties": {
+              "minLength": 1,
+              "maxLength": 65536,
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "entry_types_by_format": {
+            "title": "Entry_Types_By_Format",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "formats": {
+            "title": "Formats",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "json"
+            ]
+          },
+          "available_endpoints": {
+            "title": "Available_Endpoints",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "structure",
+              "all",
+              "info"
+            ]
+          }
+        }
+      },
+      "BaseInfoResource": {
+        "title": "BaseInfoResource",
+        "required": [
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "default": "/"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "default": "info"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/BaseInfoAttributes"
+          },
+          "relationships": {
+            "$ref": "#/components/schemas/Relationships"
+          }
+        }
+      },
+      "OptimadeInfoResponse": {
+        "title": "OptimadeInfoResponse",
+        "required": [
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BaseInfoResource"
+          },
+          "included": {
+            "title": "Included",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/OptimadeResponseMeta"
+          },
+          "links": {
+            "title": "Links",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Links"
+              },
+              {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            ]
+          },
+          "jsonapi": {
+            "$ref": "#/components/schemas/JsonAPI"
+          }
+        }
+      },
+      "OptimadeProvider": {
+        "title": "OptimadeProvider",
+        "required": [
+          "name",
+          "description",
+          "prefix"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "description": "a short name for the database provider"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "a longer description of the database provider"
+          },
+          "prefix": {
+            "title": "Prefix",
+            "type": "string",
+            "description": "database-provider-specific prefix as found in Appendix 1."
+          },
+          "homepage": {
+            "title": "Homepage",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
+          },
+          "index_base_url": {
+            "title": "Index_Base_Url",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to the base URL for the `index` meta-database as specified in Appendix 1, either directly as a string, or as a link object."
+          }
+        },
+        "description": "Stores information on the database provider of the\n   implementation."
+      },
+      "OptimadeResponseMetaQuery": {
+        "title": "OptimadeResponseMetaQuery",
+        "required": [
+          "representation"
+        ],
+        "type": "object",
+        "properties": {
+          "representation": {
+            "title": "Representation",
+            "type": "string",
+            "description": "a string with the part of the URL that follows the base URL."
+          }
+        },
+        "description": "Information on the query that was requested."
       },
       "ValidationError": {
         "title": "ValidationError",
