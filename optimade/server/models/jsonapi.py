@@ -1,9 +1,11 @@
 """
 This module should reproduce https://jsonapi.org/schema
 """
-
 from typing import Optional, Set, Union, Dict, Any
 from pydantic import BaseModel, UrlStr, constr
+
+class Meta(Dict[str, Any]):
+    """Non-standard meta-information that can not be represented as an attribute or relationship."""
 
 class Link(BaseModel):
     href: UrlStr
@@ -11,7 +13,8 @@ class Link(BaseModel):
 
 class Links(BaseModel):
     next: Optional[Union[UrlStr,Link]]
-    base_url: Optional[Union[UrlStr,Link]]
+    self: Optional[Union[UrlStr,Link]]
+    about: Optional[Union[UrlStr, Link]]
 
 class JsonAPI(BaseModel):
     version: str
@@ -35,6 +38,7 @@ class Error(BaseModel):
     detail: Optional[str]
     source: Optional[Source]
     meta: Optional[dict]
+    links: Optional[Links]
 
 class Failure(BaseModel):
     errors: Set[Error]
@@ -64,6 +68,15 @@ class Relationship(BaseModel):
     links: Optional[RelationshipLinks]
     data: Optional[Union[Linkage, Set[Linkage]]]
     meta: Optional[dict]
+
+# class Empty(None):
+#     """Describes an empty to-one relationship."""
+
+class RelationshipToOne(Linkage):
+    """References to other resource objects in a to-one (\"relationship\"). Relationships can be specified by including a member in a resource's links object."""
+
+class RelationshipToMany(Set[Linkage]):
+    """An array of objects each containing \"type\" and \"id\" members for to-many relationships."""
 
 rel_pat_prop = constr(regex=r"^(?!id$|type$)\\w[-\\w_]*$")
 class Relationships(BaseModel):
