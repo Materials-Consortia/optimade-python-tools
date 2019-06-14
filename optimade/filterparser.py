@@ -8,8 +8,8 @@ parser = {}
 for name in glob(os.path.join(os.path.dirname(__file__), "grammar", "*.g")):
     with open(name) as f:
         ver = tuple(
-            int(n) for n in
-            re.findall(r"\d+", str(os.path.basename(name).split(".g")[0]))
+            int(n)
+            for n in re.findall(r"\d+", str(os.path.basename(name).split(".g")[0]))
         )
         parser[ver] = Lark(f.read())
 

@@ -38,5 +38,3 @@ class ParserTest(TestCase):
         self.assertIsNotNone(repr(self.parser))
         self.parser.parse(self.test_filters[0])
         self.assertIsNotNone(repr(self.parser))
-
-
