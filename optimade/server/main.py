@@ -4,6 +4,7 @@ import sys
 from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
+from typing import Union
 
 from fastapi import FastAPI, Depends
 from starlette.requests import Request
@@ -13,7 +14,7 @@ from .collections import MongoCollection
 from .models.jsonapi import Link, Links
 from .models.structures import StructureResource
 from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
-from .models.toplevel import OptimadeResponseMeta, OptimadeResponseMetaQuery, OptimadeStructureResponseMany, OptimadeInfoResponse, OptimadeProvider
+from .models.toplevel import OptimadeResponseMeta, OptimadeResponseMetaQuery, OptimadeStructureResponseMany, OptimadeInfoResponse, OptimadeProvider, OptimadeErrorResponse
 
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath('config.ini'))
@@ -71,7 +72,7 @@ def update_schema(app):
     with open('local_openapi.json', 'w') as f:
         json.dump(app.openapi(), f, indent=2)
 
-@app.get("/structures", response_model=OptimadeStructureResponseMany, response_model_skip_defaults=True, tags=['Structure'])
+@app.get("/structures", response_model=Union[OptimadeStructureResponseMany, OptimadeErrorResponse], response_model_skip_defaults=True, tags=['Structure'])
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
     results, more_data_available, data_available = structures.find(params)
     parse_result = urllib.parse.urlparse(str(request.url))
@@ -88,7 +89,7 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         meta=meta_values(str(request.url), len(results), more_data_available),
     )
 
-@app.get("/info", response_model=OptimadeInfoResponse, response_model_skip_defaults=True, tags=['Structure'])
+@app.get("/info", response_model=Union[OptimadeInfoResponse, OptimadeErrorResponse], response_model_skip_defaults=True, tags=['Structure'])
 def get_info(request: Request, params: EntryListingQueryParams = Depends()):
     return OptimadeInfoResponse(
         meta=meta_values(str(request.url), 1, more_data_available=False),
