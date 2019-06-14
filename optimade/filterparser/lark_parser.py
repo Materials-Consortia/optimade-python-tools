@@ -5,7 +5,7 @@ from glob import glob
 from lark import Lark, Tree
 
 parser = {}
-for name in glob(os.path.join(os.path.dirname(__file__), "grammar", "*.g")):
+for name in glob(os.path.join(os.path.dirname(__file__), "../grammar", "*.g")):
     with open(name) as f:
         ver = tuple(
             int(n)
@@ -18,7 +18,7 @@ class ParserError(Exception):
     pass
 
 
-class Parser:
+class LarkParser:
     def __init__(self, version=None):
         if version is None:
             self.version = sorted(parser.keys())[-1]

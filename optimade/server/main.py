@@ -45,7 +45,7 @@ else:
 client = MongoClient()
 structures = MongoCollection(client.optimade.structures, StructureResource)
 
-test_structures_path = Path(__file__).resolve().parent.joinpath("test_structures.json")
+test_structures_path = Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
 if not USE_REAL_MONGO and test_structures_path.exists():
     import json
     import bson.json_util

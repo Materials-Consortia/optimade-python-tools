@@ -4,14 +4,14 @@ import uuid
 
 from pymongo import MongoClient
 
-from optimade.filterparser import Parser
+from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 
 
 class TestTransformer(TestCase):
     @classmethod
     def setUpClass(cls):
-        parser = Parser()
+        parser = LarkParser()
         transformer = MongoTransformer()
 
         def convert(_, q):

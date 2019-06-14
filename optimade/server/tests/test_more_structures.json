@@ -1,0 +1,30 @@
+{
+  "id": "db/1234567",
+  "type": "structure",
+	"last_modified": {
+		"$date": "2019-06-08T05:13:37.331Z"
+	},
+  "_exmpl_band_gap": 1.23456,
+  "elements": ["Si", "Ge"],
+  "nelements": 3,
+  "dimension_types": [1, 1, 1],
+  "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
+
+
+
+
+  "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
+  "species_at_sites": ["Si", "Ge", "vac"],
+  "species": {
+    "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
+    "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
+    "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+  },
+  "assemblies": [
+    {
+      "sites_in_groups": [ [0], [1], [2] ],
+      "group_probabilities": [0.3, 0.5, 0.2]
+    }
+  ],
+  "structure_features": ["assemblies"]
+}
