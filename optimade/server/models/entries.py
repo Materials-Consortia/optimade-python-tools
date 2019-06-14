@@ -71,18 +71,45 @@ class EntryResource(Resource):
 
 
 class EntryPropertyInfo(BaseModel):
-    description: str
-    unit: Optional[str]
+
+    description: str = Schema(
+        ...
+        description="description of the entry"
+    )
+
+    unit: Optional[str] = Schema(
+        ...,
+        description="the physical unit of the entry"
+    )
 
 
 class EntryInfoAttributes(BaseModel):
-    description: str
-    properties: Dict[str, EntryPropertyInfo]
-    formats: List[str] = ["json"]
-    output_fields_by_format: Dict[str, List[str]]
+
+    formats: List[str] = Schema(
+        ["json"],
+        description="list of available output formats."
+    )
+
+    description: str = Schema(
+        ...,
+        description="description of the entry"
+    )
+
+    properties: Dict[str, EntryPropertyInfo] = Schema(
+        ...,
+        description="a dictionary describing queryable properties for this "
+                    "entry type, where each key is a property ID."
+    )
+
+    output_fields_by_format: Dict[str, List[str]] = Schema(
+        ...,
+        description="a dictionary of available output fields for this entry "
+                    "type, where the keys are the values of the `formats` list "
+                    "and the values are the keys of the `properties` dictionary."
+    )
 
 
 class EntryInfoResource(BaseModel):
-    id: str
+    id: str = "/"
     type: str = "info"
     attributes: EntryInfoAttributes
