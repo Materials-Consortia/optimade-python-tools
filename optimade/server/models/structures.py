@@ -61,9 +61,7 @@ class StructureMapper:
         ("chemical_formula", "pretty_formula"),
     )
 
-    list_fields = (
-        "elements",
-    )
+    list_fields = ("elements",)
 
     @classmethod
     def alias_for(cls, field):

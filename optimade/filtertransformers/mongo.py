@@ -9,14 +9,7 @@ class UnknownMongoDBQueryError(Exception):
     pass
 
 
-op_expr = {
-    "<": "$lt",
-    "<=": "$lte",
-    ">": "$gt",
-    ">=": "$gte",
-    "!=": "$ne",
-    "=": "$eq",
-}
+op_expr = {"<": "$lt", "<=": "$lte", ">": "$gt", ">=": "$gte", "!=": "$ne", "=": "$eq"}
 
 
 def conjoin_args(args):
@@ -30,7 +23,7 @@ def conjoin_args(args):
     """
     if len(args) == 1:
         return args[0]
-    conj = f'${args[1].value.lower()}'
+    conj = f"${args[1].value.lower()}"
     return {conj: [args[0], args[2]]}
 
 
@@ -38,6 +31,7 @@ class MongoTransformer(Transformer):
     """
      class for transforming Lark tree into MongoDB format
     """
+
     def start(self, args):
         return args[0]
 
@@ -77,7 +71,7 @@ class MongoTransformer(Transformer):
             val = float(val_tok.value)
         except ValueError:
             val = val_tok.value
-            if val.startswith("\"") and val.endswith("\""):
+            if val.startswith('"') and val.endswith('"'):
                 val = val[1:-1]
         return {field: {op: val}}
 
@@ -88,7 +82,7 @@ class MongoTransformer(Transformer):
                 val = float(val_tok.value)
             except ValueError:
                 val = val_tok.value
-                if val.startswith("\"") and val.endswith("\""):
+                if val.startswith('"') and val.endswith('"'):
                     val = val[1:-1]
             elements.append(val)
         return elements

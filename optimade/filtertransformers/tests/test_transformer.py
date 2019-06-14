@@ -4,14 +4,14 @@ import uuid
 
 from pymongo import MongoClient
 
-from optimade.filterparser import Parser
+from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 
 
 class TestTransformer(TestCase):
     @classmethod
     def setUpClass(cls):
-        parser = Parser()
+        parser = LarkParser()
         transformer = MongoTransformer()
 
         def convert(_, q):
@@ -20,11 +20,11 @@ class TestTransformer(TestCase):
 
         cls.convert = convert
         cls.client = MongoClient()
-        cls.db = cls.client[f'test_db_{uuid.uuid4()}']
+        cls.db = cls.client[f"test_db_{uuid.uuid4()}"]
         cls.coll = cls.db.data
-        cls.coll.insert_many([
-            {"a": a, "b": b} for a, b in itertools.product(range(10), range(10))
-        ])
+        cls.coll.insert_many(
+            [{"a": a, "b": b} for a, b in itertools.product(range(10), range(10))]
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -44,12 +44,18 @@ class TestTransformer(TestCase):
 
     def test_conjunctions(self):
         self.assertEqual(self.coll.count_documents(self.convert("a<5 and b=0")), 5)
-        self.assertEqual(self.coll.count_documents(self.convert("a<5")), 5*10)
-        docs = list(self.coll.find(self.convert("a<5 and b>=8"), {"_id": 0, "a": 1, "b": 1}))
+        self.assertEqual(self.coll.count_documents(self.convert("a<5")), 5 * 10)
+        docs = list(
+            self.coll.find(self.convert("a<5 and b>=8"), {"_id": 0, "a": 1, "b": 1})
+        )
         self.assertEqual(len(docs), 5 * 2)
         self.assertIn({"a": 4, "b": 9}, docs)
         # grammar evaluates conjunctions progressively rightwards.
-        docs = list(self.coll.find(self.convert("a >= 8 or a<5 and b>=8"), {"_id": 0, "a": 1, "b": 1}))
+        docs = list(
+            self.coll.find(
+                self.convert("a >= 8 or a<5 and b>=8"), {"_id": 0, "a": 1, "b": 1}
+            )
+        )
         self.assertEqual(len(docs), 7 * 2)
         self.assertIn({"a": 4, "b": 9}, docs)
         self.assertIn({"a": 8, "b": 9}, docs)
