@@ -51,6 +51,8 @@ open http://localhost:5000/docs
 open http://localhost:5000/openapi.json
 ```
 
+When contributing to the Python code, please use the [black](https://github.com/ambv/black) code formatter.
+
 ### Getting Started with Filter Parsing and Transforming
 
 Example use:
