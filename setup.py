@@ -22,7 +22,7 @@ setup(
         "mongogrant",
         "mongomock>=3.16",
         "fastapi[all]",
-        "black>=19",
+        "black",
     ],
     extras_require={"task_running": ["invoke", "twine"]},
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
