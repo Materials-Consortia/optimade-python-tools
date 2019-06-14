@@ -1,14 +1,17 @@
-services:
-  - mongodb
-  - docker
 language: python
 python:
   - "3.6"
+
+services:
+  - mongodb
+  - docker
+
 install:
    - pip install -e .
    - pip install -r requirements.txt
    - pip install -r requirements-optional.txt
    - docker pull quen2404/openapi-diff
+
 script:
    - pytest
    - openapi-spec-validator openapi.json
@@ -16,3 +19,23 @@ script:
    - python -c "from optimade.server.main import app, update_schema; update_schema(app)"
      # check whether generated schema matches the committed version
    - .ci/openapi_diff.sh
+
+jobs:
+  include:
+    - stage: documentaition
+      branches:
+        only:
+          - master
+
+      script:
+        - optimade-api generate-doc -f openapi.json _build
+        # - optimade-api generate-doc -u 'https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/openapi.json' _build
+
+      deploy:
+        provider: pages
+        local_dir: _build/
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep-history: true
+        on:
+          branch: master
