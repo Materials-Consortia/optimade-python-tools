@@ -22,6 +22,7 @@ setup(
         "mongogrant",
         "mongomock>=3.16",
         "fastapi[all]",
+        "Flask",
     ],
     extras_require={
         "task_running": ["invoke", "twine"],
@@ -42,4 +43,7 @@ setup(
     ],
     keywords='optimade jsonapi materials',
     python_requires='>=3.6',
+    entry_points={
+        'console_scripts': ['optimade-api=optimade.cli:main']
+    },
 )
