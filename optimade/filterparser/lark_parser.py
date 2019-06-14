@@ -18,7 +18,7 @@ class ParserError(Exception):
     pass
 
 
-class Parser:
+class LarkParser:
     def __init__(self, version=None):
         if version is None:
             self.version = sorted(parser.keys())[-1]

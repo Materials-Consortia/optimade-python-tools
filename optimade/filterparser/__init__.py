@@ -1,3 +1,3 @@
-__all__ = ['Parser', 'ParserError']
+__all__ = ['LarkParser', 'ParserError']
 
-from .filterparser import Parser, ParserError
+from .lark_parser import LarkParser, ParserError
