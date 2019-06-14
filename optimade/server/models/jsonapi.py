@@ -145,7 +145,6 @@ class Attributes(Dict[str, Any]):
         type
     """
 
-
 class RelationshipLinks(BaseModel):
     """A resource object **MAY** contain references to other resource objects (\"relationships\"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."""
 
@@ -160,7 +159,7 @@ class Linkage(BaseModel):
     id: str = Schema(..., description="The id of the linkage")
     meta: Optional[dict] = Schema(
         ..., description="The non-standard meta-information about the linkage"
-    )
+   )
 
 
 class Relationship(BaseModel):
@@ -193,8 +192,7 @@ class RelationshipToMany(Set[Linkage]):
 
 rel_pat_prop = constr(regex=r"^(?!id$|type$)\\w[-\\w_]*$")
 
-
-class Relationships(Dict[str, Any]):
+class Relationships(Dict[str, Relationship]):
     """
     Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.
     Keys MUST NOT be:
@@ -206,7 +204,7 @@ class Relationships(Dict[str, Any]):
 
 
 class Resource(BaseModel):
-    """\"Resource objects\" appear in a JSON:API document to represent resources."""
+    """Resource objects appear in a JSON:API document to represent resources."""
 
     id: str = Schema(..., description="Resource ID")
     type: str = Schema(..., description="Resource type")
@@ -225,7 +223,6 @@ class Resource(BaseModel):
         ...,
         description="a relationships object describing relationships between the resource and other JSON:API resources.",
     )
-
 
 class Success(BaseModel):
     """A Successful response"""

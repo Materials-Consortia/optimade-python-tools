@@ -10,7 +10,7 @@ from optimade.filterparser import Parser
 from optimade.filtertransformers.mongo import MongoTransformer
 
 from .models.util import NonnegativeInt
-from .models.jsonapi import Resource
+from .models.modified_jsonapi import Resource
 from .models.structures import StructureMapper
 from .deps import EntryListingQueryParams
 

@@ -3,7 +3,7 @@ from typing import Optional, Dict, List
 
 from pydantic import BaseModel
 
-from .jsonapi import Resource
+from .modified_jsonapi import Resource
 
 
 class EntryResourceAttributes(BaseModel):

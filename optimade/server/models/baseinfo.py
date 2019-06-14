@@ -1,7 +1,7 @@
 from typing import Dict, List
 
 from pydantic import BaseModel, UrlStr
-from .jsonapi import Resource
+from .modified_jsonapi import Resource
 
 
 class BaseInfoAttributes(BaseModel):
