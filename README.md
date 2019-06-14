@@ -127,6 +127,48 @@ print(query)
 {'$and': [{'_mp_bandgap': {'$gt': 5.0}}, {'_cod_molecular_weight': {'$lt': 350.0}}]}
 ```
 
+There is also a [basic JSON transformer](optimade/filtertransformers/json.py)
+(`optimade.filtertransformers.json.JSONTransformer`) you can use as a simple
+example for developing your own transformer.
+You can also use the JSON output it produces as an easy-to-parse input for a 
+"transformer" in your programming language of choice.
+
+```python
+class JSONTransformer(Transformer):
+    def __init__(self, compact=False):
+        self.compact = compact
+        super().__init__()
+
+    def __default__(self, data, children):
+        items = []
+        for c in children:
+            if isinstance(c, Token):
+                token_repr = {
+                    "@module": "lark.lexer",
+                    "@class": "Token",
+                    "type_": c.type,
+                    "value": c.value,
+                }
+                if self.compact:
+                    del token_repr["@module"]
+                    del token_repr["@class"]
+                items.append(token_repr)
+            elif isinstance(c, dict):
+                items.append(c)
+            else:
+                raise ValueError(f"Unknown type {type(c)} for tree child {c}")
+        tree_repr = {
+            "@module": "lark",
+            "@class": "Tree",
+            "data": data,
+            "children": items,
+        }
+        if self.compact:
+            del tree_repr["@module"]
+            del tree_repr["@class"]
+        return tree_repr
+```
+
 #### Developing New Filter Transformers
 If you would like to add a new transformer, please add
 1. a module (.py file) in the `optimade/filtertransformers` folder,
