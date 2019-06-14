@@ -127,9 +127,11 @@ print(query)
 {'$and': [{'_mp_bandgap': {'$gt': 5.0}}, {'_cod_molecular_weight': {'$lt': 350.0}}]}
 ```
 
-There is also a basic JSON transformer (`optimade.filtertransformers.json.JSONTransformer`) you can use as an
-intermediate format for you to write a "transformer" in your programming language of choice. You can also use it as
-a simple example for developing your own tranformer:
+There is also a [basic JSON transformer](optimade/filtertransformers/json.py)
+(`optimade.filtertransformers.json.JSONTransformer`) you can use as a simple
+example for developing your own transformer.
+You can also use the JSON output it produces as an easy-to-parse input for a 
+"transformer" in your programming language of choice.
 
 ```python
 class JSONTransformer(Transformer):
