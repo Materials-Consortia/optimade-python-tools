@@ -1,6 +1,4 @@
 import urllib
-import os
-import sys
 from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
@@ -15,7 +13,14 @@ from .models.jsonapi import Link
 from .models.modified_jsonapi import Links
 from .models.structures import StructureResource
 from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
-from .models.toplevel import OptimadeResponseMeta, OptimadeResponseMetaQuery, OptimadeStructureResponseMany, OptimadeInfoResponse, OptimadeProvider, OptimadeErrorResponse
+from .models.toplevel import (
+    ResponseMeta,
+    ResponseMetaQuery,
+    StructureResponseMany,
+    InfoResponse,
+    Provider,
+    ErrorResponse,
+)
 
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath('config.ini'))
@@ -53,14 +58,14 @@ if not USE_REAL_MONGO and test_structures_path.exists():
 def meta_values(url,data_returned, more_data_available=False):
     """Helper to initialize the meta values"""
     parse_result = urllib.parse.urlparse(url)
-    return OptimadeResponseMeta(
-        query=OptimadeResponseMetaQuery(
+    return ResponseMeta(
+        query=ResponseMetaQuery(
             representation=f'{parse_result.path}?{parse_result.query}'),
         api_version='v0.9',
         time_stamp=datetime.utcnow(),
         data_returned=data_returned,
         more_data_available=more_data_available,
-        provider=OptimadeProvider(
+        provider=Provider(
             name="test",
             description="A test database provider",
             prefix="tst",
@@ -73,7 +78,7 @@ def update_schema(app):
     with open('local_openapi.json', 'w') as f:
         json.dump(app.openapi(), f, indent=2)
 
-@app.get("/structures", response_model=Union[OptimadeStructureResponseMany, OptimadeErrorResponse], response_model_skip_defaults=True, tags=['Structure'])
+@app.get("/structures", response_model=Union[StructureResponseMany, ErrorResponse], response_model_skip_defaults=True, tags=['Structure'])
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
     results, more_data_available, data_available = structures.find(params)
     parse_result = urllib.parse.urlparse(str(request.url))
@@ -84,15 +89,15 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         links = Links(next=Link(href=f'{parse_result.scheme}://{parse_result.netloc}{parse_result.path}?{urlencoded}'))
     else:
         links = Links(next=None)
-    return OptimadeStructureResponseMany(
+    return StructureResponseMany(
         links=links,
         data=results,
         meta=meta_values(str(request.url), len(results), more_data_available),
     )
 
-@app.get("/info", response_model=Union[OptimadeInfoResponse, OptimadeErrorResponse], response_model_skip_defaults=True, tags=['Structure'])
+@app.get("/info", response_model=Union[InfoResponse, ErrorResponse], response_model_skip_defaults=True, tags=['Structure'])
 def get_info(request: Request, params: EntryListingQueryParams = Depends()):
-    return OptimadeInfoResponse(
+    return InfoResponse(
         meta=meta_values(str(request.url), 1, more_data_available=False),
         data=BaseInfoResource(attributes=BaseInfoAttributes(
                 api_version='v0.9',

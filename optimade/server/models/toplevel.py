@@ -3,8 +3,7 @@ from typing import Union, List, Optional
 
 from pydantic import BaseModel, validator, UrlStr, Schema
 
-from optimade.server.models.jsonapi import Link, Resource, RelationshipToMany
-from optimade.server.models.modified_jsonapi import Links, Attributes
+from optimade.server.models.jsonapi import Link
 from optimade.server.models.structures import StructureResource
 from .baseinfo import BaseInfoResource
 from optimade.server.models.util import NonnegativeInt
@@ -12,7 +11,7 @@ from .modified_jsonapi import Error
 from .jsonapi import Success, Failure
 
 
-class OptimadeResponseMetaQuery(BaseModel):
+class ResponseMetaQuery(BaseModel):
     """ Information on the query that was requested. """
     representation: str = Schema(
         ...,
@@ -26,7 +25,7 @@ class OptimadeResponseMetaQuery(BaseModel):
         return v
 
 
-class OptimadeProvider(BaseModel):
+class Provider(BaseModel):
     """ Stores information on the database provider of the
     implementation.
 
@@ -64,7 +63,7 @@ class OptimadeProvider(BaseModel):
     )
 
 
-class OptimadeResponseMeta(BaseModel):
+class ResponseMeta(BaseModel):
     """
     A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)
     that contains JSON API meta objects of non-standard
@@ -76,7 +75,7 @@ class OptimadeResponseMeta(BaseModel):
 
     """
 
-    query: OptimadeResponseMetaQuery = Schema(
+    query: ResponseMetaQuery = Schema(
         ...,
         description="information on the query that was requested"
     )
@@ -110,7 +109,7 @@ class OptimadeResponseMeta(BaseModel):
                     "if not."
     )
 
-    provider: OptimadeProvider = Schema(
+    provider: Provider = Schema(
         ...,
         description="information on the database provider of the implementation."
     )
@@ -131,21 +130,21 @@ class OptimadeResponseMeta(BaseModel):
         description="response string from the server"
     )
 
-class OptimadeStructureResponse1(Success):
-    meta: OptimadeResponseMeta = Schema(..., description="Optimade meta request reply, required")
+class StructureResponseOne(Success):
+    meta: ResponseMeta = Schema(..., description="Optimade meta request reply, required")
     data: StructureResource
 
 
-class OptimadeStructureResponseMany(Success):
-    meta: OptimadeResponseMeta
+class StructureResponseMany(Success):
+    meta: ResponseMeta
     data: List[StructureResource]
 
 
-class OptimadeErrorResponse(Failure):
-    meta: Optional[OptimadeResponseMeta]
+class ErrorResponse(Failure):
+    meta: Optional[ResponseMeta]
     errors: List[Error]
 
 
-class OptimadeInfoResponse(Success):
-    meta: Optional[OptimadeResponseMeta]
+class InfoResponse(Success):
+    meta: Optional[ResponseMeta]
     data: BaseInfoResource
