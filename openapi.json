@@ -17,10 +17,10 @@
                   "title": "Response_Get_Structures",
                   "anyOf": [
                     {
-                      "$ref": "#/components/schemas/OptimadeStructureResponseMany"
+                      "$ref": "#/components/schemas/StructureResponseMany"
                     },
                     {
-                      "$ref": "#/components/schemas/OptimadeErrorResponse"
+                      "$ref": "#/components/schemas/ErrorResponse"
                     }
                   ]
                 }
@@ -140,10 +140,10 @@
                   "title": "Response_Get_Info",
                   "anyOf": [
                     {
-                      "$ref": "#/components/schemas/OptimadeInfoResponse"
+                      "$ref": "#/components/schemas/InfoResponse"
                     },
                     {
-                      "$ref": "#/components/schemas/OptimadeErrorResponse"
+                      "$ref": "#/components/schemas/ErrorResponse"
                     }
                   ]
                 }
@@ -255,41 +255,79 @@
   },
   "components": {
     "schemas": {
-      "ErrorLinks": {
-        "title": "ErrorLinks",
+      "StructureResourceAttributes": {
+        "title": "StructureResourceAttributes",
         "required": [
-          "about"
+          "local_id",
+          "last_modified"
         ],
         "type": "object",
         "properties": {
-          "about": {
-            "title": "About",
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "title": "Link",
-                "type": "object",
-                "properties": {
-                  "href": {
-                    "title": "Href",
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "meta": {
-                    "title": "Meta",
-                    "type": "object"
-                  }
-                },
-                "required": [
-                  "href"
-                ]
-              }
-            ],
-            "description": "a link that leads to further details about this particular occurrence of the problem."
+          "local_id": {
+            "title": "Local_Id",
+            "type": "string",
+            "description": "the entry's local database ID (having no OPTiMaDe requirements/conventions)"
+          },
+          "last_modified": {
+            "title": "Last_Modified",
+            "type": "string",
+            "description": "an [ISO 8601](https://www.iso.org/standard/40874.html) representing the entry's last modification time.",
+            "format": "date-time"
+          },
+          "immutable_id": {
+            "title": "Immutable_Id",
+            "type": "string",
+            "description": "an optional field containing the entry's immutable ID (e.g. a UUID). This is important for databases having preferred IDs that point to 'the latest version' of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future."
+          },
+          "elements": {
+            "title": "Elements",
+            "type": "string"
+          },
+          "nelements": {
+            "title": "Nelements",
+            "type": "integer"
+          },
+          "chemical_formula": {
+            "title": "Chemical_Formula",
+            "type": "string"
+          },
+          "formula_prototype": {
+            "title": "Formula_Prototype",
+            "type": "string"
+          }
+        }
+      },
+      "Pagination": {
+        "title": "Pagination",
+        "type": "object",
+        "properties": {
+          "first": {
+            "title": "First",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "last": {
+            "title": "Last",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "prev": {
+            "title": "Prev",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "next": {
+            "title": "Next",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
           }
         }
       },
@@ -331,8 +369,22 @@
               }
             ]
           },
-          "base_url": {
-            "title": "Base_Url",
+          "self": {
+            "title": "Self",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "$ref": "#/components/schemas/Link"
+              }
+            ]
+          },
+          "about": {
+            "title": "About",
             "anyOf": [
               {
                 "minLength": 1,
@@ -347,8 +399,140 @@
           }
         }
       },
-      "OptimadeResponseMeta": {
-        "title": "OptimadeResponseMeta",
+      "BaseInfoAttributes": {
+        "title": "BaseInfoAttributes",
+        "required": [
+          "api_version",
+          "available_api_versions",
+          "entry_types_by_format"
+        ],
+        "type": "object",
+        "properties": {
+          "api_version": {
+            "title": "Api_Version",
+            "type": "string"
+          },
+          "available_api_versions": {
+            "title": "Available_Api_Versions",
+            "type": "object",
+            "additionalProperties": {
+              "minLength": 1,
+              "maxLength": 65536,
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "entry_types_by_format": {
+            "title": "Entry_Types_By_Format",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "formats": {
+            "title": "Formats",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "json"
+            ]
+          },
+          "available_endpoints": {
+            "title": "Available_Endpoints",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "structure",
+              "all",
+              "info"
+            ]
+          }
+        }
+      },
+      "BaseInfoResource": {
+        "title": "BaseInfoResource",
+        "required": [
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "default": "/"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "default": "info"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/BaseInfoAttributes"
+          },
+          "relationships": {
+            "title": "Relationships",
+            "type": "object"
+          }
+        }
+      },
+      "Attributes": {
+        "title": "Attributes",
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "object"
+          }
+        }
+      },
+      "Resource": {
+        "title": "Resource",
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/Attributes"
+          },
+          "relationships": {
+            "title": "Relationships",
+            "type": "object"
+          }
+        }
+      },
+      "ResponseMeta": {
+        "title": "ResponseMeta",
         "required": [
           "query",
           "api_version",
@@ -360,7 +544,7 @@
         "type": "object",
         "properties": {
           "query": {
-            "title": "OptimadeResponseMetaQuery",
+            "title": "ResponseMetaQuery",
             "required": [
               "representation"
             ],
@@ -397,7 +581,7 @@
             "description": "`false` if all data has been returned, and `true` if not."
           },
           "provider": {
-            "title": "OptimadeProvider",
+            "title": "Provider",
             "required": [
               "name",
               "description",
@@ -505,224 +689,6 @@
         },
         "description": "A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)\nthat contains JSON API meta objects of non-standard\nmeta-information.\n\nOPTIONAL additional information global to the query that is not\nspecified in this document, MUST start with a\ndatabase-provider-specific prefix."
       },
-      "StructureResourceAttributes": {
-        "title": "StructureResourceAttributes",
-        "required": [
-          "local_id",
-          "last_modified"
-        ],
-        "type": "object",
-        "properties": {
-          "local_id": {
-            "title": "Local_Id",
-            "type": "string"
-          },
-          "last_modified": {
-            "title": "Last_Modified",
-            "type": "string",
-            "format": "date-time"
-          },
-          "immutable_id": {
-            "title": "Immutable_Id",
-            "type": "string"
-          },
-          "elements": {
-            "title": "Elements",
-            "type": "string"
-          },
-          "nelements": {
-            "title": "Nelements",
-            "type": "integer"
-          },
-          "chemical_formula": {
-            "title": "Chemical_Formula",
-            "type": "string"
-          },
-          "formula_prototype": {
-            "title": "Formula_Prototype",
-            "type": "string"
-          }
-        }
-      },
-      "RelationshipLinks": {
-        "title": "RelationshipLinks",
-        "type": "object",
-        "properties": {
-          "self": {
-            "$ref": "#/components/schemas/Link"
-          },
-          "related": {
-            "$ref": "#/components/schemas/Link"
-          }
-        }
-      },
-      "Linkage": {
-        "title": "Linkage",
-        "required": [
-          "type",
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "title": "Type",
-            "type": "string"
-          },
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          }
-        }
-      },
-      "Relationship": {
-        "title": "Relationship",
-        "type": "object",
-        "properties": {
-          "links": {
-            "$ref": "#/components/schemas/RelationshipLinks"
-          },
-          "data": {
-            "title": "Data",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Linkage"
-              },
-              {
-                "type": "array",
-                "uniqueItems": true,
-                "items": {
-                  "$ref": "#/components/schemas/Linkage"
-                }
-              }
-            ]
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          }
-        }
-      },
-      "Relationships": {
-        "title": "Relationships",
-        "type": "object",
-        "properties": {
-          "items": {
-            "title": "Items",
-            "type": "object"
-          }
-        }
-      },
-      "StructureResource": {
-        "title": "StructureResource",
-        "required": [
-          "id",
-          "attributes"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "type": "string",
-            "default": "structure"
-          },
-          "links": {
-            "$ref": "#/components/schemas/Links"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/StructureResourceAttributes"
-          },
-          "relationships": {
-            "$ref": "#/components/schemas/Relationships"
-          }
-        }
-      },
-      "Attributes": {
-        "title": "Attributes",
-        "type": "object",
-        "properties": {
-          "items": {
-            "title": "Items",
-            "type": "object"
-          }
-        }
-      },
-      "Resource": {
-        "title": "Resource",
-        "required": [
-          "id",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "type": "string"
-          },
-          "links": {
-            "$ref": "#/components/schemas/Links"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Attributes"
-          },
-          "relationships": {
-            "$ref": "#/components/schemas/Relationships"
-          }
-        }
-      },
-      "Pagination": {
-        "title": "Pagination",
-        "type": "object",
-        "properties": {
-          "first": {
-            "title": "First",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "last": {
-            "title": "Last",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "prev": {
-            "title": "Prev",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "next": {
-            "title": "Next",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          }
-        }
-      },
       "JsonAPI": {
         "title": "JsonAPI",
         "required": [
@@ -740,8 +706,127 @@
           }
         }
       },
-      "OptimadeStructureResponseMany": {
-        "title": "OptimadeStructureResponseMany",
+      "InfoResponse": {
+        "title": "InfoResponse",
+        "required": [
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BaseInfoResource"
+          },
+          "included": {
+            "title": "Included",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          },
+          "links": {
+            "title": "Links",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Links"
+              },
+              {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            ]
+          },
+          "jsonapi": {
+            "$ref": "#/components/schemas/JsonAPI"
+          }
+        }
+      },
+      "StructureResource": {
+        "title": "StructureResource",
+        "required": [
+          "id",
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "a string which together with the type uniquely identifies the object and strictly follows the requirements as specified by `id`. This can be the local database ID."
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "default": "structure"
+          },
+          "links": {
+            "title": "Links",
+            "type": "object",
+            "properties": {
+              "next": {
+                "title": "Next",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                ]
+              },
+              "self": {
+                "title": "Self",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                ]
+              },
+              "about": {
+                "title": "About",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                ]
+              }
+            },
+            "description": "a JSON API links object"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "description": "a JSON API meta object that contains non-standard information about the object."
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/StructureResourceAttributes"
+          },
+          "relationships": {
+            "title": "Relationships",
+            "type": "object",
+            "description": "a dictionary containing references to other resource objects as defined by the JSON API relationships object."
+          }
+        }
+      },
+      "StructureResponseMany": {
+        "title": "StructureResponseMany",
         "required": [
           "data",
           "meta"
@@ -764,7 +849,7 @@
             }
           },
           "meta": {
-            "$ref": "#/components/schemas/OptimadeResponseMeta"
+            "$ref": "#/components/schemas/ResponseMeta"
           },
           "links": {
             "title": "Links",
@@ -782,212 +867,8 @@
           }
         }
       },
-      "Source": {
-        "title": "Source",
-        "type": "object",
-        "properties": {
-          "pointer": {
-            "title": "Pointer",
-            "type": "string"
-          },
-          "parmeter": {
-            "title": "Parmeter",
-            "type": "string"
-          }
-        }
-      },
-      "ErrorMsg": {
-        "title": "ErrorMsg",
-        "required": [
-          "links"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string"
-          },
-          "code": {
-            "title": "Code",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "type": "string"
-          },
-          "detail": {
-            "title": "Detail",
-            "type": "string"
-          },
-          "source": {
-            "$ref": "#/components/schemas/Source"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ErrorLinks"
-          }
-        }
-      },
-      "OptimadeErrorResponse": {
-        "title": "OptimadeErrorResponse",
-        "required": [
-          "errors"
-        ],
-        "type": "object",
-        "properties": {
-          "errors": {
-            "title": "Errors",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ErrorMsg"
-            }
-          },
-          "meta": {
-            "$ref": "#/components/schemas/OptimadeResponseMeta"
-          },
-          "jsonapi": {
-            "$ref": "#/components/schemas/JsonAPI"
-          },
-          "links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "BaseInfoAttributes": {
-        "title": "BaseInfoAttributes",
-        "required": [
-          "api_version",
-          "available_api_versions",
-          "entry_types_by_format"
-        ],
-        "type": "object",
-        "properties": {
-          "api_version": {
-            "title": "Api_Version",
-            "type": "string"
-          },
-          "available_api_versions": {
-            "title": "Available_Api_Versions",
-            "type": "object",
-            "additionalProperties": {
-              "minLength": 1,
-              "maxLength": 65536,
-              "type": "string",
-              "format": "uri"
-            }
-          },
-          "entry_types_by_format": {
-            "title": "Entry_Types_By_Format",
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "formats": {
-            "title": "Formats",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": [
-              "json"
-            ]
-          },
-          "available_endpoints": {
-            "title": "Available_Endpoints",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": [
-              "structure",
-              "all",
-              "info"
-            ]
-          }
-        }
-      },
-      "BaseInfoResource": {
-        "title": "BaseInfoResource",
-        "required": [
-          "attributes"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "default": "/"
-          },
-          "type": {
-            "title": "Type",
-            "type": "string",
-            "default": "info"
-          },
-          "links": {
-            "$ref": "#/components/schemas/Links"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/BaseInfoAttributes"
-          },
-          "relationships": {
-            "$ref": "#/components/schemas/Relationships"
-          }
-        }
-      },
-      "OptimadeInfoResponse": {
-        "title": "OptimadeInfoResponse",
-        "required": [
-          "data"
-        ],
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/BaseInfoResource"
-          },
-          "included": {
-            "title": "Included",
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Resource"
-            }
-          },
-          "meta": {
-            "$ref": "#/components/schemas/OptimadeResponseMeta"
-          },
-          "links": {
-            "title": "Links",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Links"
-              },
-              {
-                "$ref": "#/components/schemas/Pagination"
-              }
-            ]
-          },
-          "jsonapi": {
-            "$ref": "#/components/schemas/JsonAPI"
-          }
-        }
-      },
-      "OptimadeProvider": {
-        "title": "OptimadeProvider",
+      "Provider": {
+        "title": "Provider",
         "required": [
           "name",
           "description",
@@ -1077,8 +958,8 @@
         },
         "description": "Stores information on the database provider of the\n   implementation."
       },
-      "OptimadeResponseMetaQuery": {
-        "title": "OptimadeResponseMetaQuery",
+      "ResponseMetaQuery": {
+        "title": "ResponseMetaQuery",
         "required": [
           "representation"
         ],
@@ -1091,6 +972,104 @@
           }
         },
         "description": "Information on the query that was requested."
+      },
+      "ErrorLinks": {
+        "title": "ErrorLinks",
+        "required": [
+          "about"
+        ],
+        "type": "object",
+        "properties": {
+          "about": {
+            "title": "About",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Link"
+              },
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              }
+            ]
+          }
+        }
+      },
+      "Source": {
+        "title": "Source",
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "title": "Pointer",
+            "type": "string"
+          },
+          "parmeter": {
+            "title": "Parmeter",
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "title": "Error",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object"
+          },
+          "links": {
+            "$ref": "#/components/schemas/ErrorLinks"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "required": [
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "title": "Errors",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          },
+          "jsonapi": {
+            "$ref": "#/components/schemas/JsonAPI"
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
       },
       "ValidationError": {
         "title": "ValidationError",
