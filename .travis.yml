@@ -23,17 +23,11 @@ script: skip
 jobs:
   include:
     - stage: documentaition
-#      branches:
-#        only:
-#          - master
-
-      install:
-       - pip install -e .
 
       script:
         - optimade-api generate-doc -f openapi.json _build
-        - ls -ltra _build
         # - optimade-api generate-doc -u 'https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/openapi.json' _build
+        - ls -ltra _build
 
       deploy:
         provider: pages

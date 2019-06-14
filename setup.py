@@ -21,7 +21,7 @@ setup(
         "lark-parser>=0.5.6",
         "mongogrant",
         "mongomock>=3.16",
-        # "fastapi[all]",
+        "fastapi[all]",
         "flask",
     ],
     extras_require={
