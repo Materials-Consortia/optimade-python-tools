@@ -5,7 +5,7 @@ from glob import glob
 from lark import Lark, Tree
 
 parser = {}
-for name in glob(os.path.join(os.path.dirname(__file__), "grammar", "*.g")):
+for name in glob(os.path.join(os.path.dirname(__file__), "../grammar", "*.g")):
     with open(name) as f:
         ver = tuple(
             int(n)
