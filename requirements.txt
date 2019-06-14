@@ -5,3 +5,4 @@ lark-parser==0.5.6
 mongogrant==0.2.2
 mongomock==3.16.0
 pymongo==3.8.0
+flask==1.0.3

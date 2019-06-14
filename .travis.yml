@@ -16,3 +16,21 @@ script:
    - python -c "from optimade.server.main import app, update_schema; update_schema(app)"
      # check whether generated schema matches the committed version
    - .ci/openapi_diff.sh
+
+jobs:
+  include:
+    - stage: documentaition
+
+      script:
+        - optimade-api generate-doc -f openapi.json _build
+        # - optimade-api generate-doc -u 'https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/openapi.json' _build
+        - ls -ltra _build
+
+      deploy:
+        provider: pages
+        local_dir: _build/
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep-history: true
+        on:
+          branch: master

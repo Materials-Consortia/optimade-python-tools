@@ -23,6 +23,7 @@ setup(
         "mongomock>=3.16",
         "fastapi[all]",
         "black",
+        "flask",
     ],
     extras_require={"task_running": ["invoke", "twine"]},
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
@@ -37,4 +38,14 @@ setup(
     ],
     keywords="optimade jsonapi materials",
     python_requires=">=3.6",
+    package_data={'optimade': [
+        'doc/swagger_ui/templates/*.html',
+        'doc/swagger_ui/swagger/*.js',
+        'doc/swagger_ui/swagger/*.css',
+        'doc/swagger_ui/swagger/*.png'
+    ],
+    },
+    entry_points={
+        'console_scripts': ['optimade-api=optimade.cli:main']
+    },
 )
