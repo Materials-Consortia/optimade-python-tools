@@ -16,8 +16,8 @@ from .deps import EntryListingQueryParams
 
 
 config = ConfigParser()
-config.read(Path(__file__).resolve().parent.joinpath('config.ini'))
-RESPONSE_LIMIT = config['DEFAULT'].getint('RESPONSE_LIMIT')
+config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
+RESPONSE_LIMIT = config["DEFAULT"].getint("RESPONSE_LIMIT")
 
 
 class EntryCollection(Collection):
@@ -36,7 +36,9 @@ class EntryCollection(Collection):
         return self.collection.count(entry) > 0
 
     @abstractmethod
-    def find(self, params: EntryListingQueryParams) -> Tuple[List[Resource], bool, NonnegativeInt]:
+    def find(
+        self, params: EntryListingQueryParams
+    ) -> Tuple[List[Resource], bool, NonnegativeInt]:
         """
         Fetches results and indicates if more data is available.
 
@@ -56,11 +58,12 @@ class EntryCollection(Collection):
 
 
 class MongoCollection(EntryCollection):
-
     def __init__(
-            self,
-            collection: Union[pymongo.collection.Collection, mongomock.collection.Collection],
-            resource_cls: Resource
+        self,
+        collection: Union[
+            pymongo.collection.Collection, mongomock.collection.Collection
+        ],
+        resource_cls: Resource,
     ):
         super().__init__(collection, resource_cls)
         self.transformer = MongoTransformer()
@@ -77,10 +80,12 @@ class MongoCollection(EntryCollection):
                 del kwargs[k]
         return self.collection.count_documents(**kwargs)
 
-    def find(self, params: EntryListingQueryParams) -> Tuple[List[Resource], bool, NonnegativeInt]:
+    def find(
+        self, params: EntryListingQueryParams
+    ) -> Tuple[List[Resource], bool, NonnegativeInt]:
         criteria = self._parse_params(params)
         criteria_nolimit = criteria.copy()
-        del criteria_nolimit['limit']
+        del criteria_nolimit["limit"]
         nresults_now = self.count(**criteria)
         nresults_total = self.count(**criteria_nolimit)
         more_data_available = nresults_now < nresults_total
@@ -95,12 +100,14 @@ class MongoCollection(EntryCollection):
 
         if params.filter:
             tree = self.parser.parse(params.filter)
-            cursor_kwargs['filter'] = self.transformer.transform(tree)
+            cursor_kwargs["filter"] = self.transformer.transform(tree)
         else:
-            cursor_kwargs['filter'] = {}
+            cursor_kwargs["filter"] = {}
 
-        if params.response_format and params.response_format != 'jsonapi':
-            raise HTTPException(status_code=400, detail="Only 'jsonapi' response_format supported")
+        if params.response_format and params.response_format != "jsonapi":
+            raise HTTPException(
+                status_code=400, detail="Only 'jsonapi' response_format supported"
+            )
 
         limit = RESPONSE_LIMIT
         if params.response_limit != RESPONSE_LIMIT:
@@ -108,29 +115,31 @@ class MongoCollection(EntryCollection):
         elif params.page_limit != RESPONSE_LIMIT:
             limit = params.page_limit
         if limit > RESPONSE_LIMIT:
-            raise HTTPException(status_code=400, detail=f"Max response_limit/page[limit] is {RESPONSE_LIMIT}")
+            raise HTTPException(
+                status_code=400,
+                detail=f"Max response_limit/page[limit] is {RESPONSE_LIMIT}",
+            )
         elif limit == 0:
             limit = RESPONSE_LIMIT
-        cursor_kwargs['limit'] = limit
+        cursor_kwargs["limit"] = limit
 
         fields = {"id", "local_id", "last_modified"}
         if params.response_fields:
             fields |= set(params.response_fields.split(","))
-        cursor_kwargs['projection'] = [StructureMapper.alias_for(f) for f in fields]
+        cursor_kwargs["projection"] = [StructureMapper.alias_for(f) for f in fields]
 
         if params.sort:
             sort_spec = []
-            for elt in params.sort.split(','):
+            for elt in params.sort.split(","):
                 field = elt
                 sort_dir = 1
-                if elt.startswith('-'):
+                if elt.startswith("-"):
                     field = field[1:]
                     sort_dir = -1
                 sort_spec.append((field, sort_dir))
-            cursor_kwargs['sort'] = sort_spec
+            cursor_kwargs["sort"] = sort_spec
 
         if params.page_offset:
-            cursor_kwargs['skip'] = params.page_offset
+            cursor_kwargs["skip"] = params.page_offset
 
         return cursor_kwargs
-
