@@ -100,8 +100,8 @@ class RelationshipToMany(Set[Linkage]):
 rel_pat_prop = constr(regex=r"^(?!id$|type$)\\w[-\\w_]*$")
 
 
-class Relationships(BaseModel):
-    items: Optional[Dict[rel_pat_prop, Relationship]]
+class Relationships(Dict[str, Any]):
+    """ items: Optional[Dict[rel_pat_prop, Relationship]] """
 
 
 class Resource(BaseModel):
