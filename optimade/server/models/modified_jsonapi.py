@@ -1,4 +1,4 @@
-from optimade.server.models.jsonapi import Link, Links, Source
+from optimade.server.models.jsonapi import Link, Links, Source, Error as json_error
 
 from datetime import datetime
 from pydantic import  UrlStr, BaseModel
@@ -12,14 +12,7 @@ class Attributes(BaseModel):
 class ErrorLinks(BaseModel):
     about: Union[Link, UrlStr]
 
-class Error(BaseModel):
-    id: Optional[str]
-    status: Optional[str]
-    code: Optional[str]
-    title: Optional[str]
-    detail: Optional[str]
-    source: Optional[Source]
-    meta: Optional[dict]
+class Error(json_error):
     links: Optional[ErrorLinks]
 
 class Links(Links):
