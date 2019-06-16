@@ -47,7 +47,9 @@ else:
 client = MongoClient()
 structures = MongoCollection(client.optimade.structures, StructureResource)
 
-test_structures_path = Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
+test_structures_path = (
+    Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
+)
 if not USE_REAL_MONGO and test_structures_path.exists():
     import json
     import bson.json_util
@@ -135,22 +137,37 @@ def get_info(request: Request):
     )
 
 
-@app.get("/structures/info", response_model=Union[EntryInfoResponse, ErrorResponse], response_model_skip_defaults=True, tags=["Structure","Info"])
+@app.get(
+    "/structures/info",
+    response_model=Union[EntryInfoResponse, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Structure", "Info"],
+)
 def get_structures_info(request: Request):
     return EntryInfoResponse(
         meta=meta_values(str(request.url), 1, more_data_available=False),
         data=EntryInfoResource(
-        id="",
-        type="structures/info",
-        attributes=EntryInfoAttributes(
-            description="attributes that can be queried",
-            properties={
-                "exmpl_p": EntryPropertyInfo(
-                    description="a sample custom property")
-            },
-            output_fields_by_format={
-                'jsonapi': ['id', 'type', 'elements', 'nelements', 'chemical_formula', 'formula_prototype', 'exmpl_p']
-            })))
+            id="",
+            type="structures/info",
+            attributes=EntryInfoAttributes(
+                description="attributes that can be queried",
+                properties={
+                    "exmpl_p": EntryPropertyInfo(description="a sample custom property")
+                },
+                output_fields_by_format={
+                    "jsonapi": [
+                        "id",
+                        "type",
+                        "elements",
+                        "nelements",
+                        "chemical_formula",
+                        "formula_prototype",
+                        "exmpl_p",
+                    ]
+                },
+            ),
+        ),
+    )
 
 
 @app.on_event("startup")
