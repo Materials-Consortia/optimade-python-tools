@@ -3,8 +3,8 @@ from typing import Optional, Dict, List
 
 from pydantic import BaseModel, Schema
 
-from .jsonapi import Links, Resource, Relationships, Meta
-
+from .modified_jsonapi import Resource
+from .jsonapi import Links, Relationships, Meta
 
 class EntryResourceAttributes(BaseModel):
     """ Contains key-value pairs representing the entry's properties. """
