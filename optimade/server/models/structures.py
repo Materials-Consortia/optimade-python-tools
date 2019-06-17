@@ -154,11 +154,13 @@ the elements in this list each refer to the direction of the corresponding entry
 def list_length_validator(v: Any) -> List[Any]:
     if isinstance(v, list):
         return v
-    elif sequence_like(v):
-        return list(v)
-    else:
-        raise errors.ListError()
+    try:
+        if iter(v):
+            return list(v)
+    except TypeError:
+        pass
 
+    raise errors.ListError()
 
 
 class StructureResource(EntryResource):
