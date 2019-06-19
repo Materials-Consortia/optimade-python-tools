@@ -1,4 +1,5 @@
 from optimade.server.models.entries import EntryResourceAttributes, EntryResource
+from optimade.server.models.util import ConstrainedList, conlist
 from pydantic import Schema, constr, errors
 from typing import List, Optional, Any
 
@@ -128,8 +129,8 @@ then, in order left to right, replaced by anonymous symbols
     )
 
     # FIXME: re-enable this when we have length constraint working
-    # dimension_types: List[int, constr(max_length=3, min_length=3)] = Schema(
-    dimension_types: List[int] = Schema(
+    dimension_types: ConstrainedList[int, conlis:(len_eq=3)] = Schema(
+        # dimension_types: List[int] = Schema(
         ...,
         description="""List of three integers. For each of the three directions
 indicated by the three lattice vectors (see property `lattice_vectors`). This list
@@ -149,18 +150,6 @@ the elements in this list each refer to the direction of the corresponding entry
 
 """,
     )
-
-
-def list_length_validator(v: Any) -> List[Any]:
-    if isinstance(v, list):
-        return v
-    try:
-        if iter(v):
-            return list(v)
-    except TypeError:
-        pass
-
-    raise errors.ListError()
 
 
 class StructureResource(EntryResource):
