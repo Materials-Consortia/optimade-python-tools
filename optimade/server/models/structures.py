@@ -129,7 +129,7 @@ then, in order left to right, replaced by anonymous symbols
     )
 
     # FIXME: re-enable this when we have length constraint working
-    dimension_types: ConstrainedList[int, conlis:(len_eq=3)] = Schema(
+    dimension_types: conlist(len_eq=3) = Schema(
         # dimension_types: List[int] = Schema(
         ...,
         description="""List of three integers. For each of the three directions
