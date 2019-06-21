@@ -1,6 +1,6 @@
 # Extra packages required to install and use the tools
 black==19.3b0
-fastapi[all]==0.28.0
+fastapi[all]==0.30.0
 lark-parser==0.5.6
 mongogrant==0.2.2
 mongomock==3.16.0
