@@ -2,16 +2,17 @@ import urllib
 from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
-from typing import Union
+from typing import Union, Dict
 
 from fastapi import FastAPI, Depends
 from starlette.requests import Request
 
-from .deps import EntryListingQueryParams
+from .deps import EntryListingQueryParams, EntryInfoQueryParams
 from .collections import MongoCollection
 from .models.jsonapi import Link
 from .models.modified_jsonapi import Links
 from .models.structures import StructureResource
+from .models.entries import EntryInfoAttributes, EntryPropertyInfo, EntryInfoResource
 from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
 from .models.toplevel import (
     ResponseMeta,
@@ -20,6 +21,7 @@ from .models.toplevel import (
     InfoResponse,
     Provider,
     ErrorResponse,
+    EntryInfoResponse,
 )
 
 config = ConfigParser()
@@ -45,7 +47,9 @@ else:
 client = MongoClient()
 structures = MongoCollection(client.optimade.structures, StructureResource)
 
-test_structures_path = Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
+test_structures_path = (
+    Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
+)
 if not USE_REAL_MONGO and test_structures_path.exists():
     import json
     import bson.json_util
@@ -74,7 +78,7 @@ def meta_values(url, data_returned, more_data_available=False):
         provider=Provider(
             name="test",
             description="A test database provider",
-            prefix="tst",
+            prefix="exmpl",
             homepage=None,
             index_base_url=None,
         ),
@@ -118,17 +122,50 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
     "/info",
     response_model=Union[InfoResponse, ErrorResponse],
     response_model_skip_defaults=True,
-    tags=["Structure"],
+    tags=["Info"],
 )
-def get_info(request: Request, params: EntryListingQueryParams = Depends()):
+def get_info(request: Request):
     return InfoResponse(
         meta=meta_values(str(request.url), 1, more_data_available=False),
         data=BaseInfoResource(
             attributes=BaseInfoAttributes(
                 api_version="v0.9",
                 available_api_versions={"v0.9": "http://localhost:5000/"},
-                entry_types_by_format={"json": ["structures"]},
+                entry_types_by_format={"jsonapi": ["structures"]},
             )
+        ),
+    )
+
+
+@app.get(
+    "/structures/info",
+    response_model=Union[EntryInfoResponse, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Structure", "Info"],
+)
+def get_structures_info(request: Request):
+    return EntryInfoResponse(
+        meta=meta_values(str(request.url), 1, more_data_available=False),
+        data=EntryInfoResource(
+            id="",
+            type="structures/info",
+            attributes=EntryInfoAttributes(
+                description="attributes that can be queried",
+                properties={
+                    "exmpl_p": EntryPropertyInfo(description="a sample custom property")
+                },
+                output_fields_by_format={
+                    "jsonapi": [
+                        "id",
+                        "type",
+                        "elements",
+                        "nelements",
+                        "chemical_formula",
+                        "formula_prototype",
+                        "exmpl_p",
+                    ]
+                },
+            ),
         ),
     )
 

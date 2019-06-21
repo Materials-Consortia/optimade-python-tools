@@ -149,255 +149,92 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
+          }
+        },
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_info_get"
+      }
+    },
+    "/structures/info": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "title": "Response_Get_Structures_Info",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/EntryInfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
                 }
               }
             }
           }
         },
         "tags": [
-          "Structure"
+          "Structure",
+          "Info"
         ],
-        "summary": "Get Info",
-        "operationId": "get_info_info_get",
-        "parameters": [
-          {
-            "description": "See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter\nquery syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-            "required": false,
-            "schema": {
-              "title": "Filter",
-              "type": "string",
-              "description": "See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter\nquery syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
-            },
-            "name": "filter",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "jsonapi"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email"
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Limit",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "response_limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string"
-            },
-            "name": "response_fields",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Sort",
-              "type": "string"
-            },
-            "name": "sort",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page[Offset]",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page[offset]",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page[Limit]",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "page[limit]",
-            "in": "query"
-          }
-        ]
+        "summary": "Get Structures Info",
+        "operationId": "get_structures_info_structures_info_get"
       }
     }
   },
   "components": {
     "schemas": {
-      "StructureResourceAttributes": {
-        "title": "StructureResourceAttributes",
+      "ResourceLinks": {
+        "title": "ResourceLinks",
         "required": [
-          "local_id",
-          "last_modified"
+          "self"
         ],
         "type": "object",
         "properties": {
-          "local_id": {
-            "title": "Local_Id",
-            "type": "string",
-            "description": "the entry's local database ID (having no OPTiMaDe requirements/conventions)"
-          },
-          "last_modified": {
-            "title": "Last_Modified",
-            "type": "string",
-            "description": "an [ISO 8601](https://www.iso.org/standard/40874.html) representing the entry's last modification time.",
-            "format": "date-time"
-          },
-          "immutable_id": {
-            "title": "Immutable_Id",
-            "type": "string",
-            "description": "an optional field containing the entry's immutable ID (e.g. a UUID). This is important for databases having preferred IDs that point to 'the latest version' of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future."
-          },
-          "elements": {
-            "title": "Elements",
-            "type": "string"
-          },
-          "nelements": {
-            "title": "Nelements",
-            "type": "integer"
-          },
-          "chemical_formula": {
-            "title": "Chemical_Formula",
-            "type": "string"
-          },
-          "formula_prototype": {
-            "title": "Formula_Prototype",
-            "type": "string"
-          }
-        }
-      },
-      "Pagination": {
-        "title": "Pagination",
-        "type": "object",
-        "properties": {
-          "first": {
-            "title": "First",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "last": {
-            "title": "Last",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "prev": {
-            "title": "Prev",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "next": {
-            "title": "Next",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          }
-        }
-      },
-      "Link": {
-        "title": "Link",
-        "required": [
-          "href"
-        ],
-        "type": "object",
-        "properties": {
-          "href": {
-            "title": "Href",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "format": "uri"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          }
-        }
-      },
-      "Links": {
-        "title": "Links",
-        "type": "object",
-        "properties": {
-          "next": {
-            "title": "Next",
-            "anyOf": [
-              {
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              }
-            ]
-          },
           "self": {
             "title": "Self",
             "anyOf": [
               {
+                "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "description": "a meta object containing non-standard meta-information about the link.",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              },
+              {
                 "minLength": 1,
                 "maxLength": 65536,
                 "type": "string",
                 "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
               }
-            ]
-          },
-          "about": {
-            "title": "About",
-            "anyOf": [
-              {
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              }
-            ]
+            ],
+            "description": "a link that refers to this resource."
           }
-        }
+        },
+        "description": "Links with recast for Errors"
       },
       "BaseInfoAttributes": {
         "title": "BaseInfoAttributes",
@@ -439,7 +276,7 @@
               "type": "string"
             },
             "default": [
-              "json"
+              "jsonapi"
             ]
           },
           "available_endpoints": {
@@ -474,28 +311,62 @@
             "default": "info"
           },
           "links": {
-            "$ref": "#/components/schemas/Links"
+            "title": "ResourceLinks",
+            "required": [
+              "self"
+            ],
+            "type": "object",
+            "properties": {
+              "self": {
+                "title": "Self",
+                "description": "a link that refers to this resource.",
+                "anyOf": [
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  },
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  }
+                ]
+              }
+            },
+            "description": "Links with recast for Errors"
           },
           "meta": {
             "title": "Meta",
-            "type": "object"
+            "type": "object",
+            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
             "$ref": "#/components/schemas/BaseInfoAttributes"
           },
           "relationships": {
             "title": "Relationships",
-            "type": "object"
-          }
-        }
-      },
-      "Attributes": {
-        "title": "Attributes",
-        "type": "object",
-        "properties": {
-          "items": {
-            "title": "Items",
-            "type": "object"
+            "type": "object",
+            "description": "a relationships object describing relationships between the resource and other JSON:API resources."
           }
         }
       },
@@ -509,27 +380,178 @@
         "properties": {
           "id": {
             "title": "Id",
-            "type": "string"
+            "type": "string",
+            "description": "Resource ID"
           },
           "type": {
             "title": "Type",
-            "type": "string"
+            "type": "string",
+            "description": "Resource type"
           },
           "links": {
-            "$ref": "#/components/schemas/Links"
+            "title": "Links",
+            "type": "object",
+            "properties": {
+              "next": {
+                "title": "Next",
+                "description": "A Link to the next object",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "self": {
+                "title": "Self",
+                "description": "A link to itself",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "related": {
+                "title": "Related",
+                "description": "A related resource link",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "about": {
+                "title": "About",
+                "description": "a link that leads to further details about this particular occurrence of the problem.",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              }
+            },
+            "description": "A Links object is a set of keys with a Link value"
           },
           "meta": {
             "title": "Meta",
-            "type": "object"
+            "type": "object",
+            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
-            "$ref": "#/components/schemas/Attributes"
+            "title": "Attributes",
+            "type": "object",
+            "description": "an attributes object representing some of the resource\u2019s data."
           },
           "relationships": {
             "title": "Relationships",
-            "type": "object"
+            "type": "object",
+            "description": "a relationships object describing relationships between the resource and other JSON:API resources."
           }
-        }
+        },
+        "description": "Resource objects appear in a JSON:API document to represent resources."
       },
       "ResponseMeta": {
         "title": "ResponseMeta",
@@ -616,10 +638,12 @@
                   },
                   {
                     "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
                     "type": "object",
                     "properties": {
                       "href": {
                         "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
                         "minLength": 1,
                         "maxLength": 65536,
                         "type": "string",
@@ -627,6 +651,7 @@
                       },
                       "meta": {
                         "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
                         "type": "object"
                       }
                     },
@@ -648,10 +673,12 @@
                   },
                   {
                     "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
                     "type": "object",
                     "properties": {
                       "href": {
                         "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
                         "minLength": 1,
                         "maxLength": 65536,
                         "type": "string",
@@ -659,6 +686,7 @@
                       },
                       "meta": {
                         "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
                         "type": "object"
                       }
                     },
@@ -689,23 +717,6 @@
         },
         "description": "A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)\nthat contains JSON API meta objects of non-standard\nmeta-information.\n\nOPTIONAL additional information global to the query that is not\nspecified in this document, MUST start with a\ndatabase-provider-specific prefix."
       },
-      "JsonAPI": {
-        "title": "JsonAPI",
-        "required": [
-          "version"
-        ],
-        "type": "object",
-        "properties": {
-          "version": {
-            "title": "Version",
-            "type": "string"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          }
-        }
-      },
       "InfoResponse": {
         "title": "InfoResponse",
         "required": [
@@ -722,7 +733,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Resource"
-            }
+            },
+            "description": "A list of resources that are included"
           },
           "meta": {
             "$ref": "#/components/schemas/ResponseMeta"
@@ -731,15 +743,460 @@
             "title": "Links",
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Links"
+                "title": "Links",
+                "description": "A Links object is a set of keys with a Link value",
+                "type": "object",
+                "properties": {
+                  "next": {
+                    "title": "Next",
+                    "description": "A Link to the next object",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "self": {
+                    "title": "Self",
+                    "description": "A link to itself",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "related": {
+                    "title": "Related",
+                    "description": "A related resource link",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "about": {
+                    "title": "About",
+                    "description": "a link that leads to further details about this particular occurrence of the problem.",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  }
+                }
               },
               {
-                "$ref": "#/components/schemas/Pagination"
+                "title": "Pagination",
+                "description": "A set of urls to different pages:",
+                "type": "object",
+                "properties": {
+                  "first": {
+                    "title": "First",
+                    "description": "The first page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "last": {
+                    "title": "Last",
+                    "description": "The last page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "prev": {
+                    "title": "Prev",
+                    "description": "The previous page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "next": {
+                    "title": "Next",
+                    "description": "The next page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
               }
-            ]
+            ],
+            "description": "Information about the JSON API used"
           },
           "jsonapi": {
-            "$ref": "#/components/schemas/JsonAPI"
+            "title": "JsonAPI",
+            "required": [
+              "version"
+            ],
+            "type": "object",
+            "properties": {
+              "version": {
+                "title": "Version",
+                "description": "Version of the json API used",
+                "type": "string"
+              },
+              "meta": {
+                "title": "Meta",
+                "description": "Non-standard meta information",
+                "type": "object"
+              }
+            },
+            "description": "An object describing the server's implementation"
+          }
+        }
+      },
+      "EntryPropertyInfo": {
+        "title": "EntryPropertyInfo",
+        "required": [
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "description of the entry"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string",
+            "description": "the physical unit of the entry"
+          }
+        }
+      },
+      "EntryInfoAttributes": {
+        "title": "EntryInfoAttributes",
+        "required": [
+          "description",
+          "properties",
+          "output_fields_by_format"
+        ],
+        "type": "object",
+        "properties": {
+          "formats": {
+            "title": "Formats",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "list of available output formats.",
+            "default": [
+              "jsonapi"
+            ]
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "description of the entry"
+          },
+          "properties": {
+            "title": "Properties",
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/EntryPropertyInfo"
+            },
+            "description": "a dictionary describing queryable properties for this entry type, where each key is a property ID."
+          },
+          "output_fields_by_format": {
+            "title": "Output_Fields_By_Format",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "a dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary."
+          }
+        }
+      },
+      "EntryInfoResource": {
+        "title": "EntryInfoResource",
+        "required": [
+          "attributes",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/components/schemas/EntryInfoAttributes"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "unique ID for this resource object"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "description": "type of this resource",
+            "default": "info"
+          }
+        }
+      },
+      "Source": {
+        "title": "Source",
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "title": "Pointer",
+            "type": "string",
+            "description": "a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. \"/data\" for a primary data object, or \"/data/attributes/title\" for a specific attribute]."
+          },
+          "parmeter": {
+            "title": "Parmeter",
+            "type": "string",
+            "description": "a string indicating which URI query parameter caused the error."
+          }
+        },
+        "description": "an object containing references to the source of the error"
+      },
+      "ResponseMetaQuery": {
+        "title": "ResponseMetaQuery",
+        "required": [
+          "representation"
+        ],
+        "type": "object",
+        "properties": {
+          "representation": {
+            "title": "Representation",
+            "type": "string",
+            "description": "a string with the part of the URL that follows the base URL."
+          }
+        },
+        "description": "Information on the query that was requested."
+      },
+      "Pagination": {
+        "title": "Pagination",
+        "type": "object",
+        "properties": {
+          "first": {
+            "title": "First",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "description": "The first page of data",
+            "format": "uri"
+          },
+          "last": {
+            "title": "Last",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "description": "The last page of data",
+            "format": "uri"
+          },
+          "prev": {
+            "title": "Prev",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "description": "The previous page of data",
+            "format": "uri"
+          },
+          "next": {
+            "title": "Next",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "description": "The next page of data",
+            "format": "uri"
+          }
+        },
+        "description": "A set of urls to different pages:"
+      },
+      "ErrorLinks": {
+        "title": "ErrorLinks",
+        "required": [
+          "about"
+        ],
+        "type": "object",
+        "properties": {
+          "about": {
+            "title": "About",
+            "anyOf": [
+              {
+                "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "description": "a meta object containing non-standard meta-information about the link.",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              },
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              }
+            ],
+            "description": "a link that leads to further details about this particular occurrence of the problem."
+          }
+        },
+        "description": "Links with recast for Errors"
+      },
+      "StructureResourceAttributes": {
+        "title": "StructureResourceAttributes",
+        "required": [
+          "local_id",
+          "last_modified"
+        ],
+        "type": "object",
+        "properties": {
+          "local_id": {
+            "title": "Local_Id",
+            "type": "string",
+            "description": "the entry's local database ID (having no OPTiMaDe requirements/conventions)"
+          },
+          "last_modified": {
+            "title": "Last_Modified",
+            "type": "string",
+            "description": "an [ISO 8601](https://www.iso.org/standard/40874.html) representing the entry's last modification time.",
+            "format": "date-time"
+          },
+          "immutable_id": {
+            "title": "Immutable_Id",
+            "type": "string",
+            "description": "an optional field containing the entry's immutable ID (e.g. a UUID). This is important for databases having preferred IDs that point to 'the latest version' of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future."
+          },
+          "elements": {
+            "title": "Elements",
+            "type": "string"
+          },
+          "nelements": {
+            "title": "Nelements",
+            "type": "integer"
+          },
+          "chemical_formula": {
+            "title": "Chemical_Formula",
+            "type": "string"
+          },
+          "formula_prototype": {
+            "title": "Formula_Prototype",
+            "type": "string"
           }
         }
       },
@@ -767,6 +1224,7 @@
             "properties": {
               "next": {
                 "title": "Next",
+                "description": "A Link to the next object",
                 "anyOf": [
                   {
                     "minLength": 1,
@@ -775,12 +1233,33 @@
                     "format": "uri"
                   },
                   {
-                    "$ref": "#/components/schemas/Link"
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
                   }
                 ]
               },
               "self": {
                 "title": "Self",
+                "description": "A link to itself",
                 "anyOf": [
                   {
                     "minLength": 1,
@@ -789,12 +1268,68 @@
                     "format": "uri"
                   },
                   {
-                    "$ref": "#/components/schemas/Link"
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "related": {
+                "title": "Related",
+                "description": "A related resource link",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
                   }
                 ]
               },
               "about": {
                 "title": "About",
+                "description": "a link that leads to further details about this particular occurrence of the problem.",
                 "anyOf": [
                   {
                     "minLength": 1,
@@ -803,12 +1338,32 @@
                     "format": "uri"
                   },
                   {
-                    "$ref": "#/components/schemas/Link"
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
                   }
                 ]
               }
             },
-            "description": "a JSON API links object"
+            "description": "A Links object is a set of keys with a Link value"
           },
           "meta": {
             "title": "Meta",
@@ -846,7 +1401,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Resource"
-            }
+            },
+            "description": "A list of resources that are included"
           },
           "meta": {
             "$ref": "#/components/schemas/ResponseMeta"
@@ -855,15 +1411,498 @@
             "title": "Links",
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Links"
+                "title": "Links",
+                "description": "A Links object is a set of keys with a Link value",
+                "type": "object",
+                "properties": {
+                  "next": {
+                    "title": "Next",
+                    "description": "A Link to the next object",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "self": {
+                    "title": "Self",
+                    "description": "A link to itself",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "related": {
+                    "title": "Related",
+                    "description": "A related resource link",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "about": {
+                    "title": "About",
+                    "description": "a link that leads to further details about this particular occurrence of the problem.",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  }
+                }
               },
               {
-                "$ref": "#/components/schemas/Pagination"
+                "title": "Pagination",
+                "description": "A set of urls to different pages:",
+                "type": "object",
+                "properties": {
+                  "first": {
+                    "title": "First",
+                    "description": "The first page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "last": {
+                    "title": "Last",
+                    "description": "The last page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "prev": {
+                    "title": "Prev",
+                    "description": "The previous page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "next": {
+                    "title": "Next",
+                    "description": "The next page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
               }
-            ]
+            ],
+            "description": "Information about the JSON API used"
           },
           "jsonapi": {
-            "$ref": "#/components/schemas/JsonAPI"
+            "title": "JsonAPI",
+            "required": [
+              "version"
+            ],
+            "type": "object",
+            "properties": {
+              "version": {
+                "title": "Version",
+                "description": "Version of the json API used",
+                "type": "string"
+              },
+              "meta": {
+                "title": "Meta",
+                "description": "Non-standard meta information",
+                "type": "object"
+              }
+            },
+            "description": "An object describing the server's implementation"
+          }
+        }
+      },
+      "Error": {
+        "title": "Error",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "A unique identifier for this particular occurrence of the problem."
+          },
+          "links": {
+            "title": "ErrorLinks",
+            "required": [
+              "about"
+            ],
+            "type": "object",
+            "properties": {
+              "about": {
+                "title": "About",
+                "description": "a link that leads to further details about this particular occurrence of the problem.",
+                "anyOf": [
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  },
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  }
+                ]
+              }
+            },
+            "description": "Links with recast for Errors"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "description": "the HTTP status code applicable to this problem, expressed as a string value."
+          },
+          "code": {
+            "title": "Code",
+            "type": "string",
+            "description": "an application-specific error code, expressed as a string value."
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "title": "Source",
+            "type": "object",
+            "properties": {
+              "pointer": {
+                "title": "Pointer",
+                "description": "a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. \"/data\" for a primary data object, or \"/data/attributes/title\" for a specific attribute].",
+                "type": "string"
+              },
+              "parmeter": {
+                "title": "Parmeter",
+                "description": "a string indicating which URI query parameter caused the error.",
+                "type": "string"
+              }
+            },
+            "description": "an object containing references to the source of the error"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "description": "a meta object containing non-standard meta-information about the error."
+          }
+        },
+        "description": "Error where links uses ErrorLinks"
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "required": [
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "title": "Errors",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          },
+          "jsonapi": {
+            "title": "JsonAPI",
+            "required": [
+              "version"
+            ],
+            "type": "object",
+            "properties": {
+              "version": {
+                "title": "Version",
+                "description": "Version of the json API used",
+                "type": "string"
+              },
+              "meta": {
+                "title": "Meta",
+                "description": "Non-standard meta information",
+                "type": "object"
+              }
+            },
+            "description": "An object describing the server's implementation"
+          },
+          "links": {
+            "title": "Links",
+            "type": "object",
+            "properties": {
+              "next": {
+                "title": "Next",
+                "description": "A Link to the next object",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "self": {
+                "title": "Self",
+                "description": "A link to itself",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "related": {
+                "title": "Related",
+                "description": "A related resource link",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "about": {
+                "title": "About",
+                "description": "a link that leads to further details about this particular occurrence of the problem.",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "a meta object containing non-standard meta-information about the link.",
+                        "type": "object"
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              }
+            },
+            "description": "A Links object is a set of keys with a Link value"
           }
         }
       },
@@ -902,10 +1941,12 @@
               },
               {
                 "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
                 "type": "object",
                 "properties": {
                   "href": {
                     "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
                     "minLength": 1,
                     "maxLength": 65536,
                     "type": "string",
@@ -913,6 +1954,7 @@
                   },
                   "meta": {
                     "title": "Meta",
+                    "description": "a meta object containing non-standard meta-information about the link.",
                     "type": "object"
                   }
                 },
@@ -934,10 +1976,12 @@
               },
               {
                 "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
                 "type": "object",
                 "properties": {
                   "href": {
                     "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
                     "minLength": 1,
                     "maxLength": 65536,
                     "type": "string",
@@ -945,6 +1989,7 @@
                   },
                   "meta": {
                     "title": "Meta",
+                    "description": "a meta object containing non-standard meta-information about the link.",
                     "type": "object"
                   }
                 },
@@ -958,118 +2003,431 @@
         },
         "description": "Stores information on the database provider of the\n   implementation."
       },
-      "ResponseMetaQuery": {
-        "title": "ResponseMetaQuery",
+      "Link": {
+        "title": "Link",
         "required": [
-          "representation"
+          "href"
         ],
         "type": "object",
         "properties": {
-          "representation": {
-            "title": "Representation",
+          "href": {
+            "title": "Href",
+            "maxLength": 65536,
+            "minLength": 1,
             "type": "string",
-            "description": "a string with the part of the URL that follows the base URL."
+            "description": "a string containing the link\u2019s URL.",
+            "format": "uri"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "description": "a meta object containing non-standard meta-information about the link."
           }
         },
-        "description": "Information on the query that was requested."
+        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object."
       },
-      "ErrorLinks": {
-        "title": "ErrorLinks",
+      "JsonAPI": {
+        "title": "JsonAPI",
         "required": [
-          "about"
+          "version"
         ],
         "type": "object",
         "properties": {
-          "about": {
-            "title": "About",
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "description": "Version of the json API used"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "description": "Non-standard meta information"
+          }
+        },
+        "description": "An object describing the server's implementation"
+      },
+      "EntryInfoResponse": {
+        "title": "EntryInfoResponse",
+        "required": [
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/EntryInfoResource"
+          },
+          "included": {
+            "title": "Included",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            },
+            "description": "A list of resources that are included"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          },
+          "links": {
+            "title": "Links",
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Link"
+                "title": "Links",
+                "description": "A Links object is a set of keys with a Link value",
+                "type": "object",
+                "properties": {
+                  "next": {
+                    "title": "Next",
+                    "description": "A Link to the next object",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "self": {
+                    "title": "Self",
+                    "description": "A link to itself",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "related": {
+                    "title": "Related",
+                    "description": "A related resource link",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  },
+                  "about": {
+                    "title": "About",
+                    "description": "a link that leads to further details about this particular occurrence of the problem.",
+                    "anyOf": [
+                      {
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      {
+                        "title": "Link",
+                        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                        "type": "object",
+                        "properties": {
+                          "href": {
+                            "title": "Href",
+                            "description": "a string containing the link\u2019s URL.",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "meta": {
+                            "title": "Meta",
+                            "description": "a meta object containing non-standard meta-information about the link.",
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "href"
+                        ]
+                      }
+                    ]
+                  }
+                }
               },
+              {
+                "title": "Pagination",
+                "description": "A set of urls to different pages:",
+                "type": "object",
+                "properties": {
+                  "first": {
+                    "title": "First",
+                    "description": "The first page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "last": {
+                    "title": "Last",
+                    "description": "The last page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "prev": {
+                    "title": "Prev",
+                    "description": "The previous page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "next": {
+                    "title": "Next",
+                    "description": "The next page of data",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            ],
+            "description": "Information about the JSON API used"
+          },
+          "jsonapi": {
+            "title": "JsonAPI",
+            "required": [
+              "version"
+            ],
+            "type": "object",
+            "properties": {
+              "version": {
+                "title": "Version",
+                "description": "Version of the json API used",
+                "type": "string"
+              },
+              "meta": {
+                "title": "Meta",
+                "description": "Non-standard meta information",
+                "type": "object"
+              }
+            },
+            "description": "An object describing the server's implementation"
+          }
+        }
+      },
+      "Links": {
+        "title": "Links",
+        "type": "object",
+        "properties": {
+          "next": {
+            "title": "Next",
+            "anyOf": [
               {
                 "minLength": 1,
                 "maxLength": 65536,
                 "type": "string",
                 "format": "uri"
+              },
+              {
+                "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "description": "a meta object containing non-standard meta-information about the link.",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
               }
-            ]
+            ],
+            "description": "A Link to the next object"
+          },
+          "self": {
+            "title": "Self",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "description": "a meta object containing non-standard meta-information about the link.",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "A link to itself"
+          },
+          "related": {
+            "title": "Related",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "description": "a meta object containing non-standard meta-information about the link.",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "A related resource link"
+          },
+          "about": {
+            "title": "About",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "description": "a meta object containing non-standard meta-information about the link.",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "a link that leads to further details about this particular occurrence of the problem."
           }
-        }
-      },
-      "Source": {
-        "title": "Source",
-        "type": "object",
-        "properties": {
-          "pointer": {
-            "title": "Pointer",
-            "type": "string"
-          },
-          "parmeter": {
-            "title": "Parmeter",
-            "type": "string"
-          }
-        }
-      },
-      "Error": {
-        "title": "Error",
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string"
-          },
-          "code": {
-            "title": "Code",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "type": "string"
-          },
-          "detail": {
-            "title": "Detail",
-            "type": "string"
-          },
-          "source": {
-            "$ref": "#/components/schemas/Source"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object"
-          },
-          "links": {
-            "$ref": "#/components/schemas/ErrorLinks"
-          }
-        }
-      },
-      "ErrorResponse": {
-        "title": "ErrorResponse",
-        "required": [
-          "errors"
-        ],
-        "type": "object",
-        "properties": {
-          "errors": {
-            "title": "Errors",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Error"
-            }
-          },
-          "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
-          },
-          "jsonapi": {
-            "$ref": "#/components/schemas/JsonAPI"
-          },
-          "links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
+        },
+        "description": "A Links object is a set of keys with a Link value"
       },
       "ValidationError": {
         "title": "ValidationError",
