@@ -73,6 +73,46 @@ allowed (see description of the `species_at_sites` list).
     )
 
 
+class Assembly(BaseModel):
+    """ A container for sites that are statistically correlated.
+
+* **Examples**:
+  * `{"sites_in_groups": [[0], [1]], "group_probabilities: [0.3, 0.7]}`: the
+    first site and the second site never occur at the same time in the unit
+    cell. Statistically, 30 % of the times the first site is present, while
+    70 % of the times the second site is present.
+  * `{"sites_in_groups": [[1,2], [3]], "group_probabilities: [0.3, 0.7]}`: the
+    second and third site are either present together or not present; they form
+    the first group of atoms for this assembly. The second group is formed by
+    the fourth site. Sites of the first group (the second and the third) are
+    never present at the same time as the fourth site. 30 % of times sites 1 and
+    2 are present (and site 3 is absent); 70 % of times site 3 is present
+    (and sites 1 and 2 are absent).
+
+"""
+
+    sites_in_groups: List[int] = Schema(
+        ...,
+        description="""Index of the sites (0-based) that belong to each group
+for each assembly.
+
+* **Examples**:
+  * `[[1], [2]]`: two groups, one with the second site, one with the third.
+  * `[[1, 2], [3]]`: one group with the second and third site, one with the
+    fourth.
+
+""",
+    )
+
+    group_probabilities: List[float] = Schema(
+        ...,
+        description="""Statistical probability of each group. It MUST have the
+same length as `sites_in_groups`. It SHOULD sum to one. The possible reasons for
+the values not to sum to one are the same as those specified for the
+`concentration` of each species inside `species`. """,
+    )
+
+
 class StructureResourceAttributes(EntryResourceAttributes):
 
     elements: str = Schema(
@@ -254,8 +294,8 @@ in ångströms (Å).
     cartesian_site_positions: List[conlist(len_eq=3)] = Schema(
         ...,
         description="""The Cartesian positions of each site. A site is an atom,
-a site potentiall occupied by an atom, or a placeholder for a virtual mixture of
-atoms (e.g., in a virutal crystal approximation).
+a site potentially occupied by an atom, or a placeholder for a virtual mixture of
+atoms (e.g., in a virtual crystal approximation).
 
 * **Requirements/Conventions**:
   * It MUST be a list of length N times 3, where N is the number of sites in the
@@ -347,6 +387,127 @@ elements.
   * `"species": [ {"name": "C13", "chemical_symbols": ["C"], "concentration":
     [1.0], "mass": 13.0}, ]`: any site with this species is occupied by a carbon
     isotope with mass 13.
+
+""",
+    )
+
+    assemblies: Optional[List[Assembly]] = Schema(
+        ...,
+        description="""A description of groups of sites that are statistically
+correlated.
+
+* **Requirements/Conventions**:
+  * If present, the correct flag MUST be set in the list `structure_features`.
+  * Client implementations MUST check its presence (as its presence changes the
+    interpretation of the structure).
+  * If a site is not present in any group, it means that it is present with
+    100 % probability (as if no assembly was specified).
+  * A site MUST NOT appear in more than one group.
+
+* **Notes**:
+  * Assemblies are essential to represent, for instance, the situation where an
+    atom can statistically occupy two different sites.
+  * By defining groups, it is possible to represent, e.g., the case where a
+    functional molecule (and not just one atom) is either present or absent (or
+    the case where it is present in two conformations).
+  * Considerations on virtual alloys and on vacancies:
+    In the special case of a virtual alloy, these specifications allow two
+    different, equivalent ways of specifying them. For instance, a site at the
+    origin with 30 % probability of being occupied by Si, 50 % probability of
+    being occupied by Ge, and 20 % of being a vacancy, the following two
+    representations are possible:
+    * Using a single species:
+    ```
+    {
+      "cartesian_site_positions": [[0,0,0]],
+      "species_at_sites": ["SiGe-vac"],
+      "species": [
+          {
+            "name": "SiGe-vac",
+            "chemical_symbols": ["Si", "Ge", "vacancy"],
+            "concentration": [0.3, 0.5, 0.2]
+          }
+      ]
+      // ...
+    }
+    ```
+    * Using multiple species and the assemblies:
+    ```
+    {
+      "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
+      "species_at_sites": ["Si", "Ge", "vac"],
+      "species": {
+        "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
+        "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
+        "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+      },
+      "assemblies": [
+        {
+          "sites_in_groups": [ [0], [1], [2] ],
+          "group_probabilities": [0.3, 0.5, 0.2]
+        }
+      ]
+      // ...
+    }
+    ```
+  * It is up to the database provider to decide which representation to use,
+    typically depending on the internal format in which the structure is stored.
+    However, given a structure identified by a unique ID, the API implementation
+    MUST always provide the same representation for it.
+  * The probabilities of occurrence of different assemblies are uncorrelated.
+    So, for instance, in the following case with two assemblies:
+    ```
+    {
+      "assemblies": [
+        {
+          "sites_in_groups": [ [0], [1] ],
+          "group_probabilities": [0.2, 0.8],
+        },
+        {
+          "sites_in_groups": [ [2], [3] ],
+          "group_probabilities": [0.3, 0.7]
+        }
+      ]
+    }
+    ```
+
+    Site 0 is present with a probability of 20 % and site 1 with a probability
+    of 80 %. These two sites are correlated (either site 0 or 1 is present).
+    Similarly, site 2 is present with a probability of 30 % and site 3 with a
+    probability of 70 %. These two sites are correlated (either site 2 or 3 is
+    present). However, the presence or absence of sites 0 and 1 is not
+    correlated with the presence or absence of sites 2 and 3 (in the specific
+    example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability;
+    the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with
+    0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 %
+    probability).
+
+""",
+    )
+
+    structure_features: List[str] = Schema(
+        ...,
+        description="""A list of strings, flagging which special features are
+        used by the structure.
+
+* **Requirements/Conventions**:
+  * This property MUST be returned as an empty list if no special features are
+    used.
+  * This list MUST be sorted alphabetically.
+  * If a special feature listed below is used, the corresponding string MUST be
+    set.
+  * If a special feature listed below is not used, the corresponding string MUST
+  NOT be set.
+
+* **List of special structure features**:
+  * `disorder`: this flag MUST be present if any one entry in the `species` list
+  has a `chemical_symbols` list longer than 1 element.
+  * `unknown_positions`: this flag MUST be present if at least one component of
+  the `cartesian_site_positions` list of lists has value `null`.
+  * `assemblies`: this flag MUST be present if the `assemblies` list is present.
+
+* **Querying**:
+  * This property MUST be queryable.
 
 """,
     )
