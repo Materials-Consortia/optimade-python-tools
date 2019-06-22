@@ -48,3 +48,11 @@ class EntryListingQueryParams:
         self.sort = sort
         self.page_offset = page_offset
         self.page_limit = page_limit
+
+
+class EntryInfoQueryParams:
+    """
+    Parameters for entry info endpoint
+    """
+
+    pass
