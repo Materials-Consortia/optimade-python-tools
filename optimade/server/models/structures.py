@@ -4,7 +4,7 @@ from pydantic import Schema, BaseModel
 from typing import List, Optional
 
 
-class Specie(BaseModel):
+class Species(BaseModel):
     """ A dictionary with the keys required to be used as a member of the
     `species` list.
 
@@ -350,10 +350,10 @@ The properties of the species are found in the `species` property.
   """,
     )
 
-    species: List[Specie] = Schema(
+    species: List[Species] = Schema(
         ...,
         description="""A list describing the species of the sites of this
-structure. Specie scan be pure chemical elements, or virtual-crystal atoms
+structure. Species scan be pure chemical elements, or virtual-crystal atoms
 representing a statistical occupation of a given site by multiple chemical
 elements.
 
