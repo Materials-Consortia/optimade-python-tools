@@ -4,4 +4,5 @@ fastapi[all]==0.28.0
 lark-parser==0.5.6
 mongogrant==0.2.2
 mongomock==3.16.0
+pre-commit==1.17.0
 pymongo==3.8.0

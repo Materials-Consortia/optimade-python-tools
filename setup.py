@@ -23,6 +23,7 @@ setup(
         "mongomock>=3.16",
         "fastapi[all]",
         "black",
+        "pre-commit",
     ],
     extras_require={"task_running": ["invoke", "twine"]},
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
