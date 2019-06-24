@@ -34,6 +34,9 @@ conda activate optimade
 # Install package and requirements in editable mode.
 pip install -e .
 
+# Install pre-commit environment (e.g., auto-formats code on `git commit`)
+pre-commit install
+
 # Optional: Install MongoDB (and set `USE_REAL_MONGO = yes` in optimade/server/congig.ini)
 # Below method installs in conda environment and
 # - starts server in background
