@@ -21,7 +21,7 @@ setup(
         "lark-parser>=0.5.6",
         "mongogrant",
         "mongomock>=3.16",
-        "fastapi[all]>=0.30.0",
+        "fastapi[all]",
         "black",
     ],
     extras_require={"task_running": ["invoke", "twine"]},
