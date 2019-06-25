@@ -6,13 +6,13 @@ module_dir = os.path.dirname(os.path.abspath(__file__))
 
 setup(
     name="optimade",
-    version="0.1.12",
+    version="0.2.0",
     packages=find_packages(),
     include_package_data=True,
-    url="https://github.com/materialsproject/optimade/",
-    license="modified BSD",
-    author="MP Team",
-    author_email="feedback@materialsproject.org",
+    url="https://github.com/Materials-Consortia/optimade-python-tools",
+    license="MIT",
+    author="OPTiMaDe Development Team",
+    author_email="dev@optimade.org",
     description="Tools for implementing and consuming OPTiMaDe APIs.",
     long_description=open(os.path.join(module_dir, "README.md")).read(),
     long_description_content_type="text/markdown",
