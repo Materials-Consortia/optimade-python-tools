@@ -23,7 +23,6 @@ class Attributes(jsonapi.Attributes):
     )
 
 
-
 class ErrorLinks(BaseModel):
     """Links with recast for Errors"""
 
@@ -32,16 +31,18 @@ class ErrorLinks(BaseModel):
         description="a link that leads to further details about this particular occurrence of the problem.",
     )
 
+
 class ResourceLinks(BaseModel):
     """Links with recast for Errors"""
 
     self: Union[jsonapi.Link, UrlStr] = Schema(
-        ...,
-        description="a link that refers to this resource.",
+        ..., description="a link that refers to this resource."
     )
+
 
 class Resource(jsonapi.Resource):
     """Resource objects appear in a JSON:API document to represent resources."""
+
     links: Optional[ResourceLinks] = Schema(
         ..., description="A links object containing self"
     )
@@ -53,7 +54,6 @@ class Error(jsonapi.Error):
     links: Optional[ErrorLinks] = Schema(
         ..., description="A links object containing about"
     )
-
 
 
 class Links(jsonapi.Links):

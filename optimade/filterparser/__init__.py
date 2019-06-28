@@ -1,3 +1,3 @@
-__all__ = ['LarkParser', 'ParserError']
+__all__ = ["LarkParser", "ParserError"]
 
 from .lark_parser import LarkParser, ParserError
