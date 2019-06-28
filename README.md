@@ -27,12 +27,15 @@ Both the OPTiMaDe specification and this repository are **under development**.
 git clone git@github.com:Materials-Consortia/optimade-python-tools.git
 cd optimade-python-tools
 
-# Ensure a Python>=3.6 (virtual) environment (example below using Anaconda/Miniconda)
-conda create -n optimade python=3.6
+# Ensure a Python>=3.7 (virtual) environment (example below using Anaconda/Miniconda)
+conda create -n optimade python=3.7
 conda activate optimade
 
-# Install package and requirements in editable mode.
-pip install -e .
+# Install package and dependencies in editable mode (including "dev" requirements).
+pip install -e .[dev]
+
+# Run the tests (will install test requirements)
+python setup.py test
 
 # Install pre-commit environment (e.g., auto-formats code on `git commit`)
 pre-commit install

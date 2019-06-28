@@ -1,6 +1,8 @@
-# Extra packages required to test the tools
+# To pin testing and deployments to specific versions
+black==19.3b0
 invoke==1.0.0
-openapi-spec-validator==0.2.7
-twine==1.11.0
-pytest==4.0.0
 jsondiff==1.1.2
+openapi-spec-validator==0.2.7
+pre-commit==1.17.0
+pytest==4.0.0
+twine==1.11.0
