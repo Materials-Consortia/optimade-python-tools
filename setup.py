@@ -21,13 +21,14 @@ setup(
         "lark-parser>=0.5.6",
         "mongogrant",
         "mongomock>=3.16",
-        "fastapi[all]",
+        "fastapi[all]>=0.31",
     ],
     extras_require={"dev": ["black", "invoke", "pre-commit", "twine"]},
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Intended Audience :: Developers",
         "Topic :: Database",
@@ -35,5 +36,5 @@ setup(
         "Topic :: Database :: Front-Ends",
     ],
     keywords="optimade jsonapi materials",
-    python_requires=">=3.7",
+    python_requires=">=3.6",
 )

@@ -1,6 +1,5 @@
 from optimade.server.models.entries import EntryResourceAttributes, EntryResource
-from optimade.server.models.util import conlist
-from pydantic import Schema, BaseModel
+from pydantic import Schema, BaseModel, conlist
 from typing import List, Optional
 
 
@@ -238,7 +237,7 @@ then, in order left to right, replaced by anonymous symbols
     )
 
     # FIXME: re-enable this when we have length constraint working
-    dimension_types: conlist(len_eq=3) = Schema(
+    dimension_types: conlist(int, min_items=3, max_items=3) = Schema(
         # dimension_types: List[int] = Schema(
         ...,
         description="""List of three integers. For each of the three directions
@@ -260,7 +259,7 @@ the elements in this list each refer to the direction of the corresponding entry
 """,
     )
 
-    lattice_types: Optional[List[conlist(len_eq=3)]] = Schema(
+    lattice_types: Optional[conlist( conlist(float, min_items=3, max_items=3), min_items=3, max_items=3)] = Schema(
         ...,
         description="""List of three lattice vectors in Cartesian coordinates,
 in ångströms (Å).
@@ -291,7 +290,7 @@ in ångströms (Å).
 """,
     )
 
-    cartesian_site_positions: List[conlist(len_eq=3)] = Schema(
+    cartesian_site_positions: List[conlist(float, min_items=3, max_items=3)] = Schema(
         ...,
         description="""The Cartesian positions of each site. A site is an atom,
 a site potentially occupied by an atom, or a placeholder for a virtual mixture of
