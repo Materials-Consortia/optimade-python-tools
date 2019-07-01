@@ -1,32 +1,41 @@
 import urllib
-from configparser import ConfigParser
+
+# from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
 from typing import Union, Dict
+import json
+
+from tinydb import TinyDB, where
+from tinydb.storages import MemoryStorage
 
 from fastapi import FastAPI, Depends
 from starlette.requests import Request
 
-from .deps import EntryListingQueryParams, EntryInfoQueryParams
-from .collections import MongoCollection
-from .models.jsonapi import Link
-from .models.modified_jsonapi import Links
-from .models.structures import StructureResource
-from .models.entries import EntryInfoAttributes, EntryPropertyInfo, EntryInfoResource
-from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
-from .models.toplevel import (
+from optimade.server.deps import EntryListingQueryParams, EntryInfoQueryParams
+from optimade.server.models.jsonapi import Link
+from optimade.server.models.modified_jsonapi import Links
+from optimade.server.models.structures import StructureResource
+from optimade.server.models.entries import (
+    EntryInfoAttributes,
+    EntryPropertyInfo,
+    EntryInfoResource,
+)
+from optimade.server.models.baseinfo import BaseInfoResource, BaseInfoAttributes
+from optimade.server.models.toplevel import (
     ResponseMeta,
     ResponseMetaQuery,
     StructureResponseMany,
+    StructureResponseOne,
     InfoResponse,
     Provider,
     ErrorResponse,
     EntryInfoResponse,
 )
 
-config = ConfigParser()
-config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
-USE_REAL_MONGO = config["DEFAULT"].getboolean("USE_REAL_MONGO")
+# config = ConfigParser()
+# config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
+# USE_REAL_MONGO = config["DEFAULT"].getboolean("USE_REAL_MONGO")
 
 app = FastAPI(
     title=" OPTiMaDe API",
@@ -39,29 +48,60 @@ app = FastAPI(
 )
 
 
-if USE_REAL_MONGO:
-    from pymongo import MongoClient
-else:
-    from mongomock import MongoClient
+def find_data_file(filename):
+    import sys, os
 
-client = MongoClient()
-structures = MongoCollection(client.optimade.structures, StructureResource)
+    try:
+        datadir = os.path.dirname(__file__)
+    except:
+        datadir = os.path.dirname(sys.executable)
+    return os.path.normpath(os.path.join(datadir, filename))
 
-test_structures_path = (
-    Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
-)
-if not USE_REAL_MONGO and test_structures_path.exists():
-    import json
-    import bson.json_util
 
-    print("loading test structures...")
-    with open(test_structures_path) as f:
-        data = json.load(f)
-        print("inserting test structures into collection...")
-        structures.collection.insert_many(
-            bson.json_util.loads(bson.json_util.dumps(data))
-        )
-    print("done inserting test structures...")
+def insertDbValues(db, dbValues: dict):
+    """Insert an in memory dump of a db (dbValues) into the given database (db).
+A dump consists of either:
+    { "<table_name>": [ {<entry1>}, {<entry2>},... ], ...}
+or
+    { "<table_name>": { <docId1>: {<entry1>}, <docId2>: {<entry2>},... }, ...}
+<docId> if given is *not* preserved.
+The reason to accept the second format is that it is the default format DBs are stored by tinydb, when
+creating db=TinyDB('<someFilePath>'), but we always want to merge entries effectively ignoring the doc_id.
+"""
+    for tableName, values in dbValues.items():
+        table = db.table(tableName)
+        if isinstance(values, dict):
+            table.insert_multiple(values.values())
+        else:
+            table.insert_multiple(values)
+
+
+def loadScratchDB(filePath: str):
+    """Loads a db from a json file consisting of
+    { "<table_name>": [ {<entry1>}, {<entry2>},... ], ...}
+or
+    { "<table_name>": { <docId1>: {<entry1>}, <docId2>: {<entry2>},... }, ...}
+To an in memory database, and returns that database."""
+    db = TinyDB(storage=MemoryStorage)
+    with open(filePath) as f:
+        dbValues = json.load(f)
+    insertDbValues(db, dbValues)
+    return db
+
+
+db_path = Path(find_data_file("tests/optimade_examples.json"))
+
+mainDB = loadScratchDB(db_path)
+
+
+def convertQuery(query: EntryListingQueryParams):
+    """converts a query to a tinydb query to jsonapi formatted objects
+
+    TODO
+    """
+    from tinydb import Query
+
+    return None
 
 
 def meta_values(url, data_returned, more_data_available=False):
@@ -98,7 +138,15 @@ def update_schema(app):
     tags=["Structure"],
 )
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
-    results, more_data_available, data_available = structures.find(params)
+    structs = mainDB.table("structures")
+    q = convertQuery(params)
+    if q:
+        results = structs.search(q)
+    else:
+        results = structs.all()
+    results = [StructureResource(**x) for x in results]
+    more_data_available = False
+    # results, more_data_available, data_available = structures.find(params)
     parse_result = urllib.parse.urlparse(str(request.url))
     if more_data_available:
         query = urllib.parse.parse_qs(parse_result.query)
@@ -111,30 +159,12 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         )
     else:
         links = Links(next=None)
-    return StructureResponseMany(
-        links=links,
+    res = StructureResponseMany(
+        # links=links,
         data=results,
         meta=meta_values(str(request.url), len(results), more_data_available),
     )
-
-
-@app.get(
-    "/info",
-    response_model=Union[InfoResponse, ErrorResponse],
-    response_model_skip_defaults=True,
-    tags=["Info"],
-)
-def get_info(request: Request):
-    return InfoResponse(
-        meta=meta_values(str(request.url), 1, more_data_available=False),
-        data=BaseInfoResource(
-            attributes=BaseInfoAttributes(
-                api_version="v0.9",
-                available_api_versions={"v0.9": "http://localhost:5000/"},
-                entry_types_by_format={"jsonapi": ["structures"]},
-            )
-        ),
-    )
+    return res
 
 
 @app.get(
@@ -166,6 +196,49 @@ def get_structures_info(request: Request):
                     ]
                 },
             ),
+        ),
+    )
+
+
+@app.get(
+    "/structures/{id}",
+    response_model=Union[StructureResponseOne, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Structure"],
+)
+def get_structures_id(request: Request, id: str):
+    results = mainDB.table("structures").search(where("id") == id)
+    parse_result = urllib.parse.urlparse(str(request.url))
+    if results:
+        if len(results) > 1:
+            logging.warn("Non unique id {id}".format(id=id))
+        data = StructureResource(**results[0])
+        return StructureResponseOne(
+            data=data, meta=meta_values(str(request.url), 1, more_data_available=False)
+        )
+    else:
+        return StructureResponseOne(
+            links=links,
+            data=None,
+            meta=meta_values(str(request.url), len(results), more_data_available=False),
+        )
+
+
+@app.get(
+    "/info",
+    response_model=Union[InfoResponse, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Info"],
+)
+def get_info(request: Request):
+    return InfoResponse(
+        meta=meta_values(str(request.url), 1, more_data_available=False),
+        data=BaseInfoResource(
+            attributes=BaseInfoAttributes(
+                api_version="v0.9",
+                available_api_versions={"v0.9": "http://localhost:5000/"},
+                entry_types_by_format={"jsonapi": ["structures"]},
+            )
         ),
     )
 

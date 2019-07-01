@@ -1,0 +1,57 @@
+{
+    "structures": [
+        {
+            "type": "structures",
+            "id": "example.db:structs:0001",
+            "attributes": {
+                "chemical_formula_descriptive": "Es2 O3",
+                "local_id": "example.db:structs:0001",
+                "url": "http://example.db/structs/0001",
+                "immutable_id": "http://example.db/structs/0001@123",
+                "last_modified": "2007-04-05T14:30Z",
+                "elements": [ "Es", "O" ],
+                "elements_ratios": [0.4, 0.6],
+                "nelements": 2,
+                "chemical_formula_reduced": "Es2O3",
+                "chemical_formula_anonymous": "A3B2",
+                "dimension_types": [1, 1, 1],
+                "cartesian_site_positions": [
+                    [0,0,0],
+                    [1.5,1.5,1.5],
+                    [1.5,0,0],
+                    [0,1.5,0],
+                    [0,0,1.5]],
+                "nsites": 5,
+                "species_at_sites": ["Es", "Es", "O", "O", "O"],
+                "species": [
+                    { "name": "Es", "chemical_symbols": ["Es"], "concentration": [1.0] },
+                    { "name": "O",  "chemical_symbols": ["O"],  "concentration": [1.0] }],
+                "structure_features": []
+            }
+        },
+        {
+            "type": "structures",
+            "id": "example.db:structs:1234",
+            "attributes": {
+                "chemical_formula_descriptive": "Es2",
+                "local_id": "example.db:structs:1234",
+                "url": "http://example.db/structs/1234",
+                "immutable_id": "http://example.db/structs/1234@123",
+                "last_modified": "2007-04-07T12:02Z",
+                "elements": [ "Es"],
+                "elements_ratios": [1.0],
+                "nelements": 1,
+                "chemical_formula_reduced": "Es",
+                "chemical_formula_anonymous": "A",
+                "dimension_types": [1, 1, 1],
+                "cartesian_site_positions": [
+                    [0,0,0]],
+                "nsites": 1,
+                "species_at_sites": ["Es"],
+                "species": [
+                    { "name": "Es", "chemical_symbols": ["Es"], "concentration": [1.0]}],
+                "structure_features": []
+            }
+        }
+    ]
+}
