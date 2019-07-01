@@ -115,7 +115,7 @@ the values not to sum to one are the same as those specified for the
 
 class StructureResourceAttributes(EntryResourceAttributes):
 
-    elements: str = Schema(
+    elements: List[str] = Schema(
         ...,
         description="""Names of elements found in the structure as a list of strings,
 in alphabetical order.
