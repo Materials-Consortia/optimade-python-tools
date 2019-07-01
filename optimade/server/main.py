@@ -4,7 +4,7 @@ import urllib
 from datetime import datetime
 from pathlib import Path
 from typing import Union, Dict
-import json
+import json, logging
 
 from tinydb import TinyDB, where
 from tinydb.storages import MemoryStorage
