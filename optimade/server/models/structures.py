@@ -260,7 +260,7 @@ the elements in this list each refer to the direction of the corresponding entry
 """,
     )
 
-    lattice_types: Optional[List[conlist(len_eq=3)]] = Schema(
+    lattice_vectors: Optional[List[conlist(len_eq=3)]] = Schema(
         ...,
         description="""List of three lattice vectors in Cartesian coordinates,
 in ångströms (Å).
