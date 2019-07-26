@@ -6,4 +6,5 @@ openapi-spec-validator==0.2.7
 pre-commit==1.17.0
 pytest==4.0.0
 pytest-cov==2.7.1
+codecov==2.0.15
 twine==1.11.0
