@@ -11,9 +11,10 @@ install:
    - pip install -r requirements-optional.txt
    - docker pull quen2404/openapi-diff
 script:
-   - pytest
+   - py.test --cov=optimade-python-tools
    - openapi-spec-validator openapi.json
      # update schema
    - python -c "from optimade.server.main import app, update_schema; update_schema(app)"
      # check whether generated schema matches the committed version
    - .ci/openapi_diff.sh
+   - codecov --token=$CODECOV_TOKEN
