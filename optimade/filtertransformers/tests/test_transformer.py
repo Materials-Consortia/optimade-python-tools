@@ -2,7 +2,7 @@ import itertools
 from unittest import TestCase
 import uuid
 
-from pymongo import MongoClient
+from mongomock import MongoClient
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
