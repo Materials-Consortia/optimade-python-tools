@@ -1,5 +1,5 @@
 # To pin testing and deployments to specific versions
-fastapi[all]==0.31.0
+fastapi[all]==0.33.0
 lark-parser==0.5.6
 mongogrant==0.2.2
 mongomock==3.16.0

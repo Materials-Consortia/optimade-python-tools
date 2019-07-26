@@ -21,7 +21,7 @@ setup(
         "lark-parser>=0.5.6",
         "mongogrant",
         "mongomock>=3.16",
-        "fastapi[all]>=0.31",
+        "fastapi[all]>=0.33,
     ],
     extras_require={"dev": ["black", "invoke", "pre-commit", "twine"]},
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
