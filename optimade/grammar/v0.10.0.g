@@ -11,37 +11,51 @@ not_expr: ["NOT"] parenthesis
 
 parenthesis: "(" and_expr ")" | operator
 
-operator: cmp_op | list_op | known_op
+operator: cmp_op | has_list_op | has_op | has_only_op | known_op | string_op
 
 cmp_op: value CMP_OPERATOR value
 
-length_op: "LENGTH" value
-
-has_op: tuple "HAS" tuple
-
-list_op: tuple "HAS" LIST_QUALIFIER list
-
 known_op: quantity "IS" KNOWN_QUALIFIER
 
-list: (tuple ",")* tuple
+string_op: contains_op | starts_op | ends_op
 
-tuple: (value ":")* predicate
+contains_op: quantity "CONTAINS" string_literal
+starts_op: quantity "STARTS" ["WITH"] string_literal
+ends_op: quantity "ENDS" ["WITH"] string_literal
 
-predicate: [CMP_OPERATOR] value
+has_op: quantity_tuple "HAS" predicate_tuple
 
-value: quantity | literal
+has_list_op: quantity_tuple "HAS" LIST_QUALIFIER list
+
+has_only_op: quantity "HAS" "ONLY" list
+
+list: (predicate_tuple ",")* predicate_tuple
+
+predicate_tuple: (predicate ":")* predicate
+
+quantity_tuple: (quantity ":")* quantity
+
+predicate: [CMP_OPERATOR] literal
+
+value: quantity | literal | length
+
+length: "LENGTH" quantity
+
+literal: int_literal | float_literal | string_literal
 
 quantity: CNAME
 
-literal: SIGNED_FLOAT | SIGNED_INT | ESCAPED_STRING
+int_literal: SIGNED_INT
+float_literal: SIGNED_FLOAT
+string_literal: ESCAPED_STRING
 
-CMP_OPERATOR: /<=?|>=?|!?=|CONTAINS/
-LIST_QUALIFIER: /ALL|ONLY|ANY/
+CMP_OPERATOR: /<=?|>=?|!?=/
+LIST_QUALIFIER: /ALL|ANY/
 KNOWN_QUALIFIER: /KNOWN|UNKNOWN/
 
 %import common.CNAME
 %import common.SIGNED_FLOAT
 %import common.SIGNED_INT
 %import common.ESCAPED_STRING
-%import common.WS_INLINE
-%ignore WS_INLINE
+%import common.WS
+%ignore WS
