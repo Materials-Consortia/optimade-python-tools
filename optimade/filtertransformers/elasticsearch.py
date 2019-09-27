@@ -10,6 +10,31 @@ _length_quantities = {'elements': 'nelements', 'elements_rations': 'nelements', 
 
 
 class Quantity:
+    """ Class to provide information about available quantities to the transformer.
+
+    The elasticsearch transformer will :class:`Quantity`s to (a) do some semantic checks,
+    (b) map quantities to the underlying elastic index.
+
+    Attributes:
+        name: The name of the quantity as used in the filter expressions.
+        es_field: The name of the field for this quanity in elastic search, will be
+            ``name`` by default.
+        elastic_mapping_type: A decendent of an elasticsearch_dsl Field that denotes which
+            mapping was used in the elastic search index.
+        length_quantity: Elasticsearch does not support length of arrays, but we can
+            map fields with array to other fields with ints about the array length. The
+            LENGTH operator will only be supported for quantities with this attribute.
+        has_only_quantity: Elasticsearch does not support exclusive search on arrays, like
+            a list of chemical elements. But, we can order all elements by atomic number
+            and use a keyword field with all elements to perform this search. This only
+            works for elements (i.e. labels in ``ase.data.chemical_symbols``) and quantities
+            with this attribute.
+        nested_quantity: To support optimade's 'zipped tuple' feature (e.g.
+            'elements:elements_ratios HAS "H":>0.33), we use elasticsearch nested objects
+            and nested queries. This quantity will provide the field for the nested
+            object that contains the quantity (and others). The zipped tuples will only
+            work for quantities that share the same nested object quantity.
+    """
     def __init__(
             self, name, es_field: str = None, elastic_mapping_type: Field = None,
             length_quantity: 'Quantity' = None,
@@ -28,9 +53,13 @@ class Quantity:
 
 
 class Transformer(lark.Transformer):
-    """ Transformer for the Lark parser generator used for the filterparser.
+    """ Transformer that transforms ``v0.10.0`` grammer parse trees into queries.
 
-    It translates the parse tree into an elastic search query.
+    Uses elasticsearch_dsl and will produce a :class:`Q` instance.
+
+    Arguments:
+        quantities: A list of :class:`Quantity`s that describe how optimade (and other)
+            quantities are mapped to the elasticsearch index.
     """
 
     def __init__(self, quantities):
