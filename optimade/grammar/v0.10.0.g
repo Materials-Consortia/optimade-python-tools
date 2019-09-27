@@ -1,15 +1,17 @@
 // optimade v0.9.7 grammar spec in lark grammar format
 // CHANGED start to not require KEYWORD filter=
 
-start: and_expr
+start: or_expr
 
-and_expr: [and_expr "AND"] or_expr
+or_expr: [or_expr "OR"] and_expr
 
-or_expr: [or_expr "OR"] not_expr
+and_expr: [and_expr "AND"] atom_expr
 
-not_expr: ["NOT"] parenthesis
+atom_expr: parenthesis | not_expr
 
-parenthesis: "(" and_expr ")" | operator
+not_expr: "NOT" parenthesis
+
+parenthesis: "(" or_expr ")" | operator
 
 operator: cmp_op | has_list_op | has_op | has_only_op | known_op | string_op
 
