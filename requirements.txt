@@ -6,3 +6,4 @@ mongomock==3.16.0
 pymongo==3.8.0
 django==2.2.5
 elasticsearch_dsl==6.4.0
+ase==3.15.0
