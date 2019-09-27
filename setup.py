@@ -20,7 +20,7 @@ setup(
     install_requires=["lark-parser>=0.5.6"],
     extras_require={
         "dev": ["black", "invoke", "pre-commit", "twine"],
-        "server": ["pymongo>=3.8", "mongogrant", "mongomock>=3.16", "fastapi[all]"]
+        "server": ["pymongo>=3.8", "mongogrant", "mongomock>=3.16", "fastapi[all]", "elasticsearch_dsl>=6.4.0"]
     },
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
     classifiers=[
