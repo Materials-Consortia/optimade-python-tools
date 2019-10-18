@@ -5,16 +5,26 @@ from setuptools import setup, find_packages
 
 module_dir = os.path.dirname(os.path.abspath(__file__))
 
-with open('requirements.txt') as f:
-    requirements = [line.strip() for line in f.readlines()
-                    if line and not line.strip().startswith('#')]
+with open("requirements.txt") as f:
+    requirements = [
+        line.strip()
+        for line in f.readlines()
+        if line and not line.strip().startswith("#")
+    ]
 
 extra_requirements = {}
-for fname in glob.glob('requirements/*_requirements.txt'):
-    req = os.path.basename(fname).split('_')[0]
-    with open(fname, 'r') as f:
-        extra_requirements[req] = [line.strip() for line in f.readlines()
-                                   if line and not line.strip().startswith('#')]
+for fname in glob.glob("requirements/*_requirements.txt"):
+    req = os.path.basename(fname).split("_")[0]
+    with open(fname, "r") as f:
+        extra_requirements[req] = [
+            line.strip()
+            for line in f.readlines()
+            if line and not line.strip().startswith("#")
+        ]
+
+extra_requirements["all"] = [
+    req for key in extra_requirements for req in extra_requirements[key]
+]
 
 setup(
     name="optimade",
