@@ -19,7 +19,6 @@ setup(
     install_requires=[
         "pymongo>=3.8",
         "lark-parser>=0.5.6",
-        "mongogrant",
         "mongomock>=3.16",
         "fastapi[all]",
     ],
