@@ -19,11 +19,14 @@ setup(
     install_requires=[
         "pymongo>=3.8",
         "lark-parser>=0.5.6",
-        "mongogrant",
         "mongomock>=3.16",
         "fastapi[all]",
     ],
-    extras_require={"dev": ["black", "invoke", "pre-commit", "twine"]},
+    extras_require={
+        "dev": ["black", "invoke", "pre-commit", "twine"],
+        "mongo": ["mongogrant"],
+        "django": ["django==2.2.5"],
+    },
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
     classifiers=[
         "Development Status :: 3 - Alpha",

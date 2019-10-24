@@ -1,6 +1,11 @@
 import json
-from optimade.filtertransformers.django import Lark2Django
-from unittest import TestCase
+try:
+    from optimade.filtertransformers.django import Lark2Django
+    DJANGO_NOT_IMPORTED = False
+except ImportError:
+    DJANGO_NOT_IMPORTED = True
+
+from unittest import TestCase, skipIf
 import os
 
 test_data = [
@@ -17,6 +22,7 @@ test_data = [
 ]
 
 
+@skipIf(DJANGO_NOT_IMPORTED, 'Django not found')
 class DjangoParserTest(TestCase):
     @classmethod
     def setUpClass(cls):
