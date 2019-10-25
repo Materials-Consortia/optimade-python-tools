@@ -11,6 +11,7 @@ install:
    - pip install -r requirements/dev_requirements.txt
    - pip install -r requirements/mongo_requirements.txt
    - pip install -r requirements/django_requirements.txt
+   - pip install -r requirements/elastic_requirements.txt
    - docker pull quen2404/openapi-diff
 script:
    - py.test --cov=optimade

@@ -11,7 +11,7 @@ from optimade.filtertransformers.mongo import MongoTransformer
 class TestTransformer(TestCase):
     @classmethod
     def setUpClass(cls):
-        parser = LarkParser()
+        parser = LarkParser(version=(0, 9, 7))
         transformer = MongoTransformer()
 
         def convert(_, q):
