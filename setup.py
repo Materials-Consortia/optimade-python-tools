@@ -27,7 +27,7 @@ setup(
         "dev": ["black", "invoke", "pre-commit", "twine"],
         "mongo": ["mongogrant"],
         "django": ["django==2.2.5"],
-        "elastic": ["elasticsearch_dsl>=6.4.0", "ase>=3.15.0"]
+        "elastic": ["elasticsearch_dsl>=6.4.0"]
     },
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
     classifiers=[

@@ -1,2 +1,1 @@
 elasticsearch_dsl==6.4.0
-ase==3.15.0
