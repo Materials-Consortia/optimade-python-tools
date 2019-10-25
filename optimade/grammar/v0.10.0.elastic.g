@@ -1,5 +1,5 @@
-// optimade v0.9.7 grammar spec in lark grammar format
-// CHANGED start to not require KEYWORD filter=
+// optimade v0.10.0 grammar spec in lark grammar format, 
+// written to work with the elasticsearch filtertransformer
 
 start: or_expr
 
