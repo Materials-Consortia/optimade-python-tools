@@ -101,6 +101,21 @@ class Error(BaseModel):
     )
 
 
+class Warning(Error):
+    """ OPTiMaDe-specific warning class based on jsonapi.Error. From the
+    specification:
+
+        A warning resource object is defined similarly to a JSON API
+        error object, but MUST also include the field type, which MUST
+        have the value "warning". The field detail MUST be present and
+        SHOULD contain a non-critical message, e.g., reporting
+        unrecognized search attributes or deprecated features.
+
+    """
+
+    type: str = Schema("warning", const=True)
+
+
 class Failure(BaseModel):
     """A failure object"""
 

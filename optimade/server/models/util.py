@@ -1,8 +1,27 @@
-from typing import cast, Any, Dict, Type
+from typing import cast, Any, Dict, Type, Optional
 
-from pydantic import ConstrainedInt, errors
+from pydantic import ConstrainedInt, errors, BaseModel, Schema, UrlStr
 from pydantic.types import OptionalInt
 from pydantic.validators import list_validator
+
+
+class Maintainer(BaseModel):
+    email: str = Schema(..., description="the maintainer's email address")
+
+
+class Implementation(BaseModel):
+    name: Optional[str] = Schema(..., description="name of the implementation")
+    version: Optional[str] = Schema(
+        ..., description="version string of the current implementation"
+    )
+    source_url: Optional[UrlStr] = Schema(
+        ...,
+        description="URL of the implementation source, either downloadable archive or version control system",
+    )
+    maintainer: Optional[Maintainer] = Schema(
+        ...,
+        description="A dictionary providing details about the maintainer of the implementation.",
+    )
 
 
 class NonnegativeInt(ConstrainedInt):

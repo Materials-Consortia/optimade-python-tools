@@ -6,9 +6,9 @@ from pydantic import BaseModel, validator, UrlStr, Schema
 from optimade.server.models.jsonapi import Link
 from optimade.server.models.structures import StructureResource
 from .baseinfo import BaseInfoResource
-from optimade.server.models.util import NonnegativeInt
+from optimade.server.models.util import NonnegativeInt, Implementation, Maintainer
 from .modified_jsonapi import Error
-from .jsonapi import Success, Failure
+from .jsonapi import Success, Failure, Warning
 from .entries import EntryInfoResource
 
 
@@ -118,6 +118,10 @@ class ResponseMeta(BaseModel):
     response_message: Optional[str] = Schema(
         ..., description="response string from the server"
     )
+
+    implementation: Optional[Implementation] = Schema(...)
+
+    warnings: Optional[List[Warning]]
 
 
 class StructureResponseOne(Success):
