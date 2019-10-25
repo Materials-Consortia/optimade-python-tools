@@ -132,6 +132,7 @@ def get_info(request: Request):
                 api_version="v0.9",
                 available_api_versions={"v0.9": "http://localhost:5000/"},
                 entry_types_by_format={"jsonapi": ["structures"]},
+                available_endpoints=["info", "structures"],
             )
         ),
     )
