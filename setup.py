@@ -17,10 +17,17 @@ setup(
     description="Tools for implementing and consuming OPTiMaDe APIs.",
     long_description=open(os.path.join(module_dir, "README.md")).read(),
     long_description_content_type="text/markdown",
-    install_requires=["lark-parser>=0.5.6"],
+    install_requires=[
+        "pymongo>=3.8",
+        "lark-parser>=0.5.6",
+        "mongomock>=3.16",
+        "fastapi[all]",
+    ],
     extras_require={
         "dev": ["black", "invoke", "pre-commit", "twine"],
-        "server": ["pymongo>=3.8", "mongogrant", "mongomock>=3.16", "fastapi[all]", "elasticsearch_dsl>=6.4.0", "ase>=3.15.0"]
+        "mongo": ["mongogrant"],
+        "django": ["django==2.2.5"],
+        "elastic": ["elasticsearch_dsl>=6.4.0", "ase>=3.15.0"]
     },
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
     classifiers=[

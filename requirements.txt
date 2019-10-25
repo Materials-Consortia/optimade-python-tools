@@ -1,9 +1,5 @@
 # To pin testing and deployments to specific versions
 fastapi[all]==0.28.0
 lark-parser==0.5.6
-mongogrant==0.2.2
-mongomock==3.16.0
+mongomock==3.16
 pymongo==3.8.0
-django==2.2.5
-elasticsearch_dsl==6.4.0
-ase==3.15.0
