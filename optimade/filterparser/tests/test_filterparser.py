@@ -1,6 +1,6 @@
 import os
 from glob import glob
-from unittest import TestCase
+import unittest
 
 from lark import Tree
 
@@ -9,7 +9,7 @@ from optimade.filterparser import LarkParser, ParserError
 testfile_dir = os.path.join(os.path.dirname(__file__), "testfiles")
 
 
-class ParserTest(TestCase):
+class ParserTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_filters = []
@@ -40,7 +40,7 @@ class ParserTest(TestCase):
         self.assertIsNotNone(repr(self.parser))
 
 
-class FilterParserTest(TestCase):
+class FilterParserTest(unittest.TestCase):
     version = (0, 10, 0)
     variant = 'default'
     passes = (
@@ -110,3 +110,7 @@ class FilterParserTest(TestCase):
         self.assertIsNotNone(repr(self.parser))
         self.parser.parse(self.passes[0])
         self.assertIsNotNone(repr(self.parser))
+
+
+if __name__ == '__main__':
+    unittest.main()
