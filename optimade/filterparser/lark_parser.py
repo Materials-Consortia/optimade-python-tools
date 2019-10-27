@@ -9,7 +9,7 @@ class ParserError(Exception):
 
 def get_versions():
     dct = defaultdict(dict)
-    for filename in Path(__file__).parent.joinpath('../grammar').glob('*.g'):
+    for filename in Path(__file__).parent.joinpath('../grammar').glob('*.lark'):
         tags = filename.stem.lstrip('v').split('.')
         version = tuple(map(int, tags[:3]))
         variant = 'default' if len(tags) == 3 else tags[-1]
