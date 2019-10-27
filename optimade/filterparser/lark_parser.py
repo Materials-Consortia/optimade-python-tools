@@ -1,33 +1,41 @@
-import os
-import re
-from glob import glob
-
+from pathlib import Path
 from lark import Lark, Tree
-
-parser = {}
-for name in glob(os.path.join(os.path.dirname(__file__), "../grammar", "*.g")):
-    with open(name) as f:
-        ver = tuple(
-            int(n)
-            for n in re.findall(r"\d+", str(os.path.basename(name).split(".g")[0]))
-        )
-        parser[ver] = Lark(f.read())
+from collections import defaultdict
 
 
 class ParserError(Exception):
     pass
 
 
+def get_versions():
+    dct = defaultdict(dict)
+    for filename in Path(__file__).parent.joinpath('../grammar').glob('*.g'):
+        tags = filename.stem.lstrip('v').split('.')
+        version = tuple(map(int, tags[:3]))
+        variant = 'default' if len(tags) == 3 else tags[-1]
+        dct[version][variant] = filename
+    return dct
+
+
+available_parsers = get_versions()
+
+
 class LarkParser:
-    def __init__(self, version=None):
-        if version is None:
-            self.version = sorted(parser.keys())[-1]
-            self.lark = parser[self.version]
-        elif version in parser:
-            self.lark = parser[version]
-            self.version = version
-        else:
+    def __init__(self, version=None, variant='default'):
+
+        version = version if version else max(available_parsers.keys())
+
+        if version not in available_parsers:
             raise ParserError(f"Unknown parser grammar version: {version}")
+
+        if variant not in available_parsers[version]:
+            raise ParserError(f"Unknown variant of the parser: {variant}")
+
+        self.version = version
+        self.variant = variant
+
+        self.lark = Lark(open(available_parsers[version][variant]))
+
         self.tree = None
         self.filter = None
 
@@ -44,3 +52,7 @@ class LarkParser:
             return self.tree.pretty()
         else:
             return repr(self.lark)
+
+
+if __name__ == '__main__':
+    print(available_parsers)
