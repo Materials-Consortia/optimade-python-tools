@@ -6,7 +6,7 @@ from optimade.filtertransformers.elasticsearch import Transformer, Quantity
 
 class TestTransformer(TestCase):
     def setUp(self):
-        self.parser = LarkParser(version=(0, 10, 0))
+        self.parser = LarkParser(version=(0, 10, 0), variant='elastic')
 
         nelements = Quantity(name='nelements')
         elements_only = Quantity(name='elements_only')
