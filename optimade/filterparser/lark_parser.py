@@ -34,7 +34,8 @@ class LarkParser:
         self.version = version
         self.variant = variant
 
-        self.lark = Lark(open(available_parsers[version][variant]))
+        with open(available_parsers[version][variant]) as file:
+            self.lark = Lark(file)
 
         self.tree = None
         self.filter = None
