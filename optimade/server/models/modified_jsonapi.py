@@ -1,10 +1,9 @@
-"""
-Modified jsonapi for OptimadeAPI
-"""
-from optimade.server.models import jsonapi
+"""Modified jsonapi for OptimadeAPI"""
 from datetime import datetime
 from pydantic import UrlStr, BaseModel, Schema
-from typing import Optional, Union, Any
+from typing import Optional, Union
+
+from optimade.server.models import jsonapi
 
 
 class Attributes(jsonapi.Attributes):
@@ -19,7 +18,9 @@ class Attributes(jsonapi.Attributes):
     )
     immutable_id: Optional[UrlStr] = Schema(
         ...,
-        description='an OPTIONAL field containing the entry\'s immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to "the latest version" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.',
+        description="an OPTIONAL field containing the entry's immutable ID (e.g., an UUID). "
+        'This is important for databases having preferred IDs that point to "the latest version" of a record, '
+        "but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.",
     )
 
 

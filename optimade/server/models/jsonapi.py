@@ -58,7 +58,8 @@ class Source(BaseModel):
 
     pointer: Optional[str] = Schema(
         ...,
-        description='a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].',
+        description="a JSON Pointer [RFC6901] to the associated entity in the request document "
+        '[e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].',
     )
     parmeter: Optional[str] = Schema(
         ...,
@@ -86,7 +87,8 @@ class Error(BaseModel):
     )
     title: Optional[str] = Schema(
         ...,
-        description="A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.",
+        description="A short, human-readable summary of the problem. "
+        "It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.",
     )
     detail: Optional[str] = Schema(
         ...,
@@ -101,7 +103,7 @@ class Error(BaseModel):
     )
 
 
-class Warning(Error):
+class Warnings(Error):
     """ OPTiMaDe-specific warning class based on jsonapi.Error. From the
     specification:
 
@@ -162,7 +164,8 @@ class Attributes(Dict[str, Any]):
 
 
 class RelationshipLinks(BaseModel):
-    """A resource object **MAY** contain references to other resource objects (\"relationships\"). Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."""
+    """A resource object **MAY** contain references to other resource objects (\"relationships\").
+    Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."""
 
     self: Optional[Link] = Schema(..., description="A link to itself")
     related: Optional[Link] = Schema(..., description="A related resource link")
@@ -199,7 +202,8 @@ class Relationship(BaseModel):
 
 
 class RelationshipToOne(Linkage):
-    """References to other resource objects in a to-one (\"relationship\"). Relationships can be specified by including a member in a resource's links object."""
+    """References to other resource objects in a to-one (\"relationship\").
+    Relationships can be specified by including a member in a resource's links object."""
 
 
 class RelationshipToMany(Set[Linkage]):

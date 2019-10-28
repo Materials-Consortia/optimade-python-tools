@@ -1,27 +1,7 @@
-from typing import cast, Any, Dict, Type, Optional
-
-from pydantic import ConstrainedInt, errors, BaseModel, Schema, UrlStr
+from typing import cast, Any, Dict, Type
+from pydantic import ConstrainedInt, errors
 from pydantic.types import OptionalInt
 from pydantic.validators import list_validator
-
-
-class Maintainer(BaseModel):
-    email: str = Schema(..., description="the maintainer's email address")
-
-
-class Implementation(BaseModel):
-    name: Optional[str] = Schema(..., description="name of the implementation")
-    version: Optional[str] = Schema(
-        ..., description="version string of the current implementation"
-    )
-    source_url: Optional[UrlStr] = Schema(
-        ...,
-        description="URL of the implementation source, either downloadable archive or version control system",
-    )
-    maintainer: Optional[Maintainer] = Schema(
-        ...,
-        description="A dictionary providing details about the maintainer of the implementation.",
-    )
 
 
 class NonnegativeInt(ConstrainedInt):
@@ -54,7 +34,7 @@ def list_length_validator(v: "List", field: "Field") -> "List":
     field_type: ConstrainedList = field.type_  # type: ignore
     if field_type.len_gt is not None and not len(v) > field_type.len_gt:
         raise errors.NumberNotGtError(limit_value=field_type.len_gt)
-    elif field_type.len_ge is not None and not len(v) >= field_type.len_ge:
+    if field_type.len_ge is not None and not len(v) >= field_type.len_ge:
         raise errors.NumberNotGeError(limit_value=field_type.len_ge)
     if field_type.len_lt is not None and not len(v) < field_type.len_lt:
         raise errors.NumberNotLtError(limit_value=field_type.len_lt)
