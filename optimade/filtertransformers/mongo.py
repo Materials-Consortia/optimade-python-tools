@@ -213,6 +213,11 @@ class NewTransformer(Transformer):
             # expression_phrase without 'AND'
             return arg[0]
         else:
+            # combining multiple 'and's together
+            if isinstance(arg[2], dict) and '$and' in arg[2]:
+                # TODO: it has to be tested very carefully
+                return {'$and': [arg[0], *arg[2]['$and']]}
+
             # expression_phrase with 'AND'
             return {'$and': [arg[0], arg[2]]}
 
@@ -222,6 +227,11 @@ class NewTransformer(Transformer):
             # expression_clause without 'OR'
             return arg[0]
         else:
+            # combining multiple 'and's together
+            if isinstance(arg[2], dict) and '$or' in arg[2]:
+                # TODO: it has to be tested very carefully
+                return {'$or': [arg[0], *arg[2]['$or']]}
+
             # expression_clause with 'OR'
             return {'$or': [arg[0], arg[2]]}
 
@@ -244,5 +254,25 @@ if __name__ == '__main__':
 
     f = 'a IS KNOWN AND a.a STARTS WITH "asdfsd" OR a < a AND NOT 8 >= b'
 
-    print(p.parse(f))
-    print(t.transform(p.parse(f)))
+    should_pass = (
+        'te < st',
+        'spacegroup="P2"',
+        '_cod_cell_volume<100.0',
+        '_mp_bandgap > 5.0 AND _cod_molecular_weight < 350',
+        '_cod_melting_point<300 AND nelements=4 AND elements="Si,O2"',
+        'number=0.ANDnumber=.0ANDnumber=0.0ANDnumber=+0ANDNUMBER=-0ANDnumber=0e1ANDnumber=0e-1ANDnumber=0e+1',
+        'key=value',
+        'author=" someone "',
+        'NOTICE=val',
+        'author="Sąžininga Žąsis"',
+        'a = 12345 AND b = +12 AND c = -34 AND d = 1.2 AND e = .2E7 AND f = -.2E+7 AND g = +10.01E-10 AND h = 6.03e23 AND i = .1E1 AND j = -.1e1 AND k = 1.e-12 AND l = -.1e-12 AND m = 1000000000.E1000000000',
+        'field = "!#$%&\'() * +, -./:; <= > ? @[] ^ `{|}~ % "',
+    )
+    should_fail = (
+        'number=0.0.1',
+    )
+
+    for f in should_pass:
+        print(f)
+        # print(p.parse(f))
+        print(t.transform(p.parse(f)))
