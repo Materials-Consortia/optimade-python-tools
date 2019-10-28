@@ -10,12 +10,6 @@ from .jsonapi import Links, Relationships, Meta
 class EntryResourceAttributes(BaseModel):
     """ Contains key-value pairs representing the entry's properties. """
 
-    local_id: str = Schema(
-        ...,
-        description="the entry's local database ID (having no OPTiMaDe "
-        "requirements/conventions)",
-    )
-
     last_modified: datetime = Schema(
         ...,
         description="an [ISO 8601](https://www.iso.org/standard/40874.html) "
@@ -72,10 +66,10 @@ class EntryPropertyInfo(BaseModel):
     unit: Optional[str] = Schema(..., description="the physical unit of the entry")
 
 
-class EntryInfoAttributes(BaseModel):
+class EntryInfoResource(BaseModel):
 
     formats: List[str] = Schema(
-        ["jsonapi"], description="list of available output formats."
+        default=["json"], description="list of available output formats."
     )
 
     description: str = Schema(..., description="description of the entry")
@@ -92,11 +86,3 @@ class EntryInfoAttributes(BaseModel):
         "type, where the keys are the values of the `formats` list "
         "and the values are the keys of the `properties` dictionary.",
     )
-
-
-class EntryInfoResource(BaseModel):
-    id: str = Schema(..., description="unique ID for this resource object")
-
-    type: str = Schema("info", description="type of this resource")
-
-    attributes: EntryInfoAttributes

@@ -1,14 +1,14 @@
 from datetime import datetime
 from typing import Union, List, Optional
 
-from pydantic import BaseModel, validator, UrlStr, Schema
+from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
 
 from optimade.server.models.jsonapi import Link
 from optimade.server.models.structures import StructureResource
 from .baseinfo import BaseInfoResource
-from optimade.server.models.util import NonnegativeInt, Implementation, Maintainer
+from optimade.server.models.util import NonnegativeInt
 from .modified_jsonapi import Error
-from .jsonapi import Success, Failure, Warning
+from .jsonapi import Success, Failure, Warnings
 from .entries import EntryInfoResource
 
 
@@ -27,10 +27,7 @@ class ResponseMetaQuery(BaseModel):
 
 
 class Provider(BaseModel):
-    """ Stores information on the database provider of the
-    implementation.
-
-    """
+    """Information on the database provider of the implementation."""
 
     name: str = Schema(..., description="a short name for the database provider")
 
@@ -58,6 +55,32 @@ class Provider(BaseModel):
     )
 
 
+class ImplementationMaintainer(BaseModel):
+    """Details about the maintainer of the implementation"""
+
+    email: EmailStr = Schema(..., description="the maintainer's email address")
+
+
+class Implementation(BaseModel):
+    """Information on the server implementation"""
+
+    name: Optional[str] = Schema(..., description="name of the implementation")
+
+    version: Optional[str] = Schema(
+        ..., description="version string of the current implementation"
+    )
+
+    source_url: Optional[UrlStr] = Schema(
+        ...,
+        description="URL of the implementation source, either downloadable archive or version control system",
+    )
+
+    maintainer: Optional[ImplementationMaintainer] = Schema(
+        ...,
+        description="A dictionary providing details about the maintainer of the implementation.",
+    )
+
+
 class ResponseMeta(BaseModel):
     """
     A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)
@@ -82,13 +105,7 @@ class ResponseMeta(BaseModel):
 
     time_stamp: datetime = Schema(
         ...,
-        description="a string containing the date and time at which "
-        "the query was exexcuted, in "
-        "[ISO 8601](https://www.iso.org/standard/40874.html) "
-        "format. Times MUST be time-zone aware (i.e. MUST "
-        "NOT be local times), in one of the formats allowed "
-        "by ISO 8601 (i.e. either be in UTC, and then end "
-        "with a Z, or indicate explicitly the offset).",
+        description="a string containing the date and time at which the query was exexcuted",
     )
 
     data_returned: NonnegativeInt = Schema(
@@ -119,33 +136,40 @@ class ResponseMeta(BaseModel):
         ..., description="response string from the server"
     )
 
-    implementation: Optional[Implementation] = Schema(...)
+    implementation: Optional[Implementation] = Schema(
+        ..., description="a dictionary describing the server implementation"
+    )
 
-    warnings: Optional[List[Warning]]
+    warnings: Optional[List[Warnings]] = Schema(
+        ...,
+        description="List of warning resource objects representing non-critical errors or warnings. "
+        "A warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, "
+        'which MUST have the value "warning". The field detail MUST be present and SHOULD contain a non-critical message, '
+        "e.g., reporting unrecognized search attributes or deprecated features. The field status, representing a HTTP "
+        "response status code, MUST NOT be present for a warning resource object. This is an exclusive field for error resource objects.",
+    )
 
 
 class StructureResponseOne(Success):
-    meta: ResponseMeta = Schema(
-        ..., description="Optimade meta request reply, required"
-    )
-    data: StructureResource
+    meta: ResponseMeta = Schema(...)
+    data: StructureResource = Schema(...)
 
 
 class StructureResponseMany(Success):
-    meta: ResponseMeta
-    data: List[StructureResource]
+    meta: ResponseMeta = Schema(...)
+    data: List[StructureResource] = Schema(...)
 
 
 class ErrorResponse(Failure):
-    meta: Optional[ResponseMeta]
-    errors: List[Error]
+    meta: Optional[ResponseMeta] = Schema(...)
+    errors: List[Error] = Schema(...)
 
 
 class EntryInfoResponse(Success):
-    meta: Optional[ResponseMeta]
-    data: EntryInfoResource
+    meta: Optional[ResponseMeta] = Schema(...)
+    data: EntryInfoResource = Schema(...)
 
 
 class InfoResponse(Success):
-    meta: Optional[ResponseMeta]
-    data: BaseInfoResource
+    meta: Optional[ResponseMeta] = Schema(...)
+    data: BaseInfoResource = Schema(...)

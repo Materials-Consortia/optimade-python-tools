@@ -5,10 +5,7 @@ from typing import List, Optional
 
 
 class Species(BaseModel):
-    """ A dictionary with the keys required to be used as a member of the
-    `species` list.
-
-    """
+    """ A dictionary with the keys required to be used as a member of the `species` list."""
 
     name: str = Schema(
         ...,
@@ -241,9 +238,7 @@ then, in order left to right, replaced by anonymous symbols
 """,
     )
 
-    # FIXME: re-enable this when we have length constraint working
     dimension_types: conlist(len_eq=3) = Schema(
-        # dimension_types: List[int] = Schema(
         ...,
         description="""List of three integers. For each of the three directions
 indicated by the three lattice vectors (see property `lattice_vectors`). This list
@@ -520,8 +515,8 @@ correlated.
 class StructureResource(EntryResource):
     """Representing a structure."""
 
-    type = "structure"
-    attributes: StructureResourceAttributes
+    type: str = Schema("structure", const=True)
+    attributes: StructureResourceAttributes = Schema(...)
 
 
 class StructureMapper:
