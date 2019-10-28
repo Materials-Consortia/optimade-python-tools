@@ -42,7 +42,7 @@ property: IDENTIFIER ( "." IDENTIFIER )*
 
 string: ESCAPED_STRING
 
-number: SIGNED_NUMBER
+number: SIGNED_INT | SIGNED_FLOAT
 
 // TOKENS
 
@@ -76,7 +76,8 @@ ANY: "ANY"
 %import common.ESCAPED_STRING
 
 // number token syntax:
-%import common.SIGNED_NUMBER
+%import common.SIGNED_INT
+%import common.SIGNED_FLOAT
 
 // White-space:
 %import common.WS
