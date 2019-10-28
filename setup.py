@@ -9,6 +9,7 @@ setup(
     version="0.2.0",
     packages=find_packages(),
     include_package_data=True,
+    package_data={'': ['*.g']},
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTiMaDe Development Team",
@@ -26,6 +27,7 @@ setup(
         "dev": ["black", "invoke", "pre-commit", "twine"],
         "mongo": ["mongogrant"],
         "django": ["django==2.2.5"],
+        "elastic": ["elasticsearch_dsl>=6.4.0"]
     },
     tests_require=["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
     classifiers=[
