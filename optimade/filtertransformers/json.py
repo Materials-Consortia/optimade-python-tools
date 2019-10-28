@@ -7,7 +7,7 @@ class JSONTransformer(Transformer):
         self.compact = compact
         super().__init__()
 
-    def __default__(self, data, children):
+    def __default__(self, data, children, meta):
         items = []
         for c in children:
             if isinstance(c, Token):
@@ -35,3 +35,26 @@ class JSONTransformer(Transformer):
             del tree_repr["@module"]
             del tree_repr["@class"]
         return tree_repr
+
+
+class DebugTransformer(Transformer):
+    """Prints out all the nodes and its arguments during the walk-through of the tree."""
+
+    def __init__(self):
+        super().__init__()
+
+    def __default__(self, data, children, meta):
+        print('Node: ', data, children)
+        return data
+
+
+if __name__ == '__main__':
+    from optimade.filterparser import LarkParser
+
+    p = LarkParser(version=(0, 10, 0))
+    t = DebugTransformer()
+    # t = JSONTransformer(compact=True)
+
+    f = 'a.a = "asdfsd" OR a<a AND NOT b>=8'
+    print(p.parse(f))
+    print(t.transform(p.parse(f)))
