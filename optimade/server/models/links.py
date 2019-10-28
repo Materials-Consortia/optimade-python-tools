@@ -34,30 +34,31 @@ class LinksResource(EntryResource):
         "and Provider Objects.",
     )
 
-    attributes: LinksResourceAttributes
+    attributes: LinksResourceAttributes = Schema(
+        ...,
+        description="a dictionary containing key-value pairs representing the "
+        "entry's properties.",
+    )
 
     @validator("type")
     def type_must_be_in_specific_set(cls, value):
-        if value not in {"parent", "child", "provider"}:
-            raise AssertionError(
-                "name of Links endpoint resource MUST be either 'parent, 'child', or 'provider'"
-            )
+        assert value in {"parent", "child", "provider"}
         return value
 
 
 class ChildResource(LinksResource):
     """A child object representing a link to an implementation exactly one layer below the current implementation"""
 
-    type = Schema("child", const=True)
+    type: str = Schema("child", const=True)
 
 
 class ParentResource(LinksResource):
     """A parent object representing a link to an implementation exactly one layer above the current implementation"""
 
-    type = Schema("parent", const=True)
+    type: str = Schema("parent", const=True)
 
 
 class ProviderResource(LinksResource):
     """A provider object representing a link to another index meta-database by another database provider"""
 
-    type = Schema("provider", const=True)
+    type: str = Schema("provider", const=True)
