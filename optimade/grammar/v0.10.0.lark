@@ -19,8 +19,7 @@ expression: expression_clause [ OR expression ]
 expression_clause: expression_phrase [ AND expression_clause ]
 expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression ")" )
 // Note: support for constant_first_comparison is OPTIONAL
-comparison: constant_first_comparison
-          | property_first_comparison
+comparison: constant_first_comparison | property_first_comparison
 
 // Note: support for set_zip_op_rhs in comparison is OPTIONAL
 property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs | set_zip_op_rhs )
@@ -67,7 +66,7 @@ ONLY: "ONLY"
 ANY: "ANY"
 
 // operator_comparison operator tokens:
-!operator: ( "<" [ "=" ] | ">" [ "=" ] | "=" | "!=" )
+!operator: ( "<" | "<="  | ">" | ">=" | "=" | "!=" )
 
 // property syntax
 %import common.CNAME -> IDENTIFIER
