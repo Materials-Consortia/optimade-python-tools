@@ -2,17 +2,17 @@ import urllib
 from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
-from typing import Union, Dict
+from typing import Union
 
 from fastapi import FastAPI, Depends
 from starlette.requests import Request
 
-from .deps import EntryListingQueryParams, EntryInfoQueryParams
+from .deps import EntryListingQueryParams
 from .collections import MongoCollection
 from .models.jsonapi import Link
-from .models.modified_jsonapi import Links
+from .models.optimade_json import Links
 from .models.structures import StructureResource
-from .models.entries import EntryInfoAttributes, EntryPropertyInfo, EntryInfoResource
+from .models.entries import EntryPropertyInfo, EntryInfoResource
 from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
 from .models.toplevel import (
     ResponseMeta,
@@ -64,7 +64,7 @@ if not USE_REAL_MONGO and test_structures_path.exists():
     print("done inserting test structures...")
 
 
-def meta_values(url, data_returned, more_data_available=False):
+def meta_values(url, data_returned, data_available, more_data_available=False):
     """Helper to initialize the meta values"""
     parse_result = urllib.parse.urlparse(url)
     return ResponseMeta(
@@ -82,6 +82,7 @@ def meta_values(url, data_returned, more_data_available=False):
             homepage=None,
             index_base_url=None,
         ),
+        data_available=data_available,
     )
 
 
@@ -102,7 +103,7 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
     parse_result = urllib.parse.urlparse(str(request.url))
     if more_data_available:
         query = urllib.parse.parse_qs(parse_result.query)
-        query["page[offset]"] = int(query.get("page[offset]", "[0]")[0]) + len(results)
+        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         links = Links(
             next=Link(
@@ -114,7 +115,9 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
     return StructureResponseMany(
         links=links,
         data=results,
-        meta=meta_values(str(request.url), len(results), more_data_available),
+        meta=meta_values(
+            str(request.url), len(results), data_available, more_data_available
+        ),
     )
 
 
@@ -126,12 +129,14 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
 )
 def get_info(request: Request):
     return InfoResponse(
-        meta=meta_values(str(request.url), 1, more_data_available=False),
+        meta=meta_values(str(request.url), 1, 1, more_data_available=False),
         data=BaseInfoResource(
             attributes=BaseInfoAttributes(
-                api_version="v0.9",
-                available_api_versions={"v0.9": "http://localhost:5000/"},
-                entry_types_by_format={"jsonapi": ["structures"]},
+                api_version="v0.10",
+                available_api_versions=[
+                    {"url": "http://localhost:5000/", "version": "0.10.0"}
+                ],
+                entry_types_by_format={"json": ["structures"]},
                 available_endpoints=["info", "structures"],
             )
         ),
@@ -146,27 +151,23 @@ def get_info(request: Request):
 )
 def get_structures_info(request: Request):
     return EntryInfoResponse(
-        meta=meta_values(str(request.url), 1, more_data_available=False),
+        meta=meta_values(str(request.url), 1, 1, more_data_available=False),
         data=EntryInfoResource(
-            id="",
-            type="structures/info",
-            attributes=EntryInfoAttributes(
-                description="attributes that can be queried",
-                properties={
-                    "exmpl_p": EntryPropertyInfo(description="a sample custom property")
-                },
-                output_fields_by_format={
-                    "jsonapi": [
-                        "id",
-                        "type",
-                        "elements",
-                        "nelements",
-                        "chemical_formula",
-                        "formula_prototype",
-                        "exmpl_p",
-                    ]
-                },
-            ),
+            description="attributes that can be queried",
+            properties={
+                "exmpl_p": EntryPropertyInfo(description="a sample custom property")
+            },
+            output_fields_by_format={
+                "json": [
+                    "id",
+                    "type",
+                    "elements",
+                    "nelements",
+                    "chemical_formula",
+                    "formula_prototype",
+                    "exmpl_p",
+                ]
+            },
         ),
     )
 

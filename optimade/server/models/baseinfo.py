@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 from pydantic import BaseModel, UrlStr, Schema, validator
 
-from .modified_jsonapi import Resource
+from .optimade_json import Resource
 
 
 class AvailableApiVersion(BaseModel):

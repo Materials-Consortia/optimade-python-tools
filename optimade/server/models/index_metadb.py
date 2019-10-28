@@ -9,7 +9,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
     """Attributes for Base URL Info endpoint for an Index Meta-Database"""
 
     is_index: bool = Schema(
-        True,
+        default=True,
         const=True,
         description="If true, this is an index meta-database base URL (see section Index Meta-Database). "
         "If this member is not provided, the client MUST assume this is not an index meta-database base URL "
@@ -20,7 +20,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
 class RelatedChildResource(ChildResource):
     """Keep only type and id of a ChildResource"""
 
-    attributes: None
+    attributes: None = Schema(default=None, const=True)
 
 
 class IndexRelationship(BaseModel):
@@ -36,7 +36,7 @@ class IndexRelationship(BaseModel):
 class IndexInfoResource(BaseInfoResource):
     """Index Meta-Database Base URL Info enpoint resource"""
 
-    attributes: IndexInfoAttributes
+    attributes: IndexInfoAttributes = Schema(...)
     relationships: Dict[str, IndexRelationship] = Schema(
         ...,
         description="Reference to the child identifier object under the links endpoint "

@@ -13,7 +13,7 @@ class Attributes(jsonapi.Attributes):
         ...,
         description="the entry's local database ID (having no OPTiMaDe requirements/conventions",
     )
-    lad_modified: datetime = Schema(
+    last_modified: datetime = Schema(
         ..., description="an ISO 8601 representing the entry's last modification time"
     )
     immutable_id: Optional[UrlStr] = Schema(

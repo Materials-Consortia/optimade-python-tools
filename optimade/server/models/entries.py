@@ -3,7 +3,7 @@ from typing import Optional, Dict, List
 
 from pydantic import BaseModel, Schema
 
-from .modified_jsonapi import Resource
+from .optimade_json import Resource
 from .jsonapi import Links, Relationships, Meta
 
 

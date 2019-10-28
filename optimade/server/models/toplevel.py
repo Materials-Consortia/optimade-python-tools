@@ -7,7 +7,7 @@ from optimade.server.models.jsonapi import Link
 from optimade.server.models.structures import StructureResource
 from .baseinfo import BaseInfoResource
 from optimade.server.models.util import NonnegativeInt
-from .modified_jsonapi import Error
+from .optimade_json import Error
 from .jsonapi import Success, Failure, Warnings
 from .entries import EntryInfoResource
 

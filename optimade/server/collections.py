@@ -10,7 +10,7 @@ from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 
 from .models.util import NonnegativeInt
-from .models.modified_jsonapi import Resource
+from .models.optimade_json import Resource
 from .models.structures import StructureMapper
 from .deps import EntryListingQueryParams
 
@@ -20,7 +20,7 @@ config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
 RESPONSE_LIMIT = config["DEFAULT"].getint("RESPONSE_LIMIT")
 
 
-class EntryCollection(Collection):
+class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     def __init__(self, collection, resource_cls: Resource):
         self.collection = collection
         self.parser = LarkParser()
@@ -51,7 +51,6 @@ class EntryCollection(Collection):
             Tuple[List[Entry], bool, NonnegativeInt]: (results, more_data_available, data_available)
 
         """
-        pass
 
     def count(self, **kwargs):
         return self.collection.count(**kwargs)
@@ -119,7 +118,7 @@ class MongoCollection(EntryCollection):
                 status_code=400,
                 detail=f"Max response_limit/page[limit] is {RESPONSE_LIMIT}",
             )
-        elif limit == 0:
+        if limit == 0:
             limit = RESPONSE_LIMIT
         cursor_kwargs["limit"] = limit
 
