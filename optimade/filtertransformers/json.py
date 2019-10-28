@@ -35,6 +35,3 @@ class JSONTransformer(Transformer):
             del tree_repr["@module"]
             del tree_repr["@class"]
         return tree_repr
-
-
-
