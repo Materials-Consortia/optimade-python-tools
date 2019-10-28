@@ -63,7 +63,7 @@ ONLY: "ONLY"
 ANY: "ANY"
 
 // operator_comparison operator tokens:
-operator: ( "<" [ "=" ] | ">" [ "=" ] | "=" | "!=" )
+!operator: ( "<" [ "=" ] | ">" [ "=" ] | "=" | "!=" )
 
 // property syntax
 %import common.CNAME -> IDENTIFIER
