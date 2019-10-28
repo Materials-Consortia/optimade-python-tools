@@ -4,9 +4,9 @@
 filter: expression*
 
 // values
-constant: STRING | NUMBER
+constant: string | number
 // Note: support for property in value is OPTIONAL
-value: STRING | NUMBER | property
+value: string | number | property
 
 // Support for operator in value_list is OPTIONAL
 value_list: [ operator ] value ( "," [ operator ] value )*
@@ -29,7 +29,7 @@ constant_first_comparison: constant value_op_rhs
 predicate_comparison: length_comparison
 value_op_rhs: operator value
 known_op_rhs: IS ( KNOWN | UNKNOWN )
-fuzzy_string_op_rhs: CONTAINS STRING | STARTS [ WITH ] STRING | ENDS [ WITH ] STRING
+fuzzy_string_op_rhs: CONTAINS string | STARTS [ WITH ] string | ENDS [ WITH ] string
 // Note: support for ONLY in set_op_rhs is OPTIONAL
 // Note: support for [ operator ] in set_op_rhs is OPTIONAL
 set_op_rhs: HAS ( [ operator ] value | ALL value_list | ANY value_list | ONLY value_list )
@@ -39,6 +39,10 @@ property_zip_addon: ":" property (":" property)*
 
 // property
 property: IDENTIFIER ( "." IDENTIFIER )*
+
+string: ESCAPED_STRING
+
+number: SIGNED_NUMBER
 
 // TOKENS
 
@@ -69,10 +73,10 @@ ANY: "ANY"
 %import common.CNAME -> IDENTIFIER
 
 // Strings:
-%import common.ESCAPED_STRING -> STRING
+%import common.ESCAPED_STRING
 
 // number token syntax:
-%import common.SIGNED_NUMBER -> NUMBER
+%import common.SIGNED_NUMBER
 
 // White-space:
 %import common.WS
