@@ -36,7 +36,7 @@ class BaseInfoAttributes(BaseModel):
         description="List of available endpoints (i.e., the string to be appended to the base URL).",
     )
     entry_types_by_format: Dict[str, List[str]] = Schema(
-        default={"json": ["structures", "all", "info"]},
+        default={"json": ["structures", "all"]},
         description="Available entry endpoints as a function of output formats.",
     )
     is_index: Optional[bool] = Schema(
@@ -46,7 +46,7 @@ class BaseInfoAttributes(BaseModel):
         "(i.e., the default is for is_index to be false).",
     )
 
-    @validator("entry_types_by_format")
+    @validator("entry_types_by_format", whole=True)
     def formats_and_endpoints_must_be_valid(cls, v, values):
         for format_, endpoints in v.items():
             if format_ not in values["formats"]:

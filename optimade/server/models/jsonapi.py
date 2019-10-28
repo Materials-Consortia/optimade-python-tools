@@ -1,6 +1,4 @@
-"""
-This module should reproduce https://jsonapi.org/schema
-"""
+"""This module should reproduce https://jsonapi.org/schema"""
 from typing import Optional, Set, Union, Dict, Any
 from pydantic import BaseModel, UrlStr, constr, Schema
 
