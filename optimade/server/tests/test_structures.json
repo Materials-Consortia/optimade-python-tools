@@ -5,12 +5,18 @@
 	"elements": [
 		"Ac"
 	],
+  "elements_ratios": [1.0],
+  "dimension_types": [1, 1, 1],
+  "cartesian_site_positions": [[0.0, 0.0, 0.0]],
+  "species_at_sites": ["Ac"],
+  "species": [{"name": "Ac", "chemical_symbols": ["Ac"], "concentration": [1.0]}],
+  "structure_features": [],
 	"nelements": 1,
 	"pretty_formula": "Ac",
 	"formula_anonymous": "A",
 	"_mp_chemsys": "Ac",
 	"task_id": "mpf-1",
-	"last_updated": {
+	"last_modified": {
 		"$date": "2019-06-08T05:13:37.331Z"
 	}
 },
@@ -25,10 +31,20 @@
 	],
 	"nelements": 3,
 	"pretty_formula": "Ac2AgIr",
-	"formula_anonymous": "ABC2",
+	"formula_anonymous": "A2BC",
 	"_mp_chemsys": "Ac-Ag-Ir",
 	"task_id": "mpf-2",
-	"last_updated": {
+  "elements_ratios": [2.0, 1.0, 1.0],
+  "dimension_types": [1, 1, 1],
+  "cartesian_site_positions": [[0.0, 0.0, 0.0], [0.2, 0.5, 0.5], [0.8, 0.8, 0.8]],
+  "species_at_sites": ["Ac", "Ag", "Ir"],
+  "species": [
+      {"name": "Ac", "chemical_symbols": ["Ac"], "concentration": [1.0]},
+      {"name": "Ag", "chemical_symbols": ["Ag"], "concentration": [1.0]},
+      {"name": "Ir", "chemical_symbols": ["Ir"], "concentration": [1.0]}
+  ],
+  "structure_features": [],
+	"last_modified": {
 		"$date": "2019-06-08T05:13:37.331Z"
 	}
 },
@@ -43,10 +59,20 @@
 	],
 	"nelements": 3,
 	"pretty_formula": "Ac2AgPb",
-	"formula_anonymous": "ABC2",
+	"formula_anonymous": "A2BC",
 	"_mp_chemsys": "Ac-Ag-Pb",
+  "elements_ratios": [2.0, 1.0, 1.0],
+  "dimension_types": [1, 1, 1],
+  "cartesian_site_positions": [[0.0, 0.0, 0.0], [0.2, 0.5, 0.5], [0.8, 0.8, 0.8]],
+  "species_at_sites": ["Ac", "Ag", "Ir"],
+  "species": [
+      {"name": "Ac", "chemical_symbols": ["Ac"], "concentration": [1.0]},
+      {"name": "Ag", "chemical_symbols": ["Ag"], "concentration": [1.0]},
+      {"name": "Ir", "chemical_symbols": ["Ir"], "concentration": [1.0]}
+  ],
+  "structure_features": [],
 	"task_id": "mpf-3",
-	"last_updated": {
+	"last_modified": {
 		"$date": "2019-06-08T05:13:37.331Z"
 	}
 },
@@ -59,11 +85,24 @@
 		"Mg"
 	],
 	"nelements": 2,
+  "elements_ratios": [2.0, 1.0],
+  "dimension_types": [1, 1, 1],
+  "cartesian_site_positions": [
+      [0.0, 0.0, 0.0],
+      [0.2, 0.5, 0.5],
+      [0.3, 0.5, 0.5]
+  ],
+  "species_at_sites": ["Ac", "Mg"],
+  "species": [
+      {"name": "Ac", "chemical_symbols": ["Ac"], "concentration": [1.0]},
+      {"name": "Mg", "chemical_symbols": ["Mg"], "concentration": [1.0]}
+  ],
+  "structure_features": [],
 	"pretty_formula": "Ac2Mg",
-	"formula_anonymous": "AB2",
+	"formula_anonymous": "A2B",
 	"_mp_chemsys": "Ac-Mg",
 	"task_id": "mpf-23",
-	"last_updated": {
+	"last_modified": {
 		"$date": "2019-06-08T05:13:37.335Z"
 	}
 },
@@ -77,12 +116,27 @@
 	],
 	"nelements": 2,
 	"pretty_formula": "Ac2O3",
-	"formula_anonymous": "A2B3",
+	"formula_anonymous": "A3B2",
 	"_mp_chemsys": "Ac-O",
 	"task_id": "mpf-30",
-	"last_updated": {
+	"last_modified": {
 		"$date": "2019-06-08T05:13:37.337Z"
-	}
+	},
+  "elements_ratios": [2.0, 3.0],
+  "dimension_types": [1, 1, 1],
+  "cartesian_site_positions": [
+      [0.1, 0.0, 0.0],
+      [0.2, 0.5, 0.5],
+      [0.3, 0.5, 0.5],
+      [0.4, 0.5, 0.5],
+      [0.5, 0.5, 0.5]
+    ],
+  "species_at_sites": ["Ac", "O"],
+  "species": [
+      {"name": "Ac", "chemical_symbols": ["Ac"], "concentration": [1.0]},
+      {"name": "O", "chemical_symbols": ["O"], "concentration": [1.0]}
+  ],
+  "structure_features": []
 },
 {
 	"_id": {
@@ -96,12 +150,29 @@
 	],
 	"nelements": 4,
 	"pretty_formula": "AcCuO2F",
-	"formula_anonymous": "ABCD2",
+	"formula_anonymous": "A2BCD",
 	"_mp_chemsys": "Ac-Cu-F-O",
 	"task_id": "mpf-110",
-	"last_updated": {
+	"last_modified": {
 		"$date": "2019-06-08T05:13:37.351Z"
-	}
+	},
+  "elements_ratios": [1.0, 1.0, 2.0, 1.0],
+  "dimension_types": [1, 1, 1],
+  "cartesian_site_positions": [
+      [0.1, 0.0, 0.0], 
+      [0.2, 0.5, 0.5],
+      [0.3, 0.5, 0.5],
+      [0.4, 0.5, 0.5],
+      [0.5, 0.5, 0.5]
+    ],
+  "species_at_sites": ["Ac", "Cu", "O", "F"],
+  "species": [
+      {"name": "Ac", "chemical_symbols": ["Ac"], "concentration": [1.0]},
+      {"name": "Cu", "chemical_symbols": ["Cu"], "concentration": [1.0]},
+      {"name": "O", "chemical_symbols": ["O"], "concentration": [1.0]},
+      {"name": "F", "chemical_symbols": ["F"], "concentration": [1.0]}
+  ],
+  "structure_features": []
 },
 {
 	"_id": {
@@ -115,223 +186,18 @@
 	"formula_anonymous": "A",
 	"_mp_chemsys": "Ag",
 	"task_id": "mpf-200",
-	"last_updated": {
+	"last_modified": {
 		"$date": "2019-06-08T05:13:37.365Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410700ddd"
 	},
-	"elements": [
-		"Ag",
-		"Br",
-		"Cl",
-		"Te"
-	],
-	"nelements": 4,
-	"pretty_formula": "Ag10Te4BrCl",
-	"formula_anonymous": "ABC4D10",
-	"_mp_chemsys": "Ag-Br-Cl-Te",
-	"task_id": "mpf-220",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.369Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410700e04"
-	},
-	"elements": [
-		"Ag",
-		"C",
-		"Cl",
-		"N",
-		"O",
-		"S"
-	],
-	"nelements": 6,
-	"pretty_formula": "Ag2CSNClO4",
-	"formula_anonymous": "ABCDE2F4",
-	"_mp_chemsys": "Ag-C-Cl-N-O-S",
-	"task_id": "mpf-259",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.377Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410700e11"
-	},
-	"elements": [
-		"Ag",
-		"C",
-		"Cl",
-		"H",
-		"N"
-	],
-	"nelements": 5,
-	"pretty_formula": "Ag2H12C6N3Cl",
-	"formula_anonymous": "AB2C3D6E12",
-	"_mp_chemsys": "Ag-C-Cl-H-N",
-	"task_id": "mpf-272",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.380Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410700e15"
-	},
-	"elements": [
-		"Ag",
-		"C",
-		"H",
-		"N",
-		"O"
-	],
-	"nelements": 5,
-	"pretty_formula": "Ag2H2C2N6O13",
-	"formula_anonymous": "A2B2C2D6E13",
-	"_mp_chemsys": "Ag-C-H-N-O",
-	"task_id": "mpf-276",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.381Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410700e1a"
-	},
-	"elements": [
-		"Ag",
-		"C",
-		"Cl",
-		"H",
-		"N",
-		"O",
-		"S"
-	],
-	"nelements": 7,
-	"pretty_formula": "Ag2H8C2S2N5ClO3",
-	"formula_anonymous": "AB2C2D2E3F5G8",
-	"_mp_chemsys": "Ag-C-Cl-H-N-O-S",
-	"task_id": "mpf-281",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.382Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410700ebf"
-	},
-	"elements": [
-		"Ag",
-		"Br",
-		"Cl",
-		"Hg",
-		"I",
-		"S"
-	],
-	"nelements": 6,
-	"pretty_formula": "Ag4Hg5S5IBrCl2",
-	"formula_anonymous": "ABC2D4E5F5",
-	"_mp_chemsys": "Ag-Br-Cl-Hg-I-S",
-	"task_id": "mpf-446",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.412Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410700f28"
-	},
-	"elements": [
-		"Ag",
-		"B",
-		"C",
-		"Cl",
-		"H",
-		"N",
-		"O",
-		"P"
-	],
-	"nelements": 8,
-	"pretty_formula": "AgB10P2H40C15NCl2O3",
-	"formula_anonymous": "ABC2D2E3F10G15H40",
-	"_mp_chemsys": "Ag-B-C-Cl-H-N-O-P",
-	"task_id": "mpf-551",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.434Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410700f79"
-	},
-	"elements": [
-		"Ag",
-		"C",
-		"Cl",
-		"H",
-		"N",
-		"O",
-		"S"
-	],
-	"nelements": 7,
-	"pretty_formula": "AgH14C3S3N6ClO",
-	"formula_anonymous": "ABCD3E3F6G14",
-	"_mp_chemsys": "Ag-C-Cl-H-N-O-S",
-	"task_id": "mpf-632",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.450Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410701bdc"
-	},
-	"elements": [
-		"Ba",
-		"Ce",
-		"Fe",
-		"H",
-		"Na",
-		"O",
-		"Si",
-		"Ti"
-	],
-	"nelements": 8,
-	"pretty_formula": "Ba2NaCe2Ti2FeSi8HO27",
-	"formula_anonymous": "ABCD2E2F2G8H27",
-	"_mp_chemsys": "Ba-Ce-Fe-H-Na-O-Si-Ti",
-	"task_id": "mpf-3803",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.943Z"
-	}
-},
-{
-	"_id": {
-		"$oid": "5cfb441f053b174410701bec"
-	},
-	"elements": [
-		"Ba",
-		"F",
-		"H",
-		"Mn",
-		"Na",
-		"O",
-		"Re",
-		"Si",
-		"Ti"
-	],
-	"nelements": 9,
-	"pretty_formula": "Ba2NaTi2MnRe2Si8HO26F",
-	"formula_anonymous": "ABCDE2F2G2H8I26",
-	"_mp_chemsys": "Ba-F-H-Mn-Na-O-Re-Si-Ti",
-	"task_id": "mpf-3819",
-	"last_updated": {
-		"$date": "2019-06-08T05:13:37.945Z"
-	}
+  "elements_ratios": [1.0],
+  "dimension_types": [1, 1, 1],
+  "structure_features": [],
+  "cartesian_site_positions": [
+      [0.1, 0.0, 0.0]
+    ],
+  "species_at_sites": ["Ag"],
+  "species": [
+      {"name": "Ag", "chemical_symbols": ["Ag"], "concentration": [1.0]}
+  ]
 }]
 
