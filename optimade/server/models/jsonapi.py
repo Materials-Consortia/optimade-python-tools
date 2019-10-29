@@ -59,7 +59,7 @@ class ErrorSource(BaseModel):
         description="a JSON Pointer [RFC6901] to the associated entity in the request document "
         '[e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].',
     )
-    parmeter: Optional[str] = Schema(
+    parameter: Optional[str] = Schema(
         ...,
         description="a string indicating which URI query parameter caused the error.",
     )
