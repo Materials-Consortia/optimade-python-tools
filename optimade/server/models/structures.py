@@ -88,7 +88,7 @@ class Assembly(BaseModel):
 
 """
 
-    sites_in_groups: List[int] = Schema(
+    sites_in_groups: List[List[int]] = Schema(
         ...,
         description="""Index of the sites (0-based) that belong to each group
 for each assembly.
@@ -515,20 +515,20 @@ correlated.
 class StructureResource(EntryResource):
     """Representing a structure."""
 
-    type: str = Schema("structure", const=True)
+    type: str = Schema(
+        "structures", const=True, description="type of the entry, must be 'structures'"
+    )
     attributes: StructureResourceAttributes = Schema(...)
 
 
 class StructureMapper:
     aliases = (
-        ("id", "task_id"),
-        ("local_id", "task_id"),
-        ("last_modified", "last_updated"),
+        ("id", "_id"),
         ("formula_prototype", "formula_anonymous"),
-        ("chemical_formula", "pretty_formula"),
+        ("chemical_formula_descriptive", "chemical_formula"),
+        ("chemical_formula_reduced", "chemical_formula"),
+        ("chemical_formula_anonymous", "chemical_formula"),
     )
-
-    list_fields = ("elements",)
 
     @classmethod
     def alias_for(cls, field):
@@ -536,9 +536,9 @@ class StructureMapper:
 
     @classmethod
     def map_back(cls, doc):
-        if "_id" in doc:
-            del doc["_id"]
-        print(doc)
+        if "nsites" not in doc:
+            doc["nsites"] = len(doc.get("cartesian_site_positions", []))
+        # print(doc)
         mapping = ((real, alias) for alias, real in cls.aliases)
         newdoc = {}
         reals = {real for alias, real in cls.aliases}
@@ -548,16 +548,13 @@ class StructureMapper:
         for real, alias in mapping:
             if real in doc:
                 newdoc[alias] = doc[real]
-        for k in newdoc:
-            if k in cls.list_fields:
-                newdoc[k] = ",".join(sorted(newdoc[k]))
 
-        print(newdoc)
+        # print(newdoc)
         if "attributes" in newdoc:
             raise Exception("Will overwrite doc field!")
         newdoc["attributes"] = newdoc.copy()
-        newdoc["attributes"].pop("id")
         for k in list(newdoc.keys()):
             if k not in ("id", "attributes"):
                 del newdoc[k]
+        newdoc["type"] = "structures"
         return newdoc

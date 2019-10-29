@@ -8,7 +8,7 @@ from .models.util import NonnegativeInt
 
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
-RESPONSE_LIMIT = config["DEFAULT"].getint("RESPONSE_LIMIT")
+PAGE_LIMIT = config["DEFAULT"].getint("PAGE_LIMIT")
 
 
 class EntryListingQueryParams:
@@ -28,7 +28,7 @@ Example: `chemical_formula = "Al" OR (prototype_formula = "AB" AND elements HAS 
         email_address: EmailStr = Query(None),
         response_fields: str = Query(None),
         sort: str = Query(None),
-        page_limit: NonnegativeInt = Query(RESPONSE_LIMIT),
+        page_limit: NonnegativeInt = Query(PAGE_LIMIT),
         page_offset: NonnegativeInt = Query(0),
         page_page: NonnegativeInt = Query(0),
         page_cursor: NonnegativeInt = Query(0),

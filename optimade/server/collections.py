@@ -10,21 +10,27 @@ from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 
 from .models.util import NonnegativeInt
-from .models.optimade_json import Resource
+from .models.entries import EntryResource, EntryResourceAttributes
 from .models.structures import StructureMapper
 from .deps import EntryListingQueryParams
 
 
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
-RESPONSE_LIMIT = config["DEFAULT"].getint("RESPONSE_LIMIT")
+PAGE_LIMIT = config["DEFAULT"].getint("PAGE_LIMIT")
 
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
-    def __init__(self, collection, resource_cls: Resource):
+    def __init__(
+        self,
+        collection,
+        resource_cls: EntryResource,
+        resource_attributes: EntryResourceAttributes,
+    ):
         self.collection = collection
         self.parser = LarkParser()
         self.resource_cls = resource_cls
+        self.resource_attributes = resource_attributes
 
     def __len__(self):
         return self.collection.count()
@@ -38,11 +44,11 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     @abstractmethod
     def find(
         self, params: EntryListingQueryParams
-    ) -> Tuple[List[Resource], bool, NonnegativeInt]:
+    ) -> Tuple[List[EntryResource], bool, NonnegativeInt]:
         """
         Fetches results and indicates if more data is available.
 
-        Also gives the total number of data available in the absence of response_limit.
+        Also gives the total number of data available in the absence of page_limit.
 
         Args:
             params (EntryListingQueryParams): entry listing URL query params
@@ -62,9 +68,10 @@ class MongoCollection(EntryCollection):
         collection: Union[
             pymongo.collection.Collection, mongomock.collection.Collection
         ],
-        resource_cls: Resource,
+        resource_cls: EntryResource,
+        resource_attributes: EntryResourceAttributes,
     ):
-        super().__init__(collection, resource_cls)
+        super().__init__(collection, resource_cls, resource_attributes)
         self.transformer = MongoTransformer()
 
     def __len__(self):
@@ -81,7 +88,7 @@ class MongoCollection(EntryCollection):
 
     def find(
         self, params: EntryListingQueryParams
-    ) -> Tuple[List[Resource], bool, NonnegativeInt]:
+    ) -> Tuple[List[EntryResource], bool, NonnegativeInt]:
         criteria = self._parse_params(params)
         criteria_nolimit = criteria.copy()
         del criteria_nolimit["limit"]
@@ -103,28 +110,29 @@ class MongoCollection(EntryCollection):
         else:
             cursor_kwargs["filter"] = {}
 
-        if params.response_format and params.response_format != "jsonapi":
+        if params.response_format and params.response_format != "json":
             raise HTTPException(
-                status_code=400, detail="Only 'jsonapi' response_format supported"
+                status_code=400, detail="Only 'json' response_format supported"
             )
 
-        limit = RESPONSE_LIMIT
-        if params.response_limit != RESPONSE_LIMIT:
-            limit = params.response_limit
-        elif params.page_limit != RESPONSE_LIMIT:
+        limit = PAGE_LIMIT
+        if params.page_limit != PAGE_LIMIT:
             limit = params.page_limit
-        if limit > RESPONSE_LIMIT:
+        elif params.page_limit != PAGE_LIMIT:
+            limit = params.page_limit
+        if limit > PAGE_LIMIT:
             raise HTTPException(
-                status_code=400,
-                detail=f"Max response_limit/page[limit] is {RESPONSE_LIMIT}",
+                status_code=400, detail=f"Max page_limit is {PAGE_LIMIT}"
             )
         if limit == 0:
-            limit = RESPONSE_LIMIT
+            limit = PAGE_LIMIT
         cursor_kwargs["limit"] = limit
 
-        fields = {"id", "local_id", "last_modified"}
         if params.response_fields:
-            fields |= set(params.response_fields.split(","))
+            fields = set(params.response_fields.split(","))
+        else:
+            fields = {"id", "type"}
+            fields |= set(self.resource_attributes.__fields__.keys())
         cursor_kwargs["projection"] = [StructureMapper.alias_for(f) for f in fields]
 
         if params.sort:

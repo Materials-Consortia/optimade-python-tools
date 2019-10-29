@@ -5,14 +5,17 @@ from pathlib import Path
 from typing import Union
 
 from fastapi import FastAPI, Depends
+from fastapi.encoders import jsonable_encoder
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
+from starlette.responses import JSONResponse
 
 from .deps import EntryListingQueryParams
 from .collections import MongoCollection
-from .models.jsonapi import Link
-from .models.optimade_json import Links
-from .models.structures import StructureResource
-from .models.entries import EntryPropertyInfo, EntryInfoResource
+from .models.jsonapi import Link, ToplevelLinks
+from .models.optimade_json import Error
+from .models.structures import StructureResource, StructureResourceAttributes
+from .models.entries import EntryInfoResource
 from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
 from .models.toplevel import (
     ResponseMeta,
@@ -45,10 +48,12 @@ else:
     from mongomock import MongoClient
 
 client = MongoClient()
-structures = MongoCollection(client.optimade.structures, StructureResource)
+structures = MongoCollection(
+    client.optimade.structures, StructureResource, StructureResourceAttributes
+)
 
 test_structures_path = (
-    Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
+    Path(__file__).resolve().parent.joinpath("tests/test_more_structures.json")
 )
 if not USE_REAL_MONGO and test_structures_path.exists():
     import json
@@ -92,6 +97,20 @@ def update_schema(app):
         json.dump(app.openapi(), f, indent=2)
 
 
+@app.exception_handler(StarletteHTTPException)
+def http_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=jsonable_encoder(
+            ErrorResponse(
+                meta=meta_values(str(request.url), 0, 0, False),
+                errors=[Error(detail=exc.detail, code=exc.status_code)],
+            ),
+            skip_defaults=True,
+        ),
+    )
+
+
 @app.get(
     "/structures",
     response_model=Union[StructureResponseMany, ErrorResponse],
@@ -105,13 +124,13 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         query = urllib.parse.parse_qs(parse_result.query)
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
         urlencoded = urllib.parse.urlencode(query, doseq=True)
-        links = Links(
+        links = ToplevelLinks(
             next=Link(
                 href=f"{parse_result.scheme}://{parse_result.netloc}{parse_result.path}?{urlencoded}"
             )
         )
     else:
-        links = Links(next=None)
+        links = ToplevelLinks(next=None)
     return StructureResponseMany(
         links=links,
         data=results,
@@ -150,24 +169,31 @@ def get_info(request: Request):
     tags=["Structure", "Info"],
 )
 def get_structures_info(request: Request):
+    schema_properties = StructureResourceAttributes.schema().get("properties")
+
+    output_fields_by_format = {"json": ["id", "type"]}
+    output_fields_by_format["json"].extend(schema_properties.keys())
+
+    properties = {}
+    for key, key_info in schema_properties.items():
+        properties[key] = {}
+        for info in key_info:
+            if info in {"description", "unit"}:
+                properties[key][info] = key_info[info]
+    for key, key_info in StructureResource.schema().get("properties").items():
+        if key in {"id", "type"}:
+            properties[key] = {}
+            for info in key_info:
+                if info in {"description", "unit"}:
+                    properties[key][info] = key_info[info]
+
     return EntryInfoResponse(
         meta=meta_values(str(request.url), 1, 1, more_data_available=False),
         data=EntryInfoResource(
-            description="attributes that can be queried",
-            properties={
-                "exmpl_p": EntryPropertyInfo(description="a sample custom property")
-            },
-            output_fields_by_format={
-                "json": [
-                    "id",
-                    "type",
-                    "elements",
-                    "nelements",
-                    "chemical_formula",
-                    "formula_prototype",
-                    "exmpl_p",
-                ]
-            },
+            formats=list(output_fields_by_format.keys()),
+            description="Materials structure entries",
+            properties=properties,
+            output_fields_by_format=output_fields_by_format,
         ),
     )
 
