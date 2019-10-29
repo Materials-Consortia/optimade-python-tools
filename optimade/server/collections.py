@@ -16,13 +16,6 @@ from .deps import EntryListingQueryParams
 from .mappers.structures import StructureMapper
 
 
-config = ConfigParser()
-config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
-PAGE_LIMIT = config["DEFAULT"].getint("PAGE_LIMIT")
-PROVIDER = config["DEFAULT"].get("PROVIDER")
-PROVIDER_FIELDS = {field for field, _ in config["STRUCTURE"].items() if _ == ""}
-
-
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     def __init__(
         self,
@@ -73,9 +66,15 @@ class MongoCollection(EntryCollection):
         ],
         resource_cls: EntryResource,
         resource_attributes: EntryResourceAttributes,
+        provider: str,
+        provider_fields: set,
+        page_limit: int,
     ):
         super().__init__(collection, resource_cls, resource_attributes)
         self.transformer = MongoTransformer()
+        self.provider = provider
+        self.provider_fields = provider_fields
+        self.page_limit = page_limit
 
     def __len__(self):
         return self.collection.estimated_document_count()
@@ -118,17 +117,15 @@ class MongoCollection(EntryCollection):
                 status_code=400, detail="Only 'json' response_format supported"
             )
 
-        limit = PAGE_LIMIT
-        if params.page_limit != PAGE_LIMIT:
+        limit = self.page_limit
+        if params.page_limit != self.page_limit:
             limit = params.page_limit
-        elif params.page_limit != PAGE_LIMIT:
-            limit = params.page_limit
-        if limit > PAGE_LIMIT:
+        if limit > self.page_limit:
             raise HTTPException(
-                status_code=400, detail=f"Max page_limit is {PAGE_LIMIT}"
+                status_code=400, detail=f"Max page_limit is {self.page_limit}"
             )
         if limit == 0:
-            limit = PAGE_LIMIT
+            limit = self.page_limit
         cursor_kwargs["limit"] = limit
 
         if params.response_fields:
@@ -141,7 +138,7 @@ class MongoCollection(EntryCollection):
             except AttributeError:
                 fields |= set(self.resource_attributes.__annotations__.keys())
             # All provider-specific fields
-            fields |= {PROVIDER + _ for _ in PROVIDER_FIELDS}
+            fields |= {self.provider + _ for _ in self.provider_fields}
         cursor_kwargs["projection"] = [StructureMapper.alias_for(f) for f in fields]
 
         if params.sort:
