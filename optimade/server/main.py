@@ -13,9 +13,9 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from .deps import EntryListingQueryParams
+from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .collections import MongoCollection
-from .models.jsonapi import Link, ToplevelLinks, Meta
+from .models.jsonapi import Link, ToplevelLinks, ErrorSource
 from .models.optimade_json import Error
 from .models.structures import StructureResource, StructureResourceAttributes
 from .models.entries import EntryInfoResource
@@ -24,6 +24,7 @@ from .models.toplevel import (
     ResponseMeta,
     ResponseMetaQuery,
     StructureResponseMany,
+    StructureResponseOne,
     InfoResponse,
     Provider,
     ErrorResponse,
@@ -66,7 +67,7 @@ structures = MongoCollection(
 )
 
 test_structures_path = (
-    Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
+    Path(__file__).resolve().parent.joinpath("tests/test_more_structures.json")
 )
 if not USE_REAL_MONGO and test_structures_path.exists():
     import json
@@ -82,7 +83,9 @@ if not USE_REAL_MONGO and test_structures_path.exists():
     print("done inserting test structures...")
 
 
-def meta_values(url, data_returned, data_available, more_data_available=False):
+def meta_values(
+    url, data_returned, data_available, more_data_available=False, **kwargs
+):
     """Helper to initialize the meta values"""
     parse_result = urllib.parse.urlparse(url)
     return ResponseMeta(
@@ -101,6 +104,7 @@ def meta_values(url, data_returned, data_available, more_data_available=False):
             index_base_url=None,
         ),
         data_available=data_available,
+        **kwargs,
     )
 
 
@@ -128,19 +132,18 @@ def general_exception(
     except AttributeError:
         detail = str(exc)
 
+    errors = kwargs.get("errors", None)
+    if not errors:
+        errors = [
+            Error(detail=detail, status=status_code, title=str(exc.__class__.__name__))
+        ]
+
     return JSONResponse(
         status_code=status_code,
         content=jsonable_encoder(
             ErrorResponse(
-                meta=meta_values(str(request.url), 0, 0, False),
-                errors=[
-                    Error(
-                        detail=detail,
-                        status=status_code,
-                        title=str(exc.__class__.__name__),
-                        meta=Meta(traceback=tb),
-                    )
-                ],
+                meta=meta_values(str(request.url), 0, 0, False, **{"traceback": tb}),
+                errors=errors,
             ),
             skip_defaults=True,
         ),
@@ -159,7 +162,24 @@ def request_validation_exception_handler(request: Request, exc: Exception):
 
 @app.exception_handler(ValidationError)
 def validation_exception_handler(request: Request, exc: Exception):
-    return general_exception(request, exc, status_code=500)
+    status = 500
+    title = "ValidationError"
+    errors = []
+    for error in exc.errors():
+        print(error)
+        pointer = "/" + "/".join(error["loc"])
+        source = ErrorSource(pointer=pointer)
+        code = error["type"]
+        detail = error["msg"]
+        errors.append(
+            Error(detail=detail, status=status, title=title, source=source, code=code)
+        )
+    return general_exception(request, exc, status_code=status, errors=errors)
+
+
+@app.exception_handler(Exception)
+def general_exception_handler(request: Request, exc: Exception):
+    return general_exception(request, exc)
 
 
 @app.get(
@@ -187,6 +207,33 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         data=results,
         meta=meta_values(
             str(request.url), len(results), data_available, more_data_available
+        ),
+    )
+
+
+@app.get(
+    "/structures/{entry_id:path}",
+    response_model=Union[StructureResponseOne, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Structure"],
+)
+def get_single_structure(
+    request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
+):
+    print(entry_id)
+    params.filter = f"id={entry_id}"
+    results, more_data_available, data_available = structures.find(params)
+    if more_data_available:
+        raise StarletteHTTPException(
+            status_code=500,
+            detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
+        )
+    links = ToplevelLinks(next=None)
+    return StructureResponseOne(
+        links=links,
+        data=results,
+        meta=meta_values(
+            str(request.url), data_available, data_available, more_data_available
         ),
     )
 

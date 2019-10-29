@@ -1,5 +1,5 @@
 [{
-  "task_id": "db/1234567",
+  "task_id": "db_1234567",
   "type": "structure",
 	"last_modified": {
 		"$date": "2019-06-08T05:13:37.331Z"
