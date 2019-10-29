@@ -3,7 +3,7 @@ from typing import Optional, Dict, List
 
 from pydantic import BaseModel, Schema
 
-from .jsonapi import Relationships, Meta, Attributes, Resource
+from .jsonapi import Relationships, Attributes, Resource
 
 
 class EntryResourceAttributes(Attributes):
@@ -59,9 +59,7 @@ class EntryPropertyInfo(BaseModel):
 
 class EntryInfoResource(BaseModel):
 
-    formats: List[str] = Schema(
-        default=["json"], description="list of available output formats."
-    )
+    formats: List[str] = Schema(..., description="list of available output formats.")
 
     description: str = Schema(..., description="description of the entry")
 
