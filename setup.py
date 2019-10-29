@@ -19,7 +19,7 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=[
         "pymongo>=3.8",
-        "lark-parser>=0.5.6",
+        "lark-parser>=0.7.7",
         "mongomock>=3.16",
         "fastapi[all]",
     ],
