@@ -1,20 +1,20 @@
 // optimade v0.10.0 grammar spec in lark grammar format
-// The top-level "filter" rule:
+
 ?start: filter
 filter: expression*
 
-// values
+// Values
 constant: string | number
 // Note: support for property in value is OPTIONAL
 value: string | number | property
 
-// Support for operator in value_list is OPTIONAL
+// Note:  support for operator in value_list is OPTIONAL
 value_list: [ operator ] value ( "," [ operator ] value )*
-// Support for operator in value_zip is OPTIONAL
+// Note: support for operator in value_zip is OPTIONAL
 value_zip: [ operator ] value ":" [ operator ] value (":" [ operator ] value)*
 value_zip_list: value_zip ( "," value_zip )*
 
-// expressions
+// Expressions
 expression: expression_clause [ OR expression ]
 expression_clause: expression_phrase [ AND expression_clause ]
 expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression ")" )
@@ -36,16 +36,18 @@ set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL v
 length_comparison: LENGTH property operator value
 property_zip_addon: ":" property (":" property)*
 
-// property
+// Property syntax
 property: IDENTIFIER ( "." IDENTIFIER )*
 
+// String syntax
 string: ESCAPED_STRING
 
+// Number token syntax
 number: SIGNED_INT | SIGNED_FLOAT
 
-// TOKENS
+// Tokens
 
-// Boolean relations:
+// Boolean relations
 AND: "AND"
 NOT: "NOT"
 OR: "OR"
@@ -65,19 +67,14 @@ ALL: "ALL"
 ONLY: "ONLY"
 ANY: "ANY"
 
-// operator_comparison operator tokens:
-!operator: ( "<" | "<="  | ">" | ">=" | "=" | "!=" )
+// Comparison operators
+!operator: ("<" | "<="  | ">" | ">=" | "=" | "!=")
 
-// property syntax
-%import common.CNAME -> IDENTIFIER
-
-// Strings:
-%import common.ESCAPED_STRING
-
-// number token syntax:
 %import common.SIGNED_INT
 %import common.SIGNED_FLOAT
+%import common.ESCAPED_STRING
+%import common.CNAME -> IDENTIFIER
 
-// White-space:
+// White-space
 %import common.WS
 %ignore WS
