@@ -8,7 +8,7 @@ def test_constrained_list():
     class ConListModel(BaseModel):
         v: conlist(len_eq=3)
 
-    _ = ConListModel(v=[1, 2, 3])
+    ConListModel(v=[1, 2, 3])
     with pytest.raises(ValidationError) as exc_info:
         ConListModel(v=[1, 2, 3, 4])
     assert exc_info.value.errors() == [
@@ -22,5 +22,5 @@ def test_constrained_list():
 
     with pytest.raises(ConfigError):
 
-        class ConListModel(BaseModel):
+        class ConListModel(BaseModel):  # pylint: disable=function-redefined
             v: conlist(len_eq=3, len_lt=3)
