@@ -11,7 +11,7 @@ import os
 test_data = [
     ("band_gap<1", "(AND: ('calculation__band_gap__lt', '1'))"),
     (
-        "natoms >= 8 OR nelements<5 AND stability>=0.5",
+        "(natoms >= 8) OR (nelements<5 AND stability>=0.5)",
         "(OR: ('entry__natoms__gte', '8'), (AND: ('entry__composition__ntypes__lt', '5'), ('stability__gte', '0.5')))",
     ),
     ("NOT natoms >= 8", "(NOT (AND: ('entry__natoms__gte', '8')))"),

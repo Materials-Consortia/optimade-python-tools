@@ -256,7 +256,11 @@ if __name__ == '__main__':
     p = LarkParser(version=(0, 10, 0))
     t = NewMongoTransformer()
 
-    f = 'a IS KNOWN AND a.a STARTS WITH "asdfsd" OR a < a AND NOT 8 >= b'
+    # f = 'a IS KNOWN AND a.a STARTS WITH "asdfsd" OR a < a AND NOT 8 >= b'
+    # f = 'NOT a > b OR c = 100 AND f = "C2 H6"'
+    # f = '(NOT (a > b)) OR ( (c = 100) AND (f = "C2 H6") )'
+    # f = 'a >= 0 AND NOT b < c OR c = 0'
+    f = '((a >= 0) AND (NOT (b < c))) OR (c = 0)'
 
     print(f)
     print(p.parse(f))
