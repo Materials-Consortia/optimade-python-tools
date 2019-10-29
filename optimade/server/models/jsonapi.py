@@ -1,9 +1,9 @@
-"""This module should reproduce https://jsonapi.org/schema"""
-from typing import Optional, Set, Union, Dict, Any
-from pydantic import BaseModel, UrlStr, constr, Schema
+"""This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
+from typing import Optional, Set, Union
+from pydantic import BaseModel, UrlStr, Schema, validator
 
 
-class Meta(Dict[str, Any]):
+class Meta(BaseModel):
     """Non-standard meta-information that can not be represented as an attribute or relationship."""
 
 
@@ -17,41 +17,46 @@ class Link(BaseModel):
     )
 
 
-class Links(BaseModel):
-    """A Links object is a set of keys with a Link value"""
-
-    next: Optional[Union[UrlStr, Link]] = Schema(
-        ..., description="A Link to the next object"
-    )
-    self: Optional[Union[UrlStr, Link]] = Schema(..., description="A link to itself")
-    related: Optional[Union[UrlStr, Link]] = Schema(
-        ..., description="A related resource link"
-    )
-    about: Optional[Union[UrlStr, Link]] = Schema(
-        ...,
-        description="a link that leads to further details about this particular occurrence of the problem.",
-    )
-
-
-class JsonAPI(BaseModel):
+class JsonApi(BaseModel):
     """An object describing the server's implementation"""
 
     version: str = Schema(..., description="Version of the json API used")
     meta: Optional[dict] = Schema(..., description="Non-standard meta information")
 
 
-class Pagination(BaseModel):
-    """
-    A set of urls to different pages:
-    """
+class ToplevelLinks(BaseModel):
+    """A set of Links objects, possibly including pagination"""
 
-    first: Optional[UrlStr] = Schema(..., description="The first page of data")
-    last: Optional[UrlStr] = Schema(..., description="The last page of data")
-    prev: Optional[UrlStr] = Schema(..., description="The previous page of data")
-    next: Optional[UrlStr] = Schema(..., description="The next page of data")
+    self: Optional[Union[UrlStr, Link]] = Schema(..., description="A link to itself")
+    related: Optional[Union[UrlStr, Link]] = Schema(
+        ..., description="A related resource link"
+    )
+
+    # Pagination
+    first: Optional[Union[Link, UrlStr]] = Schema(
+        ..., description="The first page of data"
+    )
+    last: Optional[Union[Link, UrlStr]] = Schema(
+        ..., description="The last page of data"
+    )
+    prev: Optional[Union[Link, UrlStr]] = Schema(
+        ..., description="The previous page of data"
+    )
+    next: Optional[Union[Link, UrlStr]] = Schema(
+        ..., description="The next page of data"
+    )
 
 
-class Source(BaseModel):
+class ErrorLinks(BaseModel):
+    """A Links object specific to Error objects"""
+
+    about: Optional[Union[UrlStr, Link]] = Schema(
+        ...,
+        description="A link that leads to further details about this particular occurrence of the problem.",
+    )
+
+
+class ErrorSource(BaseModel):
     """an object containing references to the source of the error"""
 
     pointer: Optional[str] = Schema(
@@ -66,15 +71,15 @@ class Source(BaseModel):
 
 
 class Error(BaseModel):
-    """
-    An error response
-    """
+    """An error response"""
 
     id: Optional[str] = Schema(
         ...,
         description="A unique identifier for this particular occurrence of the problem.",
     )
-    links: Optional[Links] = Schema(..., description="A links object storing about")
+    links: Optional[ErrorLinks] = Schema(
+        ..., description="A links object storing about"
+    )
     status: Optional[str] = Schema(
         ...,
         description="the HTTP status code applicable to this problem, expressed as a string value.",
@@ -92,65 +97,87 @@ class Error(BaseModel):
         ...,
         description="A human-readable explanation specific to this occurrence of the problem.",
     )
-    source: Optional[Source] = Schema(
+    source: Optional[ErrorSource] = Schema(
         ..., description="An object containing references to the source of the error"
     )
-    meta: Optional[dict] = Schema(
+    meta: Optional[Meta] = Schema(
         ...,
         description="a meta object containing non-standard meta-information about the error.",
     )
 
 
-class Warnings(Error):
-    """ OPTiMaDe-specific warning class based on jsonapi.Error. From the
-    specification:
+class BaseResource(BaseModel):
+    """Minimum requirements to represent a Resource"""
 
-        A warning resource object is defined similarly to a JSON API
-        error object, but MUST also include the field type, which MUST
-        have the value "warning". The field detail MUST be present and
-        SHOULD contain a non-critical message, e.g., reporting
-        unrecognized search attributes or deprecated features.
+    id: str = Schema(..., description="Resource ID")
+    type: str = Schema(..., description="Resource type")
 
+
+class RelationshipLinks(BaseModel):
+    """A resource object **MAY** contain references to other resource objects (\"relationships\").
+    Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."""
+
+    self: Optional[Union[UrlStr, Link]] = Schema(..., description="A link to itself")
+    related: Optional[Union[UrlStr, Link]] = Schema(
+        ..., description="A related resource link"
+    )
+
+    @validator("related", always=True)
+    def either_self_or_related_must_be_specified(cls, v, values):
+        if values.get("self", None) is None and v is None:
+            raise AssertionError(
+                "Either 'self' or 'related' MUST be specified for RelationshipLinks"
+            )
+        return v
+
+
+class Relationship(BaseModel):
+    """Representation references from the resource object in which it’s defined to other resource objects."""
+
+    links: Optional[RelationshipLinks] = Schema(
+        ...,
+        description="a links object containing at least one of the following: self, related",
+    )
+    data: Optional[Union[BaseResource, Set[BaseResource]]] = Schema(
+        ..., description="Resource linkage"
+    )
+    meta: Optional[Meta] = Schema(
+        ...,
+        description="a meta object that contains non-standard meta-information about the relationship.",
+    )
+
+    @validator("meta", always=True)
+    def at_least_one_relationship_key_must_be_set(cls, v, values):
+        if (
+            values.get("links", None) is None
+            and values.get("data", None) is None
+            and v is None
+        ):
+            raise AssertionError(
+                "Either 'links', 'data', or 'meta' MUST be specified for relationship"
+            )
+        return v
+
+
+class Relationships(BaseModel):
+    """
+    Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.
+    Keys MUST NOT be:
+        type
+        id
     """
 
-    type: str = Schema("warning", const=True)
 
+class ResourceLinks(BaseModel):
+    """A Resource Links object"""
 
-class Failure(BaseModel):
-    """A failure object"""
-
-    errors: Set[Error] = Schema(..., description="A list of errors")
-    meta: Optional[dict] = Schema(
+    self: Optional[Union[UrlStr, Link]] = Schema(
         ...,
-        description="a meta object containing non-standard meta-information about the failure.",
-    )
-    jsonapi: Optional[JsonAPI] = Schema(
-        ..., description="Information about the JSON API used"
-    )
-    links: Optional[Links] = Schema(
-        ..., description="Links associated with the failure"
+        description="A link that identifies the resource represented by the resource object.",
     )
 
 
-class Info(BaseModel):
-    """Information dict about the API"""
-
-    meta: dict = Schema(
-        ...,
-        description="a meta object containing non-standard meta-information about the failure.",
-    )
-    jsonapi: Optional[JsonAPI] = Schema(
-        ..., description="Information about the JSON API used"
-    )
-    links: Optional[Links] = Schema(
-        ..., description="Links associated with the failure"
-    )
-
-
-att_pat_prop = constr(regex=r"^(?!relationships$|links$|id$|type$)\\w[-\\w_]*$")
-
-
-class Attributes(Dict[str, Any]):
+class Attributes(BaseModel):
     """
     Members of the attributes object ("attributes\") represent information about the resource object in which it's defined.
     The keys for Attributes must NOT be:
@@ -161,74 +188,13 @@ class Attributes(Dict[str, Any]):
     """
 
 
-class RelationshipLinks(BaseModel):
-    """A resource object **MAY** contain references to other resource objects (\"relationships\").
-    Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."""
-
-    self: Optional[Link] = Schema(..., description="A link to itself")
-    related: Optional[Link] = Schema(..., description="A related resource link")
-
-
-class Linkage(BaseModel):
-    """The \"type\" and \"id\" to non-empty members."""
-
-    type: str = Schema(..., description="The type of linkage")
-    id: str = Schema(..., description="The id of the linkage")
-    meta: Optional[dict] = Schema(
-        ..., description="The non-standard meta-information about the linkage"
-    )
-
-
-class Relationship(BaseModel):
-    """Representation references from the resource object in which it’s defined to other resource objects."""
-
-    links: Optional[RelationshipLinks] = Schema(
-        ...,
-        description="a links object containing at least one of the following: self, related",
-    )
-    data: Optional[Union[Linkage, Set[Linkage]]] = Schema(
-        ..., description="Resource linkage"
-    )
-    meta: Optional[dict] = Schema(
-        ...,
-        description="a meta object that contains non-standard meta-information about the relationship.",
-    )
-
-
-# class Empty(None):
-#     """Describes an empty to-one relationship."""
-
-
-class RelationshipToOne(Linkage):
-    """References to other resource objects in a to-one (\"relationship\").
-    Relationships can be specified by including a member in a resource's links object."""
-
-
-class RelationshipToMany(Set[Linkage]):
-    """An array of objects each containing \"type\" and \"id\" members for to-many relationships."""
-
-
-rel_pat_prop = constr(regex=r"^(?!id$|type$)\\w[-\\w_]*$")
-
-
-class Relationships(Dict[str, Relationship]):
-    """
-    Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.
-    Keys MUST NOT be:
-        type
-        id
-    """
-
-
-class Resource(BaseModel):
+class Resource(BaseResource):
     """Resource objects appear in a JSON:API document to represent resources."""
 
-    id: str = Schema(..., description="Resource ID")
-    type: str = Schema(..., description="Resource type")
-    links: Optional[Links] = Schema(
+    links: Optional[ResourceLinks] = Schema(
         ..., description="a links object containing links related to the resource."
     )
-    meta: Optional[dict] = Schema(
+    meta: Optional[Meta] = Schema(
         ...,
         description="a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.",
     )
@@ -242,22 +208,35 @@ class Resource(BaseModel):
     )
 
 
-class Success(BaseModel):
-    """A Successful response"""
+class Response(BaseModel):
+    """A top-level response"""
 
-    data: Union[None, Resource, Set[Resource]] = Schema(
+    data: Optional[Union[None, Resource, Set[Resource]]] = Schema(
         ..., description="Outputted Data"
     )
-    included: Optional[Set[Resource]] = Schema(
-        ..., description="A list of resources that are included"
-    )
-    meta: Optional[dict] = Schema(
+    meta: Optional[Meta] = Schema(
         ...,
         description="A meta object containing non-standard information related to the Success",
     )
-    links: Optional[Union[Links, Pagination]] = Schema(
-        ..., description="Information about the JSON API used"
+    errors: Optional[Set[Error]] = Schema(..., description="A list of errors")
+    included: Optional[Set[Resource]] = Schema(
+        ..., description="A list of resources that are included"
     )
-    jsonapi: Optional[JsonAPI] = Schema(
+    links: Optional[ToplevelLinks] = Schema(
         ..., description="Links associated with the failure"
     )
+    jsonapi: Optional[JsonApi] = Schema(
+        ..., description="Information about the JSON API used"
+    )
+
+    @validator("errors", always=True)
+    def either_data_meta_or_errors_must_be_set(cls, v, values):
+        if (
+            values.get("data", None) is None
+            and values.get("meta", None) is None
+            and v is None
+        ):
+            raise AssertionError(
+                "Either 'data', 'meta', or 'errors' must be specified in the top-level response"
+            )
+        return v

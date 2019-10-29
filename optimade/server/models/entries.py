@@ -3,11 +3,10 @@ from typing import Optional, Dict, List
 
 from pydantic import BaseModel, Schema
 
-from .optimade_json import Resource
-from .jsonapi import Links, Relationships, Meta
+from .jsonapi import Relationships, Meta, Attributes, Resource
 
 
-class EntryResourceAttributes(BaseModel):
+class EntryResourceAttributes(Attributes):
     """ Contains key-value pairs representing the entry's properties. """
 
     last_modified: datetime = Schema(
@@ -42,14 +41,6 @@ class EntryResource(Resource):
         ...,
         description="a dictionary containing key-value pairs representing the "
         "entry's properties.",
-    )
-
-    links: Optional[Links] = Schema(..., description="a JSON API links object")
-
-    meta: Optional[Meta] = Schema(
-        ...,
-        description="a JSON API meta object that contains non-standard "
-        "information about the object.",
     )
 
     relationships: Optional[Relationships] = Schema(
