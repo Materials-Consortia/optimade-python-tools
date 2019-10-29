@@ -1,6 +1,10 @@
 from lark import Transformer, v_args, Token
 
 
+class NotImplementedRule(Exception):
+    pass
+
+
 class OperatorError(Exception):
     pass
 
@@ -88,7 +92,7 @@ class MongoTransformer(Transformer):
         return elements
 
 
-class NewTransformer(Transformer):
+class NewMongoTransformer(Transformer):
     operator_map = {"<": "$lt", "<=": "$lte", ">": "$gt", ">=": "$gte", "!=": "$ne", "=": "$eq"}
 
     def __init__(self):
@@ -164,19 +168,19 @@ class NewTransformer(Transformer):
             return {'$in': arg[1]}
         else:
             if arg[1] == 'ALL':
-                raise NotImplementedError
+                raise NotImplementedRule
             elif arg[1] == 'ANY':
-                raise NotImplementedError
+                raise NotImplementedRule
             elif arg[1] == 'ONLY':
-                raise NotImplementedError
+                raise NotImplementedRule
             else:
                 # value with operator
-                raise NotImplementedError
+                raise NotImplementedRule
 
     def set_zip_op_rhs(self, arg):
         # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
         # ANY value_zip_list )
-        raise NotImplementedError
+        raise NotImplementedRule
 
     def property_first_comparison(self, arg):
         # property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs |
@@ -189,7 +193,7 @@ class NewTransformer(Transformer):
 
     def predicate_comparison(self, arg):
         # predicate_comparison: length_comparison
-        raise NotImplementedError
+        raise NotImplementedRule
 
     @v_args(inline=True)
     def comparison(self, value):
@@ -250,29 +254,10 @@ if __name__ == '__main__':
     from optimade.filterparser import LarkParser
 
     p = LarkParser(version=(0, 10, 0))
-    t = NewTransformer()
+    t = NewMongoTransformer()
 
     f = 'a IS KNOWN AND a.a STARTS WITH "asdfsd" OR a < a AND NOT 8 >= b'
 
-    should_pass = (
-        'te < st',
-        'spacegroup="P2"',
-        '_cod_cell_volume<100.0',
-        '_mp_bandgap > 5.0 AND _cod_molecular_weight < 350',
-        '_cod_melting_point<300 AND nelements=4 AND elements="Si,O2"',
-        'number=0.ANDnumber=.0ANDnumber=0.0ANDnumber=+0ANDNUMBER=-0ANDnumber=0e1ANDnumber=0e-1ANDnumber=0e+1',
-        'key=value',
-        'author=" someone "',
-        'NOTICE=val',
-        'author="Sąžininga Žąsis"',
-        'a = 12345 AND b = +12 AND c = -34 AND d = 1.2 AND e = .2E7 AND f = -.2E+7 AND g = +10.01E-10 AND h = 6.03e23 AND i = .1E1 AND j = -.1e1 AND k = 1.e-12 AND l = -.1e-12 AND m = 1000000000.E1000000000',
-        'field = "!#$%&\'() * +, -./:; <= > ? @[] ^ `{|}~ % "',
-    )
-    should_fail = (
-        'number=0.0.1',
-    )
-
-    for f in should_pass:
-        print(f)
-        # print(p.parse(f))
-        print(t.transform(p.parse(f)))
+    print(f)
+    print(p.parse(f))
+    print(t.transform(p.parse(f)))
