@@ -3,7 +3,7 @@ from typing import Union, List, Optional
 
 from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
 
-from optimade.server.models.jsonapi import Link
+from optimade.server.models.jsonapi import Link, Meta
 from optimade.server.models.structures import StructureResource
 from .baseinfo import BaseInfoResource
 from optimade.server.models.util import NonnegativeInt
@@ -80,7 +80,7 @@ class Implementation(BaseModel):
     )
 
 
-class ResponseMeta(BaseModel):
+class ResponseMeta(Meta):
     """
     A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)
     that contains JSON API meta objects of non-standard
