@@ -29,13 +29,13 @@ config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
 USE_REAL_MONGO = config["DEFAULT"].getboolean("USE_REAL_MONGO")
 
 app = FastAPI(
-    title=" OPTiMaDe API",
+    title="OPTiMaDe API",
     description=(
         "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium]"
-        "(http://http://www.optimade.org/) aims to make materials databases interoperational"
-        " by developing a common REST API."
+        "(http://http://www.optimade.org/) aims to make materials databases interoperational "
+        "by developing a common REST API."
     ),
-    version="0.9",
+    version="0.10.0",
 )
 
 
@@ -71,7 +71,7 @@ def meta_values(url, data_returned, data_available, more_data_available=False):
         query=ResponseMetaQuery(
             representation=f"{parse_result.path}?{parse_result.query}"
         ),
-        api_version="v0.9",
+        api_version="v0.10",
         time_stamp=datetime.utcnow(),
         data_returned=data_returned,
         more_data_available=more_data_available,
@@ -144,7 +144,7 @@ def get_info(request: Request):
 
 
 @app.get(
-    "/structures/info",
+    "/info/structures",
     response_model=Union[EntryInfoResponse, ErrorResponse],
     response_model_skip_defaults=True,
     tags=["Structure", "Info"],
