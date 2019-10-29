@@ -1,10 +1,6 @@
 from lark import Transformer, v_args, Token
 
 
-class NotImplementedRule(Exception):
-    pass
-
-
 class OperatorError(Exception):
     pass
 
@@ -98,28 +94,11 @@ class NewMongoTransformer(Transformer):
     def __init__(self):
         super().__init__()
 
-    def property(self, arg):
-        # property: IDENTIFIER ( "." IDENTIFIER )*
-        return '.'.join(arg)
-
-    def number(self, arg):
-        # number: SIGNED_INT | SIGNED_FLOAT
-        token = arg[0]
-        if token.type == 'SIGNED_INT':
-            return int(token)
-        elif token.type == 'SIGNED_FLOAT':
-            return float(token)
-
-    @v_args(inline=True)
-    def string(self, string):
-        # string: ESCAPED_STRING
-        return string.strip('"')
-
-    @v_args(inline=True)
-    def value(self, value):
-        # value: string | number | property
-        # Note: Do nothing!
-        return value
+    def filter(self, arg):
+        # filter: expression*
+        if not arg:
+            return None
+        return arg[0]
 
     @v_args(inline=True)
     def constant(self, value):
@@ -128,9 +107,79 @@ class NewMongoTransformer(Transformer):
         return value
 
     @v_args(inline=True)
-    def operator(self, operator):
-        # !operator: ("<" | "<=" | ">" | ">=" | "=" | "!=")
-        return self.operator_map[operator]
+    def value(self, value):
+        # value: string | number | property
+        # Note: Do nothing!
+        return value
+
+    def value_list(self, arg):
+        # value_list: [ operator ] value ( "," [ operator ] value )*
+        raise NotImplementedError
+
+    def value_zip(self, arg):
+        # value_zip: [ operator ] value ":" [ operator ] value (":" [ operator ] value)*
+        raise NotImplementedError
+
+    def value_zip_list(self, arg):
+        # value_zip_list: value_zip ( "," value_zip )*
+        raise NotImplementedError
+
+    def expression(self, arg):
+        # expression: expression_clause [ OR expression ]
+        if len(arg) == 1:
+            # expression_clause without 'OR'
+            return arg[0]
+        else:
+            # combining multiple 'and's together
+            if isinstance(arg[2], dict) and '$or' in arg[2]:
+                # TODO: it has to be tested very carefully
+                return {'$or': [arg[0], *arg[2]['$or']]}
+
+            # expression_clause with 'OR'
+            return {'$or': [arg[0], arg[2]]}
+
+    def expression_clause(self, arg):
+        # expression_clause: expression_phrase [ AND expression_clause ]
+        if len(arg) == 1:
+            # expression_phrase without 'AND'
+            return arg[0]
+        else:
+            # combining multiple 'and's together
+            if isinstance(arg[2], dict) and '$and' in arg[2]:
+                # TODO: it has to be tested very carefully
+                return {'$and': [arg[0], *arg[2]['$and']]}
+
+            # expression_phrase with 'AND'
+            return {'$and': [arg[0], arg[2]]}
+
+    def expression_phrase(self, arg):
+        # expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression ")" )
+        if len(arg) == 1:
+            # without NOT
+            return arg[0]
+        else:
+            # with NOT
+            # TODO: This implementation probably fails in the case of `predicate_comparison` or `"(" expression ")"`
+            return {prop: {'$not': expr} for prop, expr in arg[1].items()}
+
+    @v_args(inline=True)
+    def comparison(self, value):
+        # comparison: constant_first_comparison | property_first_comparison
+        # Note: Do nothing!
+        return value
+
+    def property_first_comparison(self, arg):
+        # property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs |
+        # set_zip_op_rhs )
+        return {arg[0]: arg[1]}
+
+    def constant_first_comparison(self, arg):
+        # constant_first_comparison: constant value_op_rhs
+        return {prop: {oper: arg[0]} for oper, prop in arg[1].items()}
+
+    def predicate_comparison(self, arg):
+        # predicate_comparison: length_comparison
+        raise NotImplementedError
 
     @v_args(inline=True)
     def value_op_rhs(self, operator, value):
@@ -168,86 +217,53 @@ class NewMongoTransformer(Transformer):
             return {'$in': arg[1]}
         else:
             if arg[1] == 'ALL':
-                raise NotImplementedRule
+                raise NotImplementedError
             elif arg[1] == 'ANY':
-                raise NotImplementedRule
+                raise NotImplementedError
             elif arg[1] == 'ONLY':
-                raise NotImplementedRule
+                raise NotImplementedError
             else:
                 # value with operator
-                raise NotImplementedRule
+                raise NotImplementedError
 
     def set_zip_op_rhs(self, arg):
         # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
         # ANY value_zip_list )
-        raise NotImplementedRule
+        raise NotImplementedError
 
-    def property_first_comparison(self, arg):
-        # property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs |
-        # set_zip_op_rhs )
-        return {arg[0]: arg[1]}
+    def length_comparison(self, arg):
+        # length_comparison: LENGTH property operator value
+        raise NotImplementedError
 
-    def constant_first_comparison(self, arg):
-        # constant_first_comparison: constant value_op_rhs
-        return {prop: {oper: arg[0]} for oper, prop in arg[1].items()}
+    def property_zip_addon(self, arg):
+        # property_zip_addon: ":" property (":" property)*
+        raise NotImplementedError
 
-    def predicate_comparison(self, arg):
-        # predicate_comparison: length_comparison
-        raise NotImplementedRule
+    def property(self, arg):
+        # property: IDENTIFIER ( "." IDENTIFIER )*
+        return '.'.join(arg)
 
     @v_args(inline=True)
-    def comparison(self, value):
-        # comparison: constant_first_comparison | property_first_comparison
-        # Note: Do nothing!
-        return value
+    def string(self, string):
+        # string: ESCAPED_STRING
+        return string.strip('"')
 
-    def expression_phrase(self, arg):
-        # expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression ")" )
-        if len(arg) == 1:
-            # without NOT
-            return arg[0]
-        else:
-            # with NOT
-            # TODO: This implementation probably fails in the case of `predicate_comparison` or `"(" expression ")"`
-            return {prop: {'$not': expr} for prop, expr in arg[1].items()}
+    def number(self, arg):
+        # number: SIGNED_INT | SIGNED_FLOAT
+        token = arg[0]
+        if token.type == 'SIGNED_INT':
+            return int(token)
+        elif token.type == 'SIGNED_FLOAT':
+            return float(token)
 
-    def expression_clause(self, arg):
-        # expression_clause: expression_phrase [ AND expression_clause ]
-        if len(arg) == 1:
-            # expression_phrase without 'AND'
-            return arg[0]
-        else:
-            # combining multiple 'and's together
-            if isinstance(arg[2], dict) and '$and' in arg[2]:
-                # TODO: it has to be tested very carefully
-                return {'$and': [arg[0], *arg[2]['$and']]}
-
-            # expression_phrase with 'AND'
-            return {'$and': [arg[0], arg[2]]}
-
-    def expression(self, arg):
-        # expression: expression_clause [ OR expression ]
-        if len(arg) == 1:
-            # expression_clause without 'OR'
-            return arg[0]
-        else:
-            # combining multiple 'and's together
-            if isinstance(arg[2], dict) and '$or' in arg[2]:
-                # TODO: it has to be tested very carefully
-                return {'$or': [arg[0], *arg[2]['$or']]}
-
-            # expression_clause with 'OR'
-            return {'$or': [arg[0], arg[2]]}
-
-    def filter(self, arg):
-        # filter: expression*
-        if not arg:
-            return None
-        return arg[0]
+    @v_args(inline=True)
+    def operator(self, operator):
+        # !operator: ("<" | "<=" | ">" | ">=" | "=" | "!=")
+        return self.operator_map[operator]
 
     def __default__(self, data, children, meta):
-        print(data, children, meta)
-        return data
+        # print(data, children, meta)
+        raise NotImplementedError
 
 
 if __name__ == '__main__':
