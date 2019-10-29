@@ -57,13 +57,13 @@ class ParserTestNew(unittest.TestCase):
         self.assertIsInstance(self.parse('cell_volume = 1'), Tree)
 
         with self.assertRaises(ParserError):
-            self.parse('0_kvak = 1')  # starts with a number
+            self.parse('0_kvak IS KNOWN')  # starts with a number
 
-        # with self.assertRaises(ParserError):
-        #     self.parse('"foo bar" = 1')  # contains space; contains quotes
+        with self.assertRaises(ParserError):
+            self.parse('"foo bar" IS KNOWN')  # contains space; contains quotes
 
-        # with self.assertRaises(ParserError):
-        #     self.parse('BadLuck = 1')  # contains upper-case letters
+        with self.assertRaises(ParserError):
+            self.parse('BadLuck IS KNOWN')  # contains upper-case letters
 
         # database-provider-specific prefixes
         self.assertIsInstance(self.parse('_exmpl_formula_sum = 1'), Tree)
@@ -107,7 +107,6 @@ class ParserTestNew(unittest.TestCase):
             self.parse('number=0.0.1')
 
     def test_operators(self):
-
         # Basic boolean operations
         self.assertIsInstance(
             self.parse('NOT ( chemical_formula_hill = "Al" AND chemical_formula_anonymous = "A" OR '
@@ -175,9 +174,19 @@ class ParserTestNew(unittest.TestCase):
         self.assertIsInstance(self.parse('_cod_melting_point<300 AND nelements=4 AND elements="Si,O2"'), Tree)
         self.assertIsInstance(self.parse('key=value'), Tree)
         self.assertIsInstance(self.parse('author=" someone "'), Tree)
-        self.assertIsInstance(self.parse('NOTICE=val'), Tree)
-        self.assertIsInstance(self.parse('number=0.ANDnumber=.0ANDnumber=0.0ANDnumber=+0ANDNUMBER=-0AND'
+        self.assertIsInstance(self.parse('number=0.ANDnumber=.0ANDnumber=0.0ANDnumber=+0AND_n_u_m_b_e_r_=-0AND'
                                          'number=0e1ANDnumber=0e-1ANDnumber=0e+1'), Tree)
+
+        self.assertIsInstance(self.parse('NOTice=val'), Tree)  # property (ice) != property (val)
+        self.assertIsInstance(self.parse('NOTice="val"'), Tree)  # property (ice) != value ("val")
+        self.assertIsInstance(self.parse('"NOTice"=val'), Tree)  # value ("NOTice") = property (val)
+
+        with self.assertRaises(ParserError):
+            self.parse('NOTICE=val')  # not valid property or value (NOTICE)
+        with self.assertRaises(ParserError):
+            self.parse('"NOTICE"=Val') # not valid property (Val)
+        with self.assertRaises(ParserError):
+            self.parse('NOTICE=val')  # not valid property or value (NOTICE)
 
     def test_parser_version(self):
         self.assertEqual(self.parser.version, self.version)

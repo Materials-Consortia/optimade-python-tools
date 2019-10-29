@@ -70,10 +70,13 @@ ANY: "ANY"
 // Comparison operators
 !operator: ("<" | "<="  | ">" | ">=" | "=" | "!=")
 
+IDENTIFIER: ("_"|LCASE_LETTER) ("_" | LCASE_LETTER | DIGIT)*
+LCASE_LETTER: "a".."z"
+DIGIT: "0".."9"
+
 %import common.SIGNED_INT
 %import common.SIGNED_FLOAT
 %import common.ESCAPED_STRING
-%import common.CNAME -> IDENTIFIER
 
 // White-space
 %import common.WS

@@ -21,13 +21,13 @@ class TestMongoTransformer(unittest.TestCase):
         self.assertEqual(self.transform('cell_volume = 1'), {'cell_volume': {'$eq': 1}})
 
         with self.assertRaises(ParserError):
-            self.transform('0_kvak = 1')  # starts with a number
+            self.transform('0_kvak IS KNOWN')  # starts with a number
 
-        # with self.assertRaises(ParserError):
-        #     self.transform('"foo bar" = 1')  # contains space; contains quotes
+        with self.assertRaises(ParserError):
+            self.transform('"foo bar" IS KNOWN')  # contains space; contains quotes
 
-        # with self.assertRaises(ParserError):
-        #     self.transform('BadLuck = 1')  # contains upper-case letters
+        with self.assertRaises(ParserError):
+            self.transform('BadLuck IS KNOWN')  # contains upper-case letters
 
         # database-provider-specific prefixes
         self.assertEqual(self.transform('_exmpl_formula_sum = 1'), {'_exmpl_formula_sum': {'$eq': 1}})
@@ -168,9 +168,10 @@ class TestMongoTransformer(unittest.TestCase):
                                    {'elements': {'$eq': 'Si,O2'}}]})
         self.assertEqual(self.transform('key=value'), {'key': {'$eq': 'value'}})
         self.assertEqual(self.transform('author=" someone "'), {'author': {'$eq': ' someone '}})
-        self.assertEqual(self.transform('NOTICE=val'), {'ICE': {'$not': {'$eq': 'val'}}})
-        self.assertEqual(self.transform('number=0.ANDnumber=.0ANDnumber=0.0ANDnumber=+0ANDNUMBER=-0ANDnumber=0e1AND'
-                                        'number=0e-1ANDnumber=0e+1'),
+        self.assertEqual(self.transform('notice=val'), {'notice': {'$eq': 'val'}})
+        self.assertEqual(self.transform('NOTice=val'), {'ice': {'$not': {'$eq': 'val'}}})
+        self.assertEqual(self.transform('number=0.ANDnumber=.0ANDnumber=0.0ANDnumber=+0AND_n_u_m_b_e_r_=-0AND'
+                                        'number=0e1ANDnumber=0e-1ANDnumber=0e+1'),
                          {'$and': [{'number': {'$eq': 0.0}}, {'number': {'$eq': 0.0}}, {'number': {'$eq': 0.0}},
-                                   {'number': {'$eq': 0}}, {'NUMBER': {'$eq': 0}}, {'number': {'$eq': 0.0}},
+                                   {'number': {'$eq': 0}}, {'_n_u_m_b_e_r_': {'$eq': 0}}, {'number': {'$eq': 0.0}},
                                    {'number': {'$eq': 0.0}}, {'number': {'$eq': 0.0}}]})
