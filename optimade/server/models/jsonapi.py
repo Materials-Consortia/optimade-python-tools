@@ -6,12 +6,15 @@ from pydantic import BaseModel, UrlStr, Schema, validator
 class Meta(BaseModel):
     """Non-standard meta-information that can not be represented as an attribute or relationship."""
 
+    class Config:
+        extra = "allow"
+
 
 class Link(BaseModel):
     """A link **MUST** be represented as either: a string containing the link's URL or a link object."""
 
     href: UrlStr = Schema(..., description="a string containing the link’s URL.")
-    meta: Optional[dict] = Schema(
+    meta: Optional[Meta] = Schema(
         ...,
         description="a meta object containing non-standard meta-information about the link.",
     )
@@ -21,7 +24,7 @@ class JsonApi(BaseModel):
     """An object describing the server's implementation"""
 
     version: str = Schema(..., description="Version of the json API used")
-    meta: Optional[dict] = Schema(..., description="Non-standard meta information")
+    meta: Optional[Meta] = Schema(..., description="Non-standard meta information")
 
 
 class ToplevelLinks(BaseModel):
@@ -33,18 +36,10 @@ class ToplevelLinks(BaseModel):
     )
 
     # Pagination
-    first: Optional[Union[Link, UrlStr]] = Schema(
-        ..., description="The first page of data"
-    )
-    last: Optional[Union[Link, UrlStr]] = Schema(
-        ..., description="The last page of data"
-    )
-    prev: Optional[Union[Link, UrlStr]] = Schema(
-        ..., description="The previous page of data"
-    )
-    next: Optional[Union[Link, UrlStr]] = Schema(
-        ..., description="The next page of data"
-    )
+    first: Optional[UrlStr] = Schema(..., description="The first page of data")
+    last: Optional[UrlStr] = Schema(..., description="The last page of data")
+    prev: Optional[UrlStr] = Schema(..., description="The previous page of data")
+    next: Optional[UrlStr] = Schema(..., description="The next page of data")
 
 
 class ErrorLinks(BaseModel):
@@ -186,6 +181,9 @@ class Attributes(BaseModel):
         id
         type
     """
+
+    class Config:
+        extra = "allow"
 
 
 class Resource(BaseResource):

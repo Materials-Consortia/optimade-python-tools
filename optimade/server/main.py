@@ -1,18 +1,21 @@
 import urllib
+import traceback
 from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
-from typing import Union
+from typing import Union, Dict, Any
 
+from pydantic import ValidationError
 from fastapi import FastAPI, Depends
 from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from .deps import EntryListingQueryParams
 from .collections import MongoCollection
-from .models.jsonapi import Link, ToplevelLinks
+from .models.jsonapi import Link, ToplevelLinks, Meta
 from .models.optimade_json import Error
 from .models.structures import StructureResource, StructureResourceAttributes
 from .models.entries import EntryInfoResource
@@ -53,7 +56,7 @@ structures = MongoCollection(
 )
 
 test_structures_path = (
-    Path(__file__).resolve().parent.joinpath("tests/test_more_structures.json")
+    Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
 )
 if not USE_REAL_MONGO and test_structures_path.exists():
     import json
@@ -97,18 +100,56 @@ def update_schema(app):
         json.dump(app.openapi(), f, indent=2)
 
 
-@app.exception_handler(StarletteHTTPException)
-def http_exception_handler(request, exc):
+def general_exception(
+    request: Request, exc: Exception, **kwargs: Dict[str, Any]
+) -> JSONResponse:
+    tb = "".join(
+        traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
+    )
+    print(tb)
+
+    try:
+        status_code = exc.status_code
+    except AttributeError:
+        status_code = kwargs.get("status_code", 500)
+
+    try:
+        detail = exc.detail
+    except AttributeError:
+        detail = str(exc)
+
     return JSONResponse(
-        status_code=exc.status_code,
+        status_code=status_code,
         content=jsonable_encoder(
             ErrorResponse(
                 meta=meta_values(str(request.url), 0, 0, False),
-                errors=[Error(detail=exc.detail, code=exc.status_code)],
+                errors=[
+                    Error(
+                        detail=detail,
+                        status=status_code,
+                        title=str(exc.__class__.__name__),
+                        meta=Meta(traceback=tb),
+                    )
+                ],
             ),
             skip_defaults=True,
         ),
     )
+
+
+@app.exception_handler(StarletteHTTPException)
+def http_exception_handler(request: Request, exc: Exception):
+    return general_exception(request, exc)
+
+
+@app.exception_handler(RequestValidationError)
+def request_validation_exception_handler(request: Request, exc: Exception):
+    return general_exception(request, exc)
+
+
+@app.exception_handler(ValidationError)
+def validation_exception_handler(request: Request, exc: Exception):
+    return general_exception(request, exc, status_code=500)
 
 
 @app.get(
@@ -169,17 +210,19 @@ def get_info(request: Request):
     tags=["Structure", "Info"],
 )
 def get_structures_info(request: Request):
-    schema_properties = StructureResourceAttributes.schema().get("properties")
+    schema_properties = (
+        StructureResourceAttributes.__annotations__  # pylint: disable=no-member
+    )
 
     output_fields_by_format = {"json": ["id", "type"]}
     output_fields_by_format["json"].extend(schema_properties.keys())
 
     properties = {}
-    for key, key_info in schema_properties.items():
-        properties[key] = {}
-        for info in key_info:
-            if info in {"description", "unit"}:
-                properties[key][info] = key_info[info]
+    for name in schema_properties:
+        schema = StructureResourceAttributes.__dict__.get(name)
+        properties[name] = {"description": schema.description}
+        if "unit" in schema.extra:
+            properties[name]["unit"] = schema.extra["unit"]
     for key, key_info in StructureResource.schema().get("properties").items():
         if key in {"id", "type"}:
             properties[key] = {}

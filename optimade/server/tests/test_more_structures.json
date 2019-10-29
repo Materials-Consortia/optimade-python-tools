@@ -1,14 +1,16 @@
 [{
-  "_id": "db/1234567",
+  "task_id": "db/1234567",
   "type": "structure",
 	"last_modified": {
 		"$date": "2019-06-08T05:13:37.331Z"
 	},
-  "_exmpl_band_gap": 1.23456,
+  "band_gap": 1.23456,
+	"_mp_chemsys": "Ge-Si",
   "elements": ["Si", "Ge"],
   "nelements": 2,
   "elements_ratios": [0.5, 0.5],
-  "chemical_formula": "SiGe",
+  "pretty_formula": "SiGe",
+  "formula_anonymous": "GeSi",
   "dimension_types": [1, 1, 1],
   "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
   "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],

@@ -11,13 +11,16 @@ from optimade.filtertransformers.mongo import MongoTransformer
 
 from .models.util import NonnegativeInt
 from .models.entries import EntryResource, EntryResourceAttributes
-from .models.structures import StructureMapper
 from .deps import EntryListingQueryParams
+
+from .mappers.structures import StructureMapper
 
 
 config = ConfigParser()
 config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
 PAGE_LIMIT = config["DEFAULT"].getint("PAGE_LIMIT")
+PROVIDER = config["DEFAULT"].get("PROVIDER")
+PROVIDER_FIELDS = {field for field, _ in config["STRUCTURE"].items() if _ == ""}
 
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
@@ -131,8 +134,14 @@ class MongoCollection(EntryCollection):
         if params.response_fields:
             fields = set(params.response_fields.split(","))
         else:
+            # All OPTiMaDe fields
             fields = {"id", "type"}
-            fields |= set(self.resource_attributes.__fields__.keys())
+            try:
+                fields |= set(self.resource_attributes.__fields__.keys())
+            except AttributeError:
+                fields |= set(self.resource_attributes.__annotations__.keys())
+            # All provider-specific fields
+            fields |= {PROVIDER + _ for _ in PROVIDER_FIELDS}
         cursor_kwargs["projection"] = [StructureMapper.alias_for(f) for f in fields]
 
         if params.sort:
