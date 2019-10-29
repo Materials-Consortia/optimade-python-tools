@@ -12,6 +12,9 @@ class TestMongoTransformer(unittest.TestCase):
         t = NewMongoTransformer()
         self.transform = lambda inp: t.transform(p.parse(inp))
 
+    def tete_empty(self):
+        self.assertIsNone(self.transform(' '))
+
     def test_simple_comparisons(self):
         self.assertEqual(self.transform("a<3"), {"a": {"$lt": 3}})
         self.assertEqual(self.transform("a<=3"), {"a": {"$lte": 3}})
