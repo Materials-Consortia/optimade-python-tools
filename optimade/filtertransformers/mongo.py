@@ -266,7 +266,7 @@ class NewMongoTransformer(Transformer):
         raise NotImplementedError
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     from optimade.filterparser import LarkParser
 
     p = LarkParser(version=(0, 10, 0))

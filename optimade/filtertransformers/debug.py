@@ -1,7 +1,7 @@
 from lark import Transformer
 
 
-class DebugTransformer(Transformer):
+class DebugTransformer(Transformer):  # pragma: no cover
 
     def __init__(self):
         super().__init__()
@@ -11,7 +11,7 @@ class DebugTransformer(Transformer):
         return data
 
 
-class TransformerSkeleton(Transformer):
+class TransformerSkeleton(Transformer):  # pragma: no cover
     """Prints out all the nodes and its arguments during the walk-through of the tree."""
 
     def __init__(self):
@@ -145,7 +145,7 @@ class TransformerSkeleton(Transformer):
         return data
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     from optimade.filterparser import LarkParser
 
     p = LarkParser(version=(0, 10, 0))
