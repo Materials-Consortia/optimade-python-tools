@@ -1,6 +1,5 @@
 from pydantic import Schema, BaseModel, validator
 from typing import List, Optional
-from collections import Counter
 
 from .entries import EntryResourceAttributes, EntryResource
 from .util import conlist, CHEMICAL_SYMBOLS

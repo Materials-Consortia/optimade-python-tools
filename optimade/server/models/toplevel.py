@@ -3,12 +3,12 @@ from typing import Union, List, Optional
 
 from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
 
-from optimade.server.models.jsonapi import Link, Meta
-from optimade.server.models.structures import StructureResource
+from .jsonapi import Link, Meta
 from .baseinfo import BaseInfoResource
-from optimade.server.models.util import NonnegativeInt
-from .optimade_json import Error, Success, Failure, Warnings
 from .entries import EntryInfoResource
+from .optimade_json import Error, Success, Failure, Warnings
+from .structures import StructureResource
+from .util import NonnegativeInt
 
 
 class ResponseMetaQuery(BaseModel):
