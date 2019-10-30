@@ -71,7 +71,7 @@ class Warnings(Error):
     """
 
     type: str = Schema(
-        "warning", const=True, description='Warnings must of type "warning"'
+        "warning", const=True, description='Warnings must be of type "warning"'
     )
 
     @validator("status")

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union, List, Optional
+from typing import Union, List, Optional, Dict, Any
 
 from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
 
@@ -150,12 +150,12 @@ class ResponseMeta(Meta):
 
 class StructureResponseOne(Success):
     meta: ResponseMeta = Schema(...)
-    data: StructureResource = Schema(...)
+    data: Union[StructureResource, Dict[str, Any]] = Schema(...)
 
 
 class StructureResponseMany(Success):
     meta: ResponseMeta = Schema(...)
-    data: List[StructureResource] = Schema(...)
+    data: Union[List[StructureResource], List[Dict[str, Any]]] = Schema(...)
 
 
 class ErrorResponse(Failure):

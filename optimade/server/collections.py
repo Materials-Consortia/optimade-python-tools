@@ -107,13 +107,19 @@ class MongoCollection(EntryCollection):
                     status_code=404,
                     detail=f"Instead of a single entry, {data_available} entries were found",
                 )
+        all_fields = criteria.pop("fields")
+        if getattr(params, "response_fields", False):
+            fields = set(params.response_fields.split(","))
+        else:
+            fields = all_fields.copy()
         results = []
         for doc in self.collection.find(**criteria):
             results.append(self.resource_cls(**StructureMapper.map_back(doc)))
+
         if isinstance(params, SingleEntryQueryParams):
             results = results[0]
 
-        return results, more_data_available, data_available
+        return results, more_data_available, data_available, all_fields - fields
 
     def _alias_filter(self, filter_: dict) -> dict:
         res = {}
@@ -124,7 +130,9 @@ class MongoCollection(EntryCollection):
             res[StructureMapper.alias_for(key)] = new_value
         return res
 
-    def _parse_params(self, params: EntryListingQueryParams) -> dict:
+    def _parse_params(
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+    ) -> dict:
         cursor_kwargs = {}
 
         if getattr(params, "filter", False):
@@ -154,14 +162,12 @@ class MongoCollection(EntryCollection):
                 limit = self.page_limit
             cursor_kwargs["limit"] = limit
 
-        if getattr(params, "response_fields", False):
-            fields = set(params.response_fields.split(","))
-        else:
-            # All OPTiMaDe fields
-            fields = {"id", "type"}
-            fields |= set(self.resource_attributes.__fields__.keys())
-            # All provider-specific fields
-            fields |= {self.provider + _ for _ in self.provider_fields}
+        # All OPTiMaDe fields
+        fields = {"id", "type"}
+        fields |= set(self.resource_attributes.__fields__.keys())
+        # All provider-specific fields
+        fields |= {self.provider + _ for _ in self.provider_fields}
+        cursor_kwargs["fields"] = fields
         cursor_kwargs["projection"] = [StructureMapper.alias_for(f) for f in fields]
 
         if getattr(params, "sort", False):
