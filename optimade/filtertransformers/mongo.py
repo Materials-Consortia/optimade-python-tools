@@ -113,11 +113,11 @@ class NewMongoTransformer(Transformer):
         return value
 
     def value_list(self, arg):
-        # value_list: [ operator ] value ( "," [ operator ] value )*
+        # value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
         raise NotImplementedError
 
     def value_zip(self, arg):
-        # value_zip: [ operator ] value ":" [ operator ] value (":" [ operator ] value)*
+        # value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
         raise NotImplementedError
 
     def value_zip_list(self, arg):
@@ -183,8 +183,8 @@ class NewMongoTransformer(Transformer):
 
     @v_args(inline=True)
     def value_op_rhs(self, operator, value):
-        # value_op_rhs: operator value
-        return {operator: value}
+        # value_op_rhs: OPERATOR value
+        return {self.operator_map[operator]: value}
 
     def known_op_rhs(self, arg):
         # known_op_rhs: IS ( KNOWN | UNKNOWN )
@@ -210,10 +210,10 @@ class NewMongoTransformer(Transformer):
             return {'$regex': f'{pattern}$'}
 
     def set_op_rhs(self, arg):
-        # set_op_rhs: HAS ( [ operator ] value | ALL value_list | ANY value_list | ONLY value_list )
+        # set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )
 
         if len(arg) == 2:
-            # only value without operator
+            # only value without OPERATOR
             return {'$in': arg[1]}
         else:
             if arg[1] == 'ALL':
@@ -223,7 +223,7 @@ class NewMongoTransformer(Transformer):
             elif arg[1] == 'ONLY':
                 raise NotImplementedError
             else:
-                # value with operator
+                # value with OPERATOR
                 raise NotImplementedError
 
     def set_zip_op_rhs(self, arg):
@@ -232,7 +232,7 @@ class NewMongoTransformer(Transformer):
         raise NotImplementedError
 
     def length_comparison(self, arg):
-        # length_comparison: LENGTH property operator value
+        # length_comparison: LENGTH property OPERATOR value
         raise NotImplementedError
 
     def property_zip_addon(self, arg):
@@ -256,13 +256,7 @@ class NewMongoTransformer(Transformer):
         elif token.type == 'SIGNED_FLOAT':
             return float(token)
 
-    @v_args(inline=True)
-    def operator(self, operator):
-        # !operator: ("<" | "<=" | ">" | ">=" | "=" | "!=")
-        return self.operator_map[operator]
-
     def __default__(self, data, children, meta):
-        # print(data, children, meta)
         raise NotImplementedError
 
 

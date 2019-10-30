@@ -184,7 +184,7 @@ class ParserTestNew(unittest.TestCase):
         with self.assertRaises(ParserError):
             self.parse('NOTICE=val')  # not valid property or value (NOTICE)
         with self.assertRaises(ParserError):
-            self.parse('"NOTICE"=Val') # not valid property (Val)
+            self.parse('"NOTICE"=Val')  # not valid property (Val)
         with self.assertRaises(ParserError):
             self.parse('NOTICE=val')  # not valid property or value (NOTICE)
 

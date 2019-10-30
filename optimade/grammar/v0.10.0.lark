@@ -8,10 +8,10 @@ constant: string | number
 // Note: support for property in value is OPTIONAL
 value: string | number | property
 
-// Note:  support for operator in value_list is OPTIONAL
-value_list: [ operator ] value ( "," [ operator ] value )*
-// Note: support for operator in value_zip is OPTIONAL
-value_zip: [ operator ] value ":" [ operator ] value (":" [ operator ] value)*
+// Note:  support for OPERATOR in value_list is OPTIONAL
+value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
+// Note: support for OPERATOR in value_zip is OPTIONAL
+value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
 value_zip_list: value_zip ( "," value_zip )*
 
 // Expressions
@@ -26,14 +26,14 @@ property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string
 
 constant_first_comparison: constant value_op_rhs
 predicate_comparison: length_comparison
-value_op_rhs: operator value
+value_op_rhs: OPERATOR value
 known_op_rhs: IS ( KNOWN | UNKNOWN )
 fuzzy_string_op_rhs: CONTAINS string | STARTS [ WITH ] string | ENDS [ WITH ] string
 // Note: support for ONLY in set_op_rhs is OPTIONAL
-// Note: support for [ operator ] in set_op_rhs is OPTIONAL
-set_op_rhs: HAS ( [ operator ] value | ALL value_list | ANY value_list | ONLY value_list )
+// Note: support for [ OPERATOR ] in set_op_rhs is OPTIONAL
+set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )
 set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list | ANY value_zip_list )
-length_comparison: LENGTH property operator value
+length_comparison: LENGTH property OPERATOR value
 property_zip_addon: ":" property (":" property)*
 
 // Property syntax
@@ -67,10 +67,10 @@ ALL: "ALL"
 ONLY: "ONLY"
 ANY: "ANY"
 
-// Comparison operators
-!operator: ("<" | "<="  | ">" | ">=" | "=" | "!=")
+// Comparison OPERATORs
+OPERATOR: ( "<" ["="] | ">" ["="] | ["!"] "=" )
 
-IDENTIFIER: ("_"|LCASE_LETTER) ("_" | LCASE_LETTER | DIGIT)*
+IDENTIFIER: ( "_" | LCASE_LETTER ) ( "_" | LCASE_LETTER | DIGIT )*
 LCASE_LETTER: "a".."z"
 DIGIT: "0".."9"
 

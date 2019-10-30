@@ -33,12 +33,12 @@ class TransformerSkeleton(Transformer):  # pragma: no cover
         return 'value'
 
     def value_list(self, arg):
-        # value_list: [ operator ] value ( "," [ operator ] value )*
+        # value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
         print('Node: ', 'value_list', arg)
         return 'value_list'
 
     def value_zip(self, arg):
-        # value_zip: [ operator ] value ":" [ operator ] value (":" [ operator ] value)*
+        # value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
         print('Node: ', 'value_zip', arg)
         return 'value_zip'
 
@@ -85,7 +85,7 @@ class TransformerSkeleton(Transformer):  # pragma: no cover
         return 'predicate_comparison'
 
     def value_op_rhs(self, arg):
-        # value_op_rhs: operator value
+        # value_op_rhs: OPERATOR value
         print('Node: ', 'value_op_rhs', arg)
         return 'value_op_rhs'
 
@@ -100,7 +100,7 @@ class TransformerSkeleton(Transformer):  # pragma: no cover
         return 'fuzzy_string_op_rhs'
 
     def set_op_rhs(self, arg):
-        # set_op_rhs: HAS ( [ operator ] value | ALL value_list | ANY value_list | ONLY value_list )
+        # set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )
         print('Node: ', 'set_op_rhs', arg)
         return 'set_op_rhs'
 
@@ -111,7 +111,7 @@ class TransformerSkeleton(Transformer):  # pragma: no cover
         return 'set_zip_op_rhs'
 
     def length_comparison(self, arg):
-        # length_comparison: LENGTH property operator value
+        # length_comparison: LENGTH property OPERATOR value
         print('Node: ', 'length_comparison', arg)
         return 'length_comparison'
 
@@ -134,11 +134,6 @@ class TransformerSkeleton(Transformer):  # pragma: no cover
         # number: SIGNED_INT | SIGNED_FLOAT
         print('Node: ', 'number', arg)
         return 'number'
-
-    def operator(self, arg):
-        # !operator: ("<" | "<=" | ">" | ">=" | "=" | "!=")
-        print('Node: ', 'operator', arg)
-        return 'operator'
 
     def __default__(self, data, children, meta):
         print('Node: ', data, children)
