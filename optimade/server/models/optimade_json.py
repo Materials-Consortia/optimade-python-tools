@@ -2,7 +2,7 @@
 from pydantic import Schema, validator
 from typing import Optional, Set
 
-from optimade.server.models import jsonapi
+from . import jsonapi
 
 
 class Error(jsonapi.Error):
