@@ -1,14 +1,8 @@
-from configparser import ConfigParser
-from pathlib import Path
-
 from fastapi import Query
 from pydantic import EmailStr
 
 from .models.util import NonnegativeInt
-
-config = ConfigParser()
-config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
-PAGE_LIMIT = config["DEFAULT"].getint("PAGE_LIMIT")
+from .config import CONFIG
 
 
 class EntryListingQueryParams:
@@ -28,7 +22,7 @@ Example: `chemical_formula = "Al" OR (prototype_formula = "AB" AND elements HAS 
         email_address: EmailStr = Query(None),
         response_fields: str = Query(None),
         sort: str = Query(None),
-        page_limit: NonnegativeInt = Query(PAGE_LIMIT),
+        page_limit: NonnegativeInt = Query(CONFIG.page_limit),
         page_offset: NonnegativeInt = Query(0),
         page_page: NonnegativeInt = Query(0),
         page_cursor: NonnegativeInt = Query(0),

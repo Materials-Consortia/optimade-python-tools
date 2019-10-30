@@ -1,11 +1,7 @@
-from configparser import ConfigParser
-from pathlib import Path
+from optimade.server.config import CONFIG
 
-
-config = ConfigParser()
-config.read(Path(__file__).resolve().parent.parent.joinpath("config.ini"))
-PROVIDER = config["DEFAULT"].get("PROVIDER")
-PROVIDER_FIELDS = {field for field, _ in config["STRUCTURE"].items() if _ == ""}
+PROVIDER = CONFIG.provider
+PROVIDER_FIELDS = CONFIG.provider_fields
 
 
 class StructureMapper:

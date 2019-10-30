@@ -10,6 +10,7 @@ from optimade.filtertransformers.mongo import MongoTransformer
 from .models.util import NonnegativeInt
 from .models.entries import EntryResource, EntryResourceAttributes
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
+from .config import CONFIG
 
 from .mappers.structures import StructureMapper
 
@@ -64,15 +65,13 @@ class MongoCollection(EntryCollection):
         ],
         resource_cls: EntryResource,
         resource_attributes: EntryResourceAttributes,
-        provider: str,
-        provider_fields: set,
-        page_limit: int,
     ):
         super().__init__(collection, resource_cls, resource_attributes)
         self.transformer = MongoTransformer()
-        self.provider = provider
-        self.provider_fields = provider_fields
-        self.page_limit = page_limit
+
+        self.provider = CONFIG.provider
+        self.provider_fields = CONFIG.provider_fields
+        self.page_limit = CONFIG.page_limit
         self.parser = LarkParser(
             version=(0, 9, 7)
         )  # The MongoTransformer only supports v0.9.7 as the latest grammar
