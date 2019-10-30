@@ -131,7 +131,9 @@ def general_exception(
         status_code=status_code,
         content=jsonable_encoder(
             ErrorResponse(
-                meta=meta_values(str(request.url), 0, 0, False, **{"traceback": tb}),
+                meta=meta_values(
+                    str(request.url), 0, 0, False, **{CONFIG.provider + "traceback": tb}
+                ),
                 errors=errors,
             ),
             skip_defaults=True,
@@ -155,7 +157,7 @@ def validation_exception_handler(request: Request, exc: Exception):
     title = "ValidationError"
     errors = []
     for error in exc.errors():
-        pointer = "/" + "/".join(error["loc"])
+        pointer = "/" + "/".join([str(_) for _ in error["loc"]])
         source = ErrorSource(pointer=pointer)
         code = error["type"]
         detail = error["msg"]
@@ -177,7 +179,7 @@ def general_exception_handler(request: Request, exc: Exception):
     tags=["Structure"],
 )
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
-    results, more_data_available, data_available = structures.find(params)
+    results, more_data_available, data_available, fields = structures.find(params)
     parse_result = urllib.parse.urlparse(str(request.url))
     if more_data_available:
         query = urllib.parse.parse_qs(parse_result.query)
@@ -190,6 +192,21 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         )
     else:
         links = ToplevelLinks(next=None)
+    if fields:
+        non_attribute_fields = {"id", "type"}
+        top_level = {_ for _ in non_attribute_fields if _ in fields}
+        attribute_level = fields - non_attribute_fields
+        new_results = []
+        while results:
+            entry = results.pop(0)
+            new_entry = entry.dict(exclude=top_level, skip_defaults=True)
+            for field in attribute_level:
+                if field in new_entry["attributes"]:
+                    del new_entry["attributes"][field]
+            if not new_entry["attributes"]:
+                del new_entry["attributes"]
+            new_results.append(new_entry)
+        results = new_results
     return StructureResponseMany(
         links=links,
         data=results,
@@ -209,13 +226,24 @@ def get_single_structure(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
 ):
     params.filter = f"id={entry_id}"
-    results, more_data_available, data_available = structures.find(params)
+    results, more_data_available, data_available, fields = structures.find(params)
     if more_data_available:
         raise StarletteHTTPException(
             status_code=500,
             detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
         )
     links = ToplevelLinks(next=None)
+    if fields and results is not None:
+        non_attribute_fields = {"id", "type"}
+        top_level = {_ for _ in non_attribute_fields if _ in fields}
+        attribute_level = fields - non_attribute_fields
+        new_entry = results.dict(exclude=top_level, skip_defaults=True)
+        for field in attribute_level:
+            if field in new_entry["attributes"]:
+                del new_entry["attributes"][field]
+        if not new_entry["attributes"]:
+            del new_entry["attributes"]
+        results = new_entry
     return StructureResponseOne(
         links=links,
         data=results,
