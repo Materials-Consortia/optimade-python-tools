@@ -89,7 +89,6 @@ class ResponseMeta(Meta):
     OPTIONAL additional information global to the query that is not
     specified in this document, MUST start with a
     database-provider-specific prefix.
-
     """
 
     query: ResponseMetaQuery = Schema(
