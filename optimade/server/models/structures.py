@@ -1,7 +1,12 @@
-from optimade.server.models.entries import EntryResourceAttributes, EntryResource
-from optimade.server.models.util import conlist
-from pydantic import Schema, BaseModel
+from pydantic import Schema, BaseModel, validator
 from typing import List, Optional
+from collections import Counter
+
+from .entries import EntryResourceAttributes, EntryResource
+from .util import conlist, CHEMICAL_SYMBOLS
+
+
+EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + ["X", "vacancy"]
 
 
 class Species(BaseModel):
@@ -61,6 +66,20 @@ Note: With regards to "source database", we refer to the immediate source being 
 The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).""",
     )
 
+    @validator("chemical_symbols")
+    def validate_chemical_symbols(cls, v):
+        assert (
+            v in EXTENDED_CHEMICAL_SYMBOLS
+        ), f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}"
+        return v
+
+    @validator("concentration", whole=True)
+    def validate_concentration(cls, v, values):
+        assert len(v) == len(
+            values.get("chemical_symbols", [])
+        ), f"Length of concentraion ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', []))})"
+        return v
+
 
 class Assembly(BaseModel):
     """A description of groups of sites that are statistically correlated.
@@ -92,6 +111,23 @@ See below for examples of how to specify the probability of the occurrence of a 
 The possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_.""",
     )
 
+    @validator("sites_in_groups", whole=True)
+    def validate_sites_in_groups(cls, v):
+        sites = []
+        for group in v:
+            sites.extend(group)
+        assert len(set(sites)) == len(
+            sites
+        ), f"A site MUST NOT appear in more than one group. Given value: {v}"
+        return v
+
+    @validator("group_probabilities", whole=True)
+    def check_self_consistency(cls, v, values):
+        assert len(v) == len(
+            values.get("sites_in_groups", [])
+        ), f"sites_in_groups and group_probabilities MUST be of same length, but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
+        return v
+
 
 class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Schema for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
@@ -106,6 +142,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - **Query**: MUST be a queryable property with support for all mandatory filter operators.
   - The strings are the chemical symbols, written as uppercase letter plus optional lowercase letters.
   - The order MUST be alphabetical.
+  - Note: This may not contain the "x" that is suggested in chemical_symbols for the :property:`species` property.
 
 - **Examples**:
 
@@ -552,6 +589,113 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
 -  **Examples**: A structure having unknown positions and using assemblies: :val:`["assemblies", "unknown_positions"]`""",
     )
+
+    @validator("elements", whole=False)
+    def element_must_be_chemical_symbol(cls, v):
+        assert (
+            v in CHEMICAL_SYMBOLS
+        ), f"Only chemical symbols are allowed, you passed: {v}"
+        return v
+
+    @validator("elements", whole=True)
+    def elements_must_be_alphabetical(cls, v):
+        assert sorted(v) == v, f"elements must be sorted alphabetically, but is: {v}"
+        return v
+
+    @validator("elements_ratios", whole=True)
+    def ratios_must_sum_to_one(cls, v):
+        assert (
+            sum(v) == 1
+        ), f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
+        return v
+
+    @validator("chemical_formula_reduced", "chemical_formula_hill")
+    def no_spaces_in_reduced(cls, v):
+        assert " " not in v, f"Spaces are not allowed, you passed: {v}"
+        return v
+
+    @validator("dimension_types", whole=True)
+    def must_be_of_length_three(cls, v):
+        assert len(v) == 3, f"MUST be of length 3, but is of length: {len(v)}"
+        for dimension in v:
+            assert dimension in {0, 1}, f"MUST be either 0 or 1, you passed: {v}"
+        return v
+
+    @validator("lattice_vectors", always=True, whole=True)
+    def required_if_dimension_types_has_one(cls, v, values):
+        if 1 in values.get("dimension_types") and v is None:
+            raise AssertionError(
+                f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values.get('dimension_types')}"
+            )
+        assert_msg = f"MUST be a an 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
+        assert len(v) == 3, assert_msg
+        return v
+
+    @validator("lattice_vectors", "cartesian_site_positions")
+    def sites_must_have_length_three(cls, v):
+        assert len(v) == 3, f"MUST be a list of length 3. {v} has length {len(v)}."
+        return v
+
+    @validator("nsites")
+    def validate_nsites(cls, v, values):
+        assert v == len(
+            values.get("cartesian_site_positions", [])
+        ), f"nsites (value: {v}) MUST equal length of cartesian_site_positions (value: {len(values.get('cartesian_site_positions', []))})"
+        return v
+
+    @validator("species_at_sites", whole=True)
+    def validate_species_at_sites(cls, v, values):
+        assert len(v) == values.get(
+            "nsites", 0
+        ), f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 0)})"
+        assert len(set(v)) == len(v), "Species in species_at_sites MUST be unique"
+        return v
+
+    @validator("species")
+    def validate_species(cls, v, values):
+        assert v.name in values.get(
+            "species_at_sites", []
+        ), f"{v.name} not found in species_at_sites: {values.get('species_at_sites', [])}"
+        return v
+
+    @validator("structure_features", whole=True, always=True)
+    def validate_structure_features(cls, v, values):
+        assert (
+            sorted(v) == v
+        ), f"structure_features MUST be sorted alphabetically, given value: {v}"
+        # disorder
+        for species in values.get("species", []):
+            if len(species.chemical_symbols) > 1:
+                assert (
+                    "disorder" in v
+                ), "disorder MUST be present when any one entry in species has a chemical_symbols list greater than one element"
+                break
+        else:
+            assert (
+                "disorder" not in v
+            ), "disorder MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
+        # unknown_positions
+        for site in values.get("cartesian_site_positions", []):
+            if None in site or float("nan") in site:
+                assert (
+                    "unknown_positions" in v
+                ), "unknown_positions MUST be present when a single component of cartesian_site_positions has value null"
+                break
+        else:
+            assert (
+                "unknown_positions" not in v
+            ), "unknown_positions MUST NOT be present, since there are no null values in cartesian_site_positions"
+        # assemblies
+        if values.get("assemblies", None) is not None:
+            assert (
+                "assemblies" in v
+            ), "assemblies MUST be present, since the property of the same name is present"
+        else:
+            assert (
+                "assemblies" not in v
+            ), "assemblies MUST NOT be present, since the property of the same name is not present"
+
+        return v
 
 
 class StructureResource(EntryResource):

@@ -155,7 +155,6 @@ def validation_exception_handler(request: Request, exc: Exception):
     title = "ValidationError"
     errors = []
     for error in exc.errors():
-        print(error)
         pointer = "/" + "/".join(error["loc"])
         source = ErrorSource(pointer=pointer)
         code = error["type"]
@@ -209,7 +208,6 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
 def get_single_structure(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
 ):
-    print(entry_id)
     params.filter = f"id={entry_id}"
     results, more_data_available, data_available = structures.find(params)
     if more_data_available:

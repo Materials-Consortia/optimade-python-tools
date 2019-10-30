@@ -19,7 +19,7 @@ class ServerConfig:
 
     def __init__(self, ftype="ini"):
         if ftype == "json":
-            self.loaf_from_json()
+            self.load_from_json()
         else:
             self.load_from_ini()
 
