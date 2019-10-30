@@ -1,8 +1,7 @@
 import urllib
 import traceback
-from configparser import ConfigParser
-from datetime import datetime
 from pathlib import Path
+from datetime import datetime
 from typing import Union, Dict, Any
 
 from pydantic import ValidationError
@@ -30,15 +29,8 @@ from .models.toplevel import (
     ErrorResponse,
     EntryInfoResponse,
 )
+from .config import CONFIG
 
-config = ConfigParser()
-config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
-USE_REAL_MONGO = config.getboolean("DEFAULT", "USE_REAL_MONGO", fallback=False)
-MONGO_DATABASE = config.get("DEFAULT", "MONGO_DATABASE", fallback="optimade")
-MONGO_COLLECTION = config.get("DEFAULT", "MONGO_COLLECTION", fallback="structures")
-PROVIDER = config.get("DEFAULT", "PROVIDER", fallback="_exmpl_")
-PAGE_LIMIT = config.getint("DEFAULT", "PAGE_LIMIT", fallback=500)
-PROVIDER_FIELDS = {field for field, _ in config["STRUCTURE"].items() if _ == ""}
 
 app = FastAPI(
     title="OPTiMaDe API",
@@ -51,25 +43,22 @@ app = FastAPI(
 )
 
 
-if USE_REAL_MONGO:
+if CONFIG.use_real_mongo:
     from pymongo import MongoClient
 else:
     from mongomock import MongoClient
 
 client = MongoClient()
 structures = MongoCollection(
-    client[MONGO_DATABASE][MONGO_COLLECTION],
+    client[CONFIG.mongo_database][CONFIG.mongo_collection],
     StructureResource,
     StructureResourceAttributes,
-    PROVIDER,
-    PROVIDER_FIELDS,
-    PAGE_LIMIT,
 )
 
 test_structures_path = (
     Path(__file__).resolve().parent.joinpath("tests/test_more_structures.json")
 )
-if not USE_REAL_MONGO and test_structures_path.exists():
+if not CONFIG.use_real_mongo and test_structures_path.exists():
     import json
     import bson.json_util
 
