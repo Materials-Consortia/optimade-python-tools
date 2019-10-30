@@ -18,7 +18,7 @@ class Species(BaseModel):
         - :val:`[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
         - :val:`[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
         - :val:`[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
-        - :val:`[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.    
+        - :val:`[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
 
     """
 
@@ -45,7 +45,7 @@ class Species(BaseModel):
         description="""MUST be a list of floats, with same length as :property:`chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species.
 The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
 
-  - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.       
+  - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.
   - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.
 
 Note that concentrations are uncorrelated between different site (even of the same species).""",
@@ -263,7 +263,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.
     For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, :property:`chemical_formula_hill` is :val:`"H2O2"` (i.e., not :val:`"HO"`, nor :val:`"H4O4"`).
   - If the chemical insight needed to ascribe a Hill formula to the system is not present, the property MUST be handled as unset.
-  - Element names MUST have proper capitalization (e.g., :val:`"Si"`, not :VAL:`"SI"` for "silicon").    
+  - Element names MUST have proper capitalization (e.g., :val:`"Si"`, not :VAL:`"SI"` for "silicon").
   - Elements MUST be placed in `Hill order <https://dx.doi.org/10.1021/ja02046a005>`__, followed by their integer chemical proportion number.
     Hill order means: if carbon is present, it is placed first, and if also present, hydrogen is placed second.
     After that, all other elements are ordered alphabetically.
@@ -307,7 +307,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Requirements/Conventions**:
 
   - **Response**: REQUIRED in the response unless explicitly excluded.
-  - **Query**: MUST be a queryable property. Support for equality comparison is REQUIRED, support for other comparison operators are OPTIONAL.    
+  - **Query**: MUST be a queryable property. Support for equality comparison is REQUIRED, support for other comparison operators are OPTIONAL.
   - MUST be a list of length 3.
   - Each integer element MUST assume only the value 0 or 1.
 
@@ -363,7 +363,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     nsites: int = Schema(
         ...,
         description="""An integer specifying the length of the :property:`cartesian_site_positions` property.
-- **Type**: integer  
+- **Type**: integer
 - **Requirements/Conventions**:
 
   - **Response**: REQUIRED in the response unless explicitly excluded.
@@ -420,7 +420,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;
 
     - **chemical\_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.
-      
+
       - It MUST be one of the following:
 
         - a valid chemical-element name, or
@@ -432,7 +432,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - **concentration**: REQUIRED; MUST be a list of floats, with same length as :property:`chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species.
       The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
 
-      - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.       
+      - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.
       - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.
 
       Note that concentrations are uncorrelated between different site (even of the same species).
