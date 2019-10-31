@@ -2,7 +2,7 @@ import urllib
 import traceback
 from pathlib import Path
 from datetime import datetime
-from typing import Union, Dict, Any
+from typing import Union, Dict, Any, List
 
 from pydantic import ValidationError
 from fastapi import FastAPI, Depends
@@ -12,14 +12,16 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from .deps import EntryListingQueryParams, SingleEntryQueryParams
-from .collections import MongoCollection
-from .models.jsonapi import Link, ToplevelLinks, ErrorSource
-from .models.optimade_json import Error
-from .models.structures import StructureResource, StructureResourceAttributes
-from .models.entries import EntryInfoResource
-from .models.baseinfo import BaseInfoResource, BaseInfoAttributes
-from .models.toplevel import (
+from optimade.models import (
+    Link,
+    ToplevelLinks,
+    ErrorSource,
+    Error,
+    StructureResource,
+    StructureResourceAttributes,
+    EntryInfoResource,
+    BaseInfoResource,
+    BaseInfoAttributes,
     ResponseMeta,
     ResponseMetaQuery,
     StructureResponseMany,
@@ -28,7 +30,11 @@ from .models.toplevel import (
     Provider,
     ErrorResponse,
     EntryInfoResponse,
+    EntryResource,
 )
+
+from .deps import EntryListingQueryParams, SingleEntryQueryParams
+from .collections import MongoCollection
 from .config import CONFIG
 
 
@@ -172,6 +178,28 @@ def general_exception_handler(request: Request, exc: Exception):
     return general_exception(request, exc)
 
 
+def handle_response_limit(
+    results: Union[List[EntryResource], EntryResource], fields: set
+) -> dict:
+    print(type(results))
+    if not isinstance(results, list):
+        results = [results]
+    non_attribute_fields = {"id", "type"}
+    top_level = {_ for _ in non_attribute_fields if _ in fields}
+    attribute_level = fields - non_attribute_fields
+    new_results = []
+    while results:
+        entry = results.pop(0)
+        new_entry = entry.dict(exclude=top_level, skip_defaults=True)
+        for field in attribute_level:
+            if field in new_entry["attributes"]:
+                del new_entry["attributes"][field]
+        if not new_entry["attributes"]:
+            del new_entry["attributes"]
+        new_results.append(new_entry)
+    return new_results
+
+
 @app.get(
     "/structures",
     response_model=Union[StructureResponseMany, ErrorResponse],
@@ -193,20 +221,7 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
     else:
         links = ToplevelLinks(next=None)
     if fields:
-        non_attribute_fields = {"id", "type"}
-        top_level = {_ for _ in non_attribute_fields if _ in fields}
-        attribute_level = fields - non_attribute_fields
-        new_results = []
-        while results:
-            entry = results.pop(0)
-            new_entry = entry.dict(exclude=top_level, skip_defaults=True)
-            for field in attribute_level:
-                if field in new_entry["attributes"]:
-                    del new_entry["attributes"][field]
-            if not new_entry["attributes"]:
-                del new_entry["attributes"]
-            new_results.append(new_entry)
-        results = new_results
+        results = handle_response_limit(results, fields)
     return StructureResponseMany(
         links=links,
         data=results,
@@ -234,16 +249,7 @@ def get_single_structure(
         )
     links = ToplevelLinks(next=None)
     if fields and results is not None:
-        non_attribute_fields = {"id", "type"}
-        top_level = {_ for _ in non_attribute_fields if _ in fields}
-        attribute_level = fields - non_attribute_fields
-        new_entry = results.dict(exclude=top_level, skip_defaults=True)
-        for field in attribute_level:
-            if field in new_entry["attributes"]:
-                del new_entry["attributes"][field]
-        if not new_entry["attributes"]:
-            del new_entry["attributes"]
-        results = new_entry
+        results = handle_response_limit(results, fields)[0]
     return StructureResponseOne(
         links=links,
         data=results,

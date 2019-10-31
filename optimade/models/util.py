@@ -4,6 +4,9 @@ from pydantic.types import OptionalInt
 from pydantic.validators import list_validator
 
 
+__all__ = ("NonnegativeInt",)
+
+
 class NonnegativeInt(ConstrainedInt):
     ge = 0
 

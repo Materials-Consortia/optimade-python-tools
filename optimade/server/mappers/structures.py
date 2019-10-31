@@ -4,6 +4,9 @@ PROVIDER = CONFIG.provider
 PROVIDER_FIELDS = CONFIG.provider_fields
 
 
+__all__ = ("StructureMapper",)
+
+
 class StructureMapper:
     aliases = tuple((PROVIDER + _, _) for _ in PROVIDER_FIELDS)
     aliases += (

@@ -5,12 +5,17 @@ from pydantic import BaseModel, Schema
 from .jsonapi import Relationships, Attributes, Resource
 
 
+__all__ = ("EntryResource", "EntryResourceAttributes", "EntryInfoResource")
+
+
 class EntryResourceAttributes(Attributes):
     """Contains key-value pairs representing the entry's properties."""
 
     immutable_id: Optional[str] = Schema(
         ...,
-        description="""The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to "the latest version" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.
+        description="""The entry's immutable ID (e.g., an UUID).
+This is important for databases having preferred IDs that point to "the latest version" of a record, but still offer access to older variants.
+This ID maps to the version-specific record, in case it changes in the future.
 - **Type**: string.
 - **Requirements/Conventions**:
 
@@ -34,7 +39,8 @@ class EntryResourceAttributes(Attributes):
 
 - **Example**:
 
-  - As part of JSON response format: :VAL:`"2007-04-05T14:30Z"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)""",
+  - As part of JSON response format: :VAL:`"2007-04-05T14:30Z"`
+    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)""",
     )
 
 
@@ -61,7 +67,8 @@ class EntryResource(Resource):
 
     type: str = Schema(
         ...,
-        description="""The name of the type of an entry. Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.
+        description="""The name of the type of an entry.
+Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.
 - **Type**: string.
 - **Requirements/Conventions**:
 
@@ -77,12 +84,14 @@ class EntryResource(Resource):
         ...,
         description="""a dictionary, containing key-value pairs representing the entry's properties, except for type and id.
 
-Database-provider-specific properties need to include the database-provider-specific prefix (see appendix `Database-Provider-Specific Namespace Prefixes`_).""",
+Database-provider-specific properties need to include the database-provider-specific prefix
+(see appendix `Database-Provider-Specific Namespace Prefixes`_).""",
     )
 
     relationships: Optional[Relationships] = Schema(
         ...,
-        description="""a dictionary containing references to other entries according to the description in section `Relationships`_ encoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.
+        description="""a dictionary containing references to other entries according to the description in section `Relationships`_
+encoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.
 The OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary.""",
     )
 
