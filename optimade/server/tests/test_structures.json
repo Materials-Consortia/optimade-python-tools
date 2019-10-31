@@ -6,6 +6,7 @@
 		"Ac"
 	],
   "elements_ratios": [1.0],
+  "lattice_vectors": [[5.311, 0.0, 0.0], [0.0, 5.311, 0.0], [0.0, 0.0, 5.311]],
   "dimension_types": [1, 1, 1],
   "cartesian_site_positions": [[0.0, 0.0, 0.0]],
   "species_at_sites": ["Ac"],
@@ -31,7 +32,8 @@
 	],
 	"nelements": 3,
 	"pretty_formula": "Ac2AgIr",
-	"formula_anonymous": "A2BC",
+  "formula_anonymous": "A2BC",
+  "lattice_vectors": [[7.64297714, 0.0, 0.0], [0.0, 7.64297714, 0.0], [0.0, 0.0, 7.64297714]],
 	"_mp_chemsys": "Ac-Ag-Ir",
 	"task_id": "mpf-2",
   "elements_ratios": [2.0, 1.0, 1.0],
@@ -87,6 +89,7 @@
 	"nelements": 2,
   "elements_ratios": [2.0, 1.0],
   "dimension_types": [1, 1, 1],
+  "lattice_vectors": [[4.10473234, 0.0, 0.0], [0.0, 4.10473234, 0.0], [0.0, 0.0, 13.75581191]],
   "cartesian_site_positions": [
       [0.0, 0.0, 0.0],
       [0.2, 0.5, 0.5],
@@ -116,7 +119,8 @@
 	],
 	"nelements": 2,
 	"pretty_formula": "Ac2O3",
-	"formula_anonymous": "A3B2",
+  "formula_anonymous": "A3B2",
+  "lattice_vectors": [[3.551194, -2.050283, 0.0], [0.0, 4.100565, 0.0], [0.0, 0.0, 6.378450]],
 	"_mp_chemsys": "Ac-O",
 	"task_id": "mpf-30",
 	"last_modified": {
@@ -182,7 +186,8 @@
 		"Ag"
 	],
 	"nelements": 1,
-	"pretty_formula": "Ag",
+  "pretty_formula": "Ag",
+  "lattice_vectors": [[4.0855, 0.0, 0.0], [0.0, 4.0855, 0.0], [0.0, 0.0, 4.0855]],
 	"formula_anonymous": "A",
 	"_mp_chemsys": "Ag",
 	"task_id": "mpf-200",
@@ -200,4 +205,3 @@
       {"name": "Ag", "chemical_symbols": ["Ag"], "concentration": [1.0]}
   ]
 }]
-
