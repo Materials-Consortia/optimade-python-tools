@@ -111,7 +111,7 @@ class TestMongoTransformer(unittest.TestCase):
                          {'$and': [{'_exmpl_melting_point': {'$lt': 300}}, {'nelements': {'$eq': 4}},
                                    {'elements': {'$eq': 'Si,O2'}}]})
         self.assertEqual(self.transform('_exmpl_some_string_property = 42'), {'_exmpl_some_string_property': {'$eq': 42}})
-        self.assertEqual(self.transform('5 < _exmpl_a'), {'_exmpl_a': {'$lt': 5}})
+        self.assertEqual(self.transform('5 < _exmpl_a'), {'_exmpl_a': {'$gt': 5}})
 
         self.assertEqual(self.transform("a<5 AND b=0"), {'$and': [{'a': {'$lt': 5}}, {'b': {'$eq': 0}}]})
         self.assertEqual(self.transform("a >= 8 OR a<5 AND b>=8"),
@@ -144,6 +144,13 @@ class TestMongoTransformer(unittest.TestCase):
     def test_properties(self):
         #  Filtering on Properties with unknown value
         # TODO: {'$not': {'$exists': False}} can be simplified to {'$exists': True}
+        # The { $not: { $gt: 1.99 } } is different from the $lte operator. { $lte: 1.99 } returns only the documents
+        # where price field exists and its value is less than or equal to 1.99.
+        # Remember that the $not operator only affects other operators and cannot check fields and documents
+        # independently. So, use the $not operator for logical disjunctions and the $ne operator to test
+        # the contents of fields directly.
+        # source: https://docs.mongodb.com/manual/reference/operator/query/not/
+
         self.assertEqual(self.transform('chemical_formula_hill IS KNOWN AND NOT chemical_formula_anonymous IS UNKNOWN'),
                          {'$and': [{'chemical_formula_hill': {'$exists': True}},
                                    {'chemical_formula_anonymous': {'$not': {'$exists': False}}}]})

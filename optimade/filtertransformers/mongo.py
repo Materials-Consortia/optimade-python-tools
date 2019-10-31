@@ -90,6 +90,7 @@ class MongoTransformer(Transformer):
 
 class NewMongoTransformer(Transformer):
     operator_map = {"<": "$lt", "<=": "$lte", ">": "$gt", ">=": "$gte", "!=": "$ne", "=": "$eq"}
+    reversed_operator_map = {"$lt": "$gt", "$lte": "$gte", "$gt": "$lt", "$gte": "$lte", "$ne": "$ne", "$eq": "$eq"}
 
     def __init__(self):
         super().__init__()
@@ -175,7 +176,8 @@ class NewMongoTransformer(Transformer):
 
     def constant_first_comparison(self, arg):
         # constant_first_comparison: constant value_op_rhs
-        return {prop: {oper: arg[0]} for oper, prop in arg[1].items()}
+        # TODO: Probably the value_op_rhs rule is not the best for implementing this.
+        return {prop: {self.reversed_operator_map[oper]: arg[0]} for oper, prop in arg[1].items()}
 
     def predicate_comparison(self, arg):
         # predicate_comparison: length_comparison
@@ -270,7 +272,9 @@ if __name__ == '__main__':  # pragma: no cover
     # f = 'NOT a > b OR c = 100 AND f = "C2 H6"'
     # f = '(NOT (a > b)) OR ( (c = 100) AND (f = "C2 H6") )'
     # f = 'a >= 0 AND NOT b < c OR c = 0'
-    f = '((a >= 0) AND (NOT (b < c))) OR (c = 0)'
+    # f = '((a >= 0) AND (NOT (b < c))) OR (c = 0)'
+    # f = 'nelements > 3'
+    f = ' 3 < nelements'
 
     print(f)
     print(p.parse(f))
