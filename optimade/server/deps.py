@@ -1,7 +1,8 @@
 from fastapi import Query
 from pydantic import EmailStr
 
-from .models.util import NonnegativeInt
+from optimade.models import NonnegativeInt
+
 from .config import CONFIG
 
 

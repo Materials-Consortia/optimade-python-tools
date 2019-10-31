@@ -4,6 +4,9 @@ from pydantic import BaseModel, UrlStr, Schema, validator
 from .jsonapi import Resource
 
 
+__all__ = ("BaseInfoResource", "BaseInfoAttributes")
+
+
 class AvailableApiVersion(BaseModel):
     """A JSON object containing information about an available API version"""
 

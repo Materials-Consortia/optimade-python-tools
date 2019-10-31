@@ -5,6 +5,9 @@ from typing import Optional, Set
 from . import jsonapi
 
 
+__all__ = ("Error",)
+
+
 class Error(jsonapi.Error):
     """detail MUST be present"""
 

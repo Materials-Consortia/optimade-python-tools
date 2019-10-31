@@ -1,7 +1,7 @@
 import pytest
 from pydantic import BaseModel, ValidationError, ConfigError
 
-from optimade.server.models.util import conlist
+from optimade.models.util import conlist
 
 
 def test_constrained_list():

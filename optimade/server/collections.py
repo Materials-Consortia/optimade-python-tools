@@ -4,15 +4,15 @@ from typing import Collection, Tuple, List, Union
 import mongomock
 import pymongo.collection
 from fastapi import HTTPException
+
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
+from optimade.models import NonnegativeInt, EntryResource, EntryResourceAttributes
 
-from .models.util import NonnegativeInt
-from .models.entries import EntryResource, EntryResourceAttributes
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .config import CONFIG
 
-from .mappers.structures import StructureMapper
+from .mappers import StructureMapper
 
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
@@ -39,7 +39,7 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     @abstractmethod
     def find(
         self, params: EntryListingQueryParams
-    ) -> Tuple[List[EntryResource], bool, NonnegativeInt]:
+    ) -> Tuple[List[EntryResource], bool, NonnegativeInt, set]:
         """
         Fetches results and indicates if more data is available.
 
@@ -49,7 +49,7 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
             params (EntryListingQueryParams): entry listing URL query params
 
         Returns:
-            Tuple[List[Entry], bool, NonnegativeInt]: (results, more_data_available, data_available)
+            Tuple[List[Entry], bool, NonnegativeInt, set]: (results, more_data_available, data_available, fields)
 
         """
 
@@ -90,7 +90,7 @@ class MongoCollection(EntryCollection):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[List[EntryResource], bool, NonnegativeInt]:
+    ) -> Tuple[List[EntryResource], bool, NonnegativeInt, set]:
         criteria = self._parse_params(params)
         if isinstance(params, EntryListingQueryParams):
             criteria_nolimit = criteria.copy()

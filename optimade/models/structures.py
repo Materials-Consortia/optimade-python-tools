@@ -8,6 +8,9 @@ from .util import conlist, CHEMICAL_SYMBOLS
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + ["X", "vacancy"]
 
 
+__all__ = ("StructureResource", "StructureResourceAttributes")
+
+
 class Species(BaseModel):
     """A list describing the species of the sites of this structure.
     Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.
