@@ -1,5 +1,7 @@
-from pydantic import Schema, BaseModel, validator
+from sys import float_info
 from typing import List, Optional
+
+from pydantic import Schema, BaseModel, validator
 
 from .entries import EntryResourceAttributes, EntryResource
 from .util import conlist, CHEMICAL_SYMBOLS
@@ -9,6 +11,9 @@ EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + ["X", "vacancy"]
 
 
 __all__ = ("StructureResource", "StructureResourceAttributes")
+
+
+EPS = float_info.epsilon
 
 
 class Species(BaseModel):
@@ -607,7 +612,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     @validator("elements_ratios", whole=True)
     def ratios_must_sum_to_one(cls, v):
         assert (
-            sum(v) == 1
+            abs(sum(v) - 1) < EPS
         ), f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
         return v
 
