@@ -62,7 +62,7 @@ structures = MongoCollection(
 )
 
 test_structures_path = (
-    Path(__file__).resolve().parent.joinpath("tests/test_more_structures.json")
+    Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
 )
 if not CONFIG.use_real_mongo and test_structures_path.exists():
     import json
