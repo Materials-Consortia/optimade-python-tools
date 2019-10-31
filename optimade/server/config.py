@@ -3,12 +3,36 @@ from configparser import ConfigParser
 from pathlib import Path
 
 
-class ServerConfig:
+class Config:
+    """Base class for loading config files and its parameters"""
+
+    ftype = "ini"
+
+    def __init__(self, ftype: str = None):
+        ftype = self.ftype if ftype is None else ftype
+        self.load(ftype)
+
+    def _get_load_func(self, format_name):
+        return getattr(self, f"load_from_{format_name}")
+
+    def load(self, ftype: str = None):
+        try:
+            f = self._get_load_func(ftype)
+        except AttributeError:
+            raise NotImplementedError(
+                f"load function for config format {ftype} is not implemented"
+            )
+        else:
+            f()
+
+
+class ServerConfig(Config):
     """ This class stores server config parameters in a way that
     can be easily extended for new config file types.
 
     """
 
+    ftype = "ini"
     use_real_mongo = False
     mongo_database = "optimade"
     mongo_collection = "structures"
@@ -16,12 +40,6 @@ class ServerConfig:
     page_limit = 500
     provider_fields = set()
     _path = Path(__file__).resolve().parent
-
-    def __init__(self, ftype="ini"):
-        if ftype == "json":
-            self.load_from_json()
-        else:
-            self.load_from_ini()
 
     def load_from_ini(self):
         """ Load from the file "config.ini", if it exists. """
