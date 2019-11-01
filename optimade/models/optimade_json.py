@@ -5,7 +5,7 @@ from typing import Optional, Set
 from . import jsonapi
 
 
-__all__ = ("Error",)
+__all__ = ("Error", "Failure", "Success", "Warnings")
 
 
 class Error(jsonapi.Error):

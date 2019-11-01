@@ -10,7 +10,7 @@ from .util import conlist, CHEMICAL_SYMBOLS
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + ["X", "vacancy"]
 
 
-__all__ = ("StructureResource", "StructureResourceAttributes")
+__all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResource")
 
 
 EPS = float_info.epsilon
@@ -655,7 +655,9 @@ class StructureResourceAttributes(EntryResourceAttributes):
         assert len(v) == values.get(
             "nsites", 0
         ), f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 0)})"
-        assert len(set(v)) == len(v), "Species in species_at_sites MUST be unique"
+        # The following assert is true as of v0.10.0 - but should hopefully be avoided in the future.
+        # In that hope, it is commented out here.
+        # assert len(set(v)) == len(v), "Species in species_at_sites MUST be unique"
         return v
 
     @validator("species")

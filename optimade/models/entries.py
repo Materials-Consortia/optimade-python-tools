@@ -5,7 +5,12 @@ from pydantic import BaseModel, Schema
 from .jsonapi import Relationships, Attributes, Resource
 
 
-__all__ = ("EntryResource", "EntryResourceAttributes", "EntryInfoResource")
+__all__ = (
+    "EntryResourceAttributes",
+    "EntryResource",
+    "EntryInfoProperty",
+    "EntryInfoResource",
+)
 
 
 class EntryResourceAttributes(Attributes):

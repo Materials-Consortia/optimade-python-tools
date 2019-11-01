@@ -4,7 +4,7 @@ from pydantic.types import OptionalInt
 from pydantic.validators import list_validator
 
 
-__all__ = ("NonnegativeInt",)
+__all__ = ("NonnegativeInt", "CHEMICAL_SYMBOLS")
 
 
 class NonnegativeInt(ConstrainedInt):
