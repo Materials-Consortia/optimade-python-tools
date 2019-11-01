@@ -2,6 +2,9 @@ from pydantic import Schema, BaseModel, UrlStr, validator
 from typing import List, Optional
 
 
+__all__ = ("Person", "ReferenceResourceAttributes", "ReferenceResource")
+
+
 class Person(BaseModel):
     name: str = Schema(..., decsription="""Full name of the person, REQUIRED.""")
     firstname: Optional[str] = Schema(..., description="""First name of the person.""")

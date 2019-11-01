@@ -1,8 +1,16 @@
 from pydantic import Schema, BaseModel
 from typing import Union, Dict
 
-from .links import ChildResource
+from .jsonapi import BaseResource
 from .baseinfo import BaseInfoAttributes, BaseInfoResource
+
+
+__all__ = (
+    "IndexInfoAttributes",
+    "RelatedChildResource",
+    "IndexRelationship",
+    "IndexInfoResource",
+)
 
 
 class IndexInfoAttributes(BaseInfoAttributes):
@@ -17,10 +25,10 @@ class IndexInfoAttributes(BaseInfoAttributes):
     )
 
 
-class RelatedChildResource(ChildResource):
+class RelatedChildResource(BaseResource):
     """Keep only type and id of a ChildResource"""
 
-    attributes: None = Schema(default=None, const=True)
+    type: str = Schema("child", const=True)
 
 
 class IndexRelationship(BaseModel):

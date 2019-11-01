@@ -3,7 +3,22 @@ from typing import Optional, Set, Union
 from pydantic import BaseModel, UrlStr, Schema, validator
 
 
-__all__ = ("Link", "ToplevelLinks", "ErrorSource")
+__all__ = (
+    "Meta",
+    "Link",
+    "JsonApi",
+    "ToplevelLinks",
+    "ErrorLinks",
+    "ErrorSource",
+    "BaseResource",
+    "RelationshipLinks",
+    "Relationship",
+    "Relationships",
+    "ResourceLinks",
+    "Attributes",
+    "Resource",
+    "Response",
+)
 
 
 class Meta(BaseModel):

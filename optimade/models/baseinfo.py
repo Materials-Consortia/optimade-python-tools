@@ -4,7 +4,7 @@ from pydantic import BaseModel, UrlStr, Schema, validator
 from .jsonapi import Resource
 
 
-__all__ = ("BaseInfoResource", "BaseInfoAttributes")
+__all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 
 
 class AvailableApiVersion(BaseModel):
