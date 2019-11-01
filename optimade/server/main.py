@@ -13,7 +13,6 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from optimade.models import (
-    Link,
     ToplevelLinks,
     ErrorSource,
     Error,
@@ -119,10 +118,7 @@ def general_exception(
     except AttributeError:
         status_code = kwargs.get("status_code", 500)
 
-    try:
-        detail = exc.detail
-    except AttributeError:
-        detail = str(exc)
+    detail = getattr(exc, "detail", str(exc))
 
     errors = kwargs.get("errors", None)
     if not errors:
@@ -145,17 +141,17 @@ def general_exception(
 
 
 @app.exception_handler(StarletteHTTPException)
-def http_exception_handler(request: Request, exc: Exception):
+def http_exception_handler(request: Request, exc: StarletteHTTPException):
     return general_exception(request, exc)
 
 
 @app.exception_handler(RequestValidationError)
-def request_validation_exception_handler(request: Request, exc: Exception):
+def request_validation_exception_handler(request: Request, exc: RequestValidationError):
     return general_exception(request, exc)
 
 
 @app.exception_handler(ValidationError)
-def validation_exception_handler(request: Request, exc: Exception):
+def validation_exception_handler(request: Request, exc: ValidationError):
     status = 500
     title = "ValidationError"
     errors = []
@@ -175,10 +171,9 @@ def general_exception_handler(request: Request, exc: Exception):
     return general_exception(request, exc)
 
 
-def handle_response_limit(
+def handle_response_fields(
     results: Union[List[EntryResource], EntryResource], fields: set
 ) -> dict:
-    print(type(results))
     if not isinstance(results, list):
         results = [results]
     non_attribute_fields = {"id", "type"}
@@ -211,14 +206,12 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         links = ToplevelLinks(
-            next=Link(
-                href=f"{parse_result.scheme}://{parse_result.netloc}{parse_result.path}?{urlencoded}"
-            )
+            next=f"{parse_result.scheme}://{parse_result.netloc}{parse_result.path}?{urlencoded}"
         )
     else:
         links = ToplevelLinks(next=None)
     if fields:
-        results = handle_response_limit(results, fields)
+        results = handle_response_fields(results, fields)
     return StructureResponseMany(
         links=links,
         data=results,
@@ -246,7 +239,7 @@ def get_single_structure(
         )
     links = ToplevelLinks(next=None)
     if fields and results is not None:
-        results = handle_response_limit(results, fields)[0]
+        results = handle_response_fields(results, fields)[0]
     return StructureResponseOne(
         links=links,
         data=results,
@@ -278,7 +271,7 @@ def get_info(request: Request):
     )
 
 
-def helper_info_entries(schema, queryable_properties):
+def retrieve_queryable_properties(schema, queryable_properties):
     properties = {}
     for name, value in schema["properties"].items():
         if name in queryable_properties:
@@ -290,7 +283,7 @@ def helper_info_entries(schema, queryable_properties):
                     sub_schema = sub_schema[next_key]
                 sub_queryable_properties = sub_schema["properties"].keys()
                 properties.update(
-                    helper_info_entries(sub_schema, sub_queryable_properties)
+                    retrieve_queryable_properties(sub_schema, sub_queryable_properties)
                 )
             else:
                 properties[name] = {"description": value["description"]}
@@ -308,7 +301,7 @@ def helper_info_entries(schema, queryable_properties):
 def get_structures_info(request: Request):
     schema = StructureResource.schema()
     queryable_properties = {"id", "type", "attributes"}
-    properties = helper_info_entries(schema, queryable_properties)
+    properties = retrieve_queryable_properties(schema, queryable_properties)
 
     output_fields_by_format = {"json": list(properties.keys())}
 

@@ -32,7 +32,6 @@ class ServerConfig(Config):
 
     """
 
-    ftype = "ini"
     use_real_mongo = False
     mongo_database = "optimade"
     mongo_collection = "structures"
