@@ -18,7 +18,6 @@ from optimade.models import (
     ErrorSource,
     Error,
     StructureResource,
-    StructureResourceAttributes,
     EntryInfoResource,
     BaseInfoResource,
     BaseInfoAttributes,
@@ -56,9 +55,7 @@ else:
 
 client = MongoClient()
 structures = MongoCollection(
-    client[CONFIG.mongo_database][CONFIG.mongo_collection],
-    StructureResource,
-    StructureResourceAttributes,
+    client[CONFIG.mongo_database][CONFIG.mongo_collection], StructureResource
 )
 
 test_structures_path = (
@@ -281,6 +278,27 @@ def get_info(request: Request):
     )
 
 
+def helper_info_entries(schema, queryable_properties):
+    properties = {}
+    for name, value in schema["properties"].items():
+        if name in queryable_properties:
+            if "$ref" in value:
+                path = value["$ref"].split("/")[1:]
+                sub_schema = schema.copy()
+                while path:
+                    next_key = path.pop(0)
+                    sub_schema = sub_schema[next_key]
+                sub_queryable_properties = sub_schema["properties"].keys()
+                properties.update(
+                    helper_info_entries(sub_schema, sub_queryable_properties)
+                )
+            else:
+                properties[name] = {"description": value["description"]}
+                if "unit" in value:
+                    properties[name]["unit"] = value["unit"]
+    return properties
+
+
 @app.get(
     "/info/structures",
     response_model=Union[EntryInfoResponse, ErrorResponse],
@@ -288,31 +306,17 @@ def get_info(request: Request):
     tags=["Structure", "Info"],
 )
 def get_structures_info(request: Request):
-    schema_properties = (
-        StructureResourceAttributes.__annotations__  # pylint: disable=no-member
-    )
+    schema = StructureResource.schema()
+    queryable_properties = {"id", "type", "attributes"}
+    properties = helper_info_entries(schema, queryable_properties)
 
-    output_fields_by_format = {"json": ["id", "type"]}
-    output_fields_by_format["json"].extend(schema_properties.keys())
-
-    properties = {}
-    for name in schema_properties:
-        schema = StructureResourceAttributes.__dict__.get(name)
-        properties[name] = {"description": schema.description}
-        if "unit" in schema.extra:
-            properties[name]["unit"] = schema.extra["unit"]
-    for key, key_info in StructureResource.schema().get("properties").items():
-        if key in {"id", "type"}:
-            properties[key] = {}
-            for info in key_info:
-                if info in {"description", "unit"}:
-                    properties[key][info] = key_info[info]
+    output_fields_by_format = {"json": list(properties.keys())}
 
     return EntryInfoResponse(
         meta=meta_values(str(request.url), 1, 1, more_data_available=False),
         data=EntryInfoResource(
             formats=list(output_fields_by_format.keys()),
-            description="Materials structure entries",
+            description=schema.get("description", "Structure Resources"),
             properties=properties,
             output_fields_by_format=output_fields_by_format,
         ),

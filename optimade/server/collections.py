@@ -7,7 +7,7 @@ from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
-from optimade.models import NonnegativeInt, EntryResource, EntryResourceAttributes
+from optimade.models import NonnegativeInt, EntryResource
 
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .config import CONFIG
@@ -16,16 +16,10 @@ from .mappers import StructureMapper
 
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
-    def __init__(
-        self,
-        collection,
-        resource_cls: EntryResource,
-        resource_attributes: EntryResourceAttributes,
-    ):
+    def __init__(self, collection, resource_cls: EntryResource):
         self.collection = collection
         self.parser = LarkParser()
         self.resource_cls = resource_cls
-        self.resource_attributes = resource_attributes
 
     def __len__(self):
         return self.collection.count()
@@ -35,6 +29,17 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
 
     def __contains__(self, entry):
         return self.collection.count(entry) > 0
+
+    def get_attribute_fields(self) -> set:
+        schema = self.resource_cls.schema()
+        attributes = schema["properties"]["attributes"]
+        if "$ref" in attributes:
+            path = attributes["$ref"].split("/")[1:]
+            attributes = schema.copy()
+            while path:
+                next_key = path.pop(0)
+                attributes = attributes[next_key]
+        return set(attributes["properties"].keys())
 
     @abstractmethod
     def find(
@@ -64,9 +69,8 @@ class MongoCollection(EntryCollection):
             pymongo.collection.Collection, mongomock.collection.Collection
         ],
         resource_cls: EntryResource,
-        resource_attributes: EntryResourceAttributes,
     ):
-        super().__init__(collection, resource_cls, resource_attributes)
+        super().__init__(collection, resource_cls)
         self.transformer = MongoTransformer()
 
         self.provider = CONFIG.provider
@@ -164,7 +168,7 @@ class MongoCollection(EntryCollection):
 
         # All OPTiMaDe fields
         fields = {"id", "type"}
-        fields |= set(self.resource_attributes.__fields__.keys())
+        fields |= self.get_attribute_fields()
         # All provider-specific fields
         fields |= {self.provider + _ for _ in self.provider_fields}
         cursor_kwargs["fields"] = fields
