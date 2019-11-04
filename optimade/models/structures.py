@@ -4,10 +4,10 @@ from typing import List, Optional
 from pydantic import Schema, BaseModel, validator
 
 from .entries import EntryResourceAttributes, EntryResource
-from .util import conlist, CHEMICAL_SYMBOLS
+from .util import conlist, CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
 
 
-EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + ["X", "vacancy"]
+EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
 
 
 __all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResource")
