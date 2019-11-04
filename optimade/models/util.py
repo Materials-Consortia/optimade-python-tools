@@ -1,8 +1,10 @@
 from typing import cast, Any, Dict, Type
-
 from pydantic import ConstrainedInt, errors
 from pydantic.types import OptionalInt
 from pydantic.validators import list_validator
+
+
+__all__ = ("NonnegativeInt", "CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS")
 
 
 class NonnegativeInt(ConstrainedInt):
@@ -35,7 +37,7 @@ def list_length_validator(v: "List", field: "Field") -> "List":
     field_type: ConstrainedList = field.type_  # type: ignore
     if field_type.len_gt is not None and not len(v) > field_type.len_gt:
         raise errors.NumberNotGtError(limit_value=field_type.len_gt)
-    elif field_type.len_ge is not None and not len(v) >= field_type.len_ge:
+    if field_type.len_ge is not None and not len(v) >= field_type.len_ge:
         raise errors.NumberNotGeError(limit_value=field_type.len_ge)
     if field_type.len_lt is not None and not len(v) < field_type.len_lt:
         raise errors.NumberNotLtError(limit_value=field_type.len_lt)
@@ -73,3 +75,131 @@ def conlist(
         len_gt=len_gt, len_ge=len_ge, len_lt=len_lt, len_le=len_le, len_eq=len_eq
     )
     return type("ConstrainedListValue", (ConstrainedList,), namespace)
+
+
+EXTRA_SYMBOLS = ["X", "vacancy"]
+
+CHEMICAL_SYMBOLS = [
+    "H",
+    "He",
+    "Li",
+    "Be",
+    "B",
+    "C",
+    "N",
+    "O",
+    "F",
+    "Ne",
+    "Na",
+    "Mg",
+    "Al",
+    "Si",
+    "P",
+    "S",
+    "Cl",
+    "Ar",
+    "K",
+    "Ca",
+    "Sc",
+    "Ti",
+    "V",
+    "Cr",
+    "Mn",
+    "Fe",
+    "Co",
+    "Ni",
+    "Cu",
+    "Zn",
+    "Ga",
+    "Ge",
+    "As",
+    "Se",
+    "Br",
+    "Kr",
+    "Rb",
+    "Sr",
+    "Y",
+    "Zr",
+    "Nb",
+    "Mo",
+    "Tc",
+    "Ru",
+    "Rh",
+    "Pd",
+    "Ag",
+    "Cd",
+    "In",
+    "Sn",
+    "Sb",
+    "Te",
+    "I",
+    "Xe",
+    "Cs",
+    "Ba",
+    "La",
+    "Ce",
+    "Pr",
+    "Nd",
+    "Pm",
+    "Sm",
+    "Eu",
+    "Gd",
+    "Tb",
+    "Dy",
+    "Ho",
+    "Er",
+    "Tm",
+    "Yb",
+    "Lu",
+    "Hf",
+    "Ta",
+    "W",
+    "Re",
+    "Os",
+    "Ir",
+    "Pt",
+    "Au",
+    "Hg",
+    "Tl",
+    "Pb",
+    "Bi",
+    "Po",
+    "At",
+    "Rn",
+    "Fr",
+    "Ra",
+    "Ac",
+    "Th",
+    "Pa",
+    "U",
+    "Np",
+    "Pu",
+    "Am",
+    "Cm",
+    "Bk",
+    "Cf",
+    "Es",
+    "Fm",
+    "Md",
+    "No",
+    "Lr",
+    "Rf",
+    "Db",
+    "Sg",
+    "Bh",
+    "Hs",
+    "Mt",
+    "Ds",
+    "Rg",
+    "Cn",
+    "Nh",
+    "Fl",
+    "Mc",
+    "Lv",
+    "Ts",
+    "Og",
+]
+
+ATOMIC_NUMBERS = {}
+for Z, symbol in enumerate(CHEMICAL_SYMBOLS):
+    ATOMIC_NUMBERS[symbol] = Z + 1

@@ -1,58 +1,58 @@
-from configparser import ConfigParser
-from pathlib import Path
-
 from fastapi import Query
 from pydantic import EmailStr
 
-from .models.util import NonnegativeInt
+from optimade.models import NonnegativeInt
 
-config = ConfigParser()
-config.read(Path(__file__).resolve().parent.joinpath("config.ini"))
-RESPONSE_LIMIT = config["DEFAULT"].getint("RESPONSE_LIMIT")
-
-
-filter_description = """\
-See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter
-query syntax.
-
-Example: `chemical_formula = "Al" OR (prototype_formula = "AB" AND elements HAS Si, Al, O)`.
-"""
+from .config import CONFIG
 
 
 class EntryListingQueryParams:
-    """
-    Common query params for all Entry listing endpoints.
-
-    response_limit is a duplicate of page[limit]. The former is a MUST by optimade, whereas the latter is a SHOULD
-    by JSON API. If response_limit is given, it takes precedence over any page[limit] value.
-
-    """
+    """Common query params for all Entry listing endpoints."""
 
     def __init__(
         self,
         *,
-        filter: str = Query(None, description=filter_description),
-        response_format: str = "jsonapi",
-        email_address: EmailStr = None,
-        response_limit: NonnegativeInt = RESPONSE_LIMIT,
-        response_fields: str = None,
-        sort: str = None,
-        page_offset: NonnegativeInt = Query(0, alias="page[offset]"),
-        page_limit: NonnegativeInt = Query(RESPONSE_LIMIT, alias="page[limit]"),
+        filter: str = Query(  # pylint: disable=redefined-builtin
+            None,
+            description="""See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter query syntax.
+
+Example: `chemical_formula = "Al" OR (prototype_formula = "AB" AND elements HAS Si, Al, O)`.
+""",
+        ),
+        response_format: str = Query("json"),
+        email_address: EmailStr = Query(None),
+        response_fields: str = Query(None),
+        sort: str = Query(None),
+        page_limit: NonnegativeInt = Query(CONFIG.page_limit),
+        page_offset: NonnegativeInt = Query(0),
+        page_page: NonnegativeInt = Query(0),
+        page_cursor: NonnegativeInt = Query(0),
+        page_above: NonnegativeInt = Query(0),
+        page_below: NonnegativeInt = Query(0),
     ):
         self.filter = filter
         self.response_format = response_format
         self.email_address = email_address
-        self.response_limit = response_limit
         self.response_fields = response_fields
         self.sort = sort
-        self.page_offset = page_offset
         self.page_limit = page_limit
+        self.page_offset = page_offset
+        self.page_page = page_page
+        self.page_cursor = page_cursor
+        self.page_above = page_above
+        self.page_below = page_below
 
 
-class EntryInfoQueryParams:
-    """
-    Parameters for entry info endpoint
-    """
+class SingleEntryQueryParams:
+    """Common query params for single entry endpoints."""
 
-    pass
+    def __init__(
+        self,
+        *,
+        response_format: str = Query("json"),
+        email_address: EmailStr = Query(None),
+        response_fields: str = Query(None),
+    ):
+        self.response_format = response_format
+        self.email_address = email_address
+        self.response_fields = response_fields

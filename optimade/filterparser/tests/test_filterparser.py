@@ -13,7 +13,7 @@ class ParserTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_filters = []
-        for fn in glob(os.path.join(testfile_dir, "*.inp")):
+        for fn in sorted(glob(os.path.join(testfile_dir, "*.inp"))):
             with open(fn) as f:
                 cls.test_filters.append(f.read().strip())
 

@@ -1,41 +1,16 @@
 import lark
 from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
+from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
 
 
-chemical_symbols = [
-    # 0
-    'X',
-    # 1
-    'H', 'He',
-    # 2
-    'Li', 'Be', 'B', 'C', 'N', 'O', 'F', 'Ne',
-    # 3
-    'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar',
-    # 4
-    'K', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn',
-    'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr',
-    # 5
-    'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Mo', 'Tc', 'Ru', 'Rh', 'Pd', 'Ag', 'Cd',
-    'In', 'Sn', 'Sb', 'Te', 'I', 'Xe',
-    # 6
-    'Cs', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy',
-    'Ho', 'Er', 'Tm', 'Yb', 'Lu',
-    'Hf', 'Ta', 'W', 'Re', 'Os', 'Ir', 'Pt', 'Au', 'Hg', 'Tl', 'Pb', 'Bi',
-    'Po', 'At', 'Rn',
-    # 7
-    'Fr', 'Ra', 'Ac', 'Th', 'Pa', 'U', 'Np', 'Pu', 'Am', 'Cm', 'Bk',
-    'Cf', 'Es', 'Fm', 'Md', 'No', 'Lr',
-    'Rf', 'Db', 'Sg', 'Bh', 'Hs', 'Mt', 'Ds', 'Rg', 'Cn', 'Nh', 'Fl', 'Mc',
-    'Lv', 'Ts', 'Og']
-
-atomic_numbers = {}
-for Z, symbol in enumerate(chemical_symbols):
-    atomic_numbers[symbol] = Z
-
-_cmp_operators = {'>': 'gt', '>=': 'gte', '<': 'lt', '<=': 'lte'}
-_rev_cmp_operators = {'>': '<', '>=': '<=', '<': '>', '<=': '=>'}
-_has_operators = {'ALL': 'must', 'ANY': 'should'}
-_length_quantities = {'elements': 'nelements', 'elements_rations': 'nelements', 'dimension_types': 'dimension_types'}
+_cmp_operators = {">": "gt", ">=": "gte", "<": "lt", "<=": "lte"}
+_rev_cmp_operators = {">": "<", ">=": "<=", "<": ">", "<=": "=>"}
+_has_operators = {"ALL": "must", "ANY": "should"}
+_length_quantities = {
+    "elements": "nelements",
+    "elements_rations": "nelements",
+    "dimension_types": "dimension_types",
+}
 
 
 class Quantity:
@@ -56,7 +31,7 @@ class Quantity:
         has_only_quantity: Elasticsearch does not support exclusive search on arrays, like
             a list of chemical elements. But, we can order all elements by atomic number
             and use a keyword field with all elements to perform this search. This only
-            works for elements (i.e. labels in ``chemical_symbols``) and quantities
+            works for elements (i.e. labels in ``CHEMICAL_SYMBOLS``) and quantities
             with this attribute.
         nested_quantity: To support optimade's 'zipped tuple' feature (e.g.
             'elements:elements_ratios HAS "H":>0.33), we use elasticsearch nested objects
@@ -64,15 +39,22 @@ class Quantity:
             object that contains the quantity (and others). The zipped tuples will only
             work for quantities that share the same nested object quantity.
     """
+
     def __init__(
-            self, name, es_field: str = None, elastic_mapping_type: Field = None,
-            length_quantity: 'Quantity' = None,
-            has_only_quantity: 'Quantity' = None,
-            nested_quantity: 'Quantity' = None):
+        self,
+        name,
+        es_field: str = None,
+        elastic_mapping_type: Field = None,
+        length_quantity: "Quantity" = None,
+        has_only_quantity: "Quantity" = None,
+        nested_quantity: "Quantity" = None,
+    ):
 
         self.name = name
         self.es_field = es_field if es_field is not None else name
-        self.elastic_mapping_type = Keyword if elastic_mapping_type is None else elastic_mapping_type
+        self.elastic_mapping_type = (
+            Keyword if elastic_mapping_type is None else elastic_mapping_type
+        )
         self.length_quantity = length_quantity
         self.has_only_quantity = has_only_quantity
         self.nested_quantity = nested_quantity
@@ -96,14 +78,16 @@ class Transformer(lark.Transformer):
 
     def _field(self, quantity, nested=None):
         if nested is not None:
-            return '%s.%s' % (nested.es_field, quantity.name)
+            return "%s.%s" % (nested.es_field, quantity.name)
 
         return quantity.es_field
 
     def _order_terms(self, l, o, r):
         if isinstance(l, Quantity):
             if isinstance(r, Quantity):
-                raise Exception('Cannot compare two quantities: %s, %s' % (l.name, r.name))
+                raise Exception(
+                    "Cannot compare two quantities: %s, %s" % (l.name, r.name)
+                )
 
             return l, o, r
         else:
@@ -111,50 +95,63 @@ class Transformer(lark.Transformer):
                 o = _rev_cmp_operators.get(o, o)
                 return r, o, l
 
-            raise Exception('Cannot compare two values: %s, %s' % (str(l), str(l)))
+            raise Exception("Cannot compare two values: %s, %s" % (str(l), str(l)))
 
     def _query(self, quantity, o, value, nested=None):
         field = self._field(quantity, nested=nested)
         if o in _cmp_operators:
-            return Q('range', **{field: {_cmp_operators[o]: value}})
+            return Q("range", **{field: {_cmp_operators[o]: value}})
 
         if quantity.elastic_mapping_type == Text:
-            query_type = 'match'
+            query_type = "match"
         elif quantity.elastic_mapping_type in [Keyword, Integer]:
-            query_type = 'term'
+            query_type = "term"
         else:
-            raise NotImplementedError('Quantity has unsupported ES field type')
+            raise NotImplementedError("Quantity has unsupported ES field type")
 
-        if o in ['=', '']:
+        if o in ["=", ""]:
             return Q(query_type, **{field: value})
 
-        if o == '!=':
-            return ~Q(query_type, **{field: value})  # pylint: disable=invalid-unary-operand-type
+        if o == "!=":
+            return ~Q(
+                query_type, **{field: value}
+            )  # pylint: disable=invalid-unary-operand-type
 
-        raise Exception('Unknown operator %s' % o)
+        raise Exception("Unknown operator %s" % o)
 
     def _has_query(self, quantities, predicates):
         if len(quantities) != len(predicates):
             raise Exception(
-                'Tuple length does not match: %s <o> %s ' %
-                (':'.join(quantities), ':'.join(predicates)))
+                "Tuple length does not match: %s <o> %s "
+                % (":".join(quantities), ":".join(predicates))
+            )
 
         if len(quantities) == 1:
             o, value = predicates[0]
             return self._query(quantities[0], o, value)
 
         nested_quantity = quantities[0].nested_quantity
-        if nested_quantity is None or any(q.nested_quantity != nested_quantity for q in quantities):
-            raise Exception('Expression with tuples are only supported for %s' % ', '.join(quantities))
+        if nested_quantity is None or any(
+            q.nested_quantity != nested_quantity for q in quantities
+        ):
+            raise Exception(
+                "Expression with tuples are only supported for %s"
+                % ", ".join(quantities)
+            )
 
         queries = [
             self._query(field, o, value, nested=nested_quantity)
-            for field, (o, value) in zip(quantities, predicates)]
+            for field, (o, value) in zip(quantities, predicates)
+        ]
 
-        return Q('nested', path=self._field(nested_quantity), query=dict(bool=dict(must=queries)))
+        return Q(
+            "nested",
+            path=self._field(nested_quantity),
+            query=dict(bool=dict(must=queries)),
+        )
 
     def _wildcard_query(self, quantity, wildcard):
-        return Q('wildcard', **{self._field(quantity): wildcard})
+        return Q("wildcard", **{self._field(quantity): wildcard})
 
     def __default__(self, tree, children, *args, **kwargs):
         """ Default behavior for rules that only replace one symbol with another """
@@ -188,11 +185,11 @@ class Transformer(lark.Transformer):
     def has_list_op(self, args):
         quantities, o, predicates_list = args
         queries = [
-            self._has_query(quantities, predicates)
-            for predicates in predicates_list]
+            self._has_query(quantities, predicates) for predicates in predicates_list
+        ]
 
         if o in _has_operators:
-            return Q('bool', **{_has_operators[o]: queries})
+            return Q("bool", **{_has_operators[o]: queries})
 
         raise NotImplementedError
 
@@ -200,56 +197,56 @@ class Transformer(lark.Transformer):
         quantity, lst = args
 
         if quantity.has_only_quantity is None:
-            raise Exception('HAS ONLY is not supported by %s' % quantity.name)
+            raise Exception("HAS ONLY is not supported by %s" % quantity.name)
 
         def values():
             for predicates in lst:
                 if len(predicates) != 1:
-                    raise Exception('Tuples not supported in HAS ONLY')
+                    raise Exception("Tuples not supported in HAS ONLY")
                 op, value = predicates[0]
-                if op != '':
-                    raise Exception('Predicated not supported in HAS ONLY')
+                if op != "":
+                    raise Exception("Predicated not supported in HAS ONLY")
                 if not isinstance(value, str):
-                    raise Exception('Only strings supported in HAS ONLY')
+                    raise Exception("Only strings supported in HAS ONLY")
                 yield value
 
         try:
-            order_numbers = list([atomic_numbers[element] for element in values()])
+            order_numbers = list([ATOMIC_NUMBERS[element] for element in values()])
             order_numbers.sort()
-            value = ''.join([chemical_symbols[number] for number in order_numbers])
+            value = "".join([CHEMICAL_SYMBOLS[number] for number in order_numbers])
         except KeyError:
-            raise Exception('HAS ONLY is only supported for chemical symbols')
+            raise Exception("HAS ONLY is only supported for chemical symbols")
 
-        return Q('term', **{quantity.has_only_quantity.name: value})
+        return Q("term", **{quantity.has_only_quantity.name: value})
 
     def length(self, args):
         quantity, = args
         if quantity.length_quantity is None:
-            raise Exception('LENGTH is not supported for %s' % quantity.name)
+            raise Exception("LENGTH is not supported for %s" % quantity.name)
 
         return quantity.length_quantity
 
     def known_op(self, args):
         quantity, qualifier = args
-        query = Q('exists', field=self._field(quantity))
-        if qualifier == 'KNOWN':
+        query = Q("exists", field=self._field(quantity))
+        if qualifier == "KNOWN":
             return query
-        elif qualifier == 'UNKNOWN':
+        elif qualifier == "UNKNOWN":
             return ~query  # pylint: disable=invalid-unary-operand-type
 
         raise NotImplementedError
 
     def contains_op(self, args):
         quantity, value = args
-        return self._wildcard_query(quantity, '*%s*' % value)
+        return self._wildcard_query(quantity, "*%s*" % value)
 
     def starts_op(self, args):
         quantity, value = args
-        return self._wildcard_query(quantity, '%s*' % value)
+        return self._wildcard_query(quantity, "%s*" % value)
 
     def ends_op(self, args):
         quantity, value = args
-        return self._wildcard_query(quantity, '*%s' % value)
+        return self._wildcard_query(quantity, "*%s" % value)
 
     def list(self, args):
         return list(args)
@@ -262,7 +259,7 @@ class Transformer(lark.Transformer):
 
     def predicate(self, args):
         if len(args) == 1:
-            return '', args[0]
+            return "", args[0]
         else:
             return args[0], args[1]
 
@@ -270,7 +267,7 @@ class Transformer(lark.Transformer):
         quantity_name = args[0]
 
         if quantity_name not in self.index_mapping:
-            raise Exception('%s is not a searchable quantity' % quantity_name)
+            raise Exception("%s is not a searchable quantity" % quantity_name)
 
         quantity = self.index_mapping.get(quantity_name, None)
         if quantity is None:
