@@ -77,6 +77,8 @@ def conlist(
     return type("ConstrainedListValue", (ConstrainedList,), namespace)
 
 
+EXTRA_SYMBOLS = ["X", "vacancy"]
+
 CHEMICAL_SYMBOLS = [
     "H",
     "He",
@@ -200,4 +202,6 @@ CHEMICAL_SYMBOLS = [
 
 ATOMIC_NUMBERS = {}
 for Z, symbol in enumerate(CHEMICAL_SYMBOLS):
-    ATOMIC_NUMBERS[symbol] = Z
+    ATOMIC_NUMBERS[symbol] = Z + 1
+
+CHEMICAL_SYMBOLS.extend(EXTRA_SYMBOLS)
