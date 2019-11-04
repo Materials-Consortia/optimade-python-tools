@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/Materials-Consortia/optimade-python-tools.svg?branch=master)](https://travis-ci.org/Materials-Consortia/optimade-python-tools)
+[![Build Status](https://travis-ci.org/Materials-Consortia/optimade-python-tools.svg?branch=master)](https://travis-ci.org/Materials-Consortia/optimade-python-tools) [![PyPI
+Version](https://img.shields.io/pypi/v/optimade)](https://pypi.org/project/optimade/) [![codecov](https://codecov.io/gh/Materials-Consortia/optimade-python-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/Materials-Consortia/optimade-python-tools)
+
+
 
 The aim of OPTiMaDe is to develop a common API, compliant with the
 [JSON API 1.0](http://jsonapi.org/format/1.0/) spec, to enable interoperability
