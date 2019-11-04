@@ -4,7 +4,7 @@ from pydantic.types import OptionalInt
 from pydantic.validators import list_validator
 
 
-__all__ = ("NonnegativeInt", "CHEMICAL_SYMBOLS", "ATOMIC_NUMBERS")
+__all__ = ("NonnegativeInt", "CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS")
 
 
 class NonnegativeInt(ConstrainedInt):
@@ -203,5 +203,3 @@ CHEMICAL_SYMBOLS = [
 ATOMIC_NUMBERS = {}
 for Z, symbol in enumerate(CHEMICAL_SYMBOLS):
     ATOMIC_NUMBERS[symbol] = Z + 1
-
-CHEMICAL_SYMBOLS.extend(EXTRA_SYMBOLS)
