@@ -197,3 +197,7 @@ CHEMICAL_SYMBOLS = [
     "Ts",
     "Og",
 ]
+
+ATOMIC_NUMBERS = {}
+for Z, symbol in enumerate(CHEMICAL_SYMBOLS):
+    ATOMIC_NUMBERS[symbol] = Z
