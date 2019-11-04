@@ -13,17 +13,11 @@ install:
    - pip install -r requirements/django_requirements.txt
    - pip install -r requirements/elastic_requirements.txt
    - docker pull quen2404/openapi-diff
-
-jobs:
-    include:
-        - stage: "Unit Tests"
-          script:
-            - py.test --cov=optimade
-            - codecov --token=$CODECOV_TOKEN
-        - stage: "Schema validation"
-          script:
-            - openapi-spec-validator openapi.json
-            # update schema
-            - python -c "from optimade.server.main import app, update_schema; update_schema(app)"
-            # check whether generated schema matches the committed version
-            - .ci/openapi_diff.sh
+script:
+   - py.test --cov=optimade
+   - openapi-spec-validator openapi.json
+     # update schema
+   - python -c "from optimade.server.main import app, update_schema; update_schema(app)"
+     # check whether generated schema matches the committed version
+   - .ci/openapi_diff.sh
+   - codecov --token=$CODECOV_TOKEN
