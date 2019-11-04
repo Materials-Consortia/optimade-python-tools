@@ -5,7 +5,8 @@ from starlette.testclient import TestClient
 
 from optimade.server.config import CONFIG
 
-CONFIG.page_limit = 5
+# this must be changed before app is imported
+CONFIG.page_limit = 5  # noqa: E402
 
 from optimade.server.main import app
 from optimade.models import (
@@ -37,7 +38,7 @@ class EndpointTests(abc.ABC):
             msg=f"Request failed: {self.response.json()}",
         )
 
-    def test_meta_reponse(self):
+    def test_meta_response(self):
         self.assertTrue("meta" in self.json_response)
         meta_required_keys = [
             "query",
@@ -51,6 +52,9 @@ class EndpointTests(abc.ABC):
         self.check_keys(meta_required_keys, self.json_response["meta"])
 
     def test_serialize_response(self):
+        self.assertTrue(
+            self.response_cls is not None, msg="Response class unset for this endpoint"
+        )
         self.response_cls(**self.json_response)
 
     def check_keys(self, keys, response_subset):
