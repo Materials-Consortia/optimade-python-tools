@@ -3,6 +3,10 @@ import abc
 
 from starlette.testclient import TestClient
 
+from optimade.server.config import CONFIG
+
+CONFIG.page_limit = 5
+
 from optimade.server.main import app
 from optimade.models import (
     StructureResponseMany,
@@ -20,10 +24,18 @@ class EndpointTests(abc.ABC):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.client = TestClient(app)
+
+        # need to explicitly set base_url as the default "http://testserver"
+        # does not validate as pydantic UrlStr model
+        self.client = TestClient(app, base_url="http://example.org/optimade")
+
         self.response = self.client.get(self.request_str)
         self.json_response = self.response.json()
-        self.assertEqual(self.response.status_code, 200)
+        self.assertEqual(
+            self.response.status_code,
+            200,
+            msg=f"Request failed: {self.response.json()}",
+        )
 
     def test_meta_reponse(self):
         self.assertTrue("meta" in self.json_response)
@@ -87,10 +99,30 @@ class StructuresEndpointTests(EndpointTests, unittest.TestCase):
 
     def test_structures_endpoint_data(self):
         self.assertTrue("data" in self.json_response)
-        self.assertEqual(len(self.json_response["data"]), 16)
+        self.assertEqual(len(self.json_response["data"]), 5)
+        self.assertTrue("meta" in self.json_response)
+        self.assertEqual(self.json_response["meta"]["data_available"], 17)
+        self.assertEqual(self.json_response["meta"]["more_data_available"], True)
+
+    def test_get_next_responses(self):
+        cursor = self.json_response["data"]
+        more_data_available = True
+        next_request = self.json_response["links"]["next"]
+
+        while more_data_available:
+            next_response = self.client.get(next_request).json()
+            next_request = next_response["links"]["next"]
+            cursor.extend(next_response["data"])
+            more_data_available = next_response["meta"]["more_data_available"]
+            if more_data_available:
+                self.assertEqual(len(next_response["data"]), 5)
+            else:
+                self.assertEqual(len(next_response["data"]), 2)
+
+        self.assertEqual(len(cursor), 17)
 
 
-class SingleStructureEndpointTest(EndpointTests, unittest.TestCase):
+class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
 
     test_id = "mpf_1"
     request_str = f"/structures/{test_id}"
@@ -98,10 +130,9 @@ class SingleStructureEndpointTest(EndpointTests, unittest.TestCase):
 
     def test_structures_endpoint_data(self):
         self.assertTrue("data" in self.json_response)
-        self.assertTrue("id" in self.json_response)
         self.assertEqual(self.json_response["data"]["id"], self.test_id)
         self.assertEqual(self.json_response["data"]["type"], "structures")
         self.assertTrue("attributes" in self.json_response["data"])
         self.assertTrue(
-            "__exmpl__mp_chemsys" in self.json_response["data"]["attributes"]
+            "_exmpl__mp_chemsys" in self.json_response["data"]["attributes"]
         )
