@@ -61,7 +61,7 @@
       "Ac"
     ],
     "structure_features": [],
-    "task_id": "mpf-1"
+    "task_id": "mpf_1"
   },
   {
     "_id": {
@@ -165,7 +165,7 @@
       "Ir"
     ],
     "structure_features": [],
-    "task_id": "mpf-2"
+    "task_id": "mpf_2"
   },
   {
     "_id": {
@@ -269,7 +269,7 @@
       "Pb"
     ],
     "structure_features": [],
-    "task_id": "mpf-3"
+    "task_id": "mpf_3"
   },
   {
     "_id": {
@@ -356,7 +356,7 @@
       "Mg"
     ],
     "structure_features": [],
-    "task_id": "mpf-23"
+    "task_id": "mpf_23"
   },
   {
     "_id": {
@@ -455,7 +455,7 @@
       "O"
     ],
     "structure_features": [],
-    "task_id": "mpf-30"
+    "task_id": "mpf_30"
   },
   {
     "_id": {
@@ -576,7 +576,7 @@
       "O"
     ],
     "structure_features": [],
-    "task_id": "mpf-110"
+    "task_id": "mpf_110"
   },
   {
     "_id": {
@@ -640,7 +640,7 @@
       "Ag"
     ],
     "structure_features": [],
-    "task_id": "mpf-200"
+    "task_id": "mpf_200"
   },
   {
     "_id": {
@@ -827,7 +827,7 @@
       "Te"
     ],
     "structure_features": [],
-    "task_id": "mpf-220"
+    "task_id": "mpf_220"
   },
   {
     "_id": {
@@ -1000,7 +1000,7 @@
       "S"
     ],
     "structure_features": [],
-    "task_id": "mpf-259"
+    "task_id": "mpf_259"
   },
   {
     "_id": {
@@ -1246,7 +1246,7 @@
       "N"
     ],
     "structure_features": [],
-    "task_id": "mpf-272"
+    "task_id": "mpf_272"
   },
   {
     "_id": {
@@ -1498,7 +1498,7 @@
       "O"
     ],
     "structure_features": [],
-    "task_id": "mpf-276"
+    "task_id": "mpf_276"
   },
   {
     "_id": {
@@ -1760,7 +1760,7 @@
       "S"
     ],
     "structure_features": [],
-    "task_id": "mpf-281"
+    "task_id": "mpf_281"
   },
   {
     "_id": {
@@ -1981,7 +1981,7 @@
       "S"
     ],
     "structure_features": [],
-    "task_id": "mpf-446"
+    "task_id": "mpf_446"
   },
   {
     "_id": {
@@ -2560,7 +2560,7 @@
       "P"
     ],
     "structure_features": [],
-    "task_id": "mpf-551"
+    "task_id": "mpf_551"
   },
   {
     "_id": {
@@ -2858,7 +2858,7 @@
       "S"
     ],
     "structure_features": [],
-    "task_id": "mpf-632"
+    "task_id": "mpf_632"
   },
   {
     "_id": {
@@ -3257,7 +3257,7 @@
       "Ti"
     ],
     "structure_features": [],
-    "task_id": "mpf-3803"
+    "task_id": "mpf_3803"
   },
   {
     "_id": {
@@ -3667,6 +3667,6 @@
       "Ti"
     ],
     "structure_features": [],
-    "task_id": "mpf-3819"
+    "task_id": "mpf_3819"
   }
 ]
