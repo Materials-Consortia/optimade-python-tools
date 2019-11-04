@@ -1,6 +1,6 @@
 import lark
 from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
-from ..models.util import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
+from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
 
 
 _cmp_operators = {">": "gt", ">=": "gte", "<": "lt", "<=": "lte"}
