@@ -57,7 +57,14 @@ class Client:
         # probably a smarter way to do this with requests, but their documentation 404's...
         while retries < MAX_RETRIES:
             retries += 1
-            self.response = requests.get(self.last_request)
+            try:
+                self.response = requests.get(self.last_request)
+            except requests.exceptions.ConnectionError:
+                sys.exit(f"No response from server at {self.last_request}")
+            except requests.exceptions.MissingSchema:
+                sys.exit(
+                    f"Unable to make request on {self.last_request}, did you mean http://{self.last_request}?"
+                )
             status_code = self.response.status_code
             if status_code != 429:
                 break
