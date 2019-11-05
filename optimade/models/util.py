@@ -4,7 +4,17 @@ from pydantic.types import OptionalInt
 from pydantic.validators import list_validator
 
 
-__all__ = ("NonnegativeInt", "CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS")
+__all__ = ("NonnegativeInt", "CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS", "ManualValidationError")
+
+
+class ManualValidationError(AssertionError):
+    """ This error should be raised whenever an object has been
+    successfully serialized into its corresponding pydantic model,
+    but any extra manual constraints are not satisfied.
+
+    """
+
+    pass
 
 
 class NonnegativeInt(ConstrainedInt):
