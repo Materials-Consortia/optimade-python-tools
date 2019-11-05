@@ -208,7 +208,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
   - **Response**: REQUIRED in the response unless explicitly excluded.
   - **Query**: MUST be a queryable property with support for all mandatory filter operators.
-  - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets ``(``,\ ``)``, ``[``,\ ``]``, ``{``, ``}``, commas, the ``+``, ``-``, ``:`` and ``=`` symbols.
+  - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, commas, the ``+``, ``-``, ``:`` and ``=`` symbols.
     The parentheses are allowed to be followed by a number.
     Spaces are allowed anywhere except within chemical symbols.
     The order of elements and any groupings indicated by parentheses or brackets are chosen freely by the API implementation.
@@ -427,7 +427,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;
 
-    - **chemical\_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.
+    - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.
 
       - It MUST be one of the following:
 
@@ -446,10 +446,10 @@ class StructureResourceAttributes(EntryResourceAttributes):
       Note that concentrations are uncorrelated between different site (even of the same species).
 
     - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.
-    - **original\_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
+    - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
         Note: With regards to "source database", we refer to the immediate source being queried via the OPTiMaDe API implementation.
-	    The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).
+            The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).
 
   - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., :val:`"Ti"` for titanium, :val:`"O"` for oxygen, etc.)
     However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.
@@ -482,13 +482,13 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - Client implementations MUST check its presence (as its presence changes the interpretation of the structure).
   - If present, it MUST be a list of dictionaries, each of which represents an assembly and MUST have the following two keys:
 
-    - **sites\_in\_groups**: Index of the sites (0-based) that belong to each group for each assembly.
+    - **sites_in_groups**: Index of the sites (0-based) that belong to each group for each assembly.
 
       Example: :val:`[[1], [2]]`: two groups, one with the second site, one with the third.
 
       Example: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth.
 
-   - **group\_probabilities**: Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.
+   - **group_probabilities**: Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.
      It SHOULD sum to one.
      See below for examples of how to specify the probability of the occurrence of a vacancy.
      The possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_.
@@ -516,40 +516,40 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
       .. code:: jsonc
 
-	   {
-	     "cartesian_site_positions": [[0,0,0]],
-	     "species_at_sites": ["SiGe-vac"],
-	     "species": [
-		 {
-		   "name": "SiGe-vac",
-		   "chemical_symbols": ["Si", "Ge", "vacancy"],
-		   "concentration": [0.3, 0.5, 0.2]
-		 }
-	     ]
-	     // ...
-	   }
+           {
+             "cartesian_site_positions": [[0,0,0]],
+             "species_at_sites": ["SiGe-vac"],
+             "species": [
+                 {
+                   "name": "SiGe-vac",
+                   "chemical_symbols": ["Si", "Ge", "vacancy"],
+                   "concentration": [0.3, 0.5, 0.2]
+                 }
+             ]
+             // ...
+           }
 
 
     - Using multiple species and the assemblies:
 
       .. code:: jsonc
 
-	   {
-	     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
-	     "species_at_sites": ["Si", "Ge", "vac"],
-	     "species": {
-	       "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
-	       "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
-	       "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
-	     },
-	     "assemblies": [
-	       {
-		 "sites_in_groups": [ [0], [1], [2] ],
-		 "group_probabilities": [0.3, 0.5, 0.2]
-	       }
-	     ]
-	     // ...
-	   }
+           {
+             "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
+             "species_at_sites": ["Si", "Ge", "vac"],
+             "species": {
+               "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
+               "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
+               "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+             },
+             "assemblies": [
+               {
+                 "sites_in_groups": [ [0], [1], [2] ],
+                 "group_probabilities": [0.3, 0.5, 0.2]
+               }
+             ]
+             // ...
+           }
 
   - It is up to the database provider to decide which representation to use, typically depending on the internal format in which the structure is stored.
     However, given a structure identified by a unique ID, the API implementation MUST always provide the same representation for it.
@@ -558,18 +558,18 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     .. code:: jsonc
 
-	 {
-	   "assemblies": [
-	     {
-	       "sites_in_groups": [ [0], [1] ],
-	       "group_probabilities": [0.2, 0.8],
-	     },
-	     {
-	       "sites_in_groups": [ [2], [3] ],
-	       "group_probabilities": [0.3, 0.7]
-	     }
-	   ]
-	 }
+         {
+           "assemblies": [
+             {
+               "sites_in_groups": [ [0], [1] ],
+               "group_probabilities": [0.2, 0.8],
+             },
+             {
+               "sites_in_groups": [ [2], [3] ],
+               "group_probabilities": [0.3, 0.7]
+             }
+           ]
+         }
 
     Site 0 is present with a probability of 20 % and site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 % and site 3 with a probability of 70 %.
     These two sites are correlated (either site 2 or 3 is present).
