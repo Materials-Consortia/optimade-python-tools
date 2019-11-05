@@ -83,7 +83,7 @@ The main use of this field is for source databases that use species names, conta
     def validate_concentration(cls, v, values):
         if not (len(v) == len(values.get("chemical_symbols", []))):
             raise ManualValidationError(
-                f"Length of concentraion ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', []))})"
+                f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', []))})"
             )
         return v
 
