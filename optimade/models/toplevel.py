@@ -6,7 +6,7 @@ from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
 from .jsonapi import Link, Meta
 from .util import NonnegativeInt
 from .baseinfo import BaseInfoResource
-from .entries import EntryInfoResource
+from .entries import EntryInfoResource, EntryResource
 from .optimade_json import Error, Success, Failure, Warnings
 from .structures import StructureResource
 
@@ -22,6 +22,8 @@ __all__ = (
     "ErrorResponse",
     "EntryInfoResponse",
     "InfoResponse",
+    "AbstractEntryResponseOne",
+    "AbstractEntryResponseMany",
 )
 
 
@@ -170,6 +172,16 @@ class StructureResponseOne(Success):
 class StructureResponseMany(Success):
     meta: ResponseMeta = Schema(...)
     data: Union[List[StructureResource], List[Dict[str, Any]]] = Schema(...)
+
+
+class AbstractEntryResponseOne(Success):
+    meta: ResponseMeta = Schema(...)
+    data: Union[EntryResource, Dict[str, Any]] = Schema(...)
+
+
+class AbstractEntryResponseMany(Success):
+    meta: ResponseMeta = Schema(...)
+    data: Union[List[EntryResource], List[Dict[str, Any]]] = Schema(...)
 
 
 class ErrorResponse(Failure):

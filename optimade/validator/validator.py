@@ -21,6 +21,8 @@ from optimade.models import (
     InfoResponse,
     StructureResponseOne,
     StructureResponseMany,
+    AbstractEntryResponseOne,
+    AbstractEntryResponseMany,
     EntryInfoResponse,
     ManualValidationError,
 )
@@ -33,8 +35,6 @@ REQUIRED_ENTRY_ENDPOINTS = ["structures"]
 RESPONSE_CLASSES = {
     "structures": StructureResponseMany,
     "structures/": StructureResponseOne,
-    "calculations": StructureResponseMany,
-    "calculations/": StructureResponseOne,
     "info": InfoResponse,
     "info/structures": EntryInfoResponse,
 }
@@ -258,7 +258,11 @@ class ImplementationValidator:
 
     def test_multi_entry_endpoint(self, request_str):
         response = self.get_endpoint(request_str)
-        serialized = self.serialize_attempt(response, RESPONSE_CLASSES[request_str])
+        if request_str in RESPONSE_CLASSES:
+            response_cls = RESPONSE_CLASSES[request_str]
+        else:
+            response_cls = AbstractEntryResponseMany
+        serialized = self.serialize_attempt(response, response_cls)
         self.get_single_id_from_multi_endpoint(serialized)
 
     @test_case
@@ -278,10 +282,15 @@ class ImplementationValidator:
         )
 
     def test_single_entry_endpoint(self, _type):
+        if _type + "/" in RESPONSE_CLASSES:
+            response_cls = RESPONSE_CLASSES[_type + "/"]
+        else:
+            response_cls = AbstractEntryResponseOne
         if _type in self.test_id_by_type:
+            test_id = self.test_id_by_type[_type]
             response = self.get_endpoint(f"{_type}/{test_id}")
             if response:
-                self.serialize_attempt(response, RESPONSE_CLASSES[_type + "/"])
+                self.serialize_attempt(response, response_cls)
 
 
 if __name__ == "__main__":
