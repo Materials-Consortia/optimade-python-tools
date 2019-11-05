@@ -7,12 +7,10 @@ breakdown of any issues.
 
 """
 
-import sys
 import time
 import requests
+import sys
 import logging
-import argparse
-import traceback
 
 from pydantic import ValidationError
 from matador.utils.print_utils import print_success, print_warning, print_failure
@@ -291,27 +289,3 @@ class ImplementationValidator:
             response = self.get_endpoint(f"{_type}/{test_id}")
             if response:
                 self.serialize_attempt(response, response_cls)
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("base_url", nargs="?", default="http://localhost:5000")
-    parser.add_argument(
-        "--verbosity", "-v", type=int, default=0, help="The verbosity of the output"
-    )
-    args = vars(parser.parse_args())
-
-    validator = ImplementationValidator(
-        base_url=args["base_url"], verbosity=args["verbosity"]
-    )
-
-    try:
-        validator.main()
-    # catch and print internal exceptions, exiting with non-zero error code
-    except Exception:
-        traceback.print_exc()
-
-    if validator.valid is None:
-        sys.exit(2)
-    elif not validator.valid:
-        sys.exit(1)
