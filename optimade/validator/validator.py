@@ -132,51 +132,52 @@ class ImplementationValidator:
         self.failure_count = 0
 
     def _setup_log(self):
-        self.log = logging.getLogger("validator")
-        self.log.handlers = []
+
+        self._log = logging.getLogger(__name__)
+        self._log.handlers = []
         stdout_handler = logging.StreamHandler(sys.stdout)
         stdout_handler.setFormatter(
             logging.Formatter("%(asctime)s - %(name)s | %(levelname)8s: %(message)s")
         )
-        self.log.addHandler(stdout_handler)
+        self._log.addHandler(stdout_handler)
         if self.verbosity == 0:
-            self.log.setLevel(logging.CRITICAL)
+            self._log.setLevel(logging.CRITICAL)
         elif self.verbosity == 1:
-            self.log.setLevel(logging.INFO)
+            self._log.setLevel(logging.INFO)
         else:
-            self.log.setLevel(logging.DEBUG)
+            self._log.setLevel(logging.DEBUG)
 
     def main(self):
-        self.log.info("Testing {}...".format(self.base_url))
+        self._log.info("Testing {}...".format(self.base_url))
 
-        self.log.debug("Testing base info endpoint of {}".format(BASE_INFO_ENDPOINT))
+        self._log.debug("Testing base info endpoint of {}".format(BASE_INFO_ENDPOINT))
         base_info = self.test_info_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
 
-        self.log.debug(
+        self._log.debug(
             "Testing for expected info endpoints {}".format(BASE_INFO_ENDPOINT)
         )
         for endp in self.test_entry_endpoints:
             entry_info_endpoint = f"{BASE_INFO_ENDPOINT}/{endp}"
-            self.log.debug(
+            self._log.debug(
                 "Testing expected info endpoints".format(entry_info_endpoint)
             )
             self.test_info_endpoints(entry_info_endpoint)
-        self.log.debug(
+        self._log.debug(
             "Testing for expected info endpoints {}".format(BASE_INFO_ENDPOINT)
         )
 
         for endp in self.test_entry_endpoints:
-            self.log.debug("Testing multiple entry endpoint of {}".format(endp))
+            self._log.debug("Testing multiple entry endpoint of {}".format(endp))
             self.test_multi_entry_endpoint(endp)
 
         for endp in self.test_entry_endpoints:
-            self.log.debug("Testing single entry request of type {}".format(endp))
+            self._log.debug("Testing single entry request of type {}".format(endp))
             self.test_single_entry_endpoint(endp)
 
         self.valid = not bool(self.failure_count)
 
-        self.log.info(
+        self._log.info(
             f"Passed {self.success_count} out of {self.success_count + self.failure_count} tests."
         )
 
@@ -201,7 +202,7 @@ class ImplementationValidator:
                 )
                 break
             except Exception:
-                self.log.warning(
+                self._log.warning(
                     "Info endpoint failed serialization, trying to manually extract entry_types_by_format."
                 )
 
@@ -267,7 +268,7 @@ class ImplementationValidator:
     def get_single_id_from_multi_endpoint(self, serialized):
         if serialized and len(serialized.data) > 0:
             self.test_id_by_type[serialized.data[0].type] = serialized.data[0].id
-            self.log.debug(
+            self._log.debug(
                 "Set type {} test ID to {}".format(
                     serialized.data[0].type, serialized.data[0].id
                 )
