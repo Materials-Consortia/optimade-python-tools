@@ -693,7 +693,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
         # disorder
         for species in values.get("species", []):
             if len(species.chemical_symbols) > 1:
-                if not "disorder" in v:
+                if "disorder" not in v:
                     raise ManualValidationError(
                         "disorder MUST be present when any one entry in species has a chemical_symbols list greater than one element"
                     )
