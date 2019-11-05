@@ -13,7 +13,6 @@ import sys
 import logging
 
 from pydantic import ValidationError
-from matador.utils.print_utils import print_success, print_warning, print_failure
 
 from optimade.models import (
     InfoResponse,
@@ -36,6 +35,21 @@ RESPONSE_CLASSES = {
     "info": InfoResponse,
     "info/structures": EntryInfoResponse,
 }
+
+
+def print_warning(string):
+    """ Print but angry. """
+    print(f"\033[93m{string}\033[0m")
+
+
+def print_failure(string):
+    """ Print but sad. """
+    print(f"\033[91m\033[4m{string}\033[0m")
+
+
+def print_success(string):
+    """ Print but happy. """
+    print(f"\033[92m\033[1m{string}\033[0m")
 
 
 class ResponseError(Exception):
