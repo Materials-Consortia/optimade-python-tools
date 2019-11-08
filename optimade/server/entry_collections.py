@@ -106,7 +106,7 @@ class MongoCollection(EntryCollection):
         else:
             more_data_available = False
             data_available = self.count(**criteria)
-            if data_available != 1:
+            if data_available > 1:
                 raise HTTPException(
                     status_code=404,
                     detail=f"Instead of a single entry, {data_available} entries were found",
@@ -121,7 +121,10 @@ class MongoCollection(EntryCollection):
             results.append(self.resource_cls(**StructureMapper.map_back(doc)))
 
         if isinstance(params, SingleEntryQueryParams):
-            results = results[0]
+            if len(results) == 1:
+                results = results[0]
+            else:
+                results = None
 
         return results, more_data_available, data_available, all_fields - fields
 
