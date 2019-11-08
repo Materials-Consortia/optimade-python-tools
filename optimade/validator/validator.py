@@ -177,8 +177,6 @@ class ImplementationValidator:
         page_limit=5,
         max_retries=5,
         as_type=None,
-        *args,
-        **kwargs,
     ):
         """ Set up the tests to run, based on constants in this module
         for required endpoints.

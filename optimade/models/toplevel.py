@@ -6,7 +6,7 @@ from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
 from .jsonapi import Link, Meta
 from .util import NonnegativeInt
 from .baseinfo import BaseInfoResource
-from .entries import EntryInfoResource, EntryResource
+from .entries import EntryInfoResource
 from .optimade_json import Error, Success, Failure, Warnings
 from .structures import StructureResource
 
