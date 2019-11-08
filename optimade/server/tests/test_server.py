@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 import unittest
 import abc
 
@@ -58,13 +59,13 @@ class EndpointTests(abc.ABC):
         self.assertTrue(
             self.response_cls is not None, msg="Response class unset for this endpoint"
         )
-        self.response_cls(**self.json_response)
+        self.response_cls(**self.json_response)  # pylint: disable=not-callable
 
     def check_keys(self, keys, response_subset):
         for key in keys:
             self.assertTrue(
                 key in response_subset,
-                msg="{} missing from response".format(key, response_subset),
+                msg="{} missing from response {}".format(key, response_subset),
             )
 
 
@@ -150,6 +151,7 @@ class ServerTestWithValidator(unittest.TestCase):
         validator = ImplementationValidator(client=CLIENT)
         validator.main()
         self.assertTrue(validator.valid)
+
 
 class SingleStructureEndpointEmptyTest(EndpointTests, unittest.TestCase):
 

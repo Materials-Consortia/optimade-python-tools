@@ -245,7 +245,9 @@ class ImplementationValidator:
         # if single type has been set, only run that test
         if self.as_type_cls is not None:
             self._log.info(
-                f"Validating response of {self.base_url} with model {self.as_type_cls}"
+                "Validating response of %s with model %s",
+                self.base_url,
+                self.as_type_cls,
             )
             self.test_as_type()
             self.valid = not bool(self.failure_count)
@@ -260,8 +262,8 @@ class ImplementationValidator:
             )
 
         # otherwise test entire implementation
-        self._log.info(f"Testing entire implementation {self.base_url}...")
-        self._log.debug(f"Testing base info endpoint of {BASE_INFO_ENDPOINT}")
+        self._log.info("Testing entire implementation %s...", self.base_url)
+        self._log.debug("Testing base info endpoint of %s", BASE_INFO_ENDPOINT)
         base_info = self.test_info_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
 
@@ -271,7 +273,7 @@ class ImplementationValidator:
             self.test_info_endpoints(entry_info_endpoint)
 
         for endp in self.test_entry_endpoints:
-            self._log.debug(f"Testing multiple entry endpoint of {endp}")
+            self._log.debug("Testing multiple entry endpoint of %s", endp)
             self.test_multi_entry_endpoint(f"{endp}?page_limit={self.page_limit}")
 
         for endp in self.test_entry_endpoints:
@@ -306,7 +308,8 @@ class ImplementationValidator:
             response_cls = RESPONSE_CLASSES[response_cls_name]
         else:
             self._log.warning(
-                f"Deserializing single entry response {_type} with generic response rather than defined endpoint."
+                "Deserializing single entry response %s with generic response rather than defined endpoint.",
+                _type,
             )
             response_cls = ValidatorEntryResponseOne
         if _type in self.test_id_by_type:
@@ -323,7 +326,8 @@ class ImplementationValidator:
             response_cls = RESPONSE_CLASSES[_type]
         else:
             self._log.warning(
-                f"Deserializing multi entry response from {_type} with generic response rather than defined endpoint."
+                "Deserializing multi entry response from %s with generic response rather than defined endpoint.",
+                _type,
             )
             response_cls = ValidatorEntryResponseMany
         deserialized = self.deserialize_reponse(response, response_cls)
@@ -333,7 +337,8 @@ class ImplementationValidator:
     def test_as_type(self):
         response = self.get_endpoint("")
         self._log.debug(
-            "Response to deserialize:\n%s", json.dumps(response.json(), indent=2)
+            "Response to deserialize:\n%s",
+            json.dumps(response.json(), indent=2),  # pylint: disable=no-member
         )
         self.deserialize_reponse(response, self.as_type_cls)
 
