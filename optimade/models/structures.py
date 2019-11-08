@@ -612,7 +612,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     @validator("elements_ratios", whole=True)
     def ratios_must_sum_to_one(cls, v):
         assert (
-            abs(sum(v) - 1) < EPS
+            abs(sum(v) - 1) <= EPS
         ), f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
         return v
 
