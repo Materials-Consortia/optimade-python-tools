@@ -164,7 +164,7 @@ class ResponseMeta(Meta):
 
 class StructureResponseOne(Success):
     meta: ResponseMeta = Schema(...)
-    data: Union[StructureResource, Dict[str, Any]] = Schema(...)
+    data: Union[StructureResource, Dict[str, Any], None] = Schema(...)
 
 
 class StructureResponseMany(Success):
