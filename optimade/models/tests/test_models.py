@@ -3,7 +3,6 @@ from pathlib import Path
 import pytest
 import unittest
 import json
-import bson.json_util
 
 from pydantic import ValidationError, BaseModel, ConfigError
 from optimade.models.util import conlist, ManualValidationError
@@ -36,14 +35,14 @@ class TestPydanticValidation(unittest.TestCase):
         for doc in bad_structures:
             doc["last_modified"] = doc["last_modified"]["$date"]
 
-        print("\n")
         for ind, structure in enumerate(bad_structures):
-            with self.assertRaises(ManualValidationError):
-                try:
-                    StructureResource(**StructureMapper.map_back(structure))
-                except Exception as err:
-                    print(ind, err)
-                    raise err
+            with self.assertRaises(
+                ManualValidationError,
+                msg="Bad test structure {} failed to raise an error\nContents: {}".format(
+                    ind, json.dumps(structure, indent=2)
+                ),
+            ):
+                StructureResource(**StructureMapper.map_back(structure))
 
 
 def test_constrained_list():
