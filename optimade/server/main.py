@@ -32,7 +32,7 @@ from optimade.models import (
 )
 
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
-from .collections import MongoCollection
+from .entry_collections import MongoCollection
 from .config import CONFIG
 
 
