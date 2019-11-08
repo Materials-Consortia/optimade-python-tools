@@ -332,7 +332,7 @@ class ImplementationValidator:
 
     def test_as_type(self):
         response = self.get_endpoint("")
-        self._log.info(
+        self._log.debug(
             "Response to deserialize:\n{}".format(json.dumps(response.json(), indent=2))
         )
         self.deserialize_reponse(response, self.as_type_cls)
