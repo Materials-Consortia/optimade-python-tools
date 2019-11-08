@@ -122,8 +122,7 @@ def test_case(test_fn):
 
 
 class ImplementationValidator:
-    def __init__(self, client=None, base_url=None, verbosity=0, *args, **kwargs):
-
+    def __init__(self, client=None, base_url=None, verbosity=0):
         if client is None and base_url is None:
             raise RuntimeError(
                 "Need at least a URL or a client to initialize validator."
@@ -151,7 +150,6 @@ class ImplementationValidator:
         self.failure_count = 0
 
     def _setup_log(self):
-
         self._log = logging.getLogger(__name__)
         self._log.handlers = []
         stdout_handler = logging.StreamHandler(sys.stdout)
@@ -167,37 +165,31 @@ class ImplementationValidator:
             self._log.setLevel(logging.DEBUG)
 
     def main(self):
-        self._log.info("Testing {}...".format(self.base_url))
+        self._log.info("Testing %s...", self.base_url)
 
-        self._log.debug("Testing base info endpoint of {}".format(BASE_INFO_ENDPOINT))
+        self._log.debug("Testing base info endpoint of %s", BASE_INFO_ENDPOINT)
         base_info = self.test_info_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
 
-        self._log.debug(
-            "Testing for expected info endpoints {}".format(BASE_INFO_ENDPOINT)
-        )
         for endp in self.test_entry_endpoints:
             entry_info_endpoint = f"{BASE_INFO_ENDPOINT}/{endp}"
-            self._log.debug(
-                "Testing expected info endpoints".format(entry_info_endpoint)
-            )
+            self._log.debug("Testing expected info endpoint %s", entry_info_endpoint)
             self.test_info_endpoints(entry_info_endpoint)
-        self._log.debug(
-            "Testing for expected info endpoints {}".format(BASE_INFO_ENDPOINT)
-        )
 
         for endp in self.test_entry_endpoints:
-            self._log.debug("Testing multiple entry endpoint of {}".format(endp))
+            self._log.debug("Testing multiple entry endpoint of %s", endp)
             self.test_multi_entry_endpoint(endp)
 
         for endp in self.test_entry_endpoints:
-            self._log.debug("Testing single entry request of type {}".format(endp))
+            self._log.debug("Testing single entry request of type %s", endp)
             self.test_single_entry_endpoint(endp)
 
         self.valid = not bool(self.failure_count)
 
         self._log.info(
-            f"Passed {self.success_count} out of {self.success_count + self.failure_count} tests."
+            "Passed %d out of %d tests.",
+            self.success_count,
+            self.success_count + self.failure_count,
         )
 
     @test_case
@@ -213,7 +205,7 @@ class ImplementationValidator:
     def get_available_endpoints(self, base_info):
         """ Try to get `entry_types_by_format` even if base info response could not be validated. """
         # hopefully just a temporary hack...
-        for i in [0]:
+        for _ in [0]:
             available_json_entry_endpoints = []
             try:
                 available_json_entry_endpoints = base_info.data.attributes.entry_types_by_format.get(
@@ -276,21 +268,18 @@ class ImplementationValidator:
 
     def test_multi_entry_endpoint(self, request_str):
         response = self.get_endpoint(request_str)
-        if request_str in RESPONSE_CLASSES:
-            response_cls = RESPONSE_CLASSES[request_str]
-        else:
-            response_cls = AbstractEntryResponseMany
+        response_cls = RESPONSE_CLASSES.get(request_str, AbstractEntryResponseMany)
         serialized = self.serialize_attempt(response, response_cls)
         self.get_single_id_from_multi_endpoint(serialized)
 
     @test_case
     def get_single_id_from_multi_endpoint(self, serialized):
-        if serialized and len(serialized.data) > 0:
+        if serialized and serialized.data:
             self.test_id_by_type[serialized.data[0].type] = serialized.data[0].id
             self._log.debug(
-                "Set type {} test ID to {}".format(
-                    serialized.data[0].type, serialized.data[0].id
-                )
+                "Set type %s test ID to %s",
+                serialized.data[0].type,
+                serialized.data[0].id,
             )
         else:
             raise ResponseError("No entries found under endpoint to scrape ID from.")
