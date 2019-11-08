@@ -4,7 +4,7 @@ from typing import List, Optional
 from pydantic import Schema, BaseModel, validator
 
 from .entries import EntryResourceAttributes, EntryResource
-from .util import conlist, CHEMICAL_SYMBOLS, EXTRA_SYMBOLS, ManualValidationError
+from .util import conlist, CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
 
 
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
@@ -76,13 +76,13 @@ The main use of this field is for source databases that use species names, conta
     @validator("chemical_symbols")
     def validate_chemical_symbols(cls, v):
         if not (v in EXTENDED_CHEMICAL_SYMBOLS):
-            raise ManualValidationError(f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}")
+            raise ValueError(f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}")
         return v
 
     @validator("concentration", whole=True)
     def validate_concentration(cls, v, values):
         if not (len(v) == len(values.get("chemical_symbols", []))):
-            raise ManualValidationError(
+            raise ValueError(
                 f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', []))})"
             )
         return v
@@ -124,7 +124,7 @@ The possible reasons for the values not to sum to one are the same as already sp
         for group in v:
             sites.extend(group)
         if not (len(set(sites)) == len(sites)):
-            raise ManualValidationError(
+            raise ValueError(
                 f"A site MUST NOT appear in more than one group. Given value: {v}"
             )
         return v
@@ -132,7 +132,7 @@ The possible reasons for the values not to sum to one are the same as already sp
     @validator("group_probabilities", whole=True)
     def check_self_consistency(cls, v, values):
         if not (len(v) == len(values.get("sites_in_groups", []))):
-            raise ManualValidationError(
+            raise ValueError(
                 f"sites_in_groups and group_probabilities MUST be of same length, but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
             )
         return v
@@ -602,23 +602,19 @@ class StructureResourceAttributes(EntryResourceAttributes):
     @validator("elements", whole=False)
     def element_must_be_chemical_symbol(cls, v):
         if not (v in CHEMICAL_SYMBOLS):
-            raise ManualValidationError(
-                f"Only chemical symbols are allowed, you passed: {v}"
-            )
+            raise ValueError(f"Only chemical symbols are allowed, you passed: {v}")
         return v
 
     @validator("elements", whole=True)
     def elements_must_be_alphabetical(cls, v):
         if not (sorted(v) == v):
-            raise ManualValidationError(
-                f"elements must be sorted alphabetically, but is: {v}"
-            )
+            raise ValueError(f"elements must be sorted alphabetically, but is: {v}")
         return v
 
     @validator("elements_ratios", whole=True)
     def ratios_must_sum_to_one(cls, v):
         if not (abs(sum(v) - 1) < EPS):
-            raise ManualValidationError(
+            raise ValueError(
                 f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
             )
         return v
@@ -626,28 +622,26 @@ class StructureResourceAttributes(EntryResourceAttributes):
     @validator("chemical_formula_reduced", "chemical_formula_hill")
     def no_spaces_in_reduced(cls, v):
         if " " in v:
-            raise ManualValidationError(f"Spaces are not allowed, you passed: {v}")
+            raise ValueError(f"Spaces are not allowed, you passed: {v}")
         return v
 
     @validator("dimension_types", whole=True)
     def must_be_of_length_three(cls, v):
         if not len(v) == 3:
-            raise ManualValidationError(
-                f"MUST be of length 3, but is of length: {len(v)}"
-            )
+            raise ValueError(f"MUST be of length 3, but is of length: {len(v)}")
         for dimension in v:
             if not (dimension in {0, 1}):
-                raise ManualValidationError(f"MUST be either 0 or 1, you passed: {v}")
+                raise ValueError(f"MUST be either 0 or 1, you passed: {v}")
         return v
 
     @validator("lattice_vectors", always=True, whole=True)
     def required_if_dimension_types_has_one(cls, v, values):
         if 1 in values.get("dimension_types") and v is None:
-            raise ManualValidationError(
+            raise ValueError(
                 f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values.get('dimension_types')}"
             )
         if len(v) != 3:
-            raise ManualValidationError(
+            raise ValueError(
                 f"MUST be a an 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
             )
         return v
@@ -655,15 +649,13 @@ class StructureResourceAttributes(EntryResourceAttributes):
     @validator("lattice_vectors", "cartesian_site_positions")
     def sites_must_have_length_three(cls, v):
         if len(v) != 3:
-            raise ManualValidationError(
-                f"MUST be a list of length 3. {v} has length {len(v)}."
-            )
+            raise ValueError(f"MUST be a list of length 3. {v} has length {len(v)}.")
         return v
 
     @validator("nsites")
     def validate_nsites(cls, v, values):
         if not (v == len(values.get("cartesian_site_positions", []))):
-            raise ManualValidationError(
+            raise ValueError(
                 f"nsites (value: {v}) MUST equal length of cartesian_site_positions (value: {len(values.get('cartesian_site_positions', []))})"
             )
         return v
@@ -671,7 +663,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     @validator("species_at_sites", whole=True)
     def validate_species_at_sites(cls, v, values):
         if not (len(v) == values.get("nsites", 0)):
-            raise ManualValidationError(
+            raise ValueError(
                 f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 0)})"
             )
         return v
@@ -679,7 +671,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     @validator("species")
     def validate_species(cls, v, values):
         if not (v.name in values.get("species_at_sites", [])):
-            raise ManualValidationError(
+            raise ValueError(
                 f"{v.name} not found in species_at_sites: {values.get('species_at_sites', [])}"
             )
         return v
@@ -687,44 +679,44 @@ class StructureResourceAttributes(EntryResourceAttributes):
     @validator("structure_features", whole=True, always=True)
     def validate_structure_features(cls, v, values):
         if not sorted(v) == v:
-            raise ManualValidationError(
+            raise ValueError(
                 f"structure_features MUST be sorted alphabetically, given value: {v}"
             )
         # disorder
         for species in values.get("species", []):
             if len(species.chemical_symbols) > 1:
                 if "disorder" not in v:
-                    raise ManualValidationError(
+                    raise ValueError(
                         "disorder MUST be present when any one entry in species has a chemical_symbols list greater than one element"
                     )
                 break
         else:
             if "disorder" in v:
-                raise ManualValidationError(
+                raise ValueError(
                     "disorder MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
                 )
         # unknown_positions
         for site in values.get("cartesian_site_positions", []):
             if None in site or float("nan") in site:
                 if "unknown_positions" not in v:
-                    raise ManualValidationError(
+                    raise ValueError(
                         "unknown_positions MUST be present when a single component of cartesian_site_positions has value null"
                     )
                 break
         else:
             if "unknown_positions" in v:
-                raise ManualValidationError(
+                raise ValueError(
                     "unknown_positions MUST NOT be present, since there are no null values in cartesian_site_positions"
                 )
         # assemblies
         if values.get("assemblies", None) is not None:
             if "assemblies" not in v:
-                raise ManualValidationError(
+                raise ValueError(
                     "assemblies MUST be present, since the property of the same name is present"
                 )
         else:
             if "assemblies" in v:
-                raise ManualValidationError(
+                raise ValueError(
                     "assemblies MUST NOT be present, since the property of the same name is not present"
                 )
 

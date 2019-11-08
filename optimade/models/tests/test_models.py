@@ -5,7 +5,7 @@ import unittest
 import json
 
 from pydantic import ValidationError, BaseModel, ConfigError
-from optimade.models.util import conlist, ManualValidationError
+from optimade.models.util import conlist
 from optimade.models import StructureResource
 from optimade.server.mappers import StructureMapper
 
@@ -37,7 +37,7 @@ class TestPydanticValidation(unittest.TestCase):
 
         for ind, structure in enumerate(bad_structures):
             with self.assertRaises(
-                ManualValidationError,
+                ValidationError,
                 msg="Bad test structure {} failed to raise an error\nContents: {}".format(
                     ind, json.dumps(structure, indent=2)
                 ),

@@ -21,7 +21,6 @@ from optimade.models import (
     AbstractEntryResponseOne,
     AbstractEntryResponseMany,
     EntryInfoResponse,
-    ManualValidationError,
 )
 
 MAX_RETRIES = 5
@@ -54,6 +53,7 @@ def print_success(string):
 
 class ResponseError(Exception):
     """ This exception should be raised for a manual hardcoded test failure. """
+
     pass
 
 
@@ -98,7 +98,7 @@ def test_case(test_fn):
     def wrapper(*args, **kwargs):
         try:
             result, msg = test_fn(*args, **kwargs)
-        except (ResponseError, ValidationError, ManualValidationError) as exc:
+        except (ResponseError, ValidationError) as exc:
             result = False
             msg = f"{type(exc).__name__}: {exc}"
 
