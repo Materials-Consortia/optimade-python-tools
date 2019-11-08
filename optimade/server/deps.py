@@ -14,7 +14,7 @@ class EntryListingQueryParams:
         *,
         filter: str = Query(  # pylint: disable=redefined-builtin
             None,
-            description="""See [the full OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.md) for filter query syntax.
+            description="""See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.
 
 Example: `chemical_formula = "Al" OR (prototype_formula = "AB" AND elements HAS Si, Al, O)`.
 """,

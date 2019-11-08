@@ -1,9 +1,11 @@
+# pylint: disable=no-member
 import unittest
 import abc
 
 from starlette.testclient import TestClient
 
 from optimade.server.config import CONFIG
+from optimade.validator import ImplementationValidator
 
 # this must be changed before app is imported
 CONFIG.page_limit = 5  # noqa: E402
@@ -16,6 +18,10 @@ from optimade.models import (
     InfoResponse,
 )
 
+# need to explicitly set base_url, as the default "http://testserver"
+# does not validate as pydantic UrlStr model
+CLIENT = TestClient(app, base_url="http://example.org/optimade")
+
 
 class EndpointTests(abc.ABC):
     """ Abstract base class for common tests between endpoints. """
@@ -26,9 +32,7 @@ class EndpointTests(abc.ABC):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # need to explicitly set base_url as the default "http://testserver"
-        # does not validate as pydantic UrlStr model
-        self.client = TestClient(app, base_url="http://example.org/optimade")
+        self.client = CLIENT
 
         self.response = self.client.get(self.request_str)
         self.json_response = self.response.json()
@@ -55,13 +59,13 @@ class EndpointTests(abc.ABC):
         self.assertTrue(
             self.response_cls is not None, msg="Response class unset for this endpoint"
         )
-        self.response_cls(**self.json_response)
+        self.response_cls(**self.json_response)  # pylint: disable=not-callable
 
     def check_keys(self, keys, response_subset):
         for key in keys:
             self.assertTrue(
                 key in response_subset,
-                msg="{} missing from response".format(key, response_subset),
+                msg="{} missing from response {}".format(key, response_subset),
             )
 
 
@@ -140,6 +144,13 @@ class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
         self.assertTrue(
             "_exmpl__mp_chemsys" in self.json_response["data"]["attributes"]
         )
+
+
+class ServerTestWithValidator(unittest.TestCase):
+    def test_with_validator(self):
+        validator = ImplementationValidator(client=CLIENT)
+        validator.main()
+        self.assertTrue(validator.valid)
 
 
 class SingleStructureEndpointEmptyTest(EndpointTests, unittest.TestCase):
