@@ -35,11 +35,11 @@ class BaseInfoAttributes(BaseModel):
         default=["json"], description="List of available output formats."
     )
     available_endpoints: List[str] = Schema(
-        default=["structures", "all", "info"],
+        default=["structures", "info"],
         description="List of available endpoints (i.e., the string to be appended to the base URL).",
     )
     entry_types_by_format: Dict[str, List[str]] = Schema(
-        default={"json": ["structures", "all"]},
+        default={"json": ["structures"]},
         description="Available entry endpoints as a function of output formats.",
     )
     is_index: Optional[bool] = Schema(
