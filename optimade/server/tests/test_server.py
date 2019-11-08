@@ -3,7 +3,6 @@ import abc
 
 from starlette.testclient import TestClient
 
-
 from optimade.server.config import CONFIG
 from optimade.validator import ImplementationValidator
 
@@ -18,7 +17,7 @@ from optimade.models import (
     InfoResponse,
 )
 
-# need to explicitly set base_url as the default "http://testserver"
+# need to explicitly set base_url, as the default "http://testserver"
 # does not validate as pydantic UrlStr model
 CLIENT = TestClient(app, base_url="http://example.org/optimade")
 

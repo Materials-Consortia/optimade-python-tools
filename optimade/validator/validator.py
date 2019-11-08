@@ -54,7 +54,6 @@ def print_success(string):
 
 class ResponseError(Exception):
     """ This exception should be raised for a manual hardcoded test failure. """
-
     pass
 
 

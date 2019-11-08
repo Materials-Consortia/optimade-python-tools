@@ -25,7 +25,7 @@ class TestPydanticValidation(unittest.TestCase):
             doc["last_modified"] = doc["last_modified"]["$date"]
 
         for structure in good_structures:
-            _ = StructureResource(**StructureMapper.map_back(structure))
+            StructureResource(**StructureMapper.map_back(structure))
 
     def test_bad_structures(self):
         test_structures_path = (
@@ -40,7 +40,7 @@ class TestPydanticValidation(unittest.TestCase):
         for ind, structure in enumerate(bad_structures):
             with self.assertRaises(ManualValidationError):
                 try:
-                    _ = StructureResource(**StructureMapper.map_back(structure))
+                    StructureResource(**StructureMapper.map_back(structure))
                 except Exception as err:
                     print(ind, err)
                     raise err
