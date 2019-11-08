@@ -260,8 +260,8 @@ class ImplementationValidator:
             )
 
         # otherwise test entire implementation
-        self._log.info("Testing entire implementation {}...".format(self.base_url))
-        self._log.debug("Testing base info endpoint of {}".format(BASE_INFO_ENDPOINT))
+        self._log.info(f"Testing entire implementation {self.base_url}...")
+        self._log.debug(f"Testing base info endpoint of {BASE_INFO_ENDPOINT}")
         base_info = self.test_info_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
 
@@ -271,7 +271,7 @@ class ImplementationValidator:
             self.test_info_endpoints(entry_info_endpoint)
 
         for endp in self.test_entry_endpoints:
-            self._log.debug("Testing multiple entry endpoint of {}".format(endp))
+            self._log.debug(f"Testing multiple entry endpoint of {endp}")
             self.test_multi_entry_endpoint(f"{endp}?page_limit={self.page_limit}")
 
         for endp in self.test_entry_endpoints:
@@ -333,7 +333,7 @@ class ImplementationValidator:
     def test_as_type(self):
         response = self.get_endpoint("")
         self._log.debug(
-            "Response to deserialize:\n{}".format(json.dumps(response.json(), indent=2))
+            "Response to deserialize:\n%s", json.dumps(response.json(), indent=2)
         )
         self.deserialize_reponse(response, self.as_type_cls)
 
@@ -359,9 +359,9 @@ class ImplementationValidator:
         if deserialized and len(deserialized.data) > 0:
             self.test_id_by_type[deserialized.data[0].type] = deserialized.data[0].id
             self._log.debug(
-                "Set type {} test ID to {}".format(
-                    deserialized.data[0].type, deserialized.data[0].id
-                )
+                "Set type %s test ID to %s",
+                deserialized.data[0].type,
+                deserialized.data[0].id,
             )
         else:
             raise ResponseError("No entries found under endpoint to scrape ID from.")
