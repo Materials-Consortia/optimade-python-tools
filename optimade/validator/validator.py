@@ -55,17 +55,47 @@ class ResponseError(Exception):
 
 
 class Client:
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str, max_retries=5):
+        """ Initialises the Client with the given `base_url` without testing
+        if it is valid.
+
+        Parameters:
+            base_url (str): the base URL of the optimade implementation, including
+            request protocol (e.g. `'http://'`) and API version number if necessary.
+            Examples:
+                - `'http://example.org/optimade'`,
+                - `'www.crystallography.net/cod-test/optimade/v0.10.0/'`
+
+        """
         self.base_url = base_url
         self.last_request = None
         self.response = None
+        self.max_retries = max_retries
 
     def get(self, request: str):
-        self.last_request = f"{self.base_url}/{request}"
+        """ Makes the given request, with a number of retries if being rate limited.
+
+        Parameters:
+            request (str): the request to make against the base URL of this client.
+
+        Returns:
+            response (requests.models.Response): the response from the server.
+
+        Raises:
+            SystemExit: if there is no response from the server, or if the URL is invalid.
+            ResponseError: if the server does not respond with a non-429 status code within
+                the `MAX_RETRIES` attempts.
+
+        """
+        if request:
+            self.last_request = f"{self.base_url}/{request}"
+        else:
+            self.last_request = self.base_url
+
         status_code = None
         retries = 0
         # probably a smarter way to do this with requests, but their documentation 404's...
-        while retries < MAX_RETRIES:
+        while retries < self.max_retries:
             retries += 1
             try:
                 self.response = requests.get(self.last_request)
@@ -89,6 +119,15 @@ class Client:
 
 
 def test_case(test_fn):
+    """ Wrapper for test case functions, which pretty_prints any errors
+    depending on verbosity level and returns only the response to the caller.
+
+    Parameters:
+        test_fn (callable): function that returns a response to pass to caller,
+            and a message to print upon success. Should raise `ResponseError`,
+            `ValidationError` or `ManualValidationError` if the test case has failed.
+
+    """
     from functools import wraps
 
     @wraps(test_fn)
@@ -109,7 +148,7 @@ def test_case(test_fn):
                 print_success(f"✔: {request} - {msg}")
         else:
             args[0].failure_count += 1
-            print_failure(f"✖: {request} - failed with error")
+            print_failure(f"✖: {request} - {test_fn.__name__} - failed with error")
             message = f"{msg}".split("\n")
             for line in message:
                 print_warning(f"\t{line}")
@@ -120,7 +159,44 @@ def test_case(test_fn):
 
 
 class ImplementationValidator:
-    def __init__(self, client=None, base_url=None, verbosity=0, *args, **kwargs):
+    """ Class to call test functions on a particular OPTiMaDe
+    implementation.
+
+    Uses the pydantic models in `optimade.models` to validate the
+    response from the server and crawl through the available endpoints.
+
+    Drawbacks:
+        - only works for current version of the specification as defined
+        by `optimade.models`.
+
+    """
+
+    def __init__(
+        self,
+        client=None,
+        base_url=None,
+        verbosity=0,
+        page_limit=5,
+        max_retries=5,
+        as_type=None,
+        *args,
+        **kwargs,
+    ):
+        """ Set up the tests to run, based on constants in this module
+        for required endpoints.
+
+        """
+
+        self.verbosity = verbosity
+        self.max_retries = max_retries
+        self.page_limit = page_limit
+
+        if as_type is None:
+            self.as_type_cls = None
+        elif as_type == "structure":
+            self.as_type_cls = RESPONSE_CLASSES["structures/"]
+        else:
+            self.as_type_cls = RESPONSE_CLASSES[as_type]
 
         if client is None and base_url is None:
             raise RuntimeError(
@@ -133,22 +209,24 @@ class ImplementationValidator:
             self.base_url = self.client.base_url
         else:
             self.base_url = base_url
-            self.client = Client(base_url)
+            self.client = Client(base_url, max_retries=self.max_retries)
 
         self.test_id_by_type = {}
-        self.verbosity = verbosity
         self._setup_log()
         self.base_info_endpoint = BASE_INFO_ENDPOINT
         self.expected_entry_endpoints = REQUIRED_ENTRY_ENDPOINTS
         self.test_entry_endpoints = set(self.expected_entry_endpoints)
-        # if True on exit, script returns 0 to shell
-        # if False on exit, script returns 1 to shell
-        # if None on exit, script returns 2 to shell, indicating an internal failure
+
+        # if valid is True on exit, script returns 0 to shell
+        # if valid is False on exit, script returns 1 to shell
+        # if valid is None on exit, script returns 2 to shell, indicating an internal failure
         self.valid = None
+
         self.success_count = 0
         self.failure_count = 0
 
     def _setup_log(self):
+        """ Define stdout log based on given verbosity. """
 
         self._log = logging.getLogger(__name__)
         self._log.handlers = []
@@ -165,8 +243,27 @@ class ImplementationValidator:
             self._log.setLevel(logging.DEBUG)
 
     def main(self):
-        self._log.info("Testing {}...".format(self.base_url))
+        """ Run all the test cases of the implementation, or the single type test. """
 
+        # if single type has been set, only run that test
+        if self.as_type_cls is not None:
+            self._log.info(
+                f"Validating response of {self.base_url} with model {self.as_type_cls}"
+            )
+            self.test_as_type()
+            self.valid = not bool(self.failure_count)
+            return
+
+        # some simple checks on base_url
+        if "?" in self.base_url or any(
+            [self.base_url.endswith(endp) for endp in REQUIRED_ENTRY_ENDPOINTS]
+        ):
+            sys.exit(
+                "Base URL not appropriate: should not contain an endpoint or filter."
+            )
+
+        # otherwise test entire implementation
+        self._log.info("Testing entire implementation {}...".format(self.base_url))
         self._log.debug("Testing base info endpoint of {}".format(BASE_INFO_ENDPOINT))
         base_info = self.test_info_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
@@ -186,7 +283,7 @@ class ImplementationValidator:
 
         for endp in self.test_entry_endpoints:
             self._log.debug("Testing multiple entry endpoint of {}".format(endp))
-            self.test_multi_entry_endpoint(endp)
+            self.test_multi_entry_endpoint(f"{endp}?page_limit={self.page_limit}")
 
         for endp in self.test_entry_endpoints:
             self._log.debug("Testing single entry request of type {}".format(endp))
@@ -198,20 +295,104 @@ class ImplementationValidator:
             f"Passed {self.success_count} out of {self.success_count + self.failure_count} tests."
         )
 
+    def test_info_endpoints(self, request_str):
+        """ Runs the test cases for the info endpoints. """
+        response = self.get_endpoint(request_str)
+        if response:
+            deserialized = self.deserialize_reponse(
+                response, RESPONSE_CLASSES[request_str]
+            )
+            if not deserialized:
+                return response
+            return deserialized
+        return False
+
+    def test_single_entry_endpoint(self, request_str):
+        """ Runs the test cases for the single entry endpoints. """
+        _type = request_str.split("?")[0]
+        response_cls_name = _type + "/"
+        if response_cls_name in RESPONSE_CLASSES:
+            response_cls = RESPONSE_CLASSES[response_cls_name]
+        else:
+            self._log.warning(
+                f"Deserializing single entry response {_type} with generic response rather than defined endpoint."
+            )
+            response_cls = ValidatorEntryResponseOne
+        if _type in self.test_id_by_type:
+            test_id = self.test_id_by_type[_type]
+            response = self.get_endpoint(f"{_type}/{test_id}")
+            if response:
+                self.deserialize_reponse(response, response_cls)
+
+    def test_multi_entry_endpoint(self, request_str):
+        """ Runs the test cases for the multi entry endpoints. """
+        response = self.get_endpoint(request_str)
+        _type = request_str.split("?")[0]
+        if _type in RESPONSE_CLASSES:
+            response_cls = RESPONSE_CLASSES[_type]
+        else:
+            self._log.warning(
+                f"Deserializing multi entry response from {_type} with generic response rather than defined endpoint."
+            )
+            response_cls = ValidatorEntryResponseMany
+        deserialized = self.deserialize_reponse(response, response_cls)
+        self.test_page_limit(response)
+        self.get_single_id_from_multi_endpoint(deserialized)
+
+    def test_as_type(self):
+        response = self.get_endpoint("")
+        self._log.info(
+            "Response to deserialize:\n{}".format(json.dumps(response.json(), indent=2))
+        )
+        self.deserialize_reponse(response, self.as_type_cls)
+
     @test_case
-    def serialize_attempt(self, response, response_cls):
+    def test_page_limit(self, response):
+        """ Test that a multi-entry endpoint obeys the page limit. """
+        try:
+            num_entries = len(response.json()["data"])
+        except AttributeError:
+            raise ResponseError("Unable to test endpoint page limit.")
+        if num_entries > self.page_limit:
+            raise ResponseError(
+                f"Endpoint did not obey page limit: {num_entries} entries vs {self.page_limit} limit"
+            )
+        return num_entries, f"Endpoint obeyed page limit of {self.page_limit}"
+
+    @test_case
+    def get_single_id_from_multi_endpoint(self, deserialized):
+        """ Scrape an ID from the multi-entry endpoint to use as query
+        for single entry endpoint.
+
+        """
+        if deserialized and len(deserialized.data) > 0:
+            self.test_id_by_type[deserialized.data[0].type] = deserialized.data[0].id
+            self._log.debug(
+                "Set type {} test ID to {}".format(
+                    deserialized.data[0].type, deserialized.data[0].id
+                )
+            )
+        else:
+            raise ResponseError("No entries found under endpoint to scrape ID from.")
+        return (
+            self.test_id_by_type[deserialized.data[0].type],
+            f"successfully scraped test ID from {deserialized.data[0].type} endpoint",
+        )
+
+    @test_case
+    def deserialize_reponse(self, response, response_cls):
+        """ Try to create the appropriate pydantic model from the response. """
         if not response:
             raise ResponseError("Request failed")
         return (
             response_cls(**response.json()),
-            "serialized correctly as {}".format(response_cls),
+            "deserialized correctly as {}".format(response_cls),
         )
 
     @test_case
     def get_available_endpoints(self, base_info):
         """ Try to get `entry_types_by_format` even if base info response could not be validated. """
-        # hopefully just a temporary hack...
-        for i in [0]:
+        for _ in [0]:
             available_json_entry_endpoints = []
             try:
                 available_json_entry_endpoints = base_info.data.attributes.entry_types_by_format.get(
@@ -254,56 +435,8 @@ class ImplementationValidator:
 
     @test_case
     def get_endpoint(self, request_str):
+        """ Gets the response from the endpoint specified by `request_str`. """
         response = self.client.get(request_str)
         if response.status_code != 200:
-            raise ResponseError(
-                "Request to endpoint {} returned {}".format(
-                    request_str, response.status_code
-                )
-            )
+            raise ResponseError(f"Request returned HTTP:{response.status_code}")
         return response, "request successful."
-
-    def test_info_endpoints(self, request_str):
-        response = self.get_endpoint(request_str)
-        if response:
-            serialized = self.serialize_attempt(response, RESPONSE_CLASSES[request_str])
-            if not serialized:
-                return response
-            return serialized
-        return False
-
-    def test_multi_entry_endpoint(self, request_str):
-        response = self.get_endpoint(request_str)
-        if request_str in RESPONSE_CLASSES:
-            response_cls = RESPONSE_CLASSES[request_str]
-        else:
-            response_cls = AbstractEntryResponseMany
-        serialized = self.serialize_attempt(response, response_cls)
-        self.get_single_id_from_multi_endpoint(serialized)
-
-    @test_case
-    def get_single_id_from_multi_endpoint(self, serialized):
-        if serialized and len(serialized.data) > 0:
-            self.test_id_by_type[serialized.data[0].type] = serialized.data[0].id
-            self._log.debug(
-                "Set type {} test ID to {}".format(
-                    serialized.data[0].type, serialized.data[0].id
-                )
-            )
-        else:
-            raise ResponseError("No entries found under endpoint to scrape ID from.")
-        return (
-            self.test_id_by_type[serialized.data[0].type],
-            f"successfully scraped test ID from {serialized.data[0].type} endpoint",
-        )
-
-    def test_single_entry_endpoint(self, _type):
-        if _type + "/" in RESPONSE_CLASSES:
-            response_cls = RESPONSE_CLASSES[_type + "/"]
-        else:
-            response_cls = AbstractEntryResponseOne
-        if _type in self.test_id_by_type:
-            test_id = self.test_id_by_type[_type]
-            response = self.get_endpoint(f"{_type}/{test_id}")
-            if response:
-                self.serialize_attempt(response, response_cls)
