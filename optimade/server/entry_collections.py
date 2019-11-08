@@ -121,10 +121,7 @@ class MongoCollection(EntryCollection):
             results.append(self.resource_cls(**StructureMapper.map_back(doc)))
 
         if isinstance(params, SingleEntryQueryParams):
-            if len(results) == 1:
-                results = results[0]
-            else:
-                results = None
+            results = results[0] if results else None
 
         return results, more_data_available, data_available, all_fields - fields
 
