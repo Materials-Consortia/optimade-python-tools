@@ -22,8 +22,6 @@ __all__ = (
     "ErrorResponse",
     "EntryInfoResponse",
     "InfoResponse",
-    "AbstractEntryResponseOne",
-    "AbstractEntryResponseMany",
 )
 
 
@@ -172,16 +170,6 @@ class StructureResponseOne(Success):
 class StructureResponseMany(Success):
     meta: ResponseMeta = Schema(...)
     data: Union[List[StructureResource], List[Dict[str, Any]]] = Schema(...)
-
-
-class AbstractEntryResponseOne(Success):
-    meta: ResponseMeta = Schema(...)
-    data: Union[EntryResource, Dict[str, Any]] = Schema(...)
-
-
-class AbstractEntryResponseMany(Success):
-    meta: ResponseMeta = Schema(...)
-    data: Union[List[EntryResource], List[Dict[str, Any]]] = Schema(...)
 
 
 class ErrorResponse(Failure):

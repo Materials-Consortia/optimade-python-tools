@@ -2,35 +2,32 @@
 at an OPTiMaDe implementation and validated against the pydantic
 models in this package.
 
-It is written with the pytest framework to provide a detailed
-breakdown of any issues.
-
 """
 
 import time
 import requests
 import sys
 import logging
+import json
 
 from pydantic import ValidationError
 
-from optimade.models import (
-    InfoResponse,
-    StructureResponseOne,
-    StructureResponseMany,
-    AbstractEntryResponseOne,
-    AbstractEntryResponseMany,
-    EntryInfoResponse,
+from optimade.models import InfoResponse, EntryInfoResponse
+
+from .validator_model_patches import (
+    ValidatorStructureResponseOne,
+    ValidatorStructureResponseMany,
+    ValidatorEntryResponseOne,
+    ValidatorEntryResponseMany,
 )
 
-MAX_RETRIES = 5
 
 BASE_INFO_ENDPOINT = "info"
 REQUIRED_ENTRY_ENDPOINTS = ["structures"]
 
 RESPONSE_CLASSES = {
-    "structures": StructureResponseMany,
-    "structures/": StructureResponseOne,
+    "structures": ValidatorStructureResponseMany,
+    "structures/": ValidatorStructureResponseOne,
     "info": InfoResponse,
     "info/structures": EntryInfoResponse,
 }
