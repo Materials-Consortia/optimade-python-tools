@@ -51,8 +51,6 @@ def print_success(string):
 class ResponseError(Exception):
     """ This exception should be raised for a manual hardcoded test failure. """
 
-    pass
-
 
 class Client:
     def __init__(self, base_url: str, max_retries=5):
@@ -227,7 +225,6 @@ class ImplementationValidator:
 
     def _setup_log(self):
         """ Define stdout log based on given verbosity. """
-
         self._log = logging.getLogger(__name__)
         self._log.handlers = []
         stdout_handler = logging.StreamHandler(sys.stdout)
@@ -268,31 +265,25 @@ class ImplementationValidator:
         base_info = self.test_info_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
 
-        self._log.debug(
-            "Testing for expected info endpoints {}".format(BASE_INFO_ENDPOINT)
-        )
         for endp in self.test_entry_endpoints:
             entry_info_endpoint = f"{BASE_INFO_ENDPOINT}/{endp}"
-            self._log.debug(
-                "Testing expected info endpoints".format(entry_info_endpoint)
-            )
+            self._log.debug("Testing expected info endpoint %s", entry_info_endpoint)
             self.test_info_endpoints(entry_info_endpoint)
-        self._log.debug(
-            "Testing for expected info endpoints {}".format(BASE_INFO_ENDPOINT)
-        )
 
         for endp in self.test_entry_endpoints:
             self._log.debug("Testing multiple entry endpoint of {}".format(endp))
             self.test_multi_entry_endpoint(f"{endp}?page_limit={self.page_limit}")
 
         for endp in self.test_entry_endpoints:
-            self._log.debug("Testing single entry request of type {}".format(endp))
+            self._log.debug("Testing single entry request of type %s", endp)
             self.test_single_entry_endpoint(endp)
 
         self.valid = not bool(self.failure_count)
 
         self._log.info(
-            f"Passed {self.success_count} out of {self.success_count + self.failure_count} tests."
+            "Passed %d out of %d tests.",
+            self.success_count,
+            self.success_count + self.failure_count,
         )
 
     def test_info_endpoints(self, request_str):
