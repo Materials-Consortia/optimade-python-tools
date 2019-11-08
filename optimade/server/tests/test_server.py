@@ -140,3 +140,14 @@ class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
         self.assertTrue(
             "_exmpl__mp_chemsys" in self.json_response["data"]["attributes"]
         )
+
+
+class SingleStructureEndpointEmptyTest(EndpointTests, unittest.TestCase):
+
+    test_id = "non_existent_id"
+    request_str = f"/structures/{test_id}"
+    response_cls = StructureResponseOne
+
+    def test_structures_endpoint_data(self):
+        self.assertTrue("data" in self.json_response)
+        self.assertEqual(self.json_response["data"], None)
