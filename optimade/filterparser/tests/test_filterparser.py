@@ -174,6 +174,7 @@ class ParserTestNew(unittest.TestCase):
         self.assertIsInstance(self.parse('_cod_melting_point<300 AND nelements=4 AND elements="Si,O2"'), Tree)
         self.assertIsInstance(self.parse('key=value'), Tree)
         self.assertIsInstance(self.parse('author=" someone "'), Tree)
+        self.assertIsInstance(self.parse('author=" som\neone "'), Tree)
         self.assertIsInstance(self.parse('number=0.ANDnumber=.0ANDnumber=0.0ANDnumber=+0AND_n_u_m_b_e_r_=-0AND'
                                          'number=0e1ANDnumber=0e-1ANDnumber=0e+1'), Tree)
 

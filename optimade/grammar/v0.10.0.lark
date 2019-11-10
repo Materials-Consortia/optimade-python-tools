@@ -74,9 +74,16 @@ IDENTIFIER: ( "_" | LCASE_LETTER ) ( "_" | LCASE_LETTER | DIGIT )*
 LCASE_LETTER: "a".."z"
 DIGIT: "0".."9"
 
+// Strings
+
+_STRING_INNER: /(.|[\t\f\r\n])*?/
+_STRING_ESC_INNER: _STRING_INNER /(?<!\\)(\\\\)*?/
+
+ESCAPED_STRING : "\"" _STRING_ESC_INNER "\""
+
+
 %import common.SIGNED_INT
 %import common.SIGNED_FLOAT
-%import common.ESCAPED_STRING
 
 // White-space
 %import common.WS
