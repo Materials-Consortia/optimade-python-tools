@@ -32,7 +32,7 @@ from optimade.models import (
 )
 
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
-from .collections import MongoCollection
+from .entry_collections import MongoCollection
 from .config import CONFIG
 
 
@@ -240,11 +240,14 @@ def get_single_structure(
     links = ToplevelLinks(next=None)
     if fields and results is not None:
         results = handle_response_fields(results, fields)[0]
+
+    data_returned = 1 if results else 0
+
     return StructureResponseOne(
         links=links,
         data=results,
         meta=meta_values(
-            str(request.url), data_available, data_available, more_data_available
+            str(request.url), data_returned, data_available, more_data_available
         ),
     )
 
