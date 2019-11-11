@@ -75,16 +75,16 @@ The main use of this field is for source databases that use species names, conta
 
     @validator("chemical_symbols")
     def validate_chemical_symbols(cls, v):
-        assert (
-            v in EXTENDED_CHEMICAL_SYMBOLS
-        ), f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}"
+        if not (v in EXTENDED_CHEMICAL_SYMBOLS):
+            raise ValueError(f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}")
         return v
 
     @validator("concentration", whole=True)
     def validate_concentration(cls, v, values):
-        assert len(v) == len(
-            values.get("chemical_symbols", [])
-        ), f"Length of concentraion ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', []))})"
+        if not (len(v) == len(values.get("chemical_symbols", []))):
+            raise ValueError(
+                f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', []))})"
+            )
         return v
 
 
@@ -123,16 +123,18 @@ The possible reasons for the values not to sum to one are the same as already sp
         sites = []
         for group in v:
             sites.extend(group)
-        assert len(set(sites)) == len(
-            sites
-        ), f"A site MUST NOT appear in more than one group. Given value: {v}"
+        if not (len(set(sites)) == len(sites)):
+            raise ValueError(
+                f"A site MUST NOT appear in more than one group. Given value: {v}"
+            )
         return v
 
     @validator("group_probabilities", whole=True)
     def check_self_consistency(cls, v, values):
-        assert len(v) == len(
-            values.get("sites_in_groups", [])
-        ), f"sites_in_groups and group_probabilities MUST be of same length, but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
+        if not (len(v) == len(values.get("sites_in_groups", []))):
+            raise ValueError(
+                f"sites_in_groups and group_probabilities MUST be of same length, but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
+            )
         return v
 
 
@@ -208,7 +210,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
   - **Response**: REQUIRED in the response unless explicitly excluded.
   - **Query**: MUST be a queryable property with support for all mandatory filter operators.
-  - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets ``(``,\ ``)``, ``[``,\ ``]``, ``{``, ``}``, commas, the ``+``, ``-``, ``:`` and ``=`` symbols.
+  - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, commas, the ``+``, ``-``, ``:`` and ``=`` symbols.
     The parentheses are allowed to be followed by a number.
     Spaces are allowed anywhere except within chemical symbols.
     The order of elements and any groupings indicated by parentheses or brackets are chosen freely by the API implementation.
@@ -427,7 +429,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;
 
-    - **chemical\_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.
+    - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.
 
       - It MUST be one of the following:
 
@@ -446,10 +448,10 @@ class StructureResourceAttributes(EntryResourceAttributes):
       Note that concentrations are uncorrelated between different site (even of the same species).
 
     - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.
-    - **original\_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
+    - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
         Note: With regards to "source database", we refer to the immediate source being queried via the OPTiMaDe API implementation.
-	    The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).
+            The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).
 
   - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., :val:`"Ti"` for titanium, :val:`"O"` for oxygen, etc.)
     However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.
@@ -482,13 +484,13 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - Client implementations MUST check its presence (as its presence changes the interpretation of the structure).
   - If present, it MUST be a list of dictionaries, each of which represents an assembly and MUST have the following two keys:
 
-    - **sites\_in\_groups**: Index of the sites (0-based) that belong to each group for each assembly.
+    - **sites_in_groups**: Index of the sites (0-based) that belong to each group for each assembly.
 
       Example: :val:`[[1], [2]]`: two groups, one with the second site, one with the third.
 
       Example: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth.
 
-   - **group\_probabilities**: Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.
+   - **group_probabilities**: Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.
      It SHOULD sum to one.
      See below for examples of how to specify the probability of the occurrence of a vacancy.
      The possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_.
@@ -516,40 +518,40 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
       .. code:: jsonc
 
-	   {
-	     "cartesian_site_positions": [[0,0,0]],
-	     "species_at_sites": ["SiGe-vac"],
-	     "species": [
-		 {
-		   "name": "SiGe-vac",
-		   "chemical_symbols": ["Si", "Ge", "vacancy"],
-		   "concentration": [0.3, 0.5, 0.2]
-		 }
-	     ]
-	     // ...
-	   }
+           {
+             "cartesian_site_positions": [[0,0,0]],
+             "species_at_sites": ["SiGe-vac"],
+             "species": [
+                 {
+                   "name": "SiGe-vac",
+                   "chemical_symbols": ["Si", "Ge", "vacancy"],
+                   "concentration": [0.3, 0.5, 0.2]
+                 }
+             ]
+             // ...
+           }
 
 
     - Using multiple species and the assemblies:
 
       .. code:: jsonc
 
-	   {
-	     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
-	     "species_at_sites": ["Si", "Ge", "vac"],
-	     "species": {
-	       "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
-	       "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
-	       "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
-	     },
-	     "assemblies": [
-	       {
-		 "sites_in_groups": [ [0], [1], [2] ],
-		 "group_probabilities": [0.3, 0.5, 0.2]
-	       }
-	     ]
-	     // ...
-	   }
+           {
+             "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
+             "species_at_sites": ["Si", "Ge", "vac"],
+             "species": {
+               "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
+               "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
+               "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+             },
+             "assemblies": [
+               {
+                 "sites_in_groups": [ [0], [1], [2] ],
+                 "group_probabilities": [0.3, 0.5, 0.2]
+               }
+             ]
+             // ...
+           }
 
   - It is up to the database provider to decide which representation to use, typically depending on the internal format in which the structure is stored.
     However, given a structure identified by a unique ID, the API implementation MUST always provide the same representation for it.
@@ -558,22 +560,22 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     .. code:: jsonc
 
-	 {
-	   "assemblies": [
-	     {
-	       "sites_in_groups": [ [0], [1] ],
-	       "group_probabilities": [0.2, 0.8],
-	     },
-	     {
-	       "sites_in_groups": [ [2], [3] ],
-	       "group_probabilities": [0.3, 0.7]
-	     }
-	   ]
-	 }
+         {
+           "assemblies": [
+             {
+               "sites_in_groups": [ [0], [1] ],
+               "group_probabilities": [0.2, 0.8],
+             },
+             {
+               "sites_in_groups": [ [2], [3] ],
+               "group_probabilities": [0.3, 0.7]
+             }
+           ]
+         }
 
     Site 0 is present with a probability of 20 % and site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 % and site 3 with a probability of 70 %.
     These two sites are correlated (either site 2 or 3 is present).
-    However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2\*0.3 = 6 % probability; the pair (0, 3) with 0.2\*0.7 = 14 % probability; the pair (1, 2) with 0.8\*0.3 = 24 % probability; and the pair (1, 3) with 0.8\*0.7 = 56 % probability).""",
+    However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability).""",
     )
 
     structure_features: List[str] = Schema(
@@ -599,107 +601,124 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("elements", whole=False)
     def element_must_be_chemical_symbol(cls, v):
-        assert (
-            v in CHEMICAL_SYMBOLS
-        ), f"Only chemical symbols are allowed, you passed: {v}"
+        if not (v in CHEMICAL_SYMBOLS):
+            raise ValueError(f"Only chemical symbols are allowed, you passed: {v}")
         return v
 
     @validator("elements", whole=True)
     def elements_must_be_alphabetical(cls, v):
-        assert sorted(v) == v, f"elements must be sorted alphabetically, but is: {v}"
+        if not (sorted(v) == v):
+            raise ValueError(f"elements must be sorted alphabetically, but is: {v}")
         return v
 
     @validator("elements_ratios", whole=True)
     def ratios_must_sum_to_one(cls, v):
-        assert (
-            abs(sum(v) - 1) < EPS
-        ), f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
+        if abs(sum(v) - 1) > EPS:
+            raise ValueError(
+                f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
+            )
         return v
 
     @validator("chemical_formula_reduced", "chemical_formula_hill")
     def no_spaces_in_reduced(cls, v):
-        assert " " not in v, f"Spaces are not allowed, you passed: {v}"
+        if " " in v:
+            raise ValueError(f"Spaces are not allowed, you passed: {v}")
         return v
 
     @validator("dimension_types", whole=True)
     def must_be_of_length_three(cls, v):
-        assert len(v) == 3, f"MUST be of length 3, but is of length: {len(v)}"
+        if not len(v) == 3:
+            raise ValueError(f"MUST be of length 3, but is of length: {len(v)}")
         for dimension in v:
-            assert dimension in {0, 1}, f"MUST be either 0 or 1, you passed: {v}"
+            if not (dimension in {0, 1}):
+                raise ValueError(f"MUST be either 0 or 1, you passed: {v}")
         return v
 
     @validator("lattice_vectors", always=True, whole=True)
     def required_if_dimension_types_has_one(cls, v, values):
         if 1 in values.get("dimension_types") and v is None:
-            raise AssertionError(
+            raise ValueError(
                 f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values.get('dimension_types')}"
             )
-        assert_msg = f"MUST be a an 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
-        assert len(v) == 3, assert_msg
+        if len(v) != 3:
+            raise ValueError(
+                f"MUST be a an 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
+            )
         return v
 
     @validator("lattice_vectors", "cartesian_site_positions")
     def sites_must_have_length_three(cls, v):
-        assert len(v) == 3, f"MUST be a list of length 3. {v} has length {len(v)}."
+        if len(v) != 3:
+            raise ValueError(f"MUST be a list of length 3. {v} has length {len(v)}.")
         return v
 
     @validator("nsites")
     def validate_nsites(cls, v, values):
-        assert v == len(
-            values.get("cartesian_site_positions", [])
-        ), f"nsites (value: {v}) MUST equal length of cartesian_site_positions (value: {len(values.get('cartesian_site_positions', []))})"
+        if not (v == len(values.get("cartesian_site_positions", []))):
+            raise ValueError(
+                f"nsites (value: {v}) MUST equal length of cartesian_site_positions (value: {len(values.get('cartesian_site_positions', []))})"
+            )
         return v
 
     @validator("species_at_sites", whole=True)
     def validate_species_at_sites(cls, v, values):
-        assert len(v) == values.get(
-            "nsites", 0
-        ), f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 0)})"
+        if not (len(v) == values.get("nsites", 0)):
+            raise ValueError(
+                f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 0)})"
+            )
         return v
 
     @validator("species")
     def validate_species(cls, v, values):
-        assert v.name in values.get(
-            "species_at_sites", []
-        ), f"{v.name} not found in species_at_sites: {values.get('species_at_sites', [])}"
+        if not (v.name in values.get("species_at_sites", [])):
+            raise ValueError(
+                f"{v.name} not found in species_at_sites: {values.get('species_at_sites', [])}"
+            )
         return v
 
     @validator("structure_features", whole=True, always=True)
     def validate_structure_features(cls, v, values):
-        assert (
-            sorted(v) == v
-        ), f"structure_features MUST be sorted alphabetically, given value: {v}"
+        if not sorted(v) == v:
+            raise ValueError(
+                f"structure_features MUST be sorted alphabetically, given value: {v}"
+            )
         # disorder
         for species in values.get("species", []):
             if len(species.chemical_symbols) > 1:
-                assert (
-                    "disorder" in v
-                ), "disorder MUST be present when any one entry in species has a chemical_symbols list greater than one element"
+                if "disorder" not in v:
+                    raise ValueError(
+                        "disorder MUST be present when any one entry in species has a chemical_symbols list greater than one element"
+                    )
                 break
         else:
-            assert (
-                "disorder" not in v
-            ), "disorder MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
+            if "disorder" in v:
+                raise ValueError(
+                    "disorder MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
+                )
         # unknown_positions
         for site in values.get("cartesian_site_positions", []):
             if None in site or float("nan") in site:
-                assert (
-                    "unknown_positions" in v
-                ), "unknown_positions MUST be present when a single component of cartesian_site_positions has value null"
+                if "unknown_positions" not in v:
+                    raise ValueError(
+                        "unknown_positions MUST be present when a single component of cartesian_site_positions has value null"
+                    )
                 break
         else:
-            assert (
-                "unknown_positions" not in v
-            ), "unknown_positions MUST NOT be present, since there are no null values in cartesian_site_positions"
+            if "unknown_positions" in v:
+                raise ValueError(
+                    "unknown_positions MUST NOT be present, since there are no null values in cartesian_site_positions"
+                )
         # assemblies
         if values.get("assemblies", None) is not None:
-            assert (
-                "assemblies" in v
-            ), "assemblies MUST be present, since the property of the same name is present"
+            if "assemblies" not in v:
+                raise ValueError(
+                    "assemblies MUST be present, since the property of the same name is present"
+                )
         else:
-            assert (
-                "assemblies" not in v
-            ), "assemblies MUST NOT be present, since the property of the same name is not present"
+            if "assemblies" in v:
+                raise ValueError(
+                    "assemblies MUST NOT be present, since the property of the same name is not present"
+                )
 
         return v
 
