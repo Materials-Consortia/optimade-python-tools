@@ -22,3 +22,33 @@ script:
      # check whether generated schema matches the committed version
    - .ci/openapi_diff.sh
    - codecov --token=$CODECOV_TOKEN
+
+# Automatically deploy tags to PyPI
+jobs:
+  include:
+    - stage: deploy
+      # Make sure the tag is valid semver
+      if: "tag =~ ^v[0-9]+\\.[0-9]+\\.[0-9]+(a|b|rc)?[0-9]*$"
+      services: ignore
+      addons: skip
+      python: 3.7
+      before_install: skip
+      install: skip
+      before_script: skip
+      script: skip
+      env: ignore
+      before_deploy:
+        - echo "About to deploy $TRAVIS_TAG to PyPI"
+      after_deploy:
+        - echo "Deployed $TRAVIS_TAG to PyPI"
+      # See https://docs.travis-ci.com/user/deployment/pypi/
+      deploy: &pypi
+        provider: pypi
+        skip_existing: true
+        user: "__token__"
+        password:
+          secure: jydagLMQt10k0l/XlVqYznqnfRpXDsnrPIDzxREBMwnoCWBvx7a+X/pEg2wFWMD3uY3/Qhev8dr6+RBgX0t1N0si4TpBMFKGkilMebRbHkkbdgRA19NSQTdgj3jml+3K095i1LO8xR7bSfn/XHZ+oN02EDdhCGEDnCLMoG9AGKLX0w/8lNu4clQxHMQ2hSTeT9imJrD6kZDDTJwMS6twF6QLwE7YowfaPRlqIn6EYjQJjDYLE6Px95v9WBeCdNuL6Yr+ojO8uiQvmj1WdpnxVG1LBYtpx3R5cb2bbj/Q8WAYniXmJGeB0lnOMqtmbDire3kZcn40JfJMJ47bNY79APkQqTylxByv1NomeCf3h4UQ0Ylr3kaKufif+PCixl7yG1YUrnOeE2Rzvtr9YyN9uJ8solpVooOtKnwWQwCkS/pcyi8h2CyfdSBLDlWai7ShkQHRCf2YDqxctyPbqaSar6ezUwT1lKtaFNdPaNfl6Au/PVJMr0ANp3Bfl74EXzoajzc9SlJBbAg/CRTbGq+Mfa8hZUtMwkSJCGcrcqz18x6rlTek/p/fmic8fdVjLSiD4V75q2r6ZrHT7OvmHUxDJ4JA4GwuWFMLNC4813ydXaC+rk3h4MxRnskSVs1v5YcBnb/7DudVWQa6ZAAOesbjqRtj8RfMLWrxW8BvBUUwKyI=
+        on:
+          repo: Materials-Consortia/optimade-python-tools
+          branch: master
+          tags: true
