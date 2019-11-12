@@ -169,7 +169,7 @@ class ImplementationValidator:
 
     """
 
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
         self,
         client=None,
         base_url=None,
@@ -359,7 +359,7 @@ class ImplementationValidator:
         for single entry endpoint.
 
         """
-        if deserialized and len(deserialized.data) > 0:
+        if deserialized and deserialized.data:
             self.test_id_by_type[deserialized.data[0].type] = deserialized.data[0].id
             self._log.debug(
                 "Set type %s test ID to %s",

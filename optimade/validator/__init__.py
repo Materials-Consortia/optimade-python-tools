@@ -41,14 +41,14 @@ def validate():
         ),
     )
     parser.add_argument(
-        "--verbosity", "-v", type=int, default=0, help="The verbosity of the output"
+        "--verbosity", "-v", type=int, default=1, help="The verbosity of the output"
     )
     parser.add_argument(
         "--as_type",
         "-a",
         type=str,
         help=(
-            """ Validate the request URL with the provided type, rather than scanning the entire implementation e.g. optimade_validator `http://example.com/optimade/structures/0 --as_type structures`"""
+            """Validate the request URL with the provided type, rather than scanning the entire implementation e.g. optimade_validator `http://example.com/optimade/structures/0 --as_type structures`"""
         ),
     )
 
