@@ -1,3 +1,4 @@
+import json
 import urllib
 import traceback
 from pathlib import Path
@@ -17,6 +18,7 @@ from optimade.models import (
     ErrorSource,
     Error,
     StructureResource,
+    ReferenceResource,
     EntryInfoResource,
     BaseInfoResource,
     BaseInfoAttributes,
@@ -24,6 +26,8 @@ from optimade.models import (
     ResponseMetaQuery,
     StructureResponseMany,
     StructureResponseOne,
+    ReferenceResponseMany,
+    ReferenceResponseOne,
     InfoResponse,
     Provider,
     ErrorResponse,
@@ -54,24 +58,35 @@ else:
 
 client = MongoClient()
 structures = MongoCollection(
-    client[CONFIG.mongo_database][CONFIG.mongo_collection], StructureResource
+    client[CONFIG.mongo_database]["structures"], StructureResource
+)
+references = MongoCollection(
+    client[CONFIG.mongo_database]["references"], ReferenceResource
 )
 
-test_structures_path = (
-    Path(__file__).resolve().parent.joinpath("tests/test_structures.json")
-)
-if not CONFIG.use_real_mongo and test_structures_path.exists():
-    import json
+test_paths = {
+    "structures": Path(__file__)
+    .resolve()
+    .parent.joinpath("tests/test_structures.json"),
+    "references": Path(__file__)
+    .resolve()
+    .parent.joinpath("tests/test_references.json"),
+}
+if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
     import bson.json_util
 
-    print("loading test structures...")
-    with open(test_structures_path) as f:
-        data = json.load(f)
-        print("inserting test structures into collection...")
-        structures.collection.insert_many(
-            bson.json_util.loads(bson.json_util.dumps(data))
-        )
-    print("done inserting test structures...")
+    def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
+        print(f"loading test {endpoint_name}...")
+        with open(test_paths[endpoint_name]) as f:
+            data = json.load(f)
+            print(f"inserting test {endpoint_name} into collection...")
+            endpoint_collection.collection.insert_many(
+                bson.json_util.loads(bson.json_util.dumps(data))
+            )
+        print(f"done inserting test {endpoint_name}...")
+
+    load_entries("structures", structures)
+    load_entries("references", references)
 
 
 def meta_values(
@@ -88,11 +103,11 @@ def meta_values(
         data_returned=data_returned,
         more_data_available=more_data_available,
         provider=Provider(
-            name="test",
-            description="A test database provider",
-            prefix="exmpl",
-            homepage=None,
-            index_base_url=None,
+            name="Example provider",
+            description="Provider used for examples, not to be assigned to a real database",
+            prefix=CONFIG.provider[1:-1],  # Remove surrounding `_`
+            homepage="http://example.com",
+            index_base_url="http://example.com/optimade/index",
         ),
         data_available=data_available,
         **kwargs,
@@ -232,6 +247,66 @@ def get_single_structure(
 ):
     params.filter = f"id={entry_id}"
     results, more_data_available, data_available, fields = structures.find(params)
+    if more_data_available:
+        raise StarletteHTTPException(
+            status_code=500,
+            detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
+        )
+    links = ToplevelLinks(next=None)
+    if fields and results is not None:
+        results = handle_response_fields(results, fields)[0]
+
+    data_returned = 1 if results else 0
+
+    return StructureResponseOne(
+        links=links,
+        data=results,
+        meta=meta_values(
+            str(request.url), data_returned, data_available, more_data_available
+        ),
+    )
+
+
+@app.get(
+    "/references",
+    response_model=Union[ReferenceResponseMany, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Reference"],
+)
+def get_references(request: Request, params: EntryListingQueryParams = Depends()):
+    results, more_data_available, data_available, fields = references.find(params)
+    parse_result = urllib.parse.urlparse(str(request.url))
+    if more_data_available:
+        query = urllib.parse.parse_qs(parse_result.query)
+        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
+        urlencoded = urllib.parse.urlencode(query, doseq=True)
+        links = ToplevelLinks(
+            next=f"{parse_result.scheme}://{parse_result.netloc}{parse_result.path}?{urlencoded}"
+        )
+    else:
+        links = ToplevelLinks(next=None)
+    if fields:
+        results = handle_response_fields(results, fields)
+    return StructureResponseMany(
+        links=links,
+        data=results,
+        meta=meta_values(
+            str(request.url), len(results), data_available, more_data_available
+        ),
+    )
+
+
+@app.get(
+    "/references/{entry_id:path}",
+    response_model=Union[ReferenceResponseOne, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Reference"],
+)
+def get_single_reference(
+    request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
+):
+    params.filter = f"id={entry_id}"
+    results, more_data_available, data_available, fields = references.find(params)
     if more_data_available:
         raise StarletteHTTPException(
             status_code=500,

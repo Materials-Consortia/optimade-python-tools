@@ -34,7 +34,6 @@ class ServerConfig(Config):
 
     use_real_mongo = False
     mongo_database = "optimade"
-    mongo_collection = "structures"
     provider = "_exmpl_"
     page_limit = 500
     provider_fields = set()
@@ -55,9 +54,6 @@ class ServerConfig(Config):
         self.mongo_database = config.get(
             "DEFAULT", "MONGO_DATABASE", fallback=self.mongo_database
         )
-        self.mongo_collection = config.get(
-            "DEFAULT", "MONGO_COLLECTION", fallback=self.mongo_collection
-        )
         self.provider = config.get("DEFAULT", "PROVIDER", fallback=self.provider)
 
         self.provider_fields = {
@@ -73,7 +69,6 @@ class ServerConfig(Config):
         self.use_real_mongo = bool(config.get("use_real_mongo", self.use_real_mongo))
         self.page_limit = int(config.get("page_limit", self.page_limit))
         self.mongo_database = config.get("mongo_database", self.mongo_database)
-        self.mongo_collection = config.get("mongo_collection", self.mongo_collection)
         self.provider = config.get("provider", self.provider)
         self.provider_fields = set(config.get("provider_fields", self.provider_fields))
 

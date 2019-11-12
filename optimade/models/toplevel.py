@@ -9,6 +9,7 @@ from .baseinfo import BaseInfoResource
 from .entries import EntryInfoResource
 from .optimade_json import Error, Success, Failure, Warnings
 from .structures import StructureResource
+from .references import ReferenceResource
 
 
 __all__ = (
@@ -17,11 +18,13 @@ __all__ = (
     "ImplementationMaintainer",
     "Implementation",
     "ResponseMeta",
-    "StructureResponseOne",
-    "StructureResponseMany",
     "ErrorResponse",
     "EntryInfoResponse",
     "InfoResponse",
+    "StructureResponseOne",
+    "StructureResponseMany",
+    "ReferenceResponseOne",
+    "ReferenceResponseMany",
 )
 
 
@@ -162,16 +165,6 @@ class ResponseMeta(Meta):
     )
 
 
-class StructureResponseOne(Success):
-    meta: ResponseMeta = Schema(...)
-    data: Union[StructureResource, Dict[str, Any], None] = Schema(...)
-
-
-class StructureResponseMany(Success):
-    meta: ResponseMeta = Schema(...)
-    data: Union[List[StructureResource], List[Dict[str, Any]]] = Schema(...)
-
-
 class ErrorResponse(Failure):
     meta: Optional[ResponseMeta] = Schema(...)
     errors: List[Error] = Schema(...)
@@ -185,3 +178,23 @@ class EntryInfoResponse(Success):
 class InfoResponse(Success):
     meta: Optional[ResponseMeta] = Schema(...)
     data: BaseInfoResource = Schema(...)
+
+
+class StructureResponseOne(Success):
+    meta: ResponseMeta = Schema(...)
+    data: Union[StructureResource, Dict[str, Any], None] = Schema(...)
+
+
+class StructureResponseMany(Success):
+    meta: ResponseMeta = Schema(...)
+    data: Union[List[StructureResource], List[Dict[str, Any]]] = Schema(...)
+
+
+class ReferenceResponseOne(Success):
+    meta: ResponseMeta = Schema(...)
+    data: Union[ReferenceResource, None] = Schema(...)
+
+
+class ReferenceResponseMany(Success):
+    meta: ResponseMeta = Schema(...)
+    data: List[ReferenceResource] = Schema(...)

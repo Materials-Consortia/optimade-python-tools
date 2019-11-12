@@ -1,0 +1,21 @@
+[
+  {
+    "_id": {
+      "$oid": "Dijkstra1968"
+    },
+    "last_modified": {
+      "$date": "2019-11-12T14:24:37.331Z"
+    },
+    "authors": [
+      {
+        "name": "Edsger W. Dijkstra",
+        "firstname": "Edsger",
+        "lastname": "Dijkstra"
+      }
+    ],
+    "year": "1968",
+    "title": "Go To Statement Considered Harmful",
+    "journal": "Communications of the ACM",
+    "doi": "10.1145/362929.362947"
+  }
+]
