@@ -6,7 +6,7 @@ import pymongo.collection
 from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
-from optimade.filtertransformers.mongo import MongoTransformer
+from optimade.filtertransformers.mongo import NewMongoTransformer
 from optimade.models import NonnegativeInt, EntryResource
 
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
@@ -71,14 +71,14 @@ class MongoCollection(EntryCollection):
         resource_cls: EntryResource,
     ):
         super().__init__(collection, resource_cls)
-        self.transformer = MongoTransformer()
+        self.transformer = NewMongoTransformer()
 
         self.provider = CONFIG.provider
         self.provider_fields = CONFIG.provider_fields
         self.page_limit = CONFIG.page_limit
         self.parser = LarkParser(
-            version=(0, 9, 7)
-        )  # The MongoTransformer only supports v0.9.7 as the latest grammar
+            version=(0, 10, 0)
+        )  # The NewMongoTransformer only supports v0.10.0 as the latest grammar
 
     def __len__(self):
         return self.collection.estimated_document_count()
