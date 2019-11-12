@@ -126,32 +126,14 @@ class NewMongoTransformer(Transformer):
         raise NotImplementedError
 
     def expression(self, arg):
-        # expression: expression_clause [ OR expression ]
-        if len(arg) == 1:
-            # expression_clause without 'OR'
-            return arg[0]
-        else:
-            # combining multiple 'and's together
-            if isinstance(arg[2], dict) and '$or' in arg[2]:
-                # TODO: it has to be tested very carefully
-                return {'$or': [arg[0], *arg[2]['$or']]}
-
-            # expression_clause with 'OR'
-            return {'$or': [arg[0], arg[2]]}
+        # expression: expression_clause ( OR expression_clause )
+        # expression with and without 'OR'
+        return {'$or': arg} if len(arg) > 1 else arg[0]
 
     def expression_clause(self, arg):
-        # expression_clause: expression_phrase [ AND expression_clause ]
-        if len(arg) == 1:
-            # expression_phrase without 'AND'
-            return arg[0]
-        else:
-            # combining multiple 'and's together
-            if isinstance(arg[2], dict) and '$and' in arg[2]:
-                # TODO: it has to be tested very carefully
-                return {'$and': [arg[0], *arg[2]['$and']]}
-
-            # expression_phrase with 'AND'
-            return {'$and': [arg[0], arg[2]]}
+        # expression_clause: expression_phrase ( AND expression_phrase )*
+        # expression_clause with and without 'AND'
+        return {'$and': arg} if len(arg) > 1 else arg[0]
 
     def expression_phrase(self, arg):
         # expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression ")" )
@@ -275,6 +257,8 @@ if __name__ == '__main__':  # pragma: no cover
     # f = '((a >= 0) AND (NOT (b < c))) OR (c = 0)'
     # f = 'nelements > 3'
     f = ' 3 < nelements'
+    f = 'id=mpf_1 AND attributes.elements_ratios>0.5'
+    f = 'attributes.elements_ratios IS KNOWN'
 
     print(f)
     print(p.parse(f))

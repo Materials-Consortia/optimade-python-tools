@@ -15,8 +15,8 @@ value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
 value_zip_list: value_zip ( "," value_zip )*
 
 // Expressions
-expression: expression_clause [ OR expression ]
-expression_clause: expression_phrase [ AND expression_clause ]
+expression: expression_clause ( _OR expression_clause )*
+expression_clause: expression_phrase ( _AND expression_phrase )*
 expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression ")" )
 // Note: support for constant_first_comparison is OPTIONAL
 comparison: constant_first_comparison | property_first_comparison
@@ -48,9 +48,9 @@ number: SIGNED_INT | SIGNED_FLOAT
 // Tokens
 
 // Boolean relations
-AND: "AND"
+_AND: "AND"
+_OR: "OR"
 NOT: "NOT"
-OR: "OR"
 
 IS: "IS"
 KNOWN: "KNOWN"
