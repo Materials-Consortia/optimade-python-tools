@@ -15,22 +15,28 @@ from pydantic import ValidationError
 from optimade.models import InfoResponse, EntryInfoResponse
 
 from .validator_model_patches import (
-    ValidatorStructureResponseOne,
-    ValidatorStructureResponseMany,
     ValidatorEntryResponseOne,
     ValidatorEntryResponseMany,
+    ValidatorReferenceResponseOne,
+    ValidatorReferenceResponseMany,
+    ValidatorStructureResponseOne,
+    ValidatorStructureResponseMany,
 )
 
 
 BASE_INFO_ENDPOINT = "info"
-REQUIRED_ENTRY_ENDPOINTS = ["structures"]
+REQUIRED_ENTRY_ENDPOINTS = ["structures", "references"]
 
 RESPONSE_CLASSES = {
+    "references": ValidatorReferenceResponseMany,
+    "references/": ValidatorReferenceResponseOne,
     "structures": ValidatorStructureResponseMany,
     "structures/": ValidatorStructureResponseOne,
     "info": InfoResponse,
-    "info/structures": EntryInfoResponse,
 }
+RESPONSE_CLASSES.update(
+    {f"info/{entry}": EntryInfoResponse for entry in REQUIRED_ENTRY_ENDPOINTS}
+)
 
 
 def print_warning(string):
@@ -189,8 +195,8 @@ class ImplementationValidator:
 
         if as_type is None:
             self.as_type_cls = None
-        elif as_type == "structure":
-            self.as_type_cls = RESPONSE_CLASSES["structures/"]
+        elif as_type in ("structure", "reference"):
+            self.as_type_cls = RESPONSE_CLASSES[f"{as_type}s/"]
         else:
             self.as_type_cls = RESPONSE_CLASSES[as_type]
 

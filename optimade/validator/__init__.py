@@ -54,7 +54,15 @@ def validate():
 
     args = vars(parser.parse_args())
 
-    valid_types = ["info", "info/structures", "structures", "structure"]
+    valid_types = [
+        "info",
+        "info/references",
+        "info/structures",
+        "references",
+        "reference",
+        "structures",
+        "structure",
+    ]
     if args["as_type"] is not None and args["as_type"] not in valid_types:
         sys.exit("{args['as_type']} is not a valid type, must be one of {valid_types}")
 

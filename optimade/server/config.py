@@ -1,4 +1,5 @@
 import json
+from typing import Dict, Set
 from configparser import ConfigParser
 from pathlib import Path
 
@@ -34,9 +35,15 @@ class ServerConfig(Config):
 
     use_real_mongo = False
     mongo_database = "optimade"
-    provider = "_exmpl_"
+    provider = {
+        "prefix": "_exmpl_",
+        "name": "Example provider",
+        "description": "Provider used for examples, not to be assigned to a real database",
+        "homepage": "http://example.com",
+        "index_base_url": "http://example.com/optimade/index",
+    }
     page_limit = 500
-    provider_fields = set()
+    provider_fields: Dict[str, Set] = {}
     _path = Path(__file__).resolve().parent
 
     def load_from_ini(self):
@@ -54,11 +61,14 @@ class ServerConfig(Config):
         self.mongo_database = config.get(
             "DEFAULT", "MONGO_DATABASE", fallback=self.mongo_database
         )
-        self.provider = config.get("DEFAULT", "PROVIDER", fallback=self.provider)
+        if "PROVIDER" in config.sections():
+            self.provider = dict(config["PROVIDER"])
 
-        self.provider_fields = {
-            field for field, _ in config["STRUCTURE"].items() if _ == ""
-        }
+        self.provider_fields = {}
+        for endpoint in {"structures", "references"}:
+            self.provider_fields[endpoint] = {
+                field for field, _ in config[endpoint].items() if _ == ""
+            }
 
     def load_from_json(self):
         """ Load from the file "config.json", if it exists. """

@@ -1,8 +1,9 @@
 [
   {
     "_id": {
-      "$oid": "Dijkstra1968"
+      "$oid": "5cfb441f053b174410701bec"
     },
+    "task_id": "Dijkstra1968",
     "last_modified": {
       "$date": "2019-11-12T14:24:37.331Z"
     },

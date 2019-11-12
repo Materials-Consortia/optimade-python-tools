@@ -1,6 +1,8 @@
 from pydantic import Schema, BaseModel, UrlStr, validator
 from typing import List, Optional
 
+from .entries import EntryResource, EntryResourceAttributes
+
 
 __all__ = ("Person", "ReferenceResourceAttributes", "ReferenceResource")
 
@@ -11,7 +13,7 @@ class Person(BaseModel):
     lastname: Optional[str] = Schema(..., description="""Last name of the person.""")
 
 
-class ReferenceResourceAttributes(BaseModel):
+class ReferenceResourceAttributes(EntryResourceAttributes):
     """ Model that stores the attributes of a reference. Many properties match the
     meaning described in the
     [BibTeX specification](http://bibtexml.sourceforge.net/btxdoc.pdf).
@@ -101,7 +103,7 @@ class ReferenceResourceAttributes(BaseModel):
     )
 
 
-class ReferenceResource(BaseModel):
+class ReferenceResource(EntryResource):
     """ The :entry:`references` entries describe bibliographic references.
 The following properties are used to provide the bibliographic details:
 
@@ -122,7 +124,20 @@ The following properties are used to provide the bibliographic details:
   - **Query**: Support for queries on any of these properties is OPTIONAL.
     If supported, filters MAY support only a subset of comparison operators. """
 
-    type: str = Schema(default="references", const=True)
+    type: str = Schema(
+        default="references",
+        const=True,
+        description="""The name of the type of an entry. Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.
+- **Type**: string.
+- **Requirements/Conventions**:
+
+  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Query**: Support for queries on this property is OPTIONAL.
+    If supported, only a subset of string comparison operators MAY be supported.
+
+- **Requirements/Conventions**: MUST be an existing entry type.
+- **Example**: :val:`"structures"`""",
+    )
     attributes: ReferenceResourceAttributes
 
     @validator("attributes")

@@ -9,17 +9,19 @@ from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import NonnegativeInt, EntryResource
 
-from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .config import CONFIG
-
-from .mappers import StructureMapper
+from .deps import EntryListingQueryParams, SingleEntryQueryParams
+from .mappers import ResourceMapper
 
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
-    def __init__(self, collection, resource_cls: EntryResource):
+    def __init__(
+        self, collection, resource_cls: EntryResource, resource_mapper: ResourceMapper
+    ):
         self.collection = collection
         self.parser = LarkParser()
         self.resource_cls = resource_cls
+        self.resource_mapper = resource_mapper
 
     def __len__(self):
         return self.collection.count()
@@ -69,12 +71,13 @@ class MongoCollection(EntryCollection):
             pymongo.collection.Collection, mongomock.collection.Collection
         ],
         resource_cls: EntryResource,
+        resource_mapper: ResourceMapper,
     ):
-        super().__init__(collection, resource_cls)
+        super().__init__(collection, resource_cls, resource_mapper)
         self.transformer = MongoTransformer()
 
-        self.provider = CONFIG.provider
-        self.provider_fields = CONFIG.provider_fields
+        self.provider = CONFIG.provider["prefix"]
+        self.provider_fields = CONFIG.provider_fields[resource_mapper.ENDPOINT]
         self.page_limit = CONFIG.page_limit
         self.parser = LarkParser(
             version=(0, 9, 7)
@@ -118,7 +121,7 @@ class MongoCollection(EntryCollection):
             fields = all_fields.copy()
         results = []
         for doc in self.collection.find(**criteria):
-            results.append(self.resource_cls(**StructureMapper.map_back(doc)))
+            results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
 
         if isinstance(params, SingleEntryQueryParams):
             results = results[0] if results else None
@@ -131,7 +134,7 @@ class MongoCollection(EntryCollection):
             new_value = value
             if isinstance(value, dict):
                 new_value = self._alias_filter(value)
-            res[StructureMapper.alias_for(key)] = new_value
+            res[self.resource_mapper.alias_for(key)] = new_value
         return res
 
     def _parse_params(
@@ -172,7 +175,9 @@ class MongoCollection(EntryCollection):
         # All provider-specific fields
         fields |= {self.provider + _ for _ in self.provider_fields}
         cursor_kwargs["fields"] = fields
-        cursor_kwargs["projection"] = [StructureMapper.alias_for(f) for f in fields]
+        cursor_kwargs["projection"] = [
+            self.resource_mapper.alias_for(f) for f in fields
+        ]
 
         if getattr(params, "sort", False):
             sort_spec = []
