@@ -1,4 +1,3 @@
-import json
 import urllib
 import traceback
 
@@ -52,12 +51,6 @@ def meta_values(
         data_available=data_available,
         **kwargs,
     )
-
-
-def update_schema(app):
-    """Update OpenAPI schema in file 'local_openapi.json'"""
-    with open("local_openapi.json", "w") as f:
-        json.dump(app.openapi(), f, indent=2)
 
 
 def general_exception(

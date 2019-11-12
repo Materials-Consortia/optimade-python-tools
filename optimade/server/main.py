@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from typing import Union
 
@@ -57,7 +58,6 @@ test_paths = {
     .parent.joinpath("tests/test_references.json"),
 }
 if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
-    import json
     import bson.json_util
 
     def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
@@ -208,6 +208,12 @@ def get_entry_info(request: Request, entry: str):
     )
 
 
+def update_schema(app):
+    """Update OpenAPI schema in file 'local_openapi.json'"""
+    with open("local_openapi.json", "w") as f:
+        json.dump(app.openapi(), f, indent=2)
+
+
 @app.on_event("startup")
 async def startup_event():
-    u.update_schema(app)
+    update_schema(app)
