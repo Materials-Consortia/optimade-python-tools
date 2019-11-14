@@ -44,9 +44,12 @@ class ParserTestV0_10_0(unittest.TestCase):
     version = (0, 10, 0)
     variant = "default"
 
-    def setUp(self):
-        self.parser = LarkParser(version=self.version, variant=self.variant)
-        self.parse = lambda inp: self.parser.parse(inp)
+    @classmethod
+    def setUpClass(cls):
+        cls.parser = LarkParser(version=cls.version, variant=cls.variant)
+
+    def parse(self, inp):
+        return self.parser.parse(inp)
 
     def test_empty(self):
         self.assertIsInstance(self.parse(" "), Tree)
