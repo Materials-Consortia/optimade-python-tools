@@ -114,7 +114,10 @@ def handle_response_fields(
 
 
 def get_entries(
-    collection: EntryCollection, request: Request, params: EntryListingQueryParams
+    collection: EntryCollection,
+    response: EntryResponseMany,
+    request: Request,
+    params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
     results, more_data_available, data_available, fields = collection.find(params)
@@ -133,7 +136,7 @@ def get_entries(
     if fields:
         results = handle_response_fields(results, fields)
 
-    return EntryResponseMany(
+    return response(
         links=links,
         data=results,
         meta=meta_values(
@@ -145,6 +148,7 @@ def get_entries(
 def get_single_entry(
     collection: EntryCollection,
     entry_id: str,
+    response: EntryResponseOne,
     request: Request,
     params: SingleEntryQueryParams,
 ) -> EntryResponseOne:
@@ -164,7 +168,7 @@ def get_single_entry(
 
     data_returned = 1 if results else 0
 
-    return EntryResponseOne(
+    return response(
         links=links,
         data=results,
         meta=meta_values(

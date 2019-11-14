@@ -11,11 +11,13 @@ from starlette.requests import Request
 from optimade.models import (
     StructureResource,
     ReferenceResource,
-    EntryResponseMany,
-    EntryResponseOne,
     InfoResponse,
     ErrorResponse,
     EntryInfoResponse,
+    ReferenceResponseMany,
+    ReferenceResponseOne,
+    StructureResponseMany,
+    StructureResponseOne,
 )
 
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
@@ -109,46 +111,50 @@ def general_exception_handler(request: Request, exc: Exception):
 
 @app.get(
     "/structures",
-    response_model=Union[EntryResponseMany, ErrorResponse],
+    response_model=Union[StructureResponseMany, ErrorResponse],
     response_model_skip_defaults=True,
     tags=["Structure"],
 )
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
-    return u.get_entries(structures, request, params)
+    return u.get_entries(structures, StructureResponseMany, request, params)
 
 
 @app.get(
     "/structures/{entry_id:path}",
-    response_model=Union[EntryResponseOne, ErrorResponse],
+    response_model=Union[StructureResponseOne, ErrorResponse],
     response_model_skip_defaults=True,
     tags=["Structure"],
 )
 def get_single_structure(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
 ):
-    return u.get_single_entry(structures, entry_id, request, params)
+    return u.get_single_entry(
+        structures, entry_id, StructureResponseOne, request, params
+    )
 
 
 @app.get(
     "/references",
-    response_model=Union[EntryResponseMany, ErrorResponse],
+    response_model=Union[ReferenceResponseMany, ErrorResponse],
     response_model_skip_defaults=True,
     tags=["Reference"],
 )
 def get_references(request: Request, params: EntryListingQueryParams = Depends()):
-    return u.get_entries(references, request, params)
+    return u.get_entries(references, ReferenceResponseMany, request, params)
 
 
 @app.get(
     "/references/{entry_id:path}",
-    response_model=Union[EntryResponseOne, ErrorResponse],
+    response_model=Union[ReferenceResponseOne, ErrorResponse],
     response_model_skip_defaults=True,
     tags=["Reference"],
 )
 def get_single_reference(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
 ):
-    return u.get_single_entry(references, entry_id, request, params)
+    return u.get_single_entry(
+        references, entry_id, ReferenceResponseOne, request, params
+    )
 
 
 @app.get(
