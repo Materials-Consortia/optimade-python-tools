@@ -92,8 +92,9 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     title: Optional[str] = Schema(
         ..., description="Meaning of property matches the BiBTeX specification."
     )
-    type: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    bib_type: Optional[str] = Schema(
+        ...,
+        description="Type of the reference, corresponding to the **type** property in the BiBTeX specification.",
     )
     volume: Optional[str] = Schema(
         ..., description="Meaning of property matches the BiBTeX specification."
