@@ -40,7 +40,7 @@ class ParserTestV0_9_5(unittest.TestCase):
         self.assertIsNotNone(repr(self.parser))
 
 
-class ParserTestNew(unittest.TestCase):
+class ParserTestV0_10_0(unittest.TestCase):
     version = (0, 10, 0)
     variant = 'default'
 
