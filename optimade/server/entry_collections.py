@@ -77,7 +77,7 @@ class MongoCollection(EntryCollection):
         self.provider_fields = CONFIG.provider_fields
         self.page_limit = CONFIG.page_limit
         self.parser = LarkParser(
-            version=(0, 10, 0)
+            version=(0, 10, 0), variant="default"
         )  # The NewMongoTransformer only supports v0.10.0 as the latest grammar
 
     def __len__(self):
