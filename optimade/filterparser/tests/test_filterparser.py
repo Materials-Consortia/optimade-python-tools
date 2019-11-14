@@ -9,7 +9,7 @@ from optimade.filterparser import LarkParser, ParserError
 testfile_dir = os.path.join(os.path.dirname(__file__), "testfiles")
 
 
-class ParserTest(unittest.TestCase):
+class ParserTestV0_9_5(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_filters = []
