@@ -89,8 +89,22 @@ class MongoTransformer(Transformer):
 
 
 class NewMongoTransformer(Transformer):
-    operator_map = {"<": "$lt", "<=": "$lte", ">": "$gt", ">=": "$gte", "!=": "$ne", "=": "$eq"}
-    reversed_operator_map = {"$lt": "$gt", "$lte": "$gte", "$gt": "$lt", "$gte": "$lte", "$ne": "$ne", "$eq": "$eq"}
+    operator_map = {
+        "<": "$lt",
+        "<=": "$lte",
+        ">": "$gt",
+        ">=": "$gte",
+        "!=": "$ne",
+        "=": "$eq",
+    }
+    reversed_operator_map = {
+        "$lt": "$gt",
+        "$lte": "$gte",
+        "$gt": "$lt",
+        "$gte": "$lte",
+        "$ne": "$ne",
+        "$eq": "$eq",
+    }
 
     def __init__(self):
         super().__init__()
@@ -128,12 +142,12 @@ class NewMongoTransformer(Transformer):
     def expression(self, arg):
         # expression: expression_clause ( OR expression_clause )
         # expression with and without 'OR'
-        return {'$or': arg} if len(arg) > 1 else arg[0]
+        return {"$or": arg} if len(arg) > 1 else arg[0]
 
     def expression_clause(self, arg):
         # expression_clause: expression_phrase ( AND expression_phrase )*
         # expression_clause with and without 'AND'
-        return {'$and': arg} if len(arg) > 1 else arg[0]
+        return {"$and": arg} if len(arg) > 1 else arg[0]
 
     def expression_phrase(self, arg):
         # expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression ")" )
@@ -143,7 +157,7 @@ class NewMongoTransformer(Transformer):
         else:
             # with NOT
             # TODO: This implementation probably fails in the case of `predicate_comparison` or `"(" expression ")"`
-            return {prop: {'$not': expr} for prop, expr in arg[1].items()}
+            return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
     @v_args(inline=True)
     def comparison(self, value):
@@ -159,7 +173,10 @@ class NewMongoTransformer(Transformer):
     def constant_first_comparison(self, arg):
         # constant_first_comparison: constant value_op_rhs
         # TODO: Probably the value_op_rhs rule is not the best for implementing this.
-        return {prop: {self.reversed_operator_map[oper]: arg[0]} for oper, prop in arg[1].items()}
+        return {
+            prop: {self.reversed_operator_map[oper]: arg[0]}
+            for oper, prop in arg[1].items()
+        }
 
     def predicate_comparison(self, arg):
         # predicate_comparison: length_comparison
@@ -172,10 +189,10 @@ class NewMongoTransformer(Transformer):
 
     def known_op_rhs(self, arg):
         # known_op_rhs: IS ( KNOWN | UNKNOWN )
-        if arg[1] == 'KNOWN':
-            return {'$exists': True}
-        elif arg[1] == 'UNKNOWN':
-            return {'$exists': False}
+        if arg[1] == "KNOWN":
+            return {"$exists": True}
+        elif arg[1] == "UNKNOWN":
+            return {"$exists": False}
 
     def fuzzy_string_op_rhs(self, arg):
         # fuzzy_string_op_rhs: CONTAINS string | STARTS [ WITH ] string | ENDS [ WITH ] string
@@ -186,25 +203,25 @@ class NewMongoTransformer(Transformer):
         else:
             pattern = arg[1]
 
-        if arg[0] == 'CONTAINS':
-            return {'$regex': f'{pattern}'}
-        elif arg[0] == 'STARTS':
-            return {'$regex': f'^{pattern}'}
-        elif arg[0] == 'ENDS':
-            return {'$regex': f'{pattern}$'}
+        if arg[0] == "CONTAINS":
+            return {"$regex": f"{pattern}"}
+        elif arg[0] == "STARTS":
+            return {"$regex": f"^{pattern}"}
+        elif arg[0] == "ENDS":
+            return {"$regex": f"{pattern}$"}
 
     def set_op_rhs(self, arg):
         # set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )
 
         if len(arg) == 2:
             # only value without OPERATOR
-            return {'$in': arg[1]}
+            return {"$in": arg[1]}
         else:
-            if arg[1] == 'ALL':
+            if arg[1] == "ALL":
                 raise NotImplementedError
-            elif arg[1] == 'ANY':
+            elif arg[1] == "ANY":
                 raise NotImplementedError
-            elif arg[1] == 'ONLY':
+            elif arg[1] == "ONLY":
                 raise NotImplementedError
             else:
                 # value with OPERATOR
@@ -225,7 +242,7 @@ class NewMongoTransformer(Transformer):
 
     def property(self, arg):
         # property: IDENTIFIER ( "." IDENTIFIER )*
-        return '.'.join(arg)
+        return ".".join(arg)
 
     @v_args(inline=True)
     def string(self, string):
@@ -235,31 +252,10 @@ class NewMongoTransformer(Transformer):
     def number(self, arg):
         # number: SIGNED_INT | SIGNED_FLOAT
         token = arg[0]
-        if token.type == 'SIGNED_INT':
+        if token.type == "SIGNED_INT":
             return int(token)
-        elif token.type == 'SIGNED_FLOAT':
+        elif token.type == "SIGNED_FLOAT":
             return float(token)
 
     def __default__(self, data, children, meta):
         raise NotImplementedError
-
-
-if __name__ == '__main__':  # pragma: no cover
-    from optimade.filterparser import LarkParser
-
-    p = LarkParser(version=(0, 10, 0))
-    t = NewMongoTransformer()
-
-    # f = 'a IS KNOWN AND a.a STARTS WITH "asdfsd" OR a < a AND NOT 8 >= b'
-    # f = 'NOT a > b OR c = 100 AND f = "C2 H6"'
-    # f = '(NOT (a > b)) OR ( (c = 100) AND (f = "C2 H6") )'
-    # f = 'a >= 0 AND NOT b < c OR c = 0'
-    # f = '((a >= 0) AND (NOT (b < c))) OR (c = 0)'
-    # f = 'nelements > 3'
-    f = ' 3 < nelements'
-    f = 'id=mpf_1 AND attributes.elements_ratios>0.5'
-    f = 'attributes.elements_ratios IS KNOWN'
-
-    print(f)
-    print(p.parse(f))
-    print(t.transform(p.parse(f)))

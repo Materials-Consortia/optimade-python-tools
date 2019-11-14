@@ -9,10 +9,10 @@ class ParserError(Exception):
 
 def get_versions():
     dct = defaultdict(dict)
-    for filename in Path(__file__).parent.joinpath('../grammar').glob('*.lark'):
-        tags = filename.stem.lstrip('v').split('.')
+    for filename in Path(__file__).parent.joinpath("../grammar").glob("*.lark"):
+        tags = filename.stem.lstrip("v").split(".")
         version = tuple(map(int, tags[:3]))
-        variant = 'default' if len(tags) == 3 else tags[-1]
+        variant = "default" if len(tags) == 3 else tags[-1]
         dct[version][variant] = filename
     return dct
 
@@ -21,7 +21,7 @@ available_parsers = get_versions()
 
 
 class LarkParser:
-    def __init__(self, version=None, variant='default'):
+    def __init__(self, version=None, variant="default"):
 
         version = version if version else max(available_parsers.keys())
 
@@ -53,7 +53,3 @@ class LarkParser:
             return self.tree.pretty()
         else:
             return repr(self.lark)
-
-
-if __name__ == '__main__':
-    print(available_parsers)

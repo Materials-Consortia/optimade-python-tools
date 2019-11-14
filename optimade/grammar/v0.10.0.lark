@@ -22,16 +22,27 @@ expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression 
 comparison: constant_first_comparison | property_first_comparison
 
 // Note: support for set_zip_op_rhs in comparison is OPTIONAL
-property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs | set_zip_op_rhs )
+property_first_comparison: property ( value_op_rhs
+                                    | known_op_rhs
+                                    | fuzzy_string_op_rhs
+                                    | set_op_rhs
+                                    | set_zip_op_rhs )
 
 constant_first_comparison: constant value_op_rhs
 predicate_comparison: length_comparison
 value_op_rhs: OPERATOR value
 known_op_rhs: IS ( KNOWN | UNKNOWN )
-fuzzy_string_op_rhs: CONTAINS string | STARTS [ WITH ] string | ENDS [ WITH ] string
+fuzzy_string_op_rhs: CONTAINS string
+                   | STARTS [ WITH ] string
+                   | ENDS [ WITH ] string
 // Note: support for ONLY in set_op_rhs is OPTIONAL
 // Note: support for [ OPERATOR ] in set_op_rhs is OPTIONAL
-set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )
+// set_op_rhs: HAS [ ALL | ANY | ONLY] value_list
+set_op_rhs: HAS ( [ OPERATOR ] value
+                 | ALL value_list
+                 | ANY value_list
+                 | ONLY value_list )
+
 set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list | ANY value_zip_list )
 length_comparison: LENGTH property OPERATOR value
 property_zip_addon: ":" property (":" property)*
@@ -48,24 +59,24 @@ number: SIGNED_INT | SIGNED_FLOAT
 // Tokens
 
 // Boolean relations
-_AND: "AND"
-_OR: "OR"
-NOT: "NOT"
+_AND:     "AND"
+_OR:      "OR"
+NOT:      "NOT"
 
-IS: "IS"
-KNOWN: "KNOWN"
-UNKNOWN: "UNKNOWN"
+IS:       "IS"
+KNOWN:    "KNOWN"
+UNKNOWN:  "UNKNOWN"
 
 CONTAINS: "CONTAINS"
-STARTS: "STARTS"
-ENDS: "ENDS"
-WITH: "WITH"
+STARTS:   "STARTS"
+ENDS:     "ENDS"
+WITH:     "WITH"
 
-LENGTH: "LENGTH"
-HAS: "HAS"
-ALL: "ALL"
-ONLY: "ONLY"
-ANY: "ANY"
+LENGTH:   "LENGTH"
+HAS:      "HAS"
+ALL:      "ALL"
+ONLY:     "ONLY"
+ANY:      "ANY"
 
 // Comparison OPERATORs
 OPERATOR: ( "<" ["="] | ">" ["="] | ["!"] "=" )
