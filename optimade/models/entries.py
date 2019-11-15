@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional, Dict, List
-from pydantic import BaseModel, Schema
+from pydantic import BaseModel, Schema, validator
 
 from .jsonapi import Relationships, Attributes, Resource
 
@@ -103,9 +103,16 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
 
 class EntryInfoProperty(BaseModel):
 
-    description: str = Schema(..., description="description of the entry")
+    description: str = Schema(..., description="description of the entry property")
 
-    unit: Optional[str] = Schema(..., description="the physical unit of the entry")
+    unit: Optional[str] = Schema(
+        ..., description="the physical unit of the entry property"
+    )
+
+    sortable: Optional[bool] = Schema(
+        ...,
+        description='defines whether the entry property can be used for sorting with the "sort" parameter. If the entry listing endpoint supports sorting, this key MUST be present for all properties.',
+    )
 
 
 class EntryInfoResource(BaseModel):
@@ -126,3 +133,14 @@ class EntryInfoResource(BaseModel):
         "type, where the keys are the values of the `formats` list "
         "and the values are the keys of the `properties` dictionary.",
     )
+
+    @validator("properties", whole=True)
+    def sortable_present_for_all_or_none(cls, value):
+        sortables = 0
+        for property_ in value:
+            if "sortable" in property_:
+                sortables += 1
+        if len(value) != sortables:
+            raise ValueError(
+                '"sortable" MUST either be present for all properties or none of them'
+            )

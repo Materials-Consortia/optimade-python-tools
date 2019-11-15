@@ -303,6 +303,12 @@
   },
   "components": {
     "schemas": {
+      "Attributes": {
+        "title": "Attributes",
+        "type": "object",
+        "properties": {},
+        "description": "Members of the attributes object (\"attributes\") represent information about the resource object in which it's defined.\nThe keys for Attributes must NOT be:\n    relationships\n    links\n    id\n    type"
+      },
       "EntryInfoProperty": {
         "title": "EntryInfoProperty",
         "required": [
@@ -313,12 +319,17 @@
           "description": {
             "title": "Description",
             "type": "string",
-            "description": "description of the entry"
+            "description": "description of the entry property"
           },
           "unit": {
             "title": "Unit",
             "type": "string",
-            "description": "the physical unit of the entry"
+            "description": "the physical unit of the entry property"
+          },
+          "sortable": {
+            "title": "Sortable",
+            "type": "boolean",
+            "description": "defines whether the entry property can be used for sorting with the \"sort\" parameter. If the entry listing endpoint supports sorting, this key MUST be present for all properties."
           }
         }
       },
@@ -365,6 +376,264 @@
             "description": "a dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary."
           }
         }
+      },
+      "ResourceLinks": {
+        "title": "ResourceLinks",
+        "type": "object",
+        "properties": {
+          "self": {
+            "title": "Self",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+                    "type": "object",
+                    "properties": {}
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "A link that identifies the resource represented by the resource object."
+          }
+        },
+        "description": "A Resource Links object"
+      },
+      "AvailableApiVersion": {
+        "title": "AvailableApiVersion",
+        "required": [
+          "url",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "Url",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "description": "a string specifying a base URL that MUST adhere to the rules in section Base URL",
+            "format": "uri"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string",
+            "description": "a string containing the full version number of the API served at that base URL. The version number string MUST NOT be prefixed by, e.g., 'v'."
+          }
+        },
+        "description": "A JSON object containing information about an available API version"
+      },
+      "BaseInfoAttributes": {
+        "title": "BaseInfoAttributes",
+        "required": [
+          "available_api_versions"
+        ],
+        "type": "object",
+        "properties": {
+          "api_version": {
+            "title": "Api_Version",
+            "type": "string",
+            "description": "Presently used version of the OPTiMaDe API",
+            "default": "v0.10"
+          },
+          "available_api_versions": {
+            "title": "Available_Api_Versions",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailableApiVersion"
+            },
+            "description": "A list of dictionaries of available API versions at other base URLs"
+          },
+          "formats": {
+            "title": "Formats",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of available output formats.",
+            "default": [
+              "json"
+            ]
+          },
+          "available_endpoints": {
+            "title": "Available_Endpoints",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of available endpoints (i.e., the string to be appended to the base URL).",
+            "default": [
+              "structures",
+              "info"
+            ]
+          },
+          "entry_types_by_format": {
+            "title": "Entry_Types_By_Format",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Available entry endpoints as a function of output formats.",
+            "default": {
+              "json": [
+                "structures"
+              ]
+            }
+          },
+          "is_index": {
+            "title": "Is_Index",
+            "type": "boolean",
+            "description": "If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for is_index to be false).",
+            "default": false
+          }
+        },
+        "description": "Attributes for Base URL Info endpoint"
+      },
+      "BaseInfoResource": {
+        "title": "BaseInfoResource",
+        "required": [
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "links": {
+            "title": "ResourceLinks",
+            "type": "object",
+            "properties": {
+              "self": {
+                "title": "Self",
+                "description": "A link that identifies the resource represented by the resource object.",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              }
+            },
+            "description": "A Resource Links object"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "properties": {},
+            "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/BaseInfoAttributes"
+          },
+          "relationships": {
+            "title": "Relationships",
+            "type": "object",
+            "properties": {},
+            "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.\nKeys MUST NOT be:\n    type\n    id"
+          }
+        }
+      },
+      "Meta": {
+        "title": "Meta",
+        "type": "object",
+        "properties": {},
+        "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
+      },
+      "ErrorSource": {
+        "title": "ErrorSource",
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "title": "Pointer",
+            "type": "string",
+            "description": "a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. \"/data\" for a primary data object, or \"/data/attributes/title\" for a specific attribute]."
+          },
+          "parameter": {
+            "title": "Parameter",
+            "type": "string",
+            "description": "a string indicating which URI query parameter caused the error."
+          }
+        },
+        "description": "an object containing references to the source of the error"
+      },
+      "Link": {
+        "title": "Link",
+        "required": [
+          "href"
+        ],
+        "type": "object",
+        "properties": {
+          "href": {
+            "title": "Href",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "description": "a string containing the link\u2019s URL.",
+            "format": "uri"
+          },
+          "meta": {
+            "title": "Meta",
+            "type": "object",
+            "properties": {},
+            "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
+          }
+        },
+        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object."
       },
       "Resource": {
         "title": "Resource",
@@ -1125,6 +1394,36 @@
           }
         }
       },
+      "Assembly": {
+        "title": "Assembly",
+        "required": [
+          "sites_in_groups",
+          "group_probabilities"
+        ],
+        "type": "object",
+        "properties": {
+          "sites_in_groups": {
+            "title": "Sites_In_Groups",
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "description": "Index of the sites (0-based) that belong to each group for each assembly.\n\nExample: :val:`[[1], [2]]`: two groups, one with the second site, one with the third.\nExample: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth."
+          },
+          "group_probabilities": {
+            "title": "Group_Probabilities",
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.\nIt SHOULD sum to one.\nSee below for examples of how to specify the probability of the occurrence of a vacancy.\nThe possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_."
+          }
+        },
+        "description": "A description of groups of sites that are statistically correlated.\n\n    - **Examples** (for each entry of the assemblies list):\n\n        - :val:`{\"sites_in_groups\": [[0], [1]], \"group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.\n            Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.\n        - :val:`{\"sites_in_groups\": [[1,2], [3]], \"group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.\n            The second group is formed by the fourth site.\n            Sites of the first group (the second and the third) are never present at the same time as the fourth site.\n            30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent)."
+      },
       "Provider": {
         "title": "Provider",
         "required": [
@@ -1224,197 +1523,26 @@
         },
         "description": "Information on the database provider of the implementation."
       },
-      "Link": {
-        "title": "Link",
+      "JsonApi": {
+        "title": "JsonApi",
         "required": [
-          "href"
-        ],
-        "type": "object",
-        "properties": {
-          "href": {
-            "title": "Href",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "description": "a string containing the link\u2019s URL.",
-            "format": "uri"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "properties": {},
-            "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
-          }
-        },
-        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object."
-      },
-      "AvailableApiVersion": {
-        "title": "AvailableApiVersion",
-        "required": [
-          "url",
           "version"
         ],
         "type": "object",
         "properties": {
-          "url": {
-            "title": "Url",
-            "maxLength": 65536,
-            "minLength": 1,
-            "type": "string",
-            "description": "a string specifying a base URL that MUST adhere to the rules in section Base URL",
-            "format": "uri"
-          },
           "version": {
             "title": "Version",
             "type": "string",
-            "description": "a string containing the full version number of the API served at that base URL. The version number string MUST NOT be prefixed by, e.g., 'v'."
-          }
-        },
-        "description": "A JSON object containing information about an available API version"
-      },
-      "BaseInfoAttributes": {
-        "title": "BaseInfoAttributes",
-        "required": [
-          "available_api_versions"
-        ],
-        "type": "object",
-        "properties": {
-          "api_version": {
-            "title": "Api_Version",
-            "type": "string",
-            "description": "Presently used version of the OPTiMaDe API",
-            "default": "v0.10"
-          },
-          "available_api_versions": {
-            "title": "Available_Api_Versions",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AvailableApiVersion"
-            },
-            "description": "A list of dictionaries of available API versions at other base URLs"
-          },
-          "formats": {
-            "title": "Formats",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "List of available output formats.",
-            "default": [
-              "json"
-            ]
-          },
-          "available_endpoints": {
-            "title": "Available_Endpoints",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "List of available endpoints (i.e., the string to be appended to the base URL).",
-            "default": [
-              "structures",
-              "info"
-            ]
-          },
-          "entry_types_by_format": {
-            "title": "Entry_Types_By_Format",
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "description": "Available entry endpoints as a function of output formats.",
-            "default": {
-              "json": [
-                "structures"
-              ]
-            }
-          },
-          "is_index": {
-            "title": "Is_Index",
-            "type": "boolean",
-            "description": "If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for is_index to be false).",
-            "default": false
-          }
-        },
-        "description": "Attributes for Base URL Info endpoint"
-      },
-      "BaseInfoResource": {
-        "title": "BaseInfoResource",
-        "required": [
-          "attributes"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
-            "type": "string"
-          },
-          "links": {
-            "title": "ResourceLinks",
-            "type": "object",
-            "properties": {
-              "self": {
-                "title": "Self",
-                "description": "A link that identifies the resource represented by the resource object.",
-                "anyOf": [
-                  {
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  {
-                    "title": "Link",
-                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
-                    "type": "object",
-                    "properties": {
-                      "href": {
-                        "title": "Href",
-                        "description": "a string containing the link\u2019s URL.",
-                        "minLength": 1,
-                        "maxLength": 65536,
-                        "type": "string",
-                        "format": "uri"
-                      },
-                      "meta": {
-                        "title": "Meta",
-                        "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
-                        "type": "object",
-                        "properties": {}
-                      }
-                    },
-                    "required": [
-                      "href"
-                    ]
-                  }
-                ]
-              }
-            },
-            "description": "A Resource Links object"
+            "description": "Version of the json API used"
           },
           "meta": {
             "title": "Meta",
             "type": "object",
             "properties": {},
             "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/BaseInfoAttributes"
-          },
-          "relationships": {
-            "title": "Relationships",
-            "type": "object",
-            "properties": {},
-            "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.\nKeys MUST NOT be:\n    type\n    id"
           }
-        }
+        },
+        "description": "An object describing the server's implementation"
       },
       "Species": {
         "title": "Species",
@@ -1457,36 +1585,6 @@
           }
         },
         "description": "A list describing the species of the sites of this structure.\n    Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.\n\n    - **Examples**:\n\n        - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n        - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n        - :val:`[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n        - :val:`[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n        - :val:`[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13."
-      },
-      "Assembly": {
-        "title": "Assembly",
-        "required": [
-          "sites_in_groups",
-          "group_probabilities"
-        ],
-        "type": "object",
-        "properties": {
-          "sites_in_groups": {
-            "title": "Sites_In_Groups",
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            },
-            "description": "Index of the sites (0-based) that belong to each group for each assembly.\n\nExample: :val:`[[1], [2]]`: two groups, one with the second site, one with the third.\nExample: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth."
-          },
-          "group_probabilities": {
-            "title": "Group_Probabilities",
-            "type": "array",
-            "items": {
-              "type": "number"
-            },
-            "description": "Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.\nIt SHOULD sum to one.\nSee below for examples of how to specify the probability of the occurrence of a vacancy.\nThe possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_."
-          }
-        },
-        "description": "A description of groups of sites that are statistically correlated.\n\n    - **Examples** (for each entry of the assemblies list):\n\n        - :val:`{\"sites_in_groups\": [[0], [1]], \"group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.\n            Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.\n        - :val:`{\"sites_in_groups\": [[1,2], [3]], \"group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.\n            The second group is formed by the fourth site.\n            Sites of the first group (the second and the third) are never present at the same time as the fourth site.\n            30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent)."
       },
       "StructureResourceAttributes": {
         "title": "StructureResourceAttributes",
@@ -1619,42 +1717,6 @@
           }
         },
         "description": "This class contains the Schema for the attributes used to represent a structure, e.g. unit cell, atoms, positions."
-      },
-      "ResponseMetaQuery": {
-        "title": "ResponseMetaQuery",
-        "required": [
-          "representation"
-        ],
-        "type": "object",
-        "properties": {
-          "representation": {
-            "title": "Representation",
-            "type": "string",
-            "description": "a string with the part of the URL that follows the base URL."
-          }
-        },
-        "description": "Information on the query that was requested."
-      },
-      "JsonApi": {
-        "title": "JsonApi",
-        "required": [
-          "version"
-        ],
-        "type": "object",
-        "properties": {
-          "version": {
-            "title": "Version",
-            "type": "string",
-            "description": "Version of the json API used"
-          },
-          "meta": {
-            "title": "Meta",
-            "type": "object",
-            "properties": {},
-            "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
-          }
-        },
-        "description": "An object describing the server's implementation"
       },
       "StructureResource": {
         "title": "StructureResource",
@@ -1833,171 +1895,6 @@
         },
         "description": "An error response"
       },
-      "EntryInfoResponse": {
-        "title": "EntryInfoResponse",
-        "required": [
-          "data"
-        ],
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/EntryInfoResource"
-          },
-          "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
-          },
-          "errors": {
-            "title": "Errors",
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
-            },
-            "description": "A list of errors"
-          },
-          "included": {
-            "title": "Included",
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Resource"
-            },
-            "description": "A list of resources that are included"
-          },
-          "links": {
-            "title": "ToplevelLinks",
-            "type": "object",
-            "properties": {
-              "self": {
-                "title": "Self",
-                "description": "A link to itself",
-                "anyOf": [
-                  {
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  {
-                    "title": "Link",
-                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
-                    "type": "object",
-                    "properties": {
-                      "href": {
-                        "title": "Href",
-                        "description": "a string containing the link\u2019s URL.",
-                        "minLength": 1,
-                        "maxLength": 65536,
-                        "type": "string",
-                        "format": "uri"
-                      },
-                      "meta": {
-                        "title": "Meta",
-                        "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
-                        "type": "object",
-                        "properties": {}
-                      }
-                    },
-                    "required": [
-                      "href"
-                    ]
-                  }
-                ]
-              },
-              "related": {
-                "title": "Related",
-                "description": "A related resource link",
-                "anyOf": [
-                  {
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  {
-                    "title": "Link",
-                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
-                    "type": "object",
-                    "properties": {
-                      "href": {
-                        "title": "Href",
-                        "description": "a string containing the link\u2019s URL.",
-                        "minLength": 1,
-                        "maxLength": 65536,
-                        "type": "string",
-                        "format": "uri"
-                      },
-                      "meta": {
-                        "title": "Meta",
-                        "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
-                        "type": "object",
-                        "properties": {}
-                      }
-                    },
-                    "required": [
-                      "href"
-                    ]
-                  }
-                ]
-              },
-              "first": {
-                "title": "First",
-                "description": "The first page of data",
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              "last": {
-                "title": "Last",
-                "description": "The last page of data",
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              "prev": {
-                "title": "Prev",
-                "description": "The previous page of data",
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              "next": {
-                "title": "Next",
-                "description": "The next page of data",
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              }
-            },
-            "description": "A set of Links objects, possibly including pagination"
-          },
-          "jsonapi": {
-            "title": "JsonApi",
-            "required": [
-              "version"
-            ],
-            "type": "object",
-            "properties": {
-              "version": {
-                "title": "Version",
-                "description": "Version of the json API used",
-                "type": "string"
-              },
-              "meta": {
-                "title": "Meta",
-                "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
-                "type": "object",
-                "properties": {}
-              }
-            },
-            "description": "An object describing the server's implementation"
-          }
-        }
-      },
       "StructureResponseOne": {
         "title": "StructureResponseOne",
         "required": [
@@ -2171,6 +2068,21 @@
           }
         }
       },
+      "ResponseMetaQuery": {
+        "title": "ResponseMetaQuery",
+        "required": [
+          "representation"
+        ],
+        "type": "object",
+        "properties": {
+          "representation": {
+            "title": "Representation",
+            "type": "string",
+            "description": "a string with the part of the URL that follows the base URL."
+          }
+        },
+        "description": "Information on the query that was requested."
+      },
       "ToplevelLinks": {
         "title": "ToplevelLinks",
         "type": "object",
@@ -2282,21 +2194,15 @@
         },
         "description": "A set of Links objects, possibly including pagination"
       },
-      "Relationships": {
-        "title": "Relationships",
-        "type": "object",
-        "properties": {},
-        "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.\nKeys MUST NOT be:\n    type\n    id"
-      },
-      "InfoResponse": {
-        "title": "InfoResponse",
+      "EntryInfoResponse": {
+        "title": "EntryInfoResponse",
         "required": [
           "data"
         ],
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/BaseInfoResource"
+            "$ref": "#/components/schemas/EntryInfoResource"
           },
           "meta": {
             "$ref": "#/components/schemas/ResponseMeta"
@@ -2453,6 +2359,12 @@
           }
         }
       },
+      "Relationships": {
+        "title": "Relationships",
+        "type": "object",
+        "properties": {},
+        "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.\nKeys MUST NOT be:\n    type\n    id"
+      },
       "Implementation": {
         "title": "Implementation",
         "type": "object",
@@ -2493,120 +2405,6 @@
           }
         },
         "description": "Information on the server implementation"
-      },
-      "ImplementationMaintainer": {
-        "title": "ImplementationMaintainer",
-        "required": [
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "title": "Email",
-            "type": "string",
-            "description": "the maintainer's email address",
-            "format": "email"
-          }
-        },
-        "description": "Details about the maintainer of the implementation"
-      },
-      "ErrorLinks": {
-        "title": "ErrorLinks",
-        "type": "object",
-        "properties": {
-          "about": {
-            "title": "About",
-            "anyOf": [
-              {
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              {
-                "title": "Link",
-                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
-                "type": "object",
-                "properties": {
-                  "href": {
-                    "title": "Href",
-                    "description": "a string containing the link\u2019s URL.",
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "meta": {
-                    "title": "Meta",
-                    "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
-                    "type": "object",
-                    "properties": {}
-                  }
-                },
-                "required": [
-                  "href"
-                ]
-              }
-            ],
-            "description": "A link that leads to further details about this particular occurrence of the problem."
-          }
-        },
-        "description": "A Links object specific to Error objects"
-      },
-      "Attributes": {
-        "title": "Attributes",
-        "type": "object",
-        "properties": {},
-        "description": "Members of the attributes object (\"attributes\") represent information about the resource object in which it's defined.\nThe keys for Attributes must NOT be:\n    relationships\n    links\n    id\n    type"
-      },
-      "ResourceLinks": {
-        "title": "ResourceLinks",
-        "type": "object",
-        "properties": {
-          "self": {
-            "title": "Self",
-            "anyOf": [
-              {
-                "minLength": 1,
-                "maxLength": 65536,
-                "type": "string",
-                "format": "uri"
-              },
-              {
-                "title": "Link",
-                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
-                "type": "object",
-                "properties": {
-                  "href": {
-                    "title": "Href",
-                    "description": "a string containing the link\u2019s URL.",
-                    "minLength": 1,
-                    "maxLength": 65536,
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  "meta": {
-                    "title": "Meta",
-                    "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
-                    "type": "object",
-                    "properties": {}
-                  }
-                },
-                "required": [
-                  "href"
-                ]
-              }
-            ],
-            "description": "A link that identifies the resource represented by the resource object."
-          }
-        },
-        "description": "A Resource Links object"
-      },
-      "Meta": {
-        "title": "Meta",
-        "type": "object",
-        "properties": {},
-        "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
       },
       "StructureResponseMany": {
         "title": "StructureResponseMany",
@@ -2788,22 +2586,229 @@
           }
         }
       },
-      "ErrorSource": {
-        "title": "ErrorSource",
+      "ImplementationMaintainer": {
+        "title": "ImplementationMaintainer",
+        "required": [
+          "email"
+        ],
         "type": "object",
         "properties": {
-          "pointer": {
-            "title": "Pointer",
+          "email": {
+            "title": "Email",
             "type": "string",
-            "description": "a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. \"/data\" for a primary data object, or \"/data/attributes/title\" for a specific attribute]."
-          },
-          "parameter": {
-            "title": "Parameter",
-            "type": "string",
-            "description": "a string indicating which URI query parameter caused the error."
+            "description": "the maintainer's email address",
+            "format": "email"
           }
         },
-        "description": "an object containing references to the source of the error"
+        "description": "Details about the maintainer of the implementation"
+      },
+      "InfoResponse": {
+        "title": "InfoResponse",
+        "required": [
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BaseInfoResource"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          },
+          "errors": {
+            "title": "Errors",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+            },
+            "description": "A list of errors"
+          },
+          "included": {
+            "title": "Included",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Resource"
+            },
+            "description": "A list of resources that are included"
+          },
+          "links": {
+            "title": "ToplevelLinks",
+            "type": "object",
+            "properties": {
+              "self": {
+                "title": "Self",
+                "description": "A link to itself",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "related": {
+                "title": "Related",
+                "description": "A related resource link",
+                "anyOf": [
+                  {
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "title": "Link",
+                    "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                    "type": "object",
+                    "properties": {
+                      "href": {
+                        "title": "Href",
+                        "description": "a string containing the link\u2019s URL.",
+                        "minLength": 1,
+                        "maxLength": 65536,
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "meta": {
+                        "title": "Meta",
+                        "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "required": [
+                      "href"
+                    ]
+                  }
+                ]
+              },
+              "first": {
+                "title": "First",
+                "description": "The first page of data",
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              "last": {
+                "title": "Last",
+                "description": "The last page of data",
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              "prev": {
+                "title": "Prev",
+                "description": "The previous page of data",
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              "next": {
+                "title": "Next",
+                "description": "The next page of data",
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "description": "A set of Links objects, possibly including pagination"
+          },
+          "jsonapi": {
+            "title": "JsonApi",
+            "required": [
+              "version"
+            ],
+            "type": "object",
+            "properties": {
+              "version": {
+                "title": "Version",
+                "description": "Version of the json API used",
+                "type": "string"
+              },
+              "meta": {
+                "title": "Meta",
+                "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+                "type": "object",
+                "properties": {}
+              }
+            },
+            "description": "An object describing the server's implementation"
+          }
+        }
+      },
+      "ErrorLinks": {
+        "title": "ErrorLinks",
+        "type": "object",
+        "properties": {
+          "about": {
+            "title": "About",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "title": "Link",
+                "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object.",
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "title": "Href",
+                    "description": "a string containing the link\u2019s URL.",
+                    "minLength": 1,
+                    "maxLength": 65536,
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "meta": {
+                    "title": "Meta",
+                    "description": "Non-standard meta-information that can not be represented as an attribute or relationship.",
+                    "type": "object",
+                    "properties": {}
+                  }
+                },
+                "required": [
+                  "href"
+                ]
+              }
+            ],
+            "description": "A link that leads to further details about this particular occurrence of the problem."
+          }
+        },
+        "description": "A Links object specific to Error objects"
       },
       "ValidationError": {
         "title": "ValidationError",
