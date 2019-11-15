@@ -1502,7 +1502,7 @@
     "type": "structure",
     "links": ["C-H"],
     "relationships": "single",
-    "attributes": ["fun", "cool"],
+    "id": "some_id",
     "_mp_chemsys": "Ac",
     "cartesian_site_positions": [
       [
