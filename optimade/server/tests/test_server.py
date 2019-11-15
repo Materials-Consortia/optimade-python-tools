@@ -100,6 +100,22 @@ class InfoStructuresEndpointTests(EndpointTests, unittest.TestCase):
         self.check_keys(data_keys, self.json_response["data"])
 
 
+class InfoReferencesEndpointTests(EndpointTests, unittest.TestCase):
+    request_str = "info/references"
+    response_cls = EntryInfoResponse
+
+
+class ReferencesEndpointTests(EndpointTests, unittest.TestCase):
+    request_str = "references"
+    response_cls = EntryResponseMany
+
+
+class SingleReferenceEndpointTests(EndpointTests, unittest.TestCase):
+    test_id = "Dijkstra1968"
+    request_str = f"references/{test_id}"
+    response_cls = EntryResponseOne
+
+
 class StructuresEndpointTests(EndpointTests, unittest.TestCase):
 
     request_str = "/structures"
