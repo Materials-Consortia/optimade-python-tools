@@ -29,7 +29,7 @@ This ID maps to the version-specific record, in case it changes in the future.
 
 - **Examples**:
 
-  - :val:`"8bd3e750-b477-41a0-9b11-3a799f21b44f"` 
+  - :val:`"8bd3e750-b477-41a0-9b11-3a799f21b44f"`
   - :val:`"fjeiwoj,54;@=%<>#32"` (Strings that are not URL-safe are allowed.)""",
     )
 
@@ -136,11 +136,8 @@ class EntryInfoResource(BaseModel):
 
     @validator("properties", whole=True)
     def sortable_present_for_all_or_none(cls, value):
-        sortables = 0
-        for property_ in value:
-            if "sortable" in property_:
-                sortables += 1
-        if len(value) != sortables:
+        sortables = sum(1 for _property in value if "sortable" in _property)
+        if sortables > 0 and len(value) != sortables:
             raise ValueError(
                 '"sortable" MUST either be present for all properties or none of them'
             )
