@@ -215,7 +215,7 @@ class NewMongoTransformer(Transformer):
 
         if len(arg) == 2:
             # only value without OPERATOR
-            return {"$in": arg[1]}
+            return {"$in": arg[1:]}
         else:
             if arg[1] == "ALL":
                 raise NotImplementedError
