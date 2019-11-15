@@ -14,7 +14,7 @@ def get_versions():
         version = tuple(map(int, tags[:3]))
         variant = "default" if len(tags) == 3 else tags[-1]
         dct[version][variant] = filename
-    return dct
+    return dict(dct)
 
 
 available_parsers = get_versions()
