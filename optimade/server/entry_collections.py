@@ -128,10 +128,13 @@ class MongoCollection(EntryCollection):
     def _alias_filter(self, filter_: dict) -> dict:
         res = {}
         for key, value in filter_.items():
-            new_value = value
-            if isinstance(value, dict):
-                new_value = self._alias_filter(value)
-            res[StructureMapper.alias_for(key)] = new_value
+            if key in ["$and", "$or"]:
+                res[key] = [self._alias_filter(item) for item in value]
+            else:
+                new_value = value
+                if isinstance(value, dict):
+                    new_value = self._alias_filter(value)
+                res[StructureMapper.alias_for(key)] = new_value
         return res
 
     def _parse_params(

@@ -259,7 +259,6 @@ class FilterTests(unittest.TestCase):
         expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
         self._check_response(request, expected_ids)
 
-    @unittest.skip("Known BUG in the _alias_filter function")
     def test_aliased_is_known(self):
         request = "/structures?filter=id IS KNOWN AND nsites>=44"
         expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
