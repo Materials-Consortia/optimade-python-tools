@@ -29,7 +29,7 @@ property_first_comparison: property ( value_op_rhs
                                     | set_zip_op_rhs )
 
 constant_first_comparison: constant value_op_rhs
-predicate_comparison: length_comparison
+
 value_op_rhs: OPERATOR value
 known_op_rhs: IS ( KNOWN | UNKNOWN )
 fuzzy_string_op_rhs: CONTAINS string
@@ -44,7 +44,7 @@ set_op_rhs: HAS ( [ OPERATOR ] value
                  | ONLY value_list )
 
 set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list | ANY value_zip_list )
-length_comparison: LENGTH property OPERATOR value
+predicate_comparison: LENGTH property OPERATOR value
 property_zip_addon: ":" property (":" property)*
 
 // Property syntax

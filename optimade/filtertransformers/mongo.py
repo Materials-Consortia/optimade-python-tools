@@ -178,10 +178,6 @@ class NewMongoTransformer(Transformer):
             for oper, prop in arg[1].items()
         }
 
-    def predicate_comparison(self, arg):
-        # predicate_comparison: length_comparison
-        raise NotImplementedError
-
     @v_args(inline=True)
     def value_op_rhs(self, operator, value):
         # value_op_rhs: OPERATOR value
@@ -232,9 +228,13 @@ class NewMongoTransformer(Transformer):
         # ANY value_zip_list )
         raise NotImplementedError
 
-    def length_comparison(self, arg):
-        # length_comparison: LENGTH property OPERATOR value
-        raise NotImplementedError
+    def predicate_comparison(self, arg):
+        # predicate_comparison: LENGTH property OPERATOR value
+        # TODO: https://stackoverflow.com/questions/7811163/query-for-documents-where-array-size-is-greater-than-1
+        if arg[2] == "=":
+            return {arg[1]: {"$size": arg[3]}}
+        else:
+            raise NotImplementedError
 
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*

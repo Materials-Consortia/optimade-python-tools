@@ -224,6 +224,11 @@ class FilterTests(unittest.TestCase):
         expected_ids = ["mpf_3819"]
         self._check_response(request, expected_ids)
 
+    def test_list_length_basic(self):
+        request = "/structures?filter=LENGTH elements = 9"
+        expected_ids = ["mpf_3819"]
+        self._check_response(request, expected_ids)
+
     @unittest.skip("Skipping LENGTH until implemented in server code.")
     def test_list_length(self):
         request = "/structures?filter=LENGTH elements = 9"
