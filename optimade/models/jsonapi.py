@@ -217,7 +217,7 @@ class Attributes(BaseModel):
 
     @validator("relationships", "links", "id", "type")
     def check_illegal_attributes_fields(cls, v):
-        raise AssertionError(
+        raise ValueError(
             '"relationships", "links", "id", "type" MUST NOT be fields under attributes'
         )
 
