@@ -152,7 +152,7 @@ def get_single_entry(
     request: Request,
     params: SingleEntryQueryParams,
 ) -> EntryResponseOne:
-    params.filter = f"id={entry_id}"
+    params.filter = f'id="{entry_id}"'
     results, more_data_available, data_available, fields = collection.find(params)
 
     if more_data_available:

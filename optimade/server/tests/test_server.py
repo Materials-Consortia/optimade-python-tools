@@ -13,8 +13,10 @@ CONFIG.page_limit = 5  # noqa: E402
 
 from optimade.server.main import app
 from optimade.models import (
-    EntryResponseMany,
-    EntryResponseOne,
+    ReferenceResponseMany,
+    ReferenceResponseOne,
+    StructureResponseMany,
+    StructureResponseOne,
     EntryInfoResponse,
     InfoResponse,
 )
@@ -108,19 +110,19 @@ class InfoReferencesEndpointTests(EndpointTests, unittest.TestCase):
 
 class ReferencesEndpointTests(EndpointTests, unittest.TestCase):
     request_str = "references"
-    response_cls = EntryResponseMany
+    response_cls = ReferenceResponseMany
 
 
 class SingleReferenceEndpointTests(EndpointTests, unittest.TestCase):
     test_id = "Dijkstra1968"
     request_str = f"references/{test_id}"
-    response_cls = EntryResponseOne
+    response_cls = ReferenceResponseOne
 
 
 class StructuresEndpointTests(EndpointTests, unittest.TestCase):
 
     request_str = "/structures"
-    response_cls = EntryResponseMany
+    response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):
         self.assertTrue("data" in self.json_response)
@@ -151,7 +153,7 @@ class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
 
     test_id = "mpf_1"
     request_str = f"/structures/{test_id}"
-    response_cls = EntryResponseOne
+    response_cls = StructureResponseOne
 
     def test_structures_endpoint_data(self):
         self.assertTrue("data" in self.json_response)
@@ -174,7 +176,7 @@ class SingleStructureEndpointEmptyTest(EndpointTests, unittest.TestCase):
 
     test_id = "non_existent_id"
     request_str = f"/structures/{test_id}"
-    response_cls = EntryResponseOne
+    response_cls = StructureResponseOne
 
     def test_structures_endpoint_data(self):
         self.assertTrue("data" in self.json_response)
