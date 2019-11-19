@@ -13,9 +13,16 @@ VALUE: CNAME | SIGNED_FLOAT | SIGNED_INT | ESCAPED_STRING
 AND: /and/i
 OR: /or/i
 NOT: /not/i
+
+// Strings
+
+_STRING_INNER: /(.|[\t\f\r\n])*?/
+_STRING_ESC_INNER: _STRING_INNER /(?<!\\)(\\\\)*?/
+
+ESCAPED_STRING : "\"" _STRING_ESC_INNER "\""
+
 %import common.CNAME
 %import common.SIGNED_FLOAT
 %import common.SIGNED_INT
-%import common.ESCAPED_STRING
 %import common.WS_INLINE
 %ignore WS_INLINE
