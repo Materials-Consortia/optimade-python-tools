@@ -8,12 +8,12 @@ python:
   - "3.7"
   - "3.8"
 install:
-   - pip install -e .
    - pip install -r requirements.txt
    - pip install -r requirements/dev_requirements.txt
    - pip install -r requirements/mongo_requirements.txt
    - pip install -r requirements/django_requirements.txt
    - pip install -r requirements/elastic_requirements.txt
+   - pip install -e .
    - docker pull quen2404/openapi-diff
 script:
    - py.test --cov=optimade

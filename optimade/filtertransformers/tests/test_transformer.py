@@ -53,9 +53,9 @@ class TestTransformer(TestCase):
         # grammar evaluates conjunctions progressively rightwards.
         docs = list(
             self.coll.find(
-                self.convert("a >= 8 or a<5 and b>=8"), {"_id": 0, "a": 1, "b": 1}
+                self.convert("(a >= 8) or (a<5 and b>=8)"), {"_id": 0, "a": 1, "b": 1}
             )
         )
-        self.assertEqual(len(docs), 7 * 2)
+        self.assertEqual(len(docs), 20 + 5 * 2)
         self.assertIn({"a": 4, "b": 9}, docs)
         self.assertIn({"a": 8, "b": 9}, docs)

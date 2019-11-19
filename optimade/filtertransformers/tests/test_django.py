@@ -1,6 +1,8 @@
 import json
+
 try:
     from optimade.filtertransformers.django import Lark2Django
+
     DJANGO_NOT_IMPORTED = False
 except ImportError:
     DJANGO_NOT_IMPORTED = True
@@ -11,8 +13,8 @@ import os
 test_data = [
     ("band_gap<1", "(AND: ('calculation__band_gap__lt', '1'))"),
     (
-        "natoms >= 8 OR nelements<5 AND stability>=0.5",
-        "(AND: (OR: ('entry__natoms__gte', '8'), ('entry__composition__ntypes__lt', '5')), ('stability__gte', '0.5'))",
+        "(natoms >= 8) OR (nelements<5 AND stability>=0.5)",
+        "(OR: ('entry__natoms__gte', '8'), (AND: ('entry__composition__ntypes__lt', '5'), ('stability__gte', '0.5')))",
     ),
     ("NOT natoms >= 8", "(NOT (AND: ('entry__natoms__gte', '8')))"),
     (
@@ -22,7 +24,7 @@ test_data = [
 ]
 
 
-@skipIf(DJANGO_NOT_IMPORTED, 'Django not found')
+@skipIf(DJANGO_NOT_IMPORTED, "Django not found")
 class DjangoParserTest(TestCase):
     @classmethod
     def setUpClass(cls):
