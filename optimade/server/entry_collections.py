@@ -6,7 +6,7 @@ import pymongo.collection
 from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
-from optimade.filtertransformers.mongo import MongoTransformer
+from optimade.filtertransformers.mongo import NewMongoTransformer
 from optimade.models import NonnegativeInt, EntryResource
 
 from .config import CONFIG
@@ -74,14 +74,14 @@ class MongoCollection(EntryCollection):
         resource_mapper: ResourceMapper,
     ):
         super().__init__(collection, resource_cls, resource_mapper)
-        self.transformer = MongoTransformer()
+        self.transformer = NewMongoTransformer()
 
         self.provider = CONFIG.provider["prefix"]
         self.provider_fields = CONFIG.provider_fields[resource_mapper.ENDPOINT]
         self.page_limit = CONFIG.page_limit
         self.parser = LarkParser(
-            version=(0, 9, 7)
-        )  # The MongoTransformer only supports v0.9.7 as the latest grammar
+            version=(0, 10, 0), variant="default"
+        )  # The NewMongoTransformer only supports v0.10.0 as the latest grammar
 
     def __len__(self):
         return self.collection.estimated_document_count()
@@ -131,10 +131,13 @@ class MongoCollection(EntryCollection):
     def _alias_filter(self, filter_: dict) -> dict:
         res = {}
         for key, value in filter_.items():
-            new_value = value
-            if isinstance(value, dict):
-                new_value = self._alias_filter(value)
-            res[self.resource_mapper.alias_for(key)] = new_value
+            if key in ["$and", "$or"]:
+                res[key] = [self._alias_filter(item) for item in value]
+            else:
+                new_value = value
+                if isinstance(value, dict):
+                    new_value = self._alias_filter(value)
+                res[self.resource_mapper.alias_for(key)] = new_value
         return res
 
     def _parse_params(

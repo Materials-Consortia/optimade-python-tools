@@ -9,7 +9,7 @@ setup(
     version="0.2.0",
     packages=find_packages(),
     include_package_data=True,
-    package_data={"": ["*.g"]},
+    package_data={"": ["*.lark"]},
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTiMaDe Development Team",
@@ -19,7 +19,7 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=[
         "pymongo>=3.8",
-        "lark-parser>=0.5.6",
+        "lark-parser>=0.7.7",
         "mongomock>=3.16",
         "fastapi[all]",
     ],
