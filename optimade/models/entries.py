@@ -133,11 +133,3 @@ class EntryInfoResource(BaseModel):
         "type, where the keys are the values of the `formats` list "
         "and the values are the keys of the `properties` dictionary.",
     )
-
-    @validator("properties", whole=True)
-    def sortable_present_for_all_or_none(cls, value):
-        sortables = sum(1 for _property in value if "sortable" in _property)
-        if sortables > 0 and len(value) != sortables:
-            raise ValueError(
-                '"sortable" MUST either be present for all properties or none of them'
-            )
