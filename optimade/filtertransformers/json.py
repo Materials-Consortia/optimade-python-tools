@@ -2,12 +2,12 @@ from lark import Transformer
 from lark.lexer import Token
 
 
-class JSONTransformer(Transformer):
+class JSONTransformer(Transformer):  # pragma: no cover
     def __init__(self, compact=False):
         self.compact = compact
         super().__init__()
 
-    def __default__(self, data, children):
+    def __default__(self, data, children, meta):
         items = []
         for c in children:
             if isinstance(c, Token):
