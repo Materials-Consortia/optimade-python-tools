@@ -4,12 +4,7 @@ import abc
 
 from starlette.testclient import TestClient
 
-from optimade.server.config import CONFIG
 from optimade.validator import ImplementationValidator
-
-# this must be changed before app is imported
-# some tests currently depend on this value remaining at 5
-CONFIG.page_limit = 5  # noqa: E402
 
 from optimade.server.main import app
 from optimade.models import (
@@ -107,16 +102,31 @@ class StructuresEndpointTests(EndpointTests, unittest.TestCase):
     response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):
-        self.assertTrue("data" in self.json_response)
-        self.assertEqual(len(self.json_response["data"]), CONFIG.page_limit)
         self.assertTrue("meta" in self.json_response)
         self.assertEqual(self.json_response["meta"]["data_available"], 17)
-        self.assertEqual(self.json_response["meta"]["more_data_available"], True)
+        self.assertEqual(self.json_response["meta"]["more_data_available"], False)
+        self.assertTrue("data" in self.json_response)
+        self.assertEqual(
+            len(self.json_response["data"]),
+            self.json_response["meta"]["data_available"],
+        )
 
     def test_get_next_responses(self):
-        cursor = self.json_response["data"]
+        total_data = self.json_response["meta"]["data_available"]
+        page_limit = 5
+
+        response = self.client.get(self.request_str + f"?page_limit={page_limit}")
+        json_response = response.json()
+        self.assertEqual(
+            self.response.status_code,
+            200,
+            msg=f"Request failed: {self.response.json()}",
+        )
+
+        cursor = json_response["data"].copy()
+        self.assertTrue(json_response["meta"]["more_data_available"])
         more_data_available = True
-        next_request = self.json_response["links"]["next"]
+        next_request = json_response["links"]["next"]
 
         while more_data_available:
             next_response = self.client.get(next_request).json()
@@ -124,11 +134,11 @@ class StructuresEndpointTests(EndpointTests, unittest.TestCase):
             cursor.extend(next_response["data"])
             more_data_available = next_response["meta"]["more_data_available"]
             if more_data_available:
-                self.assertEqual(len(next_response["data"]), CONFIG.page_limit)
+                self.assertEqual(len(next_response["data"]), page_limit)
             else:
-                self.assertEqual(len(next_response["data"]), 2)
+                self.assertEqual(len(next_response["data"]), total_data % page_limit)
 
-        self.assertEqual(len(cursor), 17)
+        self.assertEqual(len(cursor), total_data)
 
 
 class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):

@@ -1,0 +1,37 @@
+{
+    "name": "optimade",
+    "version": "0.2.0",
+    "url": "https://github.com/Materials-Consortia/optimade-python-tools",
+    "license": "MIT",
+    "author": "OPTiMaDe Development Team",
+    "author_email": "dev@optimade.org",
+    "description": "Tools for implementing and consuming OPTiMaDe APIs.",
+    "keywords": "optimade jsonapi materials",
+    "include_package_data": true,
+    "package_data": {"": ["*.lark"]},
+    "classifiers": [
+        "Development Status :: 3 - Alpha",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Intended Audience :: Developers",
+        "Topic :: Database",
+        "Topic :: Database :: Database Engines/Servers",
+        "Topic :: Database :: Front-Ends"
+    ],
+    "python_requires": ">=3.7",
+    "install_requires": [
+        "pymongo>=3.8",
+        "lark-parser>=0.7.7",
+        "mongomock>=3.16",
+        "fastapi[all]>=0.42.0"
+    ],
+    "extras_require": {
+        "dev": ["black", "invoke", "pre-commit", "twine"],
+        "testing": ["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
+        "django": ["django>=2.2.5"],
+        "elastic": ["elasticsearch_dsl>=6.4.0"]
+    },
+    "entry_points": {
+        "console_scripts": ["optimade_validator=optimade.validator:validate"]
+    }
+}
