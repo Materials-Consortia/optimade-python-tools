@@ -621,7 +621,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("chemical_formula_reduced", "chemical_formula_hill")
     def no_spaces_in_reduced(cls, v):
-        if " " in v:
+        if v and " " in v:
             raise ValueError(f"Spaces are not allowed, you passed: {v}")
         return v
 
