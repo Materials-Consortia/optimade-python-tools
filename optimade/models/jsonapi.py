@@ -1,5 +1,5 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
-from typing import Optional, Set, Union
+from typing import Optional, Set, Union, Any
 from pydantic import BaseModel, UrlStr, Schema, validator
 
 
@@ -180,6 +180,13 @@ class Relationships(BaseModel):
         id
     """
 
+    id: Optional[Any] = Schema(..., description="Not allowed key")
+    type: Optional[Any] = Schema(..., description="Not allowed key")
+
+    @validator("id", "type")
+    def check_illegal_relationships_fields(cls, v):
+        raise AssertionError('"id", "type" MUST NOT be fields under relationships')
+
 
 class ResourceLinks(BaseModel):
     """A Resource Links object"""
@@ -193,15 +200,26 @@ class ResourceLinks(BaseModel):
 class Attributes(BaseModel):
     """
     Members of the attributes object ("attributes\") represent information about the resource object in which it's defined.
-    The keys for Attributes must NOT be:
+    The keys for Attributes MUST NOT be:
         relationships
         links
         id
         type
     """
 
+    relationships: Optional[Any] = Schema(..., description="Not allowed key")
+    links: Optional[Any] = Schema(..., description="Not allowed key")
+    id: Optional[Any] = Schema(..., description="Not allowed key")
+    type: Optional[Any] = Schema(..., description="Not allowed key")
+
     class Config:
         extra = "allow"
+
+    @validator("relationships", "links", "id", "type")
+    def check_illegal_attributes_fields(cls, v):
+        raise ValueError(
+            '"relationships", "links", "id", "type" MUST NOT be fields under attributes'
+        )
 
 
 class Resource(BaseResource):
