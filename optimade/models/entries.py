@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional, Dict, List
-from pydantic import BaseModel, Schema
+from pydantic import BaseModel, Schema, validator
 
 from .jsonapi import Relationships, Attributes, Resource
 
@@ -29,7 +29,7 @@ This ID maps to the version-specific record, in case it changes in the future.
 
 - **Examples**:
 
-  - :val:`"8bd3e750-b477-41a0-9b11-3a799f21b44f"` 
+  - :val:`"8bd3e750-b477-41a0-9b11-3a799f21b44f"`
   - :val:`"fjeiwoj,54;@=%<>#32"` (Strings that are not URL-safe are allowed.)""",
     )
 
@@ -103,9 +103,16 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
 
 class EntryInfoProperty(BaseModel):
 
-    description: str = Schema(..., description="description of the entry")
+    description: str = Schema(..., description="description of the entry property")
 
-    unit: Optional[str] = Schema(..., description="the physical unit of the entry")
+    unit: Optional[str] = Schema(
+        ..., description="the physical unit of the entry property"
+    )
+
+    sortable: Optional[bool] = Schema(
+        ...,
+        description='defines whether the entry property can be used for sorting with the "sort" parameter. If the entry listing endpoint supports sorting, this key MUST be present for all properties.',
+    )
 
 
 class EntryInfoResource(BaseModel):
