@@ -9,6 +9,7 @@ python:
   - "3.8"
 install:
    - pip install -e .[testing]
+   - pip install codecov
    - docker pull quen2404/openapi-diff
 script:
    - py.test --cov=optimade

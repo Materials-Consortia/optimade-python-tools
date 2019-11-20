@@ -27,7 +27,7 @@
     ],
     "extras_require": {
         "dev": ["black", "invoke", "pre-commit", "twine"],
-        "testing": ["pytest>=3.6", "openapi-spec-validator", "jsondiff"],
+        "testing": ["pytest>=3.6", "pytest-cov", "openapi-spec-validator", "jsondiff"],
         "django": ["django>=2.2.5"],
         "elastic": ["elasticsearch_dsl>=6.4.0"]
     },
