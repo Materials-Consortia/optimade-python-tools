@@ -6,7 +6,7 @@ import json
 
 from pydantic import ValidationError, BaseModel, ConfigError
 from optimade.models.util import conlist
-from optimade.models import StructureResource
+from optimade.models import StructureResource, EntryRelationships
 from optimade.server.mappers import StructureMapper
 
 
@@ -43,6 +43,12 @@ class TestPydanticValidation(unittest.TestCase):
                 ),
             ):
                 StructureResource(**StructureMapper.map_back(structure))
+
+    def test_simple_relationships(self):
+        relationship = {
+            "references": {"data": [{"id": "Dijkstra1968", "type": "references"}]}
+        }
+        EntryRelationships(**relationship)
 
 
 def test_constrained_list():

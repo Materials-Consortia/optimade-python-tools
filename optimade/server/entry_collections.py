@@ -126,7 +126,6 @@ class MongoCollection(EntryCollection):
         id_set = set()
         for doc in self.collection.find(**criteria):
             results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
-            print(doc.get("relationships").get("references").get("data"))
             for reference in (
                 doc.get("relationships", {}).get("references", {}).get("data", [])
             ):

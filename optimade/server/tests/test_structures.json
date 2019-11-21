@@ -65,7 +65,7 @@
     "relationships": {
         "references": {
             "data": [
-                {"type": "references", "id": "references/Dijkstra1968"}
+                {"type": "references", "id": "Dijkstra1968"}
             ]
         }
     }
@@ -176,7 +176,7 @@
     "relationships": {
         "references": {
             "data": [
-                {"type": "references", "id": "references/Dijkstra1968"}
+                {"type": "references", "id": "Dijkstra1968"}
             ]
         }
     }
