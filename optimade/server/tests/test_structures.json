@@ -61,7 +61,14 @@
       "Ac"
     ],
     "structure_features": [],
-    "task_id": "mpf_1"
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "references/Dijkstra1968"}
+            ]
+        }
+    }
   },
   {
     "_id": {
@@ -165,7 +172,14 @@
       "Ir"
     ],
     "structure_features": [],
-    "task_id": "mpf_2"
+    "task_id": "mpf_2",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "references/Dijkstra1968"}
+            ]
+        }
+    }
   },
   {
     "_id": {
