@@ -1,5 +1,5 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
-from typing import Optional, Set, Union, Any
+from typing import Optional, Set, Union, Any, List
 from pydantic import BaseModel, UrlStr, Schema, validator
 
 
@@ -151,7 +151,7 @@ class Relationship(BaseModel):
         ...,
         description="a links object containing at least one of the following: self, related",
     )
-    data: Optional[Union[BaseResource, Set[BaseResource]]] = Schema(
+    data: Optional[Union[BaseResource, List[BaseResource]]] = Schema(
         ..., description="Resource linkage"
     )
     meta: Optional[Meta] = Schema(
