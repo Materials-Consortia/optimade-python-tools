@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Collection, Tuple, List, Union
+from typing import Collection, Tuple, List, Union, Dict
 
 import mongomock
 import pymongo.collection
@@ -97,7 +97,7 @@ class MongoCollection(EntryCollection):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[List[EntryResource], bool, NonnegativeInt, set]:
+    ) -> Tuple[List[EntryResource], bool, NonnegativeInt, set, List[Dict]]:
         criteria = self._parse_params(params)
         if isinstance(params, EntryListingQueryParams):
             criteria_nolimit = criteria.copy()
@@ -120,13 +120,30 @@ class MongoCollection(EntryCollection):
         else:
             fields = all_fields.copy()
         results = []
+
+        # build up set of included data with unique IDs
+        included = []
+        id_set = set()
         for doc in self.collection.find(**criteria):
             results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
+            print(doc.get("relationships").get("references").get("data"))
+            for reference in (
+                doc.get("relationships", {}).get("references", {}).get("data", [])
+            ):
+                if reference["id"] not in id_set:
+                    included.append(reference)
+                    id_set.add(reference["id"])
 
         if isinstance(params, SingleEntryQueryParams):
             results = results[0] if results else None
 
-        return results, more_data_available, data_available, all_fields - fields
+        return (
+            results,
+            more_data_available,
+            data_available,
+            all_fields - fields,
+            included,
+        )
 
     def _alias_filter(self, filter_: dict) -> dict:
         res = {}
