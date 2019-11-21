@@ -6,8 +6,9 @@ from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
 from .jsonapi import Link, Meta
 from .util import NonnegativeInt
 from .baseinfo import BaseInfoResource
-from .entries import EntryInfoResource
+from .entries import EntryInfoResource, EntryResource
 from .optimade_json import Error, Success, Failure, Warnings
+from .references import ReferenceResource
 from .structures import StructureResource
 
 
@@ -17,11 +18,15 @@ __all__ = (
     "ImplementationMaintainer",
     "Implementation",
     "ResponseMeta",
-    "StructureResponseOne",
-    "StructureResponseMany",
     "ErrorResponse",
     "EntryInfoResponse",
     "InfoResponse",
+    "EntryResponseOne",
+    "EntryResponseMany",
+    "StructureResponseOne",
+    "StructureResponseMany",
+    "ReferenceResponseOne",
+    "ReferenceResponseMany",
 )
 
 
@@ -162,16 +167,6 @@ class ResponseMeta(Meta):
     )
 
 
-class StructureResponseOne(Success):
-    meta: ResponseMeta = Schema(...)
-    data: Union[StructureResource, Dict[str, Any], None] = Schema(...)
-
-
-class StructureResponseMany(Success):
-    meta: ResponseMeta = Schema(...)
-    data: Union[List[StructureResource], List[Dict[str, Any]]] = Schema(...)
-
-
 class ErrorResponse(Failure):
     meta: Optional[ResponseMeta] = Schema(...)
     errors: List[Error] = Schema(...)
@@ -185,3 +180,29 @@ class EntryInfoResponse(Success):
 class InfoResponse(Success):
     meta: Optional[ResponseMeta] = Schema(...)
     data: BaseInfoResource = Schema(...)
+
+
+class EntryResponseOne(Success):
+    meta: ResponseMeta = Schema(...)
+    data: Union[EntryResource, Dict[str, Any], None] = Schema(...)
+
+
+class EntryResponseMany(Success):
+    meta: ResponseMeta = Schema(...)
+    data: Union[List[EntryResource], List[Dict[str, Any]]] = Schema(...)
+
+
+class StructureResponseOne(EntryResponseOne):
+    data: Union[StructureResource, Dict[str, Any], None] = Schema(...)
+
+
+class StructureResponseMany(EntryResponseMany):
+    data: Union[List[StructureResource], List[Dict[str, Any]]] = Schema(...)
+
+
+class ReferenceResponseOne(EntryResponseOne):
+    data: Union[ReferenceResource, Dict[str, Any], None] = Schema(...)
+
+
+class ReferenceResponseMany(EntryResponseMany):
+    data: Union[List[ReferenceResource], List[Dict[str, Any]]] = Schema(...)

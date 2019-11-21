@@ -1,18 +1,13 @@
 from .entries import ResourceMapper
 
 
-__all__ = ("StructureMapper",)
+__all__ = ("ReferenceMapper",)
 
 
-class StructureMapper(ResourceMapper):
+class ReferenceMapper(ResourceMapper):
 
-    ENDPOINT = "structures"
-    ALIASES = (
-        ("id", "task_id"),
-        ("chemical_formula_descriptive", "pretty_formula"),
-        ("chemical_formula_reduced", "pretty_formula"),
-        ("chemical_formula_anonymous", "formula_anonymous"),
-    )
+    ENDPOINT = "references"
+    ALIASES = (("id", "task_id"),)
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
@@ -26,8 +21,6 @@ class StructureMapper(ResourceMapper):
         """
         if "_id" in doc:
             del doc["_id"]
-        if "nsites" not in doc:
-            doc["nsites"] = len(doc.get("cartesian_site_positions", []))
         # print(doc)
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}

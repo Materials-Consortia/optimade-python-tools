@@ -1,4 +1,4 @@
-# pylint: disable=no-member
+# pylint: disable=no-member,wrong-import-position
 import unittest
 import abc
 
@@ -8,6 +8,8 @@ from optimade.validator import ImplementationValidator
 
 from optimade.server.main import app
 from optimade.models import (
+    ReferenceResponseMany,
+    ReferenceResponseOne,
     StructureResponseMany,
     StructureResponseOne,
     EntryInfoResponse,
@@ -94,6 +96,22 @@ class InfoStructuresEndpointTests(EndpointTests, unittest.TestCase):
         self.assertTrue("data" in self.json_response)
         data_keys = ["description", "properties", "formats", "output_fields_by_format"]
         self.check_keys(data_keys, self.json_response["data"])
+
+
+class InfoReferencesEndpointTests(EndpointTests, unittest.TestCase):
+    request_str = "info/references"
+    response_cls = EntryInfoResponse
+
+
+class ReferencesEndpointTests(EndpointTests, unittest.TestCase):
+    request_str = "references"
+    response_cls = ReferenceResponseMany
+
+
+class SingleReferenceEndpointTests(EndpointTests, unittest.TestCase):
+    test_id = "Dijkstra1968"
+    request_str = f"references/{test_id}"
+    response_cls = ReferenceResponseOne
 
 
 class StructuresEndpointTests(EndpointTests, unittest.TestCase):

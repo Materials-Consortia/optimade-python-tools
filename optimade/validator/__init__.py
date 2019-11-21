@@ -41,20 +41,28 @@ def validate():
         ),
     )
     parser.add_argument(
-        "--verbosity", "-v", type=int, default=0, help="The verbosity of the output"
+        "--verbosity", "-v", type=int, default=1, help="The verbosity of the output"
     )
     parser.add_argument(
         "--as_type",
         "-a",
         type=str,
         help=(
-            """ Validate the request URL with the provided type, rather than scanning the entire implementation e.g. optimade_validator `http://example.com/optimade/structures/0 --as_type structures`"""
+            """Validate the request URL with the provided type, rather than scanning the entire implementation e.g. optimade_validator `http://example.com/optimade/structures/0 --as_type structures`"""
         ),
     )
 
     args = vars(parser.parse_args())
 
-    valid_types = ["info", "info/structures", "structures", "structure"]
+    valid_types = [
+        "info",
+        "info/references",
+        "info/structures",
+        "references",
+        "reference",
+        "structures",
+        "structure",
+    ]
     if args["as_type"] is not None and args["as_type"] not in valid_types:
         sys.exit("{args['as_type']} is not a valid type, must be one of {valid_types}")
 
