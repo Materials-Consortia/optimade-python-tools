@@ -10,7 +10,22 @@ from typing import List
 from pydantic import Schema
 
 from optimade.models.optimade_json import Success
-from optimade.models import ResponseMeta, StructureResource, EntryResource
+from optimade.models import (
+    ResponseMeta,
+    EntryResource,
+    StructureResource,
+    ReferenceResource,
+)
+
+
+class ValidatorEntryResponseOne(Success):
+    meta: ResponseMeta = Schema(...)
+    data: EntryResource = Schema(...)
+
+
+class ValidatorEntryResponseMany(Success):
+    meta: ResponseMeta = Schema(...)
+    data: List[EntryResource] = Schema(...)
 
 
 class ValidatorStructureResponseOne(Success):
@@ -23,11 +38,11 @@ class ValidatorStructureResponseMany(Success):
     data: List[StructureResource] = Schema(...)
 
 
-class ValidatorEntryResponseOne(Success):
+class ValidatorReferenceResponseOne(Success):
     meta: ResponseMeta = Schema(...)
-    data: EntryResource = Schema(...)
+    data: ReferenceResource = Schema(...)
 
 
-class ValidatorEntryResponseMany(Success):
+class ValidatorReferenceResponseMany(Success):
     meta: ResponseMeta = Schema(...)
-    data: List[EntryResource] = Schema(...)
+    data: List[ReferenceResource] = Schema(...)
