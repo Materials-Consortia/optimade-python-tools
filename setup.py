@@ -4,21 +4,19 @@ from setuptools import setup, find_packages
 
 module_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Create special extra dependencies
-extras_require = {
-    "dev": ["black", "invoke", "pre-commit", "twine"],
-    "testing": ["pytest>=3.6", "pytest-cov", "openapi-spec-validator", "jsondiff"],
-    "django": ["django>=2.2.5"],
-    "elastic": ["elasticsearch_dsl>=6.4.0"],
-}
-
-extras_require["testing"] = set(
-    extras_require["testing"] + extras_require["django"] + extras_require["elastic"]
+# Dependencies
+mongo_deps = ["pymongo>=3.8", "mongomock>=3.16"]
+server_deps = ["uvicorn"] + mongo_deps
+django_deps = ["django>=2.2.5"]
+elastic_deps = ["elasticsearch_dsl>=6.4.0"]
+testing_deps = (
+    ["pytest>=3.6", "pytest-cov", "codecov", "openapi-spec-validator", "jsondiff"]
+    + server_deps
+    + django_deps
+    + elastic_deps
 )
-
-extras_require["all"] = list(
-    {item for sublist in extras_require.values() for item in sublist}
-)
+dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps
+all_deps = testing_deps + dev_deps
 
 setup(
     name="optimade",
@@ -45,13 +43,20 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        "pymongo>=3.8",
         "lark-parser>=0.7.7",
-        "mongomock>=3.16",
-        "fastapi[all]>=0.42.0",
+        "fastapi>=0.42.0",
+        "email_validator",
+        "requests",
     ],
-    extras_require=extras_require,
-    tests_require=list(extras_require["testing"]),
+    extras_require={
+        "all": all_deps,
+        "dev": dev_deps,
+        "server": server_deps,
+        "testing": testing_deps,
+        "django": django_deps,
+        "elastic": elastic_deps,
+        "mongo": mongo_deps,
+    },
     entry_points={
         "console_scripts": ["optimade_validator=optimade.validator:validate"]
     },
