@@ -1,12 +1,8 @@
 from lark import Transformer, v_args, Token
 
 
-class OperatorError(Exception):
-    pass
-
-
-class UnknownMongoDBQueryError(Exception):
-    pass
+class TransformerError(Exception):
+    """Error in transforming filter expression"""
 
 
 op_expr = {"<": "$lt", "<=": "$lte", ">": "$gt", ">=": "$gte", "!=": "$ne", "=": "$eq"}
@@ -53,8 +49,7 @@ class MongoTransformer(Transformer):
         if len(args) == 2:
             field, predicate = next(((k, v) for k, v in args[1].items()))
             return {field: {"$not": predicate}}
-        else:
-            return args[0]
+        return args[0]
 
     def comparison(self, args):
         field = args[0].value
@@ -154,10 +149,10 @@ class NewMongoTransformer(Transformer):
         if len(arg) == 1:
             # without NOT
             return arg[0]
-        else:
-            # with NOT
-            # TODO: This implementation probably fails in the case of `predicate_comparison` or `"(" expression ")"`
-            return {prop: {"$not": expr} for prop, expr in arg[1].items()}
+
+        # with NOT
+        # TODO: This implementation probably fails in the case of `predicate_comparison` or `"(" expression ")"`
+        return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
     @v_args(inline=True)
     def comparison(self, value):
@@ -187,8 +182,12 @@ class NewMongoTransformer(Transformer):
         # known_op_rhs: IS ( KNOWN | UNKNOWN )
         if arg[1] == "KNOWN":
             return {"$exists": True}
-        elif arg[1] == "UNKNOWN":
+        if arg[1] == "UNKNOWN":
             return {"$exists": False}
+
+        raise TransformerError(
+            f'"known_op_rhs" can only be "KNOWN" or "UNKNOWN". Passed: {arg[1]}'
+        )
 
     def fuzzy_string_op_rhs(self, arg):
         # fuzzy_string_op_rhs: CONTAINS string | STARTS [ WITH ] string | ENDS [ WITH ] string
@@ -201,10 +200,14 @@ class NewMongoTransformer(Transformer):
 
         if arg[0] == "CONTAINS":
             return {"$regex": f"{pattern}"}
-        elif arg[0] == "STARTS":
+        if arg[0] == "STARTS":
             return {"$regex": f"^{pattern}"}
-        elif arg[0] == "ENDS":
+        if arg[0] == "ENDS":
             return {"$regex": f"{pattern}$"}
+
+        raise TransformerError(
+            f'"fuzzy_string_op_rhs" can only have arguments "CONTAINS", "STARTS", and "ENDS". Passed: {arg[0]}'
+        )
 
     def set_op_rhs(self, arg):
         # set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )
@@ -212,16 +215,15 @@ class NewMongoTransformer(Transformer):
         if len(arg) == 2:
             # only value without OPERATOR
             return {"$in": arg[1:]}
-        else:
-            if arg[1] == "ALL":
-                raise NotImplementedError
-            elif arg[1] == "ANY":
-                raise NotImplementedError
-            elif arg[1] == "ONLY":
-                raise NotImplementedError
-            else:
-                # value with OPERATOR
-                raise NotImplementedError
+
+        if arg[1] == "ALL":
+            raise NotImplementedError
+        if arg[1] == "ANY":
+            raise NotImplementedError
+        if arg[1] == "ONLY":
+            raise NotImplementedError
+        # value with OPERATOR
+        raise NotImplementedError
 
     def set_zip_op_rhs(self, arg):
         # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
@@ -233,8 +235,8 @@ class NewMongoTransformer(Transformer):
         # TODO: https://stackoverflow.com/questions/7811163/query-for-documents-where-array-size-is-greater-than-1
         if arg[2] == "=":
             return {arg[1]: {"$size": arg[3]}}
-        else:
-            raise NotImplementedError
+
+        raise NotImplementedError
 
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*
@@ -254,8 +256,14 @@ class NewMongoTransformer(Transformer):
         token = arg[0]
         if token.type == "SIGNED_INT":
             return int(token)
-        elif token.type == "SIGNED_FLOAT":
+        if token.type == "SIGNED_FLOAT":
             return float(token)
 
+        raise TransformerError(
+            f'"number" MUST be either of types "SIGNED_INT" or "SIGNED_FLOAT". Passed type: {token.type}'
+        )
+
     def __default__(self, data, children, meta):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f"Calling __default__, i.e., unknown grammar concept. data: {data}, children: {children}, meta: {meta}"
+        )

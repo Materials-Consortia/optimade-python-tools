@@ -1,7 +1,5 @@
-""" This module contains the ImplementationValidator class and corresponding
-command line tools.
-
-"""
+""" This module contains the ImplementationValidator class and corresponding command line tools. """
+# pylint: disable=line-too-long
 
 from .validator import ImplementationValidator
 
