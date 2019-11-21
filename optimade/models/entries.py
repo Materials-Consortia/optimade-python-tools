@@ -2,15 +2,24 @@ from datetime import datetime
 from typing import Optional, Dict, List
 from pydantic import BaseModel, Schema, validator
 
-from .jsonapi import Relationships, Attributes, Resource
+from .jsonapi import Relationships, Attributes, Resource, Relationship
 
 
 __all__ = (
+    "EntryRelationships",
     "EntryResourceAttributes",
     "EntryResource",
     "EntryInfoProperty",
     "EntryInfoResource",
 )
+
+
+class EntryRelationships(Relationships):
+    """This model wraps the JSON API Relationships to include type-specific top level keys. """
+
+    references: Optional[Relationship] = Schema(
+        ..., description="Object containing links to relationships with other entries."
+    )
 
 
 class EntryResourceAttributes(Attributes):
@@ -93,7 +102,7 @@ Database-provider-specific properties need to include the database-provider-spec
 (see appendix `Database-Provider-Specific Namespace Prefixes`_).""",
     )
 
-    relationships: Optional[Relationships] = Schema(
+    relationships: Optional[EntryRelationships] = Schema(
         ...,
         description="""a dictionary containing references to other entries according to the description in section `Relationships`_
 encoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.
