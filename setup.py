@@ -9,12 +9,13 @@ mongo_deps = ["pymongo>=3.8", "mongomock>=3.16"]
 server_deps = ["uvicorn"] + mongo_deps
 django_deps = ["django>=2.2.5"]
 elastic_deps = ["elasticsearch_dsl>=6.4.0"]
-testing_deps = (
-    ["pytest>=3.6", "pytest-cov", "codecov", "openapi-spec-validator", "jsondiff"]
-    + server_deps
-    + django_deps
-    + elastic_deps
-)
+testing_deps = [
+    "pytest>=3.6",
+    "pytest-cov",
+    "codecov",
+    "openapi-spec-validator",
+    "jsondiff",
+] + server_deps
 dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps
 all_deps = testing_deps + dev_deps
 
