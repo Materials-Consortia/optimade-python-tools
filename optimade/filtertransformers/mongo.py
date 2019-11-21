@@ -1,10 +1,6 @@
 from lark import Transformer, v_args, Token
 
 
-class TransformerError(Exception):
-    """Error in transforming filter expression"""
-
-
 op_expr = {"<": "$lt", "<=": "$lte", ">": "$gt", ">=": "$gte", "!=": "$ne", "=": "$eq"}
 
 
@@ -106,9 +102,7 @@ class NewMongoTransformer(Transformer):
 
     def filter(self, arg):
         # filter: expression*
-        if not arg:
-            return None
-        return arg[0]
+        return arg[0] if arg else None
 
     @v_args(inline=True)
     def constant(self, value):
@@ -180,14 +174,7 @@ class NewMongoTransformer(Transformer):
 
     def known_op_rhs(self, arg):
         # known_op_rhs: IS ( KNOWN | UNKNOWN )
-        if arg[1] == "KNOWN":
-            return {"$exists": True}
-        if arg[1] == "UNKNOWN":
-            return {"$exists": False}
-
-        raise TransformerError(
-            f'"known_op_rhs" can only be "KNOWN" or "UNKNOWN". Passed: {arg[1]}'
-        )
+        return {"$exists": arg[1] == "KNOWN"}
 
     def fuzzy_string_op_rhs(self, arg):
         # fuzzy_string_op_rhs: CONTAINS string | STARTS [ WITH ] string | ENDS [ WITH ] string
@@ -198,16 +185,14 @@ class NewMongoTransformer(Transformer):
         else:
             pattern = arg[1]
 
+        # CONTAINS
         if arg[0] == "CONTAINS":
-            return {"$regex": f"{pattern}"}
-        if arg[0] == "STARTS":
-            return {"$regex": f"^{pattern}"}
-        if arg[0] == "ENDS":
-            return {"$regex": f"{pattern}$"}
-
-        raise TransformerError(
-            f'"fuzzy_string_op_rhs" can only have arguments "CONTAINS", "STARTS", and "ENDS". Passed: {arg[0]}'
-        )
+            regex = f"{pattern}"
+        elif arg[0] == "STARTS":
+            regex = f"^{pattern}"
+        elif arg[0] == "ENDS":
+            regex = f"{pattern}$"
+        return {"$regex": regex}
 
     def set_op_rhs(self, arg):
         # set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )
@@ -222,6 +207,7 @@ class NewMongoTransformer(Transformer):
             raise NotImplementedError
         if arg[1] == "ONLY":
             raise NotImplementedError
+
         # value with OPERATOR
         raise NotImplementedError
 
@@ -255,13 +241,10 @@ class NewMongoTransformer(Transformer):
         # number: SIGNED_INT | SIGNED_FLOAT
         token = arg[0]
         if token.type == "SIGNED_INT":
-            return int(token)
-        if token.type == "SIGNED_FLOAT":
-            return float(token)
-
-        raise TransformerError(
-            f'"number" MUST be either of types "SIGNED_INT" or "SIGNED_FLOAT". Passed type: {token.type}'
-        )
+            type_ = int
+        elif token.type == "SIGNED_FLOAT":
+            type_ = float
+        return type_(token)
 
     def __default__(self, data, children, meta):
         raise NotImplementedError(
