@@ -1,5 +1,0 @@
-# To pin testing and deployments to specific versions
-fastapi[all]==0.28.0
-lark-parser==0.7.7
-mongomock==3.16
-pymongo==3.8.0
