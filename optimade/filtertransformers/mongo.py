@@ -1,14 +1,6 @@
 from lark import Transformer, v_args, Token
 
 
-class OperatorError(Exception):
-    pass
-
-
-class UnknownMongoDBQueryError(Exception):
-    pass
-
-
 op_expr = {"<": "$lt", "<=": "$lte", ">": "$gt", ">=": "$gte", "!=": "$ne", "=": "$eq"}
 
 
@@ -53,8 +45,7 @@ class MongoTransformer(Transformer):
         if len(args) == 2:
             field, predicate = next(((k, v) for k, v in args[1].items()))
             return {field: {"$not": predicate}}
-        else:
-            return args[0]
+        return args[0]
 
     def comparison(self, args):
         field = args[0].value
@@ -111,9 +102,7 @@ class NewMongoTransformer(Transformer):
 
     def filter(self, arg):
         # filter: expression*
-        if not arg:
-            return None
-        return arg[0]
+        return arg[0] if arg else None
 
     @v_args(inline=True)
     def constant(self, value):
@@ -154,10 +143,10 @@ class NewMongoTransformer(Transformer):
         if len(arg) == 1:
             # without NOT
             return arg[0]
-        else:
-            # with NOT
-            # TODO: This implementation probably fails in the case of `predicate_comparison` or `"(" expression ")"`
-            return {prop: {"$not": expr} for prop, expr in arg[1].items()}
+
+        # with NOT
+        # TODO: This implementation probably fails in the case of `predicate_comparison` or `"(" expression ")"`
+        return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
     @v_args(inline=True)
     def comparison(self, value):
@@ -185,10 +174,7 @@ class NewMongoTransformer(Transformer):
 
     def known_op_rhs(self, arg):
         # known_op_rhs: IS ( KNOWN | UNKNOWN )
-        if arg[1] == "KNOWN":
-            return {"$exists": True}
-        elif arg[1] == "UNKNOWN":
-            return {"$exists": False}
+        return {"$exists": arg[1] == "KNOWN"}
 
     def fuzzy_string_op_rhs(self, arg):
         # fuzzy_string_op_rhs: CONTAINS string | STARTS [ WITH ] string | ENDS [ WITH ] string
@@ -199,12 +185,14 @@ class NewMongoTransformer(Transformer):
         else:
             pattern = arg[1]
 
+        # CONTAINS
         if arg[0] == "CONTAINS":
-            return {"$regex": f"{pattern}"}
+            regex = f"{pattern}"
         elif arg[0] == "STARTS":
-            return {"$regex": f"^{pattern}"}
+            regex = f"^{pattern}"
         elif arg[0] == "ENDS":
-            return {"$regex": f"{pattern}$"}
+            regex = f"{pattern}$"
+        return {"$regex": regex}
 
     def set_op_rhs(self, arg):
         # set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )
@@ -212,16 +200,16 @@ class NewMongoTransformer(Transformer):
         if len(arg) == 2:
             # only value without OPERATOR
             return {"$in": arg[1:]}
-        else:
-            if arg[1] == "ALL":
-                raise NotImplementedError
-            elif arg[1] == "ANY":
-                raise NotImplementedError
-            elif arg[1] == "ONLY":
-                raise NotImplementedError
-            else:
-                # value with OPERATOR
-                raise NotImplementedError
+
+        if arg[1] == "ALL":
+            raise NotImplementedError
+        if arg[1] == "ANY":
+            raise NotImplementedError
+        if arg[1] == "ONLY":
+            raise NotImplementedError
+
+        # value with OPERATOR
+        raise NotImplementedError
 
     def set_zip_op_rhs(self, arg):
         # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
@@ -233,8 +221,8 @@ class NewMongoTransformer(Transformer):
         # TODO: https://stackoverflow.com/questions/7811163/query-for-documents-where-array-size-is-greater-than-1
         if arg[2] == "=":
             return {arg[1]: {"$size": arg[3]}}
-        else:
-            raise NotImplementedError
+
+        raise NotImplementedError
 
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*
@@ -253,9 +241,12 @@ class NewMongoTransformer(Transformer):
         # number: SIGNED_INT | SIGNED_FLOAT
         token = arg[0]
         if token.type == "SIGNED_INT":
-            return int(token)
+            type_ = int
         elif token.type == "SIGNED_FLOAT":
-            return float(token)
+            type_ = float
+        return type_(token)
 
     def __default__(self, data, children, meta):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f"Calling __default__, i.e., unknown grammar concept. data: {data}, children: {children}, meta: {meta}"
+        )
