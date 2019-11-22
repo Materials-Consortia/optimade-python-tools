@@ -1,3 +1,4 @@
+# pylint: disable=no-self-argument,line-too-long
 from sys import float_info
 from typing import List, Optional
 
@@ -123,7 +124,7 @@ The possible reasons for the values not to sum to one are the same as already sp
         sites = []
         for group in v:
             sites.extend(group)
-        if not (len(set(sites)) == len(sites)):
+        if len(set(sites)) != len(sites):
             raise ValueError(
                 f"A site MUST NOT appear in more than one group. Given value: {v}"
             )
