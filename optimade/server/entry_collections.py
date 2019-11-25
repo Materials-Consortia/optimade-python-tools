@@ -119,19 +119,18 @@ class MongoCollection(EntryCollection):
             fields = set(params.response_fields.split(","))
         else:
             fields = all_fields.copy()
-        results = []
 
-        # build up set of included data with unique IDs
-        included = []
-        id_set = set()
+        results = []
+        included = {}
         for doc in self.collection.find(**criteria):
             results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
-            for reference in (
-                doc.get("relationships", {}).get("references", {}).get("data", [])
-            ):
-                if reference["id"] not in id_set:
-                    included.append(reference)
-                    id_set.add(reference["id"])
+            # collapse list of references into dict by ID and take only one per ID
+            refs = doc.get("relationships", {}).get("references", {}).get("data", [])
+            for ref in refs:
+                # could check here and raise a warning if any IDs clash
+                included[ref["id"]] = ref
+
+        included = list(included.values())
 
         if isinstance(params, SingleEntryQueryParams):
             results = results[0] if results else None
