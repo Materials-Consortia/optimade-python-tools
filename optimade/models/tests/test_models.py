@@ -50,6 +50,12 @@ class TestPydanticValidation(unittest.TestCase):
         }
         EntryRelationships(**relationship)
 
+        relationship = {
+            "references": {"data": [{"id": "Dijkstra1968", "type": "structures"}]}
+        }
+        with self.assertRaises(ValidationError):
+            EntryRelationships(**relationship)
+
 
 def test_constrained_list():
     class ConListModel(BaseModel):

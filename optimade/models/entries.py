@@ -1,7 +1,7 @@
 # pylint: disable=line-too-long
 from datetime import datetime
-from typing import Optional, Dict, List
-from pydantic import BaseModel, Schema
+from typing import Optional, Dict, List, Union
+from pydantic import BaseModel, Schema, validator
 
 from .jsonapi import Relationships, Attributes, Resource, Relationship
 
@@ -15,11 +15,33 @@ __all__ = (
 )
 
 
+class TypedRelationship(Relationship):
+    @validator("data", whole=True)
+    def check_rel_type(cls, data, values):
+        if hasattr(cls, "_req_type") and any(obj.type != cls._req_type for obj in data):
+            raise ValueError("Object stored in relationship data has wrong type")
+        return data
+
+
+class ReferenceRelationship(TypedRelationship):
+    _req_type = "references"
+
+
+class StructureRelationship(TypedRelationship):
+    _req_type = "structures"
+
+
 class EntryRelationships(Relationships):
     """This model wraps the JSON API Relationships to include type-specific top level keys. """
 
-    references: Optional[Relationship] = Schema(
-        ..., description="Object containing links to relationships with other entries."
+    references: Optional[ReferenceRelationship] = Schema(
+        ...,
+        description="Object containing links to relationships with entries of the `references` type.",
+    )
+
+    structures: Optional[StructureRelationship] = Schema(
+        ...,
+        description="Object containing links to relationships with entries of the `structures` type.",
     )
 
 
