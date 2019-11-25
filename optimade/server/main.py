@@ -9,9 +9,11 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
 
 from optimade.models import (
+    LinksResource,
     StructureResource,
     ReferenceResource,
     InfoResponse,
+    LinksResponse,
     ErrorResponse,
     EntryInfoResponse,
     ReferenceResponseMany,
@@ -23,7 +25,7 @@ from optimade.models import (
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .entry_collections import MongoCollection
 from .config import CONFIG
-from .mappers import StructureMapper, ReferenceMapper
+from .mappers import LinksMapper, StructureMapper, ReferenceMapper
 import optimade.server.utils as u
 
 
@@ -50,6 +52,9 @@ structures = MongoCollection(
 references = MongoCollection(
     client[CONFIG.mongo_database]["references"], ReferenceResource, ReferenceMapper
 )
+links = MongoCollection(
+    client[CONFIG.mongo_database]["links"], LinksResource, LinksMapper
+)
 ENTRY_COLLECTIONS = {"references": references, "structures": structures}
 
 
@@ -60,6 +65,7 @@ test_paths = {
     "references": Path(__file__)
     .resolve()
     .parent.joinpath("tests/test_references.json"),
+    "links": Path(__file__).resolve().parent.joinpath("tests/test_links.json"),
 }
 if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
     import bson.json_util
@@ -76,6 +82,9 @@ if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values())
 
     load_entries("structures", structures)
     load_entries("references", references)
+    load_entries("links", links)
+
+    # Load providers.json
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -214,6 +223,16 @@ def get_entry_info(request: Request, entry: str):
             output_fields_by_format=output_fields_by_format,
         ),
     )
+
+
+@app.get(
+    "/links",
+    response_model=Union[LinksResponse, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Links"],
+)
+def get_links(request: Request, params: SingleEntryQueryParams = Depends()):
+    return u.get_entries(links, LinksResponse, request, params)
 
 
 def update_schema(app):

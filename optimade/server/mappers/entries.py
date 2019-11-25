@@ -1,12 +1,10 @@
-import abc
 from typing import Tuple
 from optimade.server.config import CONFIG
-
 
 __all__ = ("ResourceMapper",)
 
 
-class ResourceMapper(metaclass=abc.ABCMeta):
+class ResourceMapper:
     """Generic Resource Mapper"""
 
     ENDPOINT: str = ""
@@ -17,7 +15,7 @@ class ResourceMapper(metaclass=abc.ABCMeta):
         return (
             tuple(
                 (CONFIG.provider["prefix"] + field, field)
-                for field in CONFIG.provider_fields[cls.ENDPOINT]
+                for field in CONFIG.provider_fields.get(cls.ENDPOINT, {})
             )
             + cls.ALIASES
         )
@@ -34,7 +32,7 @@ class ResourceMapper(metaclass=abc.ABCMeta):
         """
         return dict(cls.all_aliases()).get(field, field)
 
-    @abc.abstractclassmethod
+    @classmethod
     def map_back(cls, doc: dict) -> dict:
         """Map properties from MongoDB to OPTiMaDe
 
@@ -44,3 +42,31 @@ class ResourceMapper(metaclass=abc.ABCMeta):
         :return: A resource object in OPTiMaDe format
         :rtype: dict
         """
+        if "_id" in doc:
+            del doc["_id"]
+
+        mapping = ((real, alias) for alias, real in cls.all_aliases())
+        newdoc = {}
+        reals = {real for alias, real in cls.all_aliases()}
+        for k in doc:
+            if k not in reals:
+                newdoc[k] = doc[k]
+        for real, alias in mapping:
+            if real in doc:
+                newdoc[alias] = doc[real]
+
+        if "attributes" in newdoc:
+            raise Exception("Will overwrite doc field!")
+        attributes = newdoc.copy()
+
+        top_level_entry_fields = {"id", "type", "relationships", "links"}
+        for k in top_level_entry_fields:
+            attributes.pop(k, None)
+        for k in list(newdoc.keys()):
+            if k not in top_level_entry_fields:
+                del newdoc[k]
+
+        newdoc["type"] = cls.ENDPOINT
+        newdoc["attributes"] = attributes
+
+        return newdoc
