@@ -83,9 +83,6 @@ class MongoCollection(EntryCollection):
             version=(0, 10, 0), variant="default"
         )  # The NewMongoTransformer only supports v0.10.0 as the latest grammar
 
-        # "Cache"
-        self._data_available: int = None
-
     def __len__(self):
         return self.collection.estimated_document_count()
 
@@ -99,12 +96,6 @@ class MongoCollection(EntryCollection):
         if "filter" not in kwargs:  # "filter" is needed for count_documents()
             kwargs["filter"] = {}
         return self.collection.count_documents(**kwargs)
-
-    @property
-    def data_available(self) -> int:
-        if self._data_available is None:
-            self._data_available = self.count()
-        return self._data_available
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
@@ -142,7 +133,7 @@ class MongoCollection(EntryCollection):
             results,
             data_returned,
             more_data_available,
-            self.data_available,
+            self.count(),  # data_available
             all_fields - fields,
         )
 
