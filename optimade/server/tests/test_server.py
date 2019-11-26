@@ -10,6 +10,7 @@ from optimade.server.main import app
 from optimade.models import (
     ReferenceResponseMany,
     ReferenceResponseOne,
+    ReferenceResource,
     StructureResponseMany,
     StructureResponseOne,
     EntryInfoResponse,
@@ -109,7 +110,7 @@ class ReferencesEndpointTests(EndpointTests, unittest.TestCase):
 
 
 class SingleReferenceEndpointTests(EndpointTests, unittest.TestCase):
-    test_id = "Dijkstra1968"
+    test_id = "dijkstra1968"
     request_str = f"references/{test_id}"
     response_cls = ReferenceResponseOne
 
@@ -189,13 +190,15 @@ class SingleStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
         self.assertTrue("relationships" in self.json_response["data"])
         self.assertDictEqual(
             self.json_response["data"]["relationships"],
-            {"references": {"data": [{"type": "references", "id": "Dijkstra1968"}]}},
+            {"references": {"data": [{"type": "references", "id": "dijkstra1968"}]}},
         )
         self.assertTrue("included" in self.json_response)
         self.assertEqual(
             len(self.json_response["data"]["relationships"]["references"]["data"]),
             len(self.json_response["included"]),
         )
+
+        ref = ReferenceResource(**self.json_response["included"][0])
 
 
 class MultiStructureWithSharedRelationshipsTests(EndpointTests, unittest.TestCase):

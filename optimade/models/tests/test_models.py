@@ -46,12 +46,12 @@ class TestPydanticValidation(unittest.TestCase):
 
     def test_simple_relationships(self):
         relationship = {
-            "references": {"data": [{"id": "Dijkstra1968", "type": "references"}]}
+            "references": {"data": [{"id": "dijkstra1968", "type": "references"}]}
         }
         EntryRelationships(**relationship)
 
         relationship = {
-            "references": {"data": [{"id": "Dijkstra1968", "type": "structures"}]}
+            "references": {"data": [{"id": "dijkstra1968", "type": "structures"}]}
         }
         with self.assertRaises(ValidationError):
             EntryRelationships(**relationship)
