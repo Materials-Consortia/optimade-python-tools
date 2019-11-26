@@ -113,16 +113,75 @@ def handle_response_fields(
     return new_results
 
 
+def get_included_relationships(
+    results: Union[EntryResource, List[EntryResource]],
+    entry_collections: Dict[str, EntryCollection],
+) -> Dict[str, List[EntryResource]]:
+    """Filters the included relationships and makes the appropriate compound request
+    to include them in the response.
+
+    Parameters:
+        results: list of returned documents.
+        entry_collections: dictionary containing collections to query, with key
+            based on endpoint type.
+
+    Returns:
+        Dictionary with the same keys as entry_collections, each containing the list
+            of resource objects for that entry type.
+
+    """
+    from collections import defaultdict
+
+    if not isinstance(results, list):
+        results = [results]
+
+    endpoint_includes = defaultdict(dict)
+    for doc in results:
+        # convert list of references into dict by ID to only included unique IDs
+        if doc is None:
+            continue
+
+        relationships = doc.relationships
+        if relationships is None:
+            continue
+
+        relationships = relationships.dict()
+        for entry_type in entry_collections:
+            entry_relationship = relationships.get(entry_type, {})
+            if entry_relationship is not None:
+                refs = entry_relationship.get("data", [])
+                for ref in refs:
+                    # could check here and raise a warning if any IDs clash
+                    endpoint_includes[entry_type][ref["id"]] = ref
+
+    included = {}
+    for entry_type in endpoint_includes:
+        compound_filter = " AND ".join(
+            ["id={}".format(ref_id) for ref_id in endpoint_includes[entry_type]]
+        )
+        params = {"filter": compound_filter}
+
+        # still need to handle pagination
+        ref_results, more_data_available, data_available, fields = entry_collections[
+            entry_type
+        ].find(params)
+        included[entry_type] = ref_results
+
+    # flatten dict by endpoint to list
+    return [obj for endp in included.values() for obj in endp]
+
+
 def get_entries(
     collection: EntryCollection,
     response: EntryResponseMany,
     request: Request,
     params: EntryListingQueryParams,
+    entry_collections: Dict[str, EntryCollection],
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
-    results, more_data_available, data_available, fields, included = collection.find(
-        params
-    )
+    results, more_data_available, data_available, fields = collection.find(params)
+
+    included = get_included_relationships(results, entry_collections)
 
     if more_data_available:
         parse_result = urllib.parse.urlparse(str(request.url))
@@ -144,7 +203,6 @@ def get_entries(
         meta=meta_values(
             str(request.url), len(results), data_available, more_data_available
         ),
-        # included=[ReferenceResource(**doc) for doc in included],
         included=included,
     )
 
@@ -155,11 +213,12 @@ def get_single_entry(
     response: EntryResponseOne,
     request: Request,
     params: SingleEntryQueryParams,
+    entry_collections: Dict[str, EntryCollection],
 ) -> EntryResponseOne:
     params.filter = f'id="{entry_id}"'
-    results, more_data_available, data_available, fields, included = collection.find(
-        params
-    )
+    results, more_data_available, data_available, fields = collection.find(params)
+
+    included = get_included_relationships(results, entry_collections)
 
     if more_data_available:
         raise StarletteHTTPException(
@@ -180,7 +239,6 @@ def get_single_entry(
         meta=meta_values(
             str(request.url), data_returned, data_available, more_data_available
         ),
-        # included=[ReferenceResource(**doc) for doc in included],
         included=included,
     )
 

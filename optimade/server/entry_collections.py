@@ -121,27 +121,12 @@ class MongoCollection(EntryCollection):
             fields = all_fields.copy()
 
         results = []
-        included = {}
         for doc in self.collection.find(**criteria):
             results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
-            # collapse list of references into dict by ID and take only one per ID
-            refs = doc.get("relationships", {}).get("references", {}).get("data", [])
-            for ref in refs:
-                # could check here and raise a warning if any IDs clash
-                included[ref["id"]] = ref
-
-        included = list(included.values())
-
         if isinstance(params, SingleEntryQueryParams):
             results = results[0] if results else None
 
-        return (
-            results,
-            more_data_available,
-            data_available,
-            all_fields - fields,
-            included,
-        )
+        return (results, more_data_available, data_available, all_fields - fields)
 
     def _alias_filter(self, filter_: dict) -> dict:
         res = {}
