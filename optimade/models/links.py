@@ -51,11 +51,10 @@ class LinksResource(EntryResource):
 
     @validator("type")
     def type_must_be_in_specific_set(cls, value):
-        assert value in {
-            "parent",
-            "child",
-            "provider",
-        }, "name of Links endpoint resource MUST be either 'parent, 'child', or 'provider'"
+        if value not in {"parent", "child", "provider"}:
+            raise ValueError(
+                "name of Links endpoint resource MUST be either 'parent, 'child', or 'provider'"
+            )
         return value
 
 

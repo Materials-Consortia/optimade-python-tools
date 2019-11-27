@@ -84,7 +84,7 @@ class TestTransformer(TestCase):
         for query, _ in queries:
             tree = self.parser.parse(query)
             result = self.transformer.transform(tree)
-            assert result is not None
+            self.assertIsNotNone(result)
 
 
 if __name__ == "__main__":

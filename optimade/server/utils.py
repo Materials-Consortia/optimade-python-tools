@@ -24,8 +24,8 @@ from optimade.models import (
 )
 
 from .config import CONFIG
-from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .entry_collections import EntryCollection
+from .deps import EntryListingQueryParams, SingleEntryQueryParams
 
 
 def meta_values(
@@ -113,6 +113,69 @@ def handle_response_fields(
     return new_results
 
 
+def get_included_relationships(
+    results: Union[EntryResource, List[EntryResource]],
+    ENTRY_COLLECTIONS: Dict[str, EntryCollection],
+) -> Dict[str, List[EntryResource]]:
+    """Filters the included relationships and makes the appropriate compound request
+    to include them in the response.
+
+    Parameters:
+        results: list of returned documents.
+        ENTRY_COLLECTIONS: dictionary containing collections to query, with key
+            based on endpoint type.
+
+    Returns:
+        Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list
+            of resource objects for that entry type.
+
+    """
+    from collections import defaultdict
+
+    if not isinstance(results, list):
+        results = [results]
+
+    endpoint_includes = defaultdict(dict)
+    for doc in results:
+        # convert list of references into dict by ID to only included unique IDs
+        if doc is None:
+            continue
+
+        relationships = doc.relationships
+        if relationships is None:
+            continue
+
+        relationships = relationships.dict()
+        for entry_type in ENTRY_COLLECTIONS:
+            entry_relationship = relationships.get(entry_type, {})
+            if entry_relationship is not None:
+                refs = entry_relationship.get("data", [])
+                for ref in refs:
+                    # could check here and raise a warning if any IDs clash
+                    endpoint_includes[entry_type][ref["id"]] = ref
+
+    included = {}
+    for entry_type in endpoint_includes:
+        compound_filter = " OR ".join(
+            ["id={}".format(ref_id) for ref_id in endpoint_includes[entry_type]]
+        )
+        params = EntryListingQueryParams(
+            filter=compound_filter,
+            response_format="json",
+            response_fields=None,
+            sort=None,
+            page_limit=0,
+            page_offset=0,
+        )
+
+        # still need to handle pagination
+        ref_results, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
+        included[entry_type] = ref_results
+
+    # flatten dict by endpoint to list
+    return [obj for endp in included.values() for obj in endp]
+
+
 def get_entries(
     collection: EntryCollection,
     response: EntryResponseMany,
@@ -120,7 +183,11 @@ def get_entries(
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
+    from .main import ENTRY_COLLECTIONS
+
     results, data_returned, more_data_available, fields = collection.find(params)
+
+    included = get_included_relationships(results, ENTRY_COLLECTIONS)
 
     if more_data_available:
         parse_result = urllib.parse.urlparse(str(request.url))
@@ -145,6 +212,7 @@ def get_entries(
             data_available=len(collection),
             more_data_available=more_data_available,
         ),
+        included=included,
     )
 
 
@@ -155,8 +223,12 @@ def get_single_entry(
     request: Request,
     params: SingleEntryQueryParams,
 ) -> EntryResponseOne:
+    from .main import ENTRY_COLLECTIONS
+
     params.filter = f'id="{entry_id}"'
     results, data_returned, more_data_available, fields = collection.find(params)
+
+    included = get_included_relationships(results, ENTRY_COLLECTIONS)
 
     if more_data_available:
         raise StarletteHTTPException(
@@ -178,6 +250,7 @@ def get_single_entry(
             data_available=len(collection),
             more_data_available=more_data_available,
         ),
+        included=included,
     )
 
 
