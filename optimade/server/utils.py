@@ -120,9 +120,7 @@ def get_entries(
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
-    results, data_returned, more_data_available, data_available, fields = collection.find(
-        params
-    )
+    results, data_returned, more_data_available, fields = collection.find(params)
 
     if more_data_available:
         parse_result = urllib.parse.urlparse(str(request.url))
@@ -142,7 +140,10 @@ def get_entries(
         links=links,
         data=results,
         meta=meta_values(
-            str(request.url), data_returned, data_available, more_data_available
+            url=str(request.url),
+            data_returned=data_returned,
+            data_available=len(collection),
+            more_data_available=more_data_available,
         ),
     )
 
@@ -155,9 +156,7 @@ def get_single_entry(
     params: SingleEntryQueryParams,
 ) -> EntryResponseOne:
     params.filter = f'id="{entry_id}"'
-    results, data_returned, more_data_available, data_available, fields = collection.find(
-        params
-    )
+    results, data_returned, more_data_available, fields = collection.find(params)
 
     if more_data_available:
         raise StarletteHTTPException(
@@ -174,7 +173,10 @@ def get_single_entry(
         links=links,
         data=results,
         meta=meta_values(
-            str(request.url), data_returned, data_available, more_data_available
+            url=str(request.url),
+            data_returned=data_returned,
+            data_available=len(collection),
+            more_data_available=more_data_available,
         ),
     )
 
