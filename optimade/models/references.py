@@ -143,7 +143,6 @@ The following properties are used to provide the bibliographic details:
 
     @validator("attributes")
     def validate_attributes(cls, v):
-        assert any(
-            prop[1] is not None for prop in v
-        ), f"reference object must have at least one field defined"
+        if not any(prop[1] is not None for prop in v):
+            raise ValueError(f"reference object must have at least one field defined")
         return v
