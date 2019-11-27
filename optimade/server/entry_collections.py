@@ -102,7 +102,6 @@ class MongoCollection(EntryCollection):
         if isinstance(params, EntryListingQueryParams):
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
-                del criteria_nolimit["limit"]
             nresults_now = self.count(**criteria)
             nresults_total = self.count(**criteria_nolimit)
             more_data_available = nresults_now < nresults_total
