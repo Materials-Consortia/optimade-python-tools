@@ -165,11 +165,7 @@ def get_included_relationships(
             response_fields=None,
             sort=None,
             page_limit=0,
-            page_offset=0,
-            page_page=0,
-            page_cursor=0,
-            page_above=0,
-            page_below=0,
+            page_offset=0
         )
 
         # still need to handle pagination
