@@ -24,8 +24,8 @@ from optimade.models import (
 )
 
 from .config import CONFIG
-from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .entry_collections import EntryCollection
+from .deps import EntryListingQueryParams, SingleEntryQueryParams
 
 
 def meta_values(
@@ -115,18 +115,18 @@ def handle_response_fields(
 
 def get_included_relationships(
     results: Union[EntryResource, List[EntryResource]],
-    entry_collections: Dict[str, EntryCollection],
+    ENTRY_COLLECTIONS: Dict[str, EntryCollection],
 ) -> Dict[str, List[EntryResource]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
     Parameters:
         results: list of returned documents.
-        entry_collections: dictionary containing collections to query, with key
+        ENTRY_COLLECTIONS: dictionary containing collections to query, with key
             based on endpoint type.
 
     Returns:
-        Dictionary with the same keys as entry_collections, each containing the list
+        Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list
             of resource objects for that entry type.
 
     """
@@ -146,7 +146,7 @@ def get_included_relationships(
             continue
 
         relationships = relationships.dict()
-        for entry_type in entry_collections:
+        for entry_type in ENTRY_COLLECTIONS:
             entry_relationship = relationships.get(entry_type, {})
             if entry_relationship is not None:
                 refs = entry_relationship.get("data", [])
@@ -173,7 +173,7 @@ def get_included_relationships(
         )
 
         # still need to handle pagination
-        ref_results, more_data_available, data_available, fields = entry_collections[
+        ref_results, more_data_available, data_available, fields = ENTRY_COLLECTIONS[
             entry_type
         ].find(params)
         included[entry_type] = ref_results
@@ -187,12 +187,14 @@ def get_entries(
     response: EntryResponseMany,
     request: Request,
     params: EntryListingQueryParams,
-    entry_collections: Dict[str, EntryCollection],
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
+
+    from .main import ENTRY_COLLECTIONS
+
     results, more_data_available, data_available, fields = collection.find(params)
 
-    included = get_included_relationships(results, entry_collections)
+    included = get_included_relationships(results, ENTRY_COLLECTIONS)
 
     if more_data_available:
         parse_result = urllib.parse.urlparse(str(request.url))
@@ -224,12 +226,14 @@ def get_single_entry(
     response: EntryResponseOne,
     request: Request,
     params: SingleEntryQueryParams,
-    entry_collections: Dict[str, EntryCollection],
 ) -> EntryResponseOne:
+
+    from .main import ENTRY_COLLECTIONS
+
     params.filter = f'id="{entry_id}"'
     results, more_data_available, data_available, fields = collection.find(params)
 
-    included = get_included_relationships(results, entry_collections)
+    included = get_included_relationships(results, ENTRY_COLLECTIONS)
 
     if more_data_available:
         raise StarletteHTTPException(

@@ -50,7 +50,8 @@ structures = MongoCollection(
 references = MongoCollection(
     client[CONFIG.mongo_database]["references"], ReferenceResource, ReferenceMapper
 )
-entry_collections = {"references": references, "structures": structures}
+ENTRY_COLLECTIONS = {"references": references, "structures": structures}
+
 
 test_paths = {
     "structures": Path(__file__)
@@ -117,9 +118,7 @@ def general_exception_handler(request: Request, exc: Exception):
     tags=["Structure"],
 )
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
-    return u.get_entries(
-        structures, StructureResponseMany, request, params, entry_collections
-    )
+    return u.get_entries(structures, StructureResponseMany, request, params)
 
 
 @app.get(
@@ -132,7 +131,7 @@ def get_single_structure(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
 ):
     return u.get_single_entry(
-        structures, entry_id, StructureResponseOne, request, params, entry_collections
+        structures, entry_id, StructureResponseOne, request, params
     )
 
 
@@ -143,9 +142,7 @@ def get_single_structure(
     tags=["Reference"],
 )
 def get_references(request: Request, params: EntryListingQueryParams = Depends()):
-    return u.get_entries(
-        references, ReferenceResponseMany, request, params, entry_collections
-    )
+    return u.get_entries(references, ReferenceResponseMany, request, params)
 
 
 @app.get(
@@ -158,7 +155,7 @@ def get_single_reference(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
 ):
     return u.get_single_entry(
-        references, entry_id, ReferenceResponseOne, request, params, entry_collections
+        references, entry_id, ReferenceResponseOne, request, params
     )
 
 
