@@ -159,7 +159,18 @@ def get_included_relationships(
         compound_filter = " OR ".join(
             ["id={}".format(ref_id) for ref_id in endpoint_includes[entry_type]]
         )
-        params = {"filter": compound_filter}
+        params = EntryListingQueryParams(
+            filter=compound_filter,
+            response_format="json",
+            response_fields=None,
+            sort=None,
+            page_limit=0,
+            page_offset=0,
+            page_page=0,
+            page_cursor=0,
+            page_above=0,
+            page_below=0,
+        )
 
         # still need to handle pagination
         ref_results, more_data_available, data_available, fields = entry_collections[
