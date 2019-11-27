@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Collection, Tuple, List, Union, Dict
+from typing import Collection, Tuple, List, Union
 
 import mongomock
 import pymongo.collection
@@ -46,7 +46,7 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     @abstractmethod
     def find(
         self, params: EntryListingQueryParams
-    ) -> Tuple[List[EntryResource], bool, NonnegativeInt, set]:
+    ) -> Tuple[List[EntryResource], NonnegativeInt, bool, set]:
         """
         Fetches results and indicates if more data is available.
 
@@ -56,7 +56,7 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
             params (EntryListingQueryParams): entry listing URL query params
 
         Returns:
-            Tuple[List[Entry], bool, NonnegativeInt, set]: (results, more_data_available, data_available, fields)
+            Tuple[List[Entry], NonnegativeInt, bool, set]: (results, data_returned, more_data_available, fields)
 
         """
 
@@ -93,27 +93,15 @@ class MongoCollection(EntryCollection):
         for k in list(kwargs.keys()):
             if k not in ("filter", "skip", "limit", "hint", "maxTimeMS"):
                 del kwargs[k]
+        if "filter" not in kwargs:  # "filter" is needed for count_documents()
+            kwargs["filter"] = {}
         return self.collection.count_documents(**kwargs)
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[List[EntryResource], bool, NonnegativeInt, set, List[Dict]]:
+    ) -> Tuple[List[EntryResource], NonnegativeInt, bool, set]:
         criteria = self._parse_params(params)
-        if isinstance(params, EntryListingQueryParams):
-            criteria_nolimit = criteria.copy()
-            criteria_nolimit.pop("limit", None)
-            nresults_now = self.count(**criteria)
-            nresults_total = self.count(**criteria_nolimit)
-            more_data_available = nresults_now < nresults_total
-            data_available = nresults_total
-        else:
-            more_data_available = False
-            data_available = self.count(**criteria)
-            if data_available > 1:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"Instead of a single entry, {data_available} entries were found",
-                )
+
         all_fields = criteria.pop("fields")
         if getattr(params, "response_fields", False):
             fields = set(params.response_fields.split(","))
@@ -123,10 +111,25 @@ class MongoCollection(EntryCollection):
         results = []
         for doc in self.collection.find(**criteria):
             results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
-        if isinstance(params, SingleEntryQueryParams):
+
+        if isinstance(params, EntryListingQueryParams):
+            nresults_now = len(results)
+            criteria_nolimit = criteria.copy()
+            criteria_nolimit.pop("limit", None)
+            data_returned = self.count(**criteria_nolimit)
+            more_data_available = nresults_now < data_returned
+        else:
+            # SingleEntryQueryParams, e.g., /structures/{entry_id}
+            data_returned = 1
+            more_data_available = False
+            if len(results) > 1:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Instead of a single entry, {len(results)} entries were found",
+                )
             results = results[0] if results else None
 
-        return (results, more_data_available, data_available, all_fields - fields)
+        return results, data_returned, more_data_available, all_fields - fields
 
     def _alias_filter(self, filter_: dict) -> dict:
         res = {}

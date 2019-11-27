@@ -165,13 +165,11 @@ def get_included_relationships(
             response_fields=None,
             sort=None,
             page_limit=0,
-            page_offset=0
+            page_offset=0,
         )
 
         # still need to handle pagination
-        ref_results, more_data_available, data_available, fields = ENTRY_COLLECTIONS[
-            entry_type
-        ].find(params)
+        ref_results, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
         included[entry_type] = ref_results
 
     # flatten dict by endpoint to list
@@ -185,10 +183,9 @@ def get_entries(
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
-
     from .main import ENTRY_COLLECTIONS
 
-    results, more_data_available, data_available, fields = collection.find(params)
+    results, data_returned, more_data_available, fields = collection.find(params)
 
     included = get_included_relationships(results, ENTRY_COLLECTIONS)
 
@@ -210,7 +207,10 @@ def get_entries(
         links=links,
         data=results,
         meta=meta_values(
-            str(request.url), len(results), data_available, more_data_available
+            url=str(request.url),
+            data_returned=data_returned,
+            data_available=len(collection),
+            more_data_available=more_data_available,
         ),
         included=included,
     )
@@ -223,11 +223,10 @@ def get_single_entry(
     request: Request,
     params: SingleEntryQueryParams,
 ) -> EntryResponseOne:
-
     from .main import ENTRY_COLLECTIONS
 
     params.filter = f'id="{entry_id}"'
-    results, more_data_available, data_available, fields = collection.find(params)
+    results, data_returned, more_data_available, fields = collection.find(params)
 
     included = get_included_relationships(results, ENTRY_COLLECTIONS)
 
@@ -242,13 +241,14 @@ def get_single_entry(
     if fields and results is not None:
         results = handle_response_fields(results, fields)[0]
 
-    data_returned = 1 if results else 0
-
     return response(
         links=links,
         data=results,
         meta=meta_values(
-            str(request.url), data_returned, data_available, more_data_available
+            url=str(request.url),
+            data_returned=data_returned,
+            data_available=len(collection),
+            more_data_available=more_data_available,
         ),
         included=included,
     )
