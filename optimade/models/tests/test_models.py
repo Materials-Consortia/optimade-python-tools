@@ -6,8 +6,8 @@ import json
 
 from pydantic import ValidationError, BaseModel, ConfigError
 from optimade.models.util import conlist
-from optimade.models import StructureResource, EntryRelationships
-from optimade.server.mappers import StructureMapper
+from optimade.models import StructureResource, EntryRelationships, ReferenceResource
+from optimade.server.mappers import StructureMapper, ReferenceMapper
 
 
 class TestPydanticValidation(unittest.TestCase):
@@ -55,6 +55,38 @@ class TestPydanticValidation(unittest.TestCase):
         }
         with self.assertRaises(ValidationError):
             EntryRelationships(**relationship)
+        relationship = {
+            "references": {"data": [{"id": "dijkstra1968", "type": "structures"}]}
+        }
+        with self.assertRaises(ValidationError):
+            EntryRelationships(**relationship)
+
+    def test_good_references(self):
+        test_refs_path = (
+            Path(__file__)
+            .resolve()
+            .parent.joinpath("../../server/tests/test_references.json")
+        )
+        with open(test_refs_path, "r") as f:
+            good_refs = json.load(f)
+        for doc in good_refs:
+            doc["last_modified"] = doc["last_modified"]["$date"]
+            ReferenceResource(**ReferenceMapper.map_back(doc))
+
+    def test_bad_references(self):
+        bad_refs = [
+            {"id": "AAAA", "type": "references", "doi": "10.1234/1234"},  # bad id
+            {"id": "newton1687", "type": "references"},  # missing all fields
+            {
+                "id": "newton1687",
+                "type": "reference",
+                "doi": "10.1234/1234",
+            },  # wrong type
+        ]
+
+        for ref in bad_refs:
+            with self.assertRaises(ValidationError):
+                ReferenceResource(**ReferenceMapper.map_back(ref))
 
 
 def test_constrained_list():
