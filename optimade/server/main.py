@@ -69,6 +69,7 @@ test_paths = {
 }
 if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
     import bson.json_util
+    import requests
 
     def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
         print(f"loading test {endpoint_name}...")
@@ -78,13 +79,23 @@ if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values())
             endpoint_collection.collection.insert_many(
                 bson.json_util.loads(bson.json_util.dumps(data))
             )
+        if endpoint_name == "links":
+            print(
+                "adding providers.json to links from github.com/Materials-Consortia/OPTiMaDe"
+            )
+            mat_consortia_providers = requests.get(
+                "https://raw.githubusercontent.com/Materials-Consortia/OPTiMaDe/develop/providers.json"
+            ).json()
+            endpoint_collection.collection.insert_many(
+                bson.json_util.loads(
+                    bson.json_util.dumps(mat_consortia_providers.get("data", []))
+                )
+            )
         print(f"done inserting test {endpoint_name}...")
 
     load_entries("structures", structures)
     load_entries("references", references)
     load_entries("links", links)
-
-    # Load providers.json
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -169,6 +180,29 @@ def get_single_reference(
 
 
 @app.get(
+    "/links",
+    response_model=Union[LinksResponse, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Links"],
+)
+def get_links(request: Request, params: EntryListingQueryParams = Depends()):
+    for str_param in ["filter", "sort"]:
+        if getattr(params, str_param):
+            setattr(params, str_param, "")
+    for int_param in [
+        "page_offset",
+        "page_page",
+        "page_cursor",
+        "page_above",
+        "page_below",
+    ]:
+        if getattr(params, int_param):
+            setattr(params, int_param, 0)
+    params.page_limit = CONFIG.page_limit
+    return u.get_entries(links, LinksResponse, request, params)
+
+
+@app.get(
     "/info",
     response_model=Union[InfoResponse, ErrorResponse],
     response_model_skip_defaults=False,
@@ -223,16 +257,6 @@ def get_entry_info(request: Request, entry: str):
             output_fields_by_format=output_fields_by_format,
         ),
     )
-
-
-@app.get(
-    "/links",
-    response_model=Union[LinksResponse, ErrorResponse],
-    response_model_skip_defaults=True,
-    tags=["Links"],
-)
-def get_links(request: Request, params: SingleEntryQueryParams = Depends()):
-    return u.get_entries(links, LinksResponse, request, params)
 
 
 def update_schema(app):
