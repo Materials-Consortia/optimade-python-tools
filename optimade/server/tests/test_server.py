@@ -216,15 +216,27 @@ class MultiStructureWithSharedRelationshipsTests(EndpointTests, unittest.TestCas
 
 class MultiStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
 
-    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_3"
+    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_23"
     response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):
-        # mpf_3 contains no relationships, which shouldn't break anything
+        # mpf_4 contains no relationships, which shouldn't break anything
         self.assertTrue("data" in self.json_response)
         self.assertEqual(len(self.json_response["data"]), 2)
         self.assertTrue("included" in self.json_response)
         self.assertEqual(len(self.json_response["included"]), 1)
+
+
+class MultiStructureWithOverlappingRelationshipsTests(EndpointTests, unittest.TestCase):
+
+    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_3"
+    response_cls = StructureResponseMany
+
+    def test_structures_endpoint_data(self):
+        self.assertTrue("data" in self.json_response)
+        self.assertEqual(len(self.json_response["data"]), 2)
+        self.assertTrue("included" in self.json_response)
+        self.assertEqual(len(self.json_response["included"]), 2)
 
 
 class ServerTestWithValidator(unittest.TestCase):
