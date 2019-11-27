@@ -185,13 +185,13 @@ class InfoResponse(Success):
 class EntryResponseOne(Success):
     meta: ResponseMeta = Schema(...)
     data: Union[EntryResource, Dict[str, Any], None] = Schema(...)
-    included: Optional[List[Dict[str, Any]]] = Schema(...)
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Schema(...)
 
 
 class EntryResponseMany(Success):
     meta: ResponseMeta = Schema(...)
     data: Union[List[EntryResource], List[Dict[str, Any]]] = Schema(...)
-    included: Optional[List[Dict[str, Any]]] = Schema(...)
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Schema(...)
 
 
 class StructureResponseOne(EntryResponseOne):
