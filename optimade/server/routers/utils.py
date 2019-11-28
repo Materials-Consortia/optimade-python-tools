@@ -28,16 +28,9 @@ ENTRY_INFO_SCHEMAS = {
 }
 
 BASE_URL_PREFIXES = {
-    "index": {
-        "major": f"/index/optimade/v{__api_version__.split('.')[0]}",
-        "minor": f"/index/optimade/v{__api_version__.split('.')[1]}",
-        "patch": f"/index/optimade/v{__api_version__.split('.')[2]}",
-    },
-    "regular": {
-        "major": f"/optimade/v{__api_version__.split('.')[0]}",
-        "minor": f"/optimade/v{__api_version__.split('.')[1]}",
-        "patch": f"/optimade/v{__api_version__.split('.')[2]}",
-    },
+    "major": f"/optimade/v{__api_version__.split('.')[0]}",
+    "minor": f"/optimade/v{__api_version__.split('.')[1]}",
+    "patch": f"/optimade/v{__api_version__.split('.')[2]}",
 }
 
 
@@ -53,10 +46,7 @@ def meta_values(
 
     parse_result = urllib.parse.urlparse(url)
 
-    prefixes = list(BASE_URL_PREFIXES["index"].values()) + list(
-        BASE_URL_PREFIXES["regular"].values()
-    )
-    for prefix in prefixes:
+    for prefix in list(BASE_URL_PREFIXES.values()):
         if parse_result.path.startswith(prefix):
             url_path = parse_result.path[len(prefix) :]
             break

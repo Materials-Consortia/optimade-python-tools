@@ -6,8 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    #environment:
-    #  MAIN: main_index
+    environment:
+      MAIN: main_index
     ports:
-      - '3214:5000'
-    #  - '3214:5001'
+      - '3214:5001'

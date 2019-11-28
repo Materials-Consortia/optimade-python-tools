@@ -28,9 +28,9 @@ This is the "special" index meta-database.
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
-    docs_url=f"{BASE_URL_PREFIXES['index']['major']}/extensions/docs",
-    redoc_url=f"{BASE_URL_PREFIXES['index']['major']}/extensions/redoc",
-    openapi_url=f"{BASE_URL_PREFIXES['index']['major']}/extensions/openapi.json",
+    docs_url=f"{BASE_URL_PREFIXES['major']}/extensions/docs",
+    redoc_url=f"{BASE_URL_PREFIXES['major']}/extensions/redoc",
+    openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
 )
 
 
@@ -63,22 +63,20 @@ app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
 # Add various endpoints to `/optimade/vMAJOR`
-app.include_router(index_info.router, prefix=BASE_URL_PREFIXES["index"]["major"])
-app.include_router(links.router, prefix=BASE_URL_PREFIXES["index"]["major"])
+app.include_router(index_info.router, prefix=BASE_URL_PREFIXES["major"])
+app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
     """Add the following OPTIONAL prefixes/base URLs to server:
     ```
-        /index/optimade/vMajor.Minor
-        /index/optimade/vMajor.Minor.Patch
+        /optimade/vMajor.Minor
+        /optimade/vMajor.Minor.Patch
     ```
     """
     for version in ("minor", "patch"):
-        app.include_router(
-            index_info.router, prefix=BASE_URL_PREFIXES["index"][version]
-        )
-        app.include_router(links.router, prefix=BASE_URL_PREFIXES["index"][version])
+        app.include_router(index_info.router, prefix=BASE_URL_PREFIXES[version])
+        app.include_router(links.router, prefix=BASE_URL_PREFIXES[version])
 
 
 def update_schema(app: FastAPI):
