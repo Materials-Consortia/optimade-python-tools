@@ -1,0 +1,4 @@
+lark-parser==0.7.7
+fastapi==0.42.0
+email_validator==1.0.5
+requests==2.22.0
