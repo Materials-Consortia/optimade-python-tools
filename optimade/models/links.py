@@ -27,7 +27,7 @@ class LinksResourceAttributes(Attributes):
         description="Human-readable description for the OPTiMaDe API implementation "
         "a client may provide in a list to an end-user.",
     )
-    base_url: Union[UrlStr, Link] = Schema(
+    base_url: Union[UrlStr, Link, None] = Schema(
         ...,
         description="JSON API links object, pointing to the base URL for this implementation",
     )

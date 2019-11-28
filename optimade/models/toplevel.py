@@ -190,11 +190,6 @@ class InfoResponse(Success):
     data: BaseInfoResource = Schema(...)
 
 
-class LinksResponse(Success):
-    meta: Optional[ResponseMeta] = Schema(...)
-    data: Union[LinksResource, Dict[str, Any], None] = Schema(...)
-
-
 class EntryResponseOne(Success):
     meta: ResponseMeta = Schema(...)
     data: Union[EntryResource, Dict[str, Any], None] = Schema(...)
@@ -205,6 +200,10 @@ class EntryResponseMany(Success):
     meta: ResponseMeta = Schema(...)
     data: Union[List[EntryResource], List[Dict[str, Any]]] = Schema(...)
     included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Schema(...)
+
+
+class LinksResponse(EntryResponseMany):
+    data: Union[List[LinksResource], List[Dict[str, Any]]] = Schema(...)
 
 
 class StructureResponseOne(EntryResponseOne):

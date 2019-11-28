@@ -69,7 +69,6 @@ test_paths = {
 }
 if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
     import bson.json_util
-    import requests
 
     def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
         print(f"loading test {endpoint_name}...")
@@ -83,13 +82,8 @@ if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values())
             print(
                 "adding providers.json to links from github.com/Materials-Consortia/OPTiMaDe"
             )
-            mat_consortia_providers = requests.get(
-                "https://raw.githubusercontent.com/Materials-Consortia/OPTiMaDe/develop/providers.json"
-            ).json()
             endpoint_collection.collection.insert_many(
-                bson.json_util.loads(
-                    bson.json_util.dumps(mat_consortia_providers.get("data", []))
-                )
+                bson.json_util.loads(bson.json_util.dumps(u.get_providers()))
             )
         print(f"done inserting test {endpoint_name}...")
 
