@@ -50,7 +50,8 @@
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
             "name": "filter",
             "in": "query"
@@ -70,7 +71,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -79,7 +81,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -88,7 +91,8 @@
             "required": false,
             "schema": {
               "title": "Sort",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "sort",
             "in": "query"
@@ -224,7 +228,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -233,7 +238,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -285,7 +291,8 @@
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
             "name": "filter",
             "in": "query"
@@ -305,7 +312,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -314,7 +322,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -323,7 +332,8 @@
             "required": false,
             "schema": {
               "title": "Sort",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "sort",
             "in": "query"
@@ -459,7 +469,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -468,9 +479,170 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/links": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Links_Links_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Links"
+        ],
+        "summary": "Get Links",
+        "operationId": "get_links_links_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
             "in": "query"
           }
         ]
@@ -593,8 +765,25 @@
       "Attributes": {
         "title": "Attributes",
         "type": "object",
-        "properties": {},
-        "description": "Members of the attributes object (\"attributes\") represent information about the resource object in which it's defined.\nThe keys for Attributes must NOT be:\n    relationships\n    links\n    id\n    type"
+        "properties": {
+          "relationships": {
+            "title": "Relationships",
+            "description": "Not allowed key"
+          },
+          "links": {
+            "title": "Links",
+            "description": "Not allowed key"
+          },
+          "id": {
+            "title": "Id",
+            "description": "Not allowed key"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Not allowed key"
+          }
+        },
+        "description": "Members of the attributes object (\"attributes\") represent information about the resource object in which it's defined.\nThe keys for Attributes MUST NOT be:\n    relationships\n    links\n    id\n    type"
       },
       "AvailableApiVersion": {
         "title": "AvailableApiVersion",
@@ -737,6 +926,27 @@
         },
         "description": "Resource objects appear in a JSON:API document to represent resources."
       },
+      "BaseResource": {
+        "title": "BaseResource",
+        "required": [
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "Resource ID"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "description": "Resource type"
+          }
+        },
+        "description": "Minimum requirements to represent a Resource"
+      },
       "EntryInfoProperty": {
         "title": "EntryInfoProperty",
         "required": [
@@ -856,6 +1066,134 @@
           }
         },
         "description": "errors are not allowed"
+      },
+      "EntryRelationships": {
+        "title": "EntryRelationships",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "description": "Not allowed key"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Not allowed key"
+          },
+          "references": {
+            "title": "References",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReferenceRelationship"
+              }
+            ],
+            "description": "Object containing links to relationships with entries of the `references` type."
+          },
+          "structures": {
+            "title": "Structures",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StructureRelationship"
+              }
+            ],
+            "description": "Object containing links to relationships with entries of the `structures` type."
+          }
+        },
+        "description": "This model wraps the JSON API Relationships to include type-specific top level keys. "
+      },
+      "EntryResource": {
+        "title": "EntryResource",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "description": "The name of the type of an entry.\nAny entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: Support for queries on this property is OPTIONAL.\n    If supported, only a subset of string comparison operators MAY be supported.\n\n- **Requirements/Conventions**: MUST be an existing entry type.\n- **Example**: :val:`\"structures\"`"
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourceLinks"
+              }
+            ],
+            "description": "a links object containing links related to the resource."
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+          },
+          "attributes": {
+            "title": "Attributes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntryResourceAttributes"
+              }
+            ],
+            "description": "a dictionary, containing key-value pairs representing the entry's properties, except for type and id.\n\nDatabase-provider-specific properties need to include the database-provider-specific prefix\n(see appendix `Database-Provider-Specific Namespace Prefixes`_)."
+          },
+          "relationships": {
+            "title": "Relationships",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntryRelationships"
+              }
+            ],
+            "description": "a dictionary containing references to other entries according to the description in section `Relationships`_\nencoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.\nThe OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary."
+          }
+        },
+        "description": "Resource objects appear in a JSON:API document to represent resources."
+      },
+      "EntryResourceAttributes": {
+        "title": "EntryResourceAttributes",
+        "required": [
+          "last_modified"
+        ],
+        "type": "object",
+        "properties": {
+          "relationships": {
+            "title": "Relationships",
+            "description": "Not allowed key"
+          },
+          "links": {
+            "title": "Links",
+            "description": "Not allowed key"
+          },
+          "id": {
+            "title": "Id",
+            "description": "Not allowed key"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Not allowed key"
+          },
+          "immutable_id": {
+            "title": "Immutable_Id",
+            "type": "string",
+            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
+          },
+          "last_modified": {
+            "title": "Last_Modified",
+            "type": "string",
+            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"`\n    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
+            "format": "date-time"
+          }
+        },
+        "description": "Contains key-value pairs representing the entry's properties."
       },
       "ErrorLinks": {
         "title": "ErrorLinks",
@@ -1133,6 +1471,195 @@
         },
         "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object."
       },
+      "LinksResource": {
+        "title": "LinksResource",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "description": "MUST be either \"parent\", \"child\", or \"provider\". These objects are described in detail in sections Parent and Child Objects and Provider Objects."
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourceLinks"
+              }
+            ],
+            "description": "a links object containing links related to the resource."
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+          },
+          "attributes": {
+            "title": "Attributes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LinksResourceAttributes"
+              }
+            ],
+            "description": "a dictionary containing key-value pairs representing the entry's properties."
+          },
+          "relationships": {
+            "title": "Relationships",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntryRelationships"
+              }
+            ],
+            "description": "a dictionary containing references to other entries according to the description in section `Relationships`_\nencoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.\nThe OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary."
+          }
+        },
+        "description": "A Links endpoint resource object"
+      },
+      "LinksResourceAttributes": {
+        "title": "LinksResourceAttributes",
+        "required": [
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "relationships": {
+            "title": "Relationships",
+            "description": "Not allowed key"
+          },
+          "links": {
+            "title": "Links",
+            "description": "Not allowed key"
+          },
+          "id": {
+            "title": "Id",
+            "description": "Not allowed key"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Not allowed key"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "description": "Human-readable name for the OPTiMaDe API implementation a client may provide in a list to an end-user."
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "Human-readable description for the OPTiMaDe API implementation a client may provide in a list to an end-user."
+          },
+          "base_url": {
+            "title": "Base_Url",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                ]
+              }
+            ],
+            "description": "JSON API links object, pointing to the base URL for this implementation"
+          }
+        },
+        "description": "Links endpoint resource object attributes"
+      },
+      "LinksResponse": {
+        "title": "LinksResponse",
+        "required": [
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "title": "Data",
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LinksResource"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          },
+          "errors": {
+            "title": "Errors",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+            },
+            "description": "A list of errors"
+          },
+          "included": {
+            "title": "Included",
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntryResource"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ToplevelLinks"
+              }
+            ],
+            "description": "Links associated with the primary data"
+          },
+          "jsonapi": {
+            "title": "Jsonapi",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonApi"
+              }
+            ],
+            "description": "Information about the JSON API used"
+          }
+        },
+        "description": "errors are not allowed"
+      },
       "Meta": {
         "title": "Meta",
         "type": "object",
@@ -1227,6 +1754,50 @@
         },
         "description": "Information on the database provider of the implementation."
       },
+      "ReferenceRelationship": {
+        "title": "ReferenceRelationship",
+        "type": "object",
+        "properties": {
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipLinks"
+              }
+            ],
+            "description": "a links object containing at least one of the following: self, related"
+          },
+          "data": {
+            "title": "Data",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/BaseResource"
+                  }
+                ]
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseResource"
+                }
+              }
+            ],
+            "description": "Resource linkage"
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object that contains non-standard meta-information about the relationship."
+          }
+        },
+        "description": "Representation references from the resource object in which it\u2019s defined to other resource objects."
+      },
       "ReferenceResource": {
         "title": "ReferenceResource",
         "required": [
@@ -1270,7 +1841,7 @@
             "title": "Relationships",
             "allOf": [
               {
-                "$ref": "#/components/schemas/Relationships"
+                "$ref": "#/components/schemas/EntryRelationships"
               }
             ],
             "description": "a dictionary containing references to other entries according to the description in section `Relationships`_\nencoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.\nThe OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary."
@@ -1285,6 +1856,22 @@
         ],
         "type": "object",
         "properties": {
+          "relationships": {
+            "title": "Relationships",
+            "description": "Not allowed key"
+          },
+          "links": {
+            "title": "Links",
+            "description": "Not allowed key"
+          },
+          "id": {
+            "title": "Id",
+            "description": "Not allowed key"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Not allowed key"
+          },
           "immutable_id": {
             "title": "Immutable_Id",
             "type": "string",
@@ -1477,12 +2064,20 @@
           },
           "included": {
             "title": "Included",
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Resource"
-            },
-            "description": "A list of resources that are included"
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntryResource"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
           },
           "links": {
             "title": "Links",
@@ -1537,12 +2132,20 @@
           },
           "included": {
             "title": "Included",
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Resource"
-            },
-            "description": "A list of resources that are included"
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntryResource"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
           },
           "links": {
             "title": "Links",
@@ -1565,10 +2168,64 @@
         },
         "description": "errors are not allowed"
       },
+      "RelationshipLinks": {
+        "title": "RelationshipLinks",
+        "type": "object",
+        "properties": {
+          "self": {
+            "title": "Self",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                ]
+              }
+            ],
+            "description": "A link to itself"
+          },
+          "related": {
+            "title": "Related",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                ]
+              }
+            ],
+            "description": "A related resource link"
+          }
+        },
+        "description": "A resource object **MAY** contain references to other resource objects (\"relationships\").\nRelationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."
+      },
       "Relationships": {
         "title": "Relationships",
         "type": "object",
-        "properties": {},
+        "properties": {
+          "id": {
+            "title": "Id",
+            "description": "Not allowed key"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Not allowed key"
+          }
+        },
         "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.\nKeys MUST NOT be:\n    type\n    id"
       },
       "Resource": {
@@ -1798,6 +2455,50 @@
         },
         "description": "A list describing the species of the sites of this structure.\nSpecies can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.\n\n- **Examples**:\n\n    - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n    - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n    - :val:`[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n    - :val:`[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n    - :val:`[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13."
       },
+      "StructureRelationship": {
+        "title": "StructureRelationship",
+        "type": "object",
+        "properties": {
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipLinks"
+              }
+            ],
+            "description": "a links object containing at least one of the following: self, related"
+          },
+          "data": {
+            "title": "Data",
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/BaseResource"
+                  }
+                ]
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseResource"
+                }
+              }
+            ],
+            "description": "Resource linkage"
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object that contains non-standard meta-information about the relationship."
+          }
+        },
+        "description": "Representation references from the resource object in which it\u2019s defined to other resource objects."
+      },
       "StructureResource": {
         "title": "StructureResource",
         "required": [
@@ -1841,7 +2542,7 @@
             "title": "Relationships",
             "allOf": [
               {
-                "$ref": "#/components/schemas/Relationships"
+                "$ref": "#/components/schemas/EntryRelationships"
               }
             ],
             "description": "a dictionary containing references to other entries according to the description in section `Relationships`_\nencoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.\nThe OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary."
@@ -1868,6 +2569,22 @@
         ],
         "type": "object",
         "properties": {
+          "relationships": {
+            "title": "Relationships",
+            "description": "Not allowed key"
+          },
+          "links": {
+            "title": "Links",
+            "description": "Not allowed key"
+          },
+          "id": {
+            "title": "Id",
+            "description": "Not allowed key"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Not allowed key"
+          },
           "immutable_id": {
             "title": "Immutable_Id",
             "type": "string",
@@ -2023,12 +2740,20 @@
           },
           "included": {
             "title": "Included",
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Resource"
-            },
-            "description": "A list of resources that are included"
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntryResource"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
           },
           "links": {
             "title": "Links",
@@ -2083,12 +2808,20 @@
           },
           "included": {
             "title": "Included",
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Resource"
-            },
-            "description": "A list of resources that are included"
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntryResource"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
           },
           "links": {
             "title": "Links",
