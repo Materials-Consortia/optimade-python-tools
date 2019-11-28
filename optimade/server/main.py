@@ -50,6 +50,8 @@ structures = MongoCollection(
 references = MongoCollection(
     client[CONFIG.mongo_database]["references"], ReferenceResource, ReferenceMapper
 )
+ENTRY_COLLECTIONS = {"references": references, "structures": structures}
+
 
 test_paths = {
     "structures": Path(__file__)

@@ -10,6 +10,7 @@ from optimade.server.main import app
 from optimade.models import (
     ReferenceResponseMany,
     ReferenceResponseOne,
+    ReferenceResource,
     StructureResponseMany,
     StructureResponseOne,
     EntryInfoResponse,
@@ -109,7 +110,7 @@ class ReferencesEndpointTests(EndpointTests, unittest.TestCase):
 
 
 class SingleReferenceEndpointTests(EndpointTests, unittest.TestCase):
-    test_id = "Dijkstra1968"
+    test_id = "dijkstra1968"
     request_str = f"references/{test_id}"
     response_cls = ReferenceResponseOne
 
@@ -173,6 +174,69 @@ class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
         self.assertTrue(
             "_exmpl__mp_chemsys" in self.json_response["data"]["attributes"]
         )
+
+
+class SingleStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
+
+    test_id = "mpf_1"
+    request_str = f"/structures/{test_id}"
+    response_cls = StructureResponseOne
+
+    def test_structures_endpoint_data(self):
+        self.assertTrue("data" in self.json_response)
+        self.assertEqual(self.json_response["data"]["id"], self.test_id)
+        self.assertEqual(self.json_response["data"]["type"], "structures")
+        self.assertTrue("attributes" in self.json_response["data"])
+        self.assertTrue("relationships" in self.json_response["data"])
+        self.assertDictEqual(
+            self.json_response["data"]["relationships"],
+            {"references": {"data": [{"type": "references", "id": "dijkstra1968"}]}},
+        )
+        self.assertTrue("included" in self.json_response)
+        self.assertEqual(
+            len(self.json_response["data"]["relationships"]["references"]["data"]),
+            len(self.json_response["included"]),
+        )
+
+        ref = ReferenceResource(**self.json_response["included"][0])
+
+
+class MultiStructureWithSharedRelationshipsTests(EndpointTests, unittest.TestCase):
+
+    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_2"
+    response_cls = StructureResponseMany
+
+    def test_structures_endpoint_data(self):
+        # mpf_1 and mpf_2 both contain the same reference relationship, so response should not duplicate it
+        self.assertTrue("data" in self.json_response)
+        self.assertEqual(len(self.json_response["data"]), 2)
+        self.assertTrue("included" in self.json_response)
+        self.assertEqual(len(self.json_response["included"]), 1)
+
+
+class MultiStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
+
+    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_23"
+    response_cls = StructureResponseMany
+
+    def test_structures_endpoint_data(self):
+        # mpf_4 contains no relationships, which shouldn't break anything
+        self.assertTrue("data" in self.json_response)
+        self.assertEqual(len(self.json_response["data"]), 2)
+        self.assertTrue("included" in self.json_response)
+        self.assertEqual(len(self.json_response["included"]), 1)
+
+
+class MultiStructureWithOverlappingRelationshipsTests(EndpointTests, unittest.TestCase):
+
+    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_3"
+    response_cls = StructureResponseMany
+
+    def test_structures_endpoint_data(self):
+        self.assertTrue("data" in self.json_response)
+        self.assertEqual(len(self.json_response["data"]), 2)
+        self.assertTrue("included" in self.json_response)
+        self.assertEqual(len(self.json_response["included"]), 2)
 
 
 class ServerTestWithValidator(unittest.TestCase):

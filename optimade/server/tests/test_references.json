@@ -3,7 +3,7 @@
     "_id": {
       "$oid": "5cfb441f053b174410701bec"
     },
-    "task_id": "Dijkstra1968",
+    "task_id": "dijkstra1968",
     "last_modified": {
       "$date": "2019-11-12T14:24:37.331Z"
     },
@@ -18,5 +18,45 @@
     "title": "Go To Statement Considered Harmful",
     "journal": "Communications of the ACM",
     "doi": "10.1145/362929.362947"
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410701bed"
+    },
+    "task_id": "maddox1988",
+    "last_modified": {
+      "$date": "2019-11-27T14:24:37.331Z"
+    },
+    "authors": [
+      {
+        "name": "John Maddox",
+        "firstname": "John",
+        "lastname": "Maddox"
+      }
+    ],
+    "year": "1988",
+    "title": "Crystals From First Principles",
+    "journal": "Nature",
+    "doi": "10.1038/335201a0"
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410701bea"
+    },
+    "task_id": "dummy2019",
+    "last_modified": {
+      "$date": "2019-11-23T14:24:37.332Z"
+    },
+    "authors": [
+      {
+        "name": "A Nother",
+        "firstname": "A",
+        "lastname": "Nother"
+      }
+    ],
+    "year": "2019",
+    "title": "Dummy reference that should remain orphaned from all structures for testing purposes",
+    "journal": "JACS",
+    "doi": "10.1038/00000"
   }
 ]

@@ -1,6 +1,6 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-name-in-module,no-self-argument
-from typing import Optional, Set, Union, Any
+from typing import Optional, Set, Union, Any, List
 from pydantic import BaseModel, UrlStr, Schema, validator
 
 
@@ -139,7 +139,7 @@ class RelationshipLinks(BaseModel):
     @validator("related", always=True)
     def either_self_or_related_must_be_specified(cls, v, values):
         if values.get("self", None) is None and v is None:
-            raise AssertionError(
+            raise ValueError(
                 "Either 'self' or 'related' MUST be specified for RelationshipLinks"
             )
         return v
@@ -152,7 +152,7 @@ class Relationship(BaseModel):
         ...,
         description="a links object containing at least one of the following: self, related",
     )
-    data: Optional[Union[BaseResource, Set[BaseResource]]] = Schema(
+    data: Optional[Union[BaseResource, List[BaseResource]]] = Schema(
         ..., description="Resource linkage"
     )
     meta: Optional[Meta] = Schema(
@@ -167,7 +167,7 @@ class Relationship(BaseModel):
             and values.get("data", None) is None
             and v is None
         ):
-            raise AssertionError(
+            raise ValueError(
                 "Either 'links', 'data', or 'meta' MUST be specified for relationship"
             )
         return v
@@ -186,7 +186,7 @@ class Relationships(BaseModel):
 
     @validator("id", "type")
     def check_illegal_relationships_fields(cls, v):
-        raise AssertionError('"id", "type" MUST NOT be fields under relationships')
+        raise ValueError('"id", "type" MUST NOT be fields under relationships')
 
 
 class ResourceLinks(BaseModel):
@@ -271,7 +271,7 @@ class Response(BaseModel):
             and values.get("meta", None) is None
             and v is None
         ):
-            raise AssertionError(
+            raise ValueError(
                 "Either 'data', 'meta', or 'errors' must be specified in the top-level response"
             )
         return v

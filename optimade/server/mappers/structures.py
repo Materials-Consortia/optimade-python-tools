@@ -28,7 +28,7 @@ class StructureMapper(ResourceMapper):
             del doc["_id"]
         if "nsites" not in doc:
             doc["nsites"] = len(doc.get("cartesian_site_positions", []))
-        # print(doc)
+
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}
         reals = {real for alias, real in cls.all_aliases()}
@@ -39,14 +39,15 @@ class StructureMapper(ResourceMapper):
             if real in doc:
                 newdoc[alias] = doc[real]
 
-        # print(newdoc)
         if "attributes" in newdoc:
             raise Exception("Will overwrite doc field!")
-        newdoc["attributes"] = newdoc.copy()
-        for k in {"id", "type"}:
-            newdoc["attributes"].pop(k, None)
+        attributes = newdoc.copy()
+        for k in {"id", "type", "relationships", "links"}:
+            attributes.pop(k, None)
         for k in list(newdoc.keys()):
-            if k not in ("id", "attributes"):
+            if k not in ("id", "attributes", "relationships", "links"):
                 del newdoc[k]
         newdoc["type"] = cls.ENDPOINT
+        newdoc["attributes"] = attributes
+
         return newdoc

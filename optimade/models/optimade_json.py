@@ -34,7 +34,7 @@ class Failure(jsonapi.Response):
 
     @validator("data")
     def data_must_be_skipped(cls, v):
-        raise AssertionError("data MUST be skipped for failures reporting errors")
+        raise ValueError("data MUST be skipped for failures reporting errors")
 
 
 class Success(jsonapi.Response):
@@ -51,13 +51,13 @@ class Success(jsonapi.Response):
     @validator("meta", always=True)
     def either_data_or_meta_must_be_set(cls, v, values):
         if values.get("data", None) is None and v is None:
-            raise AssertionError("Either 'data' or 'meta' must be specified")
+            raise ValueError("Either 'data' or 'meta' must be specified")
         return v
 
     @validator("errors")
     def either_data_meta_or_errors_must_be_set(cls, v, values):
         """Overwriting the existing validation function"""
-        raise AssertionError("'errors' MUST be skipped for a successful response")
+        raise ValueError("'errors' MUST be skipped for a successful response")
 
 
 class Warnings(Error):
@@ -79,4 +79,4 @@ class Warnings(Error):
 
     @validator("status")
     def status_must_not_be_specified(cls, v):
-        raise AssertionError("status MUST NOT be specified for warnings")
+        raise ValueError("status MUST NOT be specified for warnings")
