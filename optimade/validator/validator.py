@@ -9,6 +9,7 @@ import requests
 import sys
 import logging
 import json
+import traceback
 
 from pydantic import ValidationError
 
@@ -140,6 +141,9 @@ def test_case(test_fn):
         try:
             result, msg = test_fn(*args, **kwargs)
         except (ResponseError, ValidationError) as exc:
+            if args[0].verbosity > 1:
+                traceback.print_exc()
+
             result = False
             msg = f"{type(exc).__name__}: {exc}"
 
@@ -370,7 +374,10 @@ class ImplementationValidator:
             raise ResponseError(
                 f"Endpoint did not obey page limit: {num_entries} entries vs {self.page_limit} limit"
             )
-        return num_entries, f"Endpoint obeyed page limit of {self.page_limit}"
+        return (
+            True,
+            f"Endpoint obeyed page limit of {self.page_limit} by returning {num_entries} entries.",
+        )
 
     @test_case
     def get_single_id_from_multi_endpoint(self, deserialized):
