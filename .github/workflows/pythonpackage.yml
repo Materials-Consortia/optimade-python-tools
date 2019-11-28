@@ -48,8 +48,7 @@ jobs:
         # first install fixed deps
         pip install -r requirements.txt
         # now try upgrading all of them and run the tests
-        pip install -U --upgrade-strategy eager .
-        pip install [testing] .
+        pip install -e -U --upgrade-strategy eager .\[all\]
     - name: Run tests on updated packages
       run: |
         py.test
