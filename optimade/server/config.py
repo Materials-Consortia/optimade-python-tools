@@ -41,6 +41,7 @@ class ServerConfig(Config):
 
     page_limit = 500
     version = "0.10.0"
+    default_db = "test_server"
 
     provider = {
         "prefix": "_exmpl_",
@@ -69,6 +70,7 @@ class ServerConfig(Config):
             "IMPLEMENTATION", "PAGE_LIMIT", fallback=self.page_limit
         )
         self.version = config.get("IMPLEMENTATION", "VERSION", fallback=self.version)
+        self.default_db = config.get("IMPLEMENTATION", "DEFAULT_DB", fallback=self.default_db)
 
         if "PROVIDER" in config.sections():
             self.provider = dict(config["PROVIDER"])
@@ -110,6 +112,7 @@ class ServerConfig(Config):
 
         self.page_limit = int(config.get("page_limit", self.page_limit))
         self.version = config.get("version", self.version)
+        self.default_db = config.get("default_db", self.default_db)
 
         self.provider = config.get("provider", self.provider)
         self.provider_fields = set(config.get("provider_fields", self.provider_fields))

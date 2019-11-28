@@ -13,6 +13,7 @@ from .jsonapi import Link, Meta
 from .utils import NonnegativeInt
 from .baseinfo import BaseInfoResource
 from .entries import EntryInfoResource, EntryResource
+from .index_metadb import IndexInfoResource
 from .links import LinksResource
 from .optimade_json import Error, Success, Failure, Warnings
 from .references import ReferenceResource
@@ -27,6 +28,7 @@ __all__ = (
     "ResponseMeta",
     "ErrorResponse",
     "EntryInfoResponse",
+    "IndexInfoResponse",
     "InfoResponse",
     "LinksResponse",
     "EntryResponseOne",
@@ -178,6 +180,11 @@ class ResponseMeta(Meta):
 class ErrorResponse(Failure):
     meta: Optional[ResponseMeta] = Schema(...)
     errors: List[Error] = Schema(...)
+
+
+class IndexInfoResponse(Success):
+    meta: Optional[ResponseMeta] = Schema(...)
+    data: IndexInfoResource = Schema(...)
 
 
 class EntryInfoResponse(Success):
