@@ -36,16 +36,30 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 
 if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     import bson.json_util
+    from bson.objectid import ObjectId
     from .routers.links import links_coll
 
     print("loading index links...")
     with open(CONFIG.index_links_path) as f:
         data = json.load(f)
+
+        processed = []
+
+        for db in data:
+            oid_str = f"{db['task_id']}{db['type']}"
+            if len(oid_str) > 12:
+                oid_str = oid_str[:12]
+            elif len(oid_str) < 12:
+                oid_str = oid_str + "0" * (12 - len(oid_str))
+            oid = ObjectId(oid_str.encode("UTF-8"))
+            db["_id"] = {"$oid": str(oid)}
+            processed.append(db)
+
         print("inserting index links into collection...")
         links_coll.collection.insert_many(
-            bson.json_util.loads(bson.json_util.dumps(data))
+            bson.json_util.loads(bson.json_util.dumps(processed))
         )
-    print("done inserting index links...")
+        print("done inserting index links...")
 
 
 # Add various middleware
