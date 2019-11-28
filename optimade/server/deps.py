@@ -1,5 +1,5 @@
 from fastapi import Query
-from pydantic import EmailStr
+from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
 from optimade.models import NonnegativeInt
 

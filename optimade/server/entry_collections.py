@@ -14,6 +14,14 @@ from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .mappers import ResourceMapper
 
 
+if CONFIG.use_real_mongo:
+    from pymongo import MongoClient
+else:
+    from mongomock import MongoClient
+
+client = MongoClient()
+
+
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     def __init__(
         self, collection, resource_cls: EntryResource, resource_mapper: ResourceMapper

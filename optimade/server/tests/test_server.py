@@ -6,7 +6,6 @@ from starlette.testclient import TestClient
 
 from optimade.validator import ImplementationValidator
 
-from optimade.server.main import app
 from optimade.models import (
     ReferenceResponseMany,
     ReferenceResponseOne,
@@ -17,8 +16,14 @@ from optimade.models import (
     InfoResponse,
 )
 
+from optimade.server.main import app
+from optimade.server.routers import info, references, structures
+
 # need to explicitly set base_url, as the default "http://testserver"
 # does not validate as pydantic UrlStr model
+app.include_router(info.router)
+app.include_router(references.router)
+app.include_router(structures.router)
 CLIENT = TestClient(app, base_url="http://example.org/optimade")
 
 
@@ -100,18 +105,18 @@ class InfoStructuresEndpointTests(EndpointTests, unittest.TestCase):
 
 
 class InfoReferencesEndpointTests(EndpointTests, unittest.TestCase):
-    request_str = "info/references"
+    request_str = "/info/references"
     response_cls = EntryInfoResponse
 
 
 class ReferencesEndpointTests(EndpointTests, unittest.TestCase):
-    request_str = "references"
+    request_str = "/references"
     response_cls = ReferenceResponseMany
 
 
 class SingleReferenceEndpointTests(EndpointTests, unittest.TestCase):
     test_id = "dijkstra1968"
-    request_str = f"references/{test_id}"
+    request_str = f"/references/{test_id}"
     response_cls = ReferenceResponseOne
 
 
@@ -198,7 +203,7 @@ class SingleStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
             len(self.json_response["included"]),
         )
 
-        ref = ReferenceResource(**self.json_response["included"][0])
+        ReferenceResource(**self.json_response["included"][0])
 
 
 class MultiStructureWithSharedRelationshipsTests(EndpointTests, unittest.TestCase):
@@ -442,5 +447,5 @@ class FilterTests(unittest.TestCase):
             self.assertEqual(response["meta"]["data_returned"], expected_return)
         except Exception as exc:
             print("Request attempted:")
-            print(f"http://localhost:5000{request}")
+            print(f"http://localhost:5000/optimade{request}")
             raise exc
