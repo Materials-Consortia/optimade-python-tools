@@ -12,7 +12,7 @@ import json
 
 from pydantic import ValidationError
 
-from optimade.models import InfoResponse, EntryInfoResponse
+from optimade.models import InfoResponse, EntryInfoResponse, LinksResponse
 
 from .validator_model_patches import (
     ValidatorEntryResponseOne,
@@ -33,6 +33,7 @@ RESPONSE_CLASSES = {
     "structures": ValidatorStructureResponseMany,
     "structures/": ValidatorStructureResponseOne,
     "info": InfoResponse,
+    "links": LinksResponse,
 }
 RESPONSE_CLASSES.update(
     {f"info/{entry}": EntryInfoResponse for entry in REQUIRED_ENTRY_ENDPOINTS}
@@ -294,6 +295,18 @@ class ImplementationValidator:
 
     def test_info_endpoints(self, request_str):
         """ Runs the test cases for the info endpoints. """
+        response = self.get_endpoint(request_str)
+        if response:
+            deserialized = self.deserialize_reponse(
+                response, RESPONSE_CLASSES[request_str]
+            )
+            if not deserialized:
+                return response
+            return deserialized
+        return False
+
+    def test_links_endpoint(self, request_str="links"):
+        """ Runs the test cases for the links endpoint. """
         response = self.get_endpoint(request_str)
         if response:
             deserialized = self.deserialize_reponse(
