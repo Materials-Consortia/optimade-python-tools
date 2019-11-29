@@ -5,7 +5,7 @@ from typing import List, Optional
 from pydantic import Schema, BaseModel, validator
 
 from .entries import EntryResourceAttributes, EntryResource
-from .util import conlist, CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
+from .utils import conlist, CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
 
 
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS

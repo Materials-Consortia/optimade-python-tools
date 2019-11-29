@@ -20,10 +20,10 @@ app = FastAPI(
         "(http://http://www.optimade.org/) aims to make materials databases interoperational "
         "by developing a common REST API."
     ),
-    version="0.10.0",
-    docs_url="/extensions/docs",
-    redoc_url="/extensions/redoc",
-    openapi_url="/extensions/openapi.json",
+    version=CONFIG.version,
+    docs_url="/optimade/extensions/docs",
+    redoc_url="/optimade/extensions/redoc",
+    openapi_url="/optimade/extensions/openapi.json",
 )
 
 
@@ -67,7 +67,7 @@ app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 #   /optimade/vMajor.Minor
 #   /optimade/vMajor.Minor.Patch
 valid_prefixes = ["/optimade"]
-version = [int(_) for _ in app.version.split(".")]
+version = [int(_) for _ in CONFIG.version.split(".")]
 while version:
     if version[0] or len(version) >= 2:
         valid_prefixes.append(

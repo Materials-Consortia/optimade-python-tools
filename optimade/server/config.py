@@ -35,6 +35,12 @@ class ServerConfig(Config):
 
     use_real_mongo = False
     mongo_database = "optimade"
+    structures_collection = "structures"
+    references_collection = "references"
+
+    page_limit = 500
+    version = "0.10.0"
+
     provider = {
         "prefix": "_exmpl_",
         "name": "Example provider",
@@ -42,7 +48,6 @@ class ServerConfig(Config):
         "homepage": "http://example.com",
         "index_base_url": "http://example.com/optimade/index",
     }
-    page_limit = 500
     provider_fields: Dict[str, Set] = {}
     _path = Path(__file__).resolve().parent
 
@@ -53,14 +58,17 @@ class ServerConfig(Config):
         config.read(self._path.joinpath("config.ini"))
 
         self.use_real_mongo = config.getboolean(
-            "DEFAULT", "USE_REAL_MONGO", fallback=self.use_real_mongo
-        )
-        self.page_limit = config.getint(
-            "DEFAULT", "PAGE_LIMIT", fallback=self.page_limit
+            "BACKEND", "USE_REAL_MONGO", fallback=self.use_real_mongo
         )
         self.mongo_database = config.get(
-            "DEFAULT", "MONGO_DATABASE", fallback=self.mongo_database
+            "BACKEND", "MONGO_DATABASE", fallback=self.mongo_database
         )
+
+        self.page_limit = config.getint(
+            "IMPLEMENTATION", "PAGE_LIMIT", fallback=self.page_limit
+        )
+        self.version = config.get("IMPLEMENTATION", "VERSION", fallback=self.version)
+
         if "PROVIDER" in config.sections():
             self.provider = dict(config["PROVIDER"])
 
@@ -70,6 +78,17 @@ class ServerConfig(Config):
                 field for field, _ in config[endpoint].items() if _ == ""
             }
 
+            # MONGO collections
+            setattr(
+                self,
+                f"{endpoint}_collection",
+                config.get(
+                    "BACKEND",
+                    f"{endpoint.upper()}_COLLECTION",
+                    fallback=getattr(self, f"{endpoint}_collection"),
+                ),
+            )
+
     def load_from_json(self):
         """ Load from the file "config.json", if it exists. """
 
@@ -77,8 +96,18 @@ class ServerConfig(Config):
             config = json.load(f)
 
         self.use_real_mongo = bool(config.get("use_real_mongo", self.use_real_mongo))
-        self.page_limit = int(config.get("page_limit", self.page_limit))
         self.mongo_database = config.get("mongo_database", self.mongo_database)
+        for endpoint in {"structures", "references"}:
+            setattr(
+                self,
+                f"{endpoint}_collection",
+                config.get(f"{endpoint}_collection"),
+                getattr(self, f"{endpoint}_collection"),
+            )
+
+        self.page_limit = int(config.get("page_limit", self.page_limit))
+        self.version = config.get("version", self.version)
+
         self.provider = config.get("provider", self.provider)
         self.provider_fields = set(config.get("provider_fields", self.provider_fields))
 

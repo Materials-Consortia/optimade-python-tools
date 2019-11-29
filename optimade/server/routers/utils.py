@@ -221,6 +221,10 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
                 properties.update(
                     retrieve_queryable_properties(sub_schema, sub_queryable_properties)
                 )
+            elif value.get("description", "") == "Not allowed key":
+                # Special case used in models to make sure not-allowed fields are not present under "attributes"
+                # NOTE: This may be removed when upgrading to pydantic v1 !
+                continue
             else:
                 properties[name] = {"description": value.get("description", "")}
                 if "unit" in value:

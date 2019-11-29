@@ -19,14 +19,16 @@ from .utils import get_entries, get_single_entry
 router = APIRouter()
 
 structures_coll = MongoCollection(
-    client[CONFIG.mongo_database]["structures"], StructureResource, StructureMapper
+    collection=client[CONFIG.mongo_database][CONFIG.structures_collection],
+    resource_cls=StructureResource,
+    resource_mapper=StructureMapper,
 )
 
 
 @router.get(
     "/structures",
     response_model=Union[StructureResponseMany, ErrorResponse],
-    response_model_skip_defaults=True,
+    response_model_exclude_unset=True,
     tags=["Structure"],
 )
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
@@ -41,7 +43,7 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
 @router.get(
     "/structures/{entry_id:path}",
     response_model=Union[StructureResponseOne, ErrorResponse],
-    response_model_skip_defaults=True,
+    response_model_exclude_unset=True,
     tags=["Structure"],
 )
 def get_single_structure(

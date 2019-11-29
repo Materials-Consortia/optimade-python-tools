@@ -12,6 +12,8 @@ from optimade.models import (
     StructureResource,
 )
 
+from optimade.server.config import CONFIG
+
 from .utils import meta_values, retrieve_queryable_properties
 
 
@@ -26,7 +28,7 @@ ENTRY_INFO_SCHEMAS = {
 @router.get(
     "/info",
     response_model=Union[InfoResponse, ErrorResponse],
-    response_model_skip_defaults=False,
+    response_model_exclude_unset=True,
     tags=["Info"],
 )
 def get_info(request: Request):
@@ -35,17 +37,20 @@ def get_info(request: Request):
     return InfoResponse(
         meta=meta_values(str(request.url), 1, 1, more_data_available=False),
         data=BaseInfoResource(
+            id=BaseInfoResource.schema()["properties"]["id"]["const"],
+            type=BaseInfoResource.schema()["properties"]["type"]["const"],
             attributes=BaseInfoAttributes(
-                api_version="v0.10",
+                api_version=f"v{CONFIG.version}",
                 available_api_versions=[
                     {
-                        "url": "http://localhost:5000/optimade/v0.10.0/",
-                        "version": "0.10.0",
+                        "url": f"http://localhost:5000/optimade/v{CONFIG.version}/",
+                        "version": CONFIG.version,
                     }
                 ],
-                entry_types_by_format={"json": ["structures"]},
-                available_endpoints=["info", "structures"],
-            )
+                formats=["json"],
+                available_endpoints=["info"] + list(ENTRY_INFO_SCHEMAS.keys()),
+                entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
+            ),
         ),
     )
 
@@ -53,13 +58,13 @@ def get_info(request: Request):
 @router.get(
     "/info/{entry}",
     response_model=Union[EntryInfoResponse, ErrorResponse],
-    response_model_skip_defaults=True,
+    response_model_exclude_unset=True,
     tags=["Info", "Structure", "Reference"],
 )
 def get_entry_info(request: Request, entry: str):
     from optimade.models import EntryInfoResource
 
-    valid_entry_info_endpoints = {"references", "structures"}
+    valid_entry_info_endpoints = ENTRY_INFO_SCHEMAS.keys()
     if entry not in valid_entry_info_endpoints:
         raise StarletteHTTPException(
             status_code=404,

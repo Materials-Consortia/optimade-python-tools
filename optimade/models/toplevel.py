@@ -4,7 +4,7 @@ from typing import Union, List, Optional, Dict, Any
 from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
 
 from .jsonapi import Link, Meta
-from .util import NonnegativeInt
+from .utils import NonnegativeInt
 from .baseinfo import BaseInfoResource
 from .entries import EntryInfoResource, EntryResource
 from .optimade_json import Error, Success, Failure, Warnings

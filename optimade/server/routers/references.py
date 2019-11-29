@@ -20,14 +20,16 @@ from .utils import get_entries, get_single_entry
 router = APIRouter()
 
 references_coll = MongoCollection(
-    client[CONFIG.mongo_database]["references"], ReferenceResource, ReferenceMapper
+    collection=client[CONFIG.mongo_database][CONFIG.references_collection],
+    resource_cls=ReferenceResource,
+    resource_mapper=ReferenceMapper,
 )
 
 
 @router.get(
     "/references",
     response_model=Union[ReferenceResponseMany, ErrorResponse],
-    response_model_skip_defaults=True,
+    response_model_exclude_unset=True,
     tags=["Reference"],
 )
 def get_references(request: Request, params: EntryListingQueryParams = Depends()):
@@ -42,7 +44,7 @@ def get_references(request: Request, params: EntryListingQueryParams = Depends()
 @router.get(
     "/references/{entry_id:path}",
     response_model=Union[ReferenceResponseOne, ErrorResponse],
-    response_model_skip_defaults=True,
+    response_model_exclude_unset=True,
     tags=["Reference"],
 )
 def get_single_reference(
