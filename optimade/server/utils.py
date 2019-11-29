@@ -287,7 +287,7 @@ def get_providers():
     from bson.objectid import ObjectId
 
     mat_consortia_providers = requests.get(
-        "https://raw.githubusercontent.com/Materials-Consortia/OPTiMaDe/develop/providers.json"
+        "https://raw.githubusercontent.com/Materials-Consortia/OPTiMaDe/master/providers.json"
     ).json()
 
     providers_list = []
@@ -296,11 +296,10 @@ def get_providers():
         if provider["id"] == "exmpl":
             continue
 
-        provider["task_id"] = provider.pop("id")
         provider.update(provider.pop("attributes"))
 
         # Create MongoDB id
-        oid = provider["task_id"] + provider["type"]
+        oid = provider["id"] + provider["type"]
         if len(oid) < 12:
             oid = oid + "0" * (12 - len(oid))
         elif len(oid) > 12:

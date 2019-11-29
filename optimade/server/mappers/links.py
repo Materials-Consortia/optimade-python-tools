@@ -6,7 +6,6 @@ __all__ = ("LinksMapper",)
 class LinksMapper(ResourceMapper):
 
     ENDPOINT = "links"
-    ALIASES = (("id", "task_id"),)
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:

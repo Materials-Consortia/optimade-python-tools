@@ -6,4 +6,3 @@ __all__ = ("ReferenceMapper",)
 class ReferenceMapper(ResourceMapper):
 
     ENDPOINT = "references"
-    ALIASES = (("id", "task_id"),)

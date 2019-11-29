@@ -9,6 +9,7 @@ class ResourceMapper:
 
     ENDPOINT: str = ""
     ALIASES: Tuple[Tuple[str, str]] = ()
+    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set = {"id", "type", "relationships", "links"}
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
@@ -36,6 +37,12 @@ class ResourceMapper:
     def map_back(cls, doc: dict) -> dict:
         """Map properties from MongoDB to OPTiMaDe
 
+        Starting from a MongoDB document ``doc``, map the DB fields to the corresponding OPTiMaDe fields.
+        Then, the fields are all added to the top-level field "attributes",
+        with the exception of other top-level fields, defined in ``cls.TOPLEVEL_NON_ATTRIBUTES_FIELDS``.
+        All fields not in ``cls.TOPLEVEL_NON_ATTRIBUTES_FIELDS`` + "attributes" will be removed.
+        Finally, the ``type`` is given the value of the specified ``cls.ENDPOINT``.
+
         :param doc: A resource object in MongoDB format
         :type doc: dict
 
@@ -59,11 +66,10 @@ class ResourceMapper:
             raise Exception("Will overwrite doc field!")
         attributes = newdoc.copy()
 
-        top_level_entry_fields = {"id", "type", "relationships", "links"}
-        for k in top_level_entry_fields:
+        for k in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
             attributes.pop(k, None)
         for k in list(newdoc.keys()):
-            if k not in top_level_entry_fields:
+            if k not in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
                 del newdoc[k]
 
         newdoc["type"] = cls.ENDPOINT
