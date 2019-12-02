@@ -3,7 +3,7 @@
     "_id": {
       "$oid": "696e646578706172656e7430"
     },
-    "task_id": "index",
+    "id": "index",
     "type": "parent",
     "name": "Index meta-database",
     "description": "Index for example's OPTiMaDe databases",
