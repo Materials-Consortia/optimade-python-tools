@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long
 from datetime import datetime
-from typing import Optional, Dict, List, Union
+from typing import Optional, Dict, List
 from pydantic import BaseModel, Schema, validator
 
 from .jsonapi import Relationships, Attributes, Resource, Relationship
@@ -17,7 +17,7 @@ __all__ = (
 
 class TypedRelationship(Relationship):
     @validator("data", whole=True)
-    def check_rel_type(cls, data, values):
+    def check_rel_type(cls, data):
         if hasattr(cls, "_req_type") and any(obj.type != cls._req_type for obj in data):
             raise ValueError("Object stored in relationship data has wrong type")
         return data
