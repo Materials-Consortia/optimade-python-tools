@@ -14,13 +14,15 @@ from optimade.models import (
     StructureResponseOne,
     EntryInfoResponse,
     InfoResponse,
+    LinksResponse,
 )
 
 from optimade.server.main import app
-from optimade.server.routers import info, references, structures
+from optimade.server.routers import info, links, references, structures
 
 # We need to remove the /optimade prefixes in order to have the tests run correctly.
 app.include_router(info.router)
+app.include_router(links.router)
 app.include_router(references.router)
 app.include_router(structures.router)
 # need to explicitly set base_url, as the default "http://testserver"
@@ -108,6 +110,11 @@ class InfoStructuresEndpointTests(EndpointTests, unittest.TestCase):
 class InfoReferencesEndpointTests(EndpointTests, unittest.TestCase):
     request_str = "/info/references"
     response_cls = EntryInfoResponse
+
+
+class LinksEndpointTests(EndpointTests, unittest.TestCase):
+    request_str = "/links"
+    response_cls = LinksResponse
 
 
 class ReferencesEndpointTests(EndpointTests, unittest.TestCase):

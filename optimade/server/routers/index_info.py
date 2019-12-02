@@ -22,13 +22,15 @@ router = APIRouter()
 @router.get(
     "/info",
     response_model=Union[IndexInfoResponse, ErrorResponse],
-    response_model_skip_defaults=False,
+    response_model_exclude_unset=True,
     tags=["Info"],
 )
 def get_info(request: Request):
     return IndexInfoResponse(
         meta=meta_values(str(request.url), 1, 1, more_data_available=False),
         data=IndexInfoResource(
+            id=IndexInfoResource.schema()["properties"]["id"]["const"],
+            type=IndexInfoResource.schema()["properties"]["type"]["const"],
             attributes=IndexInfoAttributes(
                 api_version=f"v{CONFIG.version}",
                 available_api_versions=[
@@ -37,8 +39,9 @@ def get_info(request: Request):
                         "version": f"{CONFIG.version}",
                     }
                 ],
-                entry_types_by_format={"json": ["links"]},
+                formats=["json"],
                 available_endpoints=["info", "links"],
+                entry_types_by_format={"json": []},
                 is_index=True,
             ),
             relationships={

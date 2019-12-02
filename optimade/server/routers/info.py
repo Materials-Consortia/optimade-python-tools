@@ -48,8 +48,9 @@ def get_info(request: Request):
                     }
                 ],
                 formats=["json"],
-                available_endpoints=["info"] + list(ENTRY_INFO_SCHEMAS.keys()),
+                available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS.keys()),
                 entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
+                is_index=False,
             ),
         ),
     )
