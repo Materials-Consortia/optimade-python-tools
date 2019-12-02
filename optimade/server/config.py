@@ -66,9 +66,11 @@ class ServerConfig(Config):
 
         self.provider_fields = {}
         for endpoint in {"structures", "references"}:
-            self.provider_fields[endpoint] = {
-                field for field, _ in config[endpoint].items() if _ == ""
-            }
+            self.provider_fields[endpoint] = (
+                {field for field, _ in config[endpoint].items() if _ == ""}
+                if endpoint in config
+                else {}
+            )
 
     def load_from_json(self):
         """ Load from the file "config.json", if it exists. """

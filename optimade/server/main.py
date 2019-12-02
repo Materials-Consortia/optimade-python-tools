@@ -9,9 +9,11 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
 
 from optimade.models import (
+    LinksResource,
     StructureResource,
     ReferenceResource,
     InfoResponse,
+    LinksResponse,
     ErrorResponse,
     EntryInfoResponse,
     ReferenceResponseMany,
@@ -23,7 +25,7 @@ from optimade.models import (
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .entry_collections import MongoCollection
 from .config import CONFIG
-from .mappers import StructureMapper, ReferenceMapper
+from .mappers import LinksMapper, StructureMapper, ReferenceMapper
 import optimade.server.utils as u
 
 
@@ -50,6 +52,9 @@ structures = MongoCollection(
 references = MongoCollection(
     client[CONFIG.mongo_database]["references"], ReferenceResource, ReferenceMapper
 )
+links = MongoCollection(
+    client[CONFIG.mongo_database]["links"], LinksResource, LinksMapper
+)
 ENTRY_COLLECTIONS = {"references": references, "structures": structures}
 
 
@@ -60,6 +65,7 @@ test_paths = {
     "references": Path(__file__)
     .resolve()
     .parent.joinpath("tests/test_references.json"),
+    "links": Path(__file__).resolve().parent.joinpath("tests/test_links.json"),
 }
 if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
     import bson.json_util
@@ -72,10 +78,18 @@ if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values())
             endpoint_collection.collection.insert_many(
                 bson.json_util.loads(bson.json_util.dumps(data))
             )
+        if endpoint_name == "links":
+            print(
+                "adding providers.json to links from github.com/Materials-Consortia/OPTiMaDe"
+            )
+            endpoint_collection.collection.insert_many(
+                bson.json_util.loads(bson.json_util.dumps(u.get_providers()))
+            )
         print(f"done inserting test {endpoint_name}...")
 
     load_entries("structures", structures)
     load_entries("references", references)
+    load_entries("links", links)
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -157,6 +171,29 @@ def get_single_reference(
     return u.get_single_entry(
         references, entry_id, ReferenceResponseOne, request, params
     )
+
+
+@app.get(
+    "/links",
+    response_model=Union[LinksResponse, ErrorResponse],
+    response_model_skip_defaults=True,
+    tags=["Links"],
+)
+def get_links(request: Request, params: EntryListingQueryParams = Depends()):
+    for str_param in ["filter", "sort"]:
+        if getattr(params, str_param):
+            setattr(params, str_param, "")
+    for int_param in [
+        "page_offset",
+        "page_page",
+        "page_cursor",
+        "page_above",
+        "page_below",
+    ]:
+        if getattr(params, int_param):
+            setattr(params, int_param, 0)
+    params.page_limit = CONFIG.page_limit
+    return u.get_entries(links, LinksResponse, request, params)
 
 
 @app.get(
