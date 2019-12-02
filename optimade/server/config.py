@@ -35,8 +35,9 @@ class ServerConfig(Config):
 
     use_real_mongo = False
     mongo_database = "optimade"
-    structures_collection = "structures"
+    links_collection = "links"
     references_collection = "references"
+    structures_collection = "structures"
 
     page_limit = 500
     version = "0.10.0"
@@ -73,7 +74,7 @@ class ServerConfig(Config):
             self.provider = dict(config["PROVIDER"])
 
         self.provider_fields = {}
-        for endpoint in {"structures", "references"}:
+        for endpoint in {"links", "references", "structures"}:
             self.provider_fields[endpoint] = (
                 {field for field, _ in config[endpoint].items() if _ == ""}
                 if endpoint in config
@@ -99,7 +100,7 @@ class ServerConfig(Config):
 
         self.use_real_mongo = bool(config.get("use_real_mongo", self.use_real_mongo))
         self.mongo_database = config.get("mongo_database", self.mongo_database)
-        for endpoint in {"structures", "references"}:
+        for endpoint in {"links", "references", "structures"}:
             setattr(
                 self,
                 f"{endpoint}_collection",
