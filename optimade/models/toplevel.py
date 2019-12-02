@@ -1,12 +1,19 @@
 from datetime import datetime
 from typing import Union, List, Optional, Dict, Any
 
-from pydantic import BaseModel, validator, UrlStr, Schema, EmailStr
+from pydantic import (  # pylint: disable=no-name-in-module
+    BaseModel,
+    validator,
+    UrlStr,
+    Schema,
+    EmailStr,
+)
 
 from .jsonapi import Link, Meta
 from .utils import NonnegativeInt
 from .baseinfo import BaseInfoResource
 from .entries import EntryInfoResource, EntryResource
+from .links import LinksResource
 from .optimade_json import Error, Success, Failure, Warnings
 from .references import ReferenceResource
 from .structures import StructureResource
@@ -21,6 +28,7 @@ __all__ = (
     "ErrorResponse",
     "EntryInfoResponse",
     "InfoResponse",
+    "LinksResponse",
     "EntryResponseOne",
     "EntryResponseMany",
     "StructureResponseOne",
@@ -192,6 +200,10 @@ class EntryResponseMany(Success):
     meta: ResponseMeta = Schema(...)
     data: Union[List[EntryResource], List[Dict[str, Any]]] = Schema(...)
     included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Schema(...)
+
+
+class LinksResponse(EntryResponseMany):
+    data: Union[List[LinksResource], List[Dict[str, Any]]] = Schema(...)
 
 
 class StructureResponseOne(EntryResponseOne):

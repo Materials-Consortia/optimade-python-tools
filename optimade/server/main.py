@@ -8,7 +8,8 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .entry_collections import MongoCollection
 from .config import CONFIG
-from .routers import info, references, structures
+from .routers import info, links, references, structures
+from .routers.utils import get_providers
 
 import optimade.server.exception_handlers as exc_handlers
 
@@ -34,6 +35,7 @@ test_paths = {
     "references": Path(__file__)
     .resolve()
     .parent.joinpath("tests/test_references.json"),
+    "links": Path(__file__).resolve().parent.joinpath("tests/test_links.json"),
 }
 if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
     import bson.json_util
@@ -46,6 +48,13 @@ if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values())
             print(f"inserting test {endpoint_name} into collection...")
             endpoint_collection.collection.insert_many(
                 bson.json_util.loads(bson.json_util.dumps(data))
+            )
+        if endpoint_name == "links":
+            print(
+                "adding providers.json to links from github.com/Materials-Consortia/OPTiMaDe"
+            )
+            endpoint_collection.collection.insert_many(
+                bson.json_util.loads(bson.json_util.dumps(get_providers()))
             )
         print(f"done inserting test {endpoint_name}...")
 
@@ -77,6 +86,7 @@ while version:
 
 for prefix in valid_prefixes:
     app.include_router(info.router, prefix=prefix)
+    app.include_router(links.router, prefix=prefix)
     app.include_router(references.router, prefix=prefix)
     app.include_router(structures.router, prefix=prefix)
 

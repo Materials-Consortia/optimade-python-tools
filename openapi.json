@@ -87,6 +87,166 @@
         ]
       }
     },
+    "/optimade/links": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Links_Optimade_Links_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Links"
+        ],
+        "summary": "Get Links",
+        "operationId": "get_links_optimade_links_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
     "/optimade/references": {
       "get": {
         "responses": {
@@ -131,7 +291,8 @@
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
             "name": "filter",
             "in": "query"
@@ -151,7 +312,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -160,7 +322,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -169,7 +332,8 @@
             "required": false,
             "schema": {
               "title": "Sort",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "sort",
             "in": "query"
@@ -305,7 +469,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -314,7 +479,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -366,7 +532,8 @@
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
             "name": "filter",
             "in": "query"
@@ -386,7 +553,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -395,7 +563,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -404,7 +573,8 @@
             "required": false,
             "schema": {
               "title": "Sort",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "sort",
             "in": "query"
@@ -540,7 +710,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -549,7 +720,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -638,6 +810,166 @@
         ]
       }
     },
+    "/optimade/v0.10.0/links": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Links_Optimade_V0.10.0_Links_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Links"
+        ],
+        "summary": "Get Links",
+        "operationId": "get_links_optimade_v0.10.0_links_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
     "/optimade/v0.10.0/references": {
       "get": {
         "responses": {
@@ -682,7 +1014,8 @@
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
             "name": "filter",
             "in": "query"
@@ -702,7 +1035,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -711,7 +1045,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -720,7 +1055,8 @@
             "required": false,
             "schema": {
               "title": "Sort",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "sort",
             "in": "query"
@@ -856,7 +1192,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -865,7 +1202,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -917,7 +1255,8 @@
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
             "name": "filter",
             "in": "query"
@@ -937,7 +1276,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -946,7 +1286,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -955,7 +1296,8 @@
             "required": false,
             "schema": {
               "title": "Sort",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "sort",
             "in": "query"
@@ -1091,7 +1433,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -1100,7 +1443,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -1189,6 +1533,166 @@
         ]
       }
     },
+    "/optimade/v0.10/links": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Links_Optimade_V0.10_Links_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Links"
+        ],
+        "summary": "Get Links",
+        "operationId": "get_links_optimade_v0.10_links_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
     "/optimade/v0.10/references": {
       "get": {
         "responses": {
@@ -1233,7 +1737,8 @@
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
             "name": "filter",
             "in": "query"
@@ -1253,7 +1758,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -1262,7 +1768,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -1271,7 +1778,8 @@
             "required": false,
             "schema": {
               "title": "Sort",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "sort",
             "in": "query"
@@ -1407,7 +1915,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -1416,7 +1925,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -1468,7 +1978,8 @@
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n"
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
             "name": "filter",
             "in": "query"
@@ -1488,7 +1999,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -1497,7 +2009,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -1506,7 +2019,8 @@
             "required": false,
             "schema": {
               "title": "Sort",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "sort",
             "in": "query"
@@ -1642,7 +2156,8 @@
             "schema": {
               "title": "Email_Address",
               "type": "string",
-              "format": "email"
+              "format": "email",
+              "default": ""
             },
             "name": "email_address",
             "in": "query"
@@ -1651,7 +2166,8 @@
             "required": false,
             "schema": {
               "title": "Response_Fields",
-              "type": "string"
+              "type": "string",
+              "default": ""
             },
             "name": "response_fields",
             "in": "query"
@@ -1742,15 +2258,17 @@
       "BaseInfoAttributes": {
         "title": "BaseInfoAttributes",
         "required": [
-          "available_api_versions"
+          "api_version",
+          "available_api_versions",
+          "available_endpoints",
+          "entry_types_by_format"
         ],
         "type": "object",
         "properties": {
           "api_version": {
             "title": "Api_Version",
             "type": "string",
-            "description": "Presently used version of the OPTiMaDe API",
-            "default": "v0.10"
+            "description": "Presently used version of the OPTiMaDe API"
           },
           "available_api_versions": {
             "title": "Available_Api_Versions",
@@ -1777,11 +2295,7 @@
             "items": {
               "type": "string"
             },
-            "description": "List of available endpoints (i.e., the string to be appended to the base URL).",
-            "default": [
-              "structures",
-              "info"
-            ]
+            "description": "List of available endpoints (i.e., the string to be appended to the base URL)."
           },
           "entry_types_by_format": {
             "title": "Entry_Types_By_Format",
@@ -1792,12 +2306,7 @@
                 "type": "string"
               }
             },
-            "description": "Available entry endpoints as a function of output formats.",
-            "default": {
-              "json": [
-                "structures"
-              ]
-            }
+            "description": "Available entry endpoints as a function of output formats."
           },
           "is_index": {
             "title": "Is_Index",
@@ -2400,6 +2909,195 @@
           }
         },
         "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object."
+      },
+      "LinksResource": {
+        "title": "LinksResource",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "description": "MUST be either \"parent\", \"child\", or \"provider\". These objects are described in detail in sections Parent and Child Objects and Provider Objects."
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourceLinks"
+              }
+            ],
+            "description": "a links object containing links related to the resource."
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+          },
+          "attributes": {
+            "title": "Attributes",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LinksResourceAttributes"
+              }
+            ],
+            "description": "a dictionary containing key-value pairs representing the entry's properties."
+          },
+          "relationships": {
+            "title": "Relationships",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntryRelationships"
+              }
+            ],
+            "description": "a dictionary containing references to other entries according to the description in section `Relationships`_\nencoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.\nThe OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary."
+          }
+        },
+        "description": "A Links endpoint resource object"
+      },
+      "LinksResourceAttributes": {
+        "title": "LinksResourceAttributes",
+        "required": [
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "relationships": {
+            "title": "Relationships",
+            "description": "Not allowed key"
+          },
+          "links": {
+            "title": "Links",
+            "description": "Not allowed key"
+          },
+          "id": {
+            "title": "Id",
+            "description": "Not allowed key"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Not allowed key"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "description": "Human-readable name for the OPTiMaDe API implementation a client may provide in a list to an end-user."
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "Human-readable description for the OPTiMaDe API implementation a client may provide in a list to an end-user."
+          },
+          "base_url": {
+            "title": "Base_Url",
+            "anyOf": [
+              {
+                "minLength": 1,
+                "maxLength": 65536,
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                ]
+              }
+            ],
+            "description": "JSON API links object, pointing to the base URL for this implementation"
+          }
+        },
+        "description": "Links endpoint resource object attributes"
+      },
+      "LinksResponse": {
+        "title": "LinksResponse",
+        "required": [
+          "data",
+          "meta"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "title": "Data",
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LinksResource"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          },
+          "errors": {
+            "title": "Errors",
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+            },
+            "description": "A list of errors"
+          },
+          "included": {
+            "title": "Included",
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntryResource"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            ]
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ToplevelLinks"
+              }
+            ],
+            "description": "Links associated with the primary data"
+          },
+          "jsonapi": {
+            "title": "Jsonapi",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/JsonApi"
+              }
+            ],
+            "description": "Information about the JSON API used"
+          }
+        },
+        "description": "errors are not allowed"
       },
       "Meta": {
         "title": "Meta",

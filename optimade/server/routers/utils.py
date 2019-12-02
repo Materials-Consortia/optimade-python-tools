@@ -11,11 +11,19 @@ from optimade.models import (
     EntryResponseMany,
     EntryResponseOne,
     ToplevelLinks,
+    ReferenceResource,
+    StructureResource,
 )
 
 from optimade.server.config import CONFIG
 from optimade.server.deps import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.entry_collections import EntryCollection
+
+
+ENTRY_INFO_SCHEMAS = {
+    "structures": StructureResource.schema,
+    "references": ReferenceResource.schema,
+}
 
 
 def meta_values(
@@ -230,3 +238,34 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
                 if "unit" in value:
                     properties[name]["unit"] = value["unit"]
     return properties
+
+
+def get_providers():
+    """Retrieve providers.json from /Materials-Consortia/OPTiMaDe"""
+    import requests
+    from bson.objectid import ObjectId
+
+    mat_consortia_providers = requests.get(
+        "https://raw.githubusercontent.com/Materials-Consortia/OPTiMaDe/master/providers.json"
+    ).json()
+
+    providers_list = []
+    for provider in mat_consortia_providers.get("data", []):
+        # Remove/skip "exmpl"
+        if provider["id"] == "exmpl":
+            continue
+
+        provider.update(provider.pop("attributes"))
+
+        # Create MongoDB id
+        oid = provider["id"] + provider["type"]
+        if len(oid) < 12:
+            oid = oid + "0" * (12 - len(oid))
+        elif len(oid) > 12:
+            oid = oid[:12]
+        oid = oid.encode("UTF-8")
+        provider["_id"] = {"$oid": ObjectId(oid)}
+
+        providers_list.append(provider)
+
+    return providers_list
