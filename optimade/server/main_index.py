@@ -27,13 +27,12 @@ app = FastAPI(
 )
 
 
-index_links_path = Path(__file__).resolve().parent.joinpath("index_links.json")
-if not CONFIG.use_real_mongo and index_links_path.exists():
+if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     import bson.json_util
     from .routers.links import links_coll
 
     print("loading index links...")
-    with open(index_links_path) as f:
+    with open(CONFIG.index_links_path) as f:
         data = json.load(f)
         print("inserting index links into collection...")
         links_coll.collection.insert_many(

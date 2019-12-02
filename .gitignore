@@ -116,3 +116,4 @@ venv.bak/
 Untitled.ipynb
 local_openapi.json
 local_index_openapi.json
+server.cfg
