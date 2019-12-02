@@ -53,6 +53,18 @@ class Config:
         _path = server.get(SECTION, SERVER_CONFIG_PATH, fallback=str(self._path))
         self._path = server_cfg.parent.joinpath(_path).resolve()
 
+        if not self._path.exists():
+            raise ValueError(
+                f'Cannot resolve {self._path}. Check the config-file exists. Note, "~" is not allowed.'
+            )
+
+        if not self.index_links_path.exists():
+            from warnings import warn
+
+            warn(
+                f'Cannot resolve {self.index_links_path}. Check the index_links.json file exists. Note, "~" is not allowed.'
+            )
+
     def _get_load_func(self, format_name) -> Any:
         return getattr(self, f"load_from_{format_name}")
 

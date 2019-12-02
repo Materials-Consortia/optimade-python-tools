@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 from pydantic import ValidationError
 from fastapi import FastAPI
