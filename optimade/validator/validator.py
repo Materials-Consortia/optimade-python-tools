@@ -11,11 +11,15 @@ import logging
 import json
 import traceback
 
-from pydantic import ValidationError
+from typing import Union
 
-from optimade.models import InfoResponse, EntryInfoResponse, LinksResponse
+from pydantic import ValidationError
+from starlette.testclient import TestClient
+
+from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
 
 from .validator_model_patches import (
+    ValidatorLinksResponse,
     ValidatorEntryResponseOne,
     ValidatorEntryResponseMany,
     ValidatorReferenceResponseOne,
@@ -26,7 +30,8 @@ from .validator_model_patches import (
 
 
 BASE_INFO_ENDPOINT = "info"
-REQUIRED_ENTRY_ENDPOINTS = ["structures", "references"]
+LINKS_ENDPOINT = "links"
+REQUIRED_ENTRY_ENDPOINTS = ["references", "structures"]
 
 RESPONSE_CLASSES = {
     "references": ValidatorReferenceResponseMany,
@@ -34,11 +39,14 @@ RESPONSE_CLASSES = {
     "structures": ValidatorStructureResponseMany,
     "structures/": ValidatorStructureResponseOne,
     "info": InfoResponse,
-    "links": LinksResponse,
+    "links": ValidatorLinksResponse,
 }
 RESPONSE_CLASSES.update(
     {f"info/{entry}": EntryInfoResponse for entry in REQUIRED_ENTRY_ENDPOINTS}
 )
+
+REQUIRED_ENTRY_ENDPOINTS_INDEX = []
+RESPONSE_CLASSES_INDEX = {"info": IndexInfoResponse, "links": ValidatorLinksResponse}
 
 
 def print_warning(string):
@@ -71,9 +79,10 @@ class Client:
             Examples:
                 - `'http://example.org/optimade'`,
                 - `'www.crystallography.net/cod-test/optimade/v0.10.0/'`
+            Note: A maximum of one slash ("/") is allowed as the last character.
 
         """
-        self.base_url = base_url
+        self.base_url = base_url[:-1] if base_url.endswith("/") else base_url
         self.last_request = None
         self.response = None
         self.max_retries = max_retries
@@ -94,7 +103,7 @@ class Client:
 
         """
         if request:
-            self.last_request = f"{self.base_url}/{request}"
+            self.last_request = f"{self.base_url}{request}"
         else:
             self.last_request = self.base_url
 
@@ -144,14 +153,14 @@ def test_case(test_fn):
             if args[0].verbosity > 1:
                 traceback.print_exc()
 
-            result = False
+            result = None
             msg = f"{type(exc).__name__}: {exc}"
 
         try:
             request = args[0].client.last_request
         except AttributeError:
             request = args[0].base_url
-        if result:
+        if result is not None:
             args[0].success_count += 1
             if args[0].verbosity > 0:
                 print_success(f"✔: {request} - {msg}")
@@ -182,12 +191,13 @@ class ImplementationValidator:
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        client=None,
-        base_url=None,
-        verbosity=0,
-        page_limit=5,
-        max_retries=5,
-        as_type=None,
+        client: Union[Client, TestClient] = None,
+        base_url: str = None,
+        verbosity: int = 0,
+        page_limit: int = 5,
+        max_retries: int = 5,
+        as_type: str = None,
+        index: bool = False,
     ):
         """ Set up the tests to run, based on constants in this module
         for required endpoints.
@@ -197,9 +207,16 @@ class ImplementationValidator:
         self.verbosity = verbosity
         self.max_retries = max_retries
         self.page_limit = page_limit
+        self.index = index
 
         if as_type is None:
             self.as_type_cls = None
+        elif self.index:
+            if as_type not in RESPONSE_CLASSES_INDEX.keys():
+                raise RuntimeError(
+                    f"Provided as_type='{as_type}' not allowed for an Index meta-database."
+                )
+            self.as_type_cls = RESPONSE_CLASSES_INDEX[as_type]
         elif as_type in ("structure", "reference"):
             self.as_type_cls = RESPONSE_CLASSES[f"{as_type}s/"]
         else:
@@ -220,9 +237,13 @@ class ImplementationValidator:
 
         self.test_id_by_type = {}
         self._setup_log()
-        self.base_info_endpoint = BASE_INFO_ENDPOINT
-        self.expected_entry_endpoints = REQUIRED_ENTRY_ENDPOINTS
+        self.expected_entry_endpoints = (
+            REQUIRED_ENTRY_ENDPOINTS_INDEX if self.index else REQUIRED_ENTRY_ENDPOINTS
+        )
         self.test_entry_endpoints = set(self.expected_entry_endpoints)
+        self.response_classes = (
+            RESPONSE_CLASSES_INDEX if self.index else RESPONSE_CLASSES
+        )
 
         # if valid is True on exit, script returns 0 to shell
         # if valid is False on exit, script returns 1 to shell
@@ -264,22 +285,22 @@ class ImplementationValidator:
 
         # some simple checks on base_url
         if "?" in self.base_url or any(
-            [self.base_url.endswith(endp) for endp in REQUIRED_ENTRY_ENDPOINTS]
+            [self.base_url.endswith(endp) for endp in self.expected_entry_endpoints]
         ):
             sys.exit(
                 "Base URL not appropriate: should not contain an endpoint or filter."
             )
 
-        # otherwise test entire implementation
+        # test entire implementation
         self._log.info("Testing entire implementation %s...", self.base_url)
         self._log.debug("Testing base info endpoint of %s", BASE_INFO_ENDPOINT)
-        base_info = self.test_info_endpoints(BASE_INFO_ENDPOINT)
+        base_info = self.test_info_or_links_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
 
         for endp in self.test_entry_endpoints:
             entry_info_endpoint = f"{BASE_INFO_ENDPOINT}/{endp}"
             self._log.debug("Testing expected info endpoint %s", entry_info_endpoint)
-            self.test_info_endpoints(entry_info_endpoint)
+            self.test_info_or_links_endpoints(entry_info_endpoint)
 
         for endp in self.test_entry_endpoints:
             self._log.debug("Testing multiple entry endpoint of %s", endp)
@@ -289,6 +310,9 @@ class ImplementationValidator:
             self._log.debug("Testing single entry request of type %s", endp)
             self.test_single_entry_endpoint(endp)
 
+        self._log.debug("Testing %s endpoint", LINKS_ENDPOINT)
+        self.test_info_or_links_endpoints(LINKS_ENDPOINT)
+
         self.valid = not bool(self.failure_count)
 
         self._log.info(
@@ -297,24 +321,12 @@ class ImplementationValidator:
             self.success_count + self.failure_count,
         )
 
-    def test_info_endpoints(self, request_str):
+    def test_info_or_links_endpoints(self, request_str):
         """ Runs the test cases for the info endpoints. """
         response = self.get_endpoint(request_str)
         if response:
-            deserialized = self.deserialize_reponse(
-                response, RESPONSE_CLASSES[request_str]
-            )
-            if not deserialized:
-                return response
-            return deserialized
-        return False
-
-    def test_links_endpoint(self, request_str="links"):
-        """ Runs the test cases for the links endpoint. """
-        response = self.get_endpoint(request_str)
-        if response:
-            deserialized = self.deserialize_reponse(
-                response, RESPONSE_CLASSES[request_str]
+            deserialized = self.deserialize_response(
+                response, self.response_classes[request_str]
             )
             if not deserialized:
                 return response
@@ -325,8 +337,8 @@ class ImplementationValidator:
         """ Runs the test cases for the single entry endpoints. """
         _type = request_str.split("?")[0]
         response_cls_name = _type + "/"
-        if response_cls_name in RESPONSE_CLASSES:
-            response_cls = RESPONSE_CLASSES[response_cls_name]
+        if response_cls_name in self.response_classes:
+            response_cls = self.response_classes[response_cls_name]
         else:
             self._log.warning(
                 "Deserializing single entry response %s with generic response rather than defined endpoint.",
@@ -337,21 +349,21 @@ class ImplementationValidator:
             test_id = self.test_id_by_type[_type]
             response = self.get_endpoint(f"{_type}/{test_id}")
             if response:
-                self.deserialize_reponse(response, response_cls)
+                self.deserialize_response(response, response_cls)
 
     def test_multi_entry_endpoint(self, request_str):
         """ Runs the test cases for the multi entry endpoints. """
         response = self.get_endpoint(request_str)
         _type = request_str.split("?")[0]
-        if _type in RESPONSE_CLASSES:
-            response_cls = RESPONSE_CLASSES[_type]
+        if _type in self.response_classes:
+            response_cls = self.response_classes[_type]
         else:
             self._log.warning(
                 "Deserializing multi entry response from %s with generic response rather than defined endpoint.",
                 _type,
             )
             response_cls = ValidatorEntryResponseMany
-        deserialized = self.deserialize_reponse(response, response_cls)
+        deserialized = self.deserialize_response(response, response_cls)
         self.test_page_limit(response)
         self.get_single_id_from_multi_endpoint(deserialized)
 
@@ -361,7 +373,7 @@ class ImplementationValidator:
             "Response to deserialize:\n%s",
             json.dumps(response.json(), indent=2),  # pylint: disable=no-member
         )
-        self.deserialize_reponse(response, self.as_type_cls)
+        self.deserialize_response(response, self.as_type_cls)
 
     @test_case
     def test_page_limit(self, response):
@@ -400,7 +412,7 @@ class ImplementationValidator:
         )
 
     @test_case
-    def deserialize_reponse(self, response, response_cls):
+    def deserialize_response(self, response, response_cls):
         """ Try to create the appropriate pydantic model from the response. """
         if not response:
             raise ResponseError("Request failed")
@@ -425,7 +437,10 @@ class ImplementationValidator:
                 )
 
             if not base_info.json():
-                raise ResponseError("Unable to get entry types from base info endpoint")
+                raise ResponseError(
+                    "Unable to get entry types from base info endpoint. "
+                    f"This may most likely be attributed to a wrong request to the '{BASE_INFO_ENDPOINT}' endpoint."
+                )
 
             try:
                 available_json_entry_endpoints = base_info.json()["data"]["attributes"][
@@ -443,11 +458,17 @@ class ImplementationValidator:
                 "Unable to find any JSON entry types in entry_types_by_format"
             )
 
-        self.test_entry_endpoints |= set(available_json_entry_endpoints)
-        if "info" in self.test_entry_endpoints:
+        if self.index and available_json_entry_endpoints != []:
             raise ResponseError(
-                'Illegal entry "info" was found in entry_types_by_format"'
+                "No entry endpoint are allowed for an Index meta-database"
             )
+
+        self.test_entry_endpoints |= set(available_json_entry_endpoints)
+        for non_entry_endpoint in ("info", "links"):
+            if non_entry_endpoint in self.test_entry_endpoints:
+                raise ResponseError(
+                    f'Illegal entry "{non_entry_endpoint}" was found in entry_types_by_format"'
+                )
         return (
             available_json_entry_endpoints,
             "successfully found available entry types in baseinfo",
@@ -456,7 +477,10 @@ class ImplementationValidator:
     @test_case
     def get_endpoint(self, request_str):
         """ Gets the response from the endpoint specified by `request_str`. """
+        request_str = f"/{request_str}"
         response = self.client.get(request_str)
         if response.status_code != 200:
-            raise ResponseError(f"Request returned HTTP:{response.status_code}")
+            raise ResponseError(
+                f"Request to '{request_str}' returned HTTP code: {response.status_code}"
+            )
         return response, "request successful."
