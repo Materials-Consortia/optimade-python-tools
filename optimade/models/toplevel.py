@@ -10,7 +10,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
 )
 
 from .jsonapi import Link, Meta
-from .util import NonnegativeInt
+from .utils import NonnegativeInt
 from .baseinfo import BaseInfoResource
 from .entries import EntryInfoResource, EntryResource
 from .links import LinksResource

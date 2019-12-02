@@ -6,7 +6,7 @@
     "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API."
   },
   "paths": {
-    "/structures": {
+    "/optimade/info": {
       "get": {
         "responses": {
           "200": {
@@ -14,649 +14,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Structures_Structures_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/StructureResponseMany"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Structure"
-        ],
-        "summary": "Get Structures",
-        "operationId": "get_structures_structures_get",
-        "parameters": [
-          {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-            "required": false,
-            "schema": {
-              "title": "Filter",
-              "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-              "default": ""
-            },
-            "name": "filter",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Sort",
-              "type": "string",
-              "default": ""
-            },
-            "name": "sort",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Limit",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "page_limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Page",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_page",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Cursor",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_cursor",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Above",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_above",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Below",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_below",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/structures/{entry_id}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Single_Structure_Structures__Entry_Id__Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/StructureResponseOne"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Structure"
-        ],
-        "summary": "Get Single Structure",
-        "operationId": "get_single_structure_structures__entry_id__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry_Id",
-              "type": "string"
-            },
-            "name": "entry_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/references": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_References_References_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ReferenceResponseMany"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Reference"
-        ],
-        "summary": "Get References",
-        "operationId": "get_references_references_get",
-        "parameters": [
-          {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-            "required": false,
-            "schema": {
-              "title": "Filter",
-              "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-              "default": ""
-            },
-            "name": "filter",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Sort",
-              "type": "string",
-              "default": ""
-            },
-            "name": "sort",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Limit",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "page_limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Page",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_page",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Cursor",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_cursor",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Above",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_above",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Below",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_below",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/references/{entry_id}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Single_Reference_References__Entry_Id__Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ReferenceResponseOne"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Reference"
-        ],
-        "summary": "Get Single Reference",
-        "operationId": "get_single_reference_references__entry_id__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry_Id",
-              "type": "string"
-            },
-            "name": "entry_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/links": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Links_Links_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/LinksResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Links"
-        ],
-        "summary": "Get Links",
-        "operationId": "get_links_links_get",
-        "parameters": [
-          {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-            "required": false,
-            "schema": {
-              "title": "Filter",
-              "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-              "default": ""
-            },
-            "name": "filter",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Sort",
-              "type": "string",
-              "default": ""
-            },
-            "name": "sort",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Limit",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "page_limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Page",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_page",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Cursor",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_cursor",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Above",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_above",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Below",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_below",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/info": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Info_Info_Get",
+                  "title": "Response_Get_Info_Optimade_Info_Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/InfoResponse"
@@ -674,10 +32,10 @@
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_info_get"
+        "operationId": "get_info_optimade_info_get"
       }
     },
-    "/info/{entry}": {
+    "/optimade/info/{entry}": {
       "get": {
         "responses": {
           "200": {
@@ -685,7 +43,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Entry_Info_Info__Entry__Get",
+                  "title": "Response_Get_Entry_Info_Optimade_Info__Entry__Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/EntryInfoResponse"
@@ -715,7 +73,7 @@
           "Reference"
         ],
         "summary": "Get Entry Info",
-        "operationId": "get_entry_info_info__entry__get",
+        "operationId": "get_entry_info_optimade_info__entry__get",
         "parameters": [
           {
             "required": true,
@@ -725,6 +83,2094 @@
             },
             "name": "entry",
             "in": "path"
+          }
+        ]
+      }
+    },
+    "/optimade/links": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Links_Optimade_Links_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Links"
+        ],
+        "summary": "Get Links",
+        "operationId": "get_links_optimade_links_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/references": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_References_Optimade_References_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get References",
+        "operationId": "get_references_optimade_references_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/references/{entry_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Single_Reference_Optimade_References__Entry_Id__Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseOne"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get Single Reference",
+        "operationId": "get_single_reference_optimade_references__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry_Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/structures": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Structures_Optimade_Structures_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Structures",
+        "operationId": "get_structures_optimade_structures_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/structures/{entry_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Single_Structure_Optimade_Structures__Entry_Id__Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseOne"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Single Structure",
+        "operationId": "get_single_structure_optimade_structures__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry_Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10.0/info": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Info_Optimade_V0.10.0_Info_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/InfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_optimade_v0.10.0_info_get"
+      }
+    },
+    "/optimade/v0.10.0/info/{entry}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Entry_Info_Optimade_V0.10.0_Info__Entry__Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/EntryInfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Info",
+          "Structure",
+          "Reference"
+        ],
+        "summary": "Get Entry Info",
+        "operationId": "get_entry_info_optimade_v0.10.0_info__entry__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry",
+              "type": "string"
+            },
+            "name": "entry",
+            "in": "path"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10.0/links": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Links_Optimade_V0.10.0_Links_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Links"
+        ],
+        "summary": "Get Links",
+        "operationId": "get_links_optimade_v0.10.0_links_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10.0/references": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_References_Optimade_V0.10.0_References_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get References",
+        "operationId": "get_references_optimade_v0.10.0_references_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10.0/references/{entry_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Single_Reference_Optimade_V0.10.0_References__Entry_Id__Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseOne"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get Single Reference",
+        "operationId": "get_single_reference_optimade_v0.10.0_references__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry_Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10.0/structures": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Structures_Optimade_V0.10.0_Structures_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Structures",
+        "operationId": "get_structures_optimade_v0.10.0_structures_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10.0/structures/{entry_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Single_Structure_Optimade_V0.10.0_Structures__Entry_Id__Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseOne"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Single Structure",
+        "operationId": "get_single_structure_optimade_v0.10.0_structures__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry_Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10/info": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Info_Optimade_V0.10_Info_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/InfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_optimade_v0.10_info_get"
+      }
+    },
+    "/optimade/v0.10/info/{entry}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Entry_Info_Optimade_V0.10_Info__Entry__Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/EntryInfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Info",
+          "Structure",
+          "Reference"
+        ],
+        "summary": "Get Entry Info",
+        "operationId": "get_entry_info_optimade_v0.10_info__entry__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry",
+              "type": "string"
+            },
+            "name": "entry",
+            "in": "path"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10/links": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Links_Optimade_V0.10_Links_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Links"
+        ],
+        "summary": "Get Links",
+        "operationId": "get_links_optimade_v0.10_links_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10/references": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_References_Optimade_V0.10_References_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get References",
+        "operationId": "get_references_optimade_v0.10_references_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10/references/{entry_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Single_Reference_Optimade_V0.10_References__Entry_Id__Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseOne"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get Single Reference",
+        "operationId": "get_single_reference_optimade_v0.10_references__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry_Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10/structures": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Structures_Optimade_V0.10_Structures_Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Structures",
+        "operationId": "get_structures_optimade_v0.10_structures_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page_Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/optimade/v0.10/structures/{entry_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response_Get_Single_Structure_Optimade_V0.10_Structures__Entry_Id__Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseOne"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Single Structure",
+        "operationId": "get_single_structure_optimade_v0.10_structures__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry_Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email_Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response_Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
           }
         ]
       }
@@ -812,15 +2258,17 @@
       "BaseInfoAttributes": {
         "title": "BaseInfoAttributes",
         "required": [
-          "available_api_versions"
+          "api_version",
+          "available_api_versions",
+          "available_endpoints",
+          "entry_types_by_format"
         ],
         "type": "object",
         "properties": {
           "api_version": {
             "title": "Api_Version",
             "type": "string",
-            "description": "Presently used version of the OPTiMaDe API",
-            "default": "v0.10"
+            "description": "Presently used version of the OPTiMaDe API"
           },
           "available_api_versions": {
             "title": "Available_Api_Versions",
@@ -847,11 +2295,7 @@
             "items": {
               "type": "string"
             },
-            "description": "List of available endpoints (i.e., the string to be appended to the base URL).",
-            "default": [
-              "structures",
-              "info"
-            ]
+            "description": "List of available endpoints (i.e., the string to be appended to the base URL)."
           },
           "entry_types_by_format": {
             "title": "Entry_Types_By_Format",
@@ -862,12 +2306,7 @@
                 "type": "string"
               }
             },
-            "description": "Available entry endpoints as a function of output formats.",
-            "default": {
-              "json": [
-                "structures"
-              ]
-            }
+            "description": "Available entry endpoints as a function of output formats."
           },
           "is_index": {
             "title": "Is_Index",

@@ -32,10 +32,10 @@ def validate():
     parser.add_argument(
         "base_url",
         nargs="?",
-        default="http://localhost:5000",
+        default="http://localhost:5000/optimade",
         help=(
             "The base URL of the OPTiMaDe implementation to point at, "
-            "e.g. 'http://example.com/optimade' or 'http://localhost:5000"
+            "e.g. 'http://example.com/optimade' or 'http://localhost:5000/optimade"
         ),
     )
     parser.add_argument(

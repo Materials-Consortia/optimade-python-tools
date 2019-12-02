@@ -1,31 +1,23 @@
 import urllib
-import traceback
-
-from typing import Dict, Any, Union, List
 from datetime import datetime
+from typing import Union, List, Dict
 
-from fastapi.encoders import jsonable_encoder
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
-from starlette.responses import JSONResponse
 
 from optimade.models import (
-    ToplevelLinks,
     ResponseMeta,
-    ResponseMetaQuery,
-    Provider,
-    Error,
-    ErrorResponse,
     EntryResource,
-    StructureResource,
-    ReferenceResource,
     EntryResponseMany,
     EntryResponseOne,
+    ToplevelLinks,
+    ReferenceResource,
+    StructureResource,
 )
 
-from .config import CONFIG
-from .entry_collections import EntryCollection
-from .deps import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.config import CONFIG
+from optimade.server.deps import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.entry_collections import EntryCollection
 
 
 ENTRY_INFO_SCHEMAS = {
@@ -42,6 +34,8 @@ def meta_values(
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
+    from optimade.models import ResponseMetaQuery, Provider
+
     parse_result = urllib.parse.urlparse(url)
     provider = CONFIG.provider.copy()
     provider["prefix"] = provider["prefix"][1:-1]  # Remove surrounding `_`
@@ -56,45 +50,6 @@ def meta_values(
         provider=Provider(**provider),
         data_available=data_available,
         **kwargs,
-    )
-
-
-def general_exception(
-    request: Request, exc: Exception, **kwargs: Dict[str, Any]
-) -> JSONResponse:
-    tb = "".join(
-        traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
-    )
-    print(tb)
-
-    try:
-        status_code = exc.status_code
-    except AttributeError:
-        status_code = kwargs.get("status_code", 500)
-
-    detail = getattr(exc, "detail", str(exc))
-
-    errors = kwargs.get("errors", None)
-    if not errors:
-        errors = [
-            Error(detail=detail, status=status_code, title=str(exc.__class__.__name__))
-        ]
-
-    return JSONResponse(
-        status_code=status_code,
-        content=jsonable_encoder(
-            ErrorResponse(
-                meta=meta_values(
-                    url=str(request.url),
-                    data_returned=0,
-                    data_available=0,
-                    more_data_available=False,
-                    **{CONFIG.provider["prefix"] + "traceback": tb},
-                ),
-                errors=errors,
-            ),
-            skip_defaults=True,
-        ),
     )
 
 
@@ -189,7 +144,7 @@ def get_entries(
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
-    from .main import ENTRY_COLLECTIONS
+    from optimade.server.routers import ENTRY_COLLECTIONS
 
     results, data_returned, more_data_available, fields = collection.find(params)
 
@@ -229,7 +184,7 @@ def get_single_entry(
     request: Request,
     params: SingleEntryQueryParams,
 ) -> EntryResponseOne:
-    from .main import ENTRY_COLLECTIONS
+    from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.filter = f'id="{entry_id}"'
     results, data_returned, more_data_available, fields = collection.find(params)
@@ -274,6 +229,10 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
                 properties.update(
                     retrieve_queryable_properties(sub_schema, sub_queryable_properties)
                 )
+            elif value.get("description", "") == "Not allowed key":
+                # Special case used in models to make sure not-allowed fields are not present under "attributes"
+                # NOTE: This may be removed when upgrading to pydantic v1 !
+                continue
             else:
                 properties[name] = {"description": value.get("description", "")}
                 if "unit" in value:
