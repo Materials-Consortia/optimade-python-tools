@@ -83,7 +83,15 @@ jobs:
 
     - name: Run tests on updated packages
       run: |
-        pytest -rs --cov=./
+        pytest -rs --cov=./ --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        yml: ./codecov.yml
 
   deps_eager:
     runs-on: ubuntu-latest
@@ -111,7 +119,15 @@ jobs:
 
     - name: Run tests on updated packages
       run: |
-        pytest -rs --cov=./
+        pytest -rs --cov=./ --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        yml: ./codecov.yml
 
   deps_clean_install:
     runs-on: ubuntu-latest
@@ -138,4 +154,12 @@ jobs:
 
     - name: Run tests on updated packages
       run: |
-        pytest -rs --cov=./
+        pytest -rs --cov=./ --cov-report=xml
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        yml: ./codecov.yml
