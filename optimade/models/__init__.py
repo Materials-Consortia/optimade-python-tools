@@ -1,6 +1,6 @@
 # pylint: disable=undefined-variable
 from .jsonapi import *
-from .util import *
+from .utils import *
 
 from .baseinfo import *
 from .entries import *
@@ -13,7 +13,7 @@ from .toplevel import *
 
 __all__ = (
     jsonapi.__all__  # noqa
-    + util.__all__  # noqa
+    + utils.__all__  # noqa
     + baseinfo.__all__  # noqa
     + entries.__all__  # noqa
     + index_metadb.__all__  # noqa

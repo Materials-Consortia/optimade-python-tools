@@ -9,10 +9,11 @@ import requests
 import sys
 import logging
 import json
+import traceback
 
 from pydantic import ValidationError
 
-from optimade.models import InfoResponse, EntryInfoResponse
+from optimade.models import InfoResponse, EntryInfoResponse, LinksResponse
 
 from .validator_model_patches import (
     ValidatorEntryResponseOne,
@@ -33,6 +34,7 @@ RESPONSE_CLASSES = {
     "structures": ValidatorStructureResponseMany,
     "structures/": ValidatorStructureResponseOne,
     "info": InfoResponse,
+    "links": LinksResponse,
 }
 RESPONSE_CLASSES.update(
     {f"info/{entry}": EntryInfoResponse for entry in REQUIRED_ENTRY_ENDPOINTS}
@@ -139,6 +141,9 @@ def test_case(test_fn):
         try:
             result, msg = test_fn(*args, **kwargs)
         except (ResponseError, ValidationError) as exc:
+            if args[0].verbosity > 1:
+                traceback.print_exc()
+
             result = False
             msg = f"{type(exc).__name__}: {exc}"
 
@@ -304,6 +309,18 @@ class ImplementationValidator:
             return deserialized
         return False
 
+    def test_links_endpoint(self, request_str="links"):
+        """ Runs the test cases for the links endpoint. """
+        response = self.get_endpoint(request_str)
+        if response:
+            deserialized = self.deserialize_reponse(
+                response, RESPONSE_CLASSES[request_str]
+            )
+            if not deserialized:
+                return response
+            return deserialized
+        return False
+
     def test_single_entry_endpoint(self, request_str):
         """ Runs the test cases for the single entry endpoints. """
         _type = request_str.split("?")[0]
@@ -357,7 +374,10 @@ class ImplementationValidator:
             raise ResponseError(
                 f"Endpoint did not obey page limit: {num_entries} entries vs {self.page_limit} limit"
             )
-        return num_entries, f"Endpoint obeyed page limit of {self.page_limit}"
+        return (
+            True,
+            f"Endpoint obeyed page limit of {self.page_limit} by returning {num_entries} entries.",
+        )
 
     @test_case
     def get_single_id_from_multi_endpoint(self, deserialized):

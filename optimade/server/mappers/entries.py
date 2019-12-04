@@ -1,23 +1,22 @@
-import abc
 from typing import Tuple
 from optimade.server.config import CONFIG
-
 
 __all__ = ("ResourceMapper",)
 
 
-class ResourceMapper(metaclass=abc.ABCMeta):
+class ResourceMapper:
     """Generic Resource Mapper"""
 
     ENDPOINT: str = ""
     ALIASES: Tuple[Tuple[str, str]] = ()
+    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set = {"id", "type", "relationships", "links"}
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
         return (
             tuple(
                 (CONFIG.provider["prefix"] + field, field)
-                for field in CONFIG.provider_fields[cls.ENDPOINT]
+                for field in CONFIG.provider_fields.get(cls.ENDPOINT, {})
             )
             + cls.ALIASES
         )
@@ -34,9 +33,15 @@ class ResourceMapper(metaclass=abc.ABCMeta):
         """
         return dict(cls.all_aliases()).get(field, field)
 
-    @abc.abstractclassmethod
+    @classmethod
     def map_back(cls, doc: dict) -> dict:
         """Map properties from MongoDB to OPTiMaDe
+
+        Starting from a MongoDB document ``doc``, map the DB fields to the corresponding OPTiMaDe fields.
+        Then, the fields are all added to the top-level field "attributes",
+        with the exception of other top-level fields, defined in ``cls.TOPLEVEL_NON_ATTRIBUTES_FIELDS``.
+        All fields not in ``cls.TOPLEVEL_NON_ATTRIBUTES_FIELDS`` + "attributes" will be removed.
+        Finally, the ``type`` is given the value of the specified ``cls.ENDPOINT``.
 
         :param doc: A resource object in MongoDB format
         :type doc: dict
@@ -44,3 +49,30 @@ class ResourceMapper(metaclass=abc.ABCMeta):
         :return: A resource object in OPTiMaDe format
         :rtype: dict
         """
+        if "_id" in doc:
+            del doc["_id"]
+
+        mapping = ((real, alias) for alias, real in cls.all_aliases())
+        newdoc = {}
+        reals = {real for alias, real in cls.all_aliases()}
+        for k in doc:
+            if k not in reals:
+                newdoc[k] = doc[k]
+        for real, alias in mapping:
+            if real in doc:
+                newdoc[alias] = doc[real]
+
+        if "attributes" in newdoc:
+            raise Exception("Will overwrite doc field!")
+        attributes = newdoc.copy()
+
+        for k in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
+            attributes.pop(k, None)
+        for k in list(newdoc.keys()):
+            if k not in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
+                del newdoc[k]
+
+        newdoc["type"] = cls.ENDPOINT
+        newdoc["attributes"] = attributes
+
+        return newdoc

@@ -45,7 +45,8 @@ setup(
     python_requires=">=3.7",
     install_requires=[
         "lark-parser>=0.7.7",
-        "fastapi>=0.42.0",
+        "fastapi>=0.44.0",
+        "pydantic<1",
         "email_validator",
         "requests",
     ],

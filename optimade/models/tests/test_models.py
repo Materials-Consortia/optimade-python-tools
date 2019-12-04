@@ -5,7 +5,7 @@ import unittest
 import json
 
 from pydantic import ValidationError, BaseModel, ConfigError
-from optimade.models.util import conlist
+from optimade.models.utils import conlist
 from optimade.models import StructureResource, EntryRelationships, ReferenceResource
 from optimade.server.mappers import StructureMapper, ReferenceMapper
 

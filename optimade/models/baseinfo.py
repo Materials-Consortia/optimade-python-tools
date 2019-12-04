@@ -25,7 +25,7 @@ class BaseInfoAttributes(BaseModel):
     """Attributes for Base URL Info endpoint"""
 
     api_version: str = Schema(
-        default="v0.10", description="Presently used version of the OPTiMaDe API"
+        ..., description="Presently used version of the OPTiMaDe API"
     )
     available_api_versions: List[AvailableApiVersion] = Schema(
         ...,
@@ -35,12 +35,11 @@ class BaseInfoAttributes(BaseModel):
         default=["json"], description="List of available output formats."
     )
     available_endpoints: List[str] = Schema(
-        default=["structures", "info"],
+        ...,
         description="List of available endpoints (i.e., the string to be appended to the base URL).",
     )
     entry_types_by_format: Dict[str, List[str]] = Schema(
-        default={"json": ["structures"]},
-        description="Available entry endpoints as a function of output formats.",
+        ..., description="Available entry endpoints as a function of output formats."
     )
     is_index: Optional[bool] = Schema(
         default=False,

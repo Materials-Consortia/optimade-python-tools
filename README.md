@@ -47,14 +47,16 @@ pre-commit install
 conda install -c anaconda mongodb
 mkdir -p ~/dbdata && mongod --dbpath ~/dbdata --syslog --fork
 
-# Start a development server (auto-reload on file changes at http://localhost:5000
+# Start a development server (auto-reload on file changes at http://localhost:5000/optimade
 # You can also execute ./run.sh
 uvicorn optimade.server.main:app --reload --port 5000
 
 # View auto-generated docs
-open http://localhost:5000/docs
+open http://localhost:5000/optimade/extensions/docs
+or
+open http://localhost:5000/optimade/extensions/redoc
 # View Open API Schema
-open http://localhost:5000/openapi.json
+open http://localhost:5000/optimade/extensions/openapi.json
 ```
 
 When contributing to the Python code, please use the [black](https://github.com/ambv/black) code formatter.

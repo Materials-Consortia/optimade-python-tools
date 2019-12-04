@@ -1,8 +1,8 @@
-from pydantic import Schema, UrlStr, validator
+from pydantic import Schema, UrlStr, validator  # pylint: disable=no-name-in-module
 from typing import Union
 
-from .jsonapi import Link
-from .entries import EntryResourceAttributes, EntryResource
+from .jsonapi import Link, Attributes
+from .entries import EntryResource
 
 
 __all__ = (
@@ -14,7 +14,7 @@ __all__ = (
 )
 
 
-class LinksResourceAttributes(EntryResourceAttributes):
+class LinksResourceAttributes(Attributes):
     """Links endpoint resource object attributes"""
 
     name: str = Schema(
@@ -27,7 +27,7 @@ class LinksResourceAttributes(EntryResourceAttributes):
         description="Human-readable description for the OPTiMaDe API implementation "
         "a client may provide in a list to an end-user.",
     )
-    base_url: Union[UrlStr, Link] = Schema(
+    base_url: Union[UrlStr, Link, None] = Schema(
         ...,
         description="JSON API links object, pointing to the base URL for this implementation",
     )
@@ -56,6 +56,10 @@ class LinksResource(EntryResource):
                 "name of Links endpoint resource MUST be either 'parent, 'child', or 'provider'"
             )
         return value
+
+    @validator("relationships")
+    def relationships_must_not_be_present(cls, value):
+        raise ValueError('"relationships" is not allowed for links resources')
 
 
 class ChildResource(LinksResource):

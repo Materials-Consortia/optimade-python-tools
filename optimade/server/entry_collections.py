@@ -14,6 +14,14 @@ from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .mappers import ResourceMapper
 
 
+if CONFIG.use_real_mongo:
+    from pymongo import MongoClient
+else:
+    from mongomock import MongoClient
+
+client = MongoClient()
+
+
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     def __init__(
         self, collection, resource_cls: EntryResource, resource_mapper: ResourceMapper
@@ -35,6 +43,10 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     def get_attribute_fields(self) -> set:
         schema = self.resource_cls.schema()
         attributes = schema["properties"]["attributes"]
+        if "allOf" in attributes:
+            allOf = attributes.pop("allOf")
+            for dict_ in allOf:
+                attributes.update(dict_)
         if "$ref" in attributes:
             path = attributes["$ref"].split("/")[1:]
             attributes = schema.copy()
@@ -77,7 +89,7 @@ class MongoCollection(EntryCollection):
         self.transformer = NewMongoTransformer()
 
         self.provider = CONFIG.provider["prefix"]
-        self.provider_fields = CONFIG.provider_fields[resource_mapper.ENDPOINT]
+        self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         self.page_limit = CONFIG.page_limit
         self.parser = LarkParser(
             version=(0, 10, 0), variant="default"
