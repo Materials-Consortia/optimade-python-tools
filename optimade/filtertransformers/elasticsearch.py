@@ -170,7 +170,7 @@ class Transformer(lark.Transformer):
         return l | r
 
     def not_expr(self, args):
-        o, = args
+        (o,) = args
         return ~o
 
     def cmp_op(self, args):
@@ -220,7 +220,7 @@ class Transformer(lark.Transformer):
         return Q("term", **{quantity.has_only_quantity.name: value})
 
     def length(self, args):
-        quantity, = args
+        (quantity,) = args
         if quantity.length_quantity is None:
             raise Exception("LENGTH is not supported for %s" % quantity.name)
 
