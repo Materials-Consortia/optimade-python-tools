@@ -32,7 +32,7 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  pre_commit:
+  pre-commit:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -129,7 +129,7 @@ jobs:
         flags: unittests
         yml: ./codecov.yml
 
-  deps_clean_install:
+  deps_clean-install:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
