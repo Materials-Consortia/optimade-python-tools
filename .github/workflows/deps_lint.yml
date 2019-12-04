@@ -83,7 +83,7 @@ jobs:
 
     - name: Run tests on updated packages
       run: |
-        pytest -rs --cov=./ --cov-report=xml
+        pytest -rs --cov=./optimade/ --cov-report=xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
@@ -119,7 +119,7 @@ jobs:
 
     - name: Run tests on updated packages
       run: |
-        pytest -rs --cov=./ --cov-report=xml
+        pytest -rs --cov=./optimade/ --cov-report=xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
@@ -154,7 +154,7 @@ jobs:
 
     - name: Run tests on updated packages
       run: |
-        pytest -rs --cov=./ --cov-report=xml
+        pytest -rs --cov=./optimade/ --cov-report=xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
