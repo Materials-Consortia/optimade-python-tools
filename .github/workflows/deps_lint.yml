@@ -37,7 +37,7 @@ jobs:
     #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  deps:
+  deps_static:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -57,8 +57,64 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools
-        # Install all dependencies upgrading with eager strategy
-        pip install -U --upgrade-strategy eager -e .[all]
+        # Install static dependencies followed by "normal" install
+        pip install -r requirements.txt
+        pip install -e .[all]
+
+    - name: Run tests on updated packages
+      run: |
+        pytest -rs --cov=./
+
+  deps_eager:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        python-version: [3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Set up Python ${{ matrix.python-version }} 
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install latest versions of immediate dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U setuptools
+        # Install static dependencies followed by eager update install
+        pip install -r requirements.txt
+        pip install -U --update-strategy eager -e .[all]
+
+    - name: Run tests on updated packages
+      run: |
+        pytest -rs --cov=./
+
+  deps_clean_install:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        python-version: [3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Set up Python ${{ matrix.python-version }} 
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install latest versions of immediate dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U setuptools
+        # Install all dependencies "as a user", i.e., a clean install
+        pip install -e .[all]
 
     - name: Run tests on updated packages
       run: |
