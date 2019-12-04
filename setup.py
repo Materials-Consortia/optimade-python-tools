@@ -17,7 +17,7 @@ testing_deps = [
     "jsondiff",
 ] + server_deps
 dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps
-all_deps = testing_deps + dev_deps
+all_deps = dev_deps + django_deps + elastic_deps
 
 setup(
     name="optimade",
