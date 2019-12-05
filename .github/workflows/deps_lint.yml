@@ -163,7 +163,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -U setuptools
-        python -m pip install openapi-spec-validator
+        python -m pip install -r requirements.txt
+        python -m pip install -e .[testing]
         docker pull quen2404/openapi-diff
 
     - name: Validate OpenAPI specifications
