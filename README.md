@@ -15,6 +15,11 @@ This repository contains a library of tools for implementing and consuming [OPTi
 
 Both the OPTiMaDe specification and this repository are **under development**.
 
+## Installation & Contributing
+
+See [CONTRIBUTING](CONTRIBUTING.md).
+
+
 ## Links
 
 * [OPTiMaDe Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst), the human-readable specification that this library is based on.
@@ -24,6 +29,3 @@ Both the OPTiMaDe specification and this repository are **under development**.
 * [FastAPI](https://fastapi.tiangolo.com/), the framework used for generating the reference implementation from the [`openapi.json`](openapi.json) specification.
 * [lark](https://github.com/lark-parser/lark), the library used to parse the filter language in OPTiMaDe queries.
 
-## Developing
-
-See [CONTRIBUTING](CONTRIBUTING.md).

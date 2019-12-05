@@ -1,11 +1,24 @@
 # Contribute to `optimade-python-tools`
 
-The Materials-Consortia is very open to contributions to this package.
+The [Materials Consortia](https://github.com/Materials-Consortia) is very open to contributions to this package.
+
 This may be anything from simple feedback and raising [new issues](https://github.com/Materials-Consortia/optimade-python-tools/issues/new) to creating [new PRs](https://github.com/Materials-Consortia/optimade-python-tools/compare).
 
 We have below recommendations for setting up an environment in which one may develop the package further.
 
 ## Development installation
+
+The core dependencies of this package can be found in `requirements.txt` with
+at the latest supported version. Individual backends and their supported
+versions can be found in `setup.py`. The following "extra" install modes are
+currently supported: `all`, `dev`, `server`, `testing`, `django`, `elastic` and `mongo`.
+
+When contributing to the Python code, please use the
+[black](https://github.com/ambv/black) code formatter. The
+[flake8](http://flake8.pycqa.org/en/latest/) linter will be run automatically on
+all PRs.
+
+
 
 ```shell
 # Clone this repository to your computer
@@ -41,8 +54,6 @@ open http://localhost:5000/docs
 # View Open API Schema
 open http://localhost:5000/openapi.json
 ```
-
-When contributing to the Python code, please use the [black](https://github.com/ambv/black) code formatter.
 
 ## Getting Started with Filter Parsing and Transforming
 
