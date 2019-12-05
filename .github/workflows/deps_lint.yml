@@ -147,3 +147,30 @@ jobs:
     - name: Run tests on updated packages
       run: |
         pytest -rs --cov=./optimade/
+
+  openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install tools
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -U setuptools
+        python -m pip install openapi-spec-validator
+        docker pull quen2404/openapi-diff
+
+    - name: Validate OpenAPI specifications
+      run: openapi-spec-validator openapi.json
+
+    - name: Update OpenAPI schema
+      run: python -c "from optimade.server.main import app, update_schema; update_schema(app)"
+
+    - name: Check if OpenAPI schemes match
+      run: .ci/openapi_diff.sh
