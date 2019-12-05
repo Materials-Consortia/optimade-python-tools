@@ -1,23 +1,19 @@
-name: Dependency & linting/pre-commit 
+name: Dependency, linting, and OpenAPI validation
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
 
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.7]
 
     steps:
     - uses: actions/checkout@v1
 
-    - name: Set up Python ${{ matrix.python-version }} 
+    - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.7
 
     - name: Install dependencies
       run: |
@@ -34,18 +30,14 @@ jobs:
 
   pre-commit:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.7]
 
     steps:
     - uses: actions/checkout@v1
 
-    - name: Set up Python ${{ matrix.python-version }} 
+    - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.7
 
     - name: Install dependencies
       run: |
@@ -57,11 +49,39 @@ jobs:
       run: |
         pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
+  openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install tools
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -U setuptools
+        python -m pip install -r requirements.txt
+        python -m pip install -e .[testing]
+        docker pull quen2404/openapi-diff
+
+    - name: Validate OpenAPI specifications
+      run: openapi-spec-validator openapi.json
+
+    - name: Update OpenAPI schema
+      run: python -c "from optimade.server.main import app, update_schema; update_schema(app)"
+
+    - name: Check if OpenAPI schemes match
+      run: .ci/openapi_diff.sh
+
   deps_static:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2
       matrix:
         python-version: [3.7, 3.8]
 
@@ -97,7 +117,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2
       matrix:
         python-version: [3.7, 3.8]
 
@@ -125,7 +145,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 2
       matrix:
         python-version: [3.7, 3.8]
 
@@ -147,31 +167,3 @@ jobs:
     - name: Run tests on updated packages
       run: |
         pytest -rs --cov=./optimade/
-
-  openapi:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-
-    - name: Install tools
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install -U setuptools
-        python -m pip install -r requirements.txt
-        python -m pip install -e .[testing]
-        docker pull quen2404/openapi-diff
-
-    - name: Validate OpenAPI specifications
-      run: openapi-spec-validator openapi.json
-
-    - name: Update OpenAPI schema
-      run: python -c "from optimade.server.main import app, update_schema; update_schema(app)"
-
-    - name: Check if OpenAPI schemes match
-      run: .ci/openapi_diff.sh
