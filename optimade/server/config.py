@@ -29,11 +29,7 @@ class Config:
         if not server_cfg.exists():
             import shutil
 
-            server_cfg_template = (
-                Path(__file__)
-                .resolve()
-                .parent.parent.parent.joinpath("server_template.cfg")
-            )
+            server_cfg_template = server_cfg.parent.joinpath("server_template.cfg")
             shutil.copyfile(server_cfg_template, server_cfg)
 
     def _load_server_config(self, server_cfg: Path):
