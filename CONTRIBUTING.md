@@ -18,8 +18,6 @@ When contributing to the Python code, please use the
 [flake8](http://flake8.pycqa.org/en/latest/) linter will be run automatically on
 all PRs.
 
-
-
 ```shell
 # Clone this repository to your computer
 git clone git@github.com:Materials-Consortia/optimade-python-tools.git

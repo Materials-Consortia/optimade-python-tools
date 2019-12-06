@@ -17,7 +17,6 @@ Both the OPTiMaDe specification and this repository are **under development**.
 
 See [CONTRIBUTING](CONTRIBUTING.md).
 
-
 ## Links
 
 * [OPTiMaDe Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst), the human-readable specification that this library is based on.
@@ -26,4 +25,3 @@ See [CONTRIBUTING](CONTRIBUTING.md).
 * [pydantic](https://pydantic-docs.helpmanual.io/), the library used for generating the OpenAPI schema from [Python models](optimade/models).
 * [FastAPI](https://fastapi.tiangolo.com/), the framework used for generating the reference implementation from the [`openapi.json`](openapi.json) specification.
 * [lark](https://github.com/lark-parser/lark), the library used to parse the filter language in OPTiMaDe queries.
-
