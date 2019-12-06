@@ -1,8 +1,7 @@
-import os
-
+from pathlib import Path
 from setuptools import setup, find_packages
 
-module_dir = os.path.dirname(os.path.abspath(__file__))
+module_dir = Path(__file__).resolve().parent
 
 # Dependencies
 mongo_deps = ["pymongo~=3.8", "mongomock~=3.16"]
@@ -27,7 +26,7 @@ setup(
     author="OPTiMaDe Development Team",
     author_email="dev@optimade.org",
     description="Tools for implementing and consuming OPTiMaDe APIs.",
-    long_description=open(os.path.join(module_dir, "README.md")).read(),
+    long_description=open(module_dir.joinpath("README.md")).read(),
     long_description_content_type="text/markdown",
     keywords="optimade jsonapi materials",
     include_package_data=True,

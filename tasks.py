@@ -6,9 +6,11 @@ from optimade import __version__
 
 
 @task
-def setver(c, patch=False, new_ver=""):
+def setver(_, patch=False, new_ver=""):
     if (not patch and not new_ver) or (patch and new_ver):
-        raise Exception("Either use --patch or specify e.g. --full='x.y.z.")
+        raise Exception(
+            "Either use --patch or specify e.g. --new-ver='Major.Minor.Patch(a|b|rc)?[0-9]+'"
+        )
     if patch:
         v = [int(x) for x in __version__.split(".")]
         v[2] += 1
@@ -20,6 +22,7 @@ def setver(c, patch=False, new_ver=""):
         ]
     with open("optimade/__init__.py", "w") as f:
         f.write("\n".join(lines))
+        f.write("\n")
 
     with open("setup.py", "r") as f:
         lines = [
@@ -28,6 +31,7 @@ def setver(c, patch=False, new_ver=""):
         ]
     with open("setup.py", "w") as f:
         f.write("\n".join(lines))
+        f.write("\n")
     print("Bumped version to {}".format(new_ver))
 
 
