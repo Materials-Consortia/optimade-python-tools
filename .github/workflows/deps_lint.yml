@@ -68,7 +68,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -U setuptools
-        python -m pip install -r requirements.txt
+        python -m pip install -r .github/workflows/requirements.txt
         python -m pip install -e .[testing]
         docker pull quen2404/openapi-diff
 
@@ -102,7 +102,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U setuptools
         # Install static dependencies followed by "normal" install
-        pip install -r requirements.txt
+        python -m pip install -r .github/workflows/requirements.txt
         pip install -e .[all]
 
     - name: Run tests on updated packages
@@ -139,7 +139,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U setuptools
         # Install static dependencies followed by eager update install
-        pip install -r requirements.txt
+        pip install -r ./.github/workflows/requirements.txt
         pip install -U --upgrade-strategy eager -e .[all]
 
     - name: Run tests on updated packages
