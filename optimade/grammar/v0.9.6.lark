@@ -2,10 +2,10 @@
 
 start: KEYWORD expression
 KEYWORD: "filter=" | "filter ="
-expression: [expression CONJUNCTION] term 
+expression: [expression CONJUNCTION] term
 term: [term CONJUNCTION] atom | "(" [term CONJUNCTION] term
 
-atom: [NOT] comparison 
+atom: [NOT] comparison
 
 comparison: VALUE OPERATOR VALUE [")"] | VALUE OPERATOR "'" (combined)* "'"
 OPERATOR: /<=?|>=?|!?=/
