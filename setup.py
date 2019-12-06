@@ -10,7 +10,7 @@ server_deps = ["uvicorn"] + mongo_deps
 django_deps = ["django~=2.2"]
 elastic_deps = ["elasticsearch_dsl~=6.4"]
 testing_deps = [
-    "pytest>=3.6",
+    "pytest~=3.6",
     "pytest-cov",
     "codecov",
     "openapi-spec-validator",
@@ -44,8 +44,8 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        "lark-parser>=0.7",
-        "fastapi>=0.44",
+        "lark-parser~=0.7.8",
+        "fastapi~=0.44",
         "pydantic<1",
         "email_validator",
         "requests",
