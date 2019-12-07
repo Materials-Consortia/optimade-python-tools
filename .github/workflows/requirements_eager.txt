@@ -1,6 +1,5 @@
 lark-parser
 fastapi
-pydantic<1.0.0
 email_validator
 requests
 uvicorn
