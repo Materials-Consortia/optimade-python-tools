@@ -5,19 +5,19 @@ from setuptools import setup, find_packages
 module_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Dependencies
-mongo_deps = ["pymongo>=3.8", "mongomock>=3.16"]
+mongo_deps = ["pymongo~=3.8", "mongomock~=3.16"]
 server_deps = ["uvicorn"] + mongo_deps
-django_deps = ["django>=2.2.5"]
-elastic_deps = ["elasticsearch_dsl>=6.4.0"]
+django_deps = ["django~=2.2"]
+elastic_deps = ["elasticsearch_dsl~=6.4"]
 testing_deps = [
-    "pytest>=3.6",
+    "pytest~=3.6",
     "pytest-cov",
     "codecov",
     "openapi-spec-validator",
     "jsondiff",
 ] + server_deps
 dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps
-all_deps = testing_deps + dev_deps
+all_deps = dev_deps + django_deps + elastic_deps
 
 setup(
     name="optimade",
@@ -44,8 +44,8 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        "lark-parser>=0.7.7",
-        "fastapi>=0.44.0",
+        "lark-parser~=0.7.8",
+        "fastapi~=0.44",
         "pydantic<1",
         "email_validator",
         "requests",

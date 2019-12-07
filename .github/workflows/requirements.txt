@@ -1,0 +1,10 @@
+lark-parser==0.7.8
+fastapi==0.44.0
+pydantic==0.32.2
+email_validator==1.0.5
+requests==2.22.0
+uvicorn==0.10
+pymongo==3.8
+mongomock==3.16
+django==2.2.5
+elasticsearch_dsl==6.4.0

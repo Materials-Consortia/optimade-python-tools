@@ -1,0 +1,9 @@
+lark-parser
+fastapi
+email_validator
+requests
+uvicorn
+pymongo
+mongomock
+django
+elasticsearch_dsl

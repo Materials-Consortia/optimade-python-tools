@@ -12,7 +12,9 @@ class NonnegativeInt(ConstrainedInt):
 
 
 class ConstrainedListMeta(type):
-    def __new__(cls, name: str, bases: Any, dct: Dict[str, Any]) -> "ConstrainedList":
+    def __new__(
+        cls, name: str, bases: Any, dct: Dict[str, Any]
+    ) -> "ConstrainedList":  # noqa
         new_cls = cast("ConstrainedList", type.__new__(cls, name, bases, dct))
 
         if new_cls.len_gt is not None and new_cls.len_ge is not None:
@@ -33,7 +35,7 @@ class ConstrainedListMeta(type):
         return new_cls
 
 
-def list_length_validator(v: "List", field: "Field") -> "List":
+def list_length_validator(v: "List", field: "Field") -> "List":  # noqa
     field_type: ConstrainedList = field.type_  # type: ignore
     if field_type.len_gt is not None and not len(v) > field_type.len_gt:
         raise errors.NumberNotGtError(limit_value=field_type.len_gt)
@@ -57,7 +59,7 @@ class ConstrainedList(list, metaclass=ConstrainedListMeta):
     len_eq: OptionalInt = None
 
     @classmethod
-    def __get_validators__(cls) -> "CallableGenerator":
+    def __get_validators__(cls) -> "CallableGenerator":  # noqa
         yield list_validator
         yield list_length_validator
 
