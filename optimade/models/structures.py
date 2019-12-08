@@ -2,7 +2,7 @@
 from sys import float_info
 from typing import List, Optional
 
-from pydantic import Schema, BaseModel, validator
+from pydantic import Field, BaseModel, validator
 
 from .entries import EntryResourceAttributes, EntryResource
 from .utils import conlist, CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
@@ -31,12 +31,12 @@ class Species(BaseModel):
 
     """
 
-    name: str = Schema(
+    name: str = Field(
         ...,
         decsription="""REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;""",
     )
 
-    chemical_symbols: List[str] = Schema(
+    chemical_symbols: List[str] = Field(
         ...,
         description="""MUST be a list of strings of all chemical elements composing this species.
 
@@ -49,7 +49,7 @@ class Species(BaseModel):
 -  If any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).""",
     )
 
-    concentration: List[float] = Schema(
+    concentration: List[float] = Field(
         ...,
         description="""MUST be a list of floats, with same length as :property:`chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species.
 The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
@@ -60,14 +60,14 @@ The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typi
 Note that concentrations are uncorrelated between different site (even of the same species).""",
     )
 
-    mass: Optional[float] = Schema(
-        ...,
+    mass: Optional[float] = Field(
+        None,
         description="""If present MUST be a float expressed in a.m.u.""",
         unit="a.m.u.",
     )
 
-    original_name: Optional[str] = Schema(
-        ...,
+    original_name: Optional[str] = Field(
+        None,
         description="""Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
 Note: With regards to "source database", we refer to the immediate source being queried via the OPTiMaDe API implementation.
@@ -103,7 +103,7 @@ class Assembly(BaseModel):
 
     """
 
-    sites_in_groups: List[List[int]] = Schema(
+    sites_in_groups: List[List[int]] = Field(
         ...,
         description="""Index of the sites (0-based) that belong to each group for each assembly.
 
@@ -111,7 +111,7 @@ Example: :val:`[[1], [2]]`: two groups, one with the second site, one with the t
 Example: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth.""",
     )
 
-    group_probabilities: List[float] = Schema(
+    group_probabilities: List[float] = Field(
         ...,
         description="""Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.
 It SHOULD sum to one.
@@ -140,9 +140,9 @@ The possible reasons for the values not to sum to one are the same as already sp
 
 
 class StructureResourceAttributes(EntryResourceAttributes):
-    """This class contains the Schema for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
+    """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
-    elements: List[str] = Schema(
+    elements: List[str] = Field(
         ...,
         description="""Names of the different elements present in the structure.
 - **Type**: list of strings.
@@ -164,7 +164,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - To match structures with exactly these three elements, use :filter:`elements HAS ALL "Si", "Al", "O" AND LENGTH elements = 3`.""",
     )
 
-    nelements: int = Schema(
+    nelements: int = Field(
         ...,
         description="""Number of different elements in the structure as an integer.
 - **Type**: integer
@@ -181,7 +181,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   -  A filter that matches structures that have between 2 and 7 elements: :filter:`nelements>=2 AND nelements<=7`.""",
     )
 
-    elements_ratios: List[float] = Schema(
+    elements_ratios: List[float] = Field(
         ...,
         description="""Relative proportions of different elements in the structure.
 - **Type**: list of floats
@@ -203,7 +203,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: :filter:`elements:elements_ratios HAS ALL "Al":>0.3333, "Al":<0.3334`.""",
     )
 
-    chemical_formula_descriptive: str = Schema(
+    chemical_formula_descriptive: str = Field(
         ...,
         description="""The chemical formula for a structure as a string in a form chosen by the API implementation.
 - **Type**: string
@@ -233,7 +233,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that does a partial match: :filter:`chemical_formula_descriptive CONTAINS "H2O"`.""",
     )
 
-    chemical_formula_reduced: str = Schema(
+    chemical_formula_reduced: str = Field(
         ...,
         description="""The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.
   The proportion number MUST be omitted if it is 1.
@@ -262,8 +262,8 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that matches an exactly given formula is :filter:`chemical_formula_reduced="H2NaO"`.""",
     )
 
-    chemical_formula_hill: Optional[str] = Schema(
-        ...,
+    chemical_formula_hill: Optional[str] = Field(
+        None,
         description="""The chemical formula for a structure in `Hill form <https://dx.doi.org/10.1021/ja02046a005>`__ with element symbols followed by integer chemical proportion numbers.
   The proportion number MUST be omitted if it is 1.
 - **Type**: string
@@ -290,7 +290,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that matches an exactly given formula is :filter:`chemical_formula_hill="H2O2"`.""",
     )
 
-    chemical_formula_anonymous: str = Schema(
+    chemical_formula_anonymous: str = Field(
         ...,
         description="""The anonymous formula is the :property:`chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
 - **Type**: string
@@ -308,7 +308,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that matches an exactly given formula is :filter:`chemical_formula_anonymous="A2B"`.""",
     )
 
-    dimension_types: conlist(len_eq=3) = Schema(
+    dimension_types: conlist(len_eq=3) = Field(
         ...,
         description="""List of three integers.
   For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`_).
@@ -330,8 +330,8 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - For a bulk 3D system: :val:`[1, 1, 1]`""",
     )
 
-    lattice_vectors: Optional[List[conlist(len_eq=3)]] = Schema(
-        ...,
+    lattice_vectors: Optional[List[conlist(len_eq=3)]] = Field(
+        None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
 - **Type**: list of list of floats.
 - **Requirements/Conventions**:
@@ -349,7 +349,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
         unit="Å",
     )
 
-    cartesian_site_positions: List[conlist(len_eq=3)] = Schema(
+    cartesian_site_positions: List[conlist(len_eq=3)] = Field(
         ...,
         description="""Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).
 - **Type**: list of list of floats and/or unknown values
@@ -371,7 +371,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
         unit="Å",
     )
 
-    nsites: int = Schema(
+    nsites: int = Field(
         ...,
         description="""An integer specifying the length of the :property:`cartesian_site_positions` property.
 - **Type**: integer
@@ -390,7 +390,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - Match structures that have between 2 and 7 sites: :filter:`nsites>=2 AND nsites<=7`""",
     )
 
-    species_at_sites: List[str] = Schema(
+    species_at_sites: List[str] = Field(
         ...,
         description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`_).
   The properties of the species are found in the property `species`_.
@@ -411,7 +411,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - :val:`["Ti","O2"]` indicates that the first site is hosting a species labeled :val:`"Ti"` and the second a species labeled :val:`"O2"`.""",
     )
 
-    species: List[Species] = Schema(
+    species: List[Species] = Field(
         ...,
         description="""A list describing the species of the sites of this structure. Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.
 - **Type**: list of dictionary with keys:
@@ -468,8 +468,8 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - :val:`[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.""",
     )
 
-    assemblies: Optional[List[Assembly]] = Schema(
-        ...,
+    assemblies: Optional[List[Assembly]] = Field(
+        None,
         description="""A description of groups of sites that are statistically correlated.
 - **Type**: list of dictionary with keys:
 
@@ -579,7 +579,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability).""",
     )
 
-    structure_features: List[str] = Schema(
+    structure_features: List[str] = Field(
         ...,
         description="""A list of strings that flag which special features are used by the structure.
 - **Type**: list of strings
@@ -727,7 +727,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 class StructureResource(EntryResource):
     """Representing a structure."""
 
-    type: str = Schema(
+    type: str = Field(
         "structures",
         const=True,
         description="""The name of the type of an entry. Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.

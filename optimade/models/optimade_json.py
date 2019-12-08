@@ -1,5 +1,5 @@
 """Modified JSON API v1.0 for OPTiMaDe API"""
-from pydantic import Schema, validator
+from pydantic import Field, validator
 from typing import Optional, Set
 
 from . import jsonapi
@@ -11,7 +11,7 @@ __all__ = ("Error", "Failure", "Success", "Warnings")
 class Error(jsonapi.Error):
     """detail MUST be present"""
 
-    detail: str = Schema(
+    detail: str = Field(
         ...,
         description="A human-readable explanation specific to this occurrence of the problem.",
     )
@@ -20,16 +20,16 @@ class Error(jsonapi.Error):
 class Failure(jsonapi.Response):
     """errors MUST be present and data MUST be skipped"""
 
-    meta: Optional[jsonapi.Meta] = Schema(
-        ...,
+    meta: Optional[jsonapi.Meta] = Field(
+        None,
         description="A meta object containing non-standard information related to the Success",
     )
-    errors: Set[Error] = Schema(
+    errors: Set[Error] = Field(
         ...,
         description="A list of OPTiMaDe-specific JSON API error objects, where the field detail MUST be present.",
     )
-    links: Optional[jsonapi.ToplevelLinks] = Schema(
-        ..., description="Links associated with the primary data"
+    links: Optional[jsonapi.ToplevelLinks] = Field(
+        None, description="Links associated with the primary data"
     )
 
     @validator("data")
@@ -40,12 +40,12 @@ class Failure(jsonapi.Response):
 class Success(jsonapi.Response):
     """errors are not allowed"""
 
-    meta: Optional[jsonapi.Meta] = Schema(
-        ...,
+    meta: Optional[jsonapi.Meta] = Field(
+        None,
         description="A meta object containing non-standard information related to the Success",
     )
-    links: Optional[jsonapi.ToplevelLinks] = Schema(
-        ..., description="Links associated with the primary data"
+    links: Optional[jsonapi.ToplevelLinks] = Field(
+        None, description="Links associated with the primary data"
     )
 
     @validator("meta", always=True)
@@ -73,7 +73,7 @@ class Warnings(Error):
     Note: Must be named "Warnings", since "Warning" is a built-in Python class.
     """
 
-    type: str = Schema(
+    type: str = Field(
         "warning", const=True, description='Warnings must be of type "warning"'
     )
 

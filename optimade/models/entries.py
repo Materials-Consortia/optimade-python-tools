@@ -1,7 +1,7 @@
 # pylint: disable=line-too-long
 from datetime import datetime
 from typing import Optional, Dict, List
-from pydantic import BaseModel, Schema, validator
+from pydantic import BaseModel, Field, validator
 
 from .jsonapi import Relationships, Attributes, Resource, Relationship
 
@@ -34,13 +34,13 @@ class StructureRelationship(TypedRelationship):
 class EntryRelationships(Relationships):
     """This model wraps the JSON API Relationships to include type-specific top level keys. """
 
-    references: Optional[ReferenceRelationship] = Schema(
-        ...,
+    references: Optional[ReferenceRelationship] = Field(
+        None,
         description="Object containing links to relationships with entries of the `references` type.",
     )
 
-    structures: Optional[StructureRelationship] = Schema(
-        ...,
+    structures: Optional[StructureRelationship] = Field(
+        None,
         description="Object containing links to relationships with entries of the `structures` type.",
     )
 
@@ -48,8 +48,8 @@ class EntryRelationships(Relationships):
 class EntryResourceAttributes(Attributes):
     """Contains key-value pairs representing the entry's properties."""
 
-    immutable_id: Optional[str] = Schema(
-        ...,
+    immutable_id: Optional[str] = Field(
+        None,
         description="""The entry's immutable ID (e.g., an UUID).
 This is important for databases having preferred IDs that point to "the latest version" of a record, but still offer access to older variants.
 This ID maps to the version-specific record, in case it changes in the future.
@@ -65,7 +65,7 @@ This ID maps to the version-specific record, in case it changes in the future.
   - :val:`"fjeiwoj,54;@=%<>#32"` (Strings that are not URL-safe are allowed.)""",
     )
 
-    last_modified: datetime = Schema(
+    last_modified: datetime = Field(
         ...,
         description="""Date and time representing when the entry was last modified.
 - **Type**: timestamp.
@@ -83,7 +83,7 @@ This ID maps to the version-specific record, in case it changes in the future.
 
 class EntryResource(Resource):
 
-    id: str = Schema(
+    id: str = Field(
         ...,
         description="""An entry's ID as defined in section `Definition of Terms`_.
 - **Type**: string.
@@ -102,7 +102,7 @@ class EntryResource(Resource):
   - :val:`"42"`""",
     )
 
-    type: str = Schema(
+    type: str = Field(
         ...,
         description="""The name of the type of an entry.
 Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.
@@ -117,7 +117,7 @@ Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and 
 - **Example**: :val:`"structures"`""",
     )
 
-    attributes: EntryResourceAttributes = Schema(
+    attributes: EntryResourceAttributes = Field(
         ...,
         description="""a dictionary, containing key-value pairs representing the entry's properties, except for type and id.
 
@@ -125,8 +125,8 @@ Database-provider-specific properties need to include the database-provider-spec
 (see appendix `Database-Provider-Specific Namespace Prefixes`_).""",
     )
 
-    relationships: Optional[EntryRelationships] = Schema(
-        ...,
+    relationships: Optional[EntryRelationships] = Field(
+        None,
         description="""a dictionary containing references to other entries according to the description in section `Relationships`_
 encoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.
 The OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary.""",
@@ -135,31 +135,31 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
 
 class EntryInfoProperty(BaseModel):
 
-    description: str = Schema(..., description="description of the entry property")
+    description: str = Field(..., description="description of the entry property")
 
-    unit: Optional[str] = Schema(
-        ..., description="the physical unit of the entry property"
+    unit: Optional[str] = Field(
+        None, description="the physical unit of the entry property"
     )
 
-    sortable: Optional[bool] = Schema(
-        ...,
+    sortable: Optional[bool] = Field(
+        None,
         description='defines whether the entry property can be used for sorting with the "sort" parameter. If the entry listing endpoint supports sorting, this key MUST be present for all properties.',
     )
 
 
 class EntryInfoResource(BaseModel):
 
-    formats: List[str] = Schema(..., description="list of available output formats.")
+    formats: List[str] = Field(..., description="list of available output formats.")
 
-    description: str = Schema(..., description="description of the entry")
+    description: str = Field(..., description="description of the entry")
 
-    properties: Dict[str, EntryInfoProperty] = Schema(
+    properties: Dict[str, EntryInfoProperty] = Field(
         ...,
         description="a dictionary describing queryable properties for this "
         "entry type, where each key is a property ID.",
     )
 
-    output_fields_by_format: Dict[str, List[str]] = Schema(
+    output_fields_by_format: Dict[str, List[str]] = Field(
         ...,
         description="a dictionary of available output fields for this entry "
         "type, where the keys are the values of the `formats` list "

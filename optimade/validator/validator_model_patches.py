@@ -7,7 +7,7 @@ validation responses.
 
 from typing import List, Optional, Dict, Any
 
-from pydantic import Schema
+from pydantic import Field
 
 from optimade.models.optimade_json import Success
 from optimade.models import (
@@ -20,33 +20,33 @@ from optimade.models import (
 
 
 class ValidatorLinksResponse(Success):
-    meta: ResponseMeta = Schema(...)
-    data: List[LinksResource] = Schema(...)
+    meta: ResponseMeta = Field(...)
+    data: List[LinksResource] = Field(...)
 
 
 class ValidatorEntryResponseOne(Success):
-    meta: ResponseMeta = Schema(...)
-    data: EntryResource = Schema(...)
-    included: Optional[List[Dict[str, Any]]] = Schema(...)
+    meta: ResponseMeta = Field(...)
+    data: EntryResource = Field(...)
+    included: Optional[List[Dict[str, Any]]] = Field(...)
 
 
 class ValidatorEntryResponseMany(Success):
-    meta: ResponseMeta = Schema(...)
-    data: List[EntryResource] = Schema(...)
-    included: Optional[List[Dict[str, Any]]] = Schema(...)
+    meta: ResponseMeta = Field(...)
+    data: List[EntryResource] = Field(...)
+    included: Optional[List[Dict[str, Any]]] = Field(...)
 
 
 class ValidatorReferenceResponseOne(ValidatorEntryResponseOne):
-    data: ReferenceResource = Schema(...)
+    data: ReferenceResource = Field(...)
 
 
 class ValidatorReferenceResponseMany(ValidatorEntryResponseMany):
-    data: List[ReferenceResource] = Schema(...)
+    data: List[ReferenceResource] = Field(...)
 
 
 class ValidatorStructureResponseOne(ValidatorEntryResponseOne):
-    data: StructureResource = Schema(...)
+    data: StructureResource = Field(...)
 
 
 class ValidatorStructureResponseMany(ValidatorEntryResponseMany):
-    data: List[StructureResource] = Schema(...)
+    data: List[StructureResource] = Field(...)

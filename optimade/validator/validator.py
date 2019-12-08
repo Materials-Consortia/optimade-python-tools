@@ -116,7 +116,7 @@ class Client:
                 self.response = requests.get(self.last_request)
             except requests.exceptions.ConnectionError:
                 sys.exit(f"No response from server at {self.last_request}")
-            except requests.exceptions.MissingSchema:
+            except requests.exceptions.MissingField:
                 sys.exit(
                     f"Unable to make request on {self.last_request}, did you mean http://{self.last_request}?"
                 )
