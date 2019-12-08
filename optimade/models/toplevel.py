@@ -4,6 +4,7 @@ from typing import Union, List, Optional, Dict, Any
 from pydantic import (  # pylint: disable=no-name-in-module
     BaseModel,
     validator,
+    AnyUrl,
     AnyHttpUrl,
     Field,
     EmailStr,
@@ -45,13 +46,8 @@ class ResponseMetaQuery(BaseModel):
 
     representation: str = Field(
         ...,
-        description="a string with the part of the URL " "that follows the base URL.",
+        description="a string with the part of the URL that follows the base URL. Example: '/structures?'",
     )
-
-    @validator("representation")
-    def representation_must_be_valid_url_with_base(cls, v):
-        AnyHttpUrl(f"https://baseurl.net{v}")
-        return v
 
 
 class Provider(BaseModel):
