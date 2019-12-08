@@ -48,7 +48,7 @@ class BaseInfoAttributes(BaseModel):
         "(i.e., the default is for is_index to be false).",
     )
 
-    # @validator("entry_types_by_format", whole=True, check_fields=False)
+    # @validator("entry_types_by_format", check_fields=False)
     # def formats_and_endpoints_must_be_valid(cls, v, values):
     #     for format_, endpoints in v.items():
     #         if format_ not in values["formats"]:

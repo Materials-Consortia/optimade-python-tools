@@ -80,7 +80,7 @@ The main use of this field is for source databases that use species names, conta
             raise ValueError(f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}")
         return v
 
-    @validator("concentration", whole=True)
+    @validator("concentration")
     def validate_concentration(cls, v, values):
         if not (len(v) == len(values.get("chemical_symbols", []))):
             raise ValueError(
@@ -119,7 +119,7 @@ See below for examples of how to specify the probability of the occurrence of a 
 The possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_.""",
     )
 
-    @validator("sites_in_groups", whole=True)
+    @validator("sites_in_groups")
     def validate_sites_in_groups(cls, v):
         sites = []
         for group in v:
@@ -130,7 +130,7 @@ The possible reasons for the values not to sum to one are the same as already sp
             )
         return v
 
-    @validator("group_probabilities", whole=True)
+    @validator("group_probabilities")
     def check_self_consistency(cls, v, values):
         if not (len(v) == len(values.get("sites_in_groups", []))):
             raise ValueError(
@@ -600,19 +600,19 @@ class StructureResourceAttributes(EntryResourceAttributes):
 -  **Examples**: A structure having unknown positions and using assemblies: :val:`["assemblies", "unknown_positions"]`""",
     )
 
-    @validator("elements", whole=False)
+    @validator("elements", each_item=True)
     def element_must_be_chemical_symbol(cls, v):
         if not (v in CHEMICAL_SYMBOLS):
             raise ValueError(f"Only chemical symbols are allowed, you passed: {v}")
         return v
 
-    @validator("elements", whole=True)
+    @validator("elements")
     def elements_must_be_alphabetical(cls, v):
         if not (sorted(v) == v):
             raise ValueError(f"elements must be sorted alphabetically, but is: {v}")
         return v
 
-    @validator("elements_ratios", whole=True)
+    @validator("elements_ratios")
     def ratios_must_sum_to_one(cls, v):
         if abs(sum(v) - 1) > EPS:
             raise ValueError(
@@ -626,7 +626,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
             raise ValueError(f"Spaces are not allowed, you passed: {v}")
         return v
 
-    @validator("dimension_types", whole=True)
+    @validator("dimension_types")
     def must_be_of_length_three(cls, v):
         if not len(v) == 3:
             raise ValueError(f"MUST be of length 3, but is of length: {len(v)}")
@@ -635,7 +635,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
                 raise ValueError(f"MUST be either 0 or 1, you passed: {v}")
         return v
 
-    @validator("lattice_vectors", always=True, whole=True)
+    @validator("lattice_vectors", always=True)
     def required_if_dimension_types_has_one(cls, v, values):
         if 1 in values.get("dimension_types") and v is None:
             raise ValueError(
@@ -661,7 +661,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
             )
         return v
 
-    @validator("species_at_sites", whole=True)
+    @validator("species_at_sites")
     def validate_species_at_sites(cls, v, values):
         if not (len(v) == values.get("nsites", 0)):
             raise ValueError(
@@ -677,7 +677,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
             )
         return v
 
-    @validator("structure_features", whole=True, always=True)
+    @validator("structure_features", always=True)
     def validate_structure_features(cls, v, values):
         if not sorted(v) == v:
             raise ValueError(

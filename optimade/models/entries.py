@@ -16,7 +16,7 @@ __all__ = (
 
 
 class TypedRelationship(Relationship):
-    @validator("data", whole=True)
+    @validator("data")
     def check_rel_type(cls, data):
         if hasattr(cls, "_req_type") and any(obj.type != cls._req_type for obj in data):
             raise ValueError("Object stored in relationship data has wrong type")
