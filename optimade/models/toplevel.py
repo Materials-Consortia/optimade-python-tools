@@ -4,7 +4,7 @@ from typing import Union, List, Optional, Dict, Any
 from pydantic import (  # pylint: disable=no-name-in-module
     BaseModel,
     validator,
-    UrlStr,
+    AnyHttpUrl,
     Schema,
     EmailStr,
 )
@@ -50,7 +50,7 @@ class ResponseMetaQuery(BaseModel):
 
     @validator("representation")
     def representation_must_be_valid_url_with_base(cls, v):
-        UrlStr(f"https://baseurl.net{v}")
+        AnyHttpUrl(f"https://baseurl.net{v}")
         return v
 
 
@@ -67,14 +67,14 @@ class Provider(BaseModel):
         ..., description="database-provider-specific prefix as found in " "Appendix 1."
     )
 
-    homepage: Optional[Union[UrlStr, Link]] = Schema(
+    homepage: Optional[Union[AnyHttpUrl, Link]] = Schema(
         ...,
         description="a [JSON API links object](http://jsonapi.org/format/1.0#document-links) "
         "pointing to homepage of the database provider, either "
         "directly as a string, or as a link object.",
     )
 
-    index_base_url: Optional[Union[UrlStr, Link]] = Schema(
+    index_base_url: Optional[Union[AnyHttpUrl, Link]] = Schema(
         ...,
         description="a [JSON API links object](http://jsonapi.org/format/1.0#document-links) "
         "pointing to the base URL for the `index` meta-database as "
@@ -98,7 +98,7 @@ class Implementation(BaseModel):
         ..., description="version string of the current implementation"
     )
 
-    source_url: Optional[UrlStr] = Schema(
+    source_url: Optional[AnyHttpUrl] = Schema(
         ...,
         description="URL of the implementation source, either downloadable archive or version control system",
     )

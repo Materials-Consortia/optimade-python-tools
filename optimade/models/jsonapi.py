@@ -1,7 +1,7 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-name-in-module,no-self-argument
 from typing import Optional, Set, Union, Any, List
-from pydantic import BaseModel, UrlStr, Schema, validator
+from pydantic import BaseModel, AnyUrl, Schema, validator
 
 
 __all__ = (
@@ -32,7 +32,7 @@ class Meta(BaseModel):
 class Link(BaseModel):
     """A link **MUST** be represented as either: a string containing the link's URL or a link object."""
 
-    href: UrlStr = Schema(..., description="a string containing the link’s URL.")
+    href: AnyUrl = Schema(..., description="a string containing the link’s URL.")
     meta: Optional[Meta] = Schema(
         ...,
         description="a meta object containing non-standard meta-information about the link.",
@@ -49,22 +49,22 @@ class JsonApi(BaseModel):
 class ToplevelLinks(BaseModel):
     """A set of Links objects, possibly including pagination"""
 
-    self: Optional[Union[UrlStr, Link]] = Schema(..., description="A link to itself")
-    related: Optional[Union[UrlStr, Link]] = Schema(
+    self: Optional[Union[AnyUrl, Link]] = Schema(..., description="A link to itself")
+    related: Optional[Union[AnyUrl, Link]] = Schema(
         ..., description="A related resource link"
     )
 
     # Pagination
-    first: Optional[UrlStr] = Schema(..., description="The first page of data")
-    last: Optional[UrlStr] = Schema(..., description="The last page of data")
-    prev: Optional[UrlStr] = Schema(..., description="The previous page of data")
-    next: Optional[UrlStr] = Schema(..., description="The next page of data")
+    first: Optional[AnyUrl] = Schema(..., description="The first page of data")
+    last: Optional[AnyUrl] = Schema(..., description="The last page of data")
+    prev: Optional[AnyUrl] = Schema(..., description="The previous page of data")
+    next: Optional[AnyUrl] = Schema(..., description="The next page of data")
 
 
 class ErrorLinks(BaseModel):
     """A Links object specific to Error objects"""
 
-    about: Optional[Union[UrlStr, Link]] = Schema(
+    about: Optional[Union[AnyUrl, Link]] = Schema(
         ...,
         description="A link that leads to further details about this particular occurrence of the problem.",
     )
@@ -131,8 +131,8 @@ class RelationshipLinks(BaseModel):
     """A resource object **MAY** contain references to other resource objects (\"relationships\").
     Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."""
 
-    self: Optional[Union[UrlStr, Link]] = Schema(..., description="A link to itself")
-    related: Optional[Union[UrlStr, Link]] = Schema(
+    self: Optional[Union[AnyUrl, Link]] = Schema(..., description="A link to itself")
+    related: Optional[Union[AnyUrl, Link]] = Schema(
         ..., description="A related resource link"
     )
 
@@ -192,7 +192,7 @@ class Relationships(BaseModel):
 class ResourceLinks(BaseModel):
     """A Resource Links object"""
 
-    self: Optional[Union[UrlStr, Link]] = Schema(
+    self: Optional[Union[AnyUrl, Link]] = Schema(
         ...,
         description="A link that identifies the resource represented by the resource object.",
     )

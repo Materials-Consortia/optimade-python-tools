@@ -1,5 +1,5 @@
 from typing import Dict, List, Optional
-from pydantic import BaseModel, UrlStr, Schema, validator
+from pydantic import BaseModel, AnyUrl, Schema, validator
 
 from .jsonapi import Resource
 
@@ -10,7 +10,7 @@ __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 class AvailableApiVersion(BaseModel):
     """A JSON object containing information about an available API version"""
 
-    url: UrlStr = Schema(
+    url: AnyUrl = Schema(
         ...,
         description="a string specifying a base URL that MUST adhere to the rules in section Base URL",
     )

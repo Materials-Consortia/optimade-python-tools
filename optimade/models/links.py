@@ -1,4 +1,4 @@
-from pydantic import Schema, UrlStr, validator  # pylint: disable=no-name-in-module
+from pydantic import Schema, AnyUrl, validator  # pylint: disable=no-name-in-module
 from typing import Union
 
 from .jsonapi import Link, Attributes
@@ -27,7 +27,7 @@ class LinksResourceAttributes(Attributes):
         description="Human-readable description for the OPTiMaDe API implementation "
         "a client may provide in a list to an end-user.",
     )
-    base_url: Union[UrlStr, Link, None] = Schema(
+    base_url: Union[AnyUrl, Link, None] = Schema(
         ...,
         description="JSON API links object, pointing to the base URL for this implementation",
     )

@@ -1,4 +1,4 @@
-from pydantic import Schema, BaseModel, UrlStr, validator
+from pydantic import Schema, BaseModel, AnyUrl, validator
 from typing import List, Optional
 
 from .entries import EntryResource, EntryResourceAttributes
@@ -33,7 +33,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
         ..., description="The digital object identifier of the reference."
     )
 
-    url: Optional[UrlStr] = Schema(..., description="The URL of the reference.")
+    url: Optional[AnyUrl] = Schema(..., description="The URL of the reference.")
 
     address: Optional[str] = Schema(
         ..., description="Meaning of property matches the BiBTeX specification."

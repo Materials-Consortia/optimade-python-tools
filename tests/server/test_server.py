@@ -26,7 +26,7 @@ app.include_router(links.router)
 app.include_router(references.router)
 app.include_router(structures.router)
 # need to explicitly set base_url, as the default "http://testserver"
-# does not validate as pydantic UrlStr model
+# does not validate as pydantic AnyUrl model
 CLIENT = TestClient(app, base_url="http://example.org/optimade")
 
 
