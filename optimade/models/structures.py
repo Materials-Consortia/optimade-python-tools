@@ -74,7 +74,7 @@ Note: With regards to "source database", we refer to the immediate source being 
 The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).""",
     )
 
-    @validator("chemical_symbols")
+    @validator("chemical_symbols", each_item=True)
     def validate_chemical_symbols(cls, v):
         if not (v in EXTENDED_CHEMICAL_SYMBOLS):
             raise ValueError(f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}")
@@ -647,7 +647,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
             )
         return v
 
-    @validator("lattice_vectors", "cartesian_site_positions")
+    @validator("lattice_vectors", "cartesian_site_positions", each_item=True)
     def sites_must_have_length_three(cls, v):
         if len(v) != 3:
             raise ValueError(f"MUST be a list of length 3. {v} has length {len(v)}.")
@@ -669,7 +669,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
             )
         return v
 
-    @validator("species")
+    @validator("species", each_item=True)
     def validate_species(cls, v, values):
         if not (v.name in values.get("species_at_sites", [])):
             raise ValueError(

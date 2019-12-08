@@ -57,7 +57,9 @@ class Success(jsonapi.Response):
     @validator("errors")
     def either_data_meta_or_errors_must_be_set(cls, v, values):
         """Overwriting the existing validation function"""
-        raise ValueError("'errors' MUST be skipped for a successful response")
+        if v is not None:
+            raise ValueError("'errors' MUST be skipped for a successful response")
+        return v
 
 
 class Warnings(Error):
