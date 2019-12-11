@@ -38,3 +38,4 @@ def setver(_, patch=False, new_ver=""):
 @task
 def update_openapijson(c):
     c.run("cp local_openapi.json openapi.json")
+    c.run("cp local_index_openapi.json index_openapi.json")

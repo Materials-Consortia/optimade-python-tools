@@ -1,5 +1,4 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
-# pylint: disable=line-too-long
 
 from .validator import ImplementationValidator
 
@@ -46,7 +45,15 @@ def validate():
         "-a",
         type=str,
         help=(
-            """Validate the request URL with the provided type, rather than scanning the entire implementation e.g. optimade_validator `http://example.com/optimade/structures/0 --as_type structures`"""
+            "Validate the request URL with the provided type, rather than scanning the entire implementation e.g. "
+            "optimade_validator `http://example.com/optimade/structures/0 --as_type structures`"
+        ),
+    )
+    parser.add_argument(
+        "--index",
+        action="store_true",
+        help=(
+            "Flag for whether the specified OPTiMaDe implementation is an Index meta-database or not. [default=False]"
         ),
     )
 
@@ -56,16 +63,20 @@ def validate():
         "info",
         "info/references",
         "info/structures",
+        "links",
         "references",
         "reference",
         "structures",
         "structure",
     ]
     if args["as_type"] is not None and args["as_type"] not in valid_types:
-        sys.exit("{args['as_type']} is not a valid type, must be one of {valid_types}")
+        sys.exit(f"{args['as_type']} is not a valid type, must be one of {valid_types}")
 
     validator = ImplementationValidator(
-        base_url=args["base_url"], verbosity=args["verbosity"], as_type=args["as_type"]
+        base_url=args["base_url"],
+        verbosity=args["verbosity"],
+        as_type=args["as_type"],
+        index=args["index"],
     )
 
     try:

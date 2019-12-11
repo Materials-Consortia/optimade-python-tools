@@ -1,13 +1,25 @@
-repos:
-- repo: https://github.com/ambv/black
-  rev: stable
-  hooks:
-  - id: black
+default_language_version:
+  python: python3.7
 
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v2.3.0
-  hooks:
-  - id: trailing-whitespace
-    exclude: README.md
-  - id: check-yaml
-  - id: check-json
+repos:
+  - repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+    - id: black
+      name: Blacken
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    - id: trailing-whitespace
+      exclude: README.md
+    - id: check-yaml
+    - id: check-json
+
+  - repo: local
+    hooks:
+    - id: json-diff
+      name: OpenAPI diff
+      description: Check for differences in openapi.json and index_openapi.json with local versions.
+      entry: ./.ci/json_diff.sh
+      language: system

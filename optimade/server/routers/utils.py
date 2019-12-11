@@ -43,7 +43,7 @@ def meta_values(
         query=ResponseMetaQuery(
             representation=f"{parse_result.path}?{parse_result.query}"
         ),
-        api_version="v0.10",
+        api_version=f"v{CONFIG.version}",
         time_stamp=datetime.utcnow(),
         data_returned=data_returned,
         more_data_available=more_data_available,
