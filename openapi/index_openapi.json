@@ -2,19 +2,24 @@
   "openapi": "3.0.2",
   "info": {
     "title": "OPTiMaDe API - Index meta-database",
-    "version": "0.10.0",
-    "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database."
+    "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.",
+    "version": "0.10.0"
   },
   "paths": {
     "/index/optimade/info": {
       "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_index_optimade_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Info_Index_Optimade_Info_Get",
+                  "title": "Response Get Info Index Optimade Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/IndexInfoResponse"
@@ -27,46 +32,11 @@
               }
             }
           }
-        },
-        "tags": [
-          "Info"
-        ],
-        "summary": "Get Info",
-        "operationId": "get_info_index_optimade_info_get"
+        }
       }
     },
     "/index/optimade/links": {
       "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Links_Index_Optimade_Links_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/LinksResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Links"
         ],
@@ -88,7 +58,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -98,7 +68,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -109,7 +79,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
@@ -129,7 +99,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Limit",
+              "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
               "default": 500
@@ -140,7 +110,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Offset",
+              "title": "Page Offset",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -151,7 +121,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Page",
+              "title": "Page Page",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -162,7 +132,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Cursor",
+              "title": "Page Cursor",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -173,7 +143,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Above",
+              "title": "Page Above",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -184,7 +154,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Below",
+              "title": "Page Below",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -192,47 +162,14 @@
             "name": "page_below",
             "in": "query"
           }
-        ]
-      }
-    },
-    "/index/optimade/v0.10.0/info": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Info_Index_Optimade_V0.10.0_Info_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/IndexInfoResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Info"
         ],
-        "summary": "Get Info",
-        "operationId": "get_info_index_optimade_v0.10.0_info_get"
-      }
-    },
-    "/index/optimade/v0.10.0/links": {
-      "get": {
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Links_Index_Optimade_V0.10.0_Links_Get",
+                  "title": "Response Get Links Index Optimade Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
@@ -255,7 +192,40 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/index/optimade/v0.10.0/info": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_index_optimade_v0.10.0_info_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Info Index Optimade V0.10.0 Info Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/IndexInfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/index/optimade/v0.10.0/links": {
+      "get": {
         "tags": [
           "Links"
         ],
@@ -277,7 +247,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -287,7 +257,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -298,7 +268,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
@@ -318,7 +288,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Limit",
+              "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
               "default": 500
@@ -329,7 +299,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Offset",
+              "title": "Page Offset",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -340,7 +310,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Page",
+              "title": "Page Page",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -351,7 +321,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Cursor",
+              "title": "Page Cursor",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -362,7 +332,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Above",
+              "title": "Page Above",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -373,7 +343,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Below",
+              "title": "Page Below",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -381,47 +351,14 @@
             "name": "page_below",
             "in": "query"
           }
-        ]
-      }
-    },
-    "/index/optimade/v0.10/info": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Info_Index_Optimade_V0.10_Info_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/IndexInfoResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Info"
         ],
-        "summary": "Get Info",
-        "operationId": "get_info_index_optimade_v0.10_info_get"
-      }
-    },
-    "/index/optimade/v0.10/links": {
-      "get": {
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Links_Index_Optimade_V0.10_Links_Get",
+                  "title": "Response Get Links Index Optimade V0.10.0 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
@@ -444,7 +381,40 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/index/optimade/v0.10/info": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_index_optimade_v0.10_info_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Info Index Optimade V0.10 Info Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/IndexInfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/index/optimade/v0.10/links": {
+      "get": {
         "tags": [
           "Links"
         ],
@@ -466,7 +436,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -476,7 +446,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -487,7 +457,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
@@ -507,7 +477,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Limit",
+              "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
               "default": 500
@@ -518,7 +488,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Offset",
+              "title": "Page Offset",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -529,7 +499,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Page",
+              "title": "Page Page",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -540,7 +510,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Cursor",
+              "title": "Page Cursor",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -551,7 +521,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Above",
+              "title": "Page Above",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -562,7 +532,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Below",
+              "title": "Page Below",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -570,7 +540,37 @@
             "name": "page_below",
             "in": "query"
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Links Index Optimade V0.10 Links Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -759,12 +759,12 @@
             "description": "Not allowed key"
           },
           "immutable_id": {
-            "title": "Immutable_Id",
+            "title": "Immutable Id",
             "type": "string",
             "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
-            "title": "Last_Modified",
+            "title": "Last Modified",
             "type": "string",
             "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"`\n    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
             "format": "date-time"
@@ -817,10 +817,10 @@
               },
               {
                 "type": "array",
-                "uniqueItems": true,
                 "items": {
                   "$ref": "#/components/schemas/Resource"
-                }
+                },
+                "uniqueItems": true
               }
             ],
             "description": "Outputted Data"
@@ -910,7 +910,7 @@
             "description": "version string of the current implementation"
           },
           "source_url": {
-            "title": "Source_Url",
+            "title": "Source Url",
             "maxLength": 65536,
             "minLength": 1,
             "type": "string",
@@ -956,12 +956,12 @@
         "type": "object",
         "properties": {
           "api_version": {
-            "title": "Api_Version",
+            "title": "Api Version",
             "type": "string",
             "description": "Presently used version of the OPTiMaDe API"
           },
           "available_api_versions": {
-            "title": "Available_Api_Versions",
+            "title": "Available Api Versions",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AvailableApiVersion"
@@ -980,7 +980,7 @@
             ]
           },
           "available_endpoints": {
-            "title": "Available_Endpoints",
+            "title": "Available Endpoints",
             "type": "array",
             "items": {
               "type": "string"
@@ -988,7 +988,7 @@
             "description": "List of available endpoints (i.e., the string to be appended to the base URL)."
           },
           "entry_types_by_format": {
-            "title": "Entry_Types_By_Format",
+            "title": "Entry Types By Format",
             "type": "object",
             "additionalProperties": {
               "type": "array",
@@ -999,7 +999,7 @@
             "description": "Available entry endpoints as a function of output formats."
           },
           "is_index": {
-            "title": "Is_Index",
+            "title": "Is Index",
             "type": "boolean",
             "description": "If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for is_index to be false)."
           }
@@ -1108,6 +1108,9 @@
       },
       "IndexRelationship": {
         "title": "IndexRelationship",
+        "required": [
+          "data"
+        ],
         "type": "object",
         "properties": {
           "data": {
@@ -1235,7 +1238,8 @@
         "title": "LinksResourceAttributes",
         "required": [
           "name",
-          "description"
+          "description",
+          "base_url"
         ],
         "type": "object",
         "properties": {
@@ -1266,7 +1270,7 @@
             "description": "Human-readable description for the OPTiMaDe API implementation a client may provide in a list to an end-user."
           },
           "base_url": {
-            "title": "Base_Url",
+            "title": "Base Url",
             "anyOf": [
               {
                 "minLength": 1,
@@ -1412,7 +1416,7 @@
             "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
           },
           "index_base_url": {
-            "title": "Index_Base_Url",
+            "title": "Index Base Url",
             "anyOf": [
               {
                 "minLength": 1,
@@ -1661,24 +1665,24 @@
             "description": "information on the query that was requested"
           },
           "api_version": {
-            "title": "Api_Version",
+            "title": "Api Version",
             "type": "string",
             "description": "a string containing the version of the API implementation, e.g. v0.9.5"
           },
           "time_stamp": {
-            "title": "Time_Stamp",
+            "title": "Time Stamp",
             "type": "string",
             "description": "a string containing the date and time at which the query was exexcuted",
             "format": "date-time"
           },
           "data_returned": {
-            "title": "Data_Returned",
+            "title": "Data Returned",
             "minimum": 0.0,
             "type": "integer",
             "description": "an integer containing the number of data objects returned for the query."
           },
           "more_data_available": {
-            "title": "More_Data_Available",
+            "title": "More Data Available",
             "type": "boolean",
             "description": "`false` if all data has been returned, and `true` if not."
           },
@@ -1692,17 +1696,17 @@
             "description": "information on the database provider of the implementation."
           },
           "data_available": {
-            "title": "Data_Available",
+            "title": "Data Available",
             "type": "integer",
             "description": "an integer containing the total number of data objects available in the database"
           },
           "last_id": {
-            "title": "Last_Id",
+            "title": "Last Id",
             "type": "string",
             "description": "a string containing the last ID returned"
           },
           "response_message": {
-            "title": "Response_Message",
+            "title": "Response Message",
             "type": "string",
             "description": "response string from the server"
           },
@@ -1736,7 +1740,7 @@
           "representation": {
             "title": "Representation",
             "type": "string",
-            "description": "a string with the part of the URL that follows the base URL."
+            "description": "a string with the part of the URL that follows the base URL. Example: '/structures?'"
           }
         },
         "description": "Information on the query that was requested. "

@@ -2,19 +2,24 @@
   "openapi": "3.0.2",
   "info": {
     "title": "OPTiMaDe API",
-    "version": "0.10.0",
-    "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API."
+    "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.",
+    "version": "0.10.0"
   },
   "paths": {
     "/optimade/info": {
       "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_optimade_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Info_Optimade_Info_Get",
+                  "title": "Response Get Info Optimade Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/InfoResponse"
@@ -27,23 +32,36 @@
               }
             }
           }
-        },
-        "tags": [
-          "Info"
-        ],
-        "summary": "Get Info",
-        "operationId": "get_info_optimade_info_get"
+        }
       }
     },
     "/optimade/info/{entry}": {
       "get": {
+        "tags": [
+          "Info",
+          "Structure",
+          "Reference"
+        ],
+        "summary": "Get Entry Info",
+        "operationId": "get_entry_info_optimade_info__entry__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry",
+              "type": "string"
+            },
+            "name": "entry",
+            "in": "path"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Entry_Info_Optimade_Info__Entry__Get",
+                  "title": "Response Get Entry Info Optimade Info  Entry  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/EntryInfoResponse"
@@ -66,59 +84,11 @@
               }
             }
           }
-        },
-        "tags": [
-          "Info",
-          "Structure",
-          "Reference"
-        ],
-        "summary": "Get Entry Info",
-        "operationId": "get_entry_info_optimade_info__entry__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry",
-              "type": "string"
-            },
-            "name": "entry",
-            "in": "path"
-          }
-        ]
+        }
       }
     },
     "/optimade/links": {
       "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Links_Optimade_Links_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/LinksResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Links"
         ],
@@ -140,7 +110,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -150,7 +120,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -161,7 +131,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
@@ -181,7 +151,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Limit",
+              "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
               "default": 500
@@ -192,7 +162,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Offset",
+              "title": "Page Offset",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -203,7 +173,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Page",
+              "title": "Page Page",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -214,7 +184,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Cursor",
+              "title": "Page Cursor",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -225,7 +195,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Above",
+              "title": "Page Above",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -236,7 +206,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Below",
+              "title": "Page Below",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -244,21 +214,17 @@
             "name": "page_below",
             "in": "query"
           }
-        ]
-      }
-    },
-    "/optimade/references": {
-      "get": {
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_References_Optimade_References_Get",
+                  "title": "Response Get Links Optimade Links Get",
                   "anyOf": [
                     {
-                      "$ref": "#/components/schemas/ReferenceResponseMany"
+                      "$ref": "#/components/schemas/LinksResponse"
                     },
                     {
                       "$ref": "#/components/schemas/ErrorResponse"
@@ -278,7 +244,11 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/optimade/references": {
+      "get": {
         "tags": [
           "Reference"
         ],
@@ -300,7 +270,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -310,7 +280,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -321,7 +291,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
@@ -341,7 +311,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Limit",
+              "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
               "default": 500
@@ -352,7 +322,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Offset",
+              "title": "Page Offset",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -363,7 +333,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Page",
+              "title": "Page Page",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -374,7 +344,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Cursor",
+              "title": "Page Cursor",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -385,7 +355,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Above",
+              "title": "Page Above",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -396,7 +366,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Below",
+              "title": "Page Below",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -404,18 +374,95 @@
             "name": "page_below",
             "in": "query"
           }
-        ]
-      }
-    },
-    "/optimade/references/{entry_id}": {
-      "get": {
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Single_Reference_Optimade_References__Entry_Id__Get",
+                  "title": "Response Get References Optimade References Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/optimade/references/{entry_id}": {
+      "get": {
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get Single Reference",
+        "operationId": "get_single_reference_optimade_references__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Single Reference Optimade References  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseOne"
@@ -438,88 +485,11 @@
               }
             }
           }
-        },
-        "tags": [
-          "Reference"
-        ],
-        "summary": "Get Single Reference",
-        "operationId": "get_single_reference_optimade_references__entry_id__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry_Id",
-              "type": "string"
-            },
-            "name": "entry_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          }
-        ]
+        }
       }
     },
     "/optimade/structures": {
       "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Structures_Optimade_Structures_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/StructureResponseMany"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Structure"
         ],
@@ -541,7 +511,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -551,7 +521,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -562,7 +532,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
@@ -582,7 +552,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Limit",
+              "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
               "default": 500
@@ -593,7 +563,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Offset",
+              "title": "Page Offset",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -604,7 +574,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Page",
+              "title": "Page Page",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -615,7 +585,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Cursor",
+              "title": "Page Cursor",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -626,7 +596,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Above",
+              "title": "Page Above",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -637,7 +607,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Below",
+              "title": "Page Below",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -645,18 +615,95 @@
             "name": "page_below",
             "in": "query"
           }
-        ]
-      }
-    },
-    "/optimade/structures/{entry_id}": {
-      "get": {
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Single_Structure_Optimade_Structures__Entry_Id__Get",
+                  "title": "Response Get Structures Optimade Structures Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/optimade/structures/{entry_id}": {
+      "get": {
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Single Structure",
+        "operationId": "get_single_structure_optimade_structures__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Single Structure Optimade Structures  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseOne"
@@ -679,65 +726,23 @@
               }
             }
           }
-        },
-        "tags": [
-          "Structure"
-        ],
-        "summary": "Get Single Structure",
-        "operationId": "get_single_structure_optimade_structures__entry_id__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry_Id",
-              "type": "string"
-            },
-            "name": "entry_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          }
-        ]
+        }
       }
     },
     "/optimade/v0.10.0/info": {
       "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get Info",
+        "operationId": "get_info_optimade_v0.10.0_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Info_Optimade_V0.10.0_Info_Get",
+                  "title": "Response Get Info Optimade V0.10.0 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/InfoResponse"
@@ -750,23 +755,36 @@
               }
             }
           }
-        },
-        "tags": [
-          "Info"
-        ],
-        "summary": "Get Info",
-        "operationId": "get_info_optimade_v0.10.0_info_get"
+        }
       }
     },
     "/optimade/v0.10.0/info/{entry}": {
       "get": {
+        "tags": [
+          "Info",
+          "Structure",
+          "Reference"
+        ],
+        "summary": "Get Entry Info",
+        "operationId": "get_entry_info_optimade_v0.10.0_info__entry__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry",
+              "type": "string"
+            },
+            "name": "entry",
+            "in": "path"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Entry_Info_Optimade_V0.10.0_Info__Entry__Get",
+                  "title": "Response Get Entry Info Optimade V0.10.0 Info  Entry  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/EntryInfoResponse"
@@ -789,59 +807,11 @@
               }
             }
           }
-        },
-        "tags": [
-          "Info",
-          "Structure",
-          "Reference"
-        ],
-        "summary": "Get Entry Info",
-        "operationId": "get_entry_info_optimade_v0.10.0_info__entry__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry",
-              "type": "string"
-            },
-            "name": "entry",
-            "in": "path"
-          }
-        ]
+        }
       }
     },
     "/optimade/v0.10.0/links": {
       "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Links_Optimade_V0.10.0_Links_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/LinksResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Links"
         ],
@@ -863,7 +833,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -873,7 +843,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -884,7 +854,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
@@ -904,7 +874,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Limit",
+              "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
               "default": 500
@@ -915,7 +885,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Offset",
+              "title": "Page Offset",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -926,7 +896,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Page",
+              "title": "Page Page",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -937,7 +907,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Cursor",
+              "title": "Page Cursor",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -948,7 +918,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Above",
+              "title": "Page Above",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -959,7 +929,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Below",
+              "title": "Page Below",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -967,581 +937,14 @@
             "name": "page_below",
             "in": "query"
           }
-        ]
-      }
-    },
-    "/optimade/v0.10.0/references": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_References_Optimade_V0.10.0_References_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ReferenceResponseMany"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Reference"
         ],
-        "summary": "Get References",
-        "operationId": "get_references_optimade_v0.10.0_references_get",
-        "parameters": [
-          {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-            "required": false,
-            "schema": {
-              "title": "Filter",
-              "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-              "default": ""
-            },
-            "name": "filter",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Sort",
-              "type": "string",
-              "default": ""
-            },
-            "name": "sort",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Limit",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "page_limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Page",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_page",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Cursor",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_cursor",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Above",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_above",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Below",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_below",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/optimade/v0.10.0/references/{entry_id}": {
-      "get": {
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Single_Reference_Optimade_V0.10.0_References__Entry_Id__Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/ReferenceResponseOne"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Reference"
-        ],
-        "summary": "Get Single Reference",
-        "operationId": "get_single_reference_optimade_v0.10.0_references__entry_id__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry_Id",
-              "type": "string"
-            },
-            "name": "entry_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/optimade/v0.10.0/structures": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Structures_Optimade_V0.10.0_Structures_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/StructureResponseMany"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Structure"
-        ],
-        "summary": "Get Structures",
-        "operationId": "get_structures_optimade_v0.10.0_structures_get",
-        "parameters": [
-          {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-            "required": false,
-            "schema": {
-              "title": "Filter",
-              "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-              "default": ""
-            },
-            "name": "filter",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Sort",
-              "type": "string",
-              "default": ""
-            },
-            "name": "sort",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Limit",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "page_limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Page",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_page",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Cursor",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_cursor",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Above",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_above",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Below",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_below",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/optimade/v0.10.0/structures/{entry_id}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Single_Structure_Optimade_V0.10.0_Structures__Entry_Id__Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/StructureResponseOne"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Structure"
-        ],
-        "summary": "Get Single Structure",
-        "operationId": "get_single_structure_optimade_v0.10.0_structures__entry_id__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry_Id",
-              "type": "string"
-            },
-            "name": "entry_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Format",
-              "type": "string",
-              "default": "json"
-            },
-            "name": "response_format",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Email_Address",
-              "type": "string",
-              "format": "email",
-              "default": ""
-            },
-            "name": "email_address",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Response_Fields",
-              "type": "string",
-              "default": ""
-            },
-            "name": "response_fields",
-            "in": "query"
-          }
-        ]
-      }
-    },
-    "/optimade/v0.10/info": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Info_Optimade_V0.10_Info_Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/InfoResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Info"
-        ],
-        "summary": "Get Info",
-        "operationId": "get_info_optimade_v0.10_info_get"
-      }
-    },
-    "/optimade/v0.10/info/{entry}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Entry_Info_Optimade_V0.10_Info__Entry__Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/EntryInfoResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ErrorResponse"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Info",
-          "Structure",
-          "Reference"
-        ],
-        "summary": "Get Entry Info",
-        "operationId": "get_entry_info_optimade_v0.10_info__entry__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Entry",
-              "type": "string"
-            },
-            "name": "entry",
-            "in": "path"
-          }
-        ]
-      }
-    },
-    "/optimade/v0.10/links": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response_Get_Links_Optimade_V0.10_Links_Get",
+                  "title": "Response Get Links Optimade V0.10.0 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
@@ -1564,12 +967,16 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/optimade/v0.10.0/references": {
+      "get": {
         "tags": [
-          "Links"
+          "Reference"
         ],
-        "summary": "Get Links",
-        "operationId": "get_links_optimade_v0.10_links_get",
+        "summary": "Get References",
+        "operationId": "get_references_optimade_v0.10.0_references_get",
         "parameters": [
           {
             "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
@@ -1586,7 +993,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -1596,7 +1003,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -1607,7 +1014,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
@@ -1627,7 +1034,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Limit",
+              "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
               "default": 500
@@ -1638,7 +1045,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Offset",
+              "title": "Page Offset",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -1649,7 +1056,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Page",
+              "title": "Page Page",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -1660,7 +1067,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Cursor",
+              "title": "Page Cursor",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -1671,7 +1078,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Above",
+              "title": "Page Above",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -1682,7 +1089,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Page_Below",
+              "title": "Page Below",
               "minimum": 0.0,
               "type": "integer",
               "default": 0
@@ -1690,18 +1097,14 @@
             "name": "page_below",
             "in": "query"
           }
-        ]
-      }
-    },
-    "/optimade/v0.10/references": {
-      "get": {
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_References_Optimade_V0.10_References_Get",
+                  "title": "Response Get References Optimade V0.10.0 References Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseMany"
@@ -1724,29 +1127,30 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/optimade/v0.10.0/references/{entry_id}": {
+      "get": {
         "tags": [
           "Reference"
         ],
-        "summary": "Get References",
-        "operationId": "get_references_optimade_v0.10_references_get",
+        "summary": "Get Single Reference",
+        "operationId": "get_single_reference_optimade_v0.10.0_references__entry_id__get",
         "parameters": [
           {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-            "required": false,
+            "required": true,
             "schema": {
-              "title": "Filter",
-              "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-              "default": ""
+              "title": "Entry Id",
+              "type": "string"
             },
-            "name": "filter",
-            "in": "query"
+            "name": "entry_id",
+            "in": "path"
           },
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -1756,7 +1160,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -1767,101 +1171,21 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
             "name": "response_fields",
             "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Sort",
-              "type": "string",
-              "default": ""
-            },
-            "name": "sort",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Limit",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "page_limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Page",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_page",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Cursor",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_cursor",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Above",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_above",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Below",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_below",
-            "in": "query"
           }
-        ]
-      }
-    },
-    "/optimade/v0.10/references/{entry_id}": {
-      "get": {
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Single_Reference_Optimade_V0.10_References__Entry_Id__Get",
+                  "title": "Response Get Single Reference Optimade V0.10.0 References  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseOne"
@@ -1884,26 +1208,33 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/optimade/v0.10.0/structures": {
+      "get": {
         "tags": [
-          "Reference"
+          "Structure"
         ],
-        "summary": "Get Single Reference",
-        "operationId": "get_single_reference_optimade_v0.10_references__entry_id__get",
+        "summary": "Get Structures",
+        "operationId": "get_structures_optimade_v0.10.0_structures_get",
         "parameters": [
           {
-            "required": true,
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
             "schema": {
-              "title": "Entry_Id",
-              "type": "string"
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
             },
-            "name": "entry_id",
-            "in": "path"
+            "name": "filter",
+            "in": "query"
           },
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -1913,7 +1244,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -1924,25 +1255,97 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
             "name": "response_fields",
             "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
           }
-        ]
-      }
-    },
-    "/optimade/v0.10/structures": {
-      "get": {
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Structures_Optimade_V0.10_Structures_Get",
+                  "title": "Response Get Structures Optimade V0.10.0 Structures Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseMany"
@@ -1965,29 +1368,30 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/optimade/v0.10.0/structures/{entry_id}": {
+      "get": {
         "tags": [
           "Structure"
         ],
-        "summary": "Get Structures",
-        "operationId": "get_structures_optimade_v0.10_structures_get",
+        "summary": "Get Single Structure",
+        "operationId": "get_single_structure_optimade_v0.10.0_structures__entry_id__get",
         "parameters": [
           {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-            "required": false,
+            "required": true,
             "schema": {
-              "title": "Filter",
-              "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
-              "default": ""
+              "title": "Entry Id",
+              "type": "string"
             },
-            "name": "filter",
-            "in": "query"
+            "name": "entry_id",
+            "in": "path"
           },
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -1997,7 +1401,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -2008,101 +1412,21 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
             "name": "response_fields",
             "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Sort",
-              "type": "string",
-              "default": ""
-            },
-            "name": "sort",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Limit",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 500
-            },
-            "name": "page_limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Page",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_page",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Cursor",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_cursor",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Above",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_above",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Page_Below",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "page_below",
-            "in": "query"
           }
-        ]
-      }
-    },
-    "/optimade/v0.10/structures/{entry_id}": {
-      "get": {
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response_Get_Single_Structure_Optimade_V0.10_Structures__Entry_Id__Get",
+                  "title": "Response Get Single Structure Optimade V0.10.0 Structures  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseOne"
@@ -2125,26 +1449,114 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/optimade/v0.10/info": {
+      "get": {
         "tags": [
-          "Structure"
+          "Info"
         ],
-        "summary": "Get Single Structure",
-        "operationId": "get_single_structure_optimade_v0.10_structures__entry_id__get",
+        "summary": "Get Info",
+        "operationId": "get_info_optimade_v0.10_info_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Info Optimade V0.10 Info Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/InfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/optimade/v0.10/info/{entry}": {
+      "get": {
+        "tags": [
+          "Info",
+          "Structure",
+          "Reference"
+        ],
+        "summary": "Get Entry Info",
+        "operationId": "get_entry_info_optimade_v0.10_info__entry__get",
         "parameters": [
           {
             "required": true,
             "schema": {
-              "title": "Entry_Id",
+              "title": "Entry",
               "type": "string"
             },
-            "name": "entry_id",
+            "name": "entry",
             "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Entry Info Optimade V0.10 Info  Entry  Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/EntryInfoResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/optimade/v0.10/links": {
+      "get": {
+        "tags": [
+          "Links"
+        ],
+        "summary": "Get Links",
+        "operationId": "get_links_optimade_v0.10_links_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
           },
           {
             "required": false,
             "schema": {
-              "title": "Response_Format",
+              "title": "Response Format",
               "type": "string",
               "default": "json"
             },
@@ -2154,7 +1566,7 @@
           {
             "required": false,
             "schema": {
-              "title": "Email_Address",
+              "title": "Email Address",
               "type": "string",
               "format": "email",
               "default": ""
@@ -2165,14 +1577,602 @@
           {
             "required": false,
             "schema": {
-              "title": "Response_Fields",
+              "title": "Response Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Links Optimade V0.10 Links Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LinksResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/optimade/v0.10/references": {
+      "get": {
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get References",
+        "operationId": "get_references_optimade_v0.10_references_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get References Optimade V0.10 References Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/optimade/v0.10/references/{entry_id}": {
+      "get": {
+        "tags": [
+          "Reference"
+        ],
+        "summary": "Get Single Reference",
+        "operationId": "get_single_reference_optimade_v0.10_references__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Fields",
               "type": "string",
               "default": ""
             },
             "name": "response_fields",
             "in": "query"
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Single Reference Optimade V0.10 References  Entry Id  Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ReferenceResponseOne"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/optimade/v0.10/structures": {
+      "get": {
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Structures",
+        "operationId": "get_structures_optimade_v0.10_structures_get",
+        "parameters": [
+          {
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "required": false,
+            "schema": {
+              "title": "Filter",
+              "type": "string",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Sort",
+              "type": "string",
+              "default": ""
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Limit",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 500
+            },
+            "name": "page_limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Page",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Cursor",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_cursor",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Above",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_above",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Page Below",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "page_below",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Structures Optimade V0.10 Structures Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseMany"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/optimade/v0.10/structures/{entry_id}": {
+      "get": {
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Get Single Structure",
+        "operationId": "get_single_structure_optimade_v0.10_structures__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Entry Id",
+              "type": "string"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Format",
+              "type": "string",
+              "default": "json"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Email Address",
+              "type": "string",
+              "format": "email",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Response Fields",
+              "type": "string",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Single Structure Optimade V0.10 Structures  Entry Id  Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/StructureResponseOne"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -2187,7 +2187,7 @@
         "type": "object",
         "properties": {
           "sites_in_groups": {
-            "title": "Sites_In_Groups",
+            "title": "Sites In Groups",
             "type": "array",
             "items": {
               "type": "array",
@@ -2198,7 +2198,7 @@
             "description": "Index of the sites (0-based) that belong to each group for each assembly.\n\nExample: :val:`[[1], [2]]`: two groups, one with the second site, one with the third.\nExample: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth."
           },
           "group_probabilities": {
-            "title": "Group_Probabilities",
+            "title": "Group Probabilities",
             "type": "array",
             "items": {
               "type": "number"
@@ -2266,12 +2266,12 @@
         "type": "object",
         "properties": {
           "api_version": {
-            "title": "Api_Version",
+            "title": "Api Version",
             "type": "string",
             "description": "Presently used version of the OPTiMaDe API"
           },
           "available_api_versions": {
-            "title": "Available_Api_Versions",
+            "title": "Available Api Versions",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AvailableApiVersion"
@@ -2290,7 +2290,7 @@
             ]
           },
           "available_endpoints": {
-            "title": "Available_Endpoints",
+            "title": "Available Endpoints",
             "type": "array",
             "items": {
               "type": "string"
@@ -2298,7 +2298,7 @@
             "description": "List of available endpoints (i.e., the string to be appended to the base URL)."
           },
           "entry_types_by_format": {
-            "title": "Entry_Types_By_Format",
+            "title": "Entry Types By Format",
             "type": "object",
             "additionalProperties": {
               "type": "array",
@@ -2309,7 +2309,7 @@
             "description": "Available entry endpoints as a function of output formats."
           },
           "is_index": {
-            "title": "Is_Index",
+            "title": "Is Index",
             "type": "boolean",
             "description": "If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for is_index to be false).",
             "default": false
@@ -2442,7 +2442,7 @@
             "description": "a dictionary describing queryable properties for this entry type, where each key is a property ID."
           },
           "output_fields_by_format": {
-            "title": "Output_Fields_By_Format",
+            "title": "Output Fields By Format",
             "type": "object",
             "additionalProperties": {
               "type": "array",
@@ -2621,12 +2621,12 @@
             "description": "Not allowed key"
           },
           "immutable_id": {
-            "title": "Immutable_Id",
+            "title": "Immutable Id",
             "type": "string",
             "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
-            "title": "Last_Modified",
+            "title": "Last Modified",
             "type": "string",
             "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"`\n    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
             "format": "date-time"
@@ -2679,10 +2679,10 @@
               },
               {
                 "type": "array",
-                "uniqueItems": true,
                 "items": {
                   "$ref": "#/components/schemas/Resource"
-                }
+                },
+                "uniqueItems": true
               }
             ],
             "description": "Outputted Data"
@@ -2772,7 +2772,7 @@
             "description": "version string of the current implementation"
           },
           "source_url": {
-            "title": "Source_Url",
+            "title": "Source Url",
             "maxLength": 65536,
             "minLength": 1,
             "type": "string",
@@ -2972,7 +2972,8 @@
         "title": "LinksResourceAttributes",
         "required": [
           "name",
-          "description"
+          "description",
+          "base_url"
         ],
         "type": "object",
         "properties": {
@@ -3003,7 +3004,7 @@
             "description": "Human-readable description for the OPTiMaDe API implementation a client may provide in a list to an end-user."
           },
           "base_url": {
-            "title": "Base_Url",
+            "title": "Base Url",
             "anyOf": [
               {
                 "minLength": 1,
@@ -3172,7 +3173,7 @@
             "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
           },
           "index_base_url": {
-            "title": "Index_Base_Url",
+            "title": "Index Base Url",
             "anyOf": [
               {
                 "minLength": 1,
@@ -3312,12 +3313,12 @@
             "description": "Not allowed key"
           },
           "immutable_id": {
-            "title": "Immutable_Id",
+            "title": "Immutable Id",
             "type": "string",
             "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
-            "title": "Last_Modified",
+            "title": "Last Modified",
             "type": "string",
             "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"`\n    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
             "format": "date-time"
@@ -3447,7 +3448,7 @@
             "description": "Meaning of property matches the BiBTeX specification."
           },
           "bib_type": {
-            "title": "Bib_Type",
+            "title": "Bib Type",
             "type": "string",
             "description": "Type of the reference, corresponding to the **type** property in the BiBTeX specification."
           },
@@ -3542,6 +3543,7 @@
       "ReferenceResponseOne": {
         "title": "ReferenceResponseOne",
         "required": [
+          "data",
           "meta"
         ],
         "type": "object",
@@ -3772,24 +3774,24 @@
             "description": "information on the query that was requested"
           },
           "api_version": {
-            "title": "Api_Version",
+            "title": "Api Version",
             "type": "string",
             "description": "a string containing the version of the API implementation, e.g. v0.9.5"
           },
           "time_stamp": {
-            "title": "Time_Stamp",
+            "title": "Time Stamp",
             "type": "string",
             "description": "a string containing the date and time at which the query was exexcuted",
             "format": "date-time"
           },
           "data_returned": {
-            "title": "Data_Returned",
+            "title": "Data Returned",
             "minimum": 0.0,
             "type": "integer",
             "description": "an integer containing the number of data objects returned for the query."
           },
           "more_data_available": {
-            "title": "More_Data_Available",
+            "title": "More Data Available",
             "type": "boolean",
             "description": "`false` if all data has been returned, and `true` if not."
           },
@@ -3803,17 +3805,17 @@
             "description": "information on the database provider of the implementation."
           },
           "data_available": {
-            "title": "Data_Available",
+            "title": "Data Available",
             "type": "integer",
             "description": "an integer containing the total number of data objects available in the database"
           },
           "last_id": {
-            "title": "Last_Id",
+            "title": "Last Id",
             "type": "string",
             "description": "a string containing the last ID returned"
           },
           "response_message": {
-            "title": "Response_Message",
+            "title": "Response Message",
             "type": "string",
             "description": "response string from the server"
           },
@@ -3847,7 +3849,7 @@
           "representation": {
             "title": "Representation",
             "type": "string",
-            "description": "a string with the part of the URL that follows the base URL."
+            "description": "a string with the part of the URL that follows the base URL. Example: '/structures?'"
           }
         },
         "description": "Information on the query that was requested. "
@@ -3866,7 +3868,7 @@
             "type": "string"
           },
           "chemical_symbols": {
-            "title": "Chemical_Symbols",
+            "title": "Chemical Symbols",
             "type": "array",
             "items": {
               "type": "string"
@@ -3887,7 +3889,7 @@
             "description": "If present MUST be a float expressed in a.m.u."
           },
           "original_name": {
-            "title": "Original_Name",
+            "title": "Original Name",
             "type": "string",
             "description": "Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\nNote: With regards to \"source database\", we refer to the immediate source being queried via the OPTiMaDe API implementation.\nThe main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_)."
           }
@@ -4025,12 +4027,12 @@
             "description": "Not allowed key"
           },
           "immutable_id": {
-            "title": "Immutable_Id",
+            "title": "Immutable Id",
             "type": "string",
             "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
-            "title": "Last_Modified",
+            "title": "Last Modified",
             "type": "string",
             "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"`\n    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
             "format": "date-time"
@@ -4049,7 +4051,7 @@
             "description": "Number of different elements in the structure as an integer.\n- **Type**: integer\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**: :val:`3`\n- **Querying**:\n\n  -  Note: queries on this property can equivalently be formulated using :filter-fragment:`LENGTH elements`.\n  -  A filter that matches structures that have exactly 4 elements: :filter:`nelements=4`.\n  -  A filter that matches structures that have between 2 and 7 elements: :filter:`nelements>=2 AND nelements<=7`."
           },
           "elements_ratios": {
-            "title": "Elements_Ratios",
+            "title": "Elements Ratios",
             "type": "array",
             "items": {
               "type": "number"
@@ -4057,33 +4059,33 @@
             "description": "Relative proportions of different elements in the structure.\n- **Type**: list of floats\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - Composed by the proportions of elements in the structure as a list of floating point numbers.\n  - The sum of the numbers MUST be 1.0 (within floating point accuracy)\n\n- **Examples**:\n\n  - :val:`[1.0]`\n  - :val:`[0.3333333333333333, 0.2222222222222222, 0.4444444444444444]`\n\n- **Query examples**:\n\n  - Note: useful filters can be formulated using the set operator syntax for correlated values. However, since the values are floating point values, the use of equality comparisons is generally not recommended.\n  - A filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: :filter:`elements:elements_ratios HAS ALL \"Al\":>0.3333, \"Al\":<0.3334`."
           },
           "chemical_formula_descriptive": {
-            "title": "Chemical_Formula_Descriptive",
+            "title": "Chemical Formula Descriptive",
             "type": "string",
             "description": "The chemical formula for a structure as a string in a form chosen by the API implementation.\n- **Type**: string\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, commas, the ``+``, ``-``, ``:`` and ``=`` symbols.\n    The parentheses are allowed to be followed by a number.\n    Spaces are allowed anywhere except within chemical symbols.\n    The order of elements and any groupings indicated by parentheses or brackets are chosen freely by the API implementation.\n  - The string SHOULD be arithmetically consistent with the element ratios in the :property:`chemical_formula_reduced` property.\n  - It is RECOMMENDED, but not mandatory, that symbols, parentheses and brackets, if used, are used with the meanings prescribed by `IUPAC's Nomenclature of Organic Chemistry <https://www.qmul.ac.uk/sbcs/iupac/bibliog/blue.html>`__.\n\n- **Examples**:\n\n  - :val:`\"(H2O)2 Na\"`\n  - :val:`\"NaCl\"`\n  - :val:`\"CaCO3\"`\n  - :val:`\"CCaO3\"`\n  - :val:`\"(CH3)3N+ - [CH2]2-OH = Me3N+ - CH2 - CH2OH\"`\n\n- **Query examples**:\n\n  - Note: the free-form nature of this property is likely to make queries on it across different databases inconsistent.\n  - A filter that matches an exactly given formula: :filter:`chemical_formula_descriptive=\"(H2O)2 Na\"`.\n  - A filter that does a partial match: :filter:`chemical_formula_descriptive CONTAINS \"H2O\"`."
           },
           "chemical_formula_reduced": {
-            "title": "Chemical_Formula_Reduced",
+            "title": "Chemical Formula Reduced",
             "type": "string",
             "description": "The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.\n  The proportion number MUST be omitted if it is 1.\n- **Type**: string\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n\n  - **Query**: MUST be a queryable property.\n    However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).\n    Intricate querying on formula components are instead recommended to be formulated using set-type filter operators on the multi valued :property:`elements` and :property:`elements_proportions` properties.\n  - Element names MUST have proper capitalization (e.g., :val:`\"Si\"`, not :VAL:`\"SI\"` for \"silicon\").\n  - Elements MUST be placed in alphabetical order, followed by their integer chemical proportion number.\n  - For structures with no partial occupation, the chemical proportion numbers are the smallest integers for which the chemical proportion is exactly correct.\n  - For structures with partial occupation, the chemical proportion numbers are integers that within reasonable approximation indicate the correct chemical proportions. The precise details of how to perform the rounding is chosen by the API implementation.\n  - No spaces or separators are allowed.\n\n- **Examples**:\n\n  - :val:`\"H2NaO\"`\n  - :val:`\"ClNa\"`\n  - :val:`\"CCaO3\"`\n\n- **Query examples**:\n\n  - A filter that matches an exactly given formula is :filter:`chemical_formula_reduced=\"H2NaO\"`."
           },
           "chemical_formula_hill": {
-            "title": "Chemical_Formula_Hill",
+            "title": "Chemical Formula Hill",
             "type": "string",
             "description": "The chemical formula for a structure in `Hill form <https://dx.doi.org/10.1021/ja02046a005>`__ with element symbols followed by integer chemical proportion numbers.\n  The proportion number MUST be omitted if it is 1.\n- **Type**: string\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: Support for queries on these properties are OPTIONAL. If supported, only a subset of filter operators MAY be supported.\n  - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.\n    For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, :property:`chemical_formula_hill` is :val:`\"H2O2\"` (i.e., not :val:`\"HO\"`, nor :val:`\"H4O4\"`).\n  - If the chemical insight needed to ascribe a Hill formula to the system is not present, the property MUST be handled as unset.\n  - Element names MUST have proper capitalization (e.g., :val:`\"Si\"`, not :VAL:`\"SI\"` for \"silicon\").\n  - Elements MUST be placed in `Hill order <https://dx.doi.org/10.1021/ja02046a005>`__, followed by their integer chemical proportion number.\n    Hill order means: if carbon is present, it is placed first, and if also present, hydrogen is placed second.\n    After that, all other elements are ordered alphabetically.\n    If carbon is not present, all elements are ordered alphabetically.\n  - If the system has sites with partial occupation and the total occupations of each element do not all sum up to integers, then the Hill formula SHOULD be handled as unset.\n  - No spaces or separators are allowed.\n\n- **Examples**:\n  - :val:`\"H2O2\"`\n\n- **Query examples**:\n\n  - A filter that matches an exactly given formula is :filter:`chemical_formula_hill=\"H2O2\"`."
           },
           "chemical_formula_anonymous": {
-            "title": "Chemical_Formula_Anonymous",
+            "title": "Chemical Formula Anonymous",
             "type": "string",
             "description": "The anonymous formula is the :property:`chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.\n- **Type**: string\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property. However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).\n\n- **Examples**:\n\n  - :val:`\"A2B\"`\n  - :val:`\"A42B42C16D12E10F9G5\"`\n\n- **Querying**:\n  - A filter that matches an exactly given formula is :filter:`chemical_formula_anonymous=\"A2B\"`."
           },
           "dimension_types": {
-            "title": "Dimension_Types",
+            "title": "Dimension Types",
             "type": "array",
             "items": {},
             "description": "List of three integers.\n  For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`_).\n  This list indicates if the direction is periodic (value :val:`1`) or non-periodic (value :val:`0`).\n  Note: the elements in this list each refer to the direction of the corresponding entry in property `lattice_vectors`_ and *not* the Cartesian x, y, z directions.\n- **Type**: list of integers.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property. Support for equality comparison is REQUIRED, support for other comparison operators are OPTIONAL.\n  - MUST be a list of length 3.\n  - Each integer element MUST assume only the value 0 or 1.\n\n- **Examples**:\n\n  - For a molecule: :val:`[0, 0, 0]`\n  - For a wire along the direction specified by the third lattice vector: :val:`[0, 0, 1]`\n  - For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: :val:`[1, 0, 1]`\n  - For a bulk 3D system: :val:`[1, 1, 1]`"
           },
           "lattice_vectors": {
-            "title": "Lattice_Vectors",
+            "title": "Lattice Vectors",
             "type": "array",
             "items": {
               "type": "array",
@@ -4092,7 +4094,7 @@
             "description": "The three lattice vectors in Cartesian coordinates, in \u00e5ngstr\u00f6m (\u00c5).\n- **Type**: list of list of floats.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded, except when property `dimension_types`_ is equal to :val:`[0, 0, 0]` (in this case it is OPTIONAL).\n  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\n  - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates.\n    (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).\n  - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.\n  - This property MUST be an array of dimensions 3 times 3 regardless of the elements of property `dimension_types`_. The vectors SHOULD by convention be chosen so the determinant of the :property:`lattice_vectors` matrix is different from zero. The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.\n\n- **Examples**:\n\n  - :val:`[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is :val:`(4, 0, 0)`, i.e., a vector aligned along the :val:`x` axis of length 4 \u00c5; the second vector is :val:`(0, 4, 0)`; and the third vector is :val:`(0, 1, 4)`."
           },
           "cartesian_site_positions": {
-            "title": "Cartesian_Site_Positions",
+            "title": "Cartesian Site Positions",
             "type": "array",
             "items": {
               "type": "array",
@@ -4106,7 +4108,7 @@
             "description": "An integer specifying the length of the :property:`cartesian_site_positions` property.\n- **Type**: integer\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`42`\n\n- **Query examples**:\n\n  - Match only structures with exactly 4 sites: :filter:`nsites=4`\n  - Match structures that have between 2 and 7 sites: :filter:`nsites>=2 AND nsites<=7`"
           },
           "species_at_sites": {
-            "title": "Species_At_Sites",
+            "title": "Species At Sites",
             "type": "array",
             "items": {
               "type": "string"
@@ -4130,7 +4132,7 @@
             "description": "A description of groups of sites that are statistically correlated.\n- **Type**: list of dictionary with keys:\n\n  - :property:`sites_in_groups`: list of list of integers (REQUIRED)\n  - :property:`group_probabilities`: list of floats (REQUIRED)\n\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response (SHOULD be absent if there are no partial occupancies).\n  - **Query**: Support for queries on this property is OPTIONAL.\n    If supported, filters MAY support only a subset of comparison operators.\n  - If present, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).\n  - Client implementations MUST check its presence (as its presence changes the interpretation of the structure).\n  - If present, it MUST be a list of dictionaries, each of which represents an assembly and MUST have the following two keys:\n\n    - **sites_in_groups**: Index of the sites (0-based) that belong to each group for each assembly.\n\n      Example: :val:`[[1], [2]]`: two groups, one with the second site, one with the third.\n\n      Example: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth.\n\n   - **group_probabilities**: Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.\n     It SHOULD sum to one.\n     See below for examples of how to specify the probability of the occurrence of a vacancy.\n     The possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_.\n\n  - If a site is not present in any group, it means that it is present with 100 % probability (as if no assembly was specified).\n  - A site MUST NOT appear in more than one group.\n\n- **Examples** (for each entry of the assemblies list):\n\n  - :val:`{\"sites_in_groups\": [[0], [1]], \"group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.\n    Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.\n  - :val:`{\"sites_in_groups\": [[1,2], [3]], \"group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.\n    The second group is formed by the fourth site.\n    Sites of the first group (the second and the third) are never present at the same time as the fourth site.\n    30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).\n\n- **Notes**:\n\n  - Assemblies are essential to represent, for instance, the situation where an atom can statistically occupy two different positions (sites).\n  - By defining groups, it is possible to represent, e.g., the case where a functional molecule (and not just one atom) is either present or absent (or the case where it it is present in two conformations)\n  - Considerations on virtual alloys and on vacancies: In the special case of a virtual alloy, these specifications allow two different, equivalent ways of specifying them.\n    For instance, for a site at the origin with 30 % probability of being occupied by Si, 50 % probability of being occupied by Ge, and 20 % of being a vacancy, the following two representations are possible:\n\n    - Using a single species:\n\n      .. code:: jsonc\n\n           {\n             \"cartesian_site_positions\": [[0,0,0]],\n             \"species_at_sites\": [\"SiGe-vac\"],\n             \"species\": [\n                 {\n                   \"name\": \"SiGe-vac\",\n                   \"chemical_symbols\": [\"Si\", \"Ge\", \"vacancy\"],\n                   \"concentration\": [0.3, 0.5, 0.2]\n                 }\n             ]\n             // ...\n           }\n\n\n    - Using multiple species and the assemblies:\n\n      .. code:: jsonc\n\n           {\n             \"cartesian_site_positions\": [ [0,0,0], [0,0,0], [0,0,0] ],\n             \"species_at_sites\": [\"Si\", \"Ge\", \"vac\"],\n             \"species\": {\n               \"Si\": { \"chemical_symbols\": [\"Si\"], \"concentration\": [1.0] },\n               \"Ge\": { \"chemical_symbols\": [\"Ge\"], \"concentration\": [1.0] },\n               \"vac\": { \"chemical_symbols\": [\"vacancy\"], \"concentration\": [1.0] }\n             },\n             \"assemblies\": [\n               {\n                 \"sites_in_groups\": [ [0], [1], [2] ],\n                 \"group_probabilities\": [0.3, 0.5, 0.2]\n               }\n             ]\n             // ...\n           }\n\n  - It is up to the database provider to decide which representation to use, typically depending on the internal format in which the structure is stored.\n    However, given a structure identified by a unique ID, the API implementation MUST always provide the same representation for it.\n  - The probabilities of occurrence of different assemblies are uncorrelated.\n    So, for instance in the following case with two assemblies:\n\n    .. code:: jsonc\n\n         {\n           \"assemblies\": [\n             {\n               \"sites_in_groups\": [ [0], [1] ],\n               \"group_probabilities\": [0.2, 0.8],\n             },\n             {\n               \"sites_in_groups\": [ [2], [3] ],\n               \"group_probabilities\": [0.3, 0.7]\n             }\n           ]\n         }\n\n    Site 0 is present with a probability of 20 % and site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 % and site 3 with a probability of 70 %.\n    These two sites are correlated (either site 2 or 3 is present).\n    However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability)."
           },
           "structure_features": {
-            "title": "Structure_Features",
+            "title": "Structure Features",
             "type": "array",
             "items": {
               "type": "string"
@@ -4138,7 +4140,7 @@
             "description": "A list of strings that flag which special features are used by the structure.\n- **Type**: list of strings\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response (SHOULD be absent if there are no partial occupancies).\n  - **Query**: MUST be a queryable property. Filters on the list MUST support all mandatory HAS-type queries. Filter operators for comparisons on the string components MUST support equality, support for other comparison operators are OPTIONAL.\n  - MUST be an empty list if no special features are used.\n  - MUST be sorted alphabetically.\n  - If a special feature listed below is used, the list MUST contain the corresponding string.\n  - If a special feature listed below is not used, the list MUST NOT contain the corresponding string.\n  - **List of strings used to indicate special structure features**:\n\n    - :val:`disorder`: This flag MUST be present if any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element.\n    - :val:`unknown_positions`: This flag MUST be present if at least one component of the :property:`cartesian_site_positions` list of lists has value :val:`null`.\n    - :val:`assemblies`: This flag MUST be present if the property `assemblies`_ is present.\n\n-  **Examples**: A structure having unknown positions and using assemblies: :val:`[\"assemblies\", \"unknown_positions\"]`"
           }
         },
-        "description": "This class contains the Schema for the attributes used to represent a structure, e.g. unit cell, atoms, positions."
+        "description": "This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."
       },
       "StructureResponseMany": {
         "title": "StructureResponseMany",
@@ -4218,6 +4220,7 @@
       "StructureResponseOne": {
         "title": "StructureResponseOne",
         "required": [
+          "data",
           "meta"
         ],
         "type": "object",
