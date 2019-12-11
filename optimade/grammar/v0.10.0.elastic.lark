@@ -1,4 +1,4 @@
-// optimade v0.10.0 grammar spec in lark grammar format, 
+// optimade v0.10.0 grammar spec in lark grammar format,
 // written to work with the elasticsearch filtertransformer
 
 start: or_expr
