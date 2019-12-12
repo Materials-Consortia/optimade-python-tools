@@ -116,7 +116,7 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
         flags: unittests
-        yml: ./codecov.yml
+        yml: ./.codecov.yml
 
   deps_eager:
     runs-on: ubuntu-latest
