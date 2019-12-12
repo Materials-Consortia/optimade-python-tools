@@ -3,7 +3,7 @@
   "info": {
     "title": "OPTiMaDe API - Index meta-database",
     "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.",
-    "version": "0.10.0"
+    "version": "0.10.1"
   },
   "paths": {
     "/index/optimade/info": {
@@ -195,20 +195,20 @@
         }
       }
     },
-    "/index/optimade/v0.10.0/info": {
+    "/index/optimade/v0.10.1/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_index_optimade_v0_10_0_info_get",
+        "operationId": "get_info_index_optimade_v0_10_1_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info Index Optimade V0 10 0 Info Get",
+                  "title": "Response Get Info Index Optimade V0 10 1 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/IndexInfoResponse"
@@ -224,13 +224,13 @@
         }
       }
     },
-    "/index/optimade/v0.10.0/links": {
+    "/index/optimade/v0.10.1/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_index_optimade_v0_10_0_links_get",
+        "operationId": "get_links_index_optimade_v0_10_1_links_get",
         "parameters": [
           {
             "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
@@ -358,7 +358,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links Index Optimade V0 10 0 Links Get",
+                  "title": "Response Get Links Index Optimade V0 10 1 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
