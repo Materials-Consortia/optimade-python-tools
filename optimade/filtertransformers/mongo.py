@@ -80,6 +80,8 @@ class MongoTransformer(Transformer):
 
 
 class NewMongoTransformer(Transformer):
+    """Support for grammar v0.10.1"""
+
     operator_map = {
         "<": "$lt",
         "<=": "$lte",
@@ -139,13 +141,13 @@ class NewMongoTransformer(Transformer):
         return {"$and": arg} if len(arg) > 1 else arg[0]
 
     def expression_phrase(self, arg):
-        # expression_phrase: [ NOT ] ( comparison | predicate_comparison | "(" expression ")" )
+        # expression_phrase: [ NOT ] ( comparison | "(" expression ")" )
         if len(arg) == 1:
             # without NOT
             return arg[0]
 
         # with NOT
-        # TODO: This implementation probably fails in the case of `predicate_comparison` or `"(" expression ")"`
+        # TODO: This implementation probably fails in the case of `"(" expression ")"`
         return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
     @v_args(inline=True)
@@ -156,7 +158,7 @@ class NewMongoTransformer(Transformer):
 
     def property_first_comparison(self, arg):
         # property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs |
-        # set_zip_op_rhs )
+        # set_zip_op_rhs | length_op_rhs )
         return {arg[0]: arg[1]}
 
     def constant_first_comparison(self, arg):
@@ -177,7 +179,7 @@ class NewMongoTransformer(Transformer):
         return {"$exists": arg[1] == "KNOWN"}
 
     def fuzzy_string_op_rhs(self, arg):
-        # fuzzy_string_op_rhs: CONTAINS string | STARTS [ WITH ] string | ENDS [ WITH ] string
+        # fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value
 
         # The WITH keyword may be omitted.
         if isinstance(arg[1], Token) and arg[1].type == "WITH":
@@ -216,11 +218,11 @@ class NewMongoTransformer(Transformer):
         # ANY value_zip_list )
         raise NotImplementedError
 
-    def predicate_comparison(self, arg):
-        # predicate_comparison: LENGTH property OPERATOR value
+    def length_op_rhs(self, arg):
+        # length_op_rhs: LENGTH [ OPERATOR ] value
         # TODO: https://stackoverflow.com/questions/7811163/query-for-documents-where-array-size-is-greater-than-1
-        if arg[2] == "=":
-            return {arg[1]: {"$size": arg[3]}}
+        if len(arg) == 2 or (len(arg) == 3 and arg[1] == "="):
+            return {"$size": arg[-1]}
 
         raise NotImplementedError
 

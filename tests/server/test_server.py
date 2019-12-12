@@ -348,21 +348,24 @@ class FilterTests(unittest.TestCase):
         self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_length_basic(self):
-        request = "/structures?filter=LENGTH elements = 9"
+        request = "/structures?filter=elements LENGTH = 9"
         expected_ids = ["mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = "/structures?filter=elements LENGTH 9"
         self._check_response(request, expected_ids, len(expected_ids))
 
     @unittest.skip("Skipping LENGTH until implemented in server code.")
     def test_list_length(self):
-        request = "/structures?filter=LENGTH elements = 9"
+        request = "/structures?filter=elements LENGTH = 9"
         expected_ids = ["mpf_3819"]
         self._check_response(request, expected_ids, len(expected_ids))
 
-        request = "/structures?filter=LENGTH elements >= 9"
+        request = "/structures?filter=elements LENGTH >= 9"
         expected_ids = ["mpf_3819"]
         self._check_response(request, expected_ids, len(expected_ids))
 
-        request = "/structures?filter=LENGTH structure_features > 0"
+        request = "/structures?filter=structure_features LENGTH > 0"
         expected_ids = []
         self._check_response(request, expected_ids, len(expected_ids))
 
