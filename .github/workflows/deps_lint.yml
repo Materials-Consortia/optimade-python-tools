@@ -73,13 +73,19 @@ jobs:
         docker pull quen2404/openapi-diff
 
     - name: Validate OpenAPI specifications
-      run: openapi-spec-validator openapi.json
+      run: |
+        openapi-spec-validator openapi/openapi.json
+        openapi-spec-validator openapi/index_openapi.json
 
-    - name: Update OpenAPI schema
-      run: python -c "from optimade.server.main import app, update_schema; update_schema(app)"
+    - name: Update OpenAPI schemes
+      run: |
+        python -c "from optimade.server.main import app, update_schema; update_schema(app)"
+        python -c "from optimade.server.main_index import app, update_schema; update_schema(app)"
 
     - name: Check if OpenAPI schemes match
-      run: .ci/openapi_diff.sh
+      run: |
+        .ci/openapi_diff.sh
+        .ci/index_openapi_diff.sh
 
   deps_static:
     runs-on: ubuntu-latest
