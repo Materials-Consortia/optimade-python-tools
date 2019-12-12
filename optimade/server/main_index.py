@@ -69,7 +69,7 @@ for prefix in valid_prefixes:
 
 def update_schema(app):
     """Update OpenAPI schema in file 'local_index_openapi.json'"""
-    with open("local_index_openapi.json", "w") as f:
+    with open("openapi/local_index_openapi.json", "w") as f:
         json.dump(app.openapi(), f, indent=2)
 
 

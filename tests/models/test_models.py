@@ -15,7 +15,7 @@ class TestPydanticValidation(unittest.TestCase):
         test_structures_path = (
             Path(__file__)
             .resolve()
-            .parent.joinpath("../../server/tests/test_structures.json")
+            .parent.joinpath("../../optimade/server/data/test_structures.json")
         )
         with open(test_structures_path, "r") as f:
             good_structures = json.load(f)
@@ -65,7 +65,7 @@ class TestPydanticValidation(unittest.TestCase):
         test_refs_path = (
             Path(__file__)
             .resolve()
-            .parent.joinpath("../../server/tests/test_references.json")
+            .parent.joinpath("../../optimade/server/data/test_references.json")
         )
         with open(test_refs_path, "r") as f:
             good_refs = json.load(f)
