@@ -59,7 +59,7 @@ class LinksResource(EntryResource):
 
     @root_validator(pre=True)
     def relationships_must_not_be_present(cls, values):
-        if "relationships" in values:
+        if values.get("relationships", None) is not None:
             raise ValueError('"relationships" is not allowed for links resources')
         return values
 

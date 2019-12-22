@@ -34,7 +34,7 @@ class Failure(jsonapi.Response):
 
     @root_validator(pre=True)
     def data_must_be_skipped(cls, values):
-        if "data" in values:
+        if values.get("data", None) is not None:
             raise ValueError("data MUST be skipped for failures reporting errors")
         return values
 
@@ -63,8 +63,8 @@ class Success(jsonapi.Response):
             )
 
         # errors MUST be skipped
-        if "errors" in values:
-            raise ValueError("'errors' MUST be skipped for a successful response")
+        if values.get("errors", None) is not None:
+            raise ValueError(f"'errors' MUST be skipped for a successful response")
 
         return values
 
@@ -88,6 +88,6 @@ class Warnings(Error):
 
     @root_validator(pre=True)
     def status_must_not_be_specified(cls, values):
-        if "status" in values:
+        if values.get("status", None) is not None:
             raise ValueError("status MUST NOT be specified for warnings")
         return values

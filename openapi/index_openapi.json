@@ -1079,7 +1079,7 @@
                 "$ref": "#/components/schemas/RelatedChildResource"
               }
             ],
-            "description": "JSON API resource linkage. It MUST be either null or contain a single child identifier object with the fields:"
+            "description": "JSON API resource linkage. It MUST be either null or contain a single child identifier object with the fields 'id' and 'type'"
           }
         },
         "description": "Index Meta-Database relationship"

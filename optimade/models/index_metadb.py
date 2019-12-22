@@ -37,7 +37,7 @@ class IndexRelationship(BaseModel):
     data: Union[None, RelatedChildResource] = Field(
         ...,
         description="JSON API resource linkage. It MUST be either null or contain "
-        "a single child identifier object with the fields:",
+        "a single child identifier object with the fields 'id' and 'type'",
     )
 
 
