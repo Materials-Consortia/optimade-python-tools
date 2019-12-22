@@ -2211,24 +2211,7 @@
       "Attributes": {
         "title": "Attributes",
         "type": "object",
-        "properties": {
-          "relationships": {
-            "title": "Relationships",
-            "description": "Not allowed key"
-          },
-          "links": {
-            "title": "Links",
-            "description": "Not allowed key"
-          },
-          "id": {
-            "title": "Id",
-            "description": "Not allowed key"
-          },
-          "type": {
-            "title": "Type",
-            "description": "Not allowed key"
-          }
-        },
+        "properties": {},
         "description": "Members of the attributes object (\"attributes\") represent information about the resource object in which it's defined.\nThe keys for Attributes MUST NOT be:\n    relationships\n    links\n    id\n    type"
       },
       "AvailableApiVersion": {
@@ -2510,14 +2493,6 @@
         "title": "EntryRelationships",
         "type": "object",
         "properties": {
-          "id": {
-            "title": "Id",
-            "description": "Not allowed key"
-          },
-          "type": {
-            "title": "Type",
-            "description": "Not allowed key"
-          },
           "references": {
             "title": "References",
             "allOf": [
@@ -2604,22 +2579,6 @@
         ],
         "type": "object",
         "properties": {
-          "relationships": {
-            "title": "Relationships",
-            "description": "Not allowed key"
-          },
-          "links": {
-            "title": "Links",
-            "description": "Not allowed key"
-          },
-          "id": {
-            "title": "Id",
-            "description": "Not allowed key"
-          },
-          "type": {
-            "title": "Type",
-            "description": "Not allowed key"
-          },
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
@@ -2642,9 +2601,9 @@
             "title": "About",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {
@@ -2861,15 +2820,13 @@
       },
       "JsonApi": {
         "title": "JsonApi",
-        "required": [
-          "version"
-        ],
         "type": "object",
         "properties": {
           "version": {
             "title": "Version",
             "type": "string",
-            "description": "Version of the json API used"
+            "description": "Version of the json API used",
+            "default": "1.0"
           },
           "meta": {
             "title": "Meta",
@@ -2977,22 +2934,6 @@
         ],
         "type": "object",
         "properties": {
-          "relationships": {
-            "title": "Relationships",
-            "description": "Not allowed key"
-          },
-          "links": {
-            "title": "Links",
-            "description": "Not allowed key"
-          },
-          "id": {
-            "title": "Id",
-            "description": "Not allowed key"
-          },
-          "type": {
-            "title": "Type",
-            "description": "Not allowed key"
-          },
           "name": {
             "title": "Name",
             "type": "string",
@@ -3007,9 +2948,9 @@
             "title": "Base Url",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {
@@ -3157,9 +3098,9 @@
             "title": "Homepage",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {
@@ -3176,9 +3117,9 @@
             "title": "Index Base Url",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {
@@ -3296,22 +3237,6 @@
         ],
         "type": "object",
         "properties": {
-          "relationships": {
-            "title": "Relationships",
-            "description": "Not allowed key"
-          },
-          "links": {
-            "title": "Links",
-            "description": "Not allowed key"
-          },
-          "id": {
-            "title": "Id",
-            "description": "Not allowed key"
-          },
-          "type": {
-            "title": "Type",
-            "description": "Not allowed key"
-          },
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
@@ -3617,9 +3542,9 @@
             "title": "Self",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {
@@ -3636,9 +3561,9 @@
             "title": "Related",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {
@@ -3657,16 +3582,7 @@
       "Relationships": {
         "title": "Relationships",
         "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "description": "Not allowed key"
-          },
-          "type": {
-            "title": "Type",
-            "description": "Not allowed key"
-          }
-        },
+        "properties": {},
         "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.\nKeys MUST NOT be:\n    type\n    id"
       },
       "Resource": {
@@ -3734,9 +3650,9 @@
             "title": "Self",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {
@@ -4010,22 +3926,6 @@
         ],
         "type": "object",
         "properties": {
-          "relationships": {
-            "title": "Relationships",
-            "description": "Not allowed key"
-          },
-          "links": {
-            "title": "Links",
-            "description": "Not allowed key"
-          },
-          "id": {
-            "title": "Id",
-            "description": "Not allowed key"
-          },
-          "type": {
-            "title": "Type",
-            "description": "Not allowed key"
-          },
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
@@ -4294,9 +4194,9 @@
             "title": "Self",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {
@@ -4313,9 +4213,9 @@
             "title": "Related",
             "anyOf": [
               {
+                "type": "string",
                 "minLength": 1,
                 "maxLength": 65536,
-                "type": "string",
                 "format": "uri"
               },
               {

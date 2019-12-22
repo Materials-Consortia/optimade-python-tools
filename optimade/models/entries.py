@@ -16,6 +16,7 @@ __all__ = (
 
 
 class TypedRelationship(Relationship):
+    # This may be updated when moving to Python 3.8
     @validator("data")
     def check_rel_type(cls, data):
         if hasattr(cls, "_req_type") and any(obj.type != cls._req_type for obj in data):

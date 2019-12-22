@@ -1,4 +1,4 @@
-from pydantic import Field, AnyUrl, validator  # pylint: disable=no-name-in-module
+from pydantic import Field, AnyUrl, validator, root_validator
 from typing import Union
 
 from .jsonapi import Link, Attributes
@@ -57,9 +57,11 @@ class LinksResource(EntryResource):
             )
         return value
 
-    @validator("relationships")
-    def relationships_must_not_be_present(cls, value):
-        raise ValueError('"relationships" is not allowed for links resources')
+    @root_validator(pre=True)
+    def relationships_must_not_be_present(cls, values):
+        if "relationships" in values:
+            raise ValueError('"relationships" is not allowed for links resources')
+        return values
 
 
 class ChildResource(LinksResource):

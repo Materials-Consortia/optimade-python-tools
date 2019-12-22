@@ -1,3 +1,5 @@
+import re
+
 from typing import Dict, List, Optional
 from pydantic import BaseModel, AnyUrl, Field, validator
 
@@ -19,6 +21,13 @@ class AvailableApiVersion(BaseModel):
         description="a string containing the full version number of the API served at that base URL. "
         "The version number string MUST NOT be prefixed by, e.g., 'v'.",
     )
+
+    @validator("version")
+    def version_must_not_prefix_v(cls, v):
+        """The version number string MUST NOT be prefixed by, e.g., 'v'"""
+        if not re.match(r"[0-9]+.[0-9]+(.[0-9]+)?", v):
+            raise ValueError(f"version MUST NOT be prefixed by, e.g., 'v'. It is: {v}")
+        return v
 
 
 class BaseInfoAttributes(BaseModel):

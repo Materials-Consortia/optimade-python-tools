@@ -1,7 +1,6 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
-# pylint: disable=no-name-in-module,no-self-argument
 from typing import Optional, Set, Union, Any, List
-from pydantic import BaseModel, AnyUrl, Field, validator
+from pydantic import BaseModel, AnyUrl, Field, validator, root_validator
 
 
 __all__ = (
@@ -42,7 +41,7 @@ class Link(BaseModel):
 class JsonApi(BaseModel):
     """An object describing the server's implementation"""
 
-    version: str = Field(..., description="Version of the json API used")
+    version: str = Field(default="1.0", description="Version of the json API used")
     meta: Optional[Meta] = Field(None, description="Non-standard meta information")
 
 
@@ -136,13 +135,16 @@ class RelationshipLinks(BaseModel):
         None, description="A related resource link"
     )
 
-    @validator("related", always=True)
-    def either_self_or_related_must_be_specified(cls, v, values):
-        if values.get("self", None) is None and v is None:
+    @root_validator
+    def either_self_or_related_must_be_specified(cls, values):
+        for value in values.values():
+            if value is not None:
+                break
+        else:
             raise ValueError(
                 "Either 'self' or 'related' MUST be specified for RelationshipLinks"
             )
-        return v
+        return values
 
 
 class Relationship(BaseModel):
@@ -160,17 +162,16 @@ class Relationship(BaseModel):
         description="a meta object that contains non-standard meta-information about the relationship.",
     )
 
-    @validator("meta", always=True)
-    def at_least_one_relationship_key_must_be_set(cls, v, values):
-        if (
-            values.get("links", None) is None
-            and values.get("data", None) is None
-            and v is None
-        ):
+    @root_validator
+    def at_least_one_relationship_key_must_be_set(cls, values):
+        for value in values.values():
+            if value is not None:
+                break
+        else:
             raise ValueError(
-                "Either 'links', 'data', or 'meta' MUST be specified for relationship"
+                "Either 'links', 'data', or 'meta' MUST be specified for Relationship"
             )
-        return v
+        return values
 
 
 class Relationships(BaseModel):
@@ -181,12 +182,15 @@ class Relationships(BaseModel):
         id
     """
 
-    id: Optional[Any] = Field(None, description="Not allowed key")
-    type: Optional[Any] = Field(None, description="Not allowed key")
-
-    @validator("id", "type")
-    def check_illegal_relationships_fields(cls, v):
-        raise ValueError('"id", "type" MUST NOT be fields under relationships')
+    @root_validator(pre=True)
+    def check_illegal_relationships_fields(cls, values):
+        illegal_fields = ("id", "type")
+        for field in illegal_fields:
+            if field in values:
+                raise ValueError(
+                    f"{illegal_fields} MUST NOT be fields under Relationships"
+                )
+        return values
 
 
 class ResourceLinks(BaseModel):
@@ -208,19 +212,18 @@ class Attributes(BaseModel):
         type
     """
 
-    relationships: Optional[Any] = Field(None, description="Not allowed key")
-    links: Optional[Any] = Field(None, description="Not allowed key")
-    id: Optional[Any] = Field(None, description="Not allowed key")
-    type: Optional[Any] = Field(None, description="Not allowed key")
-
     class Config:
         extra = "allow"
 
-    @validator("relationships", "links", "id", "type")
-    def check_illegal_attributes_fields(cls, v):
-        raise ValueError(
-            '"relationships", "links", "id", "type" MUST NOT be fields under attributes'
-        )
+    @root_validator(pre=True)
+    def check_illegal_attributes_fields(cls, values):
+        illegal_fields = ("relationships", "links", "id", "type")
+        for field in illegal_fields:
+            if field in values:
+                raise ValueError(
+                    f"{illegal_fields} MUST NOT be fields under Attributes"
+                )
+        return values
 
 
 class Resource(BaseResource):
@@ -264,14 +267,14 @@ class Response(BaseModel):
         None, description="Information about the JSON API used"
     )
 
-    @validator("errors", always=True)
-    def either_data_meta_or_errors_must_be_set(cls, v, values):
-        if (
-            values.get("data", None) is None
-            and values.get("meta", None) is None
-            and v is None
-        ):
+    @root_validator
+    def either_data_meta_or_errors_must_be_set(cls, values):
+        required_fields = ("data", "meta", "errors")
+        for field in required_fields:
+            if values.get(field, None) is not None:
+                break
+        else:
             raise ValueError(
-                "Either 'data', 'meta', or 'errors' must be specified in the top-level response"
+                f"Either of {required_fields} must be specified in the top-level response"
             )
-        return v
+        return values

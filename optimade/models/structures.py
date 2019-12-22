@@ -82,7 +82,7 @@ The main use of this field is for source databases that use species names, conta
 
     @validator("concentration")
     def validate_concentration(cls, v, values):
-        if not (len(v) == len(values.get("chemical_symbols", []))):
+        if len(v) != len(values.get("chemical_symbols", [])):
             raise ValueError(
                 f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', []))})"
             )
@@ -132,7 +132,7 @@ The possible reasons for the values not to sum to one are the same as already sp
 
     @validator("group_probabilities")
     def check_self_consistency(cls, v, values):
-        if not (len(v) == len(values.get("sites_in_groups", []))):
+        if len(v) != len(values.get("sites_in_groups", [])):
             raise ValueError(
                 f"sites_in_groups and group_probabilities MUST be of same length, but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
             )
@@ -602,13 +602,13 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("elements", each_item=True)
     def element_must_be_chemical_symbol(cls, v):
-        if not (v in CHEMICAL_SYMBOLS):
+        if v not in CHEMICAL_SYMBOLS:
             raise ValueError(f"Only chemical symbols are allowed, you passed: {v}")
         return v
 
     @validator("elements")
     def elements_must_be_alphabetical(cls, v):
-        if not (sorted(v) == v):
+        if sorted(v) != v:
             raise ValueError(f"elements must be sorted alphabetically, but is: {v}")
         return v
 
@@ -628,22 +628,22 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("dimension_types")
     def must_be_of_length_three(cls, v):
-        if not len(v) == 3:
+        if len(v) != 3:
             raise ValueError(f"MUST be of length 3, but is of length: {len(v)}")
         for dimension in v:
-            if not (dimension in {0, 1}):
+            if dimension not in {0, 1}:
                 raise ValueError(f"MUST be either 0 or 1, you passed: {v}")
         return v
 
     @validator("lattice_vectors", always=True)
     def required_if_dimension_types_has_one(cls, v, values):
-        if 1 in values.get("dimension_types") and v is None:
+        if 1 in values["dimension_types"] and v is None:
             raise ValueError(
-                f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values.get('dimension_types')}"
+                f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values['dimension_types']}"
             )
         if len(v) != 3:
             raise ValueError(
-                f"MUST be a an 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
+                f"MUST be a 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
             )
         return v
 
@@ -655,7 +655,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("nsites")
     def validate_nsites(cls, v, values):
-        if not (v == len(values.get("cartesian_site_positions", []))):
+        if v != len(values.get("cartesian_site_positions", [])):
             raise ValueError(
                 f"nsites (value: {v}) MUST equal length of cartesian_site_positions (value: {len(values.get('cartesian_site_positions', []))})"
             )
@@ -663,7 +663,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("species_at_sites")
     def validate_species_at_sites(cls, v, values):
-        if not (len(v) == values.get("nsites", 0)):
+        if len(v) != values.get("nsites", 0):
             raise ValueError(
                 f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 0)})"
             )
@@ -671,7 +671,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("species", each_item=True)
     def validate_species(cls, v, values):
-        if not (v.name in values.get("species_at_sites", [])):
+        if v.name not in values.get("species_at_sites", []):
             raise ValueError(
                 f"{v.name} not found in species_at_sites: {values.get('species_at_sites', [])}"
             )
@@ -679,7 +679,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("structure_features", always=True)
     def validate_structure_features(cls, v, values):
-        if not sorted(v) == v:
+        if sorted(v) != v:
             raise ValueError(
                 f"structure_features MUST be sorted alphabetically, given value: {v}"
             )
@@ -720,7 +720,6 @@ class StructureResourceAttributes(EntryResourceAttributes):
                 raise ValueError(
                     "assemblies MUST NOT be present, since the property of the same name is not present"
                 )
-
         return v
 
 
