@@ -188,7 +188,7 @@ class MongoCollection(EntryCollection):
             cursor_kwargs["limit"] = limit
 
         # All OPTiMaDe fields
-        fields = {"id", "type"}
+        fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
         fields |= self.get_attribute_fields()
         # All provider-specific fields
         fields |= {self.provider + _ for _ in self.provider_fields}
