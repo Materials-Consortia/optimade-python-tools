@@ -13,7 +13,18 @@ This repository contains a library of tools for implementing and consuming [OPTi
 
 Both the OPTiMaDe specification and this repository are **under development**.
 
-## Installation & Contributing
+## Installation (Index Meta-Database)
+
+This package may be used to setup and run an [OPTiMaDe index meta-database](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#index-meta-database).
+Install the package via `pip install optimade[server]` and change the file `server.cfg` found in the root of the package.
+
+The `server.cfg` file serves paths to a server config file (either an `ini` or `json` file, see the `./optimade/server/config.ini` for an example) and an index `/links`-endpoint data file.
+The index meta-database is set up to populate a `mongomock` in-memory database with resources from a static `json` file containing the `child` resources you, as a database provider, want to serve under this index meta-database.
+
+Running the index meta-database is then as simple as writing `./run.sh index` in a terminal from the root of this package.
+You can find it at the base URL: [`http://localhost:5001/index/optimade/`](http://localhost:5001/index/optimade/).
+
+## Development installation & Contributing
 
 See [CONTRIBUTING](CONTRIBUTING.md).
 

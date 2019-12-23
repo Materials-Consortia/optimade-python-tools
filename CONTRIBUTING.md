@@ -49,6 +49,17 @@ open http://localhost:5000/docs
 open http://localhost:5000/openapi.json
 ```
 
+When developing, you can run both the server and an index meta-database server at the same time (from two separate terminals).
+Running the following:
+
+```shell
+./run.sh index
+# or
+uvicorn optimade.server.main_index:app --reload --port 5001
+```
+
+Will run the index meta-database server at <http://localhost:5001/index/optimade>.
+
 ## Getting Started with Filter Parsing and Transforming
 
 Example use:
