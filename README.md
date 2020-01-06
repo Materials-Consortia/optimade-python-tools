@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/Materials-Consortia/optimade-python-tools.svg?branch=master)](https://travis-ci.org/Materials-Consortia/optimade-python-tools)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=optimade&root=optimade/info)](https://optimade.herokuapp.com/optimade)
 
 The aim of OPTiMaDe is to develop a common API, compliant with the
 [JSON API 1.0](http://jsonapi.org/format/1.0/) spec, to enable interoperability
@@ -140,7 +141,7 @@ print(query)
 There is also a [basic JSON transformer](optimade/filtertransformers/json.py)
 (`optimade.filtertransformers.json.JSONTransformer`) you can use as a simple
 example for developing your own transformer.
-You can also use the JSON output it produces as an easy-to-parse input for a 
+You can also use the JSON output it produces as an easy-to-parse input for a
 "transformer" in your programming language of choice.
 
 ```python
