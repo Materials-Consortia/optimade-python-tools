@@ -29,13 +29,9 @@ app = FastAPI(
 
 
 test_paths = {
-    "structures": Path(__file__)
-    .resolve()
-    .parent.joinpath("tests/test_structures.json"),
-    "references": Path(__file__)
-    .resolve()
-    .parent.joinpath("tests/test_references.json"),
-    "links": Path(__file__).resolve().parent.joinpath("tests/test_links.json"),
+    "structures": Path(__file__).resolve().parent.joinpath("data/test_structures.json"),
+    "references": Path(__file__).resolve().parent.joinpath("data/test_references.json"),
+    "links": Path(__file__).resolve().parent.joinpath("data/test_links.json"),
 }
 if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
     import bson.json_util
@@ -93,7 +89,7 @@ for prefix in valid_prefixes:
 
 def update_schema(app):
     """Update OpenAPI schema in file 'local_openapi.json'"""
-    with open("local_openapi.json", "w") as f:
+    with open("openapi/local_openapi.json", "w") as f:
         json.dump(app.openapi(), f, indent=2)
 
 
