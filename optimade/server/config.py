@@ -11,8 +11,8 @@ class NoFallback(Exception):
 class Config:
     """Base class for loading config files and its parameters"""
 
-    index_links_path: Path = Path("./optimade/server/index_links.json")
-    _path: Path = Path("./optimade/server/config.ini")
+    index_links_path: Path = Path(__file__).parent.joinpath("index_links.json")
+    _path: Path = Path(__file__).parent.joinpath("config.ini")
 
     def __init__(self, server_cfg: Path = None):
         self._server = (
@@ -40,7 +40,7 @@ class Config:
         """Create 'server.cfg' in top-package dir from 'server_template.cfg' if it does not exist"""
         import shutil
 
-        server_cfg_template = self._server.parent.joinpath("server_template.cfg")
+        server_cfg_template = Path(__file__).parent.joinpath("server_template.cfg")
         shutil.copyfile(server_cfg_template, self._server)
 
     def _load_server_config(self):
