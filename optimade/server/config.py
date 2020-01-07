@@ -16,7 +16,7 @@ class Config:
 
     def __init__(self, server_cfg: Path = None):
         self._server = (
-            Path(__file__).resolve().parent.parent.parent.joinpath("server.cfg")
+            Path().resolve().joinpath("server.cfg")
             if server_cfg is None
             else server_cfg
         )
