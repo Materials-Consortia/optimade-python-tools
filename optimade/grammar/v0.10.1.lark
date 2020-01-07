@@ -7,6 +7,7 @@ filter: expression*
 constant: string | number
 // Note: support for property in value is OPTIONAL
 value: string | number | property
+non_string_value: number | property
 
 // Note:  support for OPERATOR in value_list is OPTIONAL
 value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
@@ -29,7 +30,7 @@ property_first_comparison: property ( value_op_rhs
                                     | set_zip_op_rhs
                                     | length_op_rhs )
 
-constant_first_comparison: constant value_op_rhs
+constant_first_comparison: constant OPERATOR non_string_value
 
 value_op_rhs: OPERATOR value
 known_op_rhs: IS ( KNOWN | UNKNOWN )
