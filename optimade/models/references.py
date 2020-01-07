@@ -1,4 +1,4 @@
-from pydantic import Schema, BaseModel, UrlStr, validator
+from pydantic import Field, BaseModel, AnyUrl, validator
 from typing import List, Optional
 
 from .entries import EntryResource, EntryResourceAttributes
@@ -8,9 +8,9 @@ __all__ = ("Person", "ReferenceResourceAttributes", "ReferenceResource")
 
 
 class Person(BaseModel):
-    name: str = Schema(..., decsription="""Full name of the person, REQUIRED.""")
-    firstname: Optional[str] = Schema(..., description="""First name of the person.""")
-    lastname: Optional[str] = Schema(..., description="""Last name of the person.""")
+    name: str = Field(..., decsription="""Full name of the person, REQUIRED.""")
+    firstname: Optional[str] = Field(None, description="""First name of the person.""")
+    lastname: Optional[str] = Field(None, description="""Last name of the person.""")
 
 
 class ReferenceResourceAttributes(EntryResourceAttributes):
@@ -20,87 +20,87 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
 
     """
 
-    authors: Optional[List[Person]] = Schema(
-        ...,
+    authors: Optional[List[Person]] = Field(
+        None,
         description="List of person objects containing the authors of the reference.",
     )
-    editors: Optional[List[Person]] = Schema(
-        ...,
+    editors: Optional[List[Person]] = Field(
+        None,
         description="List of person objects containing the editors of the reference.",
     )
 
-    doi: Optional[str] = Schema(
-        ..., description="The digital object identifier of the reference."
+    doi: Optional[str] = Field(
+        None, description="The digital object identifier of the reference."
     )
 
-    url: Optional[UrlStr] = Schema(..., description="The URL of the reference.")
+    url: Optional[AnyUrl] = Field(None, description="The URL of the reference.")
 
-    address: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    address: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    annote: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    annote: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    booktitle: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    booktitle: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    chapter: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    chapter: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    crossref: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    crossref: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    edition: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    edition: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    howpublished: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    howpublished: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    institution: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    institution: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    journal: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    journal: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    key: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    key: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    month: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    month: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    note: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    note: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    number: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    number: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    organization: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    organization: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    pages: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    pages: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    publisher: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    publisher: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    school: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    school: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    series: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    series: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    title: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    title: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    bib_type: Optional[str] = Schema(
-        ...,
+    bib_type: Optional[str] = Field(
+        None,
         description="Type of the reference, corresponding to the **type** property in the BiBTeX specification.",
     )
-    volume: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    volume: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
-    year: Optional[str] = Schema(
-        ..., description="Meaning of property matches the BiBTeX specification."
+    year: Optional[str] = Field(
+        None, description="Meaning of property matches the BiBTeX specification."
     )
 
 
@@ -125,7 +125,7 @@ The following properties are used to provide the bibliographic details:
   - **Query**: Support for queries on any of these properties is OPTIONAL.
     If supported, filters MAY support only a subset of comparison operators. """
 
-    type: str = Schema(
+    type: str = Field(
         default="references",
         const=True,
         description="""The name of the type of an entry. Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.
