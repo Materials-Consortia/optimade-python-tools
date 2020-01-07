@@ -34,7 +34,7 @@ def meta_values(
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
-    from optimade.models import ResponseMetaQuery, Provider
+    from optimade.models import ResponseMetaQuery, Provider, Implementation
 
     parse_result = urllib.parse.urlparse(url)
     provider = CONFIG.provider.copy()
@@ -49,6 +49,7 @@ def meta_values(
         more_data_available=more_data_available,
         provider=Provider(**provider),
         data_available=data_available,
+        implementation=Implementation(**CONFIG.implementation),
         **kwargs,
     )
 

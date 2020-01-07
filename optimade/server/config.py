@@ -94,6 +94,8 @@ class ServerConfig(Config):
 
     @staticmethod
     def _DEFAULTS(field: str) -> Any:
+        from optimade import __version__
+
         res = {
             "use_real_mongo": False,
             "mongo_database": "optimade",
@@ -101,8 +103,12 @@ class ServerConfig(Config):
             "references_collection": "references",
             "structures_collection": "structures",
             "page_limit": 500,
-            "version": "v0.10.0",
+            "api_version": "0.10.0",
             "default_db": "test_server",
+            "implementation.name": "Example implementation",
+            "implementation.version": __version__,
+            "implementation.source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
+            "implementation.maintainer": None,
             "provider": {
                 "prefix": "_exmpl_",
                 "name": "Example provider",
@@ -117,6 +123,7 @@ class ServerConfig(Config):
 
     def load_from_ini(self):
         """ Load from the file "config.ini", if it exists. """
+        from optimade.models import Implementation
 
         config = ConfigParser()
         config.read(self._path)
@@ -132,11 +139,19 @@ class ServerConfig(Config):
             "IMPLEMENTATION", "PAGE_LIMIT", fallback=self._DEFAULTS("page_limit")
         )
         self.version = config.get(
-            "IMPLEMENTATION", "VERSION", fallback=self._DEFAULTS("version")
+            "IMPLEMENTATION", "API_VERSION", fallback=self._DEFAULTS("api_version")
         )
         self.default_db = config.get(
             "IMPLEMENTATION", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
         )
+        self.implementation = {}
+        for field in Implementation.schema()["properties"]:
+            value_config = config.get("IMPLEMENTATION", field, fallback=None)
+            value_default = self._DEFAULTS(f"implementation.{field}")
+            if value_config is not None:
+                self.implementation[field] = value_config
+            elif value_default is not None:
+                self.implementation[field] = value_default
 
         if "PROVIDER" in config.sections():
             self.provider = dict(config["PROVIDER"])
@@ -164,6 +179,7 @@ class ServerConfig(Config):
 
     def load_from_json(self):
         """ Load from the file "config.json", if it exists. """
+        from optimade.models import Implementation
 
         with open(self._path, "r") as f:
             config = json.load(f)
@@ -183,8 +199,16 @@ class ServerConfig(Config):
             )
 
         self.page_limit = int(config.get("page_limit", self._DEFAULTS("page_limit")))
-        self.version = config.get("version", self._DEFAULTS("version"))
+        self.version = config.get("api_version", self._DEFAULTS("api_version"))
         self.default_db = config.get("default_db", self._DEFAULTS("default_db"))
+        self.implementation = config.get("implementation", {})
+        for field in Implementation.schema()["properties"]:
+            value_default = self._DEFAULTS(f"implementation.{field}")
+            if field in self.implementation:
+                # Keep the config value
+                pass
+            elif value_default is not None:
+                self.implementation[field] = value_default
 
         self.provider = config.get("provider", self._DEFAULTS("provider"))
         self.provider_fields = set(

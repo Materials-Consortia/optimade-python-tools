@@ -59,8 +59,10 @@ class EndpointTests(abc.ABC):
             "more_data_available",
             "provider",
         ]
+        meta_optional_keys = ["data_available", "implementation"]
 
         self.check_keys(meta_required_keys, self.json_response["meta"])
+        self.check_keys(meta_optional_keys, self.json_response["meta"])
 
     def test_serialize_response(self):
         self.assertTrue(
