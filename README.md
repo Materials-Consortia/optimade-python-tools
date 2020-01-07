@@ -26,7 +26,7 @@ You can find it at the base URL: [`http://localhost:5001/index/optimade/`](http:
 
 ## Development installation & Contributing
 
-See [CONTRIBUTING](CONTRIBUTING.md).
+Full installation instructions and contribution guidelines can be found in [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Links
 

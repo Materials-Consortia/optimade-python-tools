@@ -8,11 +8,12 @@ We have below recommendations for setting up an environment in which one may dev
 
 ## Development installation
 
-The core dependencies of this package can be found in `requirements.txt` with at the latest supported version.
-Individual backends and their supported versions can be found in `setup.py`. The following "extra" install modes are currently supported: `all`, `dev`, `server`, `testing`, `django`, `elastic` and `mongo`.
-
-When contributing to the Python code, please use the [black](https://github.com/ambv/black) code formatter.
-The [flake8](http://flake8.pycqa.org/en/latest/) linter will be run automatically on all PRs.
+The dependencies of this package can be found in `setup.py` with their latest supported versions.
+By default, a minimal set of requirements are installed to work with the filter language and the `pydantic` models.
+The install mode `server` (i.e. `pip install .[server]`) is sufficient to run a `uvicorn` server using the `mongomock` backend (or MongoDB with `pymongo`, if present).
+The suite of development and testing tools are installed with via the install modes `dev` and `testing`.
+There are additionally three backend-specific install modes, `django`, `elastic` and `mongo`, as well as the `all` mode, which installs all dependencies.
+All contributed Python code, must use the [black](https://github.com/ambv/black) code formatter, and must pass the [flake8](http://flake8.pycqa.org/en/latest/) linter that is run automatically on all PRs.
 
 ```shell
 # Clone this repository to your computer
@@ -26,8 +27,8 @@ conda activate optimade
 # Install package and dependencies in editable mode (including "dev" requirements).
 pip install -e .[dev]
 
-# Run the tests (will install test requirements)
-python setup.py test
+# Run the tests with pytest
+py.test
 
 # Install pre-commit environment (e.g., auto-formats code on `git commit`)
 pre-commit install
