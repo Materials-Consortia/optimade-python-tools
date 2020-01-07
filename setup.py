@@ -31,7 +31,6 @@ setup(
     keywords="optimade jsonapi materials",
     include_package_data=True,
     packages=find_packages(),
-    package_data={"": ["*.lark", "*.json", "*.cfg", "*.ini"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
