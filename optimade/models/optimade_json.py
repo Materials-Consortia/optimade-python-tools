@@ -1,5 +1,5 @@
 """Modified JSON API v1.0 for OPTiMaDe API"""
-from pydantic import Schema, validator
+from pydantic import Field, validator, root_validator
 from typing import Optional, Set
 
 from . import jsonapi
@@ -11,7 +11,7 @@ __all__ = ("Error", "Failure", "Success", "Warnings")
 class Error(jsonapi.Error):
     """detail MUST be present"""
 
-    detail: str = Schema(
+    detail: str = Field(
         ...,
         description="A human-readable explanation specific to this occurrence of the problem.",
     )
@@ -20,44 +20,53 @@ class Error(jsonapi.Error):
 class Failure(jsonapi.Response):
     """errors MUST be present and data MUST be skipped"""
 
-    meta: Optional[jsonapi.Meta] = Schema(
-        ...,
+    meta: Optional[jsonapi.Meta] = Field(
+        None,
         description="A meta object containing non-standard information related to the Success",
     )
-    errors: Set[Error] = Schema(
+    errors: Set[Error] = Field(
         ...,
         description="A list of OPTiMaDe-specific JSON API error objects, where the field detail MUST be present.",
     )
-    links: Optional[jsonapi.ToplevelLinks] = Schema(
-        ..., description="Links associated with the primary data"
+    links: Optional[jsonapi.ToplevelLinks] = Field(
+        None, description="Links associated with the primary data"
     )
 
-    @validator("data")
-    def data_must_be_skipped(cls, v):
-        raise ValueError("data MUST be skipped for failures reporting errors")
+    @root_validator(pre=True)
+    def data_must_be_skipped(cls, values):
+        if values.get("data", None) is not None:
+            raise ValueError("data MUST be skipped for failures reporting errors")
+        return values
 
 
 class Success(jsonapi.Response):
     """errors are not allowed"""
 
-    meta: Optional[jsonapi.Meta] = Schema(
-        ...,
+    meta: Optional[jsonapi.Meta] = Field(
+        None,
         description="A meta object containing non-standard information related to the Success",
     )
-    links: Optional[jsonapi.ToplevelLinks] = Schema(
-        ..., description="Links associated with the primary data"
+    links: Optional[jsonapi.ToplevelLinks] = Field(
+        None, description="Links associated with the primary data"
     )
 
-    @validator("meta", always=True)
-    def either_data_or_meta_must_be_set(cls, v, values):
-        if values.get("data", None) is None and v is None:
-            raise ValueError("Either 'data' or 'meta' must be specified")
-        return v
-
-    @validator("errors")
-    def either_data_meta_or_errors_must_be_set(cls, v, values):
+    @root_validator
+    def either_data_meta_or_errors_must_be_set(cls, values):
         """Overwriting the existing validation function"""
-        raise ValueError("'errors' MUST be skipped for a successful response")
+        required_fields = ("data", "meta")
+        for field in required_fields:
+            if values.get(field, None) is not None:
+                break
+        else:
+            raise ValueError(
+                f"Either of {required_fields} must be specified in the top-level response"
+            )
+
+        # errors MUST be skipped
+        if values.get("errors", None) is not None:
+            raise ValueError(f"'errors' MUST be skipped for a successful response")
+
+        return values
 
 
 class Warnings(Error):
@@ -73,10 +82,12 @@ class Warnings(Error):
     Note: Must be named "Warnings", since "Warning" is a built-in Python class.
     """
 
-    type: str = Schema(
+    type: str = Field(
         "warning", const=True, description='Warnings must be of type "warning"'
     )
 
-    @validator("status")
-    def status_must_not_be_specified(cls, v):
-        raise ValueError("status MUST NOT be specified for warnings")
+    @root_validator(pre=True)
+    def status_must_not_be_specified(cls, values):
+        if values.get("status", None) is not None:
+            raise ValueError("status MUST NOT be specified for warnings")
+        return values

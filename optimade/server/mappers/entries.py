@@ -55,9 +55,9 @@ class ResourceMapper:
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}
         reals = {real for alias, real in cls.all_aliases()}
-        for k in doc:
-            if k not in reals:
-                newdoc[k] = doc[k]
+        for key in doc:
+            if key not in reals:
+                newdoc[key] = doc[key]
         for real, alias in mapping:
             if real in doc:
                 newdoc[alias] = doc[real]
@@ -66,11 +66,13 @@ class ResourceMapper:
             raise Exception("Will overwrite doc field!")
         attributes = newdoc.copy()
 
-        for k in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
-            attributes.pop(k, None)
-        for k in list(newdoc.keys()):
-            if k not in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
-                del newdoc[k]
+        for field in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
+            value = attributes.pop(field, None)
+            if value is not None:
+                newdoc[field] = value
+        for field in list(newdoc.keys()):
+            if field not in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
+                del newdoc[field]
 
         newdoc["type"] = cls.ENDPOINT
         newdoc["attributes"] = attributes
