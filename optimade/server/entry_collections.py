@@ -124,20 +124,20 @@ class MongoCollection(EntryCollection):
         for doc in self.collection.find(**criteria):
             results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
 
+        nresults_now = len(results)
         if isinstance(params, EntryListingQueryParams):
-            nresults_now = len(results)
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
             data_returned = self.count(**criteria_nolimit)
             more_data_available = nresults_now < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
-            data_returned = 1
+            data_returned = nresults_now
             more_data_available = False
-            if len(results) > 1:
+            if nresults_now > 1:
                 raise HTTPException(
                     status_code=404,
-                    detail=f"Instead of a single entry, {len(results)} entries were found",
+                    detail=f"Instead of a single entry, {nresults_now} entries were found",
                 )
             results = results[0] if results else None
 
