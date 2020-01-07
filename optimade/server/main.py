@@ -33,7 +33,7 @@ test_paths = {
     "references": Path(__file__).resolve().parent.joinpath("data/test_references.json"),
     "links": Path(__file__).resolve().parent.joinpath("data/test_links.json"),
 }
-if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
+if not CONFIG.use_real_mongo and all(path.exists() for path in test_paths.values()):
     import bson.json_util
     from .routers import ENTRY_COLLECTIONS
 
