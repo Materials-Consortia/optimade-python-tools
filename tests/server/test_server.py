@@ -331,7 +331,7 @@ class FilterTests(unittest.TestCase):
         expected_return = 6
         self._check_response(request, expected_ids, expected_return)
 
-    @unittest.skip("Skipping HAS ALL until implemented in server code.")
+    @unittest.skip("Skipping HAS ALL until implemented in transformer code.")
     def test_list_has_all(self):
         request = '/structures?filter=elements HAS ALL "Ba","F","H","Mn","O","Re","Si"'
         expected_ids = ["mpf_3819"]
@@ -341,7 +341,7 @@ class FilterTests(unittest.TestCase):
         expected_ids = ["mpf_3819"]
         self._check_response(request, expected_ids, len(expected_ids))
 
-    @unittest.skip("Skipping HAS ANY until implemented in server code.")
+    @unittest.skip("Skipping HAS ANY until implemented in transformer code.")
     def test_list_has_any(self):
         request = '/structures?filter=elements HAS ANY "Re","Ti"'
         expected_ids = ["mpf_3819"]
@@ -355,12 +355,10 @@ class FilterTests(unittest.TestCase):
         request = "/structures?filter=elements LENGTH 9"
         self._check_response(request, expected_ids, len(expected_ids))
 
-    @unittest.skip("Skipping LENGTH until implemented in server code.")
+    @unittest.skip(
+        "Skipping LENGTH with operator until implemented in transformer code."
+    )
     def test_list_length(self):
-        request = "/structures?filter=elements LENGTH = 9"
-        expected_ids = ["mpf_3819"]
-        self._check_response(request, expected_ids, len(expected_ids))
-
         request = "/structures?filter=elements LENGTH >= 9"
         expected_ids = ["mpf_3819"]
         self._check_response(request, expected_ids, len(expected_ids))
@@ -369,13 +367,15 @@ class FilterTests(unittest.TestCase):
         expected_ids = []
         self._check_response(request, expected_ids, len(expected_ids))
 
-    @unittest.skip("Skipping HAS ONLY until implemented in server code.")
+    @unittest.skip("Skipping HAS ONLY until implemented in transformer code.")
     def test_list_has_only(self):
         request = '/structures?filter=elements HAS ONLY "Ac"'
         expected_ids = ["mpf_1"]
         self._check_response(request, expected_ids, len(expected_ids))
 
-    @unittest.skip("Skipping correlated list query until implemented in server code.")
+    @unittest.skip(
+        "Skipping correlated list query until implemented in transformer code."
+    )
     def test_list_correlated(self):
         request = '/structures?filter=elements:elements_ratios HAS "Ag":"0.2"'
         expected_ids = ["mpf_259"]

@@ -221,6 +221,8 @@ class TestMongoTransformer(unittest.TestCase):
         # Comparisons of list properties
         self.assertEqual(self.transform("list HAS < 3"), {})
         self.assertEqual(self.transform("list HAS ALL < 3, > 3"), {})
+        self.assertEqual(self.transform("list HAS ANY > 3, < 6"), {})
+        self.assertEqual(self.transform("list LENGTH 3"), {})
         self.assertEqual(self.transform("list:list HAS >=2:<=5"), {})
         self.assertEqual(
             self.transform(
@@ -255,6 +257,7 @@ class TestMongoTransformer(unittest.TestCase):
             ),
             {},
         )
+        self.assertEqual(self.transform("list LENGTH > 3"), {})
 
     def test_properties(self):
         #  Filtering on Properties with unknown value
