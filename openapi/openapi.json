@@ -38,9 +38,7 @@
     "/optimade/info/{entry}": {
       "get": {
         "tags": [
-          "Info",
-          "Structure",
-          "Reference"
+          "Info"
         ],
         "summary": "Get Entry Info",
         "operationId": "get_entry_info_optimade_info__entry__get",
@@ -250,7 +248,7 @@
     "/optimade/references": {
       "get": {
         "tags": [
-          "Reference"
+          "References"
         ],
         "summary": "Get References",
         "operationId": "get_references_optimade_references_get",
@@ -410,7 +408,7 @@
     "/optimade/references/{entry_id}": {
       "get": {
         "tags": [
-          "Reference"
+          "References"
         ],
         "summary": "Get Single Reference",
         "operationId": "get_single_reference_optimade_references__entry_id__get",
@@ -491,7 +489,7 @@
     "/optimade/structures": {
       "get": {
         "tags": [
-          "Structure"
+          "Structures"
         ],
         "summary": "Get Structures",
         "operationId": "get_structures_optimade_structures_get",
@@ -651,7 +649,7 @@
     "/optimade/structures/{entry_id}": {
       "get": {
         "tags": [
-          "Structure"
+          "Structures"
         ],
         "summary": "Get Single Structure",
         "operationId": "get_single_structure_optimade_structures__entry_id__get",
@@ -761,9 +759,7 @@
     "/optimade/v0.10.0/info/{entry}": {
       "get": {
         "tags": [
-          "Info",
-          "Structure",
-          "Reference"
+          "Info"
         ],
         "summary": "Get Entry Info",
         "operationId": "get_entry_info_optimade_v0.10.0_info__entry__get",
@@ -973,7 +969,7 @@
     "/optimade/v0.10.0/references": {
       "get": {
         "tags": [
-          "Reference"
+          "References"
         ],
         "summary": "Get References",
         "operationId": "get_references_optimade_v0.10.0_references_get",
@@ -1133,7 +1129,7 @@
     "/optimade/v0.10.0/references/{entry_id}": {
       "get": {
         "tags": [
-          "Reference"
+          "References"
         ],
         "summary": "Get Single Reference",
         "operationId": "get_single_reference_optimade_v0.10.0_references__entry_id__get",
@@ -1214,7 +1210,7 @@
     "/optimade/v0.10.0/structures": {
       "get": {
         "tags": [
-          "Structure"
+          "Structures"
         ],
         "summary": "Get Structures",
         "operationId": "get_structures_optimade_v0.10.0_structures_get",
@@ -1374,7 +1370,7 @@
     "/optimade/v0.10.0/structures/{entry_id}": {
       "get": {
         "tags": [
-          "Structure"
+          "Structures"
         ],
         "summary": "Get Single Structure",
         "operationId": "get_single_structure_optimade_v0.10.0_structures__entry_id__get",
@@ -1484,9 +1480,7 @@
     "/optimade/v0.10/info/{entry}": {
       "get": {
         "tags": [
-          "Info",
-          "Structure",
-          "Reference"
+          "Info"
         ],
         "summary": "Get Entry Info",
         "operationId": "get_entry_info_optimade_v0.10_info__entry__get",
@@ -1696,7 +1690,7 @@
     "/optimade/v0.10/references": {
       "get": {
         "tags": [
-          "Reference"
+          "References"
         ],
         "summary": "Get References",
         "operationId": "get_references_optimade_v0.10_references_get",
@@ -1856,7 +1850,7 @@
     "/optimade/v0.10/references/{entry_id}": {
       "get": {
         "tags": [
-          "Reference"
+          "References"
         ],
         "summary": "Get Single Reference",
         "operationId": "get_single_reference_optimade_v0.10_references__entry_id__get",
@@ -1937,7 +1931,7 @@
     "/optimade/v0.10/structures": {
       "get": {
         "tags": [
-          "Structure"
+          "Structures"
         ],
         "summary": "Get Structures",
         "operationId": "get_structures_optimade_v0.10_structures_get",
@@ -2097,7 +2091,7 @@
     "/optimade/v0.10/structures/{entry_id}": {
       "get": {
         "tags": [
-          "Structure"
+          "Structures"
         ],
         "summary": "Get Single Structure",
         "operationId": "get_single_structure_optimade_v0.10_structures__entry_id__get",

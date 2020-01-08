@@ -23,3 +23,14 @@ repos:
       description: Check for differences in openapi.json and index_openapi.json with local versions.
       entry: ./.ci/json_diff.sh
       language: system
+
+    - id: optimade-version
+      name: Update OPTiMaDe shield
+      description: If needed, the JSON for the OPTiMaDe shield will be updated with new config version
+      entry: python ./.ci/optimade_version_update.py
+      files: >
+        (?x)^(
+          .ci/optimade-version.json|
+          optimade/server/config.ini
+        )$
+      language: system
