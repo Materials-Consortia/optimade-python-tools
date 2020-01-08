@@ -30,7 +30,7 @@ references_coll = MongoCollection(
     "/references",
     response_model=Union[ReferenceResponseMany, ErrorResponse],
     response_model_exclude_unset=True,
-    tags=["Reference"],
+    tags=["References"],
 )
 def get_references(request: Request, params: EntryListingQueryParams = Depends()):
     return get_entries(
@@ -45,7 +45,7 @@ def get_references(request: Request, params: EntryListingQueryParams = Depends()
     "/references/{entry_id:path}",
     response_model=Union[ReferenceResponseOne, ErrorResponse],
     response_model_exclude_unset=True,
-    tags=["Reference"],
+    tags=["References"],
 )
 def get_single_reference(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()

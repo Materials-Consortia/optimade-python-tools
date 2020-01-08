@@ -29,7 +29,7 @@ structures_coll = MongoCollection(
     "/structures",
     response_model=Union[StructureResponseMany, ErrorResponse],
     response_model_exclude_unset=True,
-    tags=["Structure"],
+    tags=["Structures"],
 )
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
     return get_entries(
@@ -44,7 +44,7 @@ def get_structures(request: Request, params: EntryListingQueryParams = Depends()
     "/structures/{entry_id:path}",
     response_model=Union[StructureResponseOne, ErrorResponse],
     response_model_exclude_unset=True,
-    tags=["Structure"],
+    tags=["Structures"],
 )
 def get_single_structure(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
