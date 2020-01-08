@@ -224,7 +224,9 @@ class NewMongoTransformer(Transformer):
         if len(arg) == 2 or (len(arg) == 3 and arg[1] == "="):
             return {"$size": arg[-1]}
 
-        raise NotImplementedError
+        raise NotImplementedError(
+            f"Operator {arg[1]} not implemented for LENGTH filter."
+        )
 
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*
