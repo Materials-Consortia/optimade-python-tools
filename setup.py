@@ -20,7 +20,7 @@ all_deps = dev_deps + django_deps + elastic_deps
 
 setup(
     name="optimade",
-    version="0.2.0",
+    version="0.3.0",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTiMaDe Development Team",
