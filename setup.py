@@ -31,7 +31,6 @@ setup(
     keywords="optimade jsonapi materials",
     include_package_data=True,
     packages=find_packages(),
-    package_data={"": ["*.lark"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",

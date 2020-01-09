@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 from pydantic import ValidationError
 from fastapi import FastAPI
@@ -69,7 +70,12 @@ for prefix in valid_prefixes:
 
 def update_schema(app):
     """Update OpenAPI schema in file 'local_index_openapi.json'"""
-    with open("openapi/local_index_openapi.json", "w") as f:
+    local_openapi = (
+        Path(__file__)
+        .resolve()
+        .parent.parent.parent.joinpath("openapi/local_index_openapi.json")
+    )
+    with open(local_openapi, "w") as f:
         json.dump(app.openapi(), f, indent=2)
 
 
