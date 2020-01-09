@@ -672,7 +672,11 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("species_at_sites")
     def validate_species_at_sites(cls, v, values):
-        if len(v) != values.get("nsites", 0):
+        if "nsites" not in values:
+            raise ValueError(
+                "Attribute nsites missing so unable to verify species_at_sites."
+            )
+        if len(v) != values.get("nsites"):
             raise ValueError(
                 f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 0)})"
             )
