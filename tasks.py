@@ -37,6 +37,16 @@ def setver(_, patch=False, new_ver=""):
 
 @task
 def update_openapijson(c):
+    # pylint: disable=import-outside-toplevel
+    from optimade.server.main import app, update_schema
+    from optimade.server.main_index import (
+        app as app_index,
+        update_schema as update_schema_index,
+    )
+
+    update_schema(app)
+    update_schema_index(app_index)
+
     c.run("cp openapi/local_openapi.json openapi/openapi.json")
     c.run("cp openapi/local_index_openapi.json openapi/index_openapi.json")
 
