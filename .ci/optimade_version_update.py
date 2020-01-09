@@ -1,4 +1,5 @@
 import json
+import sys
 from configparser import ConfigParser
 from pathlib import Path
 
@@ -14,7 +15,7 @@ config = ConfigParser()
 config.read(config_ini)
 
 shield_version = shield["message"]
-current_version = f'v{config.get("IMPLEMENTATION", "VERSION")}'
+current_version = f'v{config.get("IMPLEMENTATION", "API_VERSION")}'
 
 if shield_version == current_version:
     # The shield has the newest implemented version
@@ -23,7 +24,7 @@ if shield_version == current_version:
 Shield file:
 {json.dumps(shield, indent=2)}"""
     )
-    exit(0)
+    sys.exit(0)
 
 print(
     f"""The shield version is outdated.
@@ -42,11 +43,11 @@ with open(shields_json, "r") as fp:
 
 if updated_shield["message"] == current_version:
     print(f"Successfully updated the shield version to '{updated_shield['message']}'")
-    exit(0)
+    sys.exit(0)
 else:
     print(
         f"""Something went wrong !
 Shield file:
 {json.dumps(updated_shield, indent=2)}"""
     )
-    exit(1)
+    sys.exit(1)

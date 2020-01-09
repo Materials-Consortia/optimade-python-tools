@@ -47,7 +47,8 @@ def set_optimade_ver(_, ver=""):
         raise Exception("Please specify --ver='Major.Minor.Patch'")
     with open("optimade/server/config.ini", "r") as f:
         lines = [
-            re.sub("VERSION = .+", "VERSION = {}".format(ver), l.rstrip()) for l in f
+            re.sub("API_VERSION = .+", "API_VERSION = {}".format(ver), l.rstrip())
+            for l in f
         ]
     with open("optimade/server/config.ini", "w") as f:
         f.write("\n".join(lines))
