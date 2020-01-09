@@ -2,6 +2,7 @@ import json
 from typing import Any
 from configparser import ConfigParser
 from pathlib import Path
+from warnings import warn
 
 
 class NoFallback(Exception):
@@ -22,8 +23,6 @@ class Config:
         )
 
     def __getattr__(self, name: str) -> Any:
-        if not self._server.exists():
-            self._create_server_config()
         self._load_server_config()
 
         ftype = self._path.suffix[1:]  # Remove initial "."
@@ -36,13 +35,6 @@ class Config:
 
         return getattr(self, name)
 
-    def _create_server_config(self):
-        """Create 'server.cfg' in top-package dir from 'server_template.cfg' if it does not exist"""
-        import shutil  # pylint: disable=import-outside-toplevel
-
-        server_cfg_template = Path(__file__).parent.joinpath("server_template.cfg")
-        shutil.copyfile(server_cfg_template, self._server)
-
     def _load_server_config(self):
         """Load cfg-file determining paths to server config files"""
         SECTION = "optimadeconfig"
@@ -50,7 +42,9 @@ class Config:
         SERVER_CONFIG_PATH = "CONFIG"
 
         server = ConfigParser()
-        server.read(self._server)
+
+        if self._server.exists():
+            server.read(self._server)
 
         index_links_path = server.get(
             SECTION, INDEX_LINKS_PATH, fallback=str(self.index_links_path)
@@ -66,11 +60,17 @@ class Config:
             )
 
         if not self.index_links_path.exists():
-            from warnings import warn  # pylint: disable=import-outside-toplevel
-
             warn(
                 f'Cannot resolve {self.index_links_path}. Check the index_links.json file exists. Note, "~" is not allowed.'
             )
+
+        if not self._server.exists():
+            server.add_section(SECTION)
+            server.set(SECTION, SERVER_CONFIG_PATH, str(self._path))
+            server.set(SECTION, INDEX_LINKS_PATH, str(self.index_links_path))
+            warn(f"No server.cfg file found, writing defaults to {self._server}")
+            with open(self._server, "w") as f:
+                server.write(f)
 
     def _get_load_func(self, format_name) -> Any:
         return getattr(self, f"load_from_{format_name}")
