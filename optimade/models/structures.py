@@ -641,10 +641,19 @@ class StructureResourceAttributes(EntryResourceAttributes):
             raise ValueError(
                 f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values['dimension_types']}"
             )
+
         if len(v) != 3:
             raise ValueError(
                 f"MUST be a 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
             )
+
+        for dim_type, vector in zip(values["dimension_types"], v):
+            if None in vector and dim_type == 1:
+                raise ValueError(
+                    f"Null entries in lattice vectors are only permitted when the corresponding dimension type is 0"
+                    f"here: dimension_types = {values['dimension_types']}, lattice_vectors = {v}"
+                )
+
         return v
 
     @validator("lattice_vectors", "cartesian_site_positions", each_item=True)
