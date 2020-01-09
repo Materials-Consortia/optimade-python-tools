@@ -1,4 +1,5 @@
 import os
+import sys
 
 try:
     from optimade import __version__
@@ -14,11 +15,11 @@ tag_version = tag_version[len("refs/tags/") :]
 
 if tag_version == package_version:
     print(f"The versions match: tag:'{tag_version}' == package:'{package_version}'")
-    exit(0)
+    sys.exit(0)
 
 print(
     f"""The current package version '{package_version}' does not equal the tag version '{tag_version}'.
 Update package version by \"invoke setver --new-ver='{tag_version[1:]}'\" and re-commit.
 Please remove the tag from both GitHub and your local repository and try again!"""
 )
-exit(1)
+sys.exit(1)
