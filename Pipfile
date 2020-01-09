@@ -6,8 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-python = "*"
-3-5 = "*"
+optimade = {editable = true,path = ".", extras=['server']}
 
 [requires]
 python_version = "3.7"
