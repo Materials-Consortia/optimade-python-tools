@@ -189,6 +189,20 @@ class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
         )
 
 
+class MissingSingleStructureEndpointTests(EndpointTests, unittest.TestCase):
+
+    test_id = "mpf_random_string_that_is_not_in_test_data"
+    request_str = f"/structures/{test_id}"
+    response_cls = StructureResponseOne
+
+    def test_structures_endpoint_data(self):
+        self.assertTrue("data" in self.json_response)
+        self.assertTrue("meta" in self.json_response)
+        self.assertEqual(self.json_response["data"], None)
+        self.assertEqual(self.json_response["meta"]["data_returned"], 0)
+        self.assertEqual(self.json_response["meta"]["more_data_available"], False)
+
+
 class SingleStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
 
     test_id = "mpf_1"

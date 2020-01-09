@@ -33,7 +33,7 @@ test_paths = {
     "references": Path(__file__).resolve().parent.joinpath("data/test_references.json"),
     "links": Path(__file__).resolve().parent.joinpath("data/test_links.json"),
 }
-if not CONFIG.use_real_mongo and (path.exists() for path in test_paths.values()):
+if not CONFIG.use_real_mongo and all(path.exists() for path in test_paths.values()):
     import bson.json_util
     from .routers import ENTRY_COLLECTIONS
 
@@ -89,7 +89,12 @@ for prefix in valid_prefixes:
 
 def update_schema(app):
     """Update OpenAPI schema in file 'local_openapi.json'"""
-    with open("openapi/local_openapi.json", "w") as f:
+    local_openapi = (
+        Path(__file__)
+        .resolve()
+        .parent.parent.parent.joinpath("openapi/local_openapi.json")
+    )
+    with open(local_openapi, "w") as f:
         json.dump(app.openapi(), f, indent=2)
 
 

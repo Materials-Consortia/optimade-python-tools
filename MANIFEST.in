@@ -1,1 +1,3 @@
-recursive-include *.txt *.g *.py *.ini
+recursive-include optimade/server/ *.ini *.cfg *.json
+recursive-include optimade/server/data *
+recursive-include optimade/grammar *.g
