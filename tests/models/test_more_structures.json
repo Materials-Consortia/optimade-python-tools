@@ -1,4 +1,36 @@
-[{
+[
+{
+  "task_id": "db/1234567",
+  "type": "structure",
+	"last_modified": {
+		"$date": "2019-06-08T05:13:37.331Z"
+	},
+  "band_gap": 1.23456,
+	"_mp_chemsys": "Ge-Si",
+  "elements": ["Ge", "Si"],
+  "nsites": 3,
+  "nelements": 2,
+  "elements_ratios": [0.5, 0.5],
+  "pretty_formula": "GeSi",
+  "formula_anonymous": "AB",
+  "dimension_types": [1, 1, 1],
+  "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
+  "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
+  "species": [
+    {"name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0] },
+    {"name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0] },
+    {"name": "vac", "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+  ],
+  "species_at_sites": ["Si", "Ge", "vac"],
+  "assemblies": [
+    {
+      "sites_in_groups": [ [0], [1], [2] ],
+      "group_probabilities": [0.3, 0.5, 0.2]
+    }
+  ],
+  "structure_features": ["assemblies"]
+},
+{
   "task_id": "db/1234567",
   "type": "structure",
 	"last_modified": {
@@ -8,11 +40,12 @@
 	"_mp_chemsys": "Ge-Si",
   "elements": ["Ge", "Si"],
   "nelements": 2,
+  "nsites": 3,
   "elements_ratios": [0.5, 0.5],
   "pretty_formula": "GeSi",
   "formula_anonymous": "AB",
-  "dimension_types": [1, 1, 1],
-  "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
+  "dimension_types": [1, 0, 1],
+  "lattice_vectors": [[4.0,0.0,0.0],[null,4.0, null],[0.0,1.0,4.0]],
   "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
   "species_at_sites": ["Si", "Ge", "vac"],
   "species": [
@@ -27,4 +60,5 @@
     }
   ],
   "structure_features": ["assemblies"]
-}]
+}
+]
