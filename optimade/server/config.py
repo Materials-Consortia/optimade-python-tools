@@ -4,6 +4,9 @@ from configparser import ConfigParser
 from pathlib import Path
 from warnings import warn
 
+from optimade import __version__
+from optimade.models import Implementation
+
 
 class NoFallback(Exception):
     """No fallback value can be found."""
@@ -94,21 +97,20 @@ class ServerConfig(Config):
 
     @staticmethod
     def _DEFAULTS(field: str) -> Any:
-        from optimade import __version__
-
         res = {
             "use_real_mongo": False,
             "mongo_database": "optimade",
             "links_collection": "links",
             "references_collection": "references",
             "structures_collection": "structures",
-            "page_limit": 500,
-            "api_version": "0.10.0",
+            "page_limit": 20,
             "default_db": "test_server",
-            "implementation.name": "Example implementation",
-            "implementation.version": __version__,
-            "implementation.source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
-            "implementation.maintainer": None,
+            "implementation": {
+                "name": "Example implementation",
+                "version": __version__,
+                "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
+                "maintainer": None,
+            },
             "provider": {
                 "prefix": "_exmpl_",
                 "name": "Example provider",
@@ -123,8 +125,6 @@ class ServerConfig(Config):
 
     def load_from_ini(self):
         """ Load from the file "config.ini", if it exists. """
-        from optimade.models import Implementation
-
         config = ConfigParser()
         config.read(self._path)
 
@@ -136,18 +136,17 @@ class ServerConfig(Config):
         )
 
         self.page_limit = config.getint(
-            "IMPLEMENTATION", "PAGE_LIMIT", fallback=self._DEFAULTS("page_limit")
-        )
-        self.version = config.get(
-            "IMPLEMENTATION", "API_VERSION", fallback=self._DEFAULTS("api_version")
+            "SERVER", "PAGE_LIMIT", fallback=self._DEFAULTS("page_limit")
         )
         self.default_db = config.get(
-            "IMPLEMENTATION", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
+            "SERVER", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
         )
+
+        # This is done in this way, since each field is OPTIONAL
         self.implementation = {}
         for field in Implementation.schema()["properties"]:
             value_config = config.get("IMPLEMENTATION", field, fallback=None)
-            value_default = self._DEFAULTS(f"implementation.{field}")
+            value_default = self._DEFAULTS(f"implementation")[field]
             if value_config is not None:
                 self.implementation[field] = value_config
             elif value_default is not None:
@@ -179,8 +178,6 @@ class ServerConfig(Config):
 
     def load_from_json(self):
         """ Load from the file "config.json", if it exists. """
-        from optimade.models import Implementation
-
         with open(self._path, "r") as f:
             config = json.load(f)
 
@@ -201,6 +198,8 @@ class ServerConfig(Config):
         self.page_limit = int(config.get("page_limit", self._DEFAULTS("page_limit")))
         self.version = config.get("api_version", self._DEFAULTS("api_version"))
         self.default_db = config.get("default_db", self._DEFAULTS("default_db"))
+
+        # This is done in this way, since each field is OPTIONAL
         self.implementation = config.get("implementation", {})
         for field in Implementation.schema()["properties"]:
             value_default = self._DEFAULTS(f"implementation.{field}")

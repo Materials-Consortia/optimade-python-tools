@@ -3,6 +3,8 @@ from typing import Union
 from fastapi import APIRouter
 from starlette.requests import Request
 
+from optimade import __api_version__
+
 from optimade.models import (
     ErrorResponse,
     IndexInfoResponse,
@@ -32,11 +34,11 @@ def get_info(request: Request):
             id=IndexInfoResource.schema()["properties"]["id"]["const"],
             type=IndexInfoResource.schema()["properties"]["type"]["const"],
             attributes=IndexInfoAttributes(
-                api_version=f"v{CONFIG.version}",
+                api_version=f"v{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"{CONFIG.provider['index_base_url']}/v{CONFIG.version}/",
-                        "version": f"{CONFIG.version}",
+                        "url": f"{CONFIG.provider['index_base_url']}/v{__api_version__}/",
+                        "version": f"{__api_version__}",
                     }
                 ],
                 formats=["json"],

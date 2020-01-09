@@ -1,21 +1,21 @@
 import json
 import sys
-from configparser import ConfigParser
 from pathlib import Path
 
+try:
+    from optimade import __api_version__
+except ImportError:
+    raise ImportError(
+        "optimade needs to be installed prior to running 'optimade_version_update.py'"
+    )
+
 shields_json = Path(__file__).resolve().parent.joinpath("optimade-version.json")
-config_ini = (
-    Path(__file__).resolve().parent.parent.joinpath("optimade/server/config.ini")
-)
 
 with open(shields_json, "r") as fp:
     shield = json.load(fp)
 
-config = ConfigParser()
-config.read(config_ini)
-
 shield_version = shield["message"]
-current_version = f'v{config.get("IMPLEMENTATION", "API_VERSION")}'
+current_version = f"v{__api_version__}"
 
 if shield_version == current_version:
     # The shield has the newest implemented version
@@ -36,6 +36,7 @@ Current version: {current_version}
 shield["message"] = current_version
 with open(shields_json, "w") as fp:
     json.dump(shield, fp, indent=2)
+    fp.write("\n")
 
 # Check file was saved correctly
 with open(shields_json, "r") as fp:
