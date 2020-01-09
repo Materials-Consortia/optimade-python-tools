@@ -201,14 +201,14 @@
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_index_optimade_v0.10.0_info_get",
+        "operationId": "get_info_index_optimade_v0_10_0_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info Index Optimade V0.10.0 Info Get",
+                  "title": "Response Get Info Index Optimade V0 10 0 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/IndexInfoResponse"
@@ -230,7 +230,7 @@
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_index_optimade_v0.10.0_links_get",
+        "operationId": "get_links_index_optimade_v0_10_0_links_get",
         "parameters": [
           {
             "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
@@ -358,7 +358,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links Index Optimade V0.10.0 Links Get",
+                  "title": "Response Get Links Index Optimade V0 10 0 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
@@ -390,14 +390,14 @@
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_index_optimade_v0.10_info_get",
+        "operationId": "get_info_index_optimade_v0_10_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info Index Optimade V0.10 Info Get",
+                  "title": "Response Get Info Index Optimade V0 10 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/IndexInfoResponse"
@@ -419,7 +419,7 @@
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_index_optimade_v0.10_links_get",
+        "operationId": "get_links_index_optimade_v0_10_links_get",
         "parameters": [
           {
             "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
@@ -547,7 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links Index Optimade V0.10 Links Get",
+                  "title": "Response Get Links Index Optimade V0 10 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
