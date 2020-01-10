@@ -51,5 +51,5 @@ class LarkParser:
     def __repr__(self):
         if isinstance(self.tree, Tree):
             return self.tree.pretty()
-        else:
-            return repr(self.lark)
+        # else
+        return repr(self.lark)
