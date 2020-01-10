@@ -9,6 +9,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .config import CONFIG
 from .routers import index_info, links
 
+from optimade import __api_version__
 import optimade.server.exception_handlers as exc_handlers
 
 
@@ -20,7 +21,7 @@ app = FastAPI(
         "by developing a common REST API.\n"
         'This is the "special" index meta-database.'
     ),
-    version=CONFIG.version,
+    version=__api_version__,
     docs_url="/index/optimade/extensions/docs",
     redoc_url="/index/optimade/extensions/redoc",
     openapi_url="/index/optimade/extensions/openapi.json",
