@@ -8,6 +8,6 @@
     "name": "Index meta-database",
     "description": "Index for example's OPTiMaDe databases",
     "base_url": "http://localhost:5001/index/optimade",
-    "homepage": "example.org"
+    "homepage": "https://example.org"
   }
 ]
