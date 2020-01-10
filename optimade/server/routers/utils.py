@@ -243,12 +243,12 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
 
 
 def get_providers():
-    """Retrieve providers.json from /Materials-Consortia/OPTiMaDe"""
+    """Retrieve Materials-Consortia providers (from https://www.optimade.org/providers/links)"""
     import requests
     from bson.objectid import ObjectId
 
     mat_consortia_providers = requests.get(
-        "https://raw.githubusercontent.com/Materials-Consortia/OPTiMaDe/master/providers.json"
+        "https://www.optimade.org/providers/links"
     ).json()
 
     providers_list = []
