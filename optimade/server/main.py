@@ -47,9 +47,7 @@ if not CONFIG.use_real_mongo and all(path.exists() for path in test_paths.values
                 bson.json_util.loads(bson.json_util.dumps(data))
             )
         if endpoint_name == "links":
-            print(
-                "adding providers.json to links from github.com/Materials-Consortia/OPTiMaDe"
-            )
+            print("adding Materials-Consortia providers to links from optimade.org")
             endpoint_collection.collection.insert_many(
                 bson.json_util.loads(bson.json_util.dumps(get_providers()))
             )

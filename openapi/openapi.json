@@ -2924,7 +2924,8 @@
         "required": [
           "name",
           "description",
-          "base_url"
+          "base_url",
+          "homepage"
         ],
         "type": "object",
         "properties": {
@@ -2956,6 +2957,25 @@
               }
             ],
             "description": "JSON API links object, pointing to the base URL for this implementation"
+          },
+          "homepage": {
+            "title": "Homepage",
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 65536,
+                "format": "uri"
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Link"
+                  }
+                ]
+              }
+            ],
+            "description": "JSON API links object, pointing to a homepage URL for this implementation"
           }
         },
         "description": "Links endpoint resource object attributes"
