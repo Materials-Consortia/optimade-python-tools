@@ -32,6 +32,11 @@ class LinksResourceAttributes(Attributes):
         description="JSON API links object, pointing to the base URL for this implementation",
     )
 
+    homepage: Union[AnyUrl, Link, None] = Field(
+        ...,
+        description="JSON API links object, pointing to a homepage URL for this implementation",
+    )
+
 
 class LinksResource(EntryResource):
     """A Links endpoint resource object"""
