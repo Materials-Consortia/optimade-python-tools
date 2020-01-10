@@ -7,7 +7,10 @@ filter: expression*
 constant: string | number
 // Note: support for property in value is OPTIONAL
 value: string | number | property
+
+// Note: not_implemented_string is only here to help Transformers
 non_string_value: number | property
+not_implemented_string: string
 
 // Note:  support for OPERATOR in value_list is OPTIONAL
 value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
@@ -30,7 +33,7 @@ property_first_comparison: property ( value_op_rhs
                                     | set_zip_op_rhs
                                     | length_op_rhs )
 
-constant_first_comparison: constant OPERATOR non_string_value
+constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )
 
 value_op_rhs: OPERATOR value
 known_op_rhs: IS ( KNOWN | UNKNOWN )

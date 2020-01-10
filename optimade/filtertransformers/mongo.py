@@ -1,9 +1,6 @@
 from lark import Transformer, v_args, Token
 
 
-op_expr = {"<": "$lt", "<=": "$lte", ">": "$gt", ">=": "$gte", "!=": "$ne", "=": "$eq"}
-
-
 class MongoTransformer(Transformer):
     """Support for grammar v0.10.1"""
 
@@ -45,9 +42,19 @@ class MongoTransformer(Transformer):
 
     @v_args(inline=True)
     def non_string_value(self, value):
-        # non_string_value: number | property
+        """ non_string_value: number | property """
         # Note: Do nothing!
         return value
+
+    @v_args(inline=True)
+    def not_implemented_string(self, value):
+        """ not_implemented_string: value
+
+        Raise NotImplementedError.
+        For further information, see Materials-Consortia/OPTiMaDe issue 157:
+        https://github.com/Materials-Consortia/OPTiMaDe/issues/157
+        """
+        raise NotImplementedError("Comparing strings is not yet implemented.")
 
     def value_list(self, arg):
         # value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
@@ -93,12 +100,8 @@ class MongoTransformer(Transformer):
         return {arg[0]: arg[1]}
 
     def constant_first_comparison(self, arg):
-        # constant_first_comparison: constant value_op_rhs
-        # TODO: Probably the value_op_rhs rule is not the best for implementing this.
-        return {
-            prop: {self.reversed_operator_map[oper]: arg[0]}
-            for oper, prop in arg[1].items()
-        }
+        # constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )
+        return {arg[2]: {self.reversed_operator_map[self.operator_map[arg[1]]]: arg[0]}}
 
     @v_args(inline=True)
     def value_op_rhs(self, operator, value):
@@ -144,11 +147,6 @@ class MongoTransformer(Transformer):
         # value with OPERATOR
         raise NotImplementedError
 
-    def set_zip_op_rhs(self, arg):
-        # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
-        # ANY value_zip_list )
-        raise NotImplementedError
-
     def length_op_rhs(self, arg):
         # length_op_rhs: LENGTH [ OPERATOR ] value
         # TODO: https://stackoverflow.com/questions/7811163/query-for-documents-where-array-size-is-greater-than-1
@@ -158,6 +156,11 @@ class MongoTransformer(Transformer):
         raise NotImplementedError(
             f"Operator {arg[1]} not implemented for LENGTH filter."
         )
+
+    def set_zip_op_rhs(self, arg):
+        # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
+        # ANY value_zip_list )
+        raise NotImplementedError
 
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*
