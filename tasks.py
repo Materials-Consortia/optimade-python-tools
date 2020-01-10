@@ -32,6 +32,7 @@ def setver(_, patch=False, new_ver=""):
     with open("setup.py", "w") as f:
         f.write("\n".join(lines))
         f.write("\n")
+
     print("Bumped version to {}".format(new_ver))
 
 
@@ -55,11 +56,14 @@ def update_openapijson(c):
 def set_optimade_ver(_, ver=""):
     if not ver:
         raise Exception("Please specify --ver='Major.Minor.Patch'")
-    with open("optimade/server/config.ini", "r") as f:
+    with open("optimade/__init__.py", "r") as f:
         lines = [
-            re.sub("VERSION = .+", "VERSION = {}".format(ver), l.rstrip()) for l in f
+            re.sub(
+                "__api_version__ = .+", '__api_version__ = "{}"'.format(ver), l.rstrip()
+            )
+            for l in f
         ]
-    with open("optimade/server/config.ini", "w") as f:
+    with open("optimade/__init__.py", "w") as f:
         f.write("\n".join(lines))
         f.write("\n")
 
@@ -71,4 +75,5 @@ def set_optimade_ver(_, ver=""):
     with open(".ci/optimade-version.json", "w") as f:
         f.write("\n".join(lines))
         f.write("\n")
+
     print("Bumped OPTiMaDe version to {}".format(ver))
