@@ -650,8 +650,8 @@ class StructureResourceAttributes(EntryResourceAttributes):
         for dim_type, vector in zip(values["dimension_types"], v):
             if None in vector and dim_type == 1:
                 raise ValueError(
-                    f"Null entries in lattice vectors are only permitted when the corresponding dimension type is 0"
-                    f"here: dimension_types = {values['dimension_types']}, lattice_vectors = {v}"
+                    "Null entries in lattice vectors are only permitted when the corresponding dimension type is 0. "
+                    f"Here: dimension_types = {values['dimension_types']}, lattice_vectors = {v}"
                 )
 
         return v
