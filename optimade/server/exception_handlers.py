@@ -1,6 +1,8 @@
 import traceback
 from typing import Dict, Any
 
+from lark.exceptions import VisitError
+
 from pydantic import ValidationError
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
@@ -74,6 +76,18 @@ def validation_exception_handler(request: Request, exc: ValidationError):
             Error(detail=detail, status=status, title=title, source=source, code=code)
         )
     return general_exception(request, exc, status_code=status, errors=errors)
+
+
+def grammar_not_implemented_handler(request: Request, exc: VisitError):
+    status = 501
+    title = "NotImplementedError"
+    detail = (
+        f"Error trying to process rule '{exc.tree.data}'"
+        if not str(exc.orig_exc)
+        else str(exc.orig_exc)
+    )
+    error = Error(detail=detail, status=status, title=title)
+    return general_exception(request, exc, status_code=status, errors=[error])
 
 
 def general_exception_handler(request: Request, exc: Exception):
