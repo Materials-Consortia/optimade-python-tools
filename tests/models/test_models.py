@@ -26,6 +26,20 @@ class TestPydanticValidation(unittest.TestCase):
         for structure in good_structures:
             StructureResource(**StructureMapper.map_back(structure))
 
+    def test_more_good_structures(self):
+        test_structures_path = (
+            Path(__file__).resolve().parent.joinpath("test_more_structures.json")
+        )
+        with open(test_structures_path, "r") as f:
+            good_structures = json.load(f)
+
+        # adjust dates as mongo would
+        for doc in good_structures:
+            doc["last_modified"] = doc["last_modified"]["$date"]
+
+        for structure in good_structures:
+            StructureResource(**StructureMapper.map_back(structure))
+
     def test_bad_structures(self):
         test_structures_path = (
             Path(__file__).resolve().parent.joinpath("test_bad_structures.json")
