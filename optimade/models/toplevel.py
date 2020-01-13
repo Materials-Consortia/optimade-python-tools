@@ -1,14 +1,7 @@
 from datetime import datetime
 from typing import Union, List, Optional, Dict, Any
 
-from pydantic import (  # pylint: disable=no-name-in-module
-    BaseModel,
-    validator,
-    AnyUrl,
-    AnyHttpUrl,
-    Field,
-    EmailStr,
-)
+from pydantic import BaseModel, AnyHttpUrl, Field, EmailStr
 
 from .jsonapi import Link, Meta
 from .utils import NonnegativeInt

@@ -1,3 +1,4 @@
+# pylint: disable=no-self-argument
 from pydantic import Field, AnyUrl, validator, root_validator
 from typing import Union
 

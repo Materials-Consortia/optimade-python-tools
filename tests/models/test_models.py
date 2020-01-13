@@ -59,18 +59,45 @@ class TestPydanticValidation(unittest.TestCase):
                 StructureResource(**StructureMapper.map_back(structure))
 
     def test_simple_relationships(self):
+        """Make sure relationship resources are added to the correct relationship"""
+
+        good_relationships = (
+            {"references": {"data": [{"id": "dijkstra1968", "type": "references"}]}},
+            {"structures": {"data": [{"id": "dijkstra1968", "type": "structures"}]}},
+        )
+        for relationship in good_relationships:
+            EntryRelationships(**relationship)
+
+        bad_relationships = (
+            {"references": {"data": [{"id": "dijkstra1968", "type": "structures"}]}},
+            {"structures": {"data": [{"id": "dijkstra1968", "type": "references"}]}},
+        )
+        for relationship in bad_relationships:
+            with self.assertRaises(ValidationError):
+                EntryRelationships(**relationship)
+
+    def test_advanced_relationships(self):
+        """Make sure the rules for the base resource 'meta' field are upheld"""
+
         relationship = {
-            "references": {"data": [{"id": "dijkstra1968", "type": "references"}]}
+            "references": {
+                "data": [
+                    {
+                        "id": "dijkstra1968",
+                        "type": "references",
+                        "meta": {
+                            "description": "Reference for the search algorithm Dijkstra."
+                        },
+                    }
+                ]
+            }
         }
         EntryRelationships(**relationship)
 
         relationship = {
-            "references": {"data": [{"id": "dijkstra1968", "type": "structures"}]}
-        }
-        with self.assertRaises(ValidationError):
-            EntryRelationships(**relationship)
-        relationship = {
-            "references": {"data": [{"id": "dijkstra1968", "type": "structures"}]}
+            "references": {
+                "data": [{"id": "dijkstra1968", "type": "references", "meta": {}}]
+            }
         }
         with self.assertRaises(ValidationError):
             EntryRelationships(**relationship)

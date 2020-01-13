@@ -2342,8 +2342,23 @@
         },
         "description": "Resource objects appear in a JSON:API document to represent resources."
       },
-      "BaseResource": {
-        "title": "BaseResource",
+      "BaseRealationshipMeta": {
+        "title": "BaseRealationshipMeta",
+        "required": [
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "OPTIONAL human-readable description of the relationship"
+          }
+        },
+        "description": "Specific meta field for base relationship resource"
+      },
+      "BaseRelationshipResource": {
+        "title": "BaseRelationshipResource",
         "required": [
           "id",
           "type"
@@ -2359,9 +2374,18 @@
             "title": "Type",
             "type": "string",
             "description": "Resource type"
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseRealationshipMeta"
+              }
+            ],
+            "description": "Relationship meta field. MUST contain 'description' if supplied."
           }
         },
-        "description": "Minimum requirements to represent a Resource"
+        "description": "Minimum requirements to represent a relationship resource"
       },
       "EntryInfoProperty": {
         "title": "EntryInfoProperty",
@@ -3168,14 +3192,14 @@
               {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BaseResource"
+                    "$ref": "#/components/schemas/BaseRelationshipResource"
                   }
                 ]
               },
               {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/BaseResource"
+                  "$ref": "#/components/schemas/BaseRelationshipResource"
                 }
               }
             ],
@@ -3191,7 +3215,7 @@
             "description": "a meta object that contains non-standard meta-information about the relationship."
           }
         },
-        "description": "Representation references from the resource object in which it\u2019s defined to other resource objects."
+        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"
       },
       "ReferenceResource": {
         "title": "ReferenceResource",
@@ -3845,14 +3869,14 @@
               {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BaseResource"
+                    "$ref": "#/components/schemas/BaseRelationshipResource"
                   }
                 ]
               },
               {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/BaseResource"
+                  "$ref": "#/components/schemas/BaseRelationshipResource"
                 }
               }
             ],
@@ -3868,7 +3892,7 @@
             "description": "a meta object that contains non-standard meta-information about the relationship."
           }
         },
-        "description": "Representation references from the resource object in which it\u2019s defined to other resource objects."
+        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"
       },
       "StructureResource": {
         "title": "StructureResource",

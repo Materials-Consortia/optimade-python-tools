@@ -1,9 +1,10 @@
-# pylint: disable=line-too-long
+# pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
 from typing import Optional, Dict, List
 from pydantic import BaseModel, Field, validator
 
-from .jsonapi import Relationships, Attributes, Resource, Relationship
+from .jsonapi import Relationships, Attributes, Resource
+from .optimade_json import Relationship
 
 
 __all__ = (
