@@ -105,6 +105,7 @@ class ServerConfig(Config):
             "structures_collection": "structures",
             "page_limit": 20,
             "default_db": "test_server",
+            "base_url": None,
             "implementation": {
                 "name": "Example implementation",
                 "version": __version__,
@@ -115,8 +116,8 @@ class ServerConfig(Config):
                 "prefix": "_exmpl_",
                 "name": "Example provider",
                 "description": "Provider used for examples, not to be assigned to a real database",
-                "homepage": "http://example.com",
-                "index_base_url": "http://example.com/optimade/index",
+                "homepage": "https://example.com",
+                "index_base_url": "https://example.com/index/optimade",
             },
         }
         if field not in res:
@@ -140,6 +141,9 @@ class ServerConfig(Config):
         )
         self.default_db = config.get(
             "SERVER", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
+        )
+        self.default_db = config.get(
+            "SERVER", "BASE_URL", fallback=self._DEFAULTS("base_url")
         )
 
         # This is done in this way, since each field is OPTIONAL
@@ -198,6 +202,7 @@ class ServerConfig(Config):
 
         self.page_limit = int(config.get("page_limit", self._DEFAULTS("page_limit")))
         self.default_db = config.get("default_db", self._DEFAULTS("default_db"))
+        self.base_url = config.get("base_url", self._DEFAULTS("base_url"))
 
         # This is done in this way, since each field is OPTIONAL
         self.implementation = config.get("implementation", {})
