@@ -31,6 +31,12 @@ structures_coll = MongoCollection(
     response_model_exclude_unset=True,
     tags=["Structures"],
 )
+@router.get(
+    "/structures/",
+    response_model=Union[StructureResponseMany, ErrorResponse],
+    response_model_exclude_unset=True,
+    tags=["Structures"],
+)
 def get_structures(request: Request, params: EntryListingQueryParams = Depends()):
     return get_entries(
         collection=structures_coll,

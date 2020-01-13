@@ -172,7 +172,11 @@ class StructuresEndpointTests(EndpointTests, unittest.TestCase):
             else:
                 self.assertEqual(len(next_response["data"]), total_data % page_limit)
 
-        self.assertEqual(len(cursor), total_data)
+
+class StructuresEndpointAliasedTests(EndpointTests, unittest.TestCase):
+
+    request_str = "/structures/"
+    response_cls = StructureResponseMany
 
 
 class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
