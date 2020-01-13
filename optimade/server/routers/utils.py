@@ -157,11 +157,13 @@ def get_entries(
         query = urllib.parse.parse_qs(parse_result.query)
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
         urlencoded = urllib.parse.urlencode(query, doseq=True)
-        base_url = (
-            CONFIG.base_url
-            if CONFIG.base_url
-            else f"{parse_result.scheme}://{parse_result.netloc}"
-        )
+        if CONFIG.base_url:
+            if parse_result.netloc.split("/")[1:]:
+                base_url = f"{CONFIG.base_url}/{parse_result.netloc.split('/')[1:]}"
+            else:
+                base_url = CONFIG.base_url
+        else:
+            base_url = f"{parse_result.scheme}://{parse_result.netloc}"
         links = ToplevelLinks(next=f"{base_url}{parse_result.path}?{urlencoded}")
     else:
         links = ToplevelLinks(next=None)
