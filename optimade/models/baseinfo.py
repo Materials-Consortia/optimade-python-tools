@@ -1,3 +1,4 @@
+# pylint: disable=no-self-argument
 import re
 
 from typing import Dict, List, Optional
