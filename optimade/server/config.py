@@ -142,7 +142,7 @@ class ServerConfig(Config):
         self.default_db = config.get(
             "SERVER", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
         )
-        self.default_db = config.get(
+        self.base_url = config.get(
             "SERVER", "BASE_URL", fallback=self._DEFAULTS("base_url")
         )
 
