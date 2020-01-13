@@ -1,11 +1,20 @@
 """Modified JSON API v1.0 for OPTiMaDe API"""
-from pydantic import Field, validator, root_validator
-from typing import Optional, Set
+# pylint: disable=no-self-argument
+from pydantic import Field, root_validator, BaseModel
+from typing import Optional, Set, Union, List
 
 from . import jsonapi
 
 
-__all__ = ("Error", "Failure", "Success", "Warnings")
+__all__ = (
+    "Error",
+    "Failure",
+    "Success",
+    "Warnings",
+    "BaseRealationshipMeta",
+    "BaseRelationshipResource",
+    "Relationship",
+)
 
 
 class Error(jsonapi.Error):
@@ -91,3 +100,28 @@ class Warnings(Error):
         if values.get("status", None) is not None:
             raise ValueError("status MUST NOT be specified for warnings")
         return values
+
+
+class BaseRealationshipMeta(BaseModel):
+    """Specific meta field for base relationship resource"""
+
+    description: str = Field(
+        ..., description="OPTIONAL human-readable description of the relationship"
+    )
+
+
+class BaseRelationshipResource(jsonapi.BaseResource):
+    """Minimum requirements to represent a relationship resource"""
+
+    meta: Optional[BaseRealationshipMeta] = Field(
+        None,
+        description="Relationship meta field. MUST contain 'description' if supplied.",
+    )
+
+
+class Relationship(jsonapi.Relationship):
+    """Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"""
+
+    data: Optional[
+        Union[BaseRelationshipResource, List[BaseRelationshipResource]]
+    ] = Field(None, description="Resource linkage")
