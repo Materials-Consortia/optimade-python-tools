@@ -104,6 +104,7 @@ class ServerConfig(Config):
             "references_collection": "references",
             "structures_collection": "structures",
             "page_limit": 20,
+            "db_page_limit": 500,
             "default_db": "test_server",
             "base_url": None,
             "implementation": {
@@ -139,6 +140,9 @@ class ServerConfig(Config):
         self.page_limit = config.getint(
             "SERVER", "PAGE_LIMIT", fallback=self._DEFAULTS("page_limit")
         )
+        self.db_page_limit = config.getint(
+            "SERVER", "DB_PAGE_LIMIT", fallback=self._DEFAULTS("db_page_limit")
+        )
         self.default_db = config.get(
             "SERVER", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
         )
@@ -164,9 +168,9 @@ class ServerConfig(Config):
         self.provider_fields = {}
         for endpoint in {"links", "references", "structures"}:
             self.provider_fields[endpoint] = (
-                {field for field, _ in config[endpoint].items() if _ == ""}
+                list({field for field, _ in config[endpoint].items() if _ == ""})
                 if endpoint in config
-                else set()
+                else []
             )
 
             # MONGO collections
@@ -201,6 +205,9 @@ class ServerConfig(Config):
             )
 
         self.page_limit = int(config.get("page_limit", self._DEFAULTS("page_limit")))
+        self.db_page_limit = int(
+            config.get("db_page_limit", self._DEFAULTS("db_page_limit"))
+        )
         self.default_db = config.get("default_db", self._DEFAULTS("default_db"))
         self.base_url = config.get("base_url", self._DEFAULTS("base_url"))
 
@@ -217,8 +224,8 @@ class ServerConfig(Config):
         self.provider = config.get("provider", self._DEFAULTS("provider"))
         self.provider_fields = {}
         for endpoint in {"structures", "references"}:
-            self.provider_fields[endpoint] = set(
-                config.get("provider_fields", {}).get(endpoint, [])
+            self.provider_fields[endpoint] = list(
+                set(config.get("provider_fields", {}).get(endpoint, []))
             )
 
 

@@ -152,7 +152,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -312,7 +312,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -553,7 +553,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -873,7 +873,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1033,7 +1033,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1274,7 +1274,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1594,7 +1594,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1754,7 +1754,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1995,7 +1995,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"

@@ -1,4 +1,4 @@
-# pylint: disable=no-member,wrong-import-position
+# pylint: disable=no-member,wrong-import-position,import-outside-toplevel
 import unittest
 import abc
 
@@ -336,20 +336,37 @@ class FilterTests(unittest.TestCase):
         expected_return = 6
         self._check_response(request, expected_ids, expected_return)
 
+    def test_db_page_limit(self):
+        from optimade.server.config import CONFIG
+
+        request = f"/structures?page_limit={CONFIG.db_page_limit + 1}"
+        self._check_error_response(
+            request,
+            expected_status=403,
+            expected_title="HTTPException",
+            expected_detail=f"Max allowed page_limit is {CONFIG.db_page_limit}, you requested {CONFIG.db_page_limit + 1}",
+        )
+
     def test_list_has_all(self):
         request = '/structures?filter=elements HAS ALL "Ba","F","H","Mn","O","Re","Si"'
-        self._check_not_implemented(request)
+        self._check_error_response(
+            request, expected_status=501, expected_title="NotImplementedError"
+        )
         # expected_ids = ["mpf_3819"]
         # self._check_response(request, expected_ids, len(expected_ids))
 
         request = '/structures?filter=elements HAS ALL "Re","Ti"'
-        self._check_not_implemented(request)
+        self._check_error_response(
+            request, expected_status=501, expected_title="NotImplementedError"
+        )
         # expected_ids = ["mpf_3819"]
         # self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_has_any(self):
         request = '/structures?filter=elements HAS ANY "Re","Ti"'
-        self._check_not_implemented(request)
+        self._check_error_response(
+            request, expected_status=501, expected_title="NotImplementedError"
+        )
         # expected_ids = ["mpf_3819"]
         # self._check_response(request, expected_ids, len(expected_ids))
 
@@ -364,25 +381,39 @@ class FilterTests(unittest.TestCase):
     def test_list_length(self):
         request = "/structures?filter=elements LENGTH >= 9"
         error_detail = "Operator >= not implemented for LENGTH filter."
-        self._check_not_implemented(request, expected_detail=error_detail)
+        self._check_error_response(
+            request,
+            expected_status=501,
+            expected_title="NotImplementedError",
+            expected_detail=error_detail,
+        )
         # expected_ids = ["mpf_3819"]
         # self._check_response(request, expected_ids, len(expected_ids))
 
         request = "/structures?filter=structure_features LENGTH > 0"
         error_detail = "Operator > not implemented for LENGTH filter."
-        self._check_not_implemented(request, expected_detail=error_detail)
+        self._check_error_response(
+            request,
+            expected_status=501,
+            expected_title="NotImplementedError",
+            expected_detail=error_detail,
+        )
         # expected_ids = []
         # self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_has_only(self):
         request = '/structures?filter=elements HAS ONLY "Ac"'
-        self._check_not_implemented(request)
+        self._check_error_response(
+            request, expected_status=501, expected_title="NotImplementedError"
+        )
         # expected_ids = ["mpf_1"]
         # self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_correlated(self):
         request = '/structures?filter=elements:elements_ratios HAS "Ag":"0.2"'
-        self._check_not_implemented(request)
+        self._check_error_response(
+            request, expected_status=501, expected_title="NotImplementedError"
+        )
         # expected_ids = ["mpf_259"]
         # self._check_response(request, expected_ids, len(expected_ids))
 
@@ -482,21 +513,28 @@ class FilterTests(unittest.TestCase):
             print(f"{self.client.base_url}{request}")
             raise exc
 
-    def _check_not_implemented(self, request, expected_detail: str = None):
+    def _check_error_response(
+        self,
+        request,
+        expected_status: int = 500,
+        expected_title: str = None,
+        expected_detail: str = None,
+    ):
         try:
             response = self.client.get(request)
             self.assertEqual(
                 response.status_code,
-                501,
-                msg=f"Request should have failed, but did not: {response.json()}",
+                expected_status,
+                msg=f"Request should have been an error with status code {expected_status}, "
+                f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
             )
             response = response.json()
             self.assertEqual(len(response["errors"]), 1)
             self.assertEqual(response["meta"]["data_returned"], 0)
 
             error = response["errors"][0]
-            self.assertEqual("501", error["status"])
-            self.assertEqual("NotImplementedError", error["title"])
+            self.assertEqual(str(expected_status), error["status"])
+            self.assertEqual(expected_title, error["title"])
 
             if expected_detail is None:
                 expected_detail = "Error trying to process rule "

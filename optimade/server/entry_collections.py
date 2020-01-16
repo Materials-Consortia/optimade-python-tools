@@ -90,10 +90,9 @@ class MongoCollection(EntryCollection):
 
         self.provider = CONFIG.provider["prefix"]
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
-        self.page_limit = CONFIG.page_limit
         self.parser = LarkParser(
             version=(0, 10, 1), variant="default"
-        )  # The MongoTransformer only supports v0.10.0 as the latest grammar
+        )  # The MongoTransformer only supports v0.10.1 as the latest grammar
 
     def __len__(self):
         return self.collection.estimated_document_count()
@@ -176,15 +175,16 @@ class MongoCollection(EntryCollection):
             )
 
         if getattr(params, "page_limit", False):
-            limit = self.page_limit
-            if params.page_limit != self.page_limit:
+            limit = CONFIG.page_limit
+            if params.page_limit != CONFIG.page_limit:
                 limit = params.page_limit
-            if limit > self.page_limit:
+            if limit > CONFIG.db_page_limit:
                 raise HTTPException(
-                    status_code=400, detail=f"Max page_limit is {self.page_limit}"
+                    status_code=403,  # Forbidden
+                    detail=f"Max allowed page_limit is {CONFIG.db_page_limit}, you requested {limit}",
                 )
             if limit == 0:
-                limit = self.page_limit
+                limit = CONFIG.page_limit
             cursor_kwargs["limit"] = limit
 
         # All OPTiMaDe fields
