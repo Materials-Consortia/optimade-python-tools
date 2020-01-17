@@ -4,12 +4,12 @@ from setuptools import setup, find_packages
 module_dir = Path(__file__).resolve().parent
 
 # Dependencies
-mongo_deps = ["pymongo~=3.8", "mongomock~=3.16"]
+mongo_deps = ["pymongo~=3.10", "mongomock~=3.18"]
 server_deps = ["uvicorn"] + mongo_deps
 django_deps = ["django~=2.2,>=2.2.8"]
 elastic_deps = ["elasticsearch_dsl~=6.4"]
 testing_deps = [
-    "pytest~=3.6",
+    "pytest~=3.10",
     "pytest-cov",
     "codecov",
     "openapi-spec-validator",
@@ -20,7 +20,7 @@ all_deps = dev_deps + django_deps + elastic_deps
 
 setup(
     name="optimade",
-    version="0.3.0",
+    version="0.3.1",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTiMaDe Development Team",
@@ -34,17 +34,19 @@ setup(
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Intended Audience :: Developers",
         "Topic :: Database",
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.7.8",
-        "fastapi~=0.44",
-        "pydantic~=1.2",
+        "fastapi~=0.46",
+        "pydantic~=1.3",
         "email_validator",
         "requests",
     ],
