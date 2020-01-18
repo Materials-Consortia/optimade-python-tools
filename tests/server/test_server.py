@@ -314,6 +314,11 @@ class FilterTests(unittest.TestCase):
         expected_ids = ["mpf_3819"]
         self._check_response(request, expected_ids, len(expected_ids))
 
+    def test_rhs_comparison(self):
+        request = "/structures?filter=8<nelements"
+        expected_ids = ["mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
+
     def test_gt_none(self):
         request = "/structures?filter=nelements>9"
         expected_ids = []
@@ -335,52 +340,55 @@ class FilterTests(unittest.TestCase):
         expected_return = 6
         self._check_response(request, expected_ids, expected_return)
 
-    @unittest.skip("Skipping HAS ALL until implemented in server code.")
     def test_list_has_all(self):
         request = '/structures?filter=elements HAS ALL "Ba","F","H","Mn","O","Re","Si"'
-        expected_ids = ["mpf_3819"]
-        self._check_response(request, expected_ids, len(expected_ids))
+        self._check_not_implemented(request)
+        # expected_ids = ["mpf_3819"]
+        # self._check_response(request, expected_ids, len(expected_ids))
 
         request = '/structures?filter=elements HAS ALL "Re","Ti"'
-        expected_ids = ["mpf_3819"]
-        self._check_response(request, expected_ids, len(expected_ids))
+        self._check_not_implemented(request)
+        # expected_ids = ["mpf_3819"]
+        # self._check_response(request, expected_ids, len(expected_ids))
 
-    @unittest.skip("Skipping HAS ANY until implemented in server code.")
     def test_list_has_any(self):
         request = '/structures?filter=elements HAS ANY "Re","Ti"'
-        expected_ids = ["mpf_3819"]
-        self._check_response(request, expected_ids, len(expected_ids))
+        self._check_not_implemented(request)
+        # expected_ids = ["mpf_3819"]
+        # self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_length_basic(self):
-        request = "/structures?filter=LENGTH elements = 9"
+        request = "/structures?filter=elements LENGTH = 9"
         expected_ids = ["mpf_3819"]
         self._check_response(request, expected_ids, len(expected_ids))
 
-    @unittest.skip("Skipping LENGTH until implemented in server code.")
+        request = "/structures?filter=elements LENGTH 9"
+        self._check_response(request, expected_ids, len(expected_ids))
+
     def test_list_length(self):
-        request = "/structures?filter=LENGTH elements = 9"
-        expected_ids = ["mpf_3819"]
-        self._check_response(request, expected_ids, len(expected_ids))
+        request = "/structures?filter=elements LENGTH >= 9"
+        error_detail = "Operator >= not implemented for LENGTH filter."
+        self._check_not_implemented(request, expected_detail=error_detail)
+        # expected_ids = ["mpf_3819"]
+        # self._check_response(request, expected_ids, len(expected_ids))
 
-        request = "/structures?filter=LENGTH elements >= 9"
-        expected_ids = ["mpf_3819"]
-        self._check_response(request, expected_ids, len(expected_ids))
+        request = "/structures?filter=structure_features LENGTH > 0"
+        error_detail = "Operator > not implemented for LENGTH filter."
+        self._check_not_implemented(request, expected_detail=error_detail)
+        # expected_ids = []
+        # self._check_response(request, expected_ids, len(expected_ids))
 
-        request = "/structures?filter=LENGTH structure_features > 0"
-        expected_ids = []
-        self._check_response(request, expected_ids, len(expected_ids))
-
-    @unittest.skip("Skipping HAS ONLY until implemented in server code.")
     def test_list_has_only(self):
         request = '/structures?filter=elements HAS ONLY "Ac"'
-        expected_ids = ["mpf_1"]
-        self._check_response(request, expected_ids, len(expected_ids))
+        self._check_not_implemented(request)
+        # expected_ids = ["mpf_1"]
+        # self._check_response(request, expected_ids, len(expected_ids))
 
-    @unittest.skip("Skipping correlated list query until implemented in server code.")
     def test_list_correlated(self):
         request = '/structures?filter=elements:elements_ratios HAS "Ag":"0.2"'
-        expected_ids = ["mpf_259"]
-        self._check_response(request, expected_ids, len(expected_ids))
+        self._check_not_implemented(request)
+        # expected_ids = ["mpf_259"]
+        # self._check_response(request, expected_ids, len(expected_ids))
 
     def test_is_known(self):
         request = "/structures?filter=nsites IS KNOWN AND nsites>=44"
@@ -473,6 +481,33 @@ class FilterTests(unittest.TestCase):
             response_ids = [struct["id"] for struct in response["data"]]
             self.assertEqual(sorted(expected_ids), sorted(response_ids))
             self.assertEqual(response["meta"]["data_returned"], expected_return)
+        except Exception as exc:
+            print("Request attempted:")
+            print(f"{self.client.base_url}{request}")
+            raise exc
+
+    def _check_not_implemented(self, request, expected_detail: str = None):
+        try:
+            response = self.client.get(request)
+            self.assertEqual(
+                response.status_code,
+                501,
+                msg=f"Request should have failed, but did not: {response.json()}",
+            )
+            response = response.json()
+            self.assertEqual(len(response["errors"]), 1)
+            self.assertEqual(response["meta"]["data_returned"], 0)
+
+            error = response["errors"][0]
+            self.assertEqual("501", error["status"])
+            self.assertEqual("NotImplementedError", error["title"])
+
+            if expected_detail is None:
+                expected_detail = "Error trying to process rule "
+                self.assertTrue(error["detail"].startswith(expected_detail))
+            else:
+                self.assertEqual(expected_detail, error["detail"])
+
         except Exception as exc:
             print("Request attempted:")
             print(f"{self.client.base_url}{request}")

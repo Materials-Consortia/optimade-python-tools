@@ -3,7 +3,7 @@
   "info": {
     "title": "OPTiMaDe API",
     "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.",
-    "version": "0.10.0"
+    "version": "0.10.1"
   },
   "paths": {
     "/optimade/info": {
@@ -727,20 +727,20 @@
         }
       }
     },
-    "/optimade/v0.10.0/info": {
+    "/optimade/v0.10.1/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_optimade_v0_10_0_info_get",
+        "operationId": "get_info_optimade_v0_10_1_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info Optimade V0 10 0 Info Get",
+                  "title": "Response Get Info Optimade V0 10 1 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/InfoResponse"
@@ -756,13 +756,13 @@
         }
       }
     },
-    "/optimade/v0.10.0/info/{entry}": {
+    "/optimade/v0.10.1/info/{entry}": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Entry Info",
-        "operationId": "get_entry_info_optimade_v0_10_0_info__entry__get",
+        "operationId": "get_entry_info_optimade_v0_10_1_info__entry__get",
         "parameters": [
           {
             "required": true,
@@ -780,7 +780,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Entry Info Optimade V0 10 0 Info  Entry  Get",
+                  "title": "Response Get Entry Info Optimade V0 10 1 Info  Entry  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/EntryInfoResponse"
@@ -806,13 +806,13 @@
         }
       }
     },
-    "/optimade/v0.10.0/links": {
+    "/optimade/v0.10.1/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_optimade_v0_10_0_links_get",
+        "operationId": "get_links_optimade_v0_10_1_links_get",
         "parameters": [
           {
             "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
@@ -940,7 +940,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links Optimade V0 10 0 Links Get",
+                  "title": "Response Get Links Optimade V0 10 1 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
@@ -966,13 +966,13 @@
         }
       }
     },
-    "/optimade/v0.10.0/references": {
+    "/optimade/v0.10.1/references": {
       "get": {
         "tags": [
           "References"
         ],
         "summary": "Get References",
-        "operationId": "get_references_optimade_v0_10_0_references_get",
+        "operationId": "get_references_optimade_v0_10_1_references_get",
         "parameters": [
           {
             "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
@@ -1100,7 +1100,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get References Optimade V0 10 0 References Get",
+                  "title": "Response Get References Optimade V0 10 1 References Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseMany"
@@ -1126,13 +1126,13 @@
         }
       }
     },
-    "/optimade/v0.10.0/references/{entry_id}": {
+    "/optimade/v0.10.1/references/{entry_id}": {
       "get": {
         "tags": [
           "References"
         ],
         "summary": "Get Single Reference",
-        "operationId": "get_single_reference_optimade_v0_10_0_references__entry_id__get",
+        "operationId": "get_single_reference_optimade_v0_10_1_references__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -1181,7 +1181,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Single Reference Optimade V0 10 0 References  Entry Id  Get",
+                  "title": "Response Get Single Reference Optimade V0 10 1 References  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseOne"
@@ -1207,13 +1207,13 @@
         }
       }
     },
-    "/optimade/v0.10.0/structures": {
+    "/optimade/v0.10.1/structures": {
       "get": {
         "tags": [
           "Structures"
         ],
         "summary": "Get Structures",
-        "operationId": "get_structures_optimade_v0_10_0_structures_get",
+        "operationId": "get_structures_optimade_v0_10_1_structures_get",
         "parameters": [
           {
             "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
@@ -1341,7 +1341,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Structures Optimade V0 10 0 Structures Get",
+                  "title": "Response Get Structures Optimade V0 10 1 Structures Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseMany"
@@ -1367,13 +1367,13 @@
         }
       }
     },
-    "/optimade/v0.10.0/structures/{entry_id}": {
+    "/optimade/v0.10.1/structures/{entry_id}": {
       "get": {
         "tags": [
           "Structures"
         ],
         "summary": "Get Single Structure",
-        "operationId": "get_single_structure_optimade_v0_10_0_structures__entry_id__get",
+        "operationId": "get_single_structure_optimade_v0_10_1_structures__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -1422,7 +1422,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Single Structure Optimade V0 10 0 Structures  Entry Id  Get",
+                  "title": "Response Get Single Structure Optimade V0 10 1 Structures  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseOne"

@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from lark.exceptions import VisitError
+
 from pydantic import ValidationError
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
@@ -47,6 +49,7 @@ app.add_exception_handler(
     RequestValidationError, exc_handlers.request_validation_exception_handler
 )
 app.add_exception_handler(ValidationError, exc_handlers.validation_exception_handler)
+app.add_exception_handler(VisitError, exc_handlers.grammar_not_implemented_handler)
 app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 

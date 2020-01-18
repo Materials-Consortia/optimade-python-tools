@@ -1,15 +1,18 @@
 import unittest
+
+from lark.exceptions import VisitError
+
 from optimade.filterparser import LarkParser, ParserError
-from optimade.filtertransformers.mongo import NewMongoTransformer
+from optimade.filtertransformers.mongo import MongoTransformer
 
 
 class TestMongoTransformer(unittest.TestCase):
-    version = (0, 10, 0)
+    version = (0, 10, 1)
     variant = "default"
 
     def setUp(self):
         p = LarkParser(version=self.version, variant=self.variant)
-        t = NewMongoTransformer()
+        t = MongoTransformer()
         self.transform = lambda inp: t.transform(p.parse(inp))
 
     def test_empty(self):
@@ -213,48 +216,65 @@ class TestMongoTransformer(unittest.TestCase):
         )
 
         # OPTIONAL
-        # self.assertEqual(self.transform('((NOT (_exmpl_a>_exmpl_b)) AND _exmpl_x>0)'), {})
-        # self.assertEqual(self.transform('5 < 7'), {})
+        # self.assertEqual(self.transform("((NOT (_exmpl_a>_exmpl_b)) AND _exmpl_x>0)"), {})
 
-    @unittest.skip("Not implemented yet.")
+        self.assertEqual(self.transform("5 < 7"), {7: {"$gt": 5}})
+
+        with self.assertRaises(VisitError):
+            self.transform('"some string" > "some other string"')
+
     def test_list_properties(self):
+        """Test queries using list properties
+
+        NOTE: Some of these are not implemented yet, these will be tested to raise.
+        """
         # Comparisons of list properties
-        self.assertEqual(self.transform("list HAS < 3"), {})
-        self.assertEqual(self.transform("list HAS ALL < 3, > 3"), {})
-        self.assertEqual(self.transform("list:list HAS >=2:<=5"), {})
-        self.assertEqual(
+        with self.assertRaises(VisitError):
+            self.transform("list HAS < 3")
+
+        with self.assertRaises(VisitError):
+            self.transform("list HAS ALL < 3, > 3")
+
+        with self.assertRaises(VisitError):
+            self.transform("list HAS ANY > 3, < 6")
+
+        self.assertEqual(self.transform("list LENGTH 3"), {"list": {"$size": 3}})
+
+        with self.assertRaises(VisitError):
+            self.transform("list:list HAS >=2:<=5")
+
+        with self.assertRaises(VisitError):
             self.transform(
                 'elements HAS "H" AND elements HAS ALL "H","He","Ga","Ta" AND elements HAS '
                 'ONLY "H","He","Ga","Ta" AND elements HAS ANY "H", "He", "Ga", "Ta"'
-            ),
-            {},
-        )
+            )
 
         # OPTIONAL:
-        self.assertEqual(self.transform('elements HAS ONLY "H","He","Ga","Ta"'), {})
-        self.assertEqual(
+        with self.assertRaises(VisitError):
+            self.transform('elements HAS ONLY "H","He","Ga","Ta"')
+
+        with self.assertRaises(VisitError):
             self.transform(
                 'elements:_exmpl_element_counts HAS "H":6 AND elements:_exmpl_element_counts '
                 'HAS ALL "H":6,"He":7 AND elements:_exmpl_element_counts HAS ONLY "H":6 AND '
                 'elements:_exmpl_element_counts HAS ANY "H":6,"He":7 AND '
                 'elements:_exmpl_element_counts HAS ONLY "H":6,"He":7'
-            ),
-            {},
-        )
-        self.assertEqual(
+            )
+
+        with self.assertRaises(VisitError):
             self.transform(
                 "_exmpl_element_counts HAS < 3 AND _exmpl_element_counts "
                 "HAS ANY > 3, = 6, 4, != 8"
-            ),
-            {},
-        )
-        self.assertEqual(
+            )
+
+        with self.assertRaises(VisitError):
             self.transform(
                 "elements:_exmpl_element_counts:_exmpl_element_weights "
                 'HAS ANY > 3:"He":>55.3 , = 6:>"Ti":<37.6 , 8:<"Ga":0'
-            ),
-            {},
-        )
+            )
+
+        with self.assertRaises(VisitError):
+            self.transform("list LENGTH > 3")
 
     def test_properties(self):
         #  Filtering on Properties with unknown value
