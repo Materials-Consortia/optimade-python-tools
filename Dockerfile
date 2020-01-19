@@ -5,12 +5,9 @@ WORKDIR /app
 # copy repo contents
 COPY setup.py README.md ./
 COPY optimade ./optimade
-RUN pip install -e .[mongo]
-RUN pip install uvicorn
+RUN pip install -e .[server]
 
 EXPOSE 80
-
-ENV MAIN main
 
 COPY run.sh ./
 

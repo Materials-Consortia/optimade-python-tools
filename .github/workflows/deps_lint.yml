@@ -87,6 +87,15 @@ jobs:
         .ci/openapi_diff.sh
         .ci/index_openapi_diff.sh
 
+  docker-image:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Build the Docker image
+      run: docker-compose -f profiles/docker-compose.yml build
+
   deps_static:
     runs-on: ubuntu-latest
 
