@@ -1,3 +1,4 @@
+import os
 import json
 from pathlib import Path
 
@@ -91,12 +92,10 @@ for prefix in valid_prefixes:
 
 def update_schema(app):
     """Update OpenAPI schema in file 'local_openapi.json'"""
-    local_openapi = (
-        Path(__file__)
-        .resolve()
-        .parent.parent.parent.joinpath("openapi/local_openapi.json")
-    )
-    with open(local_openapi, "w") as f:
+    package_root = Path(__file__).parent.parent.parent.resolve()
+    if not package_root.joinpath("openapi").exists():
+        os.mkdir(package_root.joinpath("openapi"))
+    with open(package_root.joinpath("openapi/local_openapi.json"), "w") as f:
         json.dump(app.openapi(), f, indent=2)
 
 
