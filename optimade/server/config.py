@@ -117,7 +117,7 @@ class ServerConfig(Config):
                 "name": "Example provider",
                 "description": "Provider used for examples, not to be assigned to a real database",
                 "homepage": "https://example.com",
-                "index_base_url": "https://example.com/index/optimade",
+                "index_base_url": None,
             },
         }
         if field not in res:

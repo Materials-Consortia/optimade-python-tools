@@ -16,9 +16,7 @@ from optimade.models import (
     StructureResource,
 )
 
-from optimade.server.config import CONFIG
-
-from .utils import meta_values, retrieve_queryable_properties
+from .utils import meta_values, retrieve_queryable_properties, get_base_url
 
 
 router = APIRouter()
@@ -39,11 +37,7 @@ def get_info(request: Request):
     from optimade.models import BaseInfoResource, BaseInfoAttributes
 
     parse_result = urllib.parse.urlparse(str(request.url))
-    base_url = (
-        CONFIG.base_url
-        if CONFIG.base_url
-        else f"{parse_result.scheme}://{parse_result.netloc}"
-    )
+    base_url = get_base_url(parse_result)
 
     return InfoResponse(
         meta=meta_values(str(request.url), 1, 1, more_data_available=False),
