@@ -139,6 +139,18 @@ def get_included_relationships(
     return [obj for endp in included.values() for obj in endp]
 
 
+def get_base_url(parsed_url_request: urllib.parse.ParseResult) -> str:
+    """Get base URL for current server
+
+    Take the base URL from the config file, if it exists, otherwise use the request.
+    """
+    return (
+        CONFIG.base_url
+        if CONFIG.base_url
+        else f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
+    )
+
+
 def get_entries(
     collection: EntryCollection,
     response: EntryResponseMany,
@@ -158,13 +170,8 @@ def get_entries(
         query = urllib.parse.parse_qs(parse_result.query)
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
         urlencoded = urllib.parse.urlencode(query, doseq=True)
+        base_url = get_base_url(parse_result)
 
-        # Take the base URL from the config file, if it exists, otherwise use the request.
-        base_url = (
-            CONFIG.base_url
-            if CONFIG.base_url
-            else f"{parse_result.scheme}://{parse_result.netloc}"
-        )
         links = ToplevelLinks(next=f"{base_url}{parse_result.path}?{urlencoded}")
     else:
         links = ToplevelLinks(next=None)
