@@ -16,7 +16,7 @@ class ResourceMapper:
         return (
             tuple(
                 (CONFIG.provider["prefix"] + field, field)
-                for field in CONFIG.provider_fields.get(cls.ENDPOINT, {})
+                for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
             )
             + cls.ALIASES
         )

@@ -1,3 +1,5 @@
+import urllib
+
 from typing import Union
 
 from fastapi import APIRouter
@@ -14,7 +16,7 @@ from optimade.models import (
     StructureResource,
 )
 
-from .utils import meta_values, retrieve_queryable_properties
+from .utils import meta_values, retrieve_queryable_properties, get_base_url
 
 
 router = APIRouter()
@@ -34,6 +36,9 @@ ENTRY_INFO_SCHEMAS = {
 def get_info(request: Request):
     from optimade.models import BaseInfoResource, BaseInfoAttributes
 
+    parse_result = urllib.parse.urlparse(str(request.url))
+    base_url = get_base_url(parse_result)
+
     return InfoResponse(
         meta=meta_values(str(request.url), 1, 1, more_data_available=False),
         data=BaseInfoResource(
@@ -43,7 +48,7 @@ def get_info(request: Request):
                 api_version=f"v{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"http://localhost:5000/optimade/v{__api_version__}/",
+                        "url": f"{base_url}/optimade/v{__api_version__}",
                         "version": __api_version__,
                     }
                 ],

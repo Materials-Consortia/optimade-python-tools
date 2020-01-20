@@ -104,7 +104,9 @@ class ServerConfig(Config):
             "references_collection": "references",
             "structures_collection": "structures",
             "page_limit": 20,
+            "page_limit_max": 500,
             "default_db": "test_server",
+            "base_url": None,
             "implementation": {
                 "name": "Example implementation",
                 "version": __version__,
@@ -115,8 +117,8 @@ class ServerConfig(Config):
                 "prefix": "_exmpl_",
                 "name": "Example provider",
                 "description": "Provider used for examples, not to be assigned to a real database",
-                "homepage": "http://example.com",
-                "index_base_url": "http://example.com/optimade/index",
+                "homepage": "https://example.com",
+                "index_base_url": None,
             },
         }
         if field not in res:
@@ -138,8 +140,14 @@ class ServerConfig(Config):
         self.page_limit = config.getint(
             "SERVER", "PAGE_LIMIT", fallback=self._DEFAULTS("page_limit")
         )
+        self.page_limit_max = config.getint(
+            "SERVER", "PAGE_LIMIT_MAX", fallback=self._DEFAULTS("page_limit_max")
+        )
         self.default_db = config.get(
             "SERVER", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
+        )
+        self.base_url = config.get(
+            "SERVER", "BASE_URL", fallback=self._DEFAULTS("base_url")
         )
 
         # This is done in this way, since each field is OPTIONAL
@@ -160,9 +168,9 @@ class ServerConfig(Config):
         self.provider_fields = {}
         for endpoint in {"links", "references", "structures"}:
             self.provider_fields[endpoint] = (
-                {field for field, _ in config[endpoint].items() if _ == ""}
+                list({field for field, _ in config[endpoint].items() if _ == ""})
                 if endpoint in config
-                else set()
+                else []
             )
 
             # MONGO collections
@@ -197,7 +205,11 @@ class ServerConfig(Config):
             )
 
         self.page_limit = int(config.get("page_limit", self._DEFAULTS("page_limit")))
+        self.page_limit_max = int(
+            config.get("page_limit_max", self._DEFAULTS("page_limit_max"))
+        )
         self.default_db = config.get("default_db", self._DEFAULTS("default_db"))
+        self.base_url = config.get("base_url", self._DEFAULTS("base_url"))
 
         # This is done in this way, since each field is OPTIONAL
         self.implementation = config.get("implementation", {})
@@ -212,8 +224,8 @@ class ServerConfig(Config):
         self.provider = config.get("provider", self._DEFAULTS("provider"))
         self.provider_fields = {}
         for endpoint in {"structures", "references"}:
-            self.provider_fields[endpoint] = set(
-                config.get("provider_fields", {}).get(endpoint, [])
+            self.provider_fields[endpoint] = list(
+                set(config.get("provider_fields", {}).get(endpoint, []))
             )
 
 
