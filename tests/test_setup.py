@@ -13,7 +13,7 @@ class TestSetup(unittest.TestCase):
         package_root = Path(__file__).parent.parent.resolve()
 
         number_of_grammar_files = len(
-            [_ for _ in package_root.joinpath("optimade/grammar").rglob("*.lark")]
+            list(package_root.joinpath("optimade/grammar").rglob("*.lark"))
         )
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -35,8 +35,6 @@ class TestSetup(unittest.TestCase):
                 r"test_structures\.json": False,
                 r"test_references\.json": False,
                 r"test_links\.json": False,
-                r"index_openapi\.json": False,
-                r"openapi\.json": False,
             }
             count = 0
             for line in lines:
