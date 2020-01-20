@@ -175,17 +175,15 @@ class MongoCollection(EntryCollection):
             )
 
         if getattr(params, "page_limit", False):
-            limit = CONFIG.page_limit
-            if params.page_limit != CONFIG.page_limit:
-                limit = params.page_limit
-            if limit > CONFIG.db_page_limit:
+            limit = params.page_limit
+            if limit > CONFIG.page_limit_max:
                 raise HTTPException(
                     status_code=403,  # Forbidden
-                    detail=f"Max allowed page_limit is {CONFIG.db_page_limit}, you requested {limit}",
+                    detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
                 )
-            if limit == 0:
-                limit = CONFIG.page_limit
             cursor_kwargs["limit"] = limit
+        else:
+            cursor_kwargs["limit"] = CONFIG.page_limit
 
         # All OPTiMaDe fields
         fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
