@@ -150,7 +150,7 @@ class ServerConfig(Config):
         self.implementation = {}
         for field in Implementation.schema()["properties"]:
             value_config = config.get("IMPLEMENTATION", field, fallback=None)
-            value_default = self._DEFAULTS(f"implementation")[field]
+            value_default = self._DEFAULTS("implementation")[field]
             if value_config is not None:
                 self.implementation[field] = value_config
             elif value_default is not None:
@@ -195,8 +195,9 @@ class ServerConfig(Config):
             setattr(
                 self,
                 f"{endpoint}_collection",
-                config.get(f"{endpoint}_collection"),
-                getattr(self._DEFAULTS(f"{endpoint}_collection")),
+                config.get(
+                    f"{endpoint}_collection", self._DEFAULTS(f"{endpoint}_collection")
+                ),
             )
 
         self.page_limit = int(config.get("page_limit", self._DEFAULTS("page_limit")))
@@ -206,7 +207,7 @@ class ServerConfig(Config):
         # This is done in this way, since each field is OPTIONAL
         self.implementation = config.get("implementation", {})
         for field in Implementation.schema()["properties"]:
-            value_default = self._DEFAULTS(f"implementation.{field}")
+            value_default = self._DEFAULTS("implementation")[field]
             if field in self.implementation:
                 # Keep the config value
                 pass
@@ -214,9 +215,11 @@ class ServerConfig(Config):
                 self.implementation[field] = value_default
 
         self.provider = config.get("provider", self._DEFAULTS("provider"))
-        self.provider_fields = set(
-            config.get("provider_fields", self._DEFAULTS("provider_fields"))
-        )
+        self.provider_fields = {}
+        for endpoint in {"structures", "references"}:
+            self.provider_fields[endpoint] = set(
+                config.get("provider_fields", {}).get(endpoint, [])
+            )
 
 
 CONFIG = ServerConfig()
