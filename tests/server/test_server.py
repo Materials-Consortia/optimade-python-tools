@@ -336,15 +336,15 @@ class FilterTests(unittest.TestCase):
         expected_return = 6
         self._check_response(request, expected_ids, expected_return)
 
-    def test_db_page_limit(self):
+    def test_page_limit_max(self):
         from optimade.server.config import CONFIG
 
-        request = f"/structures?page_limit={CONFIG.db_page_limit + 1}"
+        request = f"/structures?page_limit={CONFIG.page_limit_max + 1}"
         self._check_error_response(
             request,
             expected_status=403,
             expected_title="HTTPException",
-            expected_detail=f"Max allowed page_limit is {CONFIG.db_page_limit}, you requested {CONFIG.db_page_limit + 1}",
+            expected_detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {CONFIG.page_limit_max + 1}",
         )
 
     def test_list_has_all(self):
