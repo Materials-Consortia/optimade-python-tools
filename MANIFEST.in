@@ -1,4 +1,3 @@
 recursive-include optimade/server/ *.ini *.json
 recursive-include optimade/server/data/ *
 recursive-include optimade/grammar/ *.lark
-recursive-include openapi/ index_openapi.json openapi.json
