@@ -149,6 +149,12 @@ def test_case(test_fn):
     def wrapper(*args, **kwargs):
         try:
             result, msg = test_fn(*args, **kwargs)
+        except json.JSONDecodeError as exc:
+            result = None
+            msg = (
+                "Critical: unable to parse server response as JSON. "
+                f"Error: {type(exc).__name__}: {exc}"
+            )
         except (ResponseError, ValidationError) as exc:
             if args[0].verbosity > 1:
                 traceback.print_exc()
@@ -412,13 +418,13 @@ class ImplementationValidator:
         )
 
     @test_case
-    def deserialize_response(self, response, response_cls):
+    def deserialize_response(self, response: requests.models.Response, response_cls):
         """ Try to create the appropriate pydantic model from the response. """
         if not response:
             raise ResponseError("Request failed")
         return (
             response_cls(**response.json()),
-            "deserialized correctly as {}".format(response_cls),
+            "deserialized correctly as object of type {}".format(response_cls),
         )
 
     @test_case
