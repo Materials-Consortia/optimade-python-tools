@@ -187,13 +187,13 @@ class InfoResponse(Success):
 
 
 class EntryResponseOne(Success):
-    meta: ResponseMeta = Field(...)
+    meta: Optional[ResponseMeta] = Field(None)
     data: Union[EntryResource, Dict[str, Any], None] = Field(...)
     included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(None)
 
 
 class EntryResponseMany(Success):
-    meta: ResponseMeta = Field(...)
+    meta: Optional[ResponseMeta] = Field(None)
     data: Union[List[EntryResource], List[Dict[str, Any]]] = Field(...)
     included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(None)
 

@@ -1279,8 +1279,7 @@
       "LinksResponse": {
         "title": "LinksResponse",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
