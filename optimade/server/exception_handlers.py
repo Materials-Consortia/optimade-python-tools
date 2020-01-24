@@ -79,10 +79,12 @@ def validation_exception_handler(request: Request, exc: ValidationError):
 
 
 def grammar_not_implemented_handler(request: Request, exc: VisitError):
+    rule = getattr(exc.obj, "data", getattr(exc.obj, "type", str(exc)))
+
     status = 501
     title = "NotImplementedError"
     detail = (
-        f"Error trying to process rule '{exc}'"
+        f"Error trying to process rule '{rule}'"
         if not str(exc.orig_exc)
         else str(exc.orig_exc)
     )
