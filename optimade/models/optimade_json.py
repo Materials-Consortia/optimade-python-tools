@@ -65,7 +65,7 @@ class Success(jsonapi.Response):
         required_fields = ("data", "meta")
         if not any(values.get(field) for field in required_fields):
             raise ValueError(
-                f"Either of {required_fields} MUST be specified in the top-level response"
+                f"Minimum one of {required_fields} MUST be specified in the top-level response"
             )
 
         # errors MUST be skipped
