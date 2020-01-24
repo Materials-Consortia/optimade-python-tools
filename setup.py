@@ -20,7 +20,7 @@ all_deps = dev_deps + django_deps + elastic_deps
 
 setup(
     name="optimade",
-    version="0.3.2",
+    version="0.3.3",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTiMaDe Development Team",
@@ -45,7 +45,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.8.1",
-        "fastapi~=0.46",
+        "fastapi~=0.47",
         "pydantic~=1.3",
         "email_validator",
         "requests",
