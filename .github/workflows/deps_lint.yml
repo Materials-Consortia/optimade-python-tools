@@ -1,4 +1,4 @@
-name: Testing, linting and OpenAPI validation
+name: Testing, linting, and OpenAPI validation
 
 on:
   pull_request:
