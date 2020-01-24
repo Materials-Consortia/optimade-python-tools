@@ -273,6 +273,6 @@ class Response(BaseModel):
         required_fields = ("data", "meta", "errors")
         if not any(values.get(field) for field in required_fields):
             raise ValueError(
-                f"Minimum one of {required_fields} MUST be specified in the top-level response"
+                f"At least one of {required_fields} MUST be specified in the top-level response"
             )
         return values
