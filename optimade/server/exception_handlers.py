@@ -82,7 +82,7 @@ def grammar_not_implemented_handler(request: Request, exc: VisitError):
     status = 501
     title = "NotImplementedError"
     detail = (
-        f"Error trying to process rule '{exc.tree.data}'"
+        f"Error trying to process rule '{exc}'"
         if not str(exc.orig_exc)
         else str(exc.orig_exc)
     )
