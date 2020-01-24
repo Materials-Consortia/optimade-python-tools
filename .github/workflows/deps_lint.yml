@@ -1,4 +1,4 @@
-name: Dependency, linting, and OpenAPI validation
+name: Testing, linting, and OpenAPI validation
 
 on:
   pull_request:
@@ -89,9 +89,10 @@ jobs:
 
   deps_static:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 3
       matrix:
         python-version: [3.6, 3.7, 3.8]
 
@@ -103,7 +104,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install latest versions of immediate dependencies
+    - name: Install latest compatible versions of immediate dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools
@@ -111,7 +112,7 @@ jobs:
         python -m pip install -r .github/workflows/requirements.txt
         pip install -e .[all]
 
-    - name: Run tests on updated packages
+    - name: Run tests
       run: |
         pytest -rs --cov=./optimade/ --cov-report=xml
 
@@ -123,58 +124,3 @@ jobs:
         file: ./coverage.xml
         flags: unittests
         yml: ./.codecov.yml
-
-  deps_eager:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 2
-      matrix:
-        python-version: [3.6, 3.7, 3.8]
-
-    steps:
-    - uses: actions/checkout@v1
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Install latest versions of immediate dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools
-        # Install package clean with all dependencies followed by eager update install
-        pip install -e .[testing,django,elastic]
-        pip install -U --upgrade-strategy eager -r .github/workflows/requirements_eager.txt
-
-    - name: Run tests on updated packages
-      run: |
-        pytest -rs --cov=./optimade/
-
-  # deps_clean-install:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #     max-parallel: 2
-  #     matrix:
-  #       python-version: [3.6, 3.7, 3.8]
-
-  #   steps:
-  #   - uses: actions/checkout@v1
-
-  #   - name: Set up Python ${{ matrix.python-version }}
-  #     uses: actions/setup-python@v1
-  #     with:
-  #       python-version: ${{ matrix.python-version }}
-
-  #   - name: Install latest versions of immediate dependencies
-  #     run: |
-  #       python -m pip install --upgrade pip
-  #       pip install -U setuptools
-  #       # Install all dependencies "as a user", i.e., a clean install
-  #       pip install -e .[all]
-
-  #   - name: Run tests on updated packages
-  #     run: |
-  #       pytest -rs --cov=./optimade/
