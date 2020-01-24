@@ -3007,8 +3007,7 @@
       "LinksResponse": {
         "title": "LinksResponse",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
@@ -3431,8 +3430,7 @@
       "ReferenceResponseMany": {
         "title": "ReferenceResponseMany",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
@@ -3506,8 +3504,7 @@
       "ReferenceResponseOne": {
         "title": "ReferenceResponseOne",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
@@ -4083,8 +4080,7 @@
       "StructureResponseMany": {
         "title": "StructureResponseMany",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
@@ -4158,8 +4154,7 @@
       "StructureResponseOne": {
         "title": "StructureResponseOne",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {

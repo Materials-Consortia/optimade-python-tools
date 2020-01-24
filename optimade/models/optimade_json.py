@@ -59,16 +59,13 @@ class Success(jsonapi.Response):
         None, description="Links associated with the primary data"
     )
 
-    @root_validator
+    @root_validator(pre=True)
     def either_data_meta_or_errors_must_be_set(cls, values):
         """Overwriting the existing validation function"""
         required_fields = ("data", "meta")
-        for field in required_fields:
-            if values.get(field, None) is not None:
-                break
-        else:
+        if not any(values.get(field) for field in required_fields):
             raise ValueError(
-                f"Either of {required_fields} must be specified in the top-level response"
+                f"At least one of {required_fields} MUST be specified in the top-level response"
             )
 
         # errors MUST be skipped
