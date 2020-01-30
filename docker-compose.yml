@@ -2,22 +2,26 @@ version: '2'
 
 services:
 
-  optimade-index:
-    restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      MAIN: main_index
-    ports:
-      - '3214:5001'
-
   optimade:
     restart: always
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        PORT: 5000
     environment:
       MAIN: main
     ports:
       - '3213:5000'
+
+  optimade-index:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PORT: 5001
+    environment:
+      MAIN: main_index
+    ports:
+      - '3214:5001'

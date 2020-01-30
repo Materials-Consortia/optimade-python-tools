@@ -7,8 +7,9 @@ COPY setup.py README.md ./
 COPY optimade ./optimade
 RUN pip install -e .[server]
 
-EXPOSE 80
+ARG PORT=5000
+EXPOSE ${PORT}
 
-COPY run.sh ./
+COPY .docker/run.sh ./
 
-CMD ["/app/run.sh", "$MAIN"]
+CMD ["/app/run.sh"]
