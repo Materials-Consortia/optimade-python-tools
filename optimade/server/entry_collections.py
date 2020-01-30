@@ -16,9 +16,11 @@ from .mappers import ResourceMapper
 
 if CONFIG.use_real_mongo:
     from pymongo import MongoClient
+
     client = MongoClient(CONFIG.mongo_uri)
 else:
     from mongomock import MongoClient
+
     client = MongoClient()
 
 
