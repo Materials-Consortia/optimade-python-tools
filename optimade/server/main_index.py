@@ -1,3 +1,4 @@
+# pylint: disable=line-too-long
 import os
 import json
 from pathlib import Path
@@ -12,17 +13,17 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .config import CONFIG
 from .routers import index_info, links
 
-from optimade import __api_version__
+from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 
 app = FastAPI(
     title="OPTiMaDe API - Index meta-database",
     description=(
-        "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium]"
-        "(http://http://www.optimade.org/) aims to make materials databases interoperational "
-        "by developing a common REST API.\n"
-        'This is the "special" index meta-database.'
+        f"""The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.
+This is the "special" index meta-database.
+
+This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
     docs_url="/index/optimade/extensions/docs",
