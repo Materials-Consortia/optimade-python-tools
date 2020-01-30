@@ -1,6 +1,7 @@
 {
     "use_real_mongo": false,
     "mongo_database": "optimade",
+    "mongo_uri": "localhost:27017",
     "links_collection": "links",
     "references_collection": "references",
     "structures_collection": "structures",
