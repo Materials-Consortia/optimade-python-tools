@@ -100,6 +100,7 @@ class ServerConfig(Config):
         res = {
             "use_real_mongo": False,
             "mongo_database": "optimade",
+            "mongo_uri": "localhost:27017",
             "links_collection": "links",
             "references_collection": "references",
             "structures_collection": "structures",
@@ -135,6 +136,9 @@ class ServerConfig(Config):
         )
         self.mongo_database = config.get(
             "BACKEND", "MONGO_DATABASE", fallback=self._DEFAULTS("mongo_database")
+        )
+        self.mongo_uri = config.get(
+            "BACKEND", "MONGO_URI", fallback=self._DEFAULTS("mongo_uri")
         )
 
         self.page_limit = config.getint(
@@ -195,6 +199,7 @@ class ServerConfig(Config):
         self.mongo_database = config.get(
             "mongo_database", self._DEFAULTS("mongo_database")
         )
+        self.mongo_uri = config.get("mongo_uri", self._DEFAULTS("mongo_uri"))
         for endpoint in {"links", "references", "structures"}:
             setattr(
                 self,
