@@ -17,6 +17,12 @@ from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 
+base_urls = {
+    "major": f"/index/optimade/v{__api_version__.split('.')[0]}",
+    "minor": f"/index/optimade/v{__api_version__.split('.')[1]}",
+    "patch": f"/index/optimade/v{__api_version__.split('.')[2]}",
+}
+
 app = FastAPI(
     title="OPTiMaDe API - Index meta-database",
     description=(
@@ -26,9 +32,9 @@ This is the "special" index meta-database.
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
-    docs_url="/index/optimade/extensions/docs",
-    redoc_url="/index/optimade/extensions/redoc",
-    openapi_url="/index/optimade/extensions/openapi.json",
+    docs_url=f"{base_urls['major']}/extensions/docs",
+    redoc_url=f"{base_urls['major']}/extensions/redoc",
+    openapi_url=f"{base_urls['major']}/extensions/openapi.json",
 )
 
 
@@ -46,6 +52,7 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     print("done inserting index links...")
 
 
+# Add various exception handlers
 app.add_exception_handler(StarletteHTTPException, exc_handlers.http_exception_handler)
 app.add_exception_handler(
     RequestValidationError, exc_handlers.request_validation_exception_handler
@@ -55,26 +62,24 @@ app.add_exception_handler(VisitError, exc_handlers.grammar_not_implemented_handl
 app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
-# Create the following prefixes:
-#   /optimade
-#   /optimade/vMajor (but only if Major >= 1)
-#   /optimade/vMajor.Minor
-#   /optimade/vMajor.Minor.Patch
-valid_prefixes = ["/index/optimade"]
-version = [int(_) for _ in app.version.split(".")]
-while version:
-    if version[0] or len(version) >= 2:
-        valid_prefixes.append(
-            "/index/optimade/v{}".format(".".join([str(_) for _ in version]))
-        )
-    version.pop(-1)
-
-for prefix in valid_prefixes:
-    app.include_router(index_info.router, prefix=prefix)
-    app.include_router(links.router, prefix=prefix)
+# Add various endpoints to `/optimade/vMAJOR`
+app.include_router(index_info.router, prefix=base_urls["major"])
+app.include_router(links.router, prefix=base_urls["major"])
 
 
-def update_schema(app):
+def add_optional_versioned_base_urls(app: FastAPI):
+    """Add the following OPTIONAL prefixes/base URLs to server:
+    ```
+        /index/optimade/vMajor.Minor
+        /index/optimade/vMajor.Minor.Patch
+    ```
+    """
+    for version in ("minor", "patch"):
+        app.include_router(index_info.router, prefix=base_urls[version])
+        app.include_router(links.router, prefix=base_urls[version])
+
+
+def update_schema(app: FastAPI):
     """Update OpenAPI schema in file 'local_index_openapi.json'"""
     package_root = Path(__file__).parent.parent.parent.resolve()
     if not package_root.joinpath("openapi").exists():
@@ -85,4 +90,7 @@ def update_schema(app):
 
 @app.on_event("startup")
 async def startup_event():
+    # Update OpenAPI schema on versioned base URL `/optimade/vMAJOR`
     update_schema(app)
+    # Add API endpoints for OPTIONAL base URLs `/optimade/vMAJOR.MINOR` and `/optimade/vMAJOR.MINOR.PATCH`
+    add_optional_versioned_base_urls(app)

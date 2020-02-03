@@ -3,6 +3,7 @@ at an OPTiMaDe implementation and validated against the pydantic
 models in this package.
 
 """
+# pylint: disable=import-outside-toplevel
 
 import time
 import requests
@@ -116,7 +117,7 @@ class Client:
                 self.response = requests.get(self.last_request)
             except requests.exceptions.ConnectionError:
                 sys.exit(f"No response from server at {self.last_request}")
-            except requests.exceptions.MissingField:
+            except requests.exceptions.MissingSchema:
                 sys.exit(
                     f"Unable to make request on {self.last_request}, did you mean http://{self.last_request}?"
                 )
