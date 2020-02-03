@@ -28,35 +28,6 @@ ENTRY_INFO_SCHEMAS = {
 }
 
 
-def optional_base_urls(
-    both: bool = True, index: bool = False, include_major: bool = True
-) -> list:
-    """Create and return OPTIONAL versioned base URLs
-
-    The parameter `both` takes precedence over the parameter `index`.
-
-    :param both: Return path prefixes for both the regular and index meta-database servers (default: True).
-    :param index: Return _only_ path prefixes for index meta-database (True) or regular server (False, default).
-    :param include_major: Append `/optimade/vMAJOR` or `/index/optimade/vMAJOR` to the returned list (default: True).
-    """
-    possible_prefixes = []
-
-    version = [int(_) for _ in __api_version__.split(".")]
-    while version:
-        if (not include_major and len(version) > 1) or include_major:
-            ver = ".".join([str(_) for _ in version])
-            if both:
-                possible_prefixes.append(f"/optimade/v{ver}")
-                possible_prefixes.append(f"/index/optimade/v{ver}")
-            elif index:
-                possible_prefixes.append(f"/index/optimade/v{ver}")
-            else:
-                possible_prefixes.append(f"/optimade/v{ver}")
-        version.pop(-1)
-
-    return possible_prefixes
-
-
 def meta_values(
     url: str,
     data_returned: int,
@@ -66,10 +37,12 @@ def meta_values(
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
     from optimade.models import ResponseMetaQuery, Provider, Implementation
+    from optimade.server.main import base_urls
+    from optimade.server.main_index import base_urls as index_base_urls
 
     parse_result = urllib.parse.urlparse(url)
 
-    for prefix in optional_base_urls():
+    for prefix in list(base_urls.values()) + list(index_base_urls.values()):
         if parse_result.path.startswith(prefix):
             url_path = parse_result.path[len(prefix) :]
             break

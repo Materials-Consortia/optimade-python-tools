@@ -13,13 +13,18 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .entry_collections import MongoCollection
 from .config import CONFIG
 from .routers import info, links, references, structures
-from .routers.utils import get_providers, optional_base_urls
+from .routers.utils import get_providers
 
 from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 
-versioned_base_url = f"/optimade/v{__api_version__.split('.')[0]}"
+base_urls = {
+    "major": f"/optimade/v{__api_version__.split('.')[0]}",
+    "minor": f"/optimade/v{__api_version__.split('.')[1]}",
+    "patch": f"/optimade/v{__api_version__.split('.')[2]}",
+}
+
 app = FastAPI(
     title="OPTiMaDe API",
     description=(
@@ -28,9 +33,9 @@ app = FastAPI(
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
-    docs_url=f"{versioned_base_url}/extensions/docs",
-    redoc_url=f"{versioned_base_url}/extensions/redoc",
-    openapi_url=f"{versioned_base_url}/extensions/openapi.json",
+    docs_url=f"{base_urls['major']}/extensions/docs",
+    redoc_url=f"{base_urls['major']}/extensions/redoc",
+    openapi_url=f"{base_urls['major']}/extensions/openapi.json",
 )
 
 
@@ -73,10 +78,10 @@ app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
 # Add various endpoints to `/optimade/vMAJOR`
-app.include_router(info.router, prefix=versioned_base_url)
-app.include_router(links.router, prefix=versioned_base_url)
-app.include_router(references.router, prefix=versioned_base_url)
-app.include_router(structures.router, prefix=versioned_base_url)
+app.include_router(info.router, prefix=base_urls["major"])
+app.include_router(links.router, prefix=base_urls["major"])
+app.include_router(references.router, prefix=base_urls["major"])
+app.include_router(structures.router, prefix=base_urls["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
@@ -86,11 +91,11 @@ def add_optional_versioned_base_urls(app: FastAPI):
         /optimade/vMajor.Minor.Patch
     ```
     """
-    for prefix in optional_base_urls(both=False, index=False, include_major=False):
-        app.include_router(info.router, prefix=prefix)
-        app.include_router(links.router, prefix=prefix)
-        app.include_router(references.router, prefix=prefix)
-        app.include_router(structures.router, prefix=prefix)
+    for version in ("minor", "patch"):
+        app.include_router(info.router, prefix=base_urls[version])
+        app.include_router(links.router, prefix=base_urls[version])
+        app.include_router(references.router, prefix=base_urls[version])
+        app.include_router(structures.router, prefix=base_urls[version])
 
 
 def update_schema(app: FastAPI):

@@ -12,13 +12,17 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .config import CONFIG
 from .routers import index_info, links
-from .routers.utils import optional_base_urls
 
 from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 
-versioned_base_url = f"/index/optimade/v{__api_version__.split('.')[0]}"
+base_urls = {
+    "major": f"/index/optimade/v{__api_version__.split('.')[0]}",
+    "minor": f"/index/optimade/v{__api_version__.split('.')[1]}",
+    "patch": f"/index/optimade/v{__api_version__.split('.')[2]}",
+}
+
 app = FastAPI(
     title="OPTiMaDe API - Index meta-database",
     description=(
@@ -28,9 +32,9 @@ This is the "special" index meta-database.
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
-    docs_url=f"{versioned_base_url}/extensions/docs",
-    redoc_url=f"{versioned_base_url}/extensions/redoc",
-    openapi_url=f"{versioned_base_url}/extensions/openapi.json",
+    docs_url=f"{base_urls['major']}/extensions/docs",
+    redoc_url=f"{base_urls['major']}/extensions/redoc",
+    openapi_url=f"{base_urls['major']}/extensions/openapi.json",
 )
 
 
@@ -59,8 +63,8 @@ app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
 # Add various endpoints to `/optimade/vMAJOR`
-app.include_router(index_info.router, prefix=versioned_base_url)
-app.include_router(links.router, prefix=versioned_base_url)
+app.include_router(index_info.router, prefix=base_urls["major"])
+app.include_router(links.router, prefix=base_urls["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
@@ -70,9 +74,9 @@ def add_optional_versioned_base_urls(app: FastAPI):
         /index/optimade/vMajor.Minor.Patch
     ```
     """
-    for prefix in optional_base_urls(both=False, index=True, include_major=False):
-        app.include_router(index_info.router, prefix=prefix)
-        app.include_router(links.router, prefix=prefix)
+    for version in ("minor", "patch"):
+        app.include_router(index_info.router, prefix=base_urls[version])
+        app.include_router(links.router, prefix=base_urls[version])
 
 
 def update_schema(app: FastAPI):
