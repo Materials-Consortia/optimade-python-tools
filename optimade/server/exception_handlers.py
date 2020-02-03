@@ -48,7 +48,12 @@ def general_exception(
             ),
             errors=errors,
         )
-    except StarletteHTTPException:
+    except Exception:
+        # This was introduced due to the original raise of an HTTPException if the
+        # path prefix could not be found, e.g., `/optimade/v0`.
+        # However, due to the testing, this error cannot be raised anymore.
+        # Instead, an OPTiMaDe warning should be issued.
+        # Having this try and except is still good practice though.
         response = ErrorResponse(errors=errors)
 
     return JSONResponse(

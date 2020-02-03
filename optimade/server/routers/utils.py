@@ -74,11 +74,8 @@ def meta_values(
             url_path = parse_result.path[len(prefix) :]
             break
     else:
-        raise HTTPException(
-            status_code=500,
-            detail="Correct URL path prefix not found. "
-            f"Tried with {optional_base_urls()} on {parse_result.path}",
-        )
+        # Raise warning
+        url_path = parse_result.path
 
     provider = CONFIG.provider.copy()
     provider["prefix"] = provider["prefix"][1:-1]  # Remove surrounding `_`
