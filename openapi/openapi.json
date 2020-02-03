@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "OPTiMaDe API",
-    "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](http://http://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.",
+    "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.3.3) v0.3.3.",
     "version": "0.10.1"
   },
   "paths": {
@@ -152,7 +152,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -312,7 +312,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -553,7 +553,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -873,7 +873,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1033,7 +1033,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1274,7 +1274,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1594,7 +1594,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1754,7 +1754,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -1995,7 +1995,7 @@
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "default": 500
+              "default": 20
             },
             "name": "page_limit",
             "in": "query"
@@ -3007,8 +3007,7 @@
       "LinksResponse": {
         "title": "LinksResponse",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
@@ -3431,8 +3430,7 @@
       "ReferenceResponseMany": {
         "title": "ReferenceResponseMany",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
@@ -3506,8 +3504,7 @@
       "ReferenceResponseOne": {
         "title": "ReferenceResponseOne",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
@@ -4083,8 +4080,7 @@
       "StructureResponseMany": {
         "title": "StructureResponseMany",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {
@@ -4158,8 +4154,7 @@
       "StructureResponseOne": {
         "title": "StructureResponseOne",
         "required": [
-          "data",
-          "meta"
+          "data"
         ],
         "type": "object",
         "properties": {

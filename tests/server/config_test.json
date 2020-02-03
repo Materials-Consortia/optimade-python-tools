@@ -1,0 +1,27 @@
+{
+    "use_real_mongo": false,
+    "mongo_database": "optimade",
+    "mongo_uri": "localhost:27017",
+    "links_collection": "links",
+    "references_collection": "references",
+    "structures_collection": "structures",
+    "page_limit": 500,
+    "default_db": "test_server",
+    "implementation": {
+        "name": "Example implementation",
+        "source_url": "https://github.com/Materials-Consortia/optimade-python-tools"
+    },
+    "provider": {
+        "prefix": "_exmpl_",
+        "name": "Example provider",
+        "description": "Provider used for examples, not to be assigned to a real database",
+        "homepage": "http://example.com",
+        "index_base_url": "http://localhost:5001/index/optimade"
+    },
+    "provider_fields": {
+        "structures": [
+            "band_gap",
+            "_mp_chemsys"
+        ]
+    }
+}

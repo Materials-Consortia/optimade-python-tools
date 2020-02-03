@@ -16,10 +16,12 @@ from .mappers import ResourceMapper
 
 if CONFIG.use_real_mongo:
     from pymongo import MongoClient
+
+    client = MongoClient(CONFIG.mongo_uri)
 else:
     from mongomock import MongoClient
 
-client = MongoClient()
+    client = MongoClient()
 
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
@@ -90,10 +92,9 @@ class MongoCollection(EntryCollection):
 
         self.provider = CONFIG.provider["prefix"]
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
-        self.page_limit = CONFIG.page_limit
         self.parser = LarkParser(
             version=(0, 10, 1), variant="default"
-        )  # The MongoTransformer only supports v0.10.0 as the latest grammar
+        )  # The MongoTransformer only supports v0.10.1 as the latest grammar
 
     def __len__(self):
         return self.collection.estimated_document_count()
@@ -176,16 +177,15 @@ class MongoCollection(EntryCollection):
             )
 
         if getattr(params, "page_limit", False):
-            limit = self.page_limit
-            if params.page_limit != self.page_limit:
-                limit = params.page_limit
-            if limit > self.page_limit:
+            limit = params.page_limit
+            if limit > CONFIG.page_limit_max:
                 raise HTTPException(
-                    status_code=400, detail=f"Max page_limit is {self.page_limit}"
+                    status_code=403,  # Forbidden
+                    detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
                 )
-            if limit == 0:
-                limit = self.page_limit
             cursor_kwargs["limit"] = limit
+        else:
+            cursor_kwargs["limit"] = CONFIG.page_limit
 
         # All OPTiMaDe fields
         fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()

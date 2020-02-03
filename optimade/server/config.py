@@ -100,11 +100,14 @@ class ServerConfig(Config):
         res = {
             "use_real_mongo": False,
             "mongo_database": "optimade",
+            "mongo_uri": "localhost:27017",
             "links_collection": "links",
             "references_collection": "references",
             "structures_collection": "structures",
             "page_limit": 20,
+            "page_limit_max": 500,
             "default_db": "test_server",
+            "base_url": None,
             "implementation": {
                 "name": "Example implementation",
                 "version": __version__,
@@ -115,8 +118,8 @@ class ServerConfig(Config):
                 "prefix": "_exmpl_",
                 "name": "Example provider",
                 "description": "Provider used for examples, not to be assigned to a real database",
-                "homepage": "http://example.com",
-                "index_base_url": "http://example.com/optimade/index",
+                "homepage": "https://example.com",
+                "index_base_url": None,
             },
         }
         if field not in res:
@@ -134,19 +137,28 @@ class ServerConfig(Config):
         self.mongo_database = config.get(
             "BACKEND", "MONGO_DATABASE", fallback=self._DEFAULTS("mongo_database")
         )
+        self.mongo_uri = config.get(
+            "BACKEND", "MONGO_URI", fallback=self._DEFAULTS("mongo_uri")
+        )
 
         self.page_limit = config.getint(
             "SERVER", "PAGE_LIMIT", fallback=self._DEFAULTS("page_limit")
         )
+        self.page_limit_max = config.getint(
+            "SERVER", "PAGE_LIMIT_MAX", fallback=self._DEFAULTS("page_limit_max")
+        )
         self.default_db = config.get(
             "SERVER", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
+        )
+        self.base_url = config.get(
+            "SERVER", "BASE_URL", fallback=self._DEFAULTS("base_url")
         )
 
         # This is done in this way, since each field is OPTIONAL
         self.implementation = {}
         for field in Implementation.schema()["properties"]:
             value_config = config.get("IMPLEMENTATION", field, fallback=None)
-            value_default = self._DEFAULTS(f"implementation")[field]
+            value_default = self._DEFAULTS("implementation")[field]
             if value_config is not None:
                 self.implementation[field] = value_config
             elif value_default is not None:
@@ -160,9 +172,9 @@ class ServerConfig(Config):
         self.provider_fields = {}
         for endpoint in {"links", "references", "structures"}:
             self.provider_fields[endpoint] = (
-                {field for field, _ in config[endpoint].items() if _ == ""}
+                list({field for field, _ in config[endpoint].items() if _ == ""})
                 if endpoint in config
-                else set()
+                else []
             )
 
             # MONGO collections
@@ -187,22 +199,27 @@ class ServerConfig(Config):
         self.mongo_database = config.get(
             "mongo_database", self._DEFAULTS("mongo_database")
         )
+        self.mongo_uri = config.get("mongo_uri", self._DEFAULTS("mongo_uri"))
         for endpoint in {"links", "references", "structures"}:
             setattr(
                 self,
                 f"{endpoint}_collection",
-                config.get(f"{endpoint}_collection"),
-                getattr(self._DEFAULTS(f"{endpoint}_collection")),
+                config.get(
+                    f"{endpoint}_collection", self._DEFAULTS(f"{endpoint}_collection")
+                ),
             )
 
         self.page_limit = int(config.get("page_limit", self._DEFAULTS("page_limit")))
-        self.version = config.get("api_version", self._DEFAULTS("api_version"))
+        self.page_limit_max = int(
+            config.get("page_limit_max", self._DEFAULTS("page_limit_max"))
+        )
         self.default_db = config.get("default_db", self._DEFAULTS("default_db"))
+        self.base_url = config.get("base_url", self._DEFAULTS("base_url"))
 
         # This is done in this way, since each field is OPTIONAL
         self.implementation = config.get("implementation", {})
         for field in Implementation.schema()["properties"]:
-            value_default = self._DEFAULTS(f"implementation.{field}")
+            value_default = self._DEFAULTS("implementation")[field]
             if field in self.implementation:
                 # Keep the config value
                 pass
@@ -210,9 +227,11 @@ class ServerConfig(Config):
                 self.implementation[field] = value_default
 
         self.provider = config.get("provider", self._DEFAULTS("provider"))
-        self.provider_fields = set(
-            config.get("provider_fields", self._DEFAULTS("provider_fields"))
-        )
+        self.provider_fields = {}
+        for endpoint in {"structures", "references"}:
+            self.provider_fields[endpoint] = list(
+                set(config.get("provider_fields", {}).get(endpoint, []))
+            )
 
 
 CONFIG = ServerConfig()

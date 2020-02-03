@@ -136,7 +136,7 @@ class RelationshipLinks(BaseModel):
         None, description="A related resource link"
     )
 
-    @root_validator
+    @root_validator(pre=True)
     def either_self_or_related_must_be_specified(cls, values):
         for value in values.values():
             if value is not None:
@@ -163,7 +163,7 @@ class Relationship(BaseModel):
         description="a meta object that contains non-standard meta-information about the relationship.",
     )
 
-    @root_validator
+    @root_validator(pre=True)
     def at_least_one_relationship_key_must_be_set(cls, values):
         for value in values.values():
             if value is not None:
@@ -268,14 +268,11 @@ class Response(BaseModel):
         None, description="Information about the JSON API used"
     )
 
-    @root_validator
+    @root_validator(pre=True)
     def either_data_meta_or_errors_must_be_set(cls, values):
         required_fields = ("data", "meta", "errors")
-        for field in required_fields:
-            if values.get(field, None) is not None:
-                break
-        else:
+        if not any(values.get(field) for field in required_fields):
             raise ValueError(
-                f"Either of {required_fields} must be specified in the top-level response"
+                f"At least one of {required_fields} MUST be specified in the top-level response"
             )
         return values

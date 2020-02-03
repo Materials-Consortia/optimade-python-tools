@@ -1,3 +1,5 @@
+# pylint: disable=line-too-long
+import os
 import json
 from pathlib import Path
 
@@ -13,16 +15,16 @@ from .config import CONFIG
 from .routers import info, links, references, structures
 from .routers.utils import get_providers
 
-from optimade import __api_version__
+from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 
 app = FastAPI(
     title="OPTiMaDe API",
     description=(
-        "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium]"
-        "(http://http://www.optimade.org/) aims to make materials databases interoperational "
-        "by developing a common REST API."
+        f"""The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.
+
+This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
     docs_url="/optimade/extensions/docs",
@@ -91,12 +93,10 @@ for prefix in valid_prefixes:
 
 def update_schema(app):
     """Update OpenAPI schema in file 'local_openapi.json'"""
-    local_openapi = (
-        Path(__file__)
-        .resolve()
-        .parent.parent.parent.joinpath("openapi/local_openapi.json")
-    )
-    with open(local_openapi, "w") as f:
+    package_root = Path(__file__).parent.parent.parent.resolve()
+    if not package_root.joinpath("openapi").exists():
+        os.mkdir(package_root.joinpath("openapi"))
+    with open(package_root.joinpath("openapi/local_openapi.json"), "w") as f:
         json.dump(app.openapi(), f, indent=2)
 
 
