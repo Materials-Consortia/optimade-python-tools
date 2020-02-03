@@ -84,7 +84,7 @@ The main use of this field is for source databases that use species names, conta
     def validate_concentration(cls, v, values):
         if len(v) != len(values.get("chemical_symbols", [])):
             raise ValueError(
-                f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', []))})"
+                f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', 'Not specified'))})"
             )
         return v
 
@@ -134,7 +134,7 @@ The possible reasons for the values not to sum to one are the same as already sp
     def check_self_consistency(cls, v, values):
         if len(v) != len(values.get("sites_in_groups", [])):
             raise ValueError(
-                f"sites_in_groups and group_probabilities MUST be of same length, but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
+                f"sites_in_groups and group_probabilities MUST be of same length, but are {len(values.get('sites_in_groups', 'Not specified'))} and {len(v)}, respectively"
             )
         return v
 
@@ -637,9 +637,9 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("lattice_vectors", always=True)
     def required_if_dimension_types_has_one(cls, v, values):
-        if 1 in values["dimension_types"] and v is None:
+        if 1 in values.get("dimension_types", []) and v is None:
             raise ValueError(
-                f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values['dimension_types']}"
+                f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values('dimension_types', 'Not specified')}"
             )
 
         if len(v) != 3:
@@ -647,11 +647,11 @@ class StructureResourceAttributes(EntryResourceAttributes):
                 f"MUST be a 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
             )
 
-        for dim_type, vector in zip(values["dimension_types"], v):
+        for dim_type, vector in zip(values.get("dimension_types", []), v):
             if None in vector and dim_type == 1:
                 raise ValueError(
                     "Null entries in lattice vectors are only permitted when the corresponding dimension type is 0. "
-                    f"Here: dimension_types = {values['dimension_types']}, lattice_vectors = {v}"
+                    f"Here: dimension_types = {values.get('dimension_types', 'Not specified')}, lattice_vectors = {v}"
                 )
 
         return v
@@ -676,9 +676,9 @@ class StructureResourceAttributes(EntryResourceAttributes):
             raise ValueError(
                 "Attribute nsites missing so unable to verify species_at_sites."
             )
-        if len(v) != values.get("nsites"):
+        if len(v) != values.get("nsites", 0):
             raise ValueError(
-                f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 0)})"
+                f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 'Not specified')})"
             )
         return v
 
@@ -686,7 +686,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     def validate_species(cls, v, values):
         if v.name not in values.get("species_at_sites", []):
             raise ValueError(
-                f"{v.name} not found in species_at_sites: {values.get('species_at_sites', [])}"
+                f"{v.name} not found in species_at_sites: {values.get('species_at_sites', 'Not specified')}"
             )
         return v
 
