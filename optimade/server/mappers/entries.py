@@ -9,6 +9,7 @@ class ResourceMapper:
 
     ENDPOINT: str = ""
     ALIASES: Tuple[Tuple[str, str]] = ()
+    REQUIRED_FIELDS: set = set()
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set = {"id", "type", "relationships", "links"}
 
     @classmethod
@@ -32,6 +33,13 @@ class ResourceMapper:
         :rtype: str
         """
         return dict(cls.all_aliases()).get(field, field)
+
+    @classmethod
+    def get_required_fields(cls) -> set:
+        """Return set REQUIRED response fields"""
+        res = cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
+        res.update(cls.REQUIRED_FIELDS)
+        return res
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:

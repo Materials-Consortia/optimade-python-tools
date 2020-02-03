@@ -1,3 +1,4 @@
+# pylint: disable=line-too-long
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
@@ -14,10 +15,7 @@ class EntryListingQueryParams:
         *,
         filter: str = Query(  # pylint: disable=redefined-builtin
             "",
-            description="""See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.
-
-Example: `chemical_formula = "Al" OR (prototype_formula = "AB" AND elements HAS Si, Al, O)`.
-""",
+            description="""See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.""",
         ),
         response_format: str = Query("json"),
         email_address: EmailStr = Query(""),
