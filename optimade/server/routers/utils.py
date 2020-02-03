@@ -1,8 +1,9 @@
+# pylint: disable=import-outside-toplevel
 import urllib
 from datetime import datetime
 from typing import Union, List, Dict
 
-from starlette.exceptions import HTTPException as StarletteHTTPException
+from fastapi import HTTPException
 from starlette.requests import Request
 
 from optimade.models import (
@@ -38,12 +39,29 @@ def meta_values(
     from optimade.models import ResponseMetaQuery, Provider, Implementation
 
     parse_result = urllib.parse.urlparse(url)
+
+    possible_prefixes = []
+    version = [int(_) for _ in __api_version__.split(".")]
+    while version:
+        ver = ".".join([str(_) for _ in version])
+        possible_prefixes.append(f"/optimade/v{ver}")
+        possible_prefixes.append(f"/index/optimade/v{ver}")
+        version.pop(-1)
+    for prefix in possible_prefixes:
+        if parse_result.path.startswith(prefix):
+            url_path = parse_result.path[len(prefix) :]
+            break
+    else:
+        raise HTTPException(
+            status_code=500,
+            detail="Correct URL path prefix not found. "
+            f"Tried with {possible_prefixes} on {parse_result.path}",
+        )
+
     provider = CONFIG.provider.copy()
     provider["prefix"] = provider["prefix"][1:-1]  # Remove surrounding `_`
     return ResponseMeta(
-        query=ResponseMetaQuery(
-            representation=f"{parse_result.path}?{parse_result.query}"
-        ),
+        query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
         api_version=f"v{__api_version__}",
         time_stamp=datetime.utcnow(),
         data_returned=data_returned,
@@ -207,7 +225,7 @@ def get_single_entry(
     included = get_included_relationships(results, ENTRY_COLLECTIONS)
 
     if more_data_available:
-        raise StarletteHTTPException(
+        raise HTTPException(
             status_code=500,
             detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
         )

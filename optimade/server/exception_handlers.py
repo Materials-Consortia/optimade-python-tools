@@ -37,21 +37,22 @@ def general_exception(
             Error(detail=detail, status=status_code, title=str(exc.__class__.__name__))
         ]
 
-    return JSONResponse(
-        status_code=status_code,
-        content=jsonable_encoder(
-            ErrorResponse(
-                meta=meta_values(
-                    url=str(request.url),
-                    data_returned=0,
-                    data_available=0,
-                    more_data_available=False,
-                    **{CONFIG.provider["prefix"] + "traceback": tb},
-                ),
-                errors=errors,
+    try:
+        response = ErrorResponse(
+            meta=meta_values(
+                url=str(request.url),
+                data_returned=0,
+                data_available=0,
+                more_data_available=False,
+                **{CONFIG.provider["prefix"] + "traceback": tb},
             ),
-            exclude_unset=True,
-        ),
+            errors=errors,
+        )
+    except StarletteHTTPException:
+        response = ErrorResponse(errors=errors)
+
+    return JSONResponse(
+        status_code=status_code, content=jsonable_encoder(response, exclude_unset=True)
     )
 
 
