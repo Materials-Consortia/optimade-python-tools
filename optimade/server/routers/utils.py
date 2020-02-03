@@ -6,6 +6,7 @@ from typing import Union, List, Dict
 from fastapi import HTTPException
 from starlette.requests import Request
 
+from optimade import __api_version__
 from optimade.models import (
     ResponseMeta,
     EntryResource,
@@ -27,6 +28,35 @@ ENTRY_INFO_SCHEMAS = {
 }
 
 
+def optional_base_urls(
+    both: bool = True, index: bool = False, include_major: bool = True
+) -> list:
+    """Create and return OPTIONAL versioned base URLs
+
+    The parameter `both` takes precedence over the parameter `index`.
+
+    :param both: Return path prefixes for both the regular and index meta-database servers (default: True).
+    :param index: Return _only_ path prefixes for index meta-database (True) or regular server (False, default).
+    :param include_major: Append `/optimade/vMAJOR` or `/index/optimade/vMAJOR` to the returned list (default: True).
+    """
+    possible_prefixes = []
+
+    version = [int(_) for _ in __api_version__.split(".")]
+    while version:
+        if (not include_major and len(version) > 1) or include_major:
+            ver = ".".join([str(_) for _ in version])
+            if both:
+                possible_prefixes.append(f"/optimade/v{ver}")
+                possible_prefixes.append(f"/index/optimade/v{ver}")
+            elif index:
+                possible_prefixes.append(f"/index/optimade/v{ver}")
+            else:
+                possible_prefixes.append(f"/optimade/v{ver}")
+        version.pop(-1)
+
+    return possible_prefixes
+
+
 def meta_values(
     url: str,
     data_returned: int,
@@ -35,19 +65,11 @@ def meta_values(
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
-    from optimade import __api_version__
     from optimade.models import ResponseMetaQuery, Provider, Implementation
 
     parse_result = urllib.parse.urlparse(url)
 
-    possible_prefixes = []
-    version = [int(_) for _ in __api_version__.split(".")]
-    while version:
-        ver = ".".join([str(_) for _ in version])
-        possible_prefixes.append(f"/optimade/v{ver}")
-        possible_prefixes.append(f"/index/optimade/v{ver}")
-        version.pop(-1)
-    for prefix in possible_prefixes:
+    for prefix in optional_base_urls():
         if parse_result.path.startswith(prefix):
             url_path = parse_result.path[len(prefix) :]
             break
@@ -55,7 +77,7 @@ def meta_values(
         raise HTTPException(
             status_code=500,
             detail="Correct URL path prefix not found. "
-            f"Tried with {possible_prefixes} on {parse_result.path}",
+            f"Tried with {optional_base_urls()} on {parse_result.path}",
         )
 
     provider = CONFIG.provider.copy()

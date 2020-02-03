@@ -12,6 +12,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from .config import CONFIG
 from .routers import index_info, links
+from .routers.utils import optional_base_urls
 
 from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
@@ -69,16 +70,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
         /index/optimade/vMajor.Minor.Patch
     ```
     """
-    extra_prefixes = []
-    version = [int(_) for _ in app.version.split(".")]
-    while version:
-        if len(version) > 1:
-            extra_prefixes.append(
-                "/index/optimade/v{}".format(".".join([str(_) for _ in version]))
-            )
-        version.pop(-1)
-
-    for prefix in extra_prefixes:
+    for prefix in optional_base_urls(both=False, index=True, include_major=False):
         app.include_router(index_info.router, prefix=prefix)
         app.include_router(links.router, prefix=prefix)
 
