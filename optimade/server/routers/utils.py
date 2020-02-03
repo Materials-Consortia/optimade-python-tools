@@ -66,22 +66,25 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[List[EntryResource], EntryResource], fields: set
+    results: Union[List[EntryResource], EntryResource], exclude_fields: set
 ) -> dict:
+    """Handle query parameter ``response_fields``
+
+    It is assumed that all fields are under ``attributes``.
+    This is due to all other top-level fields are REQUIRED in the response.
+
+    :param exclude_fields: Fields under ``attributes`` to be excluded from the response.
+    """
     if not isinstance(results, list):
         results = [results]
-    non_attribute_fields = {"id", "type"}
-    top_level = {_ for _ in non_attribute_fields if _ in fields}
-    attribute_level = fields - non_attribute_fields
+
     new_results = []
     while results:
         entry = results.pop(0)
-        new_entry = entry.dict(exclude=top_level, exclude_unset=True)
-        for field in attribute_level:
+        new_entry = entry.dict(exclude_unset=True)
+        for field in exclude_fields:
             if field in new_entry["attributes"]:
                 del new_entry["attributes"][field]
-        if not new_entry["attributes"]:
-            del new_entry["attributes"]
         new_results.append(new_entry)
     return new_results
 

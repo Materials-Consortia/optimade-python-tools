@@ -94,12 +94,12 @@
         "operationId": "get_links_optimade_v0_links_get",
         "parameters": [
           {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.",
             "required": false,
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.",
               "default": ""
             },
             "name": "filter",
@@ -254,12 +254,12 @@
         "operationId": "get_references_optimade_v0_references_get",
         "parameters": [
           {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.",
             "required": false,
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.",
               "default": ""
             },
             "name": "filter",
@@ -495,12 +495,12 @@
         "operationId": "get_structures_optimade_v0_structures_get",
         "parameters": [
           {
-            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+            "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.",
             "required": false,
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.\n\nExample: `chemical_formula = \"Al\" OR (prototype_formula = \"AB\" AND elements HAS Si, Al, O)`.\n",
+              "description": "See [the full and latest OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst) for filter query syntax.",
               "default": ""
             },
             "name": "filter",
@@ -1102,12 +1102,12 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
           },
           "type": {
             "title": "Type",
             "type": "string",
-            "description": "The name of the type of an entry.\nAny entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: Support for queries on this property is OPTIONAL.\n    If supported, only a subset of string comparison operators MAY be supported.\n\n- **Requirements/Conventions**: MUST be an existing entry type.\n- **Example**: :val:`\"structures\"`"
+            "description": "The name of the type of an entry.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - MUST be an existing entry type.\n  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.\n\n- **Example**: :val:`\"structures\"`"
           },
           "links": {
             "title": "Links",
@@ -1158,12 +1158,12 @@
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
-            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
+            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
             "title": "Last Modified",
             "type": "string",
-            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"`\n    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
+            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
             "format": "date-time"
           }
         },
@@ -1455,7 +1455,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
           },
           "type": {
             "title": "Type",
@@ -1785,7 +1785,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
           },
           "type": {
             "title": "Type",
@@ -1835,12 +1835,12 @@
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
-            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
+            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
             "title": "Last Modified",
             "type": "string",
-            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"`\n    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
+            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
             "format": "date-time"
           },
           "authors": {
@@ -2460,7 +2460,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
           },
           "type": {
             "title": "Type",
@@ -2522,12 +2522,12 @@
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
-            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Response**: OPTIONAL in the response.\n  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
+            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
             "title": "Last Modified",
             "type": "string",
-            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Response**: REQUIRED in the response unless explicitly excluded.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"`\n    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
+            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
             "format": "date-time"
           },
           "elements": {

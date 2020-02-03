@@ -118,6 +118,7 @@ class MongoCollection(EntryCollection):
         all_fields = criteria.pop("fields")
         if getattr(params, "response_fields", False):
             fields = set(params.response_fields.split(","))
+            fields |= self.resource_mapper.get_required_fields()
         else:
             fields = all_fields.copy()
 

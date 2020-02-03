@@ -58,8 +58,8 @@ This ID maps to the version-specific record, in case it changes in the future.
 - **Type**: string.
 - **Requirements/Conventions**:
 
-  - **Response**: OPTIONAL in the response.
-  - **Query**: If present, MUST be a queryable property with support for all mandatory filter operators.
+  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.
+  - **Query**: MUST be a queryable property with support for all mandatory filter features.
 
 - **Examples**:
 
@@ -73,13 +73,13 @@ This ID maps to the version-specific record, in case it changes in the future.
 - **Type**: timestamp.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
-  - **Query**: MUST be a queryable property with support for all mandatory filter operators.
+  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.
+  - **Query**: MUST be a queryable property with support for all mandatory filter features.
+  - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.
 
 - **Example**:
 
-  - As part of JSON response format: :VAL:`"2007-04-05T14:30Z"`
-    (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)""",
+  - As part of JSON response format: :VAL:`"2007-04-05T14:30Z"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)""",
     )
 
 
@@ -91,8 +91,9 @@ class EntryResource(Resource):
 - **Type**: string.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
-  - **Query**: MUST be a queryable property with support for all mandatory filter operators.
+  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.
+  - **Query**: MUST be a queryable property with support for all mandatory filter features.
+  - **Response**: REQUIRED in the response.
   - See section `Definition of Terms`_.
 
 - **Examples**:
@@ -107,15 +108,15 @@ class EntryResource(Resource):
     type: str = Field(
         ...,
         description="""The name of the type of an entry.
-Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.
 - **Type**: string.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
-  - **Query**: Support for queries on this property is OPTIONAL.
-    If supported, only a subset of string comparison operators MAY be supported.
+  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.
+  - **Query**: MUST be a queryable property with support for all mandatory filter features.
+  - **Response**: REQUIRED in the response.
+  - MUST be an existing entry type.
+  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.
 
-- **Requirements/Conventions**: MUST be an existing entry type.
 - **Example**: :val:`"structures"`""",
     )
 
