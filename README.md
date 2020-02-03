@@ -13,7 +13,7 @@ This repository contains a library of tools for implementing and consuming [OPTi
 
 Both the OPTiMaDe specification and this repository are **under development**. 
 
-The latest stable version can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade` or by cloning this repository `git clone git@github.com:Materials-Consortia/optimade-python-tools latest`.
+The latest stable version can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade` or by cloning the master branch of this repository `git clone git@github.com:Materials-Consortia/optimade-python-tools`.
 
 ## Installation
 
