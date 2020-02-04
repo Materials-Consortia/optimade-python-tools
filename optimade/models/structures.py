@@ -1,4 +1,4 @@
-# pylint: disable=no-self-argument,line-too-long
+# pylint: disable=no-self-argument,line-too-long,no-name-in-module
 from sys import float_info
 from typing import List, Optional
 
@@ -148,7 +148,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: list of strings.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter operators.
   - The strings are the chemical symbols, written as uppercase letter plus optional lowercase letters.
   - The order MUST be alphabetical.
@@ -170,7 +170,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: integer
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter operators.
 
 - **Example**: :val:`3`
@@ -187,7 +187,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: list of floats
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter operators.
   - Composed by the proportions of elements in the structure as a list of floating point numbers.
   - The sum of the numbers MUST be 1.0 (within floating point accuracy)
@@ -209,7 +209,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: string
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter operators.
   - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, commas, the ``+``, ``-``, ``:`` and ``=`` symbols.
     The parentheses are allowed to be followed by a number.
@@ -240,8 +240,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: string
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
-
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property.
     However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
     Intricate querying on formula components are instead recommended to be formulated using set-type filter operators on the multi valued :property:`elements` and :property:`elements_proportions` properties.
@@ -269,7 +268,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: string
 - **Requirements/Conventions**:
 
-  - **Response**: OPTIONAL in the response.
+  - **Support**: OPTIONAL, i.e., MAY be :val:`null`.
   - **Query**: Support for queries on these properties are OPTIONAL. If supported, only a subset of filter operators MAY be supported.
   - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.
     For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, :property:`chemical_formula_hill` is :val:`"H2O2"` (i.e., not :val:`"HO"`, nor :val:`"H4O4"`).
@@ -296,7 +295,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: string
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property. However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
 
 - **Examples**:
@@ -317,7 +316,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: list of integers.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property. Support for equality comparison is REQUIRED, support for other comparison operators are OPTIONAL.
   - MUST be a list of length 3.
   - Each integer element MUST assume only the value 0 or 1.
@@ -336,12 +335,16 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: list of list of floats.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded, except when property `dimension_types`_ is equal to :val:`[0, 0, 0]` (in this case it is OPTIONAL).
-  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
+  - **Query**: Support for queries on this property is OPTIONAL.
+    If supported, filters MAY support only a subset of comparison operators.
   - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates.
     (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).
   - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.
-  - This property MUST be an array of dimensions 3 times 3 regardless of the elements of property `dimension_types`_. The vectors SHOULD by convention be chosen so the determinant of the :property:`lattice_vectors` matrix is different from zero. The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.
+  - This property MUST be an array of dimensions 3 times 3 regardless of the elements of :property:`dimension_types`.
+    The vectors SHOULD by convention be chosen so the determinant of the :property:`lattice_vectors` matrix is different from zero.
+    The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.
+  - All three elements of the inner lists of floats MAY be :val:`null` for non-periodic dimensions, i.e., those dimensions for which :property:`dimension_types` is :val:`0`.
 
 - **Examples**:
 
@@ -355,7 +358,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: list of list of floats and/or unknown values
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
   - It MUST be a list of length N times 3, where N is the number of sites in the structure.
   - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`_).
@@ -377,7 +380,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: integer
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter operators.
 
 - **Examples**:
@@ -397,7 +400,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: list of strings.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
   - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`_).
   - Each species MUST have a unique name.
@@ -424,8 +427,9 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
-  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
+  - **Query**: Support for queries on this property is OPTIONAL.
+    If supported, filters MAY support only a subset of comparison operators.
   - Each list member MUST be a dictionary with the following keys:
 
     - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;
@@ -478,7 +482,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
 - **Requirements/Conventions**:
 
-  - **Response**: OPTIONAL in the response (SHOULD be absent if there are no partial occupancies).
+  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.
   - **Query**: Support for queries on this property is OPTIONAL.
     If supported, filters MAY support only a subset of comparison operators.
   - If present, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).
@@ -585,7 +589,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Type**: list of strings
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response (SHOULD be absent if there are no partial occupancies).
+  - **Support**: REQUIRED, MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property. Filters on the list MUST support all mandatory HAS-type queries. Filter operators for comparisons on the string components MUST support equality, support for other comparison operators are OPTIONAL.
   - MUST be an empty list if no special features are used.
   - MUST be sorted alphabetically.
@@ -746,11 +750,12 @@ class StructureResource(EntryResource):
 - **Type**: string.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
-  - **Query**: Support for queries on this property is OPTIONAL.
-    If supported, only a subset of string comparison operators MAY be supported.
+  - **Support**: REQUIRED, MUST NOT be :val:`null`.
+  - **Query**: MUST be a queryable property with support for all mandatory filter features.
+  - **Response**: REQUIRED in the response.
+  - MUST be an existing entry type.
+  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.
 
-- **Requirements/Conventions**: MUST be an existing entry type.
 - **Example**: :val:`"structures"`""",
     )
 

@@ -15,11 +15,11 @@ class AvailableApiVersion(BaseModel):
 
     url: AnyUrl = Field(
         ...,
-        description="a string specifying a base URL that MUST adhere to the rules in section Base URL",
+        description="a string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
     )
     version: str = Field(
         ...,
-        description="a string containing the full version number of the API served at that base URL. "
+        description="a string containing the full version number of the API served at that versioned base URL. "
         "The version number string MUST NOT be prefixed by, e.g., 'v'.",
     )
 
@@ -46,7 +46,7 @@ class BaseInfoAttributes(BaseModel):
     )
     available_endpoints: List[str] = Field(
         ...,
-        description="List of available endpoints (i.e., the string to be appended to the base URL).",
+        description="List of available endpoints (i.e., the string to be appended to the versioned base URL).",
     )
     entry_types_by_format: Dict[str, List[str]] = Field(
         ..., description="Available entry endpoints as a function of output formats."

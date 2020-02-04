@@ -58,7 +58,7 @@ This ID maps to the version-specific record, in case it changes in the future.
 - **Type**: string.
 - **Requirements/Conventions**:
 
-  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.
+  - **Support**: OPTIONAL, i.e., MAY be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter features.
 
 - **Examples**:
@@ -73,7 +73,7 @@ This ID maps to the version-specific record, in case it changes in the future.
 - **Type**: timestamp.
 - **Requirements/Conventions**:
 
-  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter features.
   - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.
 
@@ -91,7 +91,7 @@ class EntryResource(Resource):
 - **Type**: string.
 - **Requirements/Conventions**:
 
-  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.
+  - **Support**: REQUIRED, MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter features.
   - **Response**: REQUIRED in the response.
   - See section `Definition of Terms`_.
@@ -111,7 +111,7 @@ class EntryResource(Resource):
 - **Type**: string.
 - **Requirements/Conventions**:
 
-  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.
+  - **Support**: REQUIRED, MUST NOT be :val:`null`.
   - **Query**: MUST be a queryable property with support for all mandatory filter features.
   - **Response**: REQUIRED in the response.
   - MUST be an existing entry type.
