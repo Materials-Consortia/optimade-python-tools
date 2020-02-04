@@ -217,13 +217,13 @@
             "maxLength": 65536,
             "minLength": 1,
             "type": "string",
-            "description": "a string specifying a base URL that MUST adhere to the rules in section Base URL",
+            "description": "a string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
             "format": "uri"
           },
           "version": {
             "title": "Version",
             "type": "string",
-            "description": "a string containing the full version number of the API served at that base URL. The version number string MUST NOT be prefixed by, e.g., 'v'."
+            "description": "a string containing the full version number of the API served at that versioned base URL. The version number string MUST NOT be prefixed by, e.g., 'v'."
           }
         },
         "description": "A JSON object containing information about an available API version"
@@ -310,12 +310,12 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: REQUIRED, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
           },
           "type": {
             "title": "Type",
             "type": "string",
-            "description": "The name of the type of an entry.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - MUST be an existing entry type.\n  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.\n\n- **Example**: :val:`\"structures\"`"
+            "description": "The name of the type of an entry.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: REQUIRED, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - MUST be an existing entry type.\n  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.\n\n- **Example**: :val:`\"structures\"`"
           },
           "links": {
             "title": "Links",
@@ -366,12 +366,12 @@
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
-            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
+            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: OPTIONAL, i.e., MAY be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
             "title": "Last Modified",
             "type": "string",
-            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
+            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
             "format": "date-time"
           }
         },
@@ -590,7 +590,7 @@
             "items": {
               "type": "string"
             },
-            "description": "List of available endpoints (i.e., the string to be appended to the base URL)."
+            "description": "List of available endpoints (i.e., the string to be appended to the versioned base URL)."
           },
           "entry_types_by_format": {
             "title": "Entry Types By Format",
@@ -791,7 +791,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: REQUIRED, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
           },
           "type": {
             "title": "Type",

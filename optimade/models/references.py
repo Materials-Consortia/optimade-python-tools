@@ -122,9 +122,10 @@ The following properties are used to provide the bibliographic details:
 
 - **Requirements/Conventions**:
 
-  - **Response**: Every references entry MUST contain at least one of the properties.
+  - **Support**: OPTIONAL, i.e., any of the properties MAY be :val:`null`.
   - **Query**: Support for queries on any of these properties is OPTIONAL.
-    If supported, filters MAY support only a subset of comparison operators. """
+    If supported, filters MAY support only a subset of comparison operators.
+  - Every references entry MUST contain at least one of the properties."""
 
     type: str = Field(
         default="references",
@@ -133,11 +134,12 @@ The following properties are used to provide the bibliographic details:
 - **Type**: string.
 - **Requirements/Conventions**:
 
-  - **Response**: REQUIRED in the response unless explicitly excluded.
-  - **Query**: Support for queries on this property is OPTIONAL.
-    If supported, only a subset of string comparison operators MAY be supported.
+  - **Support**: REQUIRED, MUST NOT be :val:`null`.
+  - **Query**: MUST be a queryable property with support for all mandatory filter features.
+  - **Response**: REQUIRED in the response.
+  - MUST be an existing entry type.
+  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.
 
-- **Requirements/Conventions**: MUST be an existing entry type.
 - **Example**: :val:`"structures"`""",
     )
     attributes: ReferenceResourceAttributes
