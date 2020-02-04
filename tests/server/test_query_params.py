@@ -2,8 +2,79 @@
 import unittest
 
 from optimade.server.config import CONFIG
+from optimade.server import mappers
 
 from .utils import SetClient
+
+
+class ResponseFieldTests(SetClient, unittest.TestCase):
+    """Make sure response_fields is handled correctly"""
+
+    server = "regular"
+
+    get_mapper = {
+        "links": mappers.LinksMapper,
+        "references": mappers.ReferenceMapper,
+        "structures": mappers.StructureMapper,
+    }
+
+    def check_response(self, request, expected_fields):
+        try:
+            response = self.client.get(request)
+            self.assertEqual(
+                response.status_code, 200, msg=f"Request failed: {response.json()}"
+            )
+
+            response = response.json()
+            response_fields = set()
+            for entry in response["data"]:
+                response_fields.update(set(entry.keys()))
+                response_fields.update(set(entry["attributes"].keys()))
+            self.assertEqual(sorted(expected_fields), sorted(response_fields))
+        except Exception as exc:
+            print("Request attempted:")
+            print(f"{self.client.base_url}{request}")
+            raise exc
+
+    def required_fields_test_helper(
+        self, endpoint: str, known_unused_fields: set, response_fields: set
+    ):
+        """Utility function for creating required fields tests"""
+        response_fields |= (
+            self.get_mapper[endpoint].get_required_fields() - known_unused_fields
+        )
+        response_fields.add("attributes")
+        request = f"/{endpoint}?response_fields={','.join(response_fields)}"
+        self.check_response(request, response_fields)
+
+    def test_required_fields_links(self):
+        """Certain fields are REQUIRED, no matter the value of `response_fields`"""
+        endpoint = "links"
+        illegal_top_level_field = "relationships"
+        non_used_top_level_fields = {"links"}
+        non_used_top_level_fields.add(illegal_top_level_field)
+        expected_fields = {"homepage", "base_url"}
+        self.required_fields_test_helper(
+            endpoint, non_used_top_level_fields, expected_fields
+        )
+
+    def test_required_fields_references(self):
+        """Certain fields are REQUIRED, no matter the value of `response_fields`"""
+        endpoint = "references"
+        non_used_top_level_fields = {"links", "relationships"}
+        expected_fields = {"year", "journal"}
+        self.required_fields_test_helper(
+            endpoint, non_used_top_level_fields, expected_fields
+        )
+
+    def test_required_fields_structures(self):
+        """Certain fields are REQUIRED, no matter the value of `response_fields`"""
+        endpoint = "structures"
+        non_used_top_level_fields = {"links"}
+        expected_fields = {"elements", "nelements"}
+        self.required_fields_test_helper(
+            endpoint, non_used_top_level_fields, expected_fields
+        )
 
 
 class FilterTests(SetClient, unittest.TestCase):
