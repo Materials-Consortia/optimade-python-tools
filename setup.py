@@ -4,10 +4,10 @@ from setuptools import setup, find_packages
 module_dir = Path(__file__).resolve().parent
 
 # Dependencies
-mongo_deps = ["pymongo~=3.10", "mongomock~=3.18"]
+mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
 server_deps = ["uvicorn"] + mongo_deps
 django_deps = ["django~=2.2,>=2.2.9"]
-elastic_deps = ["elasticsearch_dsl~=6.4"]
+elastic_deps = ["elasticsearch-dsl~=6.4"]
 testing_deps = [
     "pytest~=3.10",
     "pytest-cov",
@@ -45,8 +45,8 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.8.1",
-        "fastapi~=0.47",
-        "pydantic~=1.3",
+        "fastapi~=0.48",
+        "pydantic~=1.4",
         "email_validator",
         "requests",
     ],
