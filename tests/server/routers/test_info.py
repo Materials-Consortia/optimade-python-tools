@@ -3,12 +3,11 @@ import unittest
 
 from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
 
-from ..utils import EndpointTestsMixin, get_regular_client, get_index_client
+from ..utils import EndpointTestsMixin
 
 
 class InfoEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     request_str = "/info"
     response_cls = InfoResponse
 
@@ -29,7 +28,6 @@ class InfoEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
 class InfoStructuresEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     request_str = "/info/structures"
     response_cls = EntryInfoResponse
 
@@ -41,14 +39,13 @@ class InfoStructuresEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
 class InfoReferencesEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     request_str = "/info/references"
     response_cls = EntryInfoResponse
 
 
 class IndexInfoEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_index_client()
+    server = "index"
     request_str = "/info"
     response_cls = IndexInfoResponse
 

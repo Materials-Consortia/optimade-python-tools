@@ -3,12 +3,12 @@ import unittest
 
 from optimade.server.config import CONFIG
 
-from .utils import get_regular_client
+from .utils import SetClient
 
 
-class FilterTests(unittest.TestCase):
+class FilterTests(SetClient, unittest.TestCase):
 
-    client = get_regular_client()
+    server = "regular"
 
     def test_custom_field(self):
         request = '/structures?filter=_exmpl__mp_chemsys="Ac"'

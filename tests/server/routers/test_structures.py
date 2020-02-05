@@ -7,12 +7,11 @@ from optimade.models import (
     ReferenceResource,
 )
 
-from ..utils import EndpointTestsMixin, get_regular_client
+from ..utils import EndpointTestsMixin
 
 
 class StructuresEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     request_str = "/structures"
     response_cls = StructureResponseMany
 
@@ -58,7 +57,6 @@ class StructuresEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
 class SingleStructureEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     test_id = "mpf_1"
     request_str = f"/structures/{test_id}"
     response_cls = StructureResponseOne
@@ -75,7 +73,6 @@ class SingleStructureEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
 class MissingSingleStructureEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     test_id = "mpf_random_string_that_is_not_in_test_data"
     request_str = f"/structures/{test_id}"
     response_cls = StructureResponseOne
@@ -90,7 +87,6 @@ class MissingSingleStructureEndpointTests(EndpointTestsMixin, unittest.TestCase)
 
 class SingleStructureWithRelationshipsTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     test_id = "mpf_1"
     request_str = f"/structures/{test_id}"
     response_cls = StructureResponseOne
@@ -116,7 +112,6 @@ class SingleStructureWithRelationshipsTests(EndpointTestsMixin, unittest.TestCas
 
 class MultiStructureWithSharedRelationshipsTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     request_str = f"/structures?filter=id=mpf_1 OR id=mpf_2"
     response_cls = StructureResponseMany
 
@@ -130,7 +125,6 @@ class MultiStructureWithSharedRelationshipsTests(EndpointTestsMixin, unittest.Te
 
 class MultiStructureWithRelationshipsTests(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     request_str = f"/structures?filter=id=mpf_1 OR id=mpf_23"
     response_cls = StructureResponseMany
 
@@ -146,7 +140,6 @@ class MultiStructureWithOverlappingRelationshipsTests(
     EndpointTestsMixin, unittest.TestCase
 ):
 
-    client = get_regular_client()
     request_str = f"/structures?filter=id=mpf_1 OR id=mpf_3"
     response_cls = StructureResponseMany
 
@@ -159,7 +152,6 @@ class MultiStructureWithOverlappingRelationshipsTests(
 
 class SingleStructureEndpointEmptyTest(EndpointTestsMixin, unittest.TestCase):
 
-    client = get_regular_client()
     test_id = "non_existent_id"
     request_str = f"/structures/{test_id}"
     response_cls = StructureResponseOne

@@ -1,4 +1,7 @@
 # pylint: disable=import-outside-toplevel,no-name-in-module
+import abc
+from typing import Dict
+
 from pydantic import BaseModel
 
 from starlette.testclient import TestClient
@@ -32,10 +35,29 @@ def get_index_client() -> TestClient:
     return TestClient(app, base_url="http://example.org/index/optimade/v0")
 
 
-class EndpointTestsMixin:
+class SetClient(abc.ABC):
+    """Metaclass to instantiate the TestClients once"""
+
+    server: str = None
+    _client: Dict[str, TestClient] = {
+        "index": get_index_client(),
+        "regular": get_regular_client(),
+    }
+
+    @property
+    def client(self) -> TestClient:
+        exception_message = "Test classes using EndpointTestsMixin MUST specify a `server` attribute with a value that is either 'regular' or 'index'"
+        if not hasattr(self, "server"):
+            raise AttributeError(exception_message)
+        if self.server in self._client:
+            return self._client[self.server]
+        raise ValueError(exception_message)
+
+
+class EndpointTestsMixin(SetClient):
     """ Mixin "base" class for common tests between endpoints. """
 
-    client: TestClient = None
+    server: str = "regular"
     request_str: str = None
     response_cls: BaseModel = None
 
