@@ -183,6 +183,16 @@
             },
             "name": "page_below",
             "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Include",
+              "type": "string",
+              "default": "references"
+            },
+            "name": "include",
+            "in": "query"
           }
         ],
         "responses": {

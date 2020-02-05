@@ -91,6 +91,7 @@ class EntryListingQueryParams:
             description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
             ge=0,
         ),
+        include: str = Query("references"),
     ):
         self.filter = filter
         self.response_format = response_format
@@ -103,6 +104,7 @@ class EntryListingQueryParams:
         self.page_cursor = page_cursor
         self.page_above = page_above
         self.page_below = page_below
+        self.include = include
 
 
 class SingleEntryQueryParams:
@@ -129,7 +131,9 @@ class SingleEntryQueryParams:
             "**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
             regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
+        include: str = Query("references"),
     ):
         self.response_format = response_format
         self.email_address = email_address
         self.response_fields = response_fields
+        self.include = include
