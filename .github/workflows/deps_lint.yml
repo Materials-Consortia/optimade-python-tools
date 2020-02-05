@@ -101,16 +101,14 @@ jobs:
         docker-compose up optimade &
         .github/workflows/wait_for_it.sh localhost:3213 -t 120
         sleep 15
-        curl http://localhost:3213/optimade/info > info.json
-        grep -F "http://example.com" info.json || exit 1
+        docker exec optimade-python-tools_optimade_1 optimade_validator http://localhost:5000/optimade/v0
 
     - name: Test index server
       run: |
         docker-compose up optimade-index &
         .github/workflows/wait_for_it.sh localhost:3214 -t 120
         sleep 15
-        curl http://localhost:3214/optimade/info > info.json
-        grep -F "http://example.com" info.json || exit 1
+        docker exec optimade-python-tools_optimade-index_1 optimade_validator http://localhost:5001/optimade/v0 --index
 
   deps_static:
     runs-on: ubuntu-latest
