@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long
-import os
 import json
+import os
 from pathlib import Path
 
 from lark.exceptions import VisitError
@@ -44,9 +44,12 @@ async def redirect_slashed_urls(request: Request, call_next):
     """
     if request.scope["path"].endswith("/"):
         redirect_scope = dict(request.scope)
-        redirect_scope["path"] = redirect_scope["path"][:-1]
-        redirect_url = URL(scope=redirect_scope)
-        return RedirectResponse(url=str(redirect_url))
+
+        # Make sure we're not dealing with a URL path (after the domain) of `/`
+        if redirect_scope["path"] != "/":
+            redirect_scope["path"] = redirect_scope["path"][:-1]
+            redirect_url = URL(scope=redirect_scope)
+            return RedirectResponse(url=str(redirect_url))
     response = await call_next(request)
     return response
 
