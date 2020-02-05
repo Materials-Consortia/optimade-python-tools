@@ -10,9 +10,9 @@ from optimade.models import (
     ReferenceResponseOne,
 )
 from optimade.server.config import CONFIG
-from optimade.server.deps import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.entry_collections import MongoCollection, client
 from optimade.server.mappers import ReferenceMapper
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 from .utils import get_entries, get_single_entry
 

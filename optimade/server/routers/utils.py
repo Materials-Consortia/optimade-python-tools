@@ -18,8 +18,8 @@ from optimade.models import (
 )
 
 from optimade.server.config import CONFIG
-from optimade.server.deps import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.entry_collections import EntryCollection
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 
 ENTRY_INFO_SCHEMAS = {

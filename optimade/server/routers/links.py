@@ -5,9 +5,9 @@ from starlette.requests import Request
 
 from optimade.models import ErrorResponse, LinksResponse, LinksResource
 from optimade.server.config import CONFIG
-from optimade.server.deps import EntryListingQueryParams
 from optimade.server.entry_collections import MongoCollection, client
 from optimade.server.mappers import LinksMapper
+from optimade.server.query_params import EntryListingQueryParams
 
 from .utils import get_entries
 
