@@ -1,13 +1,14 @@
 # pylint: disable=relative-beyond-top-level
 import unittest
 
-from optimade.models import InfoResponse, EntryInfoResponse
+from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
 
-from ..test_server import EndpointTests
+from ..utils import EndpointTestsMixin, get_regular_client, get_index_client
 
 
-class InfoEndpointTests(EndpointTests, unittest.TestCase):
+class InfoEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     request_str = "/info"
     response_cls = InfoResponse
 
@@ -26,8 +27,9 @@ class InfoEndpointTests(EndpointTests, unittest.TestCase):
         self.check_keys(attributes, self.json_response["data"]["attributes"])
 
 
-class InfoStructuresEndpointTests(EndpointTests, unittest.TestCase):
+class InfoStructuresEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     request_str = "/info/structures"
     response_cls = EntryInfoResponse
 
@@ -37,6 +39,34 @@ class InfoStructuresEndpointTests(EndpointTests, unittest.TestCase):
         self.check_keys(data_keys, self.json_response["data"])
 
 
-class InfoReferencesEndpointTests(EndpointTests, unittest.TestCase):
+class InfoReferencesEndpointTests(EndpointTestsMixin, unittest.TestCase):
+
+    client = get_regular_client()
     request_str = "/info/references"
     response_cls = EntryInfoResponse
+
+
+class IndexInfoEndpointTests(EndpointTestsMixin, unittest.TestCase):
+
+    client = get_index_client()
+    request_str = "/info"
+    response_cls = IndexInfoResponse
+
+    def test_info_endpoint_attributes(self):
+        self.assertTrue("data" in self.json_response)
+        self.assertEqual(self.json_response["data"]["type"], "info")
+        self.assertEqual(self.json_response["data"]["id"], "/")
+        self.assertTrue("attributes" in self.json_response["data"])
+        attributes = [
+            "api_version",
+            "available_api_versions",
+            "formats",
+            "entry_types_by_format",
+            "available_endpoints",
+            "is_index",
+        ]
+        self.check_keys(attributes, self.json_response["data"]["attributes"])
+        self.assertTrue("relationships" in self.json_response["data"])
+        relationships = ["default"]
+        self.check_keys(relationships, self.json_response["data"]["relationships"])
+        self.assertTrue(len(self.json_response["data"]["relationships"]["default"]), 1)

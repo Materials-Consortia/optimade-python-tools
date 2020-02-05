@@ -1,82 +1,14 @@
-# pylint: disable=no-member,wrong-import-position,import-outside-toplevel
+# pylint: disable=relative-beyond-top-level
 import unittest
-import abc
 
-from starlette.testclient import TestClient
+from optimade.server.config import CONFIG
 
-from optimade.validator import ImplementationValidator
-
-from optimade.server.main import app
-from optimade.server.routers import info, links, references, structures
-
-# We need to remove the /optimade prefixes in order to have the tests run correctly.
-app.include_router(info.router)
-app.include_router(links.router)
-app.include_router(references.router)
-app.include_router(structures.router)
-# need to explicitly set base_url, as the default "http://testserver"
-# does not validate as pydantic AnyUrl model
-CLIENT = TestClient(app, base_url="http://example.org/optimade/v0")
-
-
-class EndpointTests(abc.ABC):
-    """ Abstract base class for common tests between endpoints. """
-
-    request_str = None
-    response_cls = None
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.client = CLIENT
-
-        self.response = self.client.get(self.request_str)
-        self.json_response = self.response.json()
-        self.assertEqual(
-            self.response.status_code,
-            200,
-            msg=f"Request failed: {self.response.json()}",
-        )
-
-    def test_meta_response(self):
-        self.assertTrue("meta" in self.json_response)
-        meta_required_keys = [
-            "query",
-            "api_version",
-            "time_stamp",
-            "data_returned",
-            "more_data_available",
-            "provider",
-        ]
-        meta_optional_keys = ["data_available", "implementation"]
-
-        self.check_keys(meta_required_keys, self.json_response["meta"])
-        self.check_keys(meta_optional_keys, self.json_response["meta"])
-
-    def test_serialize_response(self):
-        self.assertTrue(
-            self.response_cls is not None, msg="Response class unset for this endpoint"
-        )
-        self.response_cls(**self.json_response)  # pylint: disable=not-callable
-
-    def check_keys(self, keys, response_subset):
-        for key in keys:
-            self.assertTrue(
-                key in response_subset,
-                msg="{} missing from response {}".format(key, response_subset),
-            )
-
-
-class ServerTestWithValidator(unittest.TestCase):
-    def test_with_validator(self):
-        validator = ImplementationValidator(client=CLIENT)
-        validator.main()
-        self.assertTrue(validator.valid)
+from .utils import get_regular_client
 
 
 class FilterTests(unittest.TestCase):
 
-    client = CLIENT
+    client = get_regular_client()
 
     def test_custom_field(self):
         request = '/structures?filter=_exmpl__mp_chemsys="Ac"'
@@ -125,8 +57,6 @@ class FilterTests(unittest.TestCase):
         self._check_response(request, expected_ids, expected_return)
 
     def test_page_limit_max(self):
-        from optimade.server.config import CONFIG
-
         request = f"/structures?page_limit={CONFIG.page_limit_max + 1}"
         self._check_error_response(
             request,

@@ -7,11 +7,12 @@ from optimade.models import (
     ReferenceResource,
 )
 
-from ..test_server import EndpointTests
+from ..utils import EndpointTestsMixin, get_regular_client
 
 
-class StructuresEndpointTests(EndpointTests, unittest.TestCase):
+class StructuresEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     request_str = "/structures"
     response_cls = StructureResponseMany
 
@@ -55,8 +56,9 @@ class StructuresEndpointTests(EndpointTests, unittest.TestCase):
         self.assertEqual(len(cursor), total_data)
 
 
-class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
+class SingleStructureEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     test_id = "mpf_1"
     request_str = f"/structures/{test_id}"
     response_cls = StructureResponseOne
@@ -71,8 +73,9 @@ class SingleStructureEndpointTests(EndpointTests, unittest.TestCase):
         )
 
 
-class MissingSingleStructureEndpointTests(EndpointTests, unittest.TestCase):
+class MissingSingleStructureEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     test_id = "mpf_random_string_that_is_not_in_test_data"
     request_str = f"/structures/{test_id}"
     response_cls = StructureResponseOne
@@ -85,8 +88,9 @@ class MissingSingleStructureEndpointTests(EndpointTests, unittest.TestCase):
         self.assertEqual(self.json_response["meta"]["more_data_available"], False)
 
 
-class SingleStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
+class SingleStructureWithRelationshipsTests(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     test_id = "mpf_1"
     request_str = f"/structures/{test_id}"
     response_cls = StructureResponseOne
@@ -110,8 +114,9 @@ class SingleStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
         ReferenceResource(**self.json_response["included"][0])
 
 
-class MultiStructureWithSharedRelationshipsTests(EndpointTests, unittest.TestCase):
+class MultiStructureWithSharedRelationshipsTests(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     request_str = f"/structures?filter=id=mpf_1 OR id=mpf_2"
     response_cls = StructureResponseMany
 
@@ -123,8 +128,9 @@ class MultiStructureWithSharedRelationshipsTests(EndpointTests, unittest.TestCas
         self.assertEqual(len(self.json_response["included"]), 1)
 
 
-class MultiStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
+class MultiStructureWithRelationshipsTests(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     request_str = f"/structures?filter=id=mpf_1 OR id=mpf_23"
     response_cls = StructureResponseMany
 
@@ -136,8 +142,11 @@ class MultiStructureWithRelationshipsTests(EndpointTests, unittest.TestCase):
         self.assertEqual(len(self.json_response["included"]), 1)
 
 
-class MultiStructureWithOverlappingRelationshipsTests(EndpointTests, unittest.TestCase):
+class MultiStructureWithOverlappingRelationshipsTests(
+    EndpointTestsMixin, unittest.TestCase
+):
 
+    client = get_regular_client()
     request_str = f"/structures?filter=id=mpf_1 OR id=mpf_3"
     response_cls = StructureResponseMany
 
@@ -148,8 +157,9 @@ class MultiStructureWithOverlappingRelationshipsTests(EndpointTests, unittest.Te
         self.assertEqual(len(self.json_response["included"]), 2)
 
 
-class SingleStructureEndpointEmptyTest(EndpointTests, unittest.TestCase):
+class SingleStructureEndpointEmptyTest(EndpointTestsMixin, unittest.TestCase):
 
+    client = get_regular_client()
     test_id = "non_existent_id"
     request_str = f"/structures/{test_id}"
     response_cls = StructureResponseOne
