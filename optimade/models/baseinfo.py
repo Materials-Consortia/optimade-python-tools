@@ -37,8 +37,8 @@ class AvailableApiVersion(BaseModel):
         if not re.match(r"[0-9]+\.[0-9]+(\.[0-9]+)?", v):
             raise ValueError(f"version MUST NOT be prefixed by, e.g., 'v'. It is: {v}")
         try:
-            _ = tuple(int(val) for val in v.split("."))
-        except Exception:
+            tuple(int(val) for val in v.split("."))
+        except ValueError:
             raise ValueError(f"failed to parse version {v} sections as integers.")
 
         return v

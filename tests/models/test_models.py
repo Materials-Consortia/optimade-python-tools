@@ -4,8 +4,7 @@ import pytest
 import unittest
 import json
 
-from pydantic import ValidationError, BaseModel, ConfigError
-from optimade.models.utils import conlist
+from pydantic import ValidationError  # pylint: disable=no-name-in-module
 from optimade.models import (
     StructureResource,
     EntryRelationships,
@@ -167,25 +166,3 @@ def test_available_api_versions():
 
     for data in good_urls:
         AvailableApiVersion(**data)
-
-
-def test_constrained_list():
-    class ConListModel(BaseModel):
-        v: conlist(len_eq=3)
-
-    ConListModel(v=[1, 2, 3])
-    with pytest.raises(ValidationError) as exc_info:
-        ConListModel(v=[1, 2, 3, 4])
-    assert exc_info.value.errors() == [
-        {
-            "loc": ("v",),
-            "msg": "ensure this value is less than or equal to 3",
-            "type": "value_error.number.not_le",
-            "ctx": {"limit_value": 3},
-        }
-    ]
-
-    with pytest.raises(ConfigError):
-
-        class ConListModel(BaseModel):  # pylint: disable=function-redefined
-            v: conlist(len_eq=3, len_lt=3)

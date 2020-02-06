@@ -32,7 +32,7 @@ def get_links(request: Request, params: EntryListingQueryParams = Depends()):
             setattr(params, str_param, "")
     for int_param in [
         "page_offset",
-        "page_page",
+        "page_number",
         "page_cursor",
         "page_above",
         "page_below",

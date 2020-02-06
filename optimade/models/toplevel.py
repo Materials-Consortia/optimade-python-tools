@@ -1,10 +1,14 @@
 from datetime import datetime
 from typing import Union, List, Optional, Dict, Any
 
-from pydantic import BaseModel, AnyHttpUrl, Field, EmailStr
+from pydantic import (  # pylint: disable=no-name-in-module
+    BaseModel,
+    AnyHttpUrl,
+    Field,
+    EmailStr,
+)
 
 from .jsonapi import Link, Meta
-from .utils import NonnegativeInt
 from .baseinfo import BaseInfoResource
 from .entries import EntryInfoResource, EntryResource
 from .index_metadb import IndexInfoResource
@@ -124,10 +128,11 @@ class ResponseMeta(Meta):
         description="a string containing the date and time at which the query was exexcuted",
     )
 
-    data_returned: NonnegativeInt = Field(
+    data_returned: int = Field(
         ...,
         description="an integer containing the number of data objects "
         "returned for the query.",
+        ge=0,
     )
 
     more_data_available: bool = Field(

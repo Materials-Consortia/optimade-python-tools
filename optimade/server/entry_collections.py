@@ -7,7 +7,7 @@ from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
-from optimade.models import NonnegativeInt, EntryResource
+from optimade.models import EntryResource
 
 from .config import CONFIG
 from .deps import EntryListingQueryParams, SingleEntryQueryParams
@@ -60,7 +60,7 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     @abstractmethod
     def find(
         self, params: EntryListingQueryParams
-    ) -> Tuple[List[EntryResource], NonnegativeInt, bool, set]:
+    ) -> Tuple[List[EntryResource], int, bool, set]:
         """
         Fetches results and indicates if more data is available.
 
@@ -70,7 +70,7 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
             params (EntryListingQueryParams): entry listing URL query params
 
         Returns:
-            Tuple[List[Entry], NonnegativeInt, bool, set]: (results, data_returned, more_data_available, fields)
+            Tuple[List[Entry], int, bool, set]: (results, data_returned, more_data_available, fields)
 
         """
 
@@ -112,7 +112,7 @@ class MongoCollection(EntryCollection):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[List[EntryResource], NonnegativeInt, bool, set]:
+    ) -> Tuple[List[EntryResource], int, bool, set]:
         criteria = self._parse_params(params)
 
         all_fields = criteria.pop("fields")

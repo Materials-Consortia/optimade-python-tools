@@ -1,11 +1,12 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
+from enum import IntEnum
 from sys import float_info
-from typing import List, Optional
+from typing import List, Optional, Tuple, Union
 
 from pydantic import Field, BaseModel, validator
 
 from .entries import EntryResourceAttributes, EntryResource
-from .utils import conlist, CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
+from .utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
 
 
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
@@ -15,6 +16,14 @@ __all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResou
 
 
 EPS = float_info.epsilon
+
+
+Vector3D = Tuple[Union[float, None], Union[float, None], Union[float, None]]
+
+
+class Periodicity(IntEnum):
+    APERIODIC = 0
+    PERIODIC = 1
 
 
 class Species(BaseModel):
@@ -307,7 +316,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that matches an exactly given formula is :filter:`chemical_formula_anonymous="A2B"`.""",
     )
 
-    dimension_types: conlist(len_eq=3) = Field(
+    dimension_types: Tuple[Periodicity, Periodicity, Periodicity] = Field(
         ...,
         description="""List of three integers.
   For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`_).
@@ -329,7 +338,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - For a bulk 3D system: :val:`[1, 1, 1]`""",
     )
 
-    lattice_vectors: Optional[List[conlist(len_eq=3)]] = Field(
+    lattice_vectors: Optional[Tuple[Vector3D, Vector3D, Vector3D]] = Field(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
 - **Type**: list of list of floats.
@@ -352,7 +361,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
         unit="Å",
     )
 
-    cartesian_site_positions: List[conlist(len_eq=3)] = Field(
+    cartesian_site_positions: List[Vector3D] = Field(
         ...,
         description="""Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).
 - **Type**: list of list of floats and/or unknown values
@@ -630,25 +639,11 @@ class StructureResourceAttributes(EntryResourceAttributes):
             raise ValueError(f"Spaces are not allowed, you passed: {v}")
         return v
 
-    @validator("dimension_types")
-    def must_be_of_length_three(cls, v):
-        if len(v) != 3:
-            raise ValueError(f"MUST be of length 3, but is of length: {len(v)}")
-        for dimension in v:
-            if dimension not in {0, 1}:
-                raise ValueError(f"MUST be either 0 or 1, you passed: {v}")
-        return v
-
     @validator("lattice_vectors", always=True)
     def required_if_dimension_types_has_one(cls, v, values):
         if 1 in values.get("dimension_types", []) and v is None:
             raise ValueError(
-                f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values('dimension_types', 'Not specified')}"
-            )
-
-        if len(v) != 3:
-            raise ValueError(
-                f"MUST be a 3 x 3 array (list of 3 lists of 3 floats), found instead: {v}"
+                f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values.get('dimension_types', 'Not specified')}"
             )
 
         for dim_type, vector in zip(values.get("dimension_types", []), v):
@@ -658,12 +653,6 @@ class StructureResourceAttributes(EntryResourceAttributes):
                     f"Here: dimension_types = {values.get('dimension_types', 'Not specified')}, lattice_vectors = {v}"
                 )
 
-        return v
-
-    @validator("lattice_vectors", "cartesian_site_positions", each_item=True)
-    def sites_must_have_length_three(cls, v):
-        if len(v) != 3:
-            raise ValueError(f"MUST be a list of length 3. {v} has length {len(v)}.")
         return v
 
     @validator("nsites")
