@@ -46,12 +46,16 @@ class AvailableApiVersion(BaseModel):
     @root_validator(pre=False, skip_on_failure=True)
     def crosscheck_url_and_version(cls, values):
         """ Check that URL version and API version are compatible. """
-        url_version = values["url"].split("/")[-2 if values["url"].endswith('/') else -1].replace('v', '')
-        url_version = tuple(int(val) for val in url_version.split('.'))
+        url_version = (
+            values["url"]
+            .split("/")[-2 if values["url"].endswith("/") else -1]
+            .replace("v", "")
+        )
+        url_version = tuple(int(val) for val in url_version.split("."))
         api_version = tuple(int(val) for val in values["version"].split("."))
         if any(a != b for a, b in zip(url_version, api_version)):
             raise ValueError(
-                "API version {api_version} is not compatible with url version {url_version}."
+                f"API version {api_version} is not compatible with url version {url_version}."
             )
 
         return values
