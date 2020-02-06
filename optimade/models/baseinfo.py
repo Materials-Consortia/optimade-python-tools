@@ -2,7 +2,7 @@
 import re
 
 from typing import Dict, List, Optional
-from pydantic import BaseModel, AnyUrl, Field, validator
+from pydantic import BaseModel, AnyHttpUrl, Field, validator, root_validator
 
 from .jsonapi import Resource
 
@@ -13,10 +13,11 @@ __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 class AvailableApiVersion(BaseModel):
     """A JSON object containing information about an available API version"""
 
-    url: AnyUrl = Field(
+    url: AnyHttpUrl = Field(
         ...,
         description="a string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
     )
+
     version: str = Field(
         ...,
         description="a string containing the full version number of the API served at that versioned base URL. "
@@ -31,11 +32,29 @@ class AvailableApiVersion(BaseModel):
         return v
 
     @validator("version")
-    def version_must_not_prefix_v(cls, v):
+    def version_must_be_valid(cls, v):
         """The version number string MUST NOT be prefixed by, e.g., 'v'"""
         if not re.match(r"[0-9]+\.[0-9]+(\.[0-9]+)?", v):
             raise ValueError(f"version MUST NOT be prefixed by, e.g., 'v'. It is: {v}")
+        try:
+            _ = tuple(int(val) for val in v.split("."))
+        except Exception:
+            raise ValueError(f"failed to parse version {v} sections as integers.")
+
         return v
+
+    @root_validator(pre=False, skip_on_failure=True)
+    def crosscheck_url_and_version(cls, values):
+        """ Check that URL version and API version are compatible. """
+        url_version = values["url"].split("/")[-2 if values["url"].endswith('/') else -1].replace('v', '')
+        url_version = tuple(int(val) for val in url_version.split('.'))
+        api_version = tuple(int(val) for val in values["version"].split("."))
+        if any(a != b for a, b in zip(url_version, api_version)):
+            raise ValueError(
+                "API version {api_version} is not compatible with url version {url_version}."
+            )
+
+        return values
 
 
 class BaseInfoAttributes(BaseModel):

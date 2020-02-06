@@ -6,7 +6,12 @@ import json
 
 from pydantic import ValidationError, BaseModel, ConfigError
 from optimade.models.utils import conlist
-from optimade.models import StructureResource, EntryRelationships, ReferenceResource
+from optimade.models import (
+    StructureResource,
+    EntryRelationships,
+    ReferenceResource,
+    AvailableApiVersion,
+)
 from optimade.server.mappers import StructureMapper, ReferenceMapper
 
 
@@ -128,6 +133,40 @@ class TestPydanticValidation(unittest.TestCase):
         for ref in bad_refs:
             with self.assertRaises(ValidationError):
                 ReferenceResource(**ReferenceMapper.map_back(ref))
+
+
+def test_available_api_versions():
+    bad_urls = [
+        "asfdsafhttps://example.com/optimade/v0.0",
+        "https://example.com/optimade",
+        "https://example.com/optimade/v0",
+        "https://example.com/optimade/v0999",
+    ]
+    good_urls = [
+        {"url": "https://example.com/optimade/v0", "version": "0.1.9"},
+        {"url": "https://example.com/optimade/v1.0.2", "version": "1.0.2"},
+        {"url": "http://example.com/optimade/v2.3", "version": "2.3.1"},
+    ]
+
+    bad_combos = [
+        {"url": "https://example.com/optimade/v0", "version": "1.0.0"},
+        {"url": "https://example.com/optimade/v1.0.2", "version": "1.0.3"},
+        {"url": "http://example.com/optimade/v2.3", "version": "2.0.1"},
+    ]
+
+    for url in bad_urls:
+        with pytest.raises(ValueError, message=f"Url {url} should have failed"):
+            AvailableApiVersion(url=url, version="1.0")
+
+    for data in bad_combos:
+        with pytest.raises(
+            ValueError,
+            message=f"{data['url']} should have failed with version {data['version']}",
+        ):
+            AvailableApiVersion(**data)
+
+    for data in good_urls:
+        AvailableApiVersion(**data)
 
 
 def test_constrained_list():
