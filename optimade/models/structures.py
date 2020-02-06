@@ -18,6 +18,9 @@ __all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResou
 EPS = float_info.epsilon
 
 
+Vector3D = Tuple[Union[float, None], Union[float, None], Union[float, None]]
+
+
 class Periodicity(IntEnum):
     APERIODIC = 0
     PERIODIC = 1
@@ -313,7 +316,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that matches an exactly given formula is :filter:`chemical_formula_anonymous="A2B"`.""",
     )
 
-    dimension_types: List[Periodicity] = Field(
+    dimension_types: Tuple[Periodicity, Periodicity, Periodicity] = Field(
         ...,
         description="""List of three integers.
   For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`_).
@@ -333,13 +336,9 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - For a wire along the direction specified by the third lattice vector: :val:`[0, 0, 1]`
   - For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: :val:`[1, 0, 1]`
   - For a bulk 3D system: :val:`[1, 1, 1]`""",
-        min_items=3,
-        max_items=3,
     )
 
-    lattice_vectors: Optional[
-        List[Tuple[Union[float, None], Union[float, None], Union[float, None]]]
-    ] = Field(
+    lattice_vectors: Optional[Tuple[Vector3D, Vector3D, Vector3D]] = Field(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
 - **Type**: list of list of floats.
@@ -360,13 +359,9 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
   - :val:`[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is :val:`(4, 0, 0)`, i.e., a vector aligned along the :val:`x` axis of length 4 Å; the second vector is :val:`(0, 4, 0)`; and the third vector is :val:`(0, 1, 4)`.""",
         unit="Å",
-        min_items=3,
-        max_items=3,
     )
 
-    cartesian_site_positions: List[
-        Tuple[Union[float, None], Union[float, None], Union[float, None]]
-    ] = Field(
+    cartesian_site_positions: List[Vector3D] = Field(
         ...,
         description="""Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).
 - **Type**: list of list of floats and/or unknown values
