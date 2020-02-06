@@ -62,7 +62,7 @@ if not CONFIG.use_real_mongo and all(path.exists() for path in test_paths.values
         load_entries(name, collection)
 
 
-# Add varioud middleware
+# Add various middleware
 app.add_middleware(RedirectSlashedURLs)
 
 
