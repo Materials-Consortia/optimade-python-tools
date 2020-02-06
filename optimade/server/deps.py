@@ -2,8 +2,6 @@
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
-from optimade.models import NonnegativeInt
-
 from .config import CONFIG
 
 
@@ -52,7 +50,7 @@ class EntryListingQueryParams:
             "[Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-info-endpoints).",
             regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
-        page_limit: NonnegativeInt = Query(
+        page_limit: int = Query(
             CONFIG.page_limit,
             description="Sets a numerical limit on the number of entries returned. "
             "See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. "
@@ -61,37 +59,37 @@ class EntryListingQueryParams:
             "A server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section "
             "[JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-schema-"
             "common-fields)). A server MAY implement pagination in concert with `sort`.",
-            minimum=0,
+            ge=0,
         ),
-        page_offset: NonnegativeInt = Query(
+        page_offset: int = Query(
             0,
             description="RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.\n"
             "**Example**: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`.",
-            minimum=0,
+            ge=0,
         ),
-        page_number: NonnegativeInt = Query(
+        page_number: int = Query(
             0,
             description="RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED. "
             "It is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\n"
             "**Example**: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
-            minimum=0,
+            ge=0,
         ),
-        page_cursor: NonnegativeInt = Query(
+        page_cursor: int = Query(
             0,
             description="RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.",
-            minimum=0,
+            ge=0,
         ),
-        page_above: NonnegativeInt = Query(
+        page_above: int = Query(
             0,
             description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\n"
             "**Example**: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing id, "
             "so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
-            minimum=0,
+            ge=0,
         ),
-        page_below: NonnegativeInt = Query(
+        page_below: int = Query(
             0,
             description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
-            minimum=0,
+            ge=0,
         ),
     ):
         self.filter = filter

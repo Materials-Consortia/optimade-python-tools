@@ -1,14 +1,11 @@
+# pylint: disable=no-name-in-module
 from typing import cast, Any, Dict, Type
-from pydantic import ConstrainedInt, errors
+from pydantic import errors
 from pydantic.types import OptionalInt
 from pydantic.validators import list_validator
 
 
-__all__ = ("NonnegativeInt", "CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS")
-
-
-class NonnegativeInt(ConstrainedInt):
-    ge = 0
+__all__ = ("CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS")
 
 
 class ConstrainedListMeta(type):
