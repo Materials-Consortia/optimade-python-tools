@@ -27,6 +27,19 @@ ENTRY_INFO_SCHEMAS = {
     "references": ReferenceResource.schema,
 }
 
+BASE_URL_PREFIXES = {
+    "index": {
+        "major": f"/index/optimade/v{__api_version__.split('.')[0]}",
+        "minor": f"/index/optimade/v{__api_version__.split('.')[1]}",
+        "patch": f"/index/optimade/v{__api_version__.split('.')[2]}",
+    },
+    "regular": {
+        "major": f"/optimade/v{__api_version__.split('.')[0]}",
+        "minor": f"/optimade/v{__api_version__.split('.')[1]}",
+        "patch": f"/optimade/v{__api_version__.split('.')[2]}",
+    },
+}
+
 
 def meta_values(
     url: str,
@@ -37,12 +50,13 @@ def meta_values(
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
     from optimade.models import ResponseMetaQuery, Provider, Implementation
-    from optimade.server.main import base_urls
-    from optimade.server.main_index import base_urls as index_base_urls
 
     parse_result = urllib.parse.urlparse(url)
 
-    for prefix in list(base_urls.values()) + list(index_base_urls.values()):
+    prefixes = list(BASE_URL_PREFIXES["index"].values()) + list(
+        BASE_URL_PREFIXES["regular"].values()
+    )
+    for prefix in prefixes:
         if parse_result.path.startswith(prefix):
             url_path = parse_result.path[len(prefix) :]
             break
