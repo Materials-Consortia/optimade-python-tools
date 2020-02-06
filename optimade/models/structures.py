@@ -1,4 +1,5 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
+from enum import IntEnum
 from sys import float_info
 from typing import List, Optional
 
@@ -15,6 +16,11 @@ __all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResou
 
 
 EPS = float_info.epsilon
+
+
+class dimension_types_values(IntEnum):
+    ZERO = 0
+    ONE = 1
 
 
 class Species(BaseModel):
@@ -307,7 +313,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that matches an exactly given formula is :filter:`chemical_formula_anonymous="A2B"`.""",
     )
 
-    dimension_types: conlist(len_eq=3) = Field(
+    dimension_types: List[dimension_types_values] = Field(
         ...,
         description="""List of three integers.
   For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`_).
@@ -327,6 +333,8 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - For a wire along the direction specified by the third lattice vector: :val:`[0, 0, 1]`
   - For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: :val:`[1, 0, 1]`
   - For a bulk 3D system: :val:`[1, 1, 1]`""",
+        min_items=3,
+        max_items=3,
     )
 
     lattice_vectors: Optional[List[conlist(len_eq=3)]] = Field(
