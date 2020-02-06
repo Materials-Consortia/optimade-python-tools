@@ -2667,10 +2667,22 @@
           },
           "lattice_vectors": {
             "title": "Lattice Vectors",
+            "maxItems": 3,
+            "minItems": 3,
             "type": "array",
             "items": {
               "type": "array",
-              "items": {}
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ]
             },
             "description": "The three lattice vectors in Cartesian coordinates, in \u00e5ngstr\u00f6m (\u00c5).\n- **Type**: list of list of floats.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL.\n    If supported, filters MAY support only a subset of comparison operators.\n  - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates.\n    (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).\n  - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.\n  - This property MUST be an array of dimensions 3 times 3 regardless of the elements of :property:`dimension_types`.\n    The vectors SHOULD by convention be chosen so the determinant of the :property:`lattice_vectors` matrix is different from zero.\n    The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.\n  - All three elements of the inner lists of floats MAY be :val:`null` for non-periodic dimensions, i.e., those dimensions for which :property:`dimension_types` is :val:`0`.\n\n- **Examples**:\n\n  - :val:`[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is :val:`(4, 0, 0)`, i.e., a vector aligned along the :val:`x` axis of length 4 \u00c5; the second vector is :val:`(0, 4, 0)`; and the third vector is :val:`(0, 1, 4)`."
           },
@@ -2679,7 +2691,17 @@
             "type": "array",
             "items": {
               "type": "array",
-              "items": {}
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ]
             },
             "description": "Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).\n- **Type**: list of list of floats and/or unknown values\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\n  - It MUST be a list of length N times 3, where N is the number of sites in the structure.\n  - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`_).\n  - If a component of the position is unknown, the :val:`null` value should be provided instead (see section `Properties with unknown value`_).\n    Otherwise, it should be a float value, expressed in angstrom (\u00c5).\n    If at least one of the coordinates is unknown, the correct flag in the list property `structure_features`_ MUST be set.\n  - **Notes**: (for implementers) While this is unrelated to this OPTiMaDe specification: If you decide to store internally the :property: `cartesian_site_positions` as a float array, you might want to represent :val:`null` values with :field-val:`NaN` values.\n    The latter being valid float numbers in the IEEE 754 standard in `IEEE 754-1985 <https://doi.org/10.1109/IEEESTD.1985.82928>`__ and in the updated version `IEEE 754-2008 <https://doi.org/10.1109/IEEESTD.2008.4610935>`__.\n\n- **Examples**:\n\n  - :val:`[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin."
           },
