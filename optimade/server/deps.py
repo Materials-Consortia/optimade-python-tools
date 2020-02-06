@@ -35,7 +35,7 @@ class EntryListingQueryParams:
             description="A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with "
             "the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n"
             "**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
-            regex=r"[a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*",
+            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
         sort: str = Query(
             "",
@@ -50,7 +50,7 @@ class EntryListingQueryParams:
             'the "sort fields" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property '
             "description (and the OPTIONAL field `unit`). An example is shown in section "
             "[Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-info-endpoints).",
-            regex=r"[a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*",
+            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
         page_limit: NonnegativeInt = Query(
             CONFIG.page_limit,
@@ -129,7 +129,7 @@ class SingleEntryQueryParams:
             description="A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with "
             "the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n"
             "**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
-            regex=r"[a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*",
+            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
     ):
         self.response_format = response_format
