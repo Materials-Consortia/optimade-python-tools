@@ -18,9 +18,9 @@ __all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResou
 EPS = float_info.epsilon
 
 
-class dimension_types_values(IntEnum):
-    ZERO = 0
-    ONE = 1
+class Periodicity(IntEnum):
+    APERIODIC = 0
+    PERIODIC = 1
 
 
 class Species(BaseModel):
@@ -313,7 +313,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - A filter that matches an exactly given formula is :filter:`chemical_formula_anonymous="A2B"`.""",
     )
 
-    dimension_types: List[dimension_types_values] = Field(
+    dimension_types: List[Periodicity] = Field(
         ...,
         description="""List of three integers.
   For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`_).
