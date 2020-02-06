@@ -1,4 +1,4 @@
-# pylint: disable=no-self-argument
+# pylint: disable=no-self-argument,no-name-in-module
 import re
 
 from typing import Dict, List, Optional
@@ -23,10 +23,17 @@ class AvailableApiVersion(BaseModel):
         "The version number string MUST NOT be prefixed by, e.g., 'v'.",
     )
 
+    @validator("url")
+    def url_must_be_versioned_base_url(cls, v):
+        """The URL must be a versioned Base URL"""
+        if not re.match(r".*/v[0-9]+(\.[0-9]+)*/?", v):
+            raise ValueError(f"url MUST be a versioned base URL. It is: {v}")
+        return v
+
     @validator("version")
     def version_must_not_prefix_v(cls, v):
         """The version number string MUST NOT be prefixed by, e.g., 'v'"""
-        if not re.match(r"[0-9]+.[0-9]+(.[0-9]+)?", v):
+        if not re.match(r"[0-9]+\.[0-9]+(\.[0-9]+)?", v):
             raise ValueError(f"version MUST NOT be prefixed by, e.g., 'v'. It is: {v}")
         return v
 
