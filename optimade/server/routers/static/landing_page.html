@@ -10,10 +10,13 @@
         {% endblock %}
 
     <style>
+        html { margin: 2em; }
+        h4, p { margin-left: 2em; }
         span.version {background-color: lightgrey; font-weight: bold; font-family: monospace; padding: 0em 0.5em 0em 0.5em; border-radius: 1em;}
     </style>
     </head>
     <body>
+        <img id="logo" width="100" src="https://avatars0.githubusercontent.com/u/23107754?s=400&u=e1580af496ac195a3ac4c445a66a5699efb0c3d3"></img>
         <h3>This is an <a href="https://www.optimade.org">OPTiMaDe</a> base URL which can be queried with an OPTiMaDe client.</h3>
         <h3>OPTiMaDe version:</h3>
         <h3><span class="version">{{ api_version }}</span></h3>
@@ -21,7 +24,7 @@
         <h4>{{ provider.name }}</h4>
         <p> Prefix: <span class="version">{{ provider.prefix }}</span></p>
         <p> {{ provider.description }} </p>
-        <a href={{provider.homepage}}>{{ provider.homepage }}</a>
+        <p><a href={{provider.homepage}}>{{ provider.homepage }}</a></p>
         <h3>Implementation:</h3>
         <h4>{{ implementation.name }}</h4>
         <p>Version: <span class="version">{{ implementation.version }}</span></p>
@@ -32,7 +35,8 @@
         {{ '<li><a href="{}{}">{}{}</a></li>'.format(versioned_url, endpoint, versioned_url, endpoint) | safe }}
         {% endfor %}
         </ul>
-
+        <h3>Index base URL:</h3>
+        <p><a href={{ provider.index_base_url }}>{{ provider.index_base_url }}</a></p>
     </body>
     <footer>
         <div class="footer_text">
