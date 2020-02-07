@@ -13,7 +13,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .entry_collections import MongoCollection
 from .config import CONFIG
 from .middleware import RedirectSlashedURLs
-from .routers import info, links, references, structures
+from .routers import info, links, references, structures, landing
 from .routers.utils import get_providers, BASE_URL_PREFIXES
 
 from optimade import __api_version__, __version__
@@ -81,6 +81,10 @@ app.include_router(info.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(references.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(structures.router, prefix=BASE_URL_PREFIXES["major"])
+
+
+# Add the router for the landing page at `/optimade`
+app.include_router(landing.router, prefix='/optimade')
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
