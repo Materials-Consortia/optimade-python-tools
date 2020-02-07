@@ -6,20 +6,20 @@
     "version": "0.10.1"
   },
   "paths": {
-    "/index/optimade/v0/info": {
+    "/optimade/v0/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_index_optimade_v0_info_get",
+        "operationId": "get_info_optimade_v0_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info Index Optimade V0 Info Get",
+                  "title": "Response Get Info Optimade V0 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/IndexInfoResponse"
@@ -35,13 +35,13 @@
         }
       }
     },
-    "/index/optimade/v0/links": {
+    "/optimade/v0/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_index_optimade_v0_links_get",
+        "operationId": "get_links_optimade_v0_links_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst).",
@@ -203,7 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links Index Optimade V0 Links Get",
+                  "title": "Response Get Links Optimade V0 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"

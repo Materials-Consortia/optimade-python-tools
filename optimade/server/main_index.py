@@ -28,24 +28,32 @@ This is the "special" index meta-database.
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
-    docs_url=f"{BASE_URL_PREFIXES['index']['major']}/extensions/docs",
-    redoc_url=f"{BASE_URL_PREFIXES['index']['major']}/extensions/redoc",
-    openapi_url=f"{BASE_URL_PREFIXES['index']['major']}/extensions/openapi.json",
+    docs_url=f"{BASE_URL_PREFIXES['major']}/extensions/docs",
+    redoc_url=f"{BASE_URL_PREFIXES['major']}/extensions/redoc",
+    openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
 )
 
 
 if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     import bson.json_util
     from .routers.links import links_coll
+    from .routers.utils import mongo_id_for_database
 
     print("loading index links...")
     with open(CONFIG.index_links_path) as f:
         data = json.load(f)
+
+        processed = []
+
+        for db in data:
+            db["_id"] = {"$oid": mongo_id_for_database(db["id"], db["type"])}
+            processed.append(db)
+
         print("inserting index links into collection...")
         links_coll.collection.insert_many(
-            bson.json_util.loads(bson.json_util.dumps(data))
+            bson.json_util.loads(bson.json_util.dumps(processed))
         )
-    print("done inserting index links...")
+        print("done inserting index links...")
 
 
 # Add various middleware
@@ -63,22 +71,20 @@ app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
 # Add various endpoints to `/optimade/vMAJOR`
-app.include_router(index_info.router, prefix=BASE_URL_PREFIXES["index"]["major"])
-app.include_router(links.router, prefix=BASE_URL_PREFIXES["index"]["major"])
+app.include_router(index_info.router, prefix=BASE_URL_PREFIXES["major"])
+app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
     """Add the following OPTIONAL prefixes/base URLs to server:
     ```
-        /index/optimade/vMajor.Minor
-        /index/optimade/vMajor.Minor.Patch
+        /optimade/vMajor.Minor
+        /optimade/vMajor.Minor.Patch
     ```
     """
     for version in ("minor", "patch"):
-        app.include_router(
-            index_info.router, prefix=BASE_URL_PREFIXES["index"][version]
-        )
-        app.include_router(links.router, prefix=BASE_URL_PREFIXES["index"][version])
+        app.include_router(index_info.router, prefix=BASE_URL_PREFIXES[version])
+        app.include_router(links.router, prefix=BASE_URL_PREFIXES[version])
 
 
 def update_schema(app: FastAPI):

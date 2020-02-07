@@ -1,8 +1,5 @@
 [
   {
-    "_id": {
-      "$oid": "746573745f73657276657263"
-    },
     "id": "test_server",
     "type": "child",
     "name": "OPTiMaDe API",
