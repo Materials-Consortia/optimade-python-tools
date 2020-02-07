@@ -32,7 +32,7 @@ def get_index_client() -> TestClient:
     app.include_router(links.router)
     # need to explicitly set base_url, as the default "http://testserver"
     # does not validate as pydantic UrlStr model
-    return TestClient(app, base_url="http://example.org/index/optimade/v0")
+    return TestClient(app, base_url="http://example.org/optimade/v0")
 
 
 class SetClient(abc.ABC):
