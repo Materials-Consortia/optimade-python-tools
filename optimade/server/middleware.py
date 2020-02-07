@@ -15,7 +15,10 @@ class RedirectSlashedURLs(BaseHTTPMiddleware):
 
             # Make sure to only redirect paths that are beyond the versioned depth
             # e.g. don't redirect `/optimade/` to `/optimade` as this will loop indefinitely
-            if len([substr for substr in redirect_scope["path"].split('/') if substr]) > 1:
+            if (
+                len([substr for substr in redirect_scope["path"].split("/") if substr])
+                > 1
+            ):
                 redirect_scope["path"] = redirect_scope["path"][:-1]
                 redirect_url = URL(scope=redirect_scope)
                 return RedirectResponse(url=str(redirect_url))

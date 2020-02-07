@@ -21,10 +21,10 @@ async def landing(request):
         "request": request,
         "request_url": request.url,
         "api_version": __api_version__,
-        "versioned_url": str(request.url) + meta.api_version + '/',
+        "versioned_url": str(request.url) + meta.api_version + "/",
         "implementation": meta.implementation,
         "provider": meta.provider,
-        "endpoints": list(ENTRY_COLLECTIONS.keys()) + ['info'],
+        "endpoints": list(ENTRY_COLLECTIONS.keys()) + ["info"],
     }
 
     return TEMPLATES.TemplateResponse("landing_page.html", context)
