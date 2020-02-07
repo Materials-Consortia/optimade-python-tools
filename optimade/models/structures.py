@@ -646,13 +646,22 @@ class StructureResourceAttributes(EntryResourceAttributes):
                 f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values.get('dimension_types', 'Not specified')}"
             )
 
-        for dim_type, vector in zip(values.get("dimension_types", []), v):
+        for dim_type, vector in zip(values.get("dimension_types", (None,) * 3), v):
             if None in vector and dim_type == 1:
                 raise ValueError(
                     "Null entries in lattice vectors are only permitted when the corresponding dimension type is 0. "
-                    f"Here: dimension_types = {values.get('dimension_types', 'Not specified')}, lattice_vectors = {v}"
+                    f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in values.get('dimension_types', []))}, lattice_vectors = {v}"
                 )
 
+        return v
+
+    @validator("lattice_vectors")
+    def null_values_for_whole_vector(cls, v):
+        for vector in v:
+            if None in vector and any((isinstance(_, float) for _ in vector)):
+                raise ValueError(
+                    f"A lattice vector MUST be either all `null` or all numbers (vector: {vector}, all vectors: {v})"
+                )
         return v
 
     @validator("nsites")

@@ -45,7 +45,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 0, 1],
-    "lattice_vectors": [[4.0,0.0,0.0],[null,4.0, null],[0.0,1.0,4.0]],
+    "lattice_vectors": [[4.0,0.0,0.0],[null, null, null],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
     "species_at_sites": ["Si", "Ge", "vac"],
     "species": [
@@ -76,7 +76,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 0, 1],
-    "lattice_vectors": [[4.0,0.0,0.0],[null,4.0, null],[0.0,1.0,4.0]],
+    "lattice_vectors": [[4.0,0.0,0.0],[null, null, null],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,null,0], [0,0,0], [0,"nan",0] ],
     "species_at_sites": ["Si", "Ge", "vac"],
     "species": [
