@@ -5,7 +5,7 @@ module_dir = Path(__file__).resolve().parent
 
 # Dependencies
 mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
-server_deps = ["uvicorn"] + mongo_deps
+server_deps = ["uvicorn", "Jinja2==2.11.1"] + mongo_deps
 django_deps = ["django~=2.2,>=2.2.9"]
 elastic_deps = ["elasticsearch-dsl~=6.4"]
 testing_deps = [
