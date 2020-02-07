@@ -17,12 +17,19 @@ async def landing(request):
 
     meta = meta_values(str(request.url), 1, 1, more_data_available=False)
 
+    major_version = __api_version__.split(".")[0]
+    versioned_url = (
+        f"{request.url}"
+        if f"v{major_version}" in f"{request.url.path}"
+        else f"{request.url}v{major_version}/"
+    )
+
     context = {
         "request": request,
         "request_url": request.url,
         "api_version": __api_version__,
-        "versioned_url": str(request.url) + meta.api_version + "/",
         "implementation": meta.implementation,
+        "versioned_url": versioned_url,
         "provider": meta.provider,
         "endpoints": list(ENTRY_COLLECTIONS.keys()) + ["info"],
     }
