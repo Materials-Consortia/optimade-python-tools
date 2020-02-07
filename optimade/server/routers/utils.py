@@ -28,16 +28,9 @@ ENTRY_INFO_SCHEMAS = {
 }
 
 BASE_URL_PREFIXES = {
-    "index": {
-        "major": f"/index/optimade/v{__api_version__.split('.')[0]}",
-        "minor": f"/index/optimade/v{__api_version__.split('.')[1]}",
-        "patch": f"/index/optimade/v{__api_version__.split('.')[2]}",
-    },
-    "regular": {
-        "major": f"/optimade/v{__api_version__.split('.')[0]}",
-        "minor": f"/optimade/v{__api_version__.split('.')[1]}",
-        "patch": f"/optimade/v{__api_version__.split('.')[2]}",
-    },
+    "major": f"/optimade/v{__api_version__.split('.')[0]}",
+    "minor": f"/optimade/v{__api_version__.split('.')[1]}",
+    "patch": f"/optimade/v{__api_version__.split('.')[2]}",
 }
 
 
@@ -53,10 +46,7 @@ def meta_values(
 
     parse_result = urllib.parse.urlparse(url)
 
-    prefixes = list(BASE_URL_PREFIXES["index"].values()) + list(
-        BASE_URL_PREFIXES["regular"].values()
-    )
-    for prefix in prefixes:
+    for prefix in list(BASE_URL_PREFIXES.values()):
         if parse_result.path.startswith(prefix):
             url_path = parse_result.path[len(prefix) :]
             break
@@ -282,10 +272,22 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
     return properties
 
 
+def mongo_id_for_database(database_id: str, database_type: str) -> str:
+    """Produce a MondoDB ObjectId for a database"""
+    from bson.objectid import ObjectId
+
+    oid = f"{database_id}{database_type}"
+    if len(oid) > 12:
+        oid = oid[:12]
+    elif len(oid) < 12:
+        oid = f"{oid}{'0' * (12 - len(oid))}"
+
+    return str(ObjectId(oid.encode("UTF-8")))
+
+
 def get_providers():
     """Retrieve Materials-Consortia providers (from https://www.optimade.org/providers/links)"""
     import requests
-    from bson.objectid import ObjectId
 
     mat_consortia_providers = requests.get(
         "https://www.optimade.org/providers/links"
@@ -299,14 +301,10 @@ def get_providers():
 
         provider.update(provider.pop("attributes"))
 
-        # Create MongoDB id
-        oid = provider["id"] + provider["type"]
-        if len(oid) < 12:
-            oid = oid + "0" * (12 - len(oid))
-        elif len(oid) > 12:
-            oid = oid[:12]
-        oid = oid.encode("UTF-8")
-        provider["_id"] = {"$oid": ObjectId(oid)}
+        # Add MongoDB ObjectId
+        provider["_id"] = {
+            "$oid": mongo_id_for_database(provider["id"], provider["type"])
+        }
 
         providers_list.append(provider)
 

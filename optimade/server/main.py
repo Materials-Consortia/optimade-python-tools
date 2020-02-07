@@ -28,9 +28,9 @@ app = FastAPI(
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
-    docs_url=f"{BASE_URL_PREFIXES['regular']['major']}/extensions/docs",
-    redoc_url=f"{BASE_URL_PREFIXES['regular']['major']}/extensions/redoc",
-    openapi_url=f"{BASE_URL_PREFIXES['regular']['major']}/extensions/openapi.json",
+    docs_url=f"{BASE_URL_PREFIXES['major']}/extensions/docs",
+    redoc_url=f"{BASE_URL_PREFIXES['major']}/extensions/redoc",
+    openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
 )
 
 
@@ -77,10 +77,10 @@ app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
 # Add various endpoints to `/optimade/vMAJOR`
-app.include_router(info.router, prefix=BASE_URL_PREFIXES["regular"]["major"])
-app.include_router(links.router, prefix=BASE_URL_PREFIXES["regular"]["major"])
-app.include_router(references.router, prefix=BASE_URL_PREFIXES["regular"]["major"])
-app.include_router(structures.router, prefix=BASE_URL_PREFIXES["regular"]["major"])
+app.include_router(info.router, prefix=BASE_URL_PREFIXES["major"])
+app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
+app.include_router(references.router, prefix=BASE_URL_PREFIXES["major"])
+app.include_router(structures.router, prefix=BASE_URL_PREFIXES["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
@@ -91,14 +91,10 @@ def add_optional_versioned_base_urls(app: FastAPI):
     ```
     """
     for version in ("minor", "patch"):
-        app.include_router(info.router, prefix=BASE_URL_PREFIXES["regular"][version])
-        app.include_router(links.router, prefix=BASE_URL_PREFIXES["regular"][version])
-        app.include_router(
-            references.router, prefix=BASE_URL_PREFIXES["regular"][version]
-        )
-        app.include_router(
-            structures.router, prefix=BASE_URL_PREFIXES["regular"][version]
-        )
+        app.include_router(info.router, prefix=BASE_URL_PREFIXES[version])
+        app.include_router(links.router, prefix=BASE_URL_PREFIXES[version])
+        app.include_router(references.router, prefix=BASE_URL_PREFIXES[version])
+        app.include_router(structures.router, prefix=BASE_URL_PREFIXES[version])
 
 
 def update_schema(app: FastAPI):
