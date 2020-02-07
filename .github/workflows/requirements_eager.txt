@@ -7,3 +7,4 @@ pymongo
 mongomock
 django
 elasticsearch_dsl
+Jinja2
