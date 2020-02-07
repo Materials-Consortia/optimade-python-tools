@@ -83,8 +83,9 @@ app.include_router(references.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(structures.router, prefix=BASE_URL_PREFIXES["major"])
 
 
-# Add the router for the landing page at `/optimade`
+# Add the router for the landing page at `/optimade` and for all prefixes
 app.include_router(landing.router, prefix="/optimade")
+app.include_router(landing.router, prefix=BASE_URL_PREFIXES["regular"]["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
@@ -99,6 +100,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
         app.include_router(links.router, prefix=BASE_URL_PREFIXES[version])
         app.include_router(references.router, prefix=BASE_URL_PREFIXES[version])
         app.include_router(structures.router, prefix=BASE_URL_PREFIXES[version])
+        app.include_router(landing.router, prefix=BASE_URL_PREFIXES[version])
 
 
 def update_schema(app: FastAPI):
