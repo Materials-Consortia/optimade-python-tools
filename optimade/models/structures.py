@@ -641,15 +641,19 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     @validator("lattice_vectors", always=True)
     def required_if_dimension_types_has_one(cls, v, values):
-        if 1 in values.get("dimension_types", []) and v is None:
+        if (
+            Periodicity.PERIODIC.value in values.get("dimension_types", [])
+            and v is None
+        ):
             raise ValueError(
-                f"lattice_vectors is REQUIRED, since dimension_types is not [0, 0, 0] but is {values.get('dimension_types', 'Not specified')}"
+                f"lattice_vectors is REQUIRED, since dimension_types is not ({(Periodicity.APERIODIC.value,) * 3}) but is "
+                f"{tuple(getattr(_, 'value', None) for _ in values.get('dimension_types', []))}"
             )
 
         for dim_type, vector in zip(values.get("dimension_types", (None,) * 3), v):
-            if None in vector and dim_type == 1:
+            if None in vector and dim_type == Periodicity.PERIODIC.value:
                 raise ValueError(
-                    "Null entries in lattice vectors are only permitted when the corresponding dimension type is 0. "
+                    f"Null entries in lattice vectors are only permitted when the corresponding dimension type is {Periodicity.APERIODIC.value}. "
                     f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in values.get('dimension_types', []))}, lattice_vectors = {v}"
                 )
 
