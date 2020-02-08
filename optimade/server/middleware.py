@@ -14,7 +14,7 @@ class RedirectSlashedURLs(BaseHTTPMiddleware):
         """
         if request.scope["path"].endswith("/") and any(
             request.scope["path"].endswith(f"{endpoint}/")
-            for endpoint in list(ENTRY_COLLECTIONS.keys())
+            for endpoint in list(ENTRY_COLLECTIONS.keys()) + ["info"]
         ):
             redirect_scope = dict(request.scope)
             redirect_scope["path"] = redirect_scope["path"][:-1]
