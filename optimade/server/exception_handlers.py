@@ -29,13 +29,16 @@ def general_exception(
     except AttributeError:
         status_code = kwargs.get("status_code", 500)
 
+    try:
+        title = exc.title
+    except AttributeError:
+        title = str(exc.__class__.__name__)
+
     detail = getattr(exc, "detail", str(exc))
 
     errors = kwargs.get("errors", None)
     if not errors:
-        errors = [
-            Error(detail=detail, status=status_code, title=str(exc.__class__.__name__))
-        ]
+        errors = [Error(detail=detail, status=status_code, title=title)]
 
     try:
         response = ErrorResponse(

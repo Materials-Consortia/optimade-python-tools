@@ -1,4 +1,3 @@
-# pylint: disable=line-too-long
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
@@ -91,6 +90,25 @@ class EntryListingQueryParams:
             description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
             ge=0,
         ),
+        include: str = Query(
+            "references",
+            description="The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) "
+            "by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\n"
+            "All related resource objects MUST be returned as part of an array value for the top-level `included` field, see section "
+            "[JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-"
+            "schema-common-fields).\n\n"
+            'The value of `include` MUST be a comma-separated list of "relationship paths", as defined in the '
+            "[JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable "
+            "to identify a relationship path a `400 Bad Request` response MUST be made.\n\n"
+            "The **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level "
+            "field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified "
+            "as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects "
+            "MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section "
+            "[JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-"
+            "schema-common-fields).\n\n"
+            "- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the "
+            "top-level field `included`.",
+        ),
     ):
         self.filter = filter
         self.response_format = response_format
@@ -103,6 +121,7 @@ class EntryListingQueryParams:
         self.page_cursor = page_cursor
         self.page_above = page_above
         self.page_below = page_below
+        self.include = include
 
 
 class SingleEntryQueryParams:
@@ -129,7 +148,27 @@ class SingleEntryQueryParams:
             "**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
             regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
+        include: str = Query(
+            "references",
+            description="The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) "
+            "by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\n"
+            "All related resource objects MUST be returned as part of an array value for the top-level `included` field, see section "
+            "[JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-"
+            "schema-common-fields).\n\n"
+            'The value of `include` MUST be a comma-separated list of "relationship paths", as defined in the '
+            "[JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable "
+            "to identify a relationship path a `400 Bad Request` response MUST be made.\n\n"
+            "The **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level "
+            "field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified "
+            "as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects "
+            "MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section "
+            "[JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-"
+            "schema-common-fields).\n\n"
+            "- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the "
+            "top-level field `included`.",
+        ),
     ):
         self.response_format = response_format
         self.email_address = email_address
         self.response_fields = response_fields
+        self.include = include
