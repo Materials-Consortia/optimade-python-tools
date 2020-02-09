@@ -1,7 +1,7 @@
-# pylint: disable=import-outside-toplevel
+# pylint: disable=import-outside-toplevel,too-many-locals
 import urllib
 from datetime import datetime
-from typing import Union, List, Dict
+from typing import Union, List, Dict, Any
 
 from fastapi import HTTPException
 from starlette.requests import Request
@@ -18,8 +18,8 @@ from optimade.models import (
 )
 
 from optimade.server.config import CONFIG
-from optimade.server.deps import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.entry_collections import EntryCollection
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 
 ENTRY_INFO_SCHEMAS = {
@@ -32,6 +32,20 @@ BASE_URL_PREFIXES = {
     "minor": f"/optimade/v{__api_version__.split('.')[1]}",
     "patch": f"/optimade/v{__api_version__.split('.')[2]}",
 }
+
+
+class BadRequest(HTTPException):
+    """400 Bad Request"""
+
+    def __init__(
+        self,
+        status_code: int = 400,
+        detail: Any = None,
+        headers: dict = None,
+        title: str = "Bad Request",
+    ) -> None:
+        super().__init__(status_code=status_code, detail=detail, headers=headers)
+        self.title = title
 
 
 def meta_values(
@@ -96,6 +110,7 @@ def handle_response_fields(
 def get_included_relationships(
     results: Union[EntryResource, List[EntryResource]],
     ENTRY_COLLECTIONS: Dict[str, EntryCollection],
+    include_param: List[str],
 ) -> Dict[str, List[EntryResource]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
@@ -104,6 +119,8 @@ def get_included_relationships(
         results: list of returned documents.
         ENTRY_COLLECTIONS: dictionary containing collections to query, with key
             based on endpoint type.
+        include_param: list of queried related resources that should be included in
+            `included`.
 
     Returns:
         Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list
@@ -114,6 +131,14 @@ def get_included_relationships(
 
     if not isinstance(results, list):
         results = [results]
+
+    empty_values = {'""', "''"}
+    for entry_type in include_param:
+        if entry_type not in ENTRY_COLLECTIONS and entry_type not in empty_values:
+            raise BadRequest(
+                detail=f"'{entry_type}' cannot be identified as a valid relationship type. "
+                f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
+            )
 
     endpoint_includes = defaultdict(dict)
     for doc in results:
@@ -127,6 +152,10 @@ def get_included_relationships(
 
         relationships = relationships.dict()
         for entry_type in ENTRY_COLLECTIONS:
+            # Skip entry type if it is not in `include_param`
+            if entry_type not in include_param:
+                continue
+
             entry_relationship = relationships.get(entry_type, {})
             if entry_relationship is not None:
                 refs = entry_relationship.get("data", [])
@@ -179,7 +208,11 @@ def get_entries(
 
     results, data_returned, more_data_available, fields = collection.find(params)
 
-    included = get_included_relationships(results, ENTRY_COLLECTIONS)
+    include = []
+    if getattr(params, "include", False):
+        include.extend(params.include.split(","))
+
+    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
         # Deduce the `next` link from the current request
@@ -221,7 +254,11 @@ def get_single_entry(
     params.filter = f'id="{entry_id}"'
     results, data_returned, more_data_available, fields = collection.find(params)
 
-    included = get_included_relationships(results, ENTRY_COLLECTIONS)
+    include = []
+    if getattr(params, "include", False):
+        include.extend(params.include.split(","))
+
+    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
         raise HTTPException(

@@ -10,8 +10,8 @@ from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
 
 from .config import CONFIG
-from .deps import EntryListingQueryParams, SingleEntryQueryParams
 from .mappers import ResourceMapper
+from .query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 
 if CONFIG.use_real_mongo:
