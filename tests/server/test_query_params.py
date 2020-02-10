@@ -331,28 +331,37 @@ class FilterTests(SetClient, unittest.TestCase):
             expected_detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {CONFIG.page_limit_max + 1}",
         )
 
+    def test_value_list_operator(self):
+        request = f"/structures?filter=dimension_types HAS < 1"
+        self._check_error_response(
+            request,
+            expected_status=501,
+            expected_title="NotImplementedError",
+            expected_detail="set_op_rhs not implemented for [Token(HAS, 'HAS'), Token(OPERATOR, '<'), 1].",
+        )
+
+    def test_has_any_operator(self):
+        request = f"/structures?filter=dimension_types HAS ANY > 1"
+        self._check_error_response(
+            request,
+            expected_status=501,
+            expected_title="NotImplementedError",
+            expected_detail="OPERATOR > inside value_list [Token(OPERATOR, '>'), 1] not implemented.",
+        )
+
     def test_list_has_all(self):
         request = '/structures?filter=elements HAS ALL "Ba","F","H","Mn","O","Re","Si"'
-        self._check_error_response(
-            request, expected_status=501, expected_title="NotImplementedError"
-        )
-        # expected_ids = ["mpf_3819"]
-        # self._check_response(request, expected_ids, len(expected_ids))
+        expected_ids = ["mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
 
         request = '/structures?filter=elements HAS ALL "Re","Ti"'
-        self._check_error_response(
-            request, expected_status=501, expected_title="NotImplementedError"
-        )
-        # expected_ids = ["mpf_3819"]
-        # self._check_response(request, expected_ids, len(expected_ids))
+        expected_ids = ["mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_has_any(self):
         request = '/structures?filter=elements HAS ANY "Re","Ti"'
-        self._check_error_response(
-            request, expected_status=501, expected_title="NotImplementedError"
-        )
-        # expected_ids = ["mpf_3819"]
-        # self._check_response(request, expected_ids, len(expected_ids))
+        expected_ids = ["mpf_3819", "mpf_3803"]
+        self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_length_basic(self):
         request = "/structures?filter=elements LENGTH = 9"
@@ -386,12 +395,23 @@ class FilterTests(SetClient, unittest.TestCase):
         # self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_has_only(self):
+        """ Test HAS ONLY query on elements.
+
+        Curiously this test fails under mongomock when $size is 1, but works with a real mongo.
+
+        The queries produced in each case should be:
+            - `{"elements": {"$all": ["Ac", "Mg"], "$size": 2}}`
+            - `{"elements": {"$all": ["Ac"], "$size": 1}}`
+
+        """
+
+        request = '/structures?filter=elements HAS ONLY "Ac", "Mg"'
+        expected_ids = ["mpf_23"]
+        self._check_response(request, expected_ids, len(expected_ids))
+
         request = '/structures?filter=elements HAS ONLY "Ac"'
-        self._check_error_response(
-            request, expected_status=501, expected_title="NotImplementedError"
-        )
-        # expected_ids = ["mpf_1"]
-        # self._check_response(request, expected_ids, len(expected_ids))
+        expected_ids = ["mpf_1"]
+        self._check_response(request, expected_ids, len(expected_ids))
 
     def test_list_correlated(self):
         request = '/structures?filter=elements:elements_ratios HAS "Ag":"0.2"'
