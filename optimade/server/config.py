@@ -239,5 +239,14 @@ class ServerConfig(Config):
                 set(config.get("provider_fields", {}).get(endpoint, []))
             )
 
+        self.aliases = {}
+        if "aliases" in config:
+            for endpoint in {"links", "references", "structures"}:
+                if endpoint in config["aliases"]:
+                    section = config["aliases"][endpoint]
+                    self.aliases[endpoint] = tuple(
+                        (key, section[key]) for key in section
+                    )
+
 
 CONFIG = ServerConfig()
