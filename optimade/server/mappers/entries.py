@@ -19,6 +19,7 @@ class ResourceMapper:
                 (CONFIG.provider["prefix"] + field, field)
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
             )
+            + CONFIG.aliases.get(cls.ENDPOINT, ())
             + cls.ALIASES
         )
 
