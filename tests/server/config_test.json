@@ -16,7 +16,7 @@
         "name": "Example provider",
         "description": "Provider used for examples, not to be assigned to a real database",
         "homepage": "http://example.com",
-        "index_base_url": "http://localhost:5001/index/optimade"
+        "index_base_url": "http://localhost:5001/optimade"
     },
     "provider_fields": {
         "structures": [
