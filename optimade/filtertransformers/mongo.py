@@ -58,7 +58,26 @@ class MongoTransformer(Transformer):
 
     def value_list(self, arg):
         # value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
-        raise NotImplementedError
+        # NOTE: no support for optional OPERATOR
+        values = []
+        for value in arg:
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]
+            if str(value) in self.operator_map.keys():
+                raise NotImplementedError(
+                    f"OPERATOR {value} inside value_list {arg} not implemented."
+                )
+            if value.isdigit():
+                value = int(value)
+            else:
+                try:
+                    value = float(value)
+                except ValueError:
+                    pass
+
+            values.append(value)
+
+        return arg
 
     def value_zip(self, arg):
         # value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
@@ -138,14 +157,16 @@ class MongoTransformer(Transformer):
             return {"$in": arg[1:]}
 
         if arg[1] == "ALL":
-            raise NotImplementedError
+            return {"$all": arg[2]}
+
         if arg[1] == "ANY":
-            raise NotImplementedError
+            return {"$in": arg[2]}
+
         if arg[1] == "ONLY":
-            raise NotImplementedError
+            return {"$all": arg[2], "$size": len(arg[2])}
 
         # value with OPERATOR
-        raise NotImplementedError
+        raise NotImplementedError(f"set_op_rhs not implemented for {arg}.")
 
     def length_op_rhs(self, arg):
         # length_op_rhs: LENGTH [ OPERATOR ] value
