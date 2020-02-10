@@ -223,35 +223,38 @@ class TestMongoTransformer(unittest.TestCase):
         with self.assertRaises(VisitError):
             self.transform('"some string" > "some other string"')
 
-    def test_list_properties(self):
-        """Test queries using list properties
+    def test_not_implemented(self):
+        """ Test that list properties that are currently not implemented
+        give a sensible response.
 
-        NOTE: Some of these are not implemented yet, these will be tested to raise.
         """
-        # Comparisons of list properties
+        # NOTE: Lark catches underlying filtertransformer exceptions and
+        # raises VisitErrors, most of these actually correspond to NotImplementedError
         with self.assertRaises(VisitError):
-            self.transform("list HAS < 3")
+            try:
+                self.transform("list HAS < 3")
+            except Exception as exc:
+                self.assertTrue("not implemented" in str(exc))
+                raise exc
 
         with self.assertRaises(VisitError):
-            self.transform("list HAS ALL < 3, > 3")
+            try:
+                self.transform("list HAS ALL < 3, > 3")
+            except Exception as exc:
+                self.assertTrue("not implemented" in str(exc))
+                raise exc
 
         with self.assertRaises(VisitError):
-            self.transform("list HAS ANY > 3, < 6")
+            try:
+                self.transform("list HAS ANY > 3, < 6")
+            except Exception as exc:
+                self.assertTrue("not implemented" in str(exc))
+                raise exc
 
         self.assertEqual(self.transform("list LENGTH 3"), {"list": {"$size": 3}})
 
         with self.assertRaises(VisitError):
             self.transform("list:list HAS >=2:<=5")
-
-        with self.assertRaises(VisitError):
-            self.transform(
-                'elements HAS "H" AND elements HAS ALL "H","He","Ga","Ta" AND elements HAS '
-                'ONLY "H","He","Ga","Ta" AND elements HAS ANY "H", "He", "Ga", "Ta"'
-            )
-
-        # OPTIONAL:
-        with self.assertRaises(VisitError):
-            self.transform('elements HAS ONLY "H","He","Ga","Ta"')
 
         with self.assertRaises(VisitError):
             self.transform(
@@ -275,6 +278,35 @@ class TestMongoTransformer(unittest.TestCase):
 
         with self.assertRaises(VisitError):
             self.transform("list LENGTH > 3")
+
+    def test_list_properties(self):
+        """ Test the HAS ALL, ANY and optional ONLY queries.
+
+        """
+        self.assertEqual(
+            self.transform('elements HAS ONLY "H","He","Ga","Ta"'),
+            {"elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}},
+        )
+
+        self.assertEqual(
+            self.transform('elements HAS ANY "H","He","Ga","Ta"'),
+            {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},
+        )
+
+        self.assertEqual(
+            self.transform(
+                'elements HAS "H" AND elements HAS ALL "H","He","Ga","Ta" AND elements HAS '
+                'ONLY "H","He","Ga","Ta" AND elements HAS ANY "H", "He", "Ga", "Ta"'
+            ),
+            {
+                "$and": [
+                    {"elements": {"$in": ["H"]}},
+                    {"elements": {"$all": ["H", "He", "Ga", "Ta"]}},
+                    {"elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}},
+                    {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},
+                ]
+            },
+        )
 
     def test_properties(self):
         #  Filtering on Properties with unknown value
