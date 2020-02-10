@@ -40,8 +40,8 @@ class ParserTestV0_9_5(unittest.TestCase):
         self.assertIsNotNone(repr(self.parser))
 
 
-class ParserTestV0_10_0(unittest.TestCase):
-    version = (0, 10, 0)
+class ParserTestV0_10_1(unittest.TestCase):
+    version = (0, 10, 1)
     variant = "default"
 
     @classmethod
@@ -186,6 +186,7 @@ class ParserTestV0_10_0(unittest.TestCase):
 
         # OPTIONAL:
         self.assertIsInstance(self.parse('elements HAS ONLY "H","He","Ga","Ta"'), Tree)
+        self.assertIsInstance(self.parse('elements HAS ALL "H","He","Ga","Ta"'), Tree)
         self.assertIsInstance(
             self.parse(
                 'elements:_exmpl_element_counts HAS "H":6 AND '
