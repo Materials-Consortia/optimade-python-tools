@@ -8,20 +8,15 @@ class ResourceMapper:
     """Generic Resource Mapper"""
 
     ENDPOINT: str = ""
-    ALIASES: Tuple[Tuple[str, str]] = ()
     REQUIRED_FIELDS: set = set()
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set = {"id", "type", "relationships", "links"}
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
-        return (
-            tuple(
-                (CONFIG.provider["prefix"] + field, field)
-                for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
-            )
-            + CONFIG.aliases.get(cls.ENDPOINT, ())
-            + cls.ALIASES
-        )
+        return tuple(
+            (CONFIG.provider["prefix"] + field, field)
+            for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
+        ) + CONFIG.aliases.get(cls.ENDPOINT, ())
 
     @classmethod
     def alias_for(cls, field: str) -> str:
@@ -30,7 +25,7 @@ class ResourceMapper:
         :param field: OPtiMaDe field name
         :type field: str
 
-        :return: Aliased field as found in PROVIDER_ALIASES + ALIASES
+        :return: Aliased fields
         :rtype: str
         """
         return dict(cls.all_aliases()).get(field, field)
