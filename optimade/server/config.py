@@ -169,6 +169,12 @@ class ServerConfig(Config):
         else:
             self.provider = self._DEFAULTS("provider")
 
+        self.aliases = {}
+        for endpoint in {"links", "references", "structures"}:
+            if f"{endpoint}.aliases" in config:
+                section = config[f"{endpoint}.aliases"]
+                self.aliases[endpoint] = tuple(section.items())
+
         self.provider_fields = {}
         for endpoint in {"links", "references", "structures"}:
             self.provider_fields[endpoint] = (
@@ -232,6 +238,13 @@ class ServerConfig(Config):
             self.provider_fields[endpoint] = list(
                 set(config.get("provider_fields", {}).get(endpoint, []))
             )
+
+        self.aliases = {}
+        if "aliases" in config:
+            for endpoint in {"links", "references", "structures"}:
+                if endpoint in config["aliases"]:
+                    section = config["aliases"][endpoint]
+                    self.aliases[endpoint] = tuple(section.items())
 
 
 CONFIG = ServerConfig()
