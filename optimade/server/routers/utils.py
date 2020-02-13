@@ -29,8 +29,8 @@ ENTRY_INFO_SCHEMAS = {
 
 BASE_URL_PREFIXES = {
     "major": f"/optimade/v{__api_version__.split('.')[0]}",
-    "minor": f"/optimade/v{__api_version__.split('.')[1]}",
-    "patch": f"/optimade/v{__api_version__.split('.')[2]}",
+    "minor": f"/optimade/v{'.'.join(__api_version__.split('.')[:2])}",
+    "patch": f"/optimade/v{__api_version__}",
 }
 
 
