@@ -56,11 +56,12 @@ def update_openapijson(c):
 def set_optimade_ver(_, ver=""):
     if not ver:
         raise Exception("Please specify --ver='Major.Minor.Patch'")
+    if not re.match("[0-9]+.[0-9]+.[0-9]+", ver):
+        raise Exception("ver MUST be expressed as 'Major.Minor.Patch'")
+
     with open("optimade/__init__.py", "r") as f:
         lines = [
-            re.sub(
-                "__api_version__ = .+", '__api_version__ = "{}"'.format(ver), l.rstrip()
-            )
+            re.sub("__api_version__ = .+", f'__api_version__ = "{ver}"', l.rstrip())
             for l in f
         ]
     with open("optimade/__init__.py", "w") as f:
@@ -69,11 +70,25 @@ def set_optimade_ver(_, ver=""):
 
     with open(".ci/optimade-version.json", "r") as f:
         lines = [
-            re.sub('"message": .+', '"message": "v{}",'.format(ver), l.rstrip())
-            for l in f
+            re.sub('"message": .+', f'"message": "v{ver}",', l.rstrip()) for l in f
         ]
     with open(".ci/optimade-version.json", "w") as f:
         f.write("\n".join(lines))
         f.write("\n")
 
-    print("Bumped OPTiMaDe version to {}".format(ver))
+    with open(".github/workflows/deps_lint.yml", "r") as f:
+        lines = f
+        for regex, version in (
+            ("[0-9]+", ver.split(".")[0]),
+            ("[0-9]+.[0-9]+", ".".join(ver.split(".")[:2])),
+            ("[0-9]+.[0-9]+.[0-9]+", ver),
+        ):
+            lines = [
+                re.sub(f"/optimade/v{regex}", f"/optimade/v{version}", l.rstrip())
+                for l in lines
+            ]
+    with open(".github/workflows/deps_lint.yml", "w") as f:
+        f.write("\n".join(lines))
+        f.write("\n")
+
+    print(f"Bumped OPTiMaDe version to {ver}")

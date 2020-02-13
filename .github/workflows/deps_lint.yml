@@ -32,6 +32,7 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
+
   pre-commit:
     runs-on: ubuntu-latest
 
@@ -52,6 +53,7 @@ jobs:
     - name: Run pre-commit
       run: |
         pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+
 
   openapi:
     runs-on: ubuntu-latest
@@ -87,28 +89,46 @@ jobs:
         .ci/openapi_diff.sh
         .ci/index_openapi_diff.sh
 
+
   docker-image:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
 
-    - name: Build the Docker image
+    - name: Build the Docker images
       run: docker-compose build
 
-    - name: Test server
+    - name: Start Docker image - server
       run: |
         docker-compose up optimade &
         .github/workflows/wait_for_it.sh localhost:3213 -t 120
         sleep 15
-        docker exec optimade-python-tools_optimade_1 optimade_validator http://localhost:5000/optimade/v0
 
-    - name: Test index server
+    - name: Test server
+      run: docker exec optimade-python-tools_optimade_1 optimade_validator http://localhost:5000/optimade/v0
+
+    - name: Test server - OPTIONAL base URL; vMAJOR.MINOR
+      run: docker exec optimade-python-tools_optimade_1 optimade_validator http://localhost:5000/optimade/v0.10
+
+    - name: Test server - OPTIONAL base URL; vMAJOR.MINOR.PATCH
+      run: docker exec optimade-python-tools_optimade_1 optimade_validator http://localhost:5000/optimade/v0.10.1
+
+    - name: Start Docker image - index server
       run: |
         docker-compose up optimade-index &
         .github/workflows/wait_for_it.sh localhost:3214 -t 120
         sleep 15
-        docker exec optimade-python-tools_optimade-index_1 optimade_validator http://localhost:5001/optimade/v0 --index
+
+    - name: Test index server
+      run: docker exec optimade-python-tools_optimade-index_1 optimade_validator http://localhost:5001/optimade/v0 --index
+
+    - name: Test index server - OPTIONAL base URL; vMAJOR.MINOR
+      run: docker exec optimade-python-tools_optimade-index_1 optimade_validator http://localhost:5001/optimade/v0.10 --index
+
+    - name: Test index server - OPTIONAL base URL; vMAJOR.MINOR.PATCH
+      run: docker exec optimade-python-tools_optimade-index_1 optimade_validator http://localhost:5001/optimade/v0.10.1 --index
+
 
   deps_static:
     runs-on: ubuntu-latest
