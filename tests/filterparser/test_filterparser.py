@@ -154,6 +154,9 @@ class ParserTestV0_10_1(unittest.TestCase):
         )
         self.assertIsInstance(self.parse("5 < 7"), Tree)
 
+    def test_id(self):
+        self.assertIsInstance(self.parse("id=example/1"), Tree)
+
     def test_string_operations(self):
         #  Substring comparisons
         self.assertIsInstance(

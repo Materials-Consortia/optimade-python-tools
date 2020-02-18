@@ -43,7 +43,7 @@
     "_id": {
       "$oid": "5cfb441f053b174410701bea"
     },
-    "id": "dummy2019",
+    "id": "dummy/2019",
     "last_modified": {
       "$date": "2019-11-23T14:24:37.332Z"
     },
