@@ -9,3 +9,4 @@ mongomock==3.19.0
 django==2.2.10
 elasticsearch-dsl==6.4.0
 Jinja2==2.11.1
+idna==2.8
