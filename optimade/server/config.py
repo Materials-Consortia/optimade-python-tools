@@ -1,3 +1,4 @@
+import os
 import json
 from typing import Any
 from configparser import ConfigParser
@@ -19,6 +20,7 @@ class Config:
     _path: Path = Path(__file__).parent.joinpath("config.ini")
 
     def __init__(self, server_cfg: Path = None):
+        self._debug = os.getenv("DEBUG") == "1"
         self._server = (
             Path().resolve().joinpath("server.cfg")
             if server_cfg is None
@@ -87,6 +89,14 @@ class Config:
             )
         else:
             f()
+
+    @property
+    def debug(self):
+        return self._debug
+
+    @debug.setter
+    def debug(self, _):
+        raise AttributeError("debug cannot be set")
 
 
 class ServerConfig(Config):
