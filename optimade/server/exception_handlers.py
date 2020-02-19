@@ -21,10 +21,13 @@ def general_exception(
     status_code: int = 500,  # A status_code in `exc` will take precedence
     errors: List[OptimadeError] = None,
 ) -> JSONResponse:
-    tb = "".join(
-        traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
-    )
-    print(tb)
+    debug_info = {}
+    if CONFIG.debug:
+        tb = "".join(
+            traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
+        )
+        print(tb)
+        debug_info[f"{CONFIG.provider['prefix']}traceback"] = tb
 
     try:
         http_response_code = exc.status_code
@@ -48,7 +51,7 @@ def general_exception(
                 data_returned=0,
                 data_available=0,
                 more_data_available=False,
-                **{CONFIG.provider["prefix"] + "traceback": tb},
+                **debug_info,
             ),
             errors=errors,
         )

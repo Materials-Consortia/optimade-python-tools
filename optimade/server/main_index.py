@@ -17,6 +17,9 @@ from .routers.utils import BASE_URL_PREFIXES
 from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
+if CONFIG.debug:
+    print("DEBUG MODE")
+
 
 app = FastAPI(
     title="OPTiMaDe API - Index meta-database",
