@@ -95,8 +95,8 @@ class Config:
         return self._debug
 
     @debug.setter
-    def debug(self, _):
-        raise AttributeError("debug cannot be set")
+    def debug(self, value: bool):
+        self._debug = value
 
 
 class ServerConfig(Config):

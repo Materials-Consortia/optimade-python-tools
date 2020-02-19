@@ -6,7 +6,7 @@ from pathlib import Path
 
 from optimade.server.config import ServerConfig, CONFIG
 
-from .utils import SetClient, get_regular_client, get_index_client
+from .utils import SetClient
 
 
 class LoadFromIniTest(unittest.TestCase):
@@ -64,6 +64,9 @@ class TestDebugOff(SetClient, unittest.TestCase):
 
         TODO: This should be moved to a separate test file that tests the exception handlers.
         """
+        if CONFIG.debug:
+            CONFIG.debug = False
+
         response = self.client.get("/non/existent/path")
         self.assertEqual(
             response.status_code,
@@ -87,6 +90,9 @@ class IndexTestDebugOff(SetClient, unittest.TestCase):
 
         TODO: This should be moved to a separate test file that tests the exception handlers.
         """
+        if CONFIG.debug:
+            CONFIG.debug = False
+
         response = self.client.get("/non/existent/path")
         self.assertEqual(
             response.status_code,
@@ -101,17 +107,17 @@ class IndexTestDebugOff(SetClient, unittest.TestCase):
         self.assertNotIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
 
 
-class TestDebugOn(unittest.TestCase):
-    def __init__(self, methodName: str = "runTest"):
-        super().__init__(methodName=methodName)
-        os.environ["DEBUG"] = "1"
-        self.client = get_regular_client()
+class TestDebugOn(SetClient, unittest.TestCase):
+
+    server = "regular"
 
     def test_debug_is_respected_when_off(self):
         """Make sure traceback is toggleable according to debug mode - here OFF
 
         TODO: This should be moved to a separate test file that tests the exception handlers.
         """
+        CONFIG.debug = True
+
         response = self.client.get("/non/existent/path")
         self.assertEqual(
             response.status_code,
@@ -123,20 +129,20 @@ class TestDebugOn(unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertNotIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
+        self.assertIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
 
 
-class IndexTestDebugOn(unittest.TestCase):
-    def __init__(self, methodName: str = "runTest"):
-        super().__init__(methodName=methodName)
-        os.environ["DEBUG"] = "1"
-        self.client = get_index_client()
+class IndexTestDebugOn(SetClient, unittest.TestCase):
+
+    server = "index"
 
     def test_debug_is_respected_when_off(self):
         """Make sure traceback is toggleable according to debug mode - here OFF
 
         TODO: This should be moved to a separate test file that tests the exception handlers.
         """
+        CONFIG.debug = True
+
         response = self.client.get("/non/existent/path")
         self.assertEqual(
             response.status_code,
@@ -148,4 +154,4 @@ class IndexTestDebugOn(unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertNotIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
+        self.assertIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
