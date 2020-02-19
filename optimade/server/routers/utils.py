@@ -323,11 +323,11 @@ def mongo_id_for_database(database_id: str, database_type: str) -> str:
 
 
 def get_providers():
-    """Retrieve Materials-Consortia providers (from https://www.optimade.org/providers/links)"""
+    """Retrieve Materials-Consortia providers (from https://providers.optimade.org/providers.json)"""
     import requests
 
     mat_consortia_providers = requests.get(
-        "https://www.optimade.org/providers/links"
+        "https://providers.optimade.org/providers.json"
     ).json()
 
     providers_list = []

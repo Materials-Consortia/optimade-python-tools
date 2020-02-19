@@ -8,3 +8,4 @@ mongomock
 django
 elasticsearch_dsl
 Jinja2
+idna

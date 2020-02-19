@@ -7,7 +7,7 @@
 The aim of OPTiMaDe is to develop a common API, compliant with the [JSON API 1.0](http://jsonapi.org/format/1.0/) specification.
 This is to enable interoperability among databases that contain calculated properties of existing and hypothetical materials.
 
-This repository contains a library of tools for implementing and consuming [OPTiMaDe](http://www.optimade.org) APIs using Python.
+This repository contains a library of tools for implementing and consuming [OPTiMaDe](https://www.optimade.org) APIs using Python.
 
 ## Status
 

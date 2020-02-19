@@ -49,6 +49,7 @@ setup(
         "pydantic~=1.4",
         "email_validator",
         "requests",
+        "idna<2.9",  # Set to avoid problems with requests
     ],
     extras_require={
         "all": all_deps,
