@@ -68,10 +68,6 @@ def set_optimade_ver(_, ver=""):
         ("[0-9]+.[0-9]+.[0-9]+", ver),
     ):
         update_file(
-            ".github/workflows/deps_lint.yml",
-            (f"/optimade/v{regex}", f"/optimade/v{version}"),
-        )
-        update_file(
             "README.md", (f"example/v{regex}", f"example/v{version}"), strip="\n"
         )
     update_file(
