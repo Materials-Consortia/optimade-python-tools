@@ -332,7 +332,7 @@ class FilterTests(SetClient, unittest.TestCase):
         )
 
     def test_value_list_operator(self):
-        request = f"/structures?filter=dimension_types HAS < 1"
+        request = "/structures?filter=dimension_types HAS < 1"
         self._check_error_response(
             request,
             expected_status=501,
@@ -341,7 +341,7 @@ class FilterTests(SetClient, unittest.TestCase):
         )
 
     def test_has_any_operator(self):
-        request = f"/structures?filter=dimension_types HAS ANY > 1"
+        request = "/structures?filter=dimension_types HAS ANY > 1"
         self._check_error_response(
             request,
             expected_status=501,
