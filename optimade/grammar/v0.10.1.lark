@@ -7,6 +7,7 @@ filter: expression*
 constant: string | number
 // Note: support for property in value is OPTIONAL
 value: string | number | property
+id_value: id_string | number
 
 // Note: not_implemented_string is only here to help Transformers
 non_string_value: number | property
@@ -23,7 +24,7 @@ expression: expression_clause ( _OR expression_clause )*
 expression_clause: expression_phrase ( _AND expression_phrase )*
 expression_phrase: [ NOT ] ( comparison | "(" expression ")" )
 // Note: support for constant_first_comparison is OPTIONAL
-comparison: constant_first_comparison | property_first_comparison
+comparison: id_comparison | constant_first_comparison | property_first_comparison
 
 // Note: support for set_zip_op_rhs in comparison is OPTIONAL
 property_first_comparison: property ( value_op_rhs
@@ -34,6 +35,8 @@ property_first_comparison: property ( value_op_rhs
                                     | length_op_rhs )
 
 constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )
+
+id_comparison: ( ID "=" id_value ) | ( id_value "=" ID )
 
 value_op_rhs: OPERATOR value
 known_op_rhs: IS ( KNOWN | UNKNOWN )
@@ -59,11 +62,13 @@ property: IDENTIFIER ( "." IDENTIFIER )*
 
 // String syntax
 string: ESCAPED_STRING
+id_string: ID_ESCAPED_STRING | ESCAPED_STRING
 
 // Number token syntax
 number: SIGNED_INT | SIGNED_FLOAT
 
 // Tokens
+ID:       "id"
 
 // Boolean relations
 _AND:     "AND"
@@ -95,9 +100,12 @@ DIGIT: "0".."9"
 // Strings
 
 _STRING_INNER: /(.|[\t\f\r\n])*?/
+_STRING_INNER_NON_ZERO: /[^ \t\f\r\n]+/
 _STRING_ESC_INNER: _STRING_INNER /(?<!\\)(\\\\)*?/
+_STRING_ESC_INNER_NON_ZERO: _STRING_INNER_NON_ZERO /(?<!\\)(\\\\)*?/
 
-ESCAPED_STRING : "\"" _STRING_ESC_INNER "\""
+ESCAPED_STRING: "\"" _STRING_ESC_INNER "\""
+ID_ESCAPED_STRING: _STRING_ESC_INNER_NON_ZERO
 
 
 %import common.SIGNED_INT
