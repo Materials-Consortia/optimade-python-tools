@@ -13,7 +13,7 @@ from .baseinfo import BaseInfoResource
 from .entries import EntryInfoResource, EntryResource
 from .index_metadb import IndexInfoResource
 from .links import LinksResource
-from .optimade_json import OptimadeError, Success, Failure, Warnings
+from .optimade_json import Success, Failure, Warnings
 from .references import ReferenceResource
 from .structures import StructureResource
 
@@ -173,7 +173,6 @@ class ResponseMeta(Meta):
 
 class ErrorResponse(Failure):
     meta: Optional[ResponseMeta] = Field(None)
-    errors: List[OptimadeError] = Field(...)
 
 
 class IndexInfoResponse(Success):

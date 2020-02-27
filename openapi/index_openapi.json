@@ -528,10 +528,12 @@
           },
           "errors": {
             "title": "Errors",
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OptimadeError"
-            }
+            },
+            "description": "A list of OPTiMaDe-specific JSON API error objects, where the field detail MUST be present."
           },
           "included": {
             "title": "Included",

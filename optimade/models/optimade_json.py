@@ -1,5 +1,5 @@
 """Modified JSON API v1.0 for OPTiMaDe API"""
-# pylint: disable=no-self-argument
+# pylint: disable=no-self-argument,no-name-in-module
 from pydantic import Field, root_validator, BaseModel
 from typing import Optional, Set, Union, List
 
