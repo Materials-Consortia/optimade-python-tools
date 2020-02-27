@@ -1040,8 +1040,8 @@
         },
         "description": "Resource objects appear in a JSON:API document to represent resources."
       },
-      "BaseRealationshipMeta": {
-        "title": "BaseRealationshipMeta",
+      "BaseRelationshipMeta": {
+        "title": "BaseRelationshipMeta",
         "required": [
           "description"
         ],
@@ -1077,7 +1077,7 @@
             "title": "Meta",
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseRealationshipMeta"
+                "$ref": "#/components/schemas/BaseRelationshipMeta"
               }
             ],
             "description": "Relationship meta field. MUST contain 'description' if supplied."

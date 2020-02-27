@@ -1,7 +1,7 @@
 """Modified JSON API v1.0 for OPTiMaDe API"""
 # pylint: disable=no-self-argument,no-name-in-module
 from pydantic import Field, root_validator, BaseModel
-from typing import Optional, Set, Union, List
+from typing import Optional, Union, List, Set
 
 from . import jsonapi
 
@@ -11,7 +11,7 @@ __all__ = (
     "Failure",
     "Success",
     "Warnings",
-    "BaseRealationshipMeta",
+    "BaseRelationshipMeta",
     "BaseRelationshipResource",
     "Relationship",
 )
@@ -99,7 +99,7 @@ class Warnings(OptimadeError):
         return values
 
 
-class BaseRealationshipMeta(BaseModel):
+class BaseRelationshipMeta(BaseModel):
     """Specific meta field for base relationship resource"""
 
     description: str = Field(
@@ -110,7 +110,7 @@ class BaseRealationshipMeta(BaseModel):
 class BaseRelationshipResource(jsonapi.BaseResource):
     """Minimum requirements to represent a relationship resource"""
 
-    meta: Optional[BaseRealationshipMeta] = Field(
+    meta: Optional[BaseRelationshipMeta] = Field(
         None,
         description="Relationship meta field. MUST contain 'description' if supplied.",
     )

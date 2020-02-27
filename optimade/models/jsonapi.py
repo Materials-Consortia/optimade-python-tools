@@ -1,7 +1,12 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-self-argument
-from typing import Optional, Set, Union, List
-from pydantic import BaseModel, AnyUrl, Field, root_validator
+from typing import Optional, Union, List, Set
+from pydantic import (  # pylint: disable=no-name-in-module
+    BaseModel,
+    AnyUrl,
+    Field,
+    root_validator,
+)
 
 
 __all__ = (
