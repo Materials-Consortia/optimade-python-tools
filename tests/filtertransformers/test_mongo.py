@@ -98,6 +98,14 @@ class TestMongoTransformer(unittest.TestCase):
         self.assertEqual(self.transform("a=3"), {"a": {"$eq": 3}})
         self.assertEqual(self.transform("a!=3"), {"a": {"$ne": 3}})
 
+    def test_id(self):
+        self.assertEqual(self.transform("id=example/1"), {"id": {"$eq": "example/1"}})
+        self.assertEqual(self.transform("example/1 = id"), {"id": {"$eq": "example/1"}})
+        self.assertEqual(
+            self.transform('id="test/2" OR example/1 = id'),
+            {"$or": [{"id": {"$eq": "test/2"}}, {"id": {"$eq": "example/1"}}]},
+        )
+
     def test_operators(self):
         # Basic boolean operations
         # TODO: {"a": {"$not": {"$lt": 3}}} can be simplified to {"a": {"$gte": 3}}
