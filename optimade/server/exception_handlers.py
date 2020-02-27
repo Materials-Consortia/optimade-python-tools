@@ -10,7 +10,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from optimade.models import Error, ErrorResponse, ErrorSource
+from optimade.models import OptimadeError, ErrorResponse, ErrorSource
 
 from .config import CONFIG
 from .routers.utils import meta_values
@@ -38,7 +38,7 @@ def general_exception(
 
     errors = kwargs.get("errors", None)
     if not errors:
-        errors = [Error(detail=detail, status=status_code, title=title)]
+        errors = [OptimadeError(detail=detail, status=status_code, title=title)]
 
     try:
         response = ErrorResponse(
@@ -82,7 +82,9 @@ def validation_exception_handler(request: Request, exc: ValidationError):
         code = error["type"]
         detail = error["msg"]
         errors.append(
-            Error(detail=detail, status=status, title=title, source=source, code=code)
+            OptimadeError(
+                detail=detail, status=status, title=title, source=source, code=code
+            )
         )
     return general_exception(request, exc, status_code=status, errors=errors)
 
@@ -97,7 +99,7 @@ def grammar_not_implemented_handler(request: Request, exc: VisitError):
         if not str(exc.orig_exc)
         else str(exc.orig_exc)
     )
-    error = Error(detail=detail, status=status, title=title)
+    error = OptimadeError(detail=detail, status=status, title=title)
     return general_exception(request, exc, status_code=status, errors=[error])
 
 

@@ -7,7 +7,7 @@ from . import jsonapi
 
 
 __all__ = (
-    "Error",
+    "OptimadeError",
     "Failure",
     "Success",
     "Warnings",
@@ -17,7 +17,7 @@ __all__ = (
 )
 
 
-class Error(jsonapi.Error):
+class OptimadeError(jsonapi.Error):
     """detail MUST be present"""
 
     detail: str = Field(
@@ -33,7 +33,7 @@ class Failure(jsonapi.Response):
         None,
         description="A meta object containing non-standard information related to the Success",
     )
-    errors: Set[Error] = Field(
+    errors: Set[OptimadeError] = Field(
         ...,
         description="A list of OPTiMaDe-specific JSON API error objects, where the field detail MUST be present.",
     )
@@ -75,7 +75,7 @@ class Success(jsonapi.Response):
         return values
 
 
-class Warnings(Error):
+class Warnings(OptimadeError):
     """OPTiMaDe-specific warning class based on OPTiMaDe-specific JSON API Error.
     From the specification:
 

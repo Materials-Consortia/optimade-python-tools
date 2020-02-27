@@ -411,6 +411,65 @@
         },
         "description": "Contains key-value pairs representing the entry's properties."
       },
+      "Error": {
+        "title": "Error",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "A unique identifier for this particular occurrence of the problem."
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorLinks"
+              }
+            ],
+            "description": "A links object storing about"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "description": "the HTTP status code applicable to this problem, expressed as a string value."
+          },
+          "code": {
+            "title": "Code",
+            "type": "string",
+            "description": "an application-specific error code, expressed as a string value."
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "title": "Source",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorSource"
+              }
+            ],
+            "description": "An object containing references to the source of the error"
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object containing non-standard meta-information about the error."
+          }
+        },
+        "description": "An error response"
+      },
       "ErrorLinks": {
         "title": "ErrorLinks",
         "type": "object",
@@ -471,7 +530,7 @@
             "title": "Errors",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__optimade_json__Error"
+              "$ref": "#/components/schemas/OptimadeError"
             }
           },
           "included": {
@@ -711,7 +770,7 @@
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
             "description": "A list of errors"
           },
@@ -964,7 +1023,7 @@
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
             "description": "A list of errors"
           },
@@ -1011,6 +1070,68 @@
         "type": "object",
         "properties": {},
         "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
+      },
+      "OptimadeError": {
+        "title": "OptimadeError",
+        "required": [
+          "detail"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "A unique identifier for this particular occurrence of the problem."
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorLinks"
+              }
+            ],
+            "description": "A links object storing about"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "description": "the HTTP status code applicable to this problem, expressed as a string value."
+          },
+          "code": {
+            "title": "Code",
+            "type": "string",
+            "description": "an application-specific error code, expressed as a string value."
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "title": "Source",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorSource"
+              }
+            ],
+            "description": "An object containing references to the source of the error"
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object containing non-standard meta-information about the error."
+          }
+        },
+        "description": "detail MUST be present"
       },
       "Provider": {
         "title": "Provider",
@@ -1589,127 +1710,6 @@
           }
         },
         "description": "OPTiMaDe-specific warning class based on OPTiMaDe-specific JSON API Error.\nFrom the specification:\n\n    A warning resource object is defined similarly to a JSON API\n    error object, but MUST also include the field type, which MUST\n    have the value \"warning\". The field detail MUST be present and\n    SHOULD contain a non-critical message, e.g., reporting\n    unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
-      },
-      "optimade__models__jsonapi__Error": {
-        "title": "Error",
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "description": "A unique identifier for this particular occurrence of the problem."
-          },
-          "links": {
-            "title": "Links",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorLinks"
-              }
-            ],
-            "description": "A links object storing about"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string",
-            "description": "the HTTP status code applicable to this problem, expressed as a string value."
-          },
-          "code": {
-            "title": "Code",
-            "type": "string",
-            "description": "an application-specific error code, expressed as a string value."
-          },
-          "title": {
-            "title": "Title",
-            "type": "string",
-            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
-          },
-          "detail": {
-            "title": "Detail",
-            "type": "string",
-            "description": "A human-readable explanation specific to this occurrence of the problem."
-          },
-          "source": {
-            "title": "Source",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorSource"
-              }
-            ],
-            "description": "An object containing references to the source of the error"
-          },
-          "meta": {
-            "title": "Meta",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Meta"
-              }
-            ],
-            "description": "a meta object containing non-standard meta-information about the error."
-          }
-        },
-        "description": "An error response"
-      },
-      "optimade__models__optimade_json__Error": {
-        "title": "Error",
-        "required": [
-          "detail"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "description": "A unique identifier for this particular occurrence of the problem."
-          },
-          "links": {
-            "title": "Links",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorLinks"
-              }
-            ],
-            "description": "A links object storing about"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string",
-            "description": "the HTTP status code applicable to this problem, expressed as a string value."
-          },
-          "code": {
-            "title": "Code",
-            "type": "string",
-            "description": "an application-specific error code, expressed as a string value."
-          },
-          "title": {
-            "title": "Title",
-            "type": "string",
-            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
-          },
-          "detail": {
-            "title": "Detail",
-            "type": "string",
-            "description": "A human-readable explanation specific to this occurrence of the problem."
-          },
-          "source": {
-            "title": "Source",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorSource"
-              }
-            ],
-            "description": "An object containing references to the source of the error"
-          },
-          "meta": {
-            "title": "Meta",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Meta"
-              }
-            ],
-            "description": "a meta object containing non-standard meta-information about the error."
-          }
-        },
-        "description": "detail MUST be present"
       }
     }
   }
