@@ -166,7 +166,7 @@ class MongoTransformer(Transformer):
             return {"$all": arg[2], "$size": len(arg[2])}
 
         # value with OPERATOR
-        raise NotImplementedError(f"set_op_rhs not implemented for {arg}.")
+        raise NotImplementedError(f"set_op_rhs not implemented for use with OPERATOR. Given: {arg}")
 
     def length_op_rhs(self, arg):
         # length_op_rhs: LENGTH [ OPERATOR ] value
