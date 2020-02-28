@@ -267,7 +267,7 @@ class Response(BaseModel):
         None, description="A list of resources that are included"
     )
     links: Optional[ToplevelLinks] = Field(
-        None, description="Links associated with the failure"
+        None, description="Links associated with the primary data or errors"
     )
     jsonapi: Optional[JsonApi] = Field(
         None, description="Information about the JSON API used"

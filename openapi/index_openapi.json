@@ -551,7 +551,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -792,7 +792,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -1053,7 +1053,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
