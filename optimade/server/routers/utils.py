@@ -165,7 +165,7 @@ def get_included_relationships(
     included = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
-            ["id={}".format(ref_id) for ref_id in endpoint_includes[entry_type]]
+            ['id="{}"'.format(ref_id) for ref_id in endpoint_includes[entry_type]]
         )
         params = EntryListingQueryParams(
             filter=compound_filter,
