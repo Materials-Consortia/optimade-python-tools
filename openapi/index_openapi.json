@@ -505,6 +505,7 @@
         "properties": {
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "allOf": [
@@ -517,14 +518,19 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Resource"
-                },
-                "uniqueItems": true
+                }
               }
             ],
             "description": "Outputted Data"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
@@ -542,7 +548,7 @@
             "items": {
               "$ref": "#/components/schemas/Resource"
             },
-            "description": "A list of resources that are included"
+            "description": "A list of unique included resources"
           },
           "links": {
             "title": "Links",
@@ -765,7 +771,13 @@
             "$ref": "#/components/schemas/IndexInfoResource"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
@@ -774,7 +786,7 @@
             "items": {
               "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
@@ -783,7 +795,7 @@
             "items": {
               "$ref": "#/components/schemas/Resource"
             },
-            "description": "A list of resources that are included"
+            "description": "A list of unique included resources"
           },
           "links": {
             "title": "Links",
@@ -1002,6 +1014,7 @@
         "properties": {
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -1018,7 +1031,13 @@
             ]
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
@@ -1027,10 +1046,11 @@
             "items": {
               "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -1215,6 +1235,7 @@
           },
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "allOf": [
@@ -1475,6 +1496,7 @@
           },
           "warnings": {
             "title": "Warnings",
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Warnings"
@@ -1514,6 +1536,7 @@
           },
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "allOf": [

@@ -1,7 +1,7 @@
 """Modified JSON API v1.0 for OPTiMaDe API"""
 # pylint: disable=no-self-argument,no-name-in-module
 from pydantic import Field, root_validator, BaseModel, AnyHttpUrl, EmailStr
-from typing import Optional, Union, List, Set
+from typing import Optional, Union, List
 
 from datetime import datetime
 
@@ -15,7 +15,6 @@ __all__ = (
     "Implementation",
     "ResponseMeta",
     "OptimadeError",
-    "Failure",
     "Success",
     "Warnings",
     "BaseRelationshipMeta",
@@ -187,34 +186,15 @@ class ResponseMeta(jsonapi.Meta):
         'which MUST have the value "warning". The field detail MUST be present and SHOULD contain a non-critical message, '
         "e.g., reporting unrecognized search attributes or deprecated features. The field status, representing a HTTP "
         "response status code, MUST NOT be present for a warning resource object. This is an exclusive field for error resource objects.",
+        uniqueItems=True,
     )
-
-
-class Failure(jsonapi.Response):
-    """errors MUST be present and data MUST be skipped"""
-
-    meta: Optional[ResponseMeta] = Field(
-        None,
-        description="A meta object containing non-standard information related to the Success",
-    )
-    errors: Set[OptimadeError] = Field(
-        ...,
-        description="A list of OPTiMaDe-specific JSON API error objects, where the field detail MUST be present.",
-    )
-
-    @root_validator(pre=True)
-    def data_must_be_skipped(cls, values):
-        if values.get("data", None) is not None:
-            raise ValueError("data MUST be skipped for failures reporting errors")
-        return values
 
 
 class Success(jsonapi.Response):
     """errors are not allowed"""
 
     meta: Optional[ResponseMeta] = Field(
-        None,
-        description="A meta object containing non-standard information related to the Success",
+        None, description="A meta object containing non-standard information"
     )
 
     @root_validator(pre=True)
@@ -255,4 +235,4 @@ class Relationship(jsonapi.Relationship):
 
     data: Optional[
         Union[BaseRelationshipResource, List[BaseRelationshipResource]]
-    ] = Field(None, description="Resource linkage")
+    ] = Field(None, description="Resource linkage", uniqueItems=True)

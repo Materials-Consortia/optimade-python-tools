@@ -1,7 +1,7 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
 from typing import Optional, Dict, List
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator  # pylint: disable=no-name-in-module
 
 from .jsonapi import Relationships, Attributes, Resource
 from .optimade_json import Relationship
