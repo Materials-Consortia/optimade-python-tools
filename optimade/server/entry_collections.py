@@ -1,3 +1,4 @@
+import os
 from abc import abstractmethod
 from typing import Collection, Tuple, List, Union
 
@@ -13,8 +14,13 @@ from .config import CONFIG
 from .mappers import ResourceMapper
 from .query_params import EntryListingQueryParams, SingleEntryQueryParams
 
+try:
+    ci_force_mongo = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
+except Exception:
+    ci_force_mongo = False
 
-if CONFIG.use_real_mongo:
+
+if CONFIG.use_real_mongo or ci_force_mongo:
     from pymongo import MongoClient
 
     client = MongoClient(CONFIG.mongo_uri)
