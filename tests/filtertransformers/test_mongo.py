@@ -294,6 +294,11 @@ class TestMongoTransformer(unittest.TestCase):
         )
 
         self.assertEqual(
+            self.transform('elements HAS ALL "H","He","Ga","Ta"'),
+            {"elements": {"$all": ["H", "He", "Ga", "Ta"]}},
+        )
+
+        self.assertEqual(
             self.transform(
                 'elements HAS "H" AND elements HAS ALL "H","He","Ga","Ta" AND elements HAS '
                 'ONLY "H","He","Ga","Ta" AND elements HAS ANY "H", "He", "Ga", "Ta"'
