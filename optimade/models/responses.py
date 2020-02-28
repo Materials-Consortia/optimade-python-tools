@@ -48,15 +48,17 @@ class ErrorResponse(Response):
 
 
 class IndexInfoResponse(Success):
-    data: IndexInfoResource = Field(...)
+    data: IndexInfoResource = Field(..., description="Index meta-database /info data")
 
 
 class EntryInfoResponse(Success):
-    data: EntryInfoResource = Field(...)
+    data: EntryInfoResource = Field(
+        ..., description="OPTIMADE information for an entry endpoint"
+    )
 
 
 class InfoResponse(Success):
-    data: BaseInfoResource = Field(...)
+    data: BaseInfoResource = Field(..., description="The implementations /info data")
 
 
 class EntryResponseOne(Success):
@@ -77,25 +79,35 @@ class EntryResponseMany(Success):
 
 class LinksResponse(EntryResponseMany):
     data: Union[List[LinksResource], List[Dict[str, Any]]] = Field(
-        ..., uniqueItems=True
+        ...,
+        description="List of unique OPTIMADE links resource objects",
+        uniqueItems=True,
     )
 
 
 class StructureResponseOne(EntryResponseOne):
-    data: Union[StructureResource, Dict[str, Any], None] = Field(...)
+    data: Union[StructureResource, Dict[str, Any], None] = Field(
+        ..., description="A single structures entry resource"
+    )
 
 
 class StructureResponseMany(EntryResponseMany):
     data: Union[List[StructureResource], List[Dict[str, Any]]] = Field(
-        ..., uniqueItems=True
+        ...,
+        description="List of unique OPTIMADE structures entry resource objects",
+        uniqueItems=True,
     )
 
 
 class ReferenceResponseOne(EntryResponseOne):
-    data: Union[ReferenceResource, Dict[str, Any], None] = Field(...)
+    data: Union[ReferenceResource, Dict[str, Any], None] = Field(
+        ..., description="A single references entry resource"
+    )
 
 
 class ReferenceResponseMany(EntryResponseMany):
     data: Union[List[ReferenceResource], List[Dict[str, Any]]] = Field(
-        ..., uniqueItems=True
+        ...,
+        description="List of unique OPTIMADE references entry resource objects",
+        uniqueItems=True,
     )

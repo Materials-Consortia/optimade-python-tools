@@ -768,7 +768,13 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/IndexInfoResource"
+            "title": "Data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IndexInfoResource"
+              }
+            ],
+            "description": "Index meta-database /info data"
           },
           "meta": {
             "title": "Meta",
@@ -1028,7 +1034,8 @@
                   "type": "object"
                 }
               }
-            ]
+            ],
+            "description": "List of unique OPTIMADE links resource objects"
           },
           "meta": {
             "title": "Meta",

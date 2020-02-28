@@ -1161,7 +1161,13 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/EntryInfoResource"
+            "title": "Data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntryInfoResource"
+              }
+            ],
+            "description": "OPTIMADE information for an entry endpoint"
           },
           "meta": {
             "title": "Meta",
@@ -1563,7 +1569,13 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/BaseInfoResource"
+            "title": "Data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseInfoResource"
+              }
+            ],
+            "description": "The implementations /info data"
           },
           "meta": {
             "title": "Meta",
@@ -1804,7 +1816,8 @@
                   "type": "object"
                 }
               }
-            ]
+            ],
+            "description": "List of unique OPTIMADE links resource objects"
           },
           "meta": {
             "title": "Meta",
@@ -2298,7 +2311,8 @@
                   "type": "object"
                 }
               }
-            ]
+            ],
+            "description": "List of unique OPTIMADE references entry resource objects"
           },
           "meta": {
             "title": "Meta",
@@ -2368,12 +2382,17 @@
             "title": "Data",
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ReferenceResource"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ReferenceResource"
+                  }
+                ]
               },
               {
                 "type": "object"
               }
-            ]
+            ],
+            "description": "A single references entry resource"
           },
           "meta": {
             "title": "Meta",
@@ -3037,7 +3056,8 @@
                   "type": "object"
                 }
               }
-            ]
+            ],
+            "description": "List of unique OPTIMADE structures entry resource objects"
           },
           "meta": {
             "title": "Meta",
@@ -3107,12 +3127,17 @@
             "title": "Data",
             "anyOf": [
               {
-                "$ref": "#/components/schemas/StructureResource"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/StructureResource"
+                  }
+                ]
               },
               {
                 "type": "object"
               }
-            ]
+            ],
+            "description": "A single structures entry resource"
           },
           "meta": {
             "title": "Meta",
