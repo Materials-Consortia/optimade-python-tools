@@ -337,7 +337,7 @@ class FilterTests(SetClient, unittest.TestCase):
             request,
             expected_status=501,
             expected_title="NotImplementedError",
-            expected_detail="set_op_rhs not implemented for [Token(HAS, 'HAS'), Token(OPERATOR, '<'), 1].",
+            expected_detail="set_op_rhs not implemented for use with OPERATOR. Given: [Token(HAS, 'HAS'), Token(OPERATOR, '<'), 1]",
         )
 
     def test_has_any_operator(self):
