@@ -8,8 +8,8 @@ from .index_metadb import *
 from .links import *
 from .optimade_json import *
 from .references import *
+from .responses import *
 from .structures import *
-from .toplevel import *
 
 __all__ = (
     jsonapi.__all__  # noqa
@@ -20,6 +20,6 @@ __all__ = (
     + links.__all__  # noqa
     + optimade_json.__all__  # noqa
     + references.__all__  # noqa
+    + responses.__all__  # noqa
     + structures.__all__  # noqa
-    + toplevel.__all__  # noqa
 )

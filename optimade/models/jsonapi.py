@@ -1,7 +1,12 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-self-argument
-from typing import Optional, Set, Union, List
-from pydantic import BaseModel, AnyUrl, Field, root_validator
+from typing import Optional, Union, List
+from pydantic import (  # pylint: disable=no-name-in-module
+    BaseModel,
+    AnyUrl,
+    Field,
+    root_validator,
+)
 
 
 __all__ = (
@@ -156,7 +161,7 @@ class Relationship(BaseModel):
         description="a links object containing at least one of the following: self, related",
     )
     data: Optional[Union[BaseResource, List[BaseResource]]] = Field(
-        None, description="Resource linkage"
+        None, description="Resource linkage", uniqueItems=True
     )
     meta: Optional[Meta] = Field(
         None,
@@ -250,19 +255,21 @@ class Resource(BaseResource):
 class Response(BaseModel):
     """A top-level response"""
 
-    data: Optional[Union[None, Resource, Set[Resource]]] = Field(
-        None, description="Outputted Data"
+    data: Optional[Union[None, Resource, List[Resource]]] = Field(
+        None, description="Outputted Data", uniqueItems=True
     )
     meta: Optional[Meta] = Field(
         None,
         description="A meta object containing non-standard information related to the Success",
     )
-    errors: Optional[Set[Error]] = Field(None, description="A list of errors")
-    included: Optional[Set[Resource]] = Field(
-        None, description="A list of resources that are included"
+    errors: Optional[List[Error]] = Field(
+        None, description="A list of unique errors", uniqueItems=True
+    )
+    included: Optional[List[Resource]] = Field(
+        None, description="A list of unique included resources", uniqueItems=True
     )
     links: Optional[ToplevelLinks] = Field(
-        None, description="Links associated with the failure"
+        None, description="Links associated with the primary data or errors"
     )
     jsonapi: Optional[JsonApi] = Field(
         None, description="Information about the JSON API used"

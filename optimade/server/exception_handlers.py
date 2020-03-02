@@ -1,5 +1,5 @@
 import traceback
-from typing import Dict, Any
+from typing import List
 
 from lark.exceptions import VisitError
 
@@ -10,14 +10,17 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from optimade.models import Error, ErrorResponse, ErrorSource
+from optimade.models import OptimadeError, ErrorResponse, ErrorSource
 
 from .config import CONFIG
 from .routers.utils import meta_values
 
 
 def general_exception(
-    request: Request, exc: Exception, **kwargs: Dict[str, Any]
+    request: Request,
+    exc: Exception,
+    status_code: int = 500,  # A status_code in `exc` will take precedence
+    errors: List[OptimadeError] = None,
 ) -> JSONResponse:
     tb = "".join(
         traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
@@ -25,9 +28,9 @@ def general_exception(
     print(tb)
 
     try:
-        status_code = exc.status_code
+        http_response_code = exc.status_code
     except AttributeError:
-        status_code = kwargs.get("status_code", 500)
+        http_response_code = status_code
 
     try:
         title = exc.title
@@ -36,9 +39,8 @@ def general_exception(
 
     detail = getattr(exc, "detail", str(exc))
 
-    errors = kwargs.get("errors", None)
-    if not errors:
-        errors = [Error(detail=detail, status=status_code, title=title)]
+    if errors is None:
+        errors = [OptimadeError(detail=detail, status=http_response_code, title=title)]
 
     try:
         response = ErrorResponse(
@@ -60,7 +62,8 @@ def general_exception(
         response = ErrorResponse(errors=errors)
 
     return JSONResponse(
-        status_code=status_code, content=jsonable_encoder(response, exclude_unset=True)
+        status_code=http_response_code,
+        content=jsonable_encoder(response, exclude_unset=True),
     )
 
 
@@ -75,16 +78,18 @@ def request_validation_exception_handler(request: Request, exc: RequestValidatio
 def validation_exception_handler(request: Request, exc: ValidationError):
     status = 500
     title = "ValidationError"
-    errors = []
+    errors = set()
     for error in exc.errors():
         pointer = "/" + "/".join([str(_) for _ in error["loc"]])
         source = ErrorSource(pointer=pointer)
         code = error["type"]
         detail = error["msg"]
-        errors.append(
-            Error(detail=detail, status=status, title=title, source=source, code=code)
+        errors.add(
+            OptimadeError(
+                detail=detail, status=status, title=title, source=source, code=code
+            )
         )
-    return general_exception(request, exc, status_code=status, errors=errors)
+    return general_exception(request, exc, status_code=status, errors=list(errors))
 
 
 def grammar_not_implemented_handler(request: Request, exc: VisitError):
@@ -97,7 +102,7 @@ def grammar_not_implemented_handler(request: Request, exc: VisitError):
         if not str(exc.orig_exc)
         else str(exc.orig_exc)
     )
-    error = Error(detail=detail, status=status, title=title)
+    error = OptimadeError(detail=detail, status=status, title=title)
     return general_exception(request, exc, status_code=status, errors=[error])
 
 
