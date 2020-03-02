@@ -7,9 +7,8 @@ from lark.exceptions import VisitError
 
 from pydantic import ValidationError
 from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError, StarletteHTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from .config import CONFIG
 from .routers import index_info, links

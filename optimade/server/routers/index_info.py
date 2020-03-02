@@ -1,7 +1,6 @@
 from typing import Union
 
-from fastapi import APIRouter
-from starlette.requests import Request
+from fastapi import APIRouter, Request
 
 from optimade import __api_version__
 

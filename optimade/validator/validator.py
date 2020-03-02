@@ -15,7 +15,7 @@ import traceback
 from typing import Union
 
 from pydantic import ValidationError
-from starlette.testclient import TestClient
+from fastapi.testclient import TestClient
 
 from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
 

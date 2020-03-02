@@ -1,7 +1,6 @@
 from typing import Union
 
-from fastapi import APIRouter, Depends
-from starlette.requests import Request
+from fastapi import APIRouter, Depends, Request
 
 from optimade.models import ErrorResponse, LinksResponse, LinksResource
 from optimade.server.config import CONFIG

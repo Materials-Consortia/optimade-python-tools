@@ -3,8 +3,7 @@ import urllib
 from datetime import datetime
 from typing import Union, List, Dict, Any
 
-from fastapi import HTTPException
-from starlette.requests import Request
+from fastapi import HTTPException, Request
 
 from optimade import __api_version__
 from optimade.models import (
