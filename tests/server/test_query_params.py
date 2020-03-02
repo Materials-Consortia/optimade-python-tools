@@ -36,7 +36,7 @@ class IncludeTests(SetClient, unittest.TestCase):
                 else [response["data"]]
             )
 
-            included_resource_types = {_["type"] for _ in response["included"]}
+            included_resource_types = list({_["type"] for _ in response["included"]})
             self.assertEqual(
                 sorted(expected_included_types),
                 sorted(included_resource_types),
