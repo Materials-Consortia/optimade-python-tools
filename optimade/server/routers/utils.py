@@ -211,6 +211,8 @@ def get_entries(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
+    else:
+        include.append(EntryListingQueryParams().include.default)
 
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
@@ -257,6 +259,8 @@ def get_single_entry(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
+    else:
+        include.append(SingleEntryQueryParams().include.default)
 
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
