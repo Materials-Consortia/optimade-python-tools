@@ -20,7 +20,7 @@ inputs:
   path:
     description: Path of the OPTiMaDe (versioned) base URL - MUST start with '/'
     required: false
-    default: /optimade/v0
+    default: /v0
   all versioned paths:
     description: >
       Whether to test all possible versioned base URLs:

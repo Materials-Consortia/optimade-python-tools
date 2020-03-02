@@ -25,7 +25,7 @@ jobs:
         uses: ./
         with:
           port: 3213
-          path: /optimade/v0
+          path: /v1
 
   validator_index:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
         uses: ./
         with:
           port: 3214
-          path: /optimade/v0
+          path: /v1
           index: yes
 
   all_versioned_paths:
@@ -64,5 +64,5 @@ jobs:
         uses: ./
         with:
           port: 3213
-          path: /optimade
+          path: /
           all versioned paths: yes

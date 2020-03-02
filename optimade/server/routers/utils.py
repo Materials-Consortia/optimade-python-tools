@@ -28,9 +28,9 @@ ENTRY_INFO_SCHEMAS = {
 }
 
 BASE_URL_PREFIXES = {
-    "major": f"/optimade/v{__api_version__.split('.')[0]}",
-    "minor": f"/optimade/v{'.'.join(__api_version__.split('.')[:2])}",
-    "patch": f"/optimade/v{__api_version__}",
+    "major": f"/v{__api_version__.split('.')[0]}",
+    "minor": f"/v{'.'.join(__api_version__.split('.')[:2])}",
+    "patch": f"/v{__api_version__}",
 }
 
 
@@ -61,8 +61,8 @@ def meta_values(
     parse_result = urllib.parse.urlparse(url)
 
     # To catch all (valid) variations of the version part of the URL, a regex is used
-    if re.match(r"/optimade/v[0-9]+(\.[0-9]+){,2}/.*", parse_result.path) is not None:
-        url_path = re.sub(r"/optimade/v[0-9]+(\.[0-9]+){,2}/", "/", parse_result.path)
+    if re.match(r"/v[0-9]+(\.[0-9]+){,2}/.*", parse_result.path) is not None:
+        url_path = re.sub(r"/v[0-9]+(\.[0-9]+){,2}/", "/", parse_result.path)
     else:
         url_path = parse_result.path
 

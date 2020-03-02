@@ -85,4 +85,12 @@ def set_optimade_ver(_, ver=""):
         ),
     )
 
+    with open("INSTALL.md", "r") as f:
+        lines = [
+            re.sub(r"/v[0-9]+(\.[0-9]+){2}", f"/v{version}", l.rstrip()) for l in f
+        ]
+    with open("INSTALL.md", "w") as f:
+        f.write("\n".join(lines))
+        f.write("\n")
+
     print(f"Bumped OPTiMaDe version to {ver}")
