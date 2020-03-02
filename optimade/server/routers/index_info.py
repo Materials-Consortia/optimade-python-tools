@@ -18,7 +18,7 @@ from optimade.server.config import CONFIG
 from .utils import meta_values
 
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=True)
 
 
 @router.get(

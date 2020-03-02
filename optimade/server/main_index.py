@@ -12,7 +12,6 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.cors import CORSMiddleware
 
 from .config import CONFIG
-from .middleware import RedirectSlashedURLs
 from .routers import index_info, links
 from .routers.utils import BASE_URL_PREFIXES
 
@@ -58,7 +57,6 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
 
 
 # Add various middleware
-app.add_middleware(RedirectSlashedURLs)
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
 

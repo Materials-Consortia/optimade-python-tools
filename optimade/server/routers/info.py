@@ -19,7 +19,7 @@ from optimade.models import (
 from .utils import meta_values, retrieve_queryable_properties, get_base_url
 
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=True)
 
 ENTRY_INFO_SCHEMAS = {
     "structures": StructureResource.schema,

@@ -11,7 +11,7 @@ from optimade.server.query_params import EntryListingQueryParams
 
 from .utils import get_entries
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=True)
 
 links_coll = MongoCollection(
     collection=client[CONFIG.mongo_database][CONFIG.links_collection],
