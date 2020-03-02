@@ -1,4 +1,6 @@
-# Installing the index meta-database
+# Installing OPTiMaDe Python tools
+
+## The index meta-database
 
 This package may be used to setup and run an [OPTiMaDe index meta-database](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#index-meta-database).
 Install the package via `pip install optimade[server]` and change the file [`server.cfg`](server.cfg) found in the root of the package.
@@ -20,7 +22,7 @@ E.g., if you have installed `optimade` on a Linux machine at `/home/USERNAME/opt
 
 Then you need `server.cfg` to be located in your home folder containing either relative paths from its current location or absolute paths.
 
-# Full development installation
+## Full development installation
 
 The dependencies of this package can be found in `setup.py` with their latest supported versions.
 By default, a minimal set of requirements are installed to work with the filter language and the `pydantic` models.
