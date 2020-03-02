@@ -45,11 +45,10 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.8.1",
-        "fastapi~=0.48",
+        "fastapi~=0.52",
         "pydantic~=1.4",
         "email_validator",
         "requests",
-        "idna<2.9",  # Set to avoid problems with requests
     ],
     extras_require={
         "all": all_deps,
