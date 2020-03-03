@@ -2,7 +2,7 @@
 
 from pathlib import Path
 from fastapi.templating import Jinja2Templates
-from fastapi.routing import Router, Route
+from starlette.routing import Router, Route
 from optimade import __api_version__
 
 from . import ENTRY_COLLECTIONS
