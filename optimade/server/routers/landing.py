@@ -1,9 +1,9 @@
 """ OPTiMaDe landing page, rendered as a Jinja2 template. """
 
+from pathlib import Path
+from fastapi.templating import Jinja2Templates
 from starlette.routing import Router, Route
 from optimade import __api_version__
-from pathlib import Path
-from starlette.templating import Jinja2Templates
 
 from . import ENTRY_COLLECTIONS
 from .utils import meta_values

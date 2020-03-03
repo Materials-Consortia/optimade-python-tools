@@ -5,10 +5,9 @@ from lark.exceptions import VisitError
 
 from pydantic import ValidationError
 from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.requests import Request
-from starlette.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError, StarletteHTTPException
+from fastapi import Request
+from fastapi.responses import JSONResponse
 
 from optimade.models import OptimadeError, ErrorResponse, ErrorSource
 

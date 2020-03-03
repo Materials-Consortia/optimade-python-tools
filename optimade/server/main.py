@@ -7,13 +7,11 @@ from lark.exceptions import VisitError
 
 from pydantic import ValidationError
 from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError, StarletteHTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from .entry_collections import MongoCollection
 from .config import CONFIG
-from .middleware import RedirectSlashedURLs
 from .routers import info, links, references, structures, landing
 from .routers.utils import get_providers, BASE_URL_PREFIXES
 
@@ -64,7 +62,6 @@ if not CONFIG.use_real_mongo and all(path.exists() for path in test_paths.values
 
 
 # Add various middleware
-app.add_middleware(RedirectSlashedURLs)
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
 

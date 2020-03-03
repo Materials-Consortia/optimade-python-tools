@@ -1,7 +1,6 @@
 from typing import Union
 
-from fastapi import APIRouter, Depends
-from starlette.requests import Request
+from fastapi import APIRouter, Depends, Request
 
 from optimade.models import (
     ErrorResponse,
@@ -17,7 +16,7 @@ from optimade.server.query_params import EntryListingQueryParams, SingleEntryQue
 from .utils import get_entries, get_single_entry
 
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=True)
 
 references_coll = MongoCollection(
     collection=client[CONFIG.mongo_database][CONFIG.references_collection],

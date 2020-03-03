@@ -2,9 +2,8 @@ import urllib
 
 from typing import Union
 
-from fastapi import APIRouter
-from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.requests import Request
+from fastapi import APIRouter, Request
+from fastapi.exceptions import StarletteHTTPException
 
 from optimade import __api_version__
 
@@ -19,7 +18,7 @@ from optimade.models import (
 from .utils import meta_values, retrieve_queryable_properties, get_base_url
 
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=True)
 
 ENTRY_INFO_SCHEMAS = {
     "structures": StructureResource.schema,
