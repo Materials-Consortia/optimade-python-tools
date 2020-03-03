@@ -41,12 +41,6 @@ class MongoTransformer(Transformer):
         return value
 
     @v_args(inline=True)
-    def id_value(self, value):
-        """ id_value: id_string | number """
-        # Note: Do nothing!
-        return value
-
-    @v_args(inline=True)
     def non_string_value(self, value):
         """ non_string_value: number | property """
         # Note: Do nothing!
@@ -104,7 +98,7 @@ class MongoTransformer(Transformer):
 
     @v_args(inline=True)
     def comparison(self, value):
-        # comparison: id_comparison | constant_first_comparison | property_first_comparison
+        # comparison: constant_first_comparison | property_first_comparison
         # Note: Do nothing!
         return value
 
@@ -116,14 +110,6 @@ class MongoTransformer(Transformer):
     def constant_first_comparison(self, arg):
         # constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )
         return {arg[2]: {self.reversed_operator_map[self.operator_map[arg[1]]]: arg[0]}}
-
-    def id_comparison(self, arg):
-        """ id_comparison: ( ID "=" id_value ) | ( id_value "=" ID ) """
-        if arg[0] == "id":
-            # property_first_comparison, i.e., ( ID "=" id_value )
-            return {arg[0]: {"$eq": arg[1]}}
-        # constant_first_comparison, i.e., ( id_value "=" ID )
-        return {arg[1]: {"$eq": arg[0]}}
 
     @v_args(inline=True)
     def value_op_rhs(self, operator, value):
@@ -199,12 +185,6 @@ class MongoTransformer(Transformer):
     @v_args(inline=True)
     def string(self, string):
         # string: ESCAPED_STRING
-        return string.strip('"')
-
-    @v_args(inline=True)
-    def id_string(self, string):
-        """ id_string: ID_ESCAPED_STRING | ESCAPED_STRING """
-        # Note: Do nothing
         return string.strip('"')
 
     def number(self, arg):
