@@ -48,7 +48,7 @@ setup(
         "fastapi~=0.52",
         "pydantic~=1.4",
         "email_validator",
-        "requests",
+        "requests~=2.23",
     ],
     extras_require={
         "all": all_deps,
