@@ -4,7 +4,7 @@ from typing import Dict
 
 from pydantic import BaseModel
 
-from starlette.testclient import TestClient
+from fastapi.testclient import TestClient
 
 
 def get_regular_client() -> TestClient:

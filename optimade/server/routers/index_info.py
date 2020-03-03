@@ -1,7 +1,6 @@
 from typing import Union
 
-from fastapi import APIRouter
-from starlette.requests import Request
+from fastapi import APIRouter, Request
 
 from optimade import __api_version__
 
@@ -18,7 +17,7 @@ from optimade.server.config import CONFIG
 from .utils import meta_values
 
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=True)
 
 
 @router.get(

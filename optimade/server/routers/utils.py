@@ -3,8 +3,7 @@ import urllib
 from datetime import datetime
 from typing import Union, List, Dict, Any
 
-from fastapi import HTTPException
-from starlette.requests import Request
+from fastapi import HTTPException, Request
 
 from optimade import __api_version__
 from optimade.models import (
@@ -211,6 +210,8 @@ def get_entries(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
+    else:
+        include.append(EntryListingQueryParams().include.default)
 
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
@@ -257,6 +258,8 @@ def get_single_entry(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
+    else:
+        include.append(SingleEntryQueryParams().include.default)
 
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 

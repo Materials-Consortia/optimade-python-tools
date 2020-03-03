@@ -36,7 +36,7 @@ class IncludeTests(SetClient, unittest.TestCase):
                 else [response["data"]]
             )
 
-            included_resource_types = {_["type"] for _ in response["included"]}
+            included_resource_types = list({_["type"] for _ in response["included"]})
             self.assertEqual(
                 sorted(expected_included_types),
                 sorted(included_resource_types),
@@ -114,6 +114,15 @@ class IncludeTests(SetClient, unittest.TestCase):
         request = "/structures?include="
         self.check_response(request, expected_types, expected_reference_ids)
 
+        # Single entry
+        request = "/structures/mpf_1"
+        expected_types = ["references"]
+        expected_reference_ids = ["dijkstra1968"]
+        self.check_response(request, expected_types, expected_reference_ids)
+
+        request = "/structures/mpf_1?include="
+        self.check_response(request, expected_types, expected_reference_ids)
+
     def test_empty_value(self):
         """An empty value should resolve in no relationships being returned under `included`"""
         request = '/structures?include=""'
@@ -128,6 +137,23 @@ class IncludeTests(SetClient, unittest.TestCase):
         )
 
         request = "/structures?include=''"
+        self.check_response(
+            request,
+            expected_types,
+            expected_reference_ids,
+            expected_data_relationship_types,
+        )
+
+        # Single entry
+        request = "/structures/mpf_1?include=''"
+        self.check_response(
+            request,
+            expected_types,
+            expected_reference_ids,
+            expected_data_relationship_types,
+        )
+
+        request = "/structures/mpf_1?include=''"
         self.check_response(
             request,
             expected_types,
