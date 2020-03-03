@@ -17,7 +17,6 @@ inputs:
   port:
     description: Port for the OPTiMaDe URL
     required: false
-    default: 5000
   path:
     description: Path of the OPTiMaDe (versioned) base URL - MUST start with '/'
     required: false
