@@ -66,3 +66,10 @@ jobs:
           port: 3213
           path: /
           all versioned paths: yes
+
+      - name: Run action (setting path to empty string)
+        uses: ./
+        with:
+          port: 3213
+          path: ""
+          all versioned paths: yes
