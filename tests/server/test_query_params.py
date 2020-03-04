@@ -4,8 +4,19 @@ from typing import Sequence
 
 from optimade.server.config import CONFIG
 from optimade.server import mappers
+from optimade.server.entry_collections import CI_FORCE_MONGO
 
 from .utils import SetClient
+
+MONGOMOCK_OLD = False
+MONGOMOCK_MSG = ""
+if not CI_FORCE_MONGO and not CONFIG.use_real_mongo:
+    import mongomock
+
+    MONGOMOCK_OLD = tuple(
+        int(val) for val in mongomock.__version__.split(".")[0:3]
+    ) <= (3, 19, 0)
+    MONGOMOCK_MSG = f"mongomock version {mongomock.__version__}<=3.19.0 is too old for this test, skipping..."
 
 
 class IncludeTests(SetClient, unittest.TestCase):
@@ -398,12 +409,13 @@ class FilterTests(SetClient, unittest.TestCase):
         # expected_ids = []
         # self._check_response(request, expected_ids, len(expected_ids))
 
+    @unittest.skipIf(MONGOMOCK_OLD, MONGOMOCK_MSG)
     def test_list_has_only(self):
         """ Test HAS ONLY query on elements.
 
-        This test fails with mongomock<=3.1.9 when $size is 1, but works with a real mongo.
+        This test fails with mongomock<=3.19.0 when $size is 1, but works with a real mongo.
 
-        TODO: this text should be removed once mongomock>3.1.9 has been released, which should
+        TODO: this text and skip condition should be removed once mongomock>3.19.0 has been released, which should
         contain the bugfix for this: https://github.com/mongomock/mongomock/pull/597.
 
         """
