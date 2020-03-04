@@ -58,7 +58,15 @@ class MongoTransformer(Transformer):
 
     def value_list(self, arg):
         # value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
-        raise NotImplementedError
+        # NOTE: no support for optional OPERATOR, yet, so this takes the
+        # parsed values and returns an error if that is being attempted
+        for value in arg:
+            if str(value) in self.operator_map.keys():
+                raise NotImplementedError(
+                    f"OPERATOR {value} inside value_list {arg} not implemented."
+                )
+
+        return arg
 
     def value_zip(self, arg):
         # value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
@@ -138,14 +146,18 @@ class MongoTransformer(Transformer):
             return {"$in": arg[1:]}
 
         if arg[1] == "ALL":
-            raise NotImplementedError
+            return {"$all": arg[2]}
+
         if arg[1] == "ANY":
-            raise NotImplementedError
+            return {"$in": arg[2]}
+
         if arg[1] == "ONLY":
-            raise NotImplementedError
+            return {"$all": arg[2], "$size": len(arg[2])}
 
         # value with OPERATOR
-        raise NotImplementedError
+        raise NotImplementedError(
+            f"set_op_rhs not implemented for use with OPERATOR. Given: {arg}"
+        )
 
     def length_op_rhs(self, arg):
         # length_op_rhs: LENGTH [ OPERATOR ] value
