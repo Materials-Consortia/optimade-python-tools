@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Build the Docker images
       run: docker-compose build
@@ -105,14 +105,12 @@ jobs:
         .github/workflows/wait_for_it.sh localhost:3213 -t 120
         sleep 15
 
-    - name: Test server
-      run: docker exec optimade-python-tools_optimade_1 optimade_validator http://localhost:5000/optimade/v0
-
-    - name: Test server - OPTIONAL base URL; vMAJOR.MINOR
-      run: docker exec optimade-python-tools_optimade_1 optimade_validator http://localhost:5000/optimade/v0.10
-
-    - name: Test server - OPTIONAL base URL; vMAJOR.MINOR.PATCH
-      run: docker exec optimade-python-tools_optimade_1 optimade_validator http://localhost:5000/optimade/v0.10.1
+    - name: Test server with OPTIONAL base URLs
+      uses: ./
+      with:
+        port: 3213
+        path: /optimade
+        all versioned paths: yes
 
     - name: Start Docker image - index server
       run: |
@@ -120,15 +118,13 @@ jobs:
         .github/workflows/wait_for_it.sh localhost:3214 -t 120
         sleep 15
 
-    - name: Test index server
-      run: docker exec optimade-python-tools_optimade-index_1 optimade_validator http://localhost:5001/optimade/v0 --index
-
-    - name: Test index server - OPTIONAL base URL; vMAJOR.MINOR
-      run: docker exec optimade-python-tools_optimade-index_1 optimade_validator http://localhost:5001/optimade/v0.10 --index
-
-    - name: Test index server - OPTIONAL base URL; vMAJOR.MINOR.PATCH
-      run: docker exec optimade-python-tools_optimade-index_1 optimade_validator http://localhost:5001/optimade/v0.10.1 --index
-
+    - name: Test index server with OPTIONAL base URLs
+      uses: ./
+      with:
+        port: 3214
+        path: /optimade
+        all versioned paths: yes
+        index: yes
 
   deps_static:
     runs-on: ubuntu-latest
@@ -140,7 +136,7 @@ jobs:
         python-version: [3.6, 3.7, 3.8]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1

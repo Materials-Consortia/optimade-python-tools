@@ -1,0 +1,68 @@
+name: Test optimade_validator GitHub Action
+
+on:
+  pull_request:
+  push:
+    branches:
+    - master
+
+jobs:
+
+  validator_regular:
+    runs-on: ubuntu-latest
+    name: Regular server
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up and run regular server
+        run: |
+          docker-compose up optimade &
+          .github/workflows/wait_for_it.sh localhost:3213 -t 120
+          sleep 15
+
+      - name: Run action
+        uses: ./
+        with:
+          port: 3213
+          path: /optimade/v0
+
+  validator_index:
+    runs-on: ubuntu-latest
+    name: Index server
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up and run index server
+        run: |
+          docker-compose up optimade-index &
+          .github/workflows/wait_for_it.sh localhost:3214 -t 120
+          sleep 15
+
+      - name: Run action
+        uses: ./
+        with:
+          port: 3214
+          path: /optimade/v0
+          index: yes
+
+  all_versioned_paths:
+    runs-on: ubuntu-latest
+    name: All versioned paths for regular server
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up and run regular server (which includes all versioned base URLs)
+        run: |
+          docker-compose up optimade &
+          .github/workflows/wait_for_it.sh localhost:3213 -t 120
+          sleep 15
+
+      - name: Run action
+        uses: ./
+        with:
+          port: 3213
+          path: /optimade
+          all versioned paths: yes
