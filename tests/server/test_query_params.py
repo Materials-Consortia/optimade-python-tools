@@ -1,10 +1,6 @@
 # pylint: disable=relative-beyond-top-level,import-outside-toplevel
-import os
 import unittest
-import pytest
 from typing import Sequence
-
-from mongomock import __version__ as mongomock_version
 
 from optimade.server.config import CONFIG
 from optimade.server import mappers
@@ -178,7 +174,10 @@ class IncludeTests(SetClient, unittest.TestCase):
     def test_wrong_html_form(self):
         """Using the parameter without equality sign `=` or values should result in a `400 Bad Request` response"""
         request = "/structures?include"
-        self.check_error_response(request)
+        self.check_error_response(
+            request,
+            expected_detail="A query parameter without an equal sign (=) is not supported by this server",
+        )
 
 
 class ResponseFieldTests(SetClient, unittest.TestCase):
