@@ -15,12 +15,12 @@ from .mappers import ResourceMapper
 from .query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 try:
-    ci_force_mongo = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
+    CI_FORCE_MONGO = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
 except (TypeError, ValueError):  # pragma: no cover
-    ci_force_mongo = False
+    CI_FORCE_MONGO = False
 
 
-if CONFIG.use_real_mongo or ci_force_mongo:
+if CONFIG.use_real_mongo or CI_FORCE_MONGO:
     from pymongo import MongoClient
 
     client = MongoClient(CONFIG.mongo_uri)
