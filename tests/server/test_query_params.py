@@ -1,6 +1,10 @@
 # pylint: disable=relative-beyond-top-level,import-outside-toplevel
+import os
 import unittest
+import pytest
 from typing import Sequence
+
+from mongomock import __version__ as mongomock_version
 
 from optimade.server.config import CONFIG
 from optimade.server import mappers
@@ -126,49 +130,12 @@ class IncludeTests(SetClient, unittest.TestCase):
         expected_reference_ids = ["dijkstra1968", "maddox1988", "dummy/2019"]
         self.check_response(request, expected_types, expected_reference_ids)
 
-        request = "/structures?include="
-        self.check_response(request, expected_types, expected_reference_ids)
-
-        # Single entry
-        request = "/structures/mpf_1"
-        expected_types = ["references"]
-        expected_reference_ids = ["dijkstra1968"]
-        self.check_response(request, expected_types, expected_reference_ids)
-
-        request = "/structures/mpf_1?include="
-        self.check_response(request, expected_types, expected_reference_ids)
-
     def test_empty_value(self):
         """An empty value should resolve in no relationships being returned under `included`"""
-        request = '/structures?include=""'
+        request = "/structures?include="
         expected_types = []
         expected_reference_ids = []
         expected_data_relationship_types = ["references"]
-        self.check_response(
-            request,
-            expected_types,
-            expected_reference_ids,
-            expected_data_relationship_types,
-        )
-
-        request = "/structures?include=''"
-        self.check_response(
-            request,
-            expected_types,
-            expected_reference_ids,
-            expected_data_relationship_types,
-        )
-
-        # Single entry
-        request = "/structures/mpf_1?include=''"
-        self.check_response(
-            request,
-            expected_types,
-            expected_reference_ids,
-            expected_data_relationship_types,
-        )
-
-        request = "/structures/mpf_1?include=''"
         self.check_response(
             request,
             expected_types,
@@ -185,18 +152,10 @@ class IncludeTests(SetClient, unittest.TestCase):
 
     def test_empty_value_single_entry(self):
         """For single entry. An empty value should resolve in no relationships being returned under `included`"""
-        request = '/structures/mpf_1?include=""'
+        request = "/structures/mpf_1?include="
         expected_types = []
         expected_reference_ids = []
         expected_data_relationship_types = ["references"]
-        self.check_response(
-            request,
-            expected_types,
-            expected_reference_ids,
-            expected_data_relationship_types,
-        )
-
-        request = "/structures/mpf_1?include=''"
         self.check_response(
             request,
             expected_types,
@@ -208,13 +167,18 @@ class IncludeTests(SetClient, unittest.TestCase):
         """A wrong type should result in a `400 Bad Request` response"""
         from optimade.server.routers import ENTRY_COLLECTIONS
 
-        wrong_type = "test"
-        request = f"/structures?include={wrong_type}"
-        error_detail = (
-            f"'{wrong_type}' cannot be identified as a valid relationship type. "
-            f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
-        )
-        self.check_error_response(request, expected_detail=error_detail)
+        for wrong_type in ("test", '""', "''"):
+            request = f"/structures?include={wrong_type}"
+            error_detail = (
+                f"'{wrong_type}' cannot be identified as a valid relationship type. "
+                f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
+            )
+            self.check_error_response(request, expected_detail=error_detail)
+
+    def test_wrong_html_form(self):
+        """Using the parameter without equality sign `=` or values should result in a `400 Bad Request` response"""
+        request = "/structures?include"
+        self.check_error_response(request)
 
 
 class ResponseFieldTests(SetClient, unittest.TestCase):

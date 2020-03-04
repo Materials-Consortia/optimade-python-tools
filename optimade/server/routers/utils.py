@@ -130,9 +130,8 @@ def get_included_relationships(
     if not isinstance(results, list):
         results = [results]
 
-    empty_values = {'""', "''"}
     for entry_type in include_param:
-        if entry_type not in ENTRY_COLLECTIONS and entry_type not in empty_values:
+        if entry_type not in ENTRY_COLLECTIONS and entry_type != "":
             raise BadRequest(
                 detail=f"'{entry_type}' cannot be identified as a valid relationship type. "
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
@@ -202,6 +201,7 @@ def get_entries(
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
+    print(params.__dict__)
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     results, data_returned, more_data_available, fields = collection.find(params)
@@ -209,9 +209,7 @@ def get_entries(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
-    else:
-        include.append(EntryListingQueryParams().include.default)
-
+    print(include)
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
