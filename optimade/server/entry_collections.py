@@ -16,7 +16,7 @@ from .query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 try:
     ci_force_mongo = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
-except (TypeError, ValueError):
+except (TypeError, ValueError):  # pragma: no cover
     ci_force_mongo = False
 
 
