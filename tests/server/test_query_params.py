@@ -397,11 +397,10 @@ class FilterTests(SetClient, unittest.TestCase):
     def test_list_has_only(self):
         """ Test HAS ONLY query on elements.
 
-        Curiously this test fails under mongomock when $size is 1, but works with a real mongo.
+        This test fails with mongomock<=3.1.9 when $size is 1, but works with a real mongo.
 
-        The queries produced in each case should be:
-            - `{"elements": {"$all": ["Ac", "Mg"], "$size": 2}}`
-            - `{"elements": {"$all": ["Ac"], "$size": 1}}`
+        TODO: this text should be removed once mongomock>3.1.9 has been released, which should
+        contain the bugfix for this: https://github.com/mongomock/mongomock/pull/597.
 
         """
 
