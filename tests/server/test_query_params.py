@@ -68,7 +68,11 @@ class IncludeTests(SetClient, unittest.TestCase):
             )
 
             included_resources = [_["id"] for _ in response["included"]]
-            self.assertEqual(len(included_resources), len(expected_included_resources))
+            self.assertEqual(
+                len(included_resources),
+                len(expected_included_resources),
+                msg=response["included"],
+            )
             self.assertEqual(
                 sorted(set(included_resources)), sorted(expected_included_resources)
             )
@@ -119,7 +123,7 @@ class IncludeTests(SetClient, unittest.TestCase):
         """
         request = "/structures"
         expected_types = ["references"]
-        expected_reference_ids = ["dijkstra1968", "maddox1988"]
+        expected_reference_ids = ["dijkstra1968", "maddox1988", "dummy/2019"]
         self.check_response(request, expected_types, expected_reference_ids)
 
         request = "/structures?include="
