@@ -71,12 +71,10 @@ def set_optimade_ver(_, ver=""):
             "README.md", (f"example/v{regex}", f"example/v{version}"), strip="\n"
         )
     update_file(
-        ".github/workflows/validator_action.yml",
-        ("/optimade/v[0-9]+", f"/optimade/v{ver.split('.')[0]}"),
+        ".github/workflows/validator_action.yml", ("/v[0-9]+", f"/v{ver.split('.')[0]}")
     )
-    update_file(
-        "README.md", ("optimade/v[0-9]+", f"optimade/v{ver.split('.')[0]}"), strip="\n"
-    )
+    update_file("README.md", ("v[0-9]+", f"v{ver.split('.')[0]}"), strip="\n")
+    update_file("action.yml", ("/v[0-9]+", f"/v{ver.split('.')[0]}"))
     update_file(
         "optimade/validator/github_action/entrypoint.sh",
         (
@@ -84,13 +82,6 @@ def set_optimade_ver(_, ver=""):
             f"'{ver.split('.')[0]}' '{'.'.join(ver.split('.')[:2])}' '{ver}'",
         ),
     )
-
-    with open("INSTALL.md", "r") as f:
-        lines = [
-            re.sub(r"/v[0-9]+(\.[0-9]+){2}", f"/v{version}", l.rstrip()) for l in f
-        ]
-    with open("INSTALL.md", "w") as f:
-        f.write("\n".join(lines))
-        f.write("\n")
+    update_file("INSTALL.md", (r"/v[0-9]+(\.[0-9]+){2}", f"/v{version}"))
 
     print(f"Bumped OPTiMaDe version to {ver}")
