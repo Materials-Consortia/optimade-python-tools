@@ -135,6 +135,12 @@ jobs:
       matrix:
         python-version: [3.6, 3.7, 3.8]
 
+    services:
+        mongo:
+            image: mongo:4.2
+            ports:
+            - 27017:27017
+
     steps:
     - uses: actions/checkout@v2
 
@@ -151,9 +157,15 @@ jobs:
         python -m pip install -r .github/workflows/requirements.txt
         pip install -e .[all]
 
-    - name: Run tests
-      run: |
-        pytest -rs --cov=./optimade/ --cov-report=xml
+    - name: Run all tests (using a real MongoDB)
+      run: pytest -rs --cov=./optimade/ --cov-report=xml
+      env:
+        OPTIMADE_CI_FORCE_MONGO: 1
+
+    - name: Run tests only for index meta-db (using `mongomock`)
+      run: pytest -rs --cov=./optimade/ --cov-report=xml --cov-append tests/server/test_middleware.py tests/server/test_server_validation.py tests/server/test_config.py
+      env:
+        OPTIMADE_CI_FORCE_MONGO: 0
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.7

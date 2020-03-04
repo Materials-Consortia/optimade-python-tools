@@ -9,7 +9,7 @@ server_deps = ["uvicorn", "Jinja2~=2.11"] + mongo_deps
 django_deps = ["django~=2.2,>=2.2.9"]
 elastic_deps = ["elasticsearch-dsl~=6.4"]
 testing_deps = [
-    "pytest~=3.10",
+    "pytest~=5.3",
     "pytest-cov",
     "codecov",
     "openapi-spec-validator",

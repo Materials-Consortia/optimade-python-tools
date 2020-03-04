@@ -1,3 +1,4 @@
+import os
 from abc import abstractmethod
 from typing import Collection, Tuple, List, Union
 
@@ -13,15 +14,22 @@ from .config import CONFIG
 from .mappers import ResourceMapper
 from .query_params import EntryListingQueryParams, SingleEntryQueryParams
 
+try:
+    ci_force_mongo = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
+except (TypeError, ValueError):  # pragma: no cover
+    ci_force_mongo = False
 
-if CONFIG.use_real_mongo:
+
+if CONFIG.use_real_mongo or ci_force_mongo:
     from pymongo import MongoClient
 
     client = MongoClient(CONFIG.mongo_uri)
+    print("Using: Real MongoDB (pymongo)")
 else:
     from mongomock import MongoClient
 
     client = MongoClient()
+    print("Using: Mock MongoDB (mongomock)")
 
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class

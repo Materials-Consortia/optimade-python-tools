@@ -17,6 +17,12 @@ jobs:
       matrix:
         python-version: [3.6, 3.7, 3.8]
 
+    services:
+        mongo:
+            image: mongo:4.2
+            ports:
+            - 27017:27017
+
     steps:
     - uses: actions/checkout@v2
 
@@ -34,8 +40,14 @@ jobs:
         pip install -U --upgrade-strategy eager -r .github/workflows/requirements_eager.txt
 
     - name: Run tests on updated packages
-      run: |
-        pytest -rs --cov=./optimade/
+      run: pytest -rs --cov=./optimade/ --cov-report=xml
+      env:
+        OPTIMADE_CI_FORCE_MONGO: 1
+
+    - name: Run tests relevant for index meta-db (using `mongomock`)
+      run: pytest -rs --cov=./optimade/ --cov-report=xml --cov-append tests/server/test_middleware.py tests/server/test_server_validation.py tests/server/test_config.py
+      env:
+        OPTIMADE_CI_FORCE_MONGO: 0
 
   # deps_clean-install:
   #   runs-on: ubuntu-latest
