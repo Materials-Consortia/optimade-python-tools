@@ -146,7 +146,6 @@ def test_available_api_versions():
         {"url": "https://example.com/optimade/v1.0.2", "version": "1.0.2"},
         {"url": "http://example.com/optimade/v2.3", "version": "2.3.1"},
     ]
-
     bad_combos = [
         {"url": "https://example.com/optimade/v0", "version": "1.0.0"},
         {"url": "https://example.com/optimade/v1.0.2", "version": "1.0.3"},
@@ -154,15 +153,16 @@ def test_available_api_versions():
     ]
 
     for url in bad_urls:
-        with pytest.raises(ValueError, message=f"Url {url} should have failed"):
+        with pytest.raises(ValueError):
             AvailableApiVersion(url=url, version="1.0")
+            pytest.fail(f"Url {url} should have failed")
 
     for data in bad_combos:
-        with pytest.raises(
-            ValueError,
-            message=f"{data['url']} should have failed with version {data['version']}",
-        ):
+        with pytest.raises(ValueError):
             AvailableApiVersion(**data)
+            pytest.fail(
+                f"{data['url']} should have failed with version {data['version']}"
+            )
 
     for data in good_urls:
         AvailableApiVersion(**data)
