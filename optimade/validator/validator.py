@@ -257,6 +257,10 @@ class ImplementationValidator:
             REQUIRED_ENTRY_ENDPOINTS_INDEX if self.index else REQUIRED_ENTRY_ENDPOINTS
         )
         self.test_entry_endpoints = set(self.expected_entry_endpoints)
+        self.endpoint_mandatory_queries = (
+            {} if self.index else ENDPOINT_MANDATORY_QUERIES
+        )
+
         self.response_classes = (
             RESPONSE_CLASSES_INDEX if self.index else RESPONSE_CLASSES
         )
@@ -326,11 +330,13 @@ class ImplementationValidator:
             self._log.debug("Testing single entry request of type %s", endp)
             self.test_single_entry_endpoint(endp)
 
-        for endp in ENDPOINT_MANDATORY_QUERIES:
+        for endp in self.endpoint_mandatory_queries:
             # skip empty endpoint query lists
-            if ENDPOINT_MANDATORY_QUERIES[endp]:
+            if self.endpoint_mandatory_queries[endp]:
                 self._log.debug("Testing mandatory query syntax on endpoint %s", endp)
-                self.test_mandatory_query_syntax(endp, ENDPOINT_MANDATORY_QUERIES[endp])
+                self.test_mandatory_query_syntax(
+                    endp, self.endpoint_mandatory_queries[endp]
+                )
 
         self._log.debug("Testing %s endpoint", LINKS_ENDPOINT)
         self.test_info_or_links_endpoints(LINKS_ENDPOINT)
