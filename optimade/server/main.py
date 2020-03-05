@@ -33,23 +33,17 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 )
 
 
-test_paths = {
-    "structures": Path(__file__).resolve().parent.joinpath("data/test_structures.json"),
-    "references": Path(__file__).resolve().parent.joinpath("data/test_references.json"),
-    "links": Path(__file__).resolve().parent.joinpath("data/test_links.json"),
-}
-if not CONFIG.use_real_mongo and all(path.exists() for path in test_paths.values()):
+if not CONFIG.use_real_mongo:
     import bson.json_util
+    import optimade.server.data as data
     from .routers import ENTRY_COLLECTIONS
 
     def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
         print(f"loading test {endpoint_name}...")
-        with open(test_paths[endpoint_name]) as f:
-            data = json.load(f)
-            print(f"inserting test {endpoint_name} into collection...")
-            endpoint_collection.collection.insert_many(
-                bson.json_util.loads(bson.json_util.dumps(data))
-            )
+
+        endpoint_collection.collection.insert_many(
+            getattr(data, endpoint_name, default=[])
+        )
         if endpoint_name == "links":
             print("adding Materials-Consortia providers to links from optimade.org")
             endpoint_collection.collection.insert_many(
