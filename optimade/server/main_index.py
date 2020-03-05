@@ -18,6 +18,10 @@ from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 
+if CONFIG.debug:  # pragma: no cover
+    print("DEBUG MODE")
+
+
 app = FastAPI(
     title="OPTiMaDe API - Index meta-database",
     description=(
