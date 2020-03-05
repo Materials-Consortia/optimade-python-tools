@@ -1,3 +1,4 @@
+""" Test Data to be used with the OPTiMaDe server """
 import bson.json_util
 from pathlib import Path
 
