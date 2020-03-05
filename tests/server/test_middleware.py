@@ -70,37 +70,16 @@ class EnsureQueryParamIntegrityTest(SetClient, unittest.TestCase):
 
     def _check_error_response(
         self,
-        request,
-        expected_status: int = 400,
-        expected_title: str = "Bad Request",
+        request: str,
+        expected_status: int = None,
+        expected_title: str = None,
         expected_detail: str = None,
     ):
-        try:
-            response = self.client.get(request)
-            self.assertEqual(
-                response.status_code,
-                expected_status,
-                msg=f"Request should have been an error with status code {expected_status}, "
-                f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
-            )
-            response = response.json()
-            self.assertEqual(len(response["errors"]), 1)
-            self.assertEqual(response["meta"]["data_returned"], 0)
-
-            error = response["errors"][0]
-            self.assertEqual(str(expected_status), error["status"])
-            self.assertEqual(expected_title, error["title"])
-
-            if expected_detail is None:
-                expected_detail = "Error trying to process rule "
-                self.assertTrue(error["detail"].startswith(expected_detail))
-            else:
-                self.assertEqual(expected_detail, error["detail"])
-
-        except Exception as exc:
-            print("Request attempted:")
-            print(f"{self.client.base_url}{request}")
-            raise exc
+        expected_status = 400 if expected_status is None else expected_status
+        expected_title = "Bad Request" if expected_title is None else expected_title
+        super()._check_error_response(
+            request, expected_status, expected_title, expected_detail
+        )
 
     def test_wrong_html_form(self):
         """Using a parameter without equality sign `=` or values should result in a `400 Bad Request` response"""

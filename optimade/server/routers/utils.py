@@ -188,7 +188,6 @@ def get_entries(
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized /{entry} endpoint getter"""
-    print(params.__dict__)
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     results, data_returned, more_data_available, fields = collection.find(params)

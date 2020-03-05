@@ -1,6 +1,6 @@
 # pylint: disable=relative-beyond-top-level,import-outside-toplevel
 import unittest
-from typing import Sequence
+from typing import Union, List, Set
 
 from optimade.server.config import CONFIG
 from optimade.server import mappers
@@ -30,9 +30,9 @@ class IncludeTests(SetClient, unittest.TestCase):
     def _check_response(
         self,
         request: str,
-        expected_included_types: Sequence,
-        expected_included_resources: Sequence,
-        expected_relationship_types: Sequence = None,
+        expected_included_types: Union[List, Set],
+        expected_included_resources: Union[List, Set],
+        expected_relationship_types: Union[List, Set] = None,
     ):
         try:
             response = self.client.get(request)
@@ -84,37 +84,16 @@ class IncludeTests(SetClient, unittest.TestCase):
 
     def _check_error_response(
         self,
-        request,
-        expected_status: int = 400,
-        expected_title: str = "Bad Request",
+        request: str,
+        expected_status: int = None,
+        expected_title: str = None,
         expected_detail: str = None,
     ):
-        try:
-            response = self.client.get(request)
-            self.assertEqual(
-                response.status_code,
-                expected_status,
-                msg=f"Request should have been an error with status code {expected_status}, "
-                f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
-            )
-            response = response.json()
-            self.assertEqual(len(response["errors"]), 1)
-            self.assertEqual(response["meta"]["data_returned"], 0)
-
-            error = response["errors"][0]
-            self.assertEqual(str(expected_status), error["status"])
-            self.assertEqual(expected_title, error["title"])
-
-            if expected_detail is None:
-                expected_detail = "Error trying to process rule "
-                self.assertTrue(error["detail"].startswith(expected_detail))
-            else:
-                self.assertEqual(expected_detail, error["detail"])
-
-        except Exception as exc:
-            print("Request attempted:")
-            print(f"{self.client.base_url}{request}")
-            raise exc
+        expected_status = 400 if expected_status is None else expected_status
+        expected_title = "Bad Request" if expected_title is None else expected_title
+        super()._check_error_response(
+            request, expected_status, expected_title, expected_detail
+        )
 
     def test_default_value(self):
         """Default value for `include` is 'references'
@@ -471,7 +450,9 @@ class FilterTests(SetClient, unittest.TestCase):
         expected_ids = ["mpf_1"]
         self._check_response(request, expected_ids, len(expected_ids))
 
-    def _check_response(self, request, expected_ids, expected_return):
+    def _check_response(
+        self, request: str, expected_ids: Union[List, Set], expected_return: int
+    ):
         try:
             response = self.client.get(request)
             self.assertEqual(
@@ -488,34 +469,12 @@ class FilterTests(SetClient, unittest.TestCase):
 
     def _check_error_response(
         self,
-        request,
-        expected_status: int = 500,
+        request: str,
+        expected_status: int = None,
         expected_title: str = None,
         expected_detail: str = None,
     ):
-        try:
-            response = self.client.get(request)
-            self.assertEqual(
-                response.status_code,
-                expected_status,
-                msg=f"Request should have been an error with status code {expected_status}, "
-                f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
-            )
-            response = response.json()
-            self.assertEqual(len(response["errors"]), 1)
-            self.assertEqual(response["meta"]["data_returned"], 0)
-
-            error = response["errors"][0]
-            self.assertEqual(str(expected_status), error["status"])
-            self.assertEqual(expected_title, error["title"])
-
-            if expected_detail is None:
-                expected_detail = "Error trying to process rule "
-                self.assertTrue(error["detail"].startswith(expected_detail))
-            else:
-                self.assertEqual(expected_detail, error["detail"])
-
-        except Exception as exc:
-            print("Request attempted:")
-            print(f"{self.client.base_url}{request}")
-            raise exc
+        expected_status = 500 if expected_status is None else expected_status
+        super()._check_error_response(
+            request, expected_status, expected_title, expected_detail
+        )
