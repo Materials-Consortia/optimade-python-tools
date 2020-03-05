@@ -22,7 +22,7 @@ jobs:
           sleep 15
 
       - name: Run action
-        uses: ./
+        uses: ./src/gh_validator
         with:
           port: 3213
           path: /v0
@@ -41,7 +41,7 @@ jobs:
           sleep 15
 
       - name: Run action
-        uses: ./
+        uses: ./src/gh_validator
         with:
           port: 3214
           path: /v0
@@ -61,14 +61,14 @@ jobs:
           sleep 15
 
       - name: Run action
-        uses: ./
+        uses: ./src/gh_validator
         with:
           port: 3213
           path: /
           all versioned paths: yes
 
       - name: Run action (setting path to empty string)
-        uses: ./
+        uses: ./src/gh_validator
         with:
           port: 3213
           path: ""
