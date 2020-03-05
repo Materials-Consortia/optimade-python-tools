@@ -76,8 +76,8 @@ jobs:
 
     - name: Validate OpenAPI specifications
       run: |
-        openapi-spec-validator openapi/openapi.json
-        openapi-spec-validator openapi/index_openapi.json
+        openapi-spec-validator src/openapi/openapi.json
+        openapi-spec-validator src/openapi/index_openapi.json
 
     - name: Update OpenAPI schemes
       run: |
