@@ -102,7 +102,9 @@ def add_optional_versioned_base_urls(app: FastAPI):
 
 def update_schema(app: FastAPI):
     """Update OpenAPI schema in file 'local_openapi.json'"""
-    package_root = Path(__file__).parent.parent.parent.resolve()
+    import optimade
+
+    package_root = Path(optimade.__file__).parent.parent.resolve()
     if not package_root.joinpath("openapi").exists():
         os.mkdir(package_root.joinpath("openapi"))
     with open(package_root.joinpath("openapi/local_openapi.json"), "w") as f:
