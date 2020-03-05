@@ -10,12 +10,13 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from .config import CONFIG
-from .routers import index_info, links
-from .routers.utils import BASE_URL_PREFIXES
-
 from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
+
+from .config import CONFIG
+from .middleware import EnsureQueryParamIntegrity
+from .routers import index_info, links
+from .routers.utils import BASE_URL_PREFIXES
 
 
 if CONFIG.debug:  # pragma: no cover
@@ -61,6 +62,7 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
 
 # Add various middleware
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
+app.add_middleware(EnsureQueryParamIntegrity)
 
 
 # Add various exception handlers

@@ -2,7 +2,7 @@
 import re
 import urllib
 from datetime import datetime
-from typing import Union, List, Dict, Any
+from typing import Union, List, Dict
 
 from fastapi import HTTPException, Request
 
@@ -19,6 +19,7 @@ from optimade.models import (
 
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
+from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 
@@ -32,20 +33,6 @@ BASE_URL_PREFIXES = {
     "minor": f"/v{'.'.join(__api_version__.split('.')[:2])}",
     "patch": f"/v{__api_version__}",
 }
-
-
-class BadRequest(HTTPException):
-    """400 Bad Request"""
-
-    def __init__(
-        self,
-        status_code: int = 400,
-        detail: Any = None,
-        headers: dict = None,
-        title: str = "Bad Request",
-    ) -> None:
-        super().__init__(status_code=status_code, detail=detail, headers=headers)
-        self.title = title
 
 
 def meta_values(
@@ -130,9 +117,8 @@ def get_included_relationships(
     if not isinstance(results, list):
         results = [results]
 
-    empty_values = {'""', "''"}
     for entry_type in include_param:
-        if entry_type not in ENTRY_COLLECTIONS and entry_type not in empty_values:
+        if entry_type not in ENTRY_COLLECTIONS and entry_type != "":
             raise BadRequest(
                 detail=f"'{entry_type}' cannot be identified as a valid relationship type. "
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
@@ -209,9 +195,6 @@ def get_entries(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
-    else:
-        include.append(EntryListingQueryParams().include.default)
-
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
@@ -257,9 +240,6 @@ def get_single_entry(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
-    else:
-        include.append(SingleEntryQueryParams().include.default)
-
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
