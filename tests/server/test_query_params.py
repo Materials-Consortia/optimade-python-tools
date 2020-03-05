@@ -1,6 +1,6 @@
 # pylint: disable=relative-beyond-top-level,import-outside-toplevel
 import unittest
-from typing import Sequence
+from typing import Union, List, Set
 
 from optimade.server.config import CONFIG
 from optimade.server import mappers
@@ -27,12 +27,12 @@ class IncludeTests(SetClient, unittest.TestCase):
 
     server = "regular"
 
-    def check_response(
+    def _check_response(
         self,
         request: str,
-        expected_included_types: Sequence,
-        expected_included_resources: Sequence,
-        expected_relationship_types: Sequence = None,
+        expected_included_types: Union[List, Set],
+        expected_included_resources: Union[List, Set],
+        expected_relationship_types: Union[List, Set] = None,
     ):
         try:
             response = self.client.get(request)
@@ -82,39 +82,18 @@ class IncludeTests(SetClient, unittest.TestCase):
             print(f"{self.client.base_url}{request}")
             raise exc
 
-    def check_error_response(
+    def _check_error_response(
         self,
-        request,
-        expected_status: int = 400,
-        expected_title: str = "Bad Request",
+        request: str,
+        expected_status: int = None,
+        expected_title: str = None,
         expected_detail: str = None,
     ):
-        try:
-            response = self.client.get(request)
-            self.assertEqual(
-                response.status_code,
-                expected_status,
-                msg=f"Request should have been an error with status code {expected_status}, "
-                f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
-            )
-            response = response.json()
-            self.assertEqual(len(response["errors"]), 1)
-            self.assertEqual(response["meta"]["data_returned"], 0)
-
-            error = response["errors"][0]
-            self.assertEqual(str(expected_status), error["status"])
-            self.assertEqual(expected_title, error["title"])
-
-            if expected_detail is None:
-                expected_detail = "Error trying to process rule "
-                self.assertTrue(error["detail"].startswith(expected_detail))
-            else:
-                self.assertEqual(expected_detail, error["detail"])
-
-        except Exception as exc:
-            print("Request attempted:")
-            print(f"{self.client.base_url}{request}")
-            raise exc
+        expected_status = 400 if expected_status is None else expected_status
+        expected_title = "Bad Request" if expected_title is None else expected_title
+        super()._check_error_response(
+            request, expected_status, expected_title, expected_detail
+        )
 
     def test_default_value(self):
         """Default value for `include` is 'references'
@@ -124,52 +103,15 @@ class IncludeTests(SetClient, unittest.TestCase):
         request = "/structures"
         expected_types = ["references"]
         expected_reference_ids = ["dijkstra1968", "maddox1988", "dummy/2019"]
-        self.check_response(request, expected_types, expected_reference_ids)
-
-        request = "/structures?include="
-        self.check_response(request, expected_types, expected_reference_ids)
-
-        # Single entry
-        request = "/structures/mpf_1"
-        expected_types = ["references"]
-        expected_reference_ids = ["dijkstra1968"]
-        self.check_response(request, expected_types, expected_reference_ids)
-
-        request = "/structures/mpf_1?include="
-        self.check_response(request, expected_types, expected_reference_ids)
+        self._check_response(request, expected_types, expected_reference_ids)
 
     def test_empty_value(self):
         """An empty value should resolve in no relationships being returned under `included`"""
-        request = '/structures?include=""'
+        request = "/structures?include="
         expected_types = []
         expected_reference_ids = []
         expected_data_relationship_types = ["references"]
-        self.check_response(
-            request,
-            expected_types,
-            expected_reference_ids,
-            expected_data_relationship_types,
-        )
-
-        request = "/structures?include=''"
-        self.check_response(
-            request,
-            expected_types,
-            expected_reference_ids,
-            expected_data_relationship_types,
-        )
-
-        # Single entry
-        request = "/structures/mpf_1?include=''"
-        self.check_response(
-            request,
-            expected_types,
-            expected_reference_ids,
-            expected_data_relationship_types,
-        )
-
-        request = "/structures/mpf_1?include=''"
-        self.check_response(
+        self._check_response(
             request,
             expected_types,
             expected_reference_ids,
@@ -181,23 +123,15 @@ class IncludeTests(SetClient, unittest.TestCase):
         request = "/structures/mpf_1"
         expected_types = ["references"]
         expected_reference_ids = ["dijkstra1968"]
-        self.check_response(request, expected_types, expected_reference_ids)
+        self._check_response(request, expected_types, expected_reference_ids)
 
     def test_empty_value_single_entry(self):
         """For single entry. An empty value should resolve in no relationships being returned under `included`"""
-        request = '/structures/mpf_1?include=""'
+        request = "/structures/mpf_1?include="
         expected_types = []
         expected_reference_ids = []
         expected_data_relationship_types = ["references"]
-        self.check_response(
-            request,
-            expected_types,
-            expected_reference_ids,
-            expected_data_relationship_types,
-        )
-
-        request = "/structures/mpf_1?include=''"
-        self.check_response(
+        self._check_response(
             request,
             expected_types,
             expected_reference_ids,
@@ -208,13 +142,13 @@ class IncludeTests(SetClient, unittest.TestCase):
         """A wrong type should result in a `400 Bad Request` response"""
         from optimade.server.routers import ENTRY_COLLECTIONS
 
-        wrong_type = "test"
-        request = f"/structures?include={wrong_type}"
-        error_detail = (
-            f"'{wrong_type}' cannot be identified as a valid relationship type. "
-            f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
-        )
-        self.check_error_response(request, expected_detail=error_detail)
+        for wrong_type in ("test", '""', "''"):
+            request = f"/structures?include={wrong_type}"
+            error_detail = (
+                f"'{wrong_type}' cannot be identified as a valid relationship type. "
+                f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
+            )
+            self._check_error_response(request, expected_detail=error_detail)
 
 
 class ResponseFieldTests(SetClient, unittest.TestCase):
@@ -228,7 +162,17 @@ class ResponseFieldTests(SetClient, unittest.TestCase):
         "structures": mappers.StructureMapper,
     }
 
-    def check_response(self, request, expected_fields):
+    def required_fields_test_helper(
+        self, endpoint: str, known_unused_fields: set, expected_fields: set
+    ):
+        """Utility function for creating required fields tests"""
+        expected_fields |= (
+            self.get_mapper[endpoint].get_required_fields() - known_unused_fields
+        )
+        expected_fields.add("attributes")
+        request = f"/{endpoint}?response_fields={','.join(expected_fields)}"
+
+        # Check response
         try:
             response = self.client.get(request)
             self.assertEqual(
@@ -245,17 +189,6 @@ class ResponseFieldTests(SetClient, unittest.TestCase):
             print("Request attempted:")
             print(f"{self.client.base_url}{request}")
             raise exc
-
-    def required_fields_test_helper(
-        self, endpoint: str, known_unused_fields: set, response_fields: set
-    ):
-        """Utility function for creating required fields tests"""
-        response_fields |= (
-            self.get_mapper[endpoint].get_required_fields() - known_unused_fields
-        )
-        response_fields.add("attributes")
-        request = f"/{endpoint}?response_fields={','.join(response_fields)}"
-        self.check_response(request, response_fields)
 
     def test_required_fields_links(self):
         """Certain fields are REQUIRED, no matter the value of `response_fields`"""
@@ -517,7 +450,9 @@ class FilterTests(SetClient, unittest.TestCase):
         expected_ids = ["mpf_1"]
         self._check_response(request, expected_ids, len(expected_ids))
 
-    def _check_response(self, request, expected_ids, expected_return):
+    def _check_response(
+        self, request: str, expected_ids: Union[List, Set], expected_return: int
+    ):
         try:
             response = self.client.get(request)
             self.assertEqual(
@@ -534,34 +469,12 @@ class FilterTests(SetClient, unittest.TestCase):
 
     def _check_error_response(
         self,
-        request,
-        expected_status: int = 500,
+        request: str,
+        expected_status: int = None,
         expected_title: str = None,
         expected_detail: str = None,
     ):
-        try:
-            response = self.client.get(request)
-            self.assertEqual(
-                response.status_code,
-                expected_status,
-                msg=f"Request should have been an error with status code {expected_status}, "
-                f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
-            )
-            response = response.json()
-            self.assertEqual(len(response["errors"]), 1)
-            self.assertEqual(response["meta"]["data_returned"], 0)
-
-            error = response["errors"][0]
-            self.assertEqual(str(expected_status), error["status"])
-            self.assertEqual(expected_title, error["title"])
-
-            if expected_detail is None:
-                expected_detail = "Error trying to process rule "
-                self.assertTrue(error["detail"].startswith(expected_detail))
-            else:
-                self.assertEqual(expected_detail, error["detail"])
-
-        except Exception as exc:
-            print("Request attempted:")
-            print(f"{self.client.base_url}{request}")
-            raise exc
+        expected_status = 500 if expected_status is None else expected_status
+        super()._check_error_response(
+            request, expected_status, expected_title, expected_detail
+        )
