@@ -20,18 +20,18 @@ class EntryListingQueryParams:
             "json",
             description="The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/"
             "optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format "
-            "described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+            "described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
         ),
         email_address: EmailStr = Query(
             "",
             description="An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n"
-            "**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+            "**Example**: http://example.com/v1/structures?email_address=user@example.com",
         ),
         response_fields: str = Query(
             "",
             description="A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with "
             "the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n"
-            "**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+            "**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
             regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
         sort: str = Query(
@@ -134,18 +134,18 @@ class SingleEntryQueryParams:
             "json",
             description="The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/"
             "optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format "
-            "described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+            "described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
         ),
         email_address: EmailStr = Query(
             "",
             description="An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n"
-            "**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+            "**Example**: http://example.com/v1/structures?email_address=user@example.com",
         ),
         response_fields: str = Query(
             "",
             description="A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with "
             "the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n"
-            "**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+            "**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
             regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
         include: str = Query(

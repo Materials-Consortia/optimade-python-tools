@@ -25,7 +25,7 @@ jobs:
         uses: ./
         with:
           port: 3213
-          path: /optimade/v0
+          path: /v0
 
   validator_index:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
         uses: ./
         with:
           port: 3214
-          path: /optimade/v0
+          path: /v0
           index: yes
 
   all_versioned_paths:
@@ -64,5 +64,12 @@ jobs:
         uses: ./
         with:
           port: 3213
-          path: /optimade
+          path: /
+          all versioned paths: yes
+
+      - name: Run action (setting path to empty string)
+        uses: ./
+        with:
+          port: 3213
+          path: ""
           all versioned paths: yes

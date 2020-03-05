@@ -1,4 +1,6 @@
-# Installing the index meta-database
+# Installing OPTiMaDe Python tools
+
+## The index meta-database
 
 This package may be used to setup and run an [OPTiMaDe index meta-database](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#index-meta-database).
 Install the package via `pip install optimade[server]` and change the file [`server.cfg`](server.cfg) found in the root of the package.
@@ -9,7 +11,7 @@ The paths must be relative from your current working directory, where your `serv
 The index meta-database is set up to populate a `mongomock` in-memory database with resources from a static `json` file containing the `child` resources you, as a database provider, want to serve under this index meta-database.
 
 Running the index meta-database is then as simple as writing `./run.sh index` in a terminal from the root of this package.
-You can find it at the base URL: [`http://localhost:5001/optimade`](http://localhost:5001/optimade).
+You can find it at the base URL: <http://localhost:5001/v0.10.1>.
 
 _Note_: `server.cfg` is loaded from the current working directory, from where you run `run.sh`.
 E.g., if you have installed `optimade` on a Linux machine at `/home/USERNAME/optimade/optimade-python-tools` and you run the following:
@@ -20,7 +22,7 @@ E.g., if you have installed `optimade` on a Linux machine at `/home/USERNAME/opt
 
 Then you need `server.cfg` to be located in your home folder containing either relative paths from its current location or absolute paths.
 
-# Full development installation
+## Full development installation
 
 The dependencies of this package can be found in `setup.py` with their latest supported versions.
 By default, a minimal set of requirements are installed to work with the filter language and the `pydantic` models.
@@ -73,4 +75,4 @@ Running the following:
 uvicorn optimade.server.main_index:app --reload --port 5001
 ```
 
-will run the index meta-database server at <http://localhost:5001/optimade>.
+will run the index meta-database server at <http://localhost:5001/v0.10.1>.

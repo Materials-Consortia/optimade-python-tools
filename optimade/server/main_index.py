@@ -69,7 +69,7 @@ app.add_exception_handler(VisitError, exc_handlers.grammar_not_implemented_handl
 app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
-# Add various endpoints to `/optimade/vMAJOR`
+# Add various endpoints to `/vMAJOR`
 app.include_router(index_info.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 
@@ -77,8 +77,8 @@ app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 def add_optional_versioned_base_urls(app: FastAPI):
     """Add the following OPTIONAL prefixes/base URLs to server:
     ```
-        /optimade/vMajor.Minor
-        /optimade/vMajor.Minor.Patch
+        /vMajor.Minor
+        /vMajor.Minor.Patch
     ```
     """
     for version in ("minor", "patch"):
@@ -97,7 +97,7 @@ def update_schema(app: FastAPI):
 
 @app.on_event("startup")
 async def startup_event():
-    # Update OpenAPI schema on versioned base URL `/optimade/vMAJOR`
+    # Update OpenAPI schema on versioned base URL `/vMAJOR`
     update_schema(app)
-    # Add API endpoints for OPTIONAL base URLs `/optimade/vMAJOR.MINOR` and `/optimade/vMAJOR.MINOR.PATCH`
+    # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
     add_optional_versioned_base_urls(app)

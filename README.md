@@ -2,7 +2,7 @@
 
 | Latest release | Build status | Activity |
 |:--------------:|:------------:|:--------:|
-| [![PyPI Version](https://img.shields.io/pypi/v/optimade?logo=pypi)](https://pypi.org/project/optimade/)<br>[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/optimade?logo=python)](https://pypi.org/project/optimade/)<br>[![OPTiMaDe](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/.ci/optimade-version.json&logo=json)](https://github.com/Materials-Consortia/OPTiMaDe/) | [![Build Status](https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/Testing,%20linting,%20and%20OpenAPI%20validation?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+)<br>[![codecov](https://codecov.io/gh/Materials-Consortia/optimade-python-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/Materials-Consortia/optimade-python-tools)<br>[![Heroku](https://heroku-badge.herokuapp.com/?app=optimade&root=optimade/v0/info)](https://optimade.herokuapp.com/optimade/v0/info) | [![Commit Activity](https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/pulse) |
+| [![PyPI Version](https://img.shields.io/pypi/v/optimade?logo=pypi)](https://pypi.org/project/optimade/)<br>[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/optimade?logo=python)](https://pypi.org/project/optimade/)<br>[![OPTiMaDe](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/.ci/optimade-version.json&logo=json)](https://github.com/Materials-Consortia/OPTiMaDe/) | [![Build Status](https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/Testing,%20linting,%20and%20OpenAPI%20validation?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+)<br>[![codecov](https://codecov.io/gh/Materials-Consortia/optimade-python-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/Materials-Consortia/optimade-python-tools)<br>[![Heroku](https://heroku-badge.herokuapp.com/?app=optimade&root=v0/info)](https://optimade.herokuapp.com/v0/info) | [![Commit Activity](https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/pulse) |
 
 The aim of OPTiMaDe is to develop a common API, compliant with the [JSON API 1.0](http://jsonapi.org/format/1.0/) specification.
 This is to enable interoperability among databases that contain calculated properties of existing and hypothetical materials.
@@ -30,14 +30,14 @@ This action runs `optimade_validator` from this repository on a running server.
 
 ### Example usage
 
-To run `optimade_validator` for an index meta-database at `http://gh_actions_host:5001/optimade/v0` do the following:  
+To run `optimade_validator` for an index meta-database at `http://gh_actions_host:5001/v0` do the following:  
 Within the same job, first, start a server, e.g., using the `docker-compose.yml` setup from this repository, and then add the step
 
 ```yml
 uses: Materials-Consortia/optimade-python-tools@master
 with:
   port: 5001
-  path: /optimade/v0
+  path: /v0
   index: yes
 ```
 
@@ -77,8 +77,8 @@ with:
 #### `path`
 
 **Optional** Path for the OPTiMaDe (versioned) base URL - MUST start with `/`  
-_Note_: If `all versioned paths` is `true`, this MUST be un-versioned, e.g., `/optimade`, otherwise it MUST be versioned, e.g., the default value.  
-**Default**: `/optimade/v0`
+_Note_: If `all versioned paths` is `true`, this MUST be un-versioned, e.g., `/optimade` or `/`, otherwise it MUST be versioned, e.g., the default value.  
+**Default**: `/v0`
 
 #### `all versioned paths`
 

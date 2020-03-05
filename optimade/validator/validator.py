@@ -78,7 +78,7 @@ class Client:
             base_url (str): the base URL of the optimade implementation, including
             request protocol (e.g. `'http://'`) and API version number if necessary.
             Examples:
-                - `'http://example.org/optimade'`,
+                - `'http://example.org/optimade/v1'`,
                 - `'www.crystallography.net/cod-test/optimade/v0.10.0/'`
             Note: A maximum of one slash ("/") is allowed as the last character.
 

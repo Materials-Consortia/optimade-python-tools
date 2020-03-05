@@ -6,20 +6,20 @@
     "version": "0.10.1"
   },
   "paths": {
-    "/optimade/v0/info": {
+    "/v0/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_optimade_v0_info_get",
+        "operationId": "get_info_v0_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info Optimade V0 Info Get",
+                  "title": "Response Get Info V0 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/IndexInfoResponse"
@@ -35,13 +35,13 @@
         }
       }
     },
-    "/optimade/v0/links": {
+    "/v0/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_optimade_v0_links_get",
+        "operationId": "get_links_v0_links_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst).",
@@ -56,24 +56,24 @@
             "in": "query"
           },
           {
-            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
             "required": false,
             "schema": {
               "title": "Response Format",
               "type": "string",
-              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
               "default": "json"
             },
             "name": "response_format",
             "in": "query"
           },
           {
-            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
             "required": false,
             "schema": {
               "title": "Email Address",
               "type": "string",
-              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
               "format": "email",
               "default": ""
             },
@@ -81,13 +81,13 @@
             "in": "query"
           },
           {
-            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
             "required": false,
             "schema": {
               "title": "Response Fields",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
               "default": ""
             },
             "name": "response_fields",
@@ -203,7 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links Optimade V0 Links Get",
+                  "title": "Response Get Links V0 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"

@@ -1,4 +1,5 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
+# pylint: disable=import-outside-toplevel
 
 from .validator import ImplementationValidator
 
@@ -14,27 +15,27 @@ def validate():
         prog="optimade_validator",
         description="""Tests OPTiMaDe implementations for compliance with the optimade-python-tools models.
 
-    - To test an entire implementation (at say example.com/optimade) for all required/available endpoints:
+    - To test an entire implementation (at say example.com/optimade/v1) for all required/available endpoints:
 
-        $ optimade_validator http://example.com/optimade
-
-    - To test a particular response of an implementation against a particular model:
-
-        $ optimade_validator http://example.com/optimade/structures/id=1234 --as_type structure
+        $ optimade_validator http://example.com/optimade/v1
 
     - To test a particular response of an implementation against a particular model:
 
-        $ optimade_validator http://example.com/optimade/structures --as_type structures
+        $ optimade_validator http://example.com/optimade/v1/structures/id=1234 --as_type structure
+
+    - To test a particular response of an implementation against a particular model:
+
+        $ optimade_validator http://example.com/optimade/v1/structures --as_type structures
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
         "base_url",
         nargs="?",
-        default="http://localhost:5000/optimade",
+        default="http://localhost:5000/v0",
         help=(
             "The base URL of the OPTiMaDe implementation to point at, "
-            "e.g. 'http://example.com/optimade' or 'http://localhost:5000/optimade"
+            "e.g. 'http://example.com/optimade/v1' or 'http://localhost:5000/v1"
         ),
     )
     parser.add_argument(
@@ -46,7 +47,7 @@ def validate():
         type=str,
         help=(
             "Validate the request URL with the provided type, rather than scanning the entire implementation e.g. "
-            "optimade_validator `http://example.com/optimade/structures/0 --as_type structures`"
+            "optimade_validator `http://example.com/optimade/v1/structures/0 --as_type structures`"
         ),
     )
     parser.add_argument(
