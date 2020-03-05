@@ -45,12 +45,12 @@ class TestDebug(unittest.TestCase):
     """Test if debug mode is correctly set and respected"""
 
     def test_env_variable(self):
-        """Set DEBUG environment variable and check CONFIG picks up on it correctly"""
-        os.environ["DEBUG"] = "1"
+        """Set OPTIMADE_DEBUG environment variable and check CONFIG picks up on it correctly"""
+        os.environ["OPTIMADE_DEBUG"] = "1"
         CONFIG = ServerConfig()
         self.assertTrue(CONFIG.debug)
 
-        os.environ.pop("DEBUG", None)
+        os.environ.pop("OPTIMADE_DEBUG", None)
         CONFIG = ServerConfig()
         self.assertFalse(CONFIG.debug)
 

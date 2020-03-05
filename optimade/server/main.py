@@ -19,8 +19,8 @@ from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 
-if CONFIG.debug:
-    print("DEBUG MODE")  # pragma: no cover
+if CONFIG.debug:  # pragma: no cover
+    print("DEBUG MODE")
 
 
 app = FastAPI(

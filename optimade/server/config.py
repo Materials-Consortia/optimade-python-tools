@@ -20,7 +20,7 @@ class Config:
     _path: Path = Path(__file__).parent.joinpath("config.ini")
 
     def __init__(self, server_cfg: Path = None):
-        self._debug = os.getenv("DEBUG") == "1"
+        self._debug = os.getenv("OPTIMADE_DEBUG") == "1"
         self._server = (
             Path().resolve().joinpath("server.cfg")
             if server_cfg is None
