@@ -133,36 +133,44 @@ class TestPydanticValidation(unittest.TestCase):
             with self.assertRaises(ValidationError):
                 ReferenceResource(**ReferenceMapper.map_back(ref))
 
+    def test_available_api_versions(self):
+        bad_urls = [
+            {"url": "asfdsafhttps://example.com/v0.0", "version": "0.0.0"},
+            {"url": "https://example.com/optimade", "version": "1.0.0"},
+            {"url": "https://example.com/v0999", "version": "0999.0.0"},
+            {"url": "http://example.com/v2.3", "version": "2.3.0"},
+        ]
+        good_urls = [
+            {"url": "https://example.com/v0", "version": "0.1.9"},
+            {"url": "https://example.com/v1.0.2", "version": "1.0.2"},
+            {"url": "https://example.com/optimade/v1.2", "version": "1.2.3"},
+        ]
+        bad_combos = [
+            {"url": "https://example.com/v0", "version": "1.0.0"},
+            {"url": "https://example.com/v1.0.2", "version": "1.0.3"},
+            {"url": "https://example.com/optimade/v1.2", "version": "1.3.2"},
+        ]
 
-def test_available_api_versions():
-    bad_urls = [
-        "asfdsafhttps://example.com/v0.0",
-        "https://example.com/optimade",
-        "https://example.com/v0",
-        "https://example.com/v0999",
-    ]
-    good_urls = [
-        {"url": "https://example.com/v0", "version": "0.1.9"},
-        {"url": "https://example.com/v1.0.2", "version": "1.0.2"},
-        {"url": "http://example.com/v2.3", "version": "2.3.1"},
-    ]
-    bad_combos = [
-        {"url": "https://example.com/v0", "version": "1.0.0"},
-        {"url": "https://example.com/v1.0.2", "version": "1.0.3"},
-        {"url": "http://example.com/v2.3", "version": "2.0.1"},
-    ]
-
-    for url in bad_urls:
-        with pytest.raises(ValueError):
-            AvailableApiVersion(url=url, version="1.0")
-            pytest.fail(f"Url {url} should have failed")
-
-    for data in bad_combos:
-        with pytest.raises(ValueError):
-            AvailableApiVersion(**data)
-            pytest.fail(
-                f"{data['url']} should have failed with version {data['version']}"
+        for data in bad_urls:
+            with pytest.raises(ValueError) as exc:
+                AvailableApiVersion(**data)
+                pytest.fail(f"Url {data['url']} should have failed")
+            self.assertTrue(
+                "url MUST be a versioned base URL" in exc.exconly()
+                or "URL scheme not permitted" in exc.exconly(),
+                msg=f"Validator 'url_must_be_versioned_base_url' not triggered as it should.\nException message: {exc.exconly()}.\nInputs: {data}",
             )
 
-    for data in good_urls:
-        AvailableApiVersion(**data)
+        for data in bad_combos:
+            with pytest.raises(ValueError) as exc:
+                AvailableApiVersion(**data)
+                pytest.fail(
+                    f"{data['url']} should have failed with version {data['version']}"
+                )
+            self.assertTrue(
+                "is not compatible with url version" in exc.exconly(),
+                msg=f"Validator 'crosscheck_url_and_version' not triggered as it should.\nException message: {exc.exconly()}.\nInputs: {data}",
+            )
+
+        for data in good_urls:
+            self.assertIsInstance(AvailableApiVersion(**data), AvailableApiVersion)
