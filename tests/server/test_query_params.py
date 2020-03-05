@@ -27,7 +27,7 @@ class IncludeTests(SetClient, unittest.TestCase):
 
     server = "regular"
 
-    def check_response(
+    def _check_response(
         self,
         request: str,
         expected_included_types: Sequence,
@@ -82,7 +82,7 @@ class IncludeTests(SetClient, unittest.TestCase):
             print(f"{self.client.base_url}{request}")
             raise exc
 
-    def check_error_response(
+    def _check_error_response(
         self,
         request,
         expected_status: int = 400,
@@ -124,7 +124,7 @@ class IncludeTests(SetClient, unittest.TestCase):
         request = "/structures"
         expected_types = ["references"]
         expected_reference_ids = ["dijkstra1968", "maddox1988", "dummy/2019"]
-        self.check_response(request, expected_types, expected_reference_ids)
+        self._check_response(request, expected_types, expected_reference_ids)
 
     def test_empty_value(self):
         """An empty value should resolve in no relationships being returned under `included`"""
@@ -132,7 +132,7 @@ class IncludeTests(SetClient, unittest.TestCase):
         expected_types = []
         expected_reference_ids = []
         expected_data_relationship_types = ["references"]
-        self.check_response(
+        self._check_response(
             request,
             expected_types,
             expected_reference_ids,
@@ -144,7 +144,7 @@ class IncludeTests(SetClient, unittest.TestCase):
         request = "/structures/mpf_1"
         expected_types = ["references"]
         expected_reference_ids = ["dijkstra1968"]
-        self.check_response(request, expected_types, expected_reference_ids)
+        self._check_response(request, expected_types, expected_reference_ids)
 
     def test_empty_value_single_entry(self):
         """For single entry. An empty value should resolve in no relationships being returned under `included`"""
@@ -152,7 +152,7 @@ class IncludeTests(SetClient, unittest.TestCase):
         expected_types = []
         expected_reference_ids = []
         expected_data_relationship_types = ["references"]
-        self.check_response(
+        self._check_response(
             request,
             expected_types,
             expected_reference_ids,
@@ -169,15 +169,7 @@ class IncludeTests(SetClient, unittest.TestCase):
                 f"'{wrong_type}' cannot be identified as a valid relationship type. "
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
             )
-            self.check_error_response(request, expected_detail=error_detail)
-
-    def test_wrong_html_form(self):
-        """Using the parameter without equality sign `=` or values should result in a `400 Bad Request` response"""
-        request = "/structures?include"
-        self.check_error_response(
-            request,
-            expected_detail="A query parameter without an equal sign (=) is not supported by this server",
-        )
+            self._check_error_response(request, expected_detail=error_detail)
 
 
 class ResponseFieldTests(SetClient, unittest.TestCase):
@@ -191,7 +183,17 @@ class ResponseFieldTests(SetClient, unittest.TestCase):
         "structures": mappers.StructureMapper,
     }
 
-    def check_response(self, request, expected_fields):
+    def required_fields_test_helper(
+        self, endpoint: str, known_unused_fields: set, expected_fields: set
+    ):
+        """Utility function for creating required fields tests"""
+        expected_fields |= (
+            self.get_mapper[endpoint].get_required_fields() - known_unused_fields
+        )
+        expected_fields.add("attributes")
+        request = f"/{endpoint}?response_fields={','.join(expected_fields)}"
+
+        # Check response
         try:
             response = self.client.get(request)
             self.assertEqual(
@@ -208,17 +210,6 @@ class ResponseFieldTests(SetClient, unittest.TestCase):
             print("Request attempted:")
             print(f"{self.client.base_url}{request}")
             raise exc
-
-    def required_fields_test_helper(
-        self, endpoint: str, known_unused_fields: set, response_fields: set
-    ):
-        """Utility function for creating required fields tests"""
-        response_fields |= (
-            self.get_mapper[endpoint].get_required_fields() - known_unused_fields
-        )
-        response_fields.add("attributes")
-        request = f"/{endpoint}?response_fields={','.join(response_fields)}"
-        self.check_response(request, response_fields)
 
     def test_required_fields_links(self):
         """Certain fields are REQUIRED, no matter the value of `response_fields`"""
