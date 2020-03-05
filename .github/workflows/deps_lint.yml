@@ -86,8 +86,8 @@ jobs:
 
     - name: Check if OpenAPI schemes match
       run: |
-        .ci/openapi_diff.sh src/
-        .ci/index_openapi_diff.sh src/
+        .ci/openapi_diff.sh
+        .ci/index_openapi_diff.sh
 
 
   docker-image:
