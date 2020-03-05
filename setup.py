@@ -30,7 +30,8 @@ setup(
     long_description_content_type="text/markdown",
     keywords="optimade jsonapi materials",
     include_package_data=True,
-    packages=find_packages(),
+    packages=find_packages("src"),
+    package_dir={"": "src"},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
