@@ -67,7 +67,7 @@ from lark.tree import pydot__tree_to_png
 pydot__tree_to_png(tree, "exampletree.png")
 ```
 
-![example tree](exampletree.png)
+![example tree](./images/exampletree.png)
 
 ### Flow for Parsing User-Supplied Filter and Converting to Backend Query
 
