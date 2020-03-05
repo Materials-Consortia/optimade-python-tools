@@ -83,6 +83,7 @@ app.include_router(structures.router, prefix=BASE_URL_PREFIXES["major"])
 
 
 # Add the router for the landing page for all prefixes
+app.include_router(landing.router)
 app.include_router(landing.router, prefix=BASE_URL_PREFIXES["major"])
 
 
