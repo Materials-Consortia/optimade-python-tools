@@ -42,7 +42,7 @@ if not CONFIG.use_real_mongo:
         print(f"loading test {endpoint_name}...")
 
         endpoint_collection.collection.insert_many(
-            getattr(data, endpoint_name, default=[])
+            getattr(data, endpoint_name, [])
         )
         if endpoint_name == "links":
             print("adding Materials-Consortia providers to links from optimade.org")
