@@ -109,8 +109,8 @@ class EnsureQueryParamIntegrityTest(SetClient, unittest.TestCase):
         """No matter the chosen (valid) parameter separator (either & or ;) the parameters should be split correctly"""
         from optimade.server.middleware import EnsureQueryParamIntegrity
 
-        query_part = 'filter=""&include=;response_format=json'
-        expected_result = {'filter=""', "include=", "response_format=json"}
+        query_part = 'filter=id="mpf_1"&include=;response_format=json'
+        expected_result = {'filter=id="mpf_1"', "include=", "response_format=json"}
 
         parsed_set_of_queries = EnsureQueryParamIntegrity(self.client.app).check_url(
             query_part
