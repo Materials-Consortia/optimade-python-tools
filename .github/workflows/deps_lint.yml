@@ -97,11 +97,11 @@ jobs:
     - uses: actions/checkout@master
 
     - name: Build the Docker images
-      run: docker-compose build
+      run: docker-compose -f src/docker/docker-compose.yml build
 
     - name: Start Docker image - server
       run: |
-        docker-compose up optimade &
+        docker-compose -f src/docker/docker-compose.yml up optimade &
         .github/workflows/wait_for_it.sh localhost:3213 -t 120
         sleep 15
 
@@ -114,7 +114,7 @@ jobs:
 
     - name: Start Docker image - index server
       run: |
-        docker-compose up optimade-index &
+        docker-compose -f src/docker/docker-compose.yml up optimade-index &
         .github/workflows/wait_for_it.sh localhost:3214 -t 120
         sleep 15
 
