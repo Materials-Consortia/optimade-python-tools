@@ -13,7 +13,7 @@ class TestSetup(unittest.TestCase):
         package_root = Path(__file__).parent.parent.resolve()
 
         number_of_grammar_files = len(
-            list(package_root.joinpath("optimade/grammar").rglob("*.lark"))
+            list(package_root.joinpath("src/optimade/grammar").rglob("*.lark"))
         )
 
         with tempfile.TemporaryDirectory() as temp_dir:
