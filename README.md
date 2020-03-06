@@ -21,11 +21,11 @@ The latest stable version can be obtained from [PyPI](https://pypi.org/project/o
 
 ## Installation
 
-Installation instructions, for both the index meta-database, and for the main API can be found in [INSTALL.md](./src/docs/INSTALL.md).
+Installation instructions, for both the index meta-database, and for the main API can be found in [INSTALL.md](./docs/INSTALL.md).
 
 ## Contributing
 
-Contribution guidelines and tips can be found in [CONTRIBUTING.md](./src/docs/CONTRIBUTING.md).
+Contribution guidelines and tips can be found in [CONTRIBUTING.md](./docs/CONTRIBUTING.md).
 
 ## GitHub Action - OPTiMaDe validator
 
