@@ -3,7 +3,7 @@ FROM python:3.7
 WORKDIR /app
 
 # copy repo contents
-COPY src/setup.py src/README.md ./
+COPY setup.py README.md ./
 COPY src/optimade ./src/optimade
 RUN pip install -e .[server]
 

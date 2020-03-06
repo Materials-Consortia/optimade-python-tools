@@ -5,8 +5,8 @@ services:
   optimade:
     restart: always
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../../
+      dockerfile: src/docker/Dockerfile
       args:
         PORT: 5000
     environment:
@@ -17,8 +17,8 @@ services:
   optimade-index:
     restart: always
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../../
+      dockerfile: src/docker/Dockerfile
       args:
         PORT: 5001
     environment:
