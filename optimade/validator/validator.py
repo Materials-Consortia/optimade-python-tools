@@ -34,6 +34,15 @@ BASE_INFO_ENDPOINT = "info"
 LINKS_ENDPOINT = "links"
 REQUIRED_ENTRY_ENDPOINTS = ["references", "structures"]
 
+ENDPOINT_MANDATORY_QUERIES = {
+    "structures": [
+        'elements HAS "Na"',
+        'elements HAS ANY "Na","Cl"',
+        'elements HAS ALL "Na","Cl"',
+    ],
+    "references": [],
+}
+
 RESPONSE_CLASSES = {
     "references": ValidatorReferenceResponseMany,
     "references/": ValidatorReferenceResponseOne,
@@ -248,6 +257,10 @@ class ImplementationValidator:
             REQUIRED_ENTRY_ENDPOINTS_INDEX if self.index else REQUIRED_ENTRY_ENDPOINTS
         )
         self.test_entry_endpoints = set(self.expected_entry_endpoints)
+        self.endpoint_mandatory_queries = (
+            {} if self.index else ENDPOINT_MANDATORY_QUERIES
+        )
+
         self.response_classes = (
             RESPONSE_CLASSES_INDEX if self.index else RESPONSE_CLASSES
         )
@@ -316,6 +329,14 @@ class ImplementationValidator:
         for endp in self.test_entry_endpoints:
             self._log.debug("Testing single entry request of type %s", endp)
             self.test_single_entry_endpoint(endp)
+
+        for endp in self.endpoint_mandatory_queries:
+            # skip empty endpoint query lists
+            if self.endpoint_mandatory_queries[endp]:
+                self._log.debug("Testing mandatory query syntax on endpoint %s", endp)
+                self.test_mandatory_query_syntax(
+                    endp, self.endpoint_mandatory_queries[endp]
+                )
 
         self._log.debug("Testing %s endpoint", LINKS_ENDPOINT)
         self.test_info_or_links_endpoints(LINKS_ENDPOINT)
@@ -491,3 +512,18 @@ class ImplementationValidator:
                 f"Request to '{request_str}' returned HTTP code: {response.status_code}"
             )
         return response, "request successful."
+
+    def test_mandatory_query_syntax(self, endpoint, endpoint_queries):
+        """ Perform a list of valid queries and assert that no errors are raised.
+
+        Parameters:
+            endpoint (str): the endpoint to query (e.g. "structures").
+            endpoint_queries (list): the list of valid mandatory queries
+                for that endpoint, where the queries do not include the
+                "?filter=" prefix, e.g. ['elements HAS "Na"'].
+
+        """
+
+        valid_queries = [f"{endpoint}?filter={query}" for query in endpoint_queries]
+        for query in valid_queries:
+            self.get_endpoint(query)
