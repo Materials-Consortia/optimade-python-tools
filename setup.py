@@ -31,14 +31,11 @@ setup(
     keywords="optimade jsonapi materials",
     include_package_data=True,
     packages=find_packages("src"),
-    package_dir={"": "src"},
+    package_dir={"optimade": "src/optimade"},
     package_data={
-        "optimade": [
-            "grammar/*.lark",
-            "server/*.json",
-            "server/*.ini",
-            "server/data/*.json",
-        ]
+        "optimade.grammar": ["*.lark"],
+        "optimade.server": ["*.json", "*.ini"],
+        "optimade.server.data": ["*.json"],
     },
     classifiers=[
         "Development Status :: 3 - Alpha",
