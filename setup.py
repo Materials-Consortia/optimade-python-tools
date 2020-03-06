@@ -32,6 +32,7 @@ setup(
     include_package_data=True,
     packages=find_packages("src"),
     package_dir={"": "src"},
+    scripts=["src/scripts/run_optimade_server"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
