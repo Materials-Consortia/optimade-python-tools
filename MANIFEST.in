@@ -1,0 +1,3 @@
+recursive-include src/optimade/server/ *.ini *.json
+recursive-include src/optimade/server/data/ *
+recursive-include src/optimade/grammar/ *.lark
