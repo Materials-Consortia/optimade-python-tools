@@ -31,6 +31,6 @@ repos:
       files: >
         (?x)^(
           .ci/optimade-version.json|
-          optimade/server/config.ini
+          src/optimade/server/config.ini
         )$
       language: system
