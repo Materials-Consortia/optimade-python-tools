@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
 
     - name: Build the Docker images
       run: docker-compose build
@@ -142,7 +142,7 @@ jobs:
             - 27017:27017
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -168,10 +168,9 @@ jobs:
         OPTIMADE_CI_FORCE_MONGO: 0
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == 3.7
+      if: matrix.python-version == 3.7 && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v1
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
         flags: unittests
         yml: ./.codecov.yml
