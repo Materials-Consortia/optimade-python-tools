@@ -1,9 +1,9 @@
-from .entries import ResourceMapper
+from .entries import BaseResourceMapper
 
 __all__ = ("LinksMapper",)
 
 
-class LinksMapper(ResourceMapper):
+class LinksMapper(BaseResourceMapper):
 
     ENDPOINT = "links"
 

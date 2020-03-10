@@ -11,7 +11,7 @@ from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
 
 from .config import CONFIG
-from .mappers import ResourceMapper
+from .mappers import BaseResourceMapper
 from .query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 try:
@@ -34,7 +34,10 @@ else:
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     def __init__(
-        self, collection, resource_cls: EntryResource, resource_mapper: ResourceMapper
+        self,
+        collection,
+        resource_cls: EntryResource,
+        resource_mapper: BaseResourceMapper,
     ):
         self.collection = collection
         self.parser = LarkParser()
@@ -93,7 +96,7 @@ class MongoCollection(EntryCollection):
             pymongo.collection.Collection, mongomock.collection.Collection
         ],
         resource_cls: EntryResource,
-        resource_mapper: ResourceMapper,
+        resource_mapper: BaseResourceMapper,
     ):
         super().__init__(collection, resource_cls, resource_mapper)
         self.transformer = MongoTransformer()
