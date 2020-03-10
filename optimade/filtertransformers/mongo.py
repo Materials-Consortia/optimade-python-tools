@@ -190,14 +190,19 @@ class MongoTransformer(Transformer):
         # string: ESCAPED_STRING
         return string.strip('"')
 
-    def number(self, arg):
+    @v_args(inline=True)
+    def signed_int(self, number):
+        # signed_int : SIGNED_INT
+        return int(number)
+
+    @v_args(inline=True)
+    def number(self, number):
         # number: SIGNED_INT | SIGNED_FLOAT
-        token = arg[0]
-        if token.type == "SIGNED_INT":
+        if number.type == "SIGNED_INT":
             type_ = int
-        elif token.type == "SIGNED_FLOAT":
+        elif number.type == "SIGNED_FLOAT":
             type_ = float
-        return type_(token)
+        return type_(number)
 
     def __default__(self, data, children, meta):
         raise NotImplementedError(
