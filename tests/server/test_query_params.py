@@ -424,6 +424,49 @@ class FilterTests(SetClient, unittest.TestCase):
         expected_ids = ["mpf_1"]
         self._check_response(request, expected_ids, len(expected_ids))
 
+    def test_awkward_not_queries(self):
+        """ Test an awkward query from the spec examples. It should return all but 2 structures
+        in the test data. The test is done in three parts:
+
+            - first query the individual expressions that make up the OR,
+            - then do an empty query to get all IDs
+            - then negate the expressions and ensure that all IDs are returned except
+              those from the first queries.
+
+        """
+        expected_ids = ["mpf_3819"]
+        request = (
+            '/structures?filter=chemical_formula_descriptive="Ba2NaTi2MnRe2Si8HO26F" AND '
+            'chemical_formula_anonymous = "A26B8C2D2E2FGHI" '
+        )
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        expected_ids = ["mpf_2"]
+        request = (
+            '/structures?filter=chemical_formula_anonymous = "A2BC" AND '
+            'NOT chemical_formula_descriptive = "Ac2AgPb" '
+        )
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = "/structures"
+        unexpected_ids = ["mpf_3819", "mpf_2"]
+        expected_ids = [
+            structure["id"]
+            for structure in self.client.get(request).json()["data"]
+            if structure["id"] not in unexpected_ids
+        ]
+
+        request = (
+            "/structures?filter="
+            "NOT ( "
+            'chemical_formula_descriptive = "Ba2NaTi2MnRe2Si8HO26F" AND '
+            'chemical_formula_anonymous = "A26B8C2D2E2FGHI" OR '
+            'chemical_formula_anonymous = "A2BC" AND '
+            'NOT chemical_formula_descriptive = "Ac2AgPb" '
+            ")"
+        )
+        self._check_response(request, expected_ids, len(expected_ids))
+
     def test_not_or_and_precedence(self):
         request = '/structures?filter=NOT elements HAS "Ac" AND nelements=1'
         expected_ids = ["mpf_200"]
