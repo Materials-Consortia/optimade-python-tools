@@ -1,11 +1,26 @@
 from typing import Tuple
 from optimade.server.config import CONFIG
 
-__all__ = ("ResourceMapper",)
+__all__ = ("BaseResourceMapper",)
 
 
-class ResourceMapper:
-    """Generic Resource Mapper"""
+class BaseResourceMapper:
+    """ Generic Resource Mapper that defines and performs the mapping
+    between objects in the database and the resource objects defined by
+    the specification.
+
+    Attributes:
+        ENDPOINT (str): defines the endpoint for which to apply this
+            mapper.
+        ALIASES (Tuple[Tuple[str, str]]): a tuple of aliases between
+            OPTiMaDe field names and the field names in the database ,
+            e.g. `(("elements", "custom_elements_field"))`.
+        REQUIRED_FIELDS (set[str]): the set of fieldnames to return
+            when mapping to the OPTiMaDe format.
+        TOP_LEVEL_NON_ATTRIBUTES_FIELDS (set[str]): the set of top-level
+            field names common to all endpoints.
+
+    """
 
     ENDPOINT: str = ""
     ALIASES: Tuple[Tuple[str, str]] = ()
@@ -27,7 +42,7 @@ class ResourceMapper:
     def alias_for(cls, field: str) -> str:
         """Return aliased field name
 
-        :param field: OPtiMaDe field name
+        :param field: OPTiMaDe field name
         :type field: str
 
         :return: Aliased field as found in PROVIDER_ALIASES + ALIASES
@@ -57,6 +72,7 @@ class ResourceMapper:
 
         :return: A resource object in OPTiMaDe format
         :rtype: dict
+
         """
         if "_id" in doc:
             del doc["_id"]

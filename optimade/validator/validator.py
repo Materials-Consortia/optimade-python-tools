@@ -10,7 +10,6 @@ import requests
 import sys
 import logging
 import json
-import traceback
 
 from typing import Union
 
@@ -19,6 +18,7 @@ from fastapi.testclient import TestClient
 
 from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
 
+from .data import MANDATORY_FILTER_EXAMPLES
 from .validator_model_patches import (
     ValidatorLinksResponse,
     ValidatorEntryResponseOne,
@@ -35,11 +35,7 @@ LINKS_ENDPOINT = "links"
 REQUIRED_ENTRY_ENDPOINTS = ["references", "structures"]
 
 ENDPOINT_MANDATORY_QUERIES = {
-    "structures": [
-        'elements HAS "Na"',
-        'elements HAS ANY "Na","Cl"',
-        'elements HAS ALL "Na","Cl"',
-    ],
+    "structures": MANDATORY_FILTER_EXAMPLES,
     "references": [],
 }
 
@@ -59,26 +55,26 @@ REQUIRED_ENTRY_ENDPOINTS_INDEX = []
 RESPONSE_CLASSES_INDEX = {"info": IndexInfoResponse, "links": ValidatorLinksResponse}
 
 
-def print_warning(string):
+def print_warning(string, **kwargs):
     """ Print but angry. """
-    print(f"\033[93m{string}\033[0m")
+    print(f"\033[93m{string}\033[0m", **kwargs)
 
 
-def print_failure(string):
+def print_failure(string, **kwargs):
     """ Print but sad. """
-    print(f"\033[91m\033[4m{string}\033[0m")
+    print(f"\033[91m\033[4m{string}\033[0m", **kwargs)
 
 
-def print_success(string):
+def print_success(string, **kwargs):
     """ Print but happy. """
-    print(f"\033[92m\033[1m{string}\033[0m")
+    print(f"\033[92m\033[1m{string}\033[0m", **kwargs)
 
 
 class ResponseError(Exception):
     """ This exception should be raised for a manual hardcoded test failure. """
 
 
-class Client:
+class Client:  # pragma: no cover
     def __init__(self, base_url: str, max_retries=5):
         """ Initialises the Client with the given `base_url` without testing
         if it is valid.
@@ -113,7 +109,7 @@ class Client:
 
         """
         if request:
-            self.last_request = f"{self.base_url}{request}"
+            self.last_request = f"{self.base_url}{request}".replace("\n", "")
         else:
             self.last_request = self.base_url
 
@@ -156,9 +152,9 @@ def test_case(test_fn):
     from functools import wraps
 
     @wraps(test_fn)
-    def wrapper(*args, **kwargs):
+    def wrapper(validator, *args, **kwargs):
         try:
-            result, msg = test_fn(*args, **kwargs)
+            result, msg = test_fn(validator, *args, **kwargs)
         except json.JSONDecodeError as exc:
             result = None
             msg = (
@@ -166,26 +162,31 @@ def test_case(test_fn):
                 f"Error: {type(exc).__name__}: {exc}"
             )
         except (ResponseError, ValidationError) as exc:
-            if args[0].verbosity > 1:
-                traceback.print_exc()
-
             result = None
             msg = f"{type(exc).__name__}: {exc}"
 
         try:
-            request = args[0].client.last_request
+            request = validator.client.last_request
         except AttributeError:
-            request = args[0].base_url
+            request = validator.base_url
         if result is not None:
-            args[0].success_count += 1
-            if args[0].verbosity > 0:
+            validator.success_count += 1
+            if validator.verbosity > 0:
                 print_success(f"✔: {request} - {msg}")
+            else:
+                print_success(".", end="", flush=True)
         else:
-            args[0].failure_count += 1
-            print_failure(f"✖: {request} - {test_fn.__name__} - failed with error")
+            validator.failure_count += 1
+            request = request.replace("\n", "")
             message = f"{msg}".split("\n")
-            for line in message:
-                print_warning(f"\t{line}")
+            summary = f"✖: {request} - {test_fn.__name__} - failed with error"
+            validator.failure_messages.append((summary, message))
+            if validator.verbosity > 0:
+                print_failure(summary)
+                for line in message:
+                    print_warning(f"\t{line}")
+            else:
+                print_failure(f"✖", end="", flush=True)
 
         return result
 
@@ -272,6 +273,7 @@ class ImplementationValidator:
 
         self.success_count = 0
         self.failure_count = 0
+        self.failure_messages = []
 
     def _setup_log(self):
         """ Define stdout log based on given verbosity. """
@@ -312,7 +314,7 @@ class ImplementationValidator:
             )
 
         # test entire implementation
-        self._log.info("Testing entire implementation %s...", self.base_url)
+        print(f"Testing entire implementation at {self.base_url}...")
         self._log.debug("Testing base info endpoint of %s", BASE_INFO_ENDPOINT)
         base_info = self.test_info_or_links_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
@@ -343,11 +345,18 @@ class ImplementationValidator:
 
         self.valid = not bool(self.failure_count)
 
-        self._log.info(
-            "Passed %d out of %d tests.",
-            self.success_count,
-            self.success_count + self.failure_count,
-        )
+        if not self.valid:
+            print(f"\n\nFAILURES\n")
+            for message in self.failure_messages:
+                print_failure(message[0])
+                for line in message[1]:
+                    print_warning("\t" + line)
+
+        final_message = f"\nPassed {self.success_count} out of {self.success_count + self.failure_count} tests."
+        if not self.valid:
+            print_failure(final_message)
+        else:
+            print_success(final_message)
 
     def test_info_or_links_endpoints(self, request_str):
         """ Runs the test cases for the info endpoints. """
@@ -505,12 +514,20 @@ class ImplementationValidator:
     @test_case
     def get_endpoint(self, request_str):
         """ Gets the response from the endpoint specified by `request_str`. """
-        request_str = f"/{request_str}"
+        request_str = f"/{request_str}".replace("\n", "")
         response = self.client.get(request_str)
         if response.status_code != 200:
-            raise ResponseError(
-                f"Request to '{request_str}' returned HTTP code: {response.status_code}"
-            )
+            error_titles = [
+                error.get("title", "") for error in response.json().get("errors", [])
+            ]
+            error_details = [
+                error.get("detail", "") for error in response.json().get("errors", [])
+            ]
+            message = f"Request to '{request_str}' returned HTTP code {response.status_code}. Errors:\n"
+            for error_title, error_detail in zip(error_titles, error_details):
+                message += f"{error_title}: {error_details}"
+            raise ResponseError(message)
+
         return response, "request successful."
 
     def test_mandatory_query_syntax(self, endpoint, endpoint_queries):

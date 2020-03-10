@@ -49,7 +49,7 @@ set_op_rhs: HAS ( [ OPERATOR ] value
                  | ONLY value_list )
 
 // Note: support for [ OPERATOR ] is OPTIONAL
-length_op_rhs: LENGTH [ OPERATOR ] value
+length_op_rhs: LENGTH [ OPERATOR ] signed_int
 
 set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list | ANY value_zip_list )
 property_zip_addon: ":" property (":" property)*
@@ -62,6 +62,9 @@ string: ESCAPED_STRING
 
 // Number token syntax
 number: SIGNED_INT | SIGNED_FLOAT
+
+// Custom signed int
+signed_int: SIGNED_INT
 
 // Tokens
 
