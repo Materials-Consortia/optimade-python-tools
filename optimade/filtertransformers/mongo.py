@@ -92,6 +92,9 @@ class MongoTransformer(Transformer):
             # without NOT
             return arg[0]
 
+        if list(arg[1].keys()) == ["$or"]:
+            return {"$nor": arg[1]["$or"]}
+
         # with NOT
         # TODO: This implementation probably fails in the case of `"(" expression ")"`
         return {prop: {"$not": expr} for prop, expr in arg[1].items()}
