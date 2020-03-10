@@ -166,17 +166,30 @@ class MongoCollection(EntryCollection):
 
         return results, data_returned, more_data_available, all_fields - fields
 
-    def _alias_filter(self, filter_: dict) -> dict:
-        res = {}
-        for key, value in filter_.items():
-            if key in ["$and", "$or"]:
-                res[key] = [self._alias_filter(item) for item in value]
-            else:
-                new_value = value
-                if isinstance(value, dict):
-                    new_value = self._alias_filter(value)
-                res[self.resource_mapper.alias_for(key)] = new_value
-        return res
+    def _alias_filter(self, _filter: dict) -> dict:
+        """ Check whether any fields in the filter have aliases so
+        that they can be renamed for the Mongo query.
+
+        """
+        # if there are no defined aliases, just skip
+        if not self._mapper_aliases:
+            return _filter
+
+        if isinstance(_filter, dict):
+            unaliased_filter = {}
+            for key, value in _filter.items():
+                unaliased_filter[
+                    self.resource_mapper.alias_for(key)
+                ] = self._alias_filter(value)
+            return unaliased_filter
+
+        elif isinstance(_filter, list):
+            return [self._alias_filter(subdict) for subdict in _filter]
+
+        # if we already have a string, or another value, then there
+        # are no more aliases to parse
+        else:
+            return _filter
 
     def _parse_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
