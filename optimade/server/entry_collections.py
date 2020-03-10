@@ -107,6 +107,16 @@ class MongoCollection(EntryCollection):
             version=(0, 10, 1), variant="default"
         )  # The MongoTransformer only supports v0.10.1 as the latest grammar
 
+        # check aliases do not clash with mongo operators
+        self._mapper_aliases = self.resource_mapper.all_aliases()
+        if any(
+            alias[0].startswith("$") or alias[1].startswith("$")
+            for alias in self._mapper_aliases
+        ):
+            raise RuntimeError(
+                f"Cannot define an alias starting with a '$': {self._mapper_aliases}"
+            )
+
     def __len__(self):
         return self.collection.estimated_document_count()
 
