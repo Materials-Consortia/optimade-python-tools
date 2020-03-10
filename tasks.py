@@ -1,9 +1,12 @@
 import re
 from typing import Tuple
+from pathlib import Path
 
 from invoke import task
 
 from optimade import __version__
+
+TOP_DIR = Path(__file__).parent.resolve()
 
 
 def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
@@ -28,9 +31,12 @@ def setver(_, patch=False, new_ver=""):
         new_ver = ".".join(map(str, v))
 
     update_file(
-        "optimade/__init__.py", ("__version__ = .+", f'__version__ = "{new_ver}"')
+        TOP_DIR.joinpath("optimade/__init__.py"),
+        ("__version__ = .+", f'__version__ = "{new_ver}"'),
     )
-    update_file("setup.py", ("version=([^,]+),", f'version="{new_ver}",'))
+    update_file(
+        TOP_DIR.joinpath("setup.py"), ("version=([^,]+),", f'version="{new_ver}",')
+    )
 
     print("Bumped version to {}".format(new_ver))
 
@@ -47,8 +53,12 @@ def update_openapijson(c):
     update_schema(app)
     update_schema_index(app_index)
 
-    c.run("cp openapi/local_openapi.json openapi/openapi.json")
-    c.run("cp openapi/local_index_openapi.json openapi/index_openapi.json")
+    c.run(
+        f"cp {TOP_DIR.joinpath('openapi/local_openapi.json')} {TOP_DIR.joinpath('openapi/openapi.json')}"
+    )
+    c.run(
+        f"cp {TOP_DIR.joinpath('openapi/local_index_openapi.json')} {TOP_DIR.joinpath('openapi/index_openapi.json')}"
+    )
 
 
 @task
@@ -59,29 +69,40 @@ def set_optimade_ver(_, ver=""):
         raise Exception("ver MUST be expressed as 'Major.Minor.Patch'")
 
     update_file(
-        "optimade/__init__.py", ("__api_version__ = .+", f'__api_version__ = "{ver}"')
+        TOP_DIR.joinpath("optimade/__init__.py"),
+        ("__api_version__ = .+", f'__api_version__ = "{ver}"'),
     )
-    update_file(".ci/optimade-version.json", ('"message": .+', f'"message": "v{ver}",'))
+    update_file(
+        TOP_DIR.joinpath(".ci/optimade-version.json"),
+        ('"message": .+', f'"message": "v{ver}",'),
+    )
     for regex, version in (
         ("[0-9]+", ver.split(".")[0]),
         ("[0-9]+.[0-9]+", ".".join(ver.split(".")[:2])),
         ("[0-9]+.[0-9]+.[0-9]+", ver),
     ):
         update_file(
-            "README.md", (f"example/v{regex}", f"example/v{version}"), strip="\n"
+            TOP_DIR.joinpath("README.md"),
+            (f"example/v{regex}", f"example/v{version}"),
+            strip="\n",
         )
     update_file(
-        ".github/workflows/validator_action.yml", ("/v[0-9]+", f"/v{ver.split('.')[0]}")
+        TOP_DIR.joinpath(".github/workflows/validator_action.yml"),
+        ("/v[0-9]+", f"/v{ver.split('.')[0]}"),
     )
-    update_file("README.md", ("v[0-9]+", f"v{ver.split('.')[0]}"), strip="\n")
-    update_file("action.yml", ("/v[0-9]+", f"/v{ver.split('.')[0]}"))
     update_file(
-        "optimade/validator/github_action/entrypoint.sh",
+        TOP_DIR.joinpath("README.md"), ("v[0-9]+", f"v{ver.split('.')[0]}"), strip="\n"
+    )
+    update_file(TOP_DIR.joinpath("action.yml"), ("/v[0-9]+", f"/v{ver.split('.')[0]}"))
+    update_file(
+        TOP_DIR.joinpath("optimade/validator/github_action/entrypoint.sh"),
         (
             "'[0-9]+' '[0-9]+.[0-9]+' '[0-9]+.[0-9]+.[0-9]+'",
             f"'{ver.split('.')[0]}' '{'.'.join(ver.split('.')[:2])}' '{ver}'",
         ),
     )
-    update_file("INSTALL.md", (r"/v[0-9]+(\.[0-9]+){2}", f"/v{version}"))
+    update_file(
+        TOP_DIR.joinpath("INSTALL.md"), (r"/v[0-9]+(\.[0-9]+){2}", f"/v{version}")
+    )
 
     print(f"Bumped OPTiMaDe version to {ver}")
