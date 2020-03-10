@@ -106,3 +106,29 @@ def set_optimade_ver(_, ver=""):
     )
 
     print(f"Bumped OPTiMaDe version to {ver}")
+
+
+@task
+def parse_spec_for_filters(_):
+    import requests
+
+    filter_path = TOP_DIR.joinpath("optimade/validator/data/filters.txt")
+
+    specification_flines = (
+        requests.get(
+            "https://raw.githubusercontent.com/Materials-Consortia/OPTiMaDe/develop/optimade.rst"
+        )
+        .content.decode("utf-8")
+        .split("\n")
+    )
+
+    filters = []
+    for line in specification_flines:
+        if ":filter:" in line:
+            for _split in line.replace("filter=", "").split(":filter:")[1:]:
+                _filter = _split.split("`")[1].strip()
+                filters.append(_filter)
+
+    with open(filter_path, "w") as f:
+        for _filter in filters:
+            f.write(_filter + "\n")
