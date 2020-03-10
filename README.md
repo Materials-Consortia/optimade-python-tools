@@ -10,6 +10,9 @@ This is to enable interoperability among databases that contain calculated prope
 This repository contains a library of tools for implementing and consuming [OPTiMaDe](https://www.optimade.org) APIs using Python.
 It also contains a server validator tool, which may be called from the shell or used as a GitHub Action.
 
+_Disclaimer_: While the package supports `elasticsearch-dsl` v6 & v7 and `django` v2 & v3, all tests are performed with the latest supported version.
+If you experience any issues with the older versions, you are most welcome to contribute to the repository (see below under Contributing).
+
 ## Status
 
 Both the OPTiMaDe specification and this repository are **under development**.
