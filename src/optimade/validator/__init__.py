@@ -1,6 +1,6 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
 # pylint: disable=import-outside-toplevel
-from .validator import ImplementationValidator
+from optimade.validator.validator import ImplementationValidator
 
 __all__ = ["ImplementationValidator", "validate"]
 

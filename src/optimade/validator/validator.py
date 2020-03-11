@@ -18,8 +18,8 @@ from fastapi.testclient import TestClient
 
 from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
 
-from .data import MANDATORY_FILTER_EXAMPLES
-from .validator_model_patches import (
+from optimade.validator.data import MANDATORY_FILTER_EXAMPLES
+from optimade.validator.validator_model_patches import (
     ValidatorLinksResponse,
     ValidatorEntryResponseOne,
     ValidatorEntryResponseMany,
@@ -34,10 +34,7 @@ BASE_INFO_ENDPOINT = "info"
 LINKS_ENDPOINT = "links"
 REQUIRED_ENTRY_ENDPOINTS = ["references", "structures"]
 
-ENDPOINT_MANDATORY_QUERIES = {
-    "structures": MANDATORY_FILTER_EXAMPLES,
-    "references": [],
-}
+ENDPOINT_MANDATORY_QUERIES = {"structures": MANDATORY_FILTER_EXAMPLES, "references": []}
 
 RESPONSE_CLASSES = {
     "references": ValidatorReferenceResponseMany,
@@ -525,7 +522,7 @@ class ImplementationValidator:
             ]
             message = f"Request to '{request_str}' returned HTTP code {response.status_code}. Errors:\n"
             for error_title, error_detail in zip(error_titles, error_details):
-                message += f"{error_title}: {error_details}"
+                message += f"{error_title}: {error_detail}"
             raise ResponseError(message)
 
         return response, "request successful."

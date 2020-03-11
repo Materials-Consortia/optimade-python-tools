@@ -11,12 +11,11 @@ from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from optimade import __api_version__, __version__
+from optimade.server.config import CONFIG
 import optimade.server.exception_handlers as exc_handlers
-
-from .config import CONFIG
-from .middleware import EnsureQueryParamIntegrity
-from .routers import index_info, links
-from .routers.utils import BASE_URL_PREFIXES
+from optimade.server.middleware import EnsureQueryParamIntegrity
+from optimade.server.routers import index_info, links
+from optimade.server.routers.utils import BASE_URL_PREFIXES
 
 
 if CONFIG.debug:  # pragma: no cover
@@ -40,8 +39,8 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 
 if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     import bson.json_util
-    from .routers.links import links_coll
-    from .routers.utils import mongo_id_for_database
+    from optimade.server.routers.links import links_coll
+    from optimade.server.routers.utils import mongo_id_for_database
 
     print("loading index links...")
     with open(CONFIG.index_links_path) as f:
@@ -94,7 +93,9 @@ def add_optional_versioned_base_urls(app: FastAPI):
 
 def update_schema(app: FastAPI):
     """Update OpenAPI schema in file 'local_index_openapi.json'"""
-    package_root = Path(__file__).parent.parent.parent.resolve()
+    import optimade  # pylint: disable=import-outside-toplevel
+
+    package_root = Path(optimade.__file__).parent.parent.resolve()
     if not package_root.joinpath("openapi").exists():
         os.mkdir(package_root.joinpath("openapi"))
     with open(package_root.joinpath("openapi/local_index_openapi.json"), "w") as f:

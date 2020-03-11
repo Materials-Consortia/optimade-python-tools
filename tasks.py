@@ -3,10 +3,12 @@ from typing import Tuple
 from pathlib import Path
 
 from invoke import task
+import requests
 
 from optimade import __version__
 
 TOP_DIR = Path(__file__).parent.resolve()
+OPTIMADE_DIR = TOP_DIR.joinpath("src/optimade/")
 
 
 def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
@@ -31,7 +33,7 @@ def setver(_, patch=False, new_ver=""):
         new_ver = ".".join(map(str, v))
 
     update_file(
-        TOP_DIR.joinpath("optimade/__init__.py"),
+        OPTIMADE_DIR.joinpath("__init__.py"),
         ("__version__ = .+", f'__version__ = "{new_ver}"'),
     )
     update_file(
@@ -54,10 +56,10 @@ def update_openapijson(c):
     update_schema_index(app_index)
 
     c.run(
-        f"cp {TOP_DIR.joinpath('openapi/local_openapi.json')} {TOP_DIR.joinpath('openapi/openapi.json')}"
+        f"cp {TOP_DIR.joinpath('src/openapi/local_openapi.json')} {TOP_DIR.joinpath('src/openapi/openapi.json')}"
     )
     c.run(
-        f"cp {TOP_DIR.joinpath('openapi/local_index_openapi.json')} {TOP_DIR.joinpath('openapi/index_openapi.json')}"
+        f"cp {TOP_DIR.joinpath('src/openapi/local_index_openapi.json')} {TOP_DIR.joinpath('src/openapi/index_openapi.json')}"
     )
 
 
@@ -69,7 +71,7 @@ def set_optimade_ver(_, ver=""):
         raise Exception("ver MUST be expressed as 'Major.Minor.Patch'")
 
     update_file(
-        TOP_DIR.joinpath("optimade/__init__.py"),
+        OPTIMADE_DIR.joinpath("__init__.py"),
         ("__api_version__ = .+", f'__api_version__ = "{ver}"'),
     )
     update_file(
@@ -95,7 +97,7 @@ def set_optimade_ver(_, ver=""):
     )
     update_file(TOP_DIR.joinpath("action.yml"), ("/v[0-9]+", f"/v{ver.split('.')[0]}"))
     update_file(
-        TOP_DIR.joinpath("optimade/validator/github_action/entrypoint.sh"),
+        OPTIMADE_DIR.joinpath("validator/github_action/entrypoint.sh"),
         (
             "'[0-9]+' '[0-9]+.[0-9]+' '[0-9]+.[0-9]+.[0-9]+'",
             f"'{ver.split('.')[0]}' '{'.'.join(ver.split('.')[:2])}' '{ver}'",
@@ -110,9 +112,7 @@ def set_optimade_ver(_, ver=""):
 
 @task
 def parse_spec_for_filters(_):
-    import requests
-
-    filter_path = TOP_DIR.joinpath("optimade/validator/data/filters.txt")
+    filter_path = OPTIMADE_DIR.joinpath("validator/data/filters.txt")
 
     specification_flines = (
         requests.get(

@@ -9,10 +9,9 @@ from fastapi import HTTPException
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
-
-from .config import CONFIG
-from .mappers import BaseResourceMapper
-from .query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.config import CONFIG
+from optimade.server.mappers import BaseResourceMapper
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 try:
     CI_FORCE_MONGO = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
@@ -183,13 +182,12 @@ class MongoCollection(EntryCollection):
                 ] = self._alias_filter(value)
             return unaliased_filter
 
-        elif isinstance(_filter, list):
+        if isinstance(_filter, list):
             return [self._alias_filter(subdict) for subdict in _filter]
 
         # if we already have a string, or another value, then there
         # are no more aliases to parse
-        else:
-            return _filter
+        return _filter
 
     def _parse_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]

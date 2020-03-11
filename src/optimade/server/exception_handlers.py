@@ -10,9 +10,8 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 
 from optimade.models import OptimadeError, ErrorResponse, ErrorSource
-
-from .config import CONFIG
-from .routers.utils import meta_values
+from optimade.server.config import CONFIG
+from optimade.server.routers.utils import meta_values
 
 
 def general_exception(

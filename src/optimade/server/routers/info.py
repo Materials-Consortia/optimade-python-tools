@@ -1,3 +1,4 @@
+# pylint: disable=import-outside-toplevel
 import urllib
 
 from typing import Union
@@ -15,7 +16,11 @@ from optimade.models import (
     StructureResource,
 )
 
-from .utils import meta_values, retrieve_queryable_properties, get_base_url
+from optimade.server.routers.utils import (
+    meta_values,
+    retrieve_queryable_properties,
+    get_base_url,
+)
 
 
 router = APIRouter(redirect_slashes=True)

@@ -11,13 +11,12 @@ from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from optimade import __api_version__, __version__
+from optimade.server.config import CONFIG
+from optimade.server.entry_collections import MongoCollection
 import optimade.server.exception_handlers as exc_handlers
-
-from .entry_collections import MongoCollection
-from .config import CONFIG
-from .middleware import EnsureQueryParamIntegrity
-from .routers import info, links, references, structures, landing
-from .routers.utils import get_providers, BASE_URL_PREFIXES
+from optimade.server.middleware import EnsureQueryParamIntegrity
+from optimade.server.routers import info, links, references, structures, landing
+from optimade.server.routers.utils import get_providers, BASE_URL_PREFIXES
 
 
 if CONFIG.debug:  # pragma: no cover
@@ -41,7 +40,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 if not CONFIG.use_real_mongo:
     import bson.json_util
     import optimade.server.data as data
-    from .routers import ENTRY_COLLECTIONS
+    from optimade.server.routers import ENTRY_COLLECTIONS
 
     def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
         print(f"loading test {endpoint_name}...")
@@ -102,7 +101,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
 
 def update_schema(app: FastAPI):
     """Update OpenAPI schema in file 'local_openapi.json'"""
-    import optimade
+    import optimade  # pylint: disable=import-outside-toplevel
 
     package_root = Path(optimade.__file__).parent.parent.resolve()
     if not package_root.joinpath("openapi").exists():

@@ -8,7 +8,7 @@ from optimade.server.entry_collections import MongoCollection, client
 from optimade.server.mappers import LinksMapper
 from optimade.server.query_params import EntryListingQueryParams
 
-from .utils import get_entries
+from optimade.server.routers.utils import get_entries
 
 router = APIRouter(redirect_slashes=True)
 
