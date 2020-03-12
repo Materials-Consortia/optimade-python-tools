@@ -31,7 +31,7 @@ class BaseResourceMapper:
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
         return (
             tuple(
-                (CONFIG.provider["prefix"] + field, field)
+                (CONFIG.provider.prefix + field, field)
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
             )
             + CONFIG.aliases.get(cls.ENDPOINT, ())

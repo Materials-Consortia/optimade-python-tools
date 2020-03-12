@@ -78,7 +78,7 @@ class TestDebugOff(SetClient, unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertNotIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
+        self.assertNotIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
 
 
 class IndexTestDebugOff(SetClient, unittest.TestCase):
@@ -104,7 +104,7 @@ class IndexTestDebugOff(SetClient, unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertNotIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
+        self.assertNotIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
 
 
 class TestDebugOn(SetClient, unittest.TestCase):
@@ -129,7 +129,7 @@ class TestDebugOn(SetClient, unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
+        self.assertIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
 
 
 class IndexTestDebugOn(SetClient, unittest.TestCase):
@@ -154,4 +154,4 @@ class IndexTestDebugOn(SetClient, unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertIn(f"{CONFIG.provider['prefix']}traceback", response["meta"])
+        self.assertIn(f"{CONFIG.provider.prefix}traceback", response["meta"])

@@ -54,16 +54,16 @@ def meta_values(
         url_path = parse_result.path
 
     provider = CONFIG.provider.copy()
-    provider["prefix"] = provider["prefix"][1:-1]  # Remove surrounding `_`
+    provider.prefix = provider.prefix[1:-1]  # Remove surrounding `_`
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
         api_version=f"v{__api_version__}",
         time_stamp=datetime.utcnow(),
         data_returned=data_returned,
         more_data_available=more_data_available,
-        provider=Provider(**provider),
+        provider=provider,
         data_available=data_available,
-        implementation=Implementation(**CONFIG.implementation),
+        implementation=CONFIG.implementation,
         **kwargs,
     )
 

@@ -101,7 +101,7 @@ class MongoCollection(EntryCollection):
         super().__init__(collection, resource_cls, resource_mapper)
         self.transformer = MongoTransformer()
 
-        self.provider = CONFIG.provider["prefix"]
+        self.provider = CONFIG.provider.prefix
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         self.parser = LarkParser(
             version=(0, 10, 1), variant="default"

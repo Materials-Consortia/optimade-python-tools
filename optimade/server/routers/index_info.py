@@ -36,7 +36,7 @@ def get_info(request: Request):
                 api_version=f"v{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"{CONFIG.provider['index_base_url']}/v{__api_version__.split('.')[0]}/",
+                        "url": f"{CONFIG.provider.index_base_url}/v{__api_version__.split('.')[0]}/",
                         "version": f"{__api_version__}",
                     }
                 ],
