@@ -116,26 +116,26 @@ class TestMongoTransformer(unittest.TestCase):
         # TODO: {'$not': {'$eq': 'Ti'}} can be simplified to {'$ne': 'Ti'}
         self.assertEqual(
             self.transform(
-                'NOT ( chemical_formula_hill = "Al" AND chemical_formula_anonymous = "A" OR '
-                'chemical_formula_anonymous = "H2O" AND NOT chemical_formula_hill = "Ti" )'
+                "NOT ( "
+                'chemical_formula_hill = "Al" AND chemical_formula_anonymous = "A" OR '
+                'chemical_formula_anonymous = "H2O" AND NOT chemical_formula_hill = "Ti" '
+                ")"
             ),
             {
-                "$or": {
-                    "$not": [
-                        {
-                            "$and": [
-                                {"chemical_formula_hill": {"$eq": "Al"}},
-                                {"chemical_formula_anonymous": {"$eq": "A"}},
-                            ]
-                        },
-                        {
-                            "$and": [
-                                {"chemical_formula_anonymous": {"$eq": "H2O"}},
-                                {"chemical_formula_hill": {"$not": {"$eq": "Ti"}}},
-                            ]
-                        },
-                    ]
-                }
+                "$nor": [
+                    {
+                        "$and": [
+                            {"chemical_formula_hill": {"$eq": "Al"}},
+                            {"chemical_formula_anonymous": {"$eq": "A"}},
+                        ]
+                    },
+                    {
+                        "$and": [
+                            {"chemical_formula_anonymous": {"$eq": "H2O"}},
+                            {"chemical_formula_hill": {"$not": {"$eq": "Ti"}}},
+                        ]
+                    },
+                ]
             },
         )
 
@@ -164,12 +164,10 @@ class TestMongoTransformer(unittest.TestCase):
                         "$and": [
                             {"nelements": {"$gte": 10}},
                             {
-                                "$or": {
-                                    "$not": [
-                                        {"_exmpl_x": {"$ne": "Some string"}},
-                                        {"_exmpl_a": {"$not": {"$eq": 7}}},
-                                    ]
-                                }
+                                "$nor": [
+                                    {"_exmpl_x": {"$ne": "Some string"}},
+                                    {"_exmpl_a": {"$not": {"$eq": 7}}},
+                                ]
                             },
                         ]
                     },

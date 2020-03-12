@@ -1,6 +1,5 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
 # pylint: disable=import-outside-toplevel
-
 from .validator import ImplementationValidator
 
 __all__ = ["ImplementationValidator", "validate"]
@@ -9,6 +8,7 @@ __all__ = ["ImplementationValidator", "validate"]
 def validate():
     import argparse
     import sys
+    import os
     import traceback
 
     parser = argparse.ArgumentParser(
@@ -39,7 +39,7 @@ def validate():
         ),
     )
     parser.add_argument(
-        "--verbosity", "-v", type=int, default=1, help="The verbosity of the output"
+        "--verbosity", "-v", type=int, default=0, help="The verbosity of the output"
     )
     parser.add_argument(
         "--as_type",
@@ -59,6 +59,12 @@ def validate():
     )
 
     args = vars(parser.parse_args())
+
+    if os.environ.get("OPTIMADE_VERBOSITY") is not None:
+        try:
+            args["verbosity"] = int(os.environ.get("OPTIMADE_VERBOSITY", 0))
+        except (TypeError, ValueError):
+            pass
 
     valid_types = [
         "info",

@@ -6,8 +6,8 @@ module_dir = Path(__file__).resolve().parent
 # Dependencies
 mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
 server_deps = ["uvicorn", "Jinja2~=2.11"] + mongo_deps
-django_deps = ["django~=2.2,>=2.2.9"]
-elastic_deps = ["elasticsearch-dsl~=6.4"]
+django_deps = ["django>=2.2.9,<4.0"]
+elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
 testing_deps = [
     "pytest~=5.3",
     "pytest-cov",
@@ -20,7 +20,7 @@ all_deps = dev_deps + django_deps + elastic_deps
 
 setup(
     name="optimade",
-    version="0.5.0",
+    version="0.6.0",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTiMaDe Development Team",

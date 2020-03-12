@@ -1,8 +1,8 @@
-from .entries import ResourceMapper
+from .entries import BaseResourceMapper
 
 __all__ = ("ReferenceMapper",)
 
 
-class ReferenceMapper(ResourceMapper):
+class ReferenceMapper(BaseResourceMapper):
 
     ENDPOINT = "references"

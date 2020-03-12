@@ -13,7 +13,7 @@ jobs:
     name: Regular server
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
 
       - name: Set up and run regular server
         run: |
@@ -32,7 +32,7 @@ jobs:
     name: Index server
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
 
       - name: Set up and run index server
         run: |
@@ -52,7 +52,7 @@ jobs:
     name: All versioned paths for regular server
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
 
       - name: Set up and run regular server (which includes all versioned base URLs)
         run: |

@@ -6,6 +6,6 @@ requests==2.23.0
 uvicorn==0.11.3
 pymongo==3.10.1
 mongomock==3.19.0
-django==2.2.10
-elasticsearch-dsl==6.4.0
+django==3.0.4
+elasticsearch-dsl==7.1.0
 Jinja2==2.11.1

@@ -47,7 +47,7 @@ def get_info(request: Request):
                 api_version=f"v{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"{base_url}/optimade/v{__api_version__.split('.')[0]}",
+                        "url": f"{base_url}/v{__api_version__.split('.')[0]}",
                         "version": __api_version__,
                     }
                 ],

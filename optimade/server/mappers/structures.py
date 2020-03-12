@@ -1,8 +1,8 @@
-from .entries import ResourceMapper
+from .entries import BaseResourceMapper
 
 __all__ = ("StructureMapper",)
 
 
-class StructureMapper(ResourceMapper):
+class StructureMapper(BaseResourceMapper):
 
     ENDPOINT = "structures"

@@ -35,6 +35,8 @@ class TestSetup(unittest.TestCase):
                 r"test_structures\.json": False,
                 r"test_references\.json": False,
                 r"test_links\.json": False,
+                r"filters\.txt": False,
+                r"optional_filters\.txt": False,
             }
             count = 0
             for line in lines:
