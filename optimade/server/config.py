@@ -21,6 +21,7 @@ class ServerConfig(BaseSettings):
     can be easily extended for new config file types.
 
     """
+
     debug: bool = False
     use_real_mongo: bool = False
     mongo_database: str = "optimade"
@@ -45,8 +46,17 @@ class ServerConfig(BaseSettings):
         homepage="https://example.com",
         index_base_url=None,
     )
-    provider_fields: Dict[Literal["links", "references", "structures"], List[str]] = {}
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = {}
+    provider_fields: Dict[Literal["links", "references", "structures"], List[str]] = {
+        "structures": ["band_gap", "_mp_chemsys"]
+    }
+    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = {
+        "structures": {
+            "id": "task_id",
+            "chemical_formula_descriptive": "pretty_formula",
+            "chemical_formula_reduced": "pretty_formula",
+            "chemical_formula_anonymous": "formula_anonymous",
+        }
+    }
 
     index_links_path: Path = Path(__file__).parent.joinpath("index_links.json")
 
