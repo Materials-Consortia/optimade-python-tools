@@ -9,7 +9,6 @@ from optimade.server.config import ServerConfig, CONFIG
 from .utils import SetClient
 
 
-
 class TestDebugOff(SetClient, unittest.TestCase):
 
     server = "regular"
@@ -64,6 +63,7 @@ class TestDebugOff(SetClient, unittest.TestCase):
         self.assertIn("meta", response)
 
         self.assertIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
+
 
 class IndexTestDebugOff(SetClient, unittest.TestCase):
 
