@@ -9,8 +9,6 @@ _exmpl_bandgap > 5.0 AND _exmpl_molecular_weight < 350
 _exmpl_melting_point<300 AND nelements=4 AND elements="Si,O2"
 _exmpl_some_string_property = 42
 5 < _exmpl_a
-((NOT (_exmpl_a>_exmpl_b)) AND _exmpl_x>0)
-5 < 7
 identifier CONTAINS x
 identifier STARTS WITH x
 identifier ENDS WITH x
@@ -20,16 +18,7 @@ list HAS value
 list HAS ALL values
 list HAS ANY values
 list LENGTH value
-list HAS ONLY values
 NOT list HAS inverse
-list HAS < 3
-list HAS ALL < 3, > 3
-list:list HAS >=2:<=5
-elements HAS "H" AND elements HAS ALL "H","He","Ga","Ta" AND elements HAS ONLY "H","He","Ga","Ta" AND elements HAS ANY "H", "He", "Ga", "Ta"
-elements HAS ONLY "H","He","Ga","Ta"
-elements:_exmpl_element_counts HAS "H":6 AND elements:_exmpl_element_counts HAS ALL "H":6,"He":7 AND elements:_exmpl_element_counts HAS ONLY "H":6 AND elements:_exmpl_element_counts HAS ANY "H":6,"He":7 AND elements:_exmpl_element_counts HAS ONLY "H":6,"He":7
-_exmpl_element_counts HAS < 3 AND _exmpl_element_counts HAS ANY > 3, = 6, 4, != 8
-elements:_exmpl_element_counts:_exmpl_element_weights HAS ANY > 3:"He":>55.3 , = 6:>"Ti":<37.6 , 8:<"Ga":0
 calculations.id HAS "calc-id-96"
 authors.lastname HAS "Schmit"
 identifier IS UNKNOWN
@@ -43,7 +32,6 @@ elements HAS ALL "Si", "Al", "O"
 elements HAS ALL "Si", "Al", "O" AND elements LENGTH 3
 nelements=4
 nelements>=2 AND nelements<=7
-elements:elements_ratios HAS ALL "Al":>0.3333, "Al":<0.3334
 chemical_formula_descriptive="(H2O)2 Na"
 chemical_formula_descriptive CONTAINS "H2O"
 chemical_formula_reduced="H2NaO"
