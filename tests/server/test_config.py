@@ -9,10 +9,7 @@ from optimade.server.config import ServerConfig, CONFIG
 from .utils import SetClient
 
 
-class TestDebugOff(SetClient, unittest.TestCase):
-
-    server = "regular"
-
+class ConfigTests(unittest.TestCase):
     def test_env_variable(self):
         """Set OPTIMADE_DEBUG environment variable and check CONFIG picks up on it correctly"""
         os.environ["OPTIMADE_DEBUG"] = "true"
@@ -22,6 +19,11 @@ class TestDebugOff(SetClient, unittest.TestCase):
         os.environ.pop("OPTIMADE_DEBUG", None)
         CONFIG = ServerConfig()
         self.assertFalse(CONFIG.debug)
+
+
+class TestRegularServerConfig(SetClient, unittest.TestCase):
+
+    server = "regular"
 
     def test_debug_is_respected_when_off(self):
         """Make sure traceback is toggleable according to debug mode - here OFF
@@ -44,8 +46,8 @@ class TestDebugOff(SetClient, unittest.TestCase):
 
         self.assertNotIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
 
-    def test_debug_is_respected_when_off(self):
-        """Make sure traceback is toggleable according to debug mode - here OFF
+    def test_debug_is_respected_when_on(self):
+        """Make sure traceback is toggleable according to debug mode - here ON
 
         TODO: This should be moved to a separate test file that tests the exception handlers.
         """
@@ -65,7 +67,7 @@ class TestDebugOff(SetClient, unittest.TestCase):
         self.assertIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
 
 
-class IndexTestDebugOff(SetClient, unittest.TestCase):
+class TestRegularIndexServerConfig(SetClient, unittest.TestCase):
 
     server = "index"
 
@@ -90,7 +92,7 @@ class IndexTestDebugOff(SetClient, unittest.TestCase):
 
         self.assertNotIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
 
-    def test_debug_is_respected_when_off(self):
+    def test_debug_is_respected_when_on(self):
         """Make sure traceback is toggleable according to debug mode - here OFF
 
         TODO: This should be moved to a separate test file that tests the exception handlers.
