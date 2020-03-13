@@ -54,7 +54,7 @@ def meta_values(
         url_path = parse_result.path
 
     provider = CONFIG.provider.copy()
-    provider.prefix = provider.prefix[1:-1]  # Remove surrounding `_`
+    provider.prefix =  provider.prefix.strip("_")  # Remove surrounding `_`
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
         api_version=f"v{__api_version__}",
