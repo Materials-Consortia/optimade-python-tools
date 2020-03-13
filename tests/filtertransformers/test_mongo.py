@@ -226,6 +226,63 @@ class TestMongoTransformer(unittest.TestCase):
         # OPTIONAL
         # self.assertEqual(self.transform("((NOT (_exmpl_a>_exmpl_b)) AND _exmpl_x>0)"), {})
 
+        self.assertEqual(
+            self.transform("NOT (a>1 AND b>1)"),
+            {"$and": [{"a": {"$not": {"$gt": 1}}}, {"b": {"$not": {"$gt": 1}}}]},
+        )
+
+        self.assertEqual(
+            self.transform("NOT (a>1 AND b>1 OR c>1)"),
+            {
+                "$nor": [
+                    {"$and": [{"a": {"$gt": 1}}, {"b": {"$gt": 1}}]},
+                    {"c": {"$gt": 1}},
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform("NOT (a>1 AND ( b>1 OR c>1 ))"),
+            {
+                "$and": [
+                    {"a": {"$not": {"$gt": 1}}},
+                    {"$nor": [{"b": {"$gt": 1}}, {"c": {"$gt": 1}}]},
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform("NOT (a>1 AND ( b>1 OR (c>1 AND d>1 ) ))"),
+            {
+                "$and": [
+                    {"a": {"$not": {"$gt": 1}}},
+                    {
+                        "$nor": [
+                            {"b": {"$gt": 1}},
+                            {"$and": [{"c": {"$gt": 1}}, {"d": {"$gt": 1}}]},
+                        ]
+                    },
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform(
+                'elements HAS "Ag" AND NOT ( elements HAS "Ir" AND elements HAS "Ac" )'
+            ),
+            {
+                "$and": [
+                    {"elements": {"$in": ["Ag"]}},
+                    {
+                        "$and": [
+                            {"elements": {"$not": {"$in": ["Ir"]}}},
+                            {"elements": {"$not": {"$in": ["Ac"]}}},
+                        ]
+                    },
+                ]
+            },
+        )
+
         self.assertEqual(self.transform("5 < 7"), {7: {"$gt": 5}})
 
         with self.assertRaises(VisitError):
