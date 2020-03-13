@@ -2,9 +2,10 @@ import os
 import json
 from typing import Any, Optional, Dict, List
 from typing_extensions import Literal
-from configparser import ConfigParser
 from pathlib import Path
 from warnings import warn
+
+import json
 
 from pydantic import BaseSettings, root_validator
 
@@ -22,6 +23,7 @@ class ServerConfig(BaseSettings):
 
     """
 
+    config_file: str = "~/.optimade.json"
     debug: bool = False
     use_real_mongo: bool = False
     mongo_database: str = "optimade"
@@ -60,8 +62,25 @@ class ServerConfig(BaseSettings):
 
     index_links_path: Path = Path(__file__).parent.joinpath("index_links.json")
 
+    @root_validator(pre=True)
+    def load_default_settings(cls, values):
+        """
+        Loads settings from a root file if available and uses that as defaults in
+        place of built in defaults
+        """
+        config_file_path = Path(values.get("config_file", "~/.optimade.json"))
+
+        new_values = {}
+
+        if config_file_path.exists():
+            with open(config_file_path) as f:
+                new_values = json.load(f)
+
+        new_values.update(values)
+
+        return new_values
+
     class Config:
-        env_file = ".optimade.json"
         env_prefix = "optimade_"
 
 
