@@ -209,12 +209,13 @@ class MongoTransformer(Transformer):
             # without NOT
             return arg[0]
 
-        # handle the case of {"$not": "$or": [expr1, expr2]} using $nor
+        # handle the case of {"$not": {"$or": [expr1, expr2]}} using {"$nor": [expr1, expr2]}.
         if "$or" in arg[1]:
             return {"$nor": self._recursive_expression_phrase([arg[1]["$or"]])}
 
-        # handle the case of {"$not": "$and": [expr1, expr2]} using per-expression negation,
-        # e.g. {"$and": [~expr1, ~expr2]}.
+        # handle the case of {"$not": {"$and": [expr1, expr2]}} using per-expression negation,
+        # e.g. {"$and": [{prop1: {"$not": expr1}}, {prop2: {"$not": ~expr2}}]}.
+        # Note that this is not the same as NOT (expr1 AND expr2)!
         if "$and" in arg[1]:
             return {
                 "$and": [
