@@ -44,7 +44,7 @@ class ServerConfig(BaseSettings):
         name="Example provider",
         description="Provider used for examples, not to be assigned to a real database",
         homepage="https://example.com",
-        index_base_url=None,
+        index_base_url="http://localhost:5001",
     )
     provider_fields: Dict[Literal["links", "references", "structures"], List[str]] = {
         "structures": ["band_gap", "_mp_chemsys"]
