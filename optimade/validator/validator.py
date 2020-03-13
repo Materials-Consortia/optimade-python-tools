@@ -18,7 +18,7 @@ from fastapi.testclient import TestClient
 
 from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
 
-from .data import MANDATORY_FILTER_EXAMPLES
+from .data import MANDATORY_FILTER_EXAMPLES, OPTIONAL_FILTER_EXAMPLES
 from .validator_model_patches import (
     ValidatorLinksResponse,
     ValidatorEntryResponseOne,
@@ -36,6 +36,11 @@ REQUIRED_ENTRY_ENDPOINTS = ["references", "structures"]
 
 ENDPOINT_MANDATORY_QUERIES = {
     "structures": MANDATORY_FILTER_EXAMPLES,
+    "references": [],
+}
+
+ENDPOINT_OPTIONAL_QUERIES = {
+    "structures": OPTIONAL_FILTER_EXAMPLES,
     "references": [],
 }
 
@@ -148,11 +153,14 @@ def test_case(test_fn):
             and a message to print upon success. Should raise `ResponseError`,
             `ValidationError` or `ManualValidationError` if the test case has failed.
 
+    Keyword arguments:
+        optional (bool): whether or not to treat the test as optional.
+
     """
     from functools import wraps
 
     @wraps(test_fn)
-    def wrapper(validator, *args, **kwargs):
+    def wrapper(validator, *args, optional=False, **kwargs):
         try:
             result, msg = test_fn(validator, *args, **kwargs)
         except json.JSONDecodeError as exc:
@@ -169,24 +177,46 @@ def test_case(test_fn):
             request = validator.client.last_request
         except AttributeError:
             request = validator.base_url
+
         if result is not None:
-            validator.success_count += 1
-            if validator.verbosity > 0:
-                print_success(f"✔: {request} - {msg}")
+            if not optional:
+                validator.success_count += 1
             else:
-                print_success(".", end="", flush=True)
+                validator.optional_success_count += 1
+            message = f"✔: {request} - {msg}"
+            if validator.verbosity > 0:
+                if optional:
+                    print(message)
+                else:
+                    print_success(message)
+            else:
+                if optional:
+                    print(".", end="", flush=True)
+                else:
+                    print_success(".", end="", flush=True)
         else:
-            validator.failure_count += 1
+            if not optional:
+                validator.failure_count += 1
+            else:
+                validator.optional_failure_count += 1
             request = request.replace("\n", "")
             message = f"{msg}".split("\n")
             summary = f"✖: {request} - {test_fn.__name__} - failed with error"
             validator.failure_messages.append((summary, message))
             if validator.verbosity > 0:
-                print_failure(summary)
-                for line in message:
-                    print_warning(f"\t{line}")
+                if optional:
+                    print(summary)
+                    for line in message:
+                        print(f"\t{line}")
+                else:
+                    print_failure(summary)
+                    for line in message:
+                        print_warning(f"\t{line}")
             else:
-                print_failure(f"✖", end="", flush=True)
+                if optional:
+                    print(f"✖", end="", flush=True)
+                else:
+                    print_failure(f"✖", end="", flush=True)
 
         return result
 
@@ -262,6 +292,8 @@ class ImplementationValidator:
             {} if self.index else ENDPOINT_MANDATORY_QUERIES
         )
 
+        self.endpoint_optional_queries = {} if self.index else ENDPOINT_OPTIONAL_QUERIES
+
         self.response_classes = (
             RESPONSE_CLASSES_INDEX if self.index else RESPONSE_CLASSES
         )
@@ -273,6 +305,8 @@ class ImplementationValidator:
 
         self.success_count = 0
         self.failure_count = 0
+        self.optional_success_count = 0
+        self.optional_failure_count = 0
         self.failure_messages = []
 
     def _setup_log(self):
@@ -315,6 +349,7 @@ class ImplementationValidator:
 
         # test entire implementation
         print(f"Testing entire implementation at {self.base_url}...")
+        print("\nMandatory tests:")
         self._log.debug("Testing base info endpoint of %s", BASE_INFO_ENDPOINT)
         base_info = self.test_info_or_links_endpoints(BASE_INFO_ENDPOINT)
         self.get_available_endpoints(base_info)
@@ -345,6 +380,15 @@ class ImplementationValidator:
 
         self.valid = not bool(self.failure_count)
 
+        print("\nOptional tests:")
+        for endp in self.endpoint_optional_queries:
+            # skip empty endpoint query lists
+            if self.endpoint_mandatory_queries[endp]:
+                self._log.debug("Testing optional query syntax on endpoint %s", endp)
+                self.test_optional_query_syntax(
+                    endp, self.endpoint_optional_queries[endp]
+                )
+
         if not self.valid:
             print(f"\n\nFAILURES\n")
             for message in self.failure_messages:
@@ -352,11 +396,16 @@ class ImplementationValidator:
                 for line in message[1]:
                     print_warning("\t" + line)
 
-        final_message = f"\nPassed {self.success_count} out of {self.success_count + self.failure_count} tests."
+        final_message = f"\n\nPassed {self.success_count} out of {self.success_count + self.failure_count} tests."
         if not self.valid:
             print_failure(final_message)
         else:
             print_success(final_message)
+
+        print(
+            f"Additionally passed {self.optional_success_count} out of "
+            f"{self.optional_success_count + self.optional_failure_count} optional tests."
+        )
 
     def test_info_or_links_endpoints(self, request_str):
         """ Runs the test cases for the info endpoints. """
@@ -512,7 +561,7 @@ class ImplementationValidator:
         )
 
     @test_case
-    def get_endpoint(self, request_str):
+    def get_endpoint(self, request_str, optional=False):
         """ Gets the response from the endpoint specified by `request_str`. """
         request_str = f"/{request_str}".replace("\n", "")
         response = self.client.get(request_str)
@@ -544,3 +593,18 @@ class ImplementationValidator:
         valid_queries = [f"{endpoint}?filter={query}" for query in endpoint_queries]
         for query in valid_queries:
             self.get_endpoint(query)
+
+    def test_optional_query_syntax(self, endpoint, endpoint_queries):
+        """ Perform a list of valid queries and assert that no errors are raised.
+
+        Parameters:
+            endpoint (str): the endpoint to query (e.g. "structures").
+            endpoint_queries (list): the list of valid mandatory queries
+                for that endpoint, where the queries do not include the
+                "?filter=" prefix, e.g. ['elements HAS "Na"'].
+
+        """
+
+        valid_queries = [f"{endpoint}?filter={query}" for query in endpoint_queries]
+        for query in valid_queries:
+            self.get_endpoint(query, optional=True)
