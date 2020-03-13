@@ -1,6 +1,7 @@
 # pylint: disable=relative-beyond-top-level,import-outside-toplevel
 import os
 import unittest
+from traceback import print_exc
 
 from optimade.validator import ImplementationValidator
 
@@ -13,7 +14,10 @@ class ServerTestWithValidator(SetClient, unittest.TestCase):
 
     def test_with_validator(self):
         validator = ImplementationValidator(client=self.client)
-        validator.main()
+        try:
+            validator.main()
+        except Exception:
+            print_exc()
         self.assertTrue(validator.valid)
 
 
@@ -23,7 +27,10 @@ class IndexServerTestWithValidator(SetClient, unittest.TestCase):
 
     def test_with_validator(self):
         validator = ImplementationValidator(client=self.client, index=True)
-        validator.main()
+        try:
+            validator.main()
+        except Exception:
+            print_exc()
         self.assertTrue(validator.valid)
 
 
