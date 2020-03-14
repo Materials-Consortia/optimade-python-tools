@@ -7,6 +7,9 @@ from pathlib import Path
 from optimade.server.config import ServerConfig, CONFIG
 
 from .utils import SetClient
+from ..test_setup import setup_config
+
+setup_config()
 
 
 class ConfigTests(unittest.TestCase):

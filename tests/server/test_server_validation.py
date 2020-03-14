@@ -5,6 +5,9 @@ import unittest
 from optimade.validator import ImplementationValidator
 
 from .utils import SetClient
+from ..test_setup import setup_config
+
+setup_config()
 
 
 class ServerTestWithValidator(SetClient, unittest.TestCase):
