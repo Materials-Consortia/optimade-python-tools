@@ -48,17 +48,8 @@ class ServerConfig(BaseSettings):
         homepage="https://example.com",
         index_base_url="http://localhost:5001",
     )
-    provider_fields: Dict[Literal["links", "references", "structures"], List[str]] = {
-        "structures": ["band_gap", "_mp_chemsys"]
-    }
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = {
-        "structures": {
-            "id": "task_id",
-            "chemical_formula_descriptive": "pretty_formula",
-            "chemical_formula_reduced": "pretty_formula",
-            "chemical_formula_anonymous": "formula_anonymous",
-        }
-    }
+    provider_fields: Dict[Literal["links", "references", "structures"], List[str]] = {}
+    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = {}
 
     index_links_path: Path = Path(__file__).parent.joinpath("index_links.json")
 
