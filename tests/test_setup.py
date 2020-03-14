@@ -4,6 +4,7 @@ import re
 import tempfile
 import unittest
 
+
 def setup_config():
     import optimade.server.config
 
@@ -19,7 +20,9 @@ def setup_config():
         },
     )
 
+
 setup_config()
+
 
 class TestSetup(unittest.TestCase):
     """Test ./setup.py"""
