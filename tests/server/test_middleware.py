@@ -3,10 +3,7 @@ import unittest
 
 from optimade.server.exceptions import BadRequest
 
-from .utils import SetClient, setup_config
-
-
-setup_config()
+from .utils import SetClient
 
 
 class CORSMiddlewareTest(SetClient, unittest.TestCase):

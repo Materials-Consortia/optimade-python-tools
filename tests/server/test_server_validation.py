@@ -4,10 +4,7 @@ import unittest
 
 from optimade.validator import ImplementationValidator
 
-from .utils import SetClient, setup_config
-
-
-setup_config()
+from .utils import SetClient
 
 
 class ServerTestWithValidator(SetClient, unittest.TestCase):
