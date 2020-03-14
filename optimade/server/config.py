@@ -7,7 +7,7 @@ from warnings import warn
 
 import json
 
-from pydantic import BaseSettings, root_validator
+from pydantic import BaseSettings, Field, root_validator
 
 from optimade import __version__
 from optimade.models import Implementation, Provider
@@ -23,18 +23,32 @@ class ServerConfig(BaseSettings):
 
     """
 
-    config_file: str = "~/.optimade.json"
-    debug: bool = False
-    use_real_mongo: bool = False
-    mongo_database: str = "optimade"
-    mongo_uri: str = "localhost:27017"
-    links_collection: str = "links"
-    references_collection: str = "references"
-    structures_collection: str = "structures"
-    page_limit: int = 20
-    page_limit_max: int = 500
-    default_db: str = "test_server"
-    base_url: Optional[str] = None
+    config_file: str = Field(
+        "~/.optimade.json", description="File to load alternative defaults from"
+    )
+    debug: bool = Field(
+        False, description="Turns on Debug Mode for the Optimade Server implementation"
+    )
+    use_real_mongo: bool = Field(
+        False, description="Use a real Mongo server rather than MongoMock"
+    )
+    mongo_database: str = Field(
+        "optimade", description="Mongo database for collection data"
+    )
+    mongo_uri: str = Field("localhost:27017", description="URI for the Mongo server")
+    links_collection: str = Field("links", description="Collection name for Links")
+    references_collection: str = Field(
+        "references", description="Collection name for References"
+    )
+    structures_collection: str = Field(
+        "structures", description="Collection name for Structures"
+    )
+    page_limit: int = Field(20, description="Default items per page")
+    page_limit_max: int = Field(500, description="Max items per page")
+    default_db: str = Field("test_server", description="??")
+    base_url: Optional[str] = Field(
+        None, description="URL for the homepage for this implementation"
+    )
     implementation: Implementation = Implementation(
         name="Example implementation",
         version=__version__,
