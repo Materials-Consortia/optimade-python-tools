@@ -7,6 +7,22 @@ from pydantic import BaseModel
 from fastapi.testclient import TestClient
 
 
+def setup_config():
+    import optimade.server.config
+
+    optimade.server.config.CONFIG = optimade.server.config.ServerConfig(
+        provider_fields={"structures": ["band_gap", "_mp_chemsys"]},
+        aliases={
+            "structures": {
+                "id": "task_id",
+                "chemical_formula_descriptive": "pretty_formula",
+                "chemical_formula_reduced": "pretty_formula",
+                "chemical_formula_anonymous": "formula_anonymous",
+            }
+        },
+    )
+
+
 def get_regular_client() -> TestClient:
     """Return TestClient for regular OPTiMaDe server"""
     from optimade.server.main import app

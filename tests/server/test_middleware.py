@@ -3,8 +3,8 @@ import unittest
 
 from optimade.server.exceptions import BadRequest
 
-from .utils import SetClient
-from ..test_setup import setup_config
+from .utils import SetClient, setup_config
+
 
 setup_config()
 
