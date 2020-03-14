@@ -12,4 +12,7 @@ EXPOSE ${PORT}
 
 COPY .docker/run.sh ./
 
+COPY tests/test_config.json ./
+ENV OPTIMADE_CONFIG_FILE /app/test_config.json
+
 CMD ["/app/run.sh"]
