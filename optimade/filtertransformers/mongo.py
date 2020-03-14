@@ -88,16 +88,7 @@ class MongoTransformer(Transformer):
 
     def expression_phrase(self, arg):
         # expression_phrase: [ NOT ] ( comparison | "(" expression ")" )
-        if len(arg) == 1:
-            # without NOT
-            return arg[0]
-
-        if list(arg[1].keys()) == ["$or"]:
-            return {"$nor": arg[1]["$or"]}
-
-        # with NOT
-        # TODO: This implementation probably fails in the case of `"(" expression ")"`
-        return {prop: {"$not": expr} for prop, expr in arg[1].items()}
+        return self._recursive_expression_phrase(arg)
 
     @v_args(inline=True)
     def comparison(self, value):
@@ -208,3 +199,30 @@ class MongoTransformer(Transformer):
         raise NotImplementedError(
             f"Calling __default__, i.e., unknown grammar concept. data: {data}, children: {children}, meta: {meta}"
         )
+
+    def _recursive_expression_phrase(self, arg):
+        """ Helper function for parsing `expression_phrase`. Recursively sorts out
+        the correct precedence for $and, $or and $nor.
+
+        """
+        if len(arg) == 1:
+            # without NOT
+            return arg[0]
+
+        # handle the case of {"$not": {"$or": [expr1, expr2]}} using {"$nor": [expr1, expr2]}.
+        if "$or" in arg[1]:
+            return {"$nor": self._recursive_expression_phrase([arg[1]["$or"]])}
+
+        # handle the case of {"$not": {"$and": [expr1, expr2]}} using per-expression negation,
+        # e.g. {"$and": [{prop1: {"$not": expr1}}, {prop2: {"$not": ~expr2}}]}.
+        # Note that this is not the same as NOT (expr1 AND expr2)!
+        if "$and" in arg[1]:
+            return {
+                "$and": [
+                    self._recursive_expression_phrase(["NOT", subdict])
+                    for subdict in arg[1]["$and"]
+                ]
+            }
+
+        # simple case of negating one expression, from NOT (expr) to ~expr.
+        return {prop: {"$not": expr} for prop, expr in arg[1].items()}
