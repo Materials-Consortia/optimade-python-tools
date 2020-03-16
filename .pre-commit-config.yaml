@@ -25,8 +25,8 @@ repos:
       language: system
 
     - id: optimade-version
-      name: Update OPTiMaDe shield
-      description: If needed, the JSON for the OPTiMaDe shield will be updated with new config version
+      name: Update OPTIMADE shield
+      description: If needed, the JSON for the OPTIMADE shield will be updated with new config version
       entry: python ./.ci/optimade_version_update.py
       files: >
         (?x)^(

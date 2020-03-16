@@ -1,4 +1,4 @@
-""" OPTiMaDe landing page, rendered as a Jinja2 template. """
+""" OPTIMADE landing page, rendered as a Jinja2 template. """
 
 from pathlib import Path
 from fastapi.templating import Jinja2Templates
