@@ -9,12 +9,12 @@ class LinksMapper(BaseResourceMapper):
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
-        """Map properties from MongoDB to OPTiMaDe
+        """Map properties from MongoDB to OPTIMADE
 
         :param doc: A resource object in MongoDB format
         :type doc: dict
 
-        :return: A resource object in OPTiMaDe format
+        :return: A resource object in OPTIMADE format
         :rtype: dict
         """
         type_ = doc["type"]

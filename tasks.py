@@ -105,7 +105,7 @@ def set_optimade_ver(_, ver=""):
         TOP_DIR.joinpath("INSTALL.md"), (r"/v[0-9]+(\.[0-9]+){2}", f"/v{version}")
     )
 
-    print(f"Bumped OPTiMaDe version to {ver}")
+    print(f"Bumped OPTIMADE version to {ver}")
 
 
 @task
@@ -116,7 +116,7 @@ def parse_spec_for_filters(_):
 
     specification_flines = (
         requests.get(
-            "https://raw.githubusercontent.com/Materials-Consortia/OPTiMaDe/develop/optimade.rst"
+            "https://raw.githubusercontent.com/Materials-Consortia/OPTIMADE/develop/optimade.rst"
         )
         .content.decode("utf-8")
         .split("\n")

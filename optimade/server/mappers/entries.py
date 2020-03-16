@@ -13,10 +13,10 @@ class BaseResourceMapper:
         ENDPOINT (str): defines the endpoint for which to apply this
             mapper.
         ALIASES (Tuple[Tuple[str, str]]): a tuple of aliases between
-            OPTiMaDe field names and the field names in the database ,
+            OPTIMADE field names and the field names in the database ,
             e.g. `(("elements", "custom_elements_field"))`.
         REQUIRED_FIELDS (set[str]): the set of fieldnames to return
-            when mapping to the OPTiMaDe format.
+            when mapping to the OPTIMADE format.
         TOP_LEVEL_NON_ATTRIBUTES_FIELDS (set[str]): the set of top-level
             field names common to all endpoints.
 
@@ -42,7 +42,7 @@ class BaseResourceMapper:
     def alias_for(cls, field: str) -> str:
         """Return aliased field name
 
-        :param field: OPTiMaDe field name
+        :param field: OPTIMADE field name
         :type field: str
 
         :return: Aliased field as found in PROVIDER_ALIASES + ALIASES
@@ -59,9 +59,9 @@ class BaseResourceMapper:
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
-        """Map properties from MongoDB to OPTiMaDe
+        """Map properties from MongoDB to OPTIMADE
 
-        Starting from a MongoDB document ``doc``, map the DB fields to the corresponding OPTiMaDe fields.
+        Starting from a MongoDB document ``doc``, map the DB fields to the corresponding OPTIMADE fields.
         Then, the fields are all added to the top-level field "attributes",
         with the exception of other top-level fields, defined in ``cls.TOPLEVEL_NON_ATTRIBUTES_FIELDS``.
         All fields not in ``cls.TOPLEVEL_NON_ATTRIBUTES_FIELDS`` + "attributes" will be removed.
@@ -70,7 +70,7 @@ class BaseResourceMapper:
         :param doc: A resource object in MongoDB format
         :type doc: dict
 
-        :return: A resource object in OPTiMaDe format
+        :return: A resource object in OPTIMADE format
         :rtype: dict
 
         """

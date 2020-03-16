@@ -48,7 +48,7 @@ class IndexInfoResource(BaseInfoResource):
     relationships: Dict[str, IndexRelationship] = Field(
         ...,
         description="Reference to the child identifier object under the links endpoint "
-        "that the provider has chosen as their 'default' OPTiMaDe API database. "
+        "that the provider has chosen as their 'default' OPTIMADE API database. "
         "A client SHOULD present this database as the first choice when an end-user "
         "chooses this provider.",
     )

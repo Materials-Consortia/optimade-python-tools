@@ -54,7 +54,7 @@ class BaseInfoAttributes(BaseModel):
     """Attributes for Base URL Info endpoint"""
 
     api_version: str = Field(
-        ..., description="Presently used version of the OPTiMaDe API"
+        ..., description="Presently used version of the OPTIMADE API"
     )
     available_api_versions: List[AvailableApiVersion] = Field(
         ...,
