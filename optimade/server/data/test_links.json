@@ -6,7 +6,7 @@
     "id": "index",
     "type": "parent",
     "name": "Index meta-database",
-    "description": "Index for example's OPTiMaDe databases",
+    "description": "Index for example's OPTIMADE databases",
     "base_url": "http://localhost:5001",
     "homepage": "https://example.com"
   }

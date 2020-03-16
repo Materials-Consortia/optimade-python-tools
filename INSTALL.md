@@ -1,8 +1,8 @@
-# Installing OPTiMaDe Python tools
+# Installing OPTIMADE Python tools
 
 ## The index meta-database
 
-This package may be used to setup and run an [OPTiMaDe index meta-database](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#index-meta-database).
+This package may be used to setup and run an [OPTIMADE index meta-database](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#index-meta-database).
 Install the package via `pip install optimade[server]` and change the file [`server.cfg`](server.cfg) found in the root of the package.
 
 The `server.cfg` file serves paths to a server runtime configuration file (either an `ini` or `json` file, see the [`config.ini` file](optimade/server/config.ini) for an example) and an index `/links`-endpoint data file.

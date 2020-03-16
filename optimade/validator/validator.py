@@ -1,5 +1,5 @@
 """ This module contains a validator class that can be pointed
-at an OPTiMaDe implementation and validated against the pydantic
+at an OPTIMADE implementation and validated against the pydantic
 models in this package.
 
 """
@@ -194,7 +194,7 @@ def test_case(test_fn):
 
 
 class ImplementationValidator:
-    """ Class to call test functions on a particular OPTiMaDe
+    """ Class to call test functions on a particular OPTIMADE
     implementation.
 
     Uses the pydantic models in `optimade.models` to validate the

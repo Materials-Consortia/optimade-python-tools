@@ -20,12 +20,12 @@ class LinksResourceAttributes(Attributes):
 
     name: str = Field(
         ...,
-        description="Human-readable name for the OPTiMaDe API implementation "
+        description="Human-readable name for the OPTIMADE API implementation "
         "a client may provide in a list to an end-user.",
     )
     description: str = Field(
         ...,
-        description="Human-readable description for the OPTiMaDe API implementation "
+        description="Human-readable description for the OPTIMADE API implementation "
         "a client may provide in a list to an end-user.",
     )
     base_url: Union[AnyUrl, Link, None] = Field(

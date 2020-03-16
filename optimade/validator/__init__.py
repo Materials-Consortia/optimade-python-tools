@@ -13,7 +13,7 @@ def validate():
 
     parser = argparse.ArgumentParser(
         prog="optimade_validator",
-        description="""Tests OPTiMaDe implementations for compliance with the optimade-python-tools models.
+        description="""Tests OPTIMADE implementations for compliance with the optimade-python-tools models.
 
     - To test an entire implementation (at say example.com/optimade/v1) for all required/available endpoints:
 
@@ -34,7 +34,7 @@ def validate():
         nargs="?",
         default="http://localhost:5000/v0",
         help=(
-            "The base URL of the OPTiMaDe implementation to point at, "
+            "The base URL of the OPTIMADE implementation to point at, "
             "e.g. 'http://example.com/optimade/v1' or 'http://localhost:5000/v1"
         ),
     )
@@ -54,7 +54,7 @@ def validate():
         "--index",
         action="store_true",
         help=(
-            "Flag for whether the specified OPTiMaDe implementation is an Index meta-database or not. [default=False]"
+            "Flag for whether the specified OPTIMADE implementation is an Index meta-database or not. [default=False]"
         ),
     )
 

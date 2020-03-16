@@ -222,7 +222,7 @@ class MongoCollection(EntryCollection):
         else:
             cursor_kwargs["limit"] = CONFIG.page_limit
 
-        # All OPTiMaDe fields
+        # All OPTIMADE fields
         fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
         fields |= self.get_attribute_fields()
         # All provider-specific fields

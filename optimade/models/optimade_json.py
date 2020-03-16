@@ -1,4 +1,4 @@
-"""Modified JSON API v1.0 for OPTiMaDe API"""
+"""Modified JSON API v1.0 for OPTIMADE API"""
 # pylint: disable=no-self-argument,no-name-in-module
 from pydantic import Field, root_validator, BaseModel, AnyHttpUrl, EmailStr
 from typing import Optional, Union, List
@@ -33,7 +33,7 @@ class OptimadeError(jsonapi.Error):
 
 
 class Warnings(OptimadeError):
-    """OPTiMaDe-specific warning class based on OPTiMaDe-specific JSON API Error.
+    """OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.
     From the specification:
 
         A warning resource object is defined similarly to a JSON API
