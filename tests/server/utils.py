@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 
 
 def get_regular_client() -> TestClient:
-    """Return TestClient for regular OPTiMaDe server"""
+    """Return TestClient for regular OPTIMADE server"""
     from optimade.server.main import app
     from optimade.server.routers import info, links, references, structures
 
@@ -23,7 +23,7 @@ def get_regular_client() -> TestClient:
 
 
 def get_index_client() -> TestClient:
-    """Return TestClient for index meta-database OPTiMaDe server"""
+    """Return TestClient for index meta-database OPTIMADE server"""
     from optimade.server.main_index import app
     from optimade.server.routers import index_info, links
 

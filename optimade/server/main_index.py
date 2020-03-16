@@ -24,9 +24,9 @@ if CONFIG.debug:  # pragma: no cover
 
 
 app = FastAPI(
-    title="OPTiMaDe API - Index meta-database",
+    title="OPTIMADE API - Index meta-database",
     description=(
-        f"""The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.
+        f"""The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.
 This is the "special" index meta-database.
 
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""

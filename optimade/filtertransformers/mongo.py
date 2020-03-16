@@ -51,8 +51,8 @@ class MongoTransformer(Transformer):
         """ not_implemented_string: value
 
         Raise NotImplementedError.
-        For further information, see Materials-Consortia/OPTiMaDe issue 157:
-        https://github.com/Materials-Consortia/OPTiMaDe/issues/157
+        For further information, see Materials-Consortia/OPTIMADE issue 157:
+        https://github.com/Materials-Consortia/OPTIMADE/issues/157
         """
         raise NotImplementedError("Comparing strings is not yet implemented.")
 

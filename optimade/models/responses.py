@@ -36,7 +36,7 @@ class ErrorResponse(Response):
     )
     errors: List[OptimadeError] = Field(
         ...,
-        description="A list of OPTiMaDe-specific JSON API error objects, where the field detail MUST be present.",
+        description="A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.",
         uniqueItems=True,
     )
 

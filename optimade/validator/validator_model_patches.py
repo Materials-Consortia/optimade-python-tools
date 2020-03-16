@@ -1,4 +1,4 @@
-""" This class contains patched versions of the OPTiMaDe models as
+""" This class contains patched versions of the OPTIMADE models as
 a workaround for the response field workaround of allowing responses
 to contain bare dictionaries. These allow the validator to print detailed
 validation responses.
