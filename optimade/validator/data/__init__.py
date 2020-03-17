@@ -41,8 +41,8 @@ def _load_filters_and_apply_aliases(path):
 
 
 OPTIONAL_FILTER_EXAMPLES = _load_filters_and_apply_aliases(
-    Path(__file__).parent.joinpath("optional_filters.txt")
+    Path(__file__).parent.joinpath("optional_filters.txt").resolve()
 )
 MANDATORY_FILTER_EXAMPLES = _load_filters_and_apply_aliases(
-    Path(__file__).parent.joinpath("filters.txt")
+    Path(__file__).parent.joinpath("filters.txt").resolve()
 )
