@@ -31,6 +31,37 @@ class MongoTransformer(Transformer):
         self.mapper = mapper
         super().__init__()
 
+    def postprocess(self, query):
+        """ Used to post-process the final parsed query. """
+        if self.mapper:
+            query = self.apply_length_aliases(query)
+        return query
+
+    def apply_length_aliases(self, query):
+        """ Recursively search query for any $size calls, and check
+        if the property can be replaced with its corresponding length
+        alias.
+
+        """
+
+        def check_for_size(prop, expr):
+            return (
+                isinstance(expr, dict)
+                and "$size" in expr
+                and self.mapper.length_alias_for(prop)
+            )
+
+        def replace_with_length_alias(subdict, prop, expr):
+            subdict[self.mapper.length_alias_for(prop)] = expr["$size"]
+            subdict[prop].pop("$size")
+            if not subdict[prop]:
+                subdict.pop(prop)
+            return subdict
+
+        return recursive_postprocessing(
+            query, check_for_size, replace_with_length_alias
+        )
+
     def transform(self, tree):
         return self.postprocess(super().transform(tree))
 
