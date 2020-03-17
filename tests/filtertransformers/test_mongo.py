@@ -344,6 +344,21 @@ class TestMongoTransformer(unittest.TestCase):
         with self.assertRaises(VisitError):
             self.transform("list LENGTH > 3")
 
+    def test_list_length_aliases(self):
+        from optimade.server.mappers import StructureMapper
+
+        class AliasedStructureMapper(StructureMapper):
+            LENGTH_ALIASES = (("elements", "nelements"),)
+
+        t = MongoTransformer(mapper=AliasedStructureMapper())
+        p = LarkParser(version=self.version, variant=self.variant)
+        self.assertEqual(t.transform(p.parse("elements LENGTH 3")), {"nelements": 3})
+
+        self.assertEqual(
+            t.transform(p.parse('elements HAS "Li" AND elements LENGTH = 3')),
+            {"$and": [{"elements": {"$in": ["Li"]}}, {"nelements": 3}]},
+        )
+
     def test_list_properties(self):
         """ Test the HAS ALL, ANY and optional ONLY queries.
 
