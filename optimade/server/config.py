@@ -118,5 +118,4 @@ class ServerConfig(BaseSettings):
     class Config:
         env_prefix = "optimade_"
 
-
 CONFIG = ServerConfig()
