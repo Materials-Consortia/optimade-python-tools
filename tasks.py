@@ -127,11 +127,12 @@ def parse_spec_for_filters(_):
 
     filters = []
     optional_filters = []
+    optional_triggers = ("OPTIONAL",)
     for line in specification_flines:
         if ":filter:" in line:
             for _split in line.replace("filter=", "").split(":filter:")[1:]:
                 _filter = _split.split("`")[1].strip()
-                if "OPTIONAL" in line:
+                if any(trigger in line for trigger in optional_triggers):
                     optional_filters.append(_filter)
                 else:
                     filters.append(_filter)
