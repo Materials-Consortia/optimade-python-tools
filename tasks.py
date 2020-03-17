@@ -129,7 +129,6 @@ def parse_spec_for_filters(_):
     optional_filters = []
     for line in specification_flines:
         if ":filter:" in line:
-            print(line)
             for _split in line.replace("filter=", "").split(":filter:")[1:]:
                 _filter = _split.split("`")[1].strip()
                 if "OPTIONAL" in line:
