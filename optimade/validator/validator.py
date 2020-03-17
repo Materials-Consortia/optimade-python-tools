@@ -371,9 +371,7 @@ class ImplementationValidator:
             # skip empty endpoint query lists
             if self.endpoint_mandatory_queries[endp]:
                 self._log.debug("Testing mandatory query syntax on endpoint %s", endp)
-                self.test_mandatory_query_syntax(
-                    endp, self.endpoint_mandatory_queries[endp]
-                )
+                self.test_query_syntax(endp, self.endpoint_mandatory_queries[endp])
 
         self._log.debug("Testing %s endpoint", LINKS_ENDPOINT)
         self.test_info_or_links_endpoints(LINKS_ENDPOINT)
@@ -385,8 +383,8 @@ class ImplementationValidator:
             # skip empty endpoint query lists
             if self.endpoint_mandatory_queries[endp]:
                 self._log.debug("Testing optional query syntax on endpoint %s", endp)
-                self.test_optional_query_syntax(
-                    endp, self.endpoint_optional_queries[endp]
+                self.test_query_syntax(
+                    endp, self.endpoint_optional_queries[endp], optional=True
                 )
 
         if not self.valid:
@@ -579,8 +577,9 @@ class ImplementationValidator:
 
         return response, "request successful."
 
-    def test_mandatory_query_syntax(self, endpoint, endpoint_queries):
-        """ Perform a list of valid queries and assert that no errors are raised.
+    def test_query_syntax(self, endpoint, endpoint_queries, optional=False):
+        """ Execute a list of valid queries agains the endpoint and assert
+        that no errors are raised.
 
         Parameters:
             endpoint (str): the endpoint to query (e.g. "structures").
@@ -588,23 +587,11 @@ class ImplementationValidator:
                 for that endpoint, where the queries do not include the
                 "?filter=" prefix, e.g. ['elements HAS "Na"'].
 
-        """
-
-        valid_queries = [f"{endpoint}?filter={query}" for query in endpoint_queries]
-        for query in valid_queries:
-            self.get_endpoint(query)
-
-    def test_optional_query_syntax(self, endpoint, endpoint_queries):
-        """ Perform a list of valid queries and assert that no errors are raised.
-
-        Parameters:
-            endpoint (str): the endpoint to query (e.g. "structures").
-            endpoint_queries (list): the list of valid mandatory queries
-                for that endpoint, where the queries do not include the
-                "?filter=" prefix, e.g. ['elements HAS "Na"'].
+        Keyword arguments:
+            optional (bool): treat the success of the queries as optional.
 
         """
 
         valid_queries = [f"{endpoint}?filter={query}" for query in endpoint_queries]
         for query in valid_queries:
-            self.get_endpoint(query, optional=True)
+            self.get_endpoint(query, optional=optional)
