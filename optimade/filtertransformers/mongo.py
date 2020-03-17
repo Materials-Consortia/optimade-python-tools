@@ -1,4 +1,6 @@
+import copy
 from lark import Transformer, v_args, Token
+from optimade.server.mappers import BaseResourceMapper
 
 
 class MongoTransformer(Transformer):
@@ -21,8 +23,16 @@ class MongoTransformer(Transformer):
         "$eq": "$eq",
     }
 
-    def __init__(self):
+    def __init__(self, mapper: BaseResourceMapper = None):
+        """ Initialise the object, optionally loading in a
+        resource mapper for use when post-processing.
+
+        """
+        self.mapper = mapper
         super().__init__()
+
+    def transform(self, tree):
+        return self.postprocess(super().transform(tree))
 
     def filter(self, arg):
         # filter: expression*
@@ -226,3 +236,55 @@ class MongoTransformer(Transformer):
 
         # simple case of negating one expression, from NOT (expr) to ~expr.
         return {prop: {"$not": expr} for prop, expr in arg[1].items()}
+
+def recursive_postprocessing(query, condition, replacement):
+    """ Recursively descend into the query, checking each dictionary
+    (contained in a list, or as an entry in another dictionary) for
+    the condition passed. If the condition is true, apply the
+    replacement to the dictionary.
+
+    Parameters:
+        query (list/dict): the query to process.
+        condition (callable): a function that returns True if the
+            replacement function should be applied. It should take
+            as arguments the property and expression from the query,
+            as would be returned by iterating over `query.items()`.
+        replacement (callable): a function that returns the processed
+            dictionary. It should take as arguments the dictionary
+            to modify, the property and the expression (as described
+            above).
+
+    Example:
+        For the simple case of replacing one field name with
+        another, the following functions could be used:
+
+        ```python
+        def condition(prop, expr):
+            return prop == "field_name_old"
+
+        def replacement(d, prop, expr):
+            d["field_name_old"] = d.pop(prop)
+
+        query = recursive_postprocessing(
+            query, condition, replacement
+        )
+
+        ```
+
+    """
+    if isinstance(query, list):
+        return [recursive_postprocessing(query, condition, replacement) for q in query]
+
+    if isinstance(query, dict):
+        # this could potentially lead to memory leaks if the query is *heavily* nested
+        _cached_query = copy.deepcopy(query)
+        for prop, expr in query.items():
+            if condition(prop, expr):
+                _cached_query = replacement(_cached_query, prop, expr)
+            elif isinstance(expr, list):
+                _cached_query[prop] = [
+                    recursive_postprocessing(q, condition, replacement) for q in expr
+                ]
+        return _cached_query
+
+    return query
