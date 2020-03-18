@@ -34,33 +34,9 @@ class MongoTransformer(Transformer):
     def postprocess(self, query):
         """ Used to post-process the final parsed query. """
         if self.mapper:
-            query = self.apply_length_aliases(query)
+            query = self._apply_length_aliases(query)
+            query = self._apply_aliases(query)
         return query
-
-    def apply_length_aliases(self, query):
-        """ Recursively search query for any $size calls, and check
-        if the property can be replaced with its corresponding length
-        alias.
-
-        """
-
-        def check_for_size(prop, expr):
-            return (
-                isinstance(expr, dict)
-                and "$size" in expr
-                and self.mapper.length_alias_for(prop)
-            )
-
-        def replace_with_length_alias(subdict, prop, expr):
-            subdict[self.mapper.length_alias_for(prop)] = expr["$size"]
-            subdict[prop].pop("$size")
-            if not subdict[prop]:
-                subdict.pop(prop)
-            return subdict
-
-        return recursive_postprocessing(
-            query, check_for_size, replace_with_length_alias
-        )
 
     def transform(self, tree):
         return self.postprocess(super().transform(tree))
@@ -268,18 +244,70 @@ class MongoTransformer(Transformer):
         # simple case of negating one expression, from NOT (expr) to ~expr.
         return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
-def recursive_postprocessing(query, condition, replacement):
+    def _apply_length_aliases(self, query):
+        """ Recursively search query for any $size calls, and check
+        if the property can be replaced with its corresponding length
+        alias.
+
+        """
+
+        def check_for_size(prop, expr):
+            return (
+                isinstance(expr, dict)
+                and "$size" in expr
+                and self.mapper.length_alias_for(prop)
+            )
+
+        def replace_with_length_alias(subdict, prop, expr):
+            subdict[self.mapper.length_alias_for(prop)] = expr["$size"]
+            subdict[prop].pop("$size")
+            if not subdict[prop]:
+                subdict.pop(prop)
+            return subdict
+
+        return recursive_postprocessing(
+            query, check_for_size, replace_with_length_alias
+        )
+
+    def _apply_aliases(self, filter_: dict) -> dict:
+        """ Check whether any fields in the filter have aliases so
+        that they can be renamed for the Mongo query.
+
+        """
+        # if there are no defined aliases, just skip
+        if not self.mapper.all_aliases():
+            return filter_
+
+        def check_for_alias(prop, expr):
+            return self.mapper.alias_for(prop) != prop
+
+        def apply_alias(subdict, prop, expr):
+            if isinstance(subdict, dict):
+                subdict[self.mapper.alias_for(prop)] = self._apply_aliases(
+                    subdict.pop(prop)
+                )
+            elif isinstance(subdict, str):
+                subdict = self.mapper.alias_for(subdict)
+
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_alias, apply_alias, debug=True
+        )
+
+
+def recursive_postprocessing(filter_, condition, replacement, debug=False):
     """ Recursively descend into the query, checking each dictionary
     (contained in a list, or as an entry in another dictionary) for
     the condition passed. If the condition is true, apply the
     replacement to the dictionary.
 
     Parameters:
-        query (list/dict): the query to process.
+        filter_ (list/dict): the filter_ to process.
         condition (callable): a function that returns True if the
             replacement function should be applied. It should take
-            as arguments the property and expression from the query,
-            as would be returned by iterating over `query.items()`.
+            as arguments the property and expression from the filter_,
+            as would be returned by iterating over `filter_.items()`.
         replacement (callable): a function that returns the processed
             dictionary. It should take as arguments the dictionary
             to modify, the property and the expression (as described
@@ -296,26 +324,27 @@ def recursive_postprocessing(query, condition, replacement):
         def replacement(d, prop, expr):
             d["field_name_old"] = d.pop(prop)
 
-        query = recursive_postprocessing(
-            query, condition, replacement
+        filter_ = recursive_postprocessing(
+            filter_, condition, replacement
         )
 
         ```
 
     """
-    if isinstance(query, list):
-        return [recursive_postprocessing(query, condition, replacement) for q in query]
+    if isinstance(filter_, list):
+        result = [recursive_postprocessing(q, condition, replacement) for q in filter_]
+        return result
 
-    if isinstance(query, dict):
-        # this could potentially lead to memory leaks if the query is *heavily* nested
-        _cached_query = copy.deepcopy(query)
-        for prop, expr in query.items():
+    if isinstance(filter_, dict):
+        # this could potentially lead to memory leaks if the filter_ is *heavily* nested
+        _cached_filter = copy.deepcopy(filter_)
+        for prop, expr in filter_.items():
             if condition(prop, expr):
-                _cached_query = replacement(_cached_query, prop, expr)
+                _cached_filter = replacement(_cached_filter, prop, expr)
             elif isinstance(expr, list):
-                _cached_query[prop] = [
+                _cached_filter[prop] = [
                     recursive_postprocessing(q, condition, replacement) for q in expr
                 ]
-        return _cached_query
+        return _cached_filter
 
-    return query
+    return filter_

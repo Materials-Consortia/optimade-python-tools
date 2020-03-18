@@ -4,6 +4,7 @@ from lark.exceptions import VisitError
 
 from optimade.filterparser import LarkParser, ParserError
 from optimade.filtertransformers.mongo import MongoTransformer
+from optimade.server.mappers import BaseResourceMapper
 
 
 class TestMongoTransformer(unittest.TestCase):
@@ -358,6 +359,42 @@ class TestMongoTransformer(unittest.TestCase):
             t.transform(p.parse('elements HAS "Li" AND elements LENGTH = 3')),
             {"$and": [{"elements": {"$in": ["Li"]}}, {"nelements": 3}]},
         )
+
+    def test_aliases(self):
+        """ Test that valid aliases are allowed, but do not effect
+        r-values.
+
+        """
+
+        class MyStructureMapper(BaseResourceMapper):
+            ALIASES = (
+                ("elements", "my_elements"),
+                ("A", "D"),
+                ("B", "E"),
+                ("C", "F"),
+            )
+
+        mapper = MyStructureMapper()
+        t = MongoTransformer(mapper=mapper)
+
+        self.assertEqual(mapper.alias_for("elements"), "my_elements")
+
+        test_filter = {"elements": {"$in": ["A", "B", "C"]}}
+        self.assertEqual(
+            t.postprocess(test_filter), {"my_elements": {"$in": ["A", "B", "C"]}},
+        )
+        test_filter = {"$and": [{"elements": {"$in": ["A", "B", "C"]}}]}
+        self.assertEqual(
+            t.postprocess(test_filter),
+            {"$and": [{"my_elements": {"$in": ["A", "B", "C"]}}]},
+        )
+        test_filter = {"elements": "A"}
+        self.assertEqual(t.postprocess(test_filter), {"my_elements": "A"})
+        test_filter = ["A", "B", "C"]
+        self.assertEqual(t.postprocess(test_filter), ["A", "B", "C"])
+
+        test_filter = ["A", "elements", "C"]
+        self.assertEqual(t.postprocess(test_filter), ["A", "elements", "C"])
 
     def test_list_properties(self):
         """ Test the HAS ALL, ANY and optional ONLY queries.

@@ -1,4 +1,5 @@
 import os
+
 from typing import Tuple, List, Union
 import mongomock
 import pymongo.collection
@@ -107,31 +108,6 @@ class MongoCollection(EntryCollection):
 
         return results, data_returned, more_data_available, all_fields - fields
 
-    def _alias_filter(self, _filter: dict) -> dict:
-        """ Check whether any fields in the filter have aliases so
-        that they can be renamed for the Mongo query.
-
-        """
-        # if there are no defined aliases, just skip
-        if not self._mapper_aliases:
-            return _filter
-
-        if isinstance(_filter, dict):
-            unaliased_filter = {}
-            for key, value in _filter.items():
-                unaliased_filter[
-                    self.resource_mapper.alias_for(key)
-                ] = self._alias_filter(value)
-            return unaliased_filter
-
-        elif isinstance(_filter, list):
-            return [self._alias_filter(subdict) for subdict in _filter]
-
-        # if we already have a string, or another value, then there
-        # are no more aliases to parse
-        else:
-            return _filter
-
     def _parse_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> dict:
@@ -139,8 +115,7 @@ class MongoCollection(EntryCollection):
 
         if getattr(params, "filter", False):
             tree = self.parser.parse(params.filter)
-            mongo_filter = self.transformer.transform(tree)
-            cursor_kwargs["filter"] = self._alias_filter(mongo_filter)
+            cursor_kwargs["filter"] = self.transformer.transform(tree)
         else:
             cursor_kwargs["filter"] = {}
 
