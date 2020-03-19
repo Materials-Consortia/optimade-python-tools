@@ -27,7 +27,7 @@ def general_exception(
             traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
         )
         print(tb)
-        debug_info[f"{CONFIG.provider.prefix}traceback"] = tb
+        debug_info[f"_{CONFIG.provider.prefix}_traceback"] = tb
 
     try:
         http_response_code = exc.status_code

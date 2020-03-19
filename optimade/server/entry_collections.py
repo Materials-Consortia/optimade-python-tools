@@ -101,7 +101,7 @@ class MongoCollection(EntryCollection):
         super().__init__(collection, resource_cls, resource_mapper)
         self.transformer = MongoTransformer()
 
-        self.provider = CONFIG.provider.prefix
+        self.provider_prefix = CONFIG.provider.prefix
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         self.parser = LarkParser(
             version=(0, 10, 1), variant="default"
@@ -226,7 +226,10 @@ class MongoCollection(EntryCollection):
         fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
         fields |= self.get_attribute_fields()
         # All provider-specific fields
-        fields |= {self.provider + _ for _ in self.provider_fields}
+        fields |= {
+            f"_{self.provider_prefix}_{field_name}"
+            for field_name in self.provider_fields
+        }
         cursor_kwargs["fields"] = fields
         cursor_kwargs["projection"] = [
             self.resource_mapper.alias_for(f) for f in fields
