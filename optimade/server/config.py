@@ -45,7 +45,10 @@ class ServerConfig(BaseSettings):
     )
     page_limit: int = Field(20, description="Default items per page")
     page_limit_max: int = Field(500, description="Max items per page")
-    default_db: str = Field("test_server", description="??")
+    default_db: str = Field(
+        "test_server",
+        description="ID of the provider's chosen default OPTIMADE API database.",
+    )
     base_url: Optional[str] = Field(
         None, description="URL for the homepage for this implementation"
     )
