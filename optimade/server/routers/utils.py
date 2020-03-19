@@ -53,7 +53,6 @@ def meta_values(
     else:
         url_path = parse_result.path
 
-
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
         api_version=f"v{__api_version__}",

@@ -13,7 +13,7 @@
     "implementation": {
         "name": "Example implementation",
         "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
-        "maintainer": {"email": "maintainer@example.org"},
+        "maintainer": {"email": "maintainer@example.org"}
     },
     "provider": {
         "name": "Example provider",

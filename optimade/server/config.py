@@ -1,6 +1,7 @@
 import os
 import json
 from typing import Any, Optional, Dict, List
+
 try:
     from typing import Literal
 except ImportError:
@@ -39,15 +40,21 @@ class ServerConfig(BaseSettings):
         "optimade", description="Mongo database for collection data"
     )
     mongo_uri: str = Field("localhost:27017", description="URI for the Mongo server")
-    links_collection: str = Field("links", description="Mongo collection name for /links endpoint resources")
+    links_collection: str = Field(
+        "links", description="Mongo collection name for /links endpoint resources"
+    )
     references_collection: str = Field(
-        "references", description="Mongo collection name for /references endpoint resources"
+        "references",
+        description="Mongo collection name for /references endpoint resources",
     )
     structures_collection: str = Field(
-        "structures", description="Mongo collection name for /structures endpoint resources"
+        "structures",
+        description="Mongo collection name for /structures endpoint resources",
     )
     page_limit: int = Field(20, description="Default number of resources per page")
-    page_limit_max: int = Field(500, description="Max allowed number of resources per page")
+    page_limit_max: int = Field(
+        500, description="Max allowed number of resources per page"
+    )
     default_db: str = Field(
         "test_server",
         description="ID of /links endpoint resource for the chosen default OPTIMADE implementation (only relevant for the index meta-database)",
@@ -74,10 +81,21 @@ class ServerConfig(BaseSettings):
         ),
         description="General information about the provider of this OPTIMADE implementation",
     )
-    provider_fields: Dict[Literal["links", "references", "structures"], List[str]] = Field({}, description="A list of additional fields to be served with the provider's prefix attached, broken down by endpoint.")
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field({}, description="A mapping between field names in the database with their corresponding OPTIMADE field names, broken down by endpoint.") 
+    provider_fields: Dict[
+        Literal["links", "references", "structures"], List[str]
+    ] = Field(
+        {},
+        description="A list of additional fields to be served with the provider's prefix attached, broken down by endpoint.",
+    )
+    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
+        {},
+        description="A mapping between field names in the database with their corresponding OPTIMADE field names, broken down by endpoint.",
+    )
 
-    index_links_path: Path = Field(Path(__file__).parent.joinpath("index_links.json").resolve(), description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database")
+    index_links_path: Path = Field(
+        Path(__file__).parent.joinpath("index_links.json").resolve(),
+        description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database",
+    )
 
     @root_validator(pre=True)
     def load_default_settings(cls, values):
