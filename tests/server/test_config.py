@@ -44,7 +44,7 @@ class TestRegularServerConfig(SetClient, unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertNotIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
+        self.assertNotIn(f"_{CONFIG.provider.prefix}_traceback", response["meta"])
 
     def test_debug_is_respected_when_on(self):
         """Make sure traceback is toggleable according to debug mode - here ON
@@ -64,7 +64,7 @@ class TestRegularServerConfig(SetClient, unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
+        self.assertIn(f"_{CONFIG.provider.prefix}_traceback", response["meta"])
 
 
 class TestRegularIndexServerConfig(SetClient, unittest.TestCase):
@@ -90,7 +90,7 @@ class TestRegularIndexServerConfig(SetClient, unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertNotIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
+        self.assertNotIn(f"_{CONFIG.provider.prefix}_traceback", response["meta"])
 
     def test_debug_is_respected_when_on(self):
         """Make sure traceback is toggleable according to debug mode - here OFF
@@ -110,4 +110,4 @@ class TestRegularIndexServerConfig(SetClient, unittest.TestCase):
         self.assertNotIn("data", response)
         self.assertIn("meta", response)
 
-        self.assertIn(f"{CONFIG.provider.prefix}traceback", response["meta"])
+        self.assertIn(f"_{CONFIG.provider.prefix}_traceback", response["meta"])
