@@ -9,7 +9,7 @@
     "page_limit": 20,
     "page_limit_max": 500,
     "default_db": "test_server",
-    "base_url": null,
+    "base_url": "http://localhost:5000",
     "implementation": {
         "name": "Example implementation",
         "version": "0.7.0",
