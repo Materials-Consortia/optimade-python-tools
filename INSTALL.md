@@ -45,7 +45,7 @@ py.test
 # Install pre-commit environment (e.g., auto-formats code on `git commit`)
 pre-commit install
 
-# Optional: Install MongoDB (and set `use_real_mongodb = true`)
+# Optional: Install MongoDB (and set `use_real_mongo = true`)
 # Below method installs in conda environment and
 # - starts server in background
 # - ensures and uses ~/dbdata directory to store data
