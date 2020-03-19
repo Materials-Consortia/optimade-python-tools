@@ -225,7 +225,7 @@ class FilterTests(SetClient, unittest.TestCase):
     server = "regular"
 
     def test_custom_field(self):
-        request = '/structures?filter=_exmpl__mp_chemsys="Ac"'
+        request = '/structures?filter=_exmpl_chemsys="Ac"'
         expected_ids = ["mpf_1"]
         self._check_response(request, expected_ids, len(expected_ids))
 

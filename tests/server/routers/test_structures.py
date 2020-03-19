@@ -66,9 +66,7 @@ class SingleStructureEndpointTests(EndpointTestsMixin, unittest.TestCase):
         self.assertEqual(self.json_response["data"]["id"], self.test_id)
         self.assertEqual(self.json_response["data"]["type"], "structures")
         self.assertTrue("attributes" in self.json_response["data"])
-        self.assertTrue(
-            "_exmpl__mp_chemsys" in self.json_response["data"]["attributes"]
-        )
+        self.assertTrue("_exmpl_chemsys" in self.json_response["data"]["attributes"])
 
 
 class MissingSingleStructureEndpointTests(EndpointTestsMixin, unittest.TestCase):
