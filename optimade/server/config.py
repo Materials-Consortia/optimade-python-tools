@@ -56,7 +56,7 @@ class ServerConfig(BaseSettings):
         maintainer=None,
     )
     provider: Provider = Provider(
-        prefix="_exmpl_",
+        prefix="exmpl",
         name="Example provider",
         description="Provider used for examples, not to be assigned to a real database",
         homepage="https://example.com",
