@@ -113,6 +113,9 @@ def parse_spec_for_filters(_):
     import requests
 
     filter_path = TOP_DIR.joinpath("optimade/validator/data/filters.txt")
+    optional_filter_path = TOP_DIR.joinpath(
+        "optimade/validator/data/optional_filters.txt"
+    )
 
     specification_flines = (
         requests.get(
@@ -123,12 +126,21 @@ def parse_spec_for_filters(_):
     )
 
     filters = []
+    optional_filters = []
+    optional_triggers = ("OPTIONAL",)
     for line in specification_flines:
         if ":filter:" in line:
             for _split in line.replace("filter=", "").split(":filter:")[1:]:
                 _filter = _split.split("`")[1].strip()
-                filters.append(_filter)
+                if any(trigger in line for trigger in optional_triggers):
+                    optional_filters.append(_filter)
+                else:
+                    filters.append(_filter)
 
     with open(filter_path, "w") as f:
         for _filter in filters:
+            f.write(_filter + "\n")
+
+    with open(optional_filter_path, "w") as f:
+        for _filter in optional_filters:
             f.write(_filter + "\n")
