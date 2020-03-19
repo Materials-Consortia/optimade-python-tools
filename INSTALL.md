@@ -9,8 +9,7 @@ The preferred method of configuring the server is to use a [JSON file](example_j
 The server can also be configured via environment variables prefixed with `optimade_` and the corresponding variable names in `ServerConfig` in the [`config.py` file](optimade/server/config.py).
 These environment variables are not case sensitive, so both `OPTIMADE_CONFIG_FILE` and `optimade_config_file` are valid.
 
-
-The index meta-database is set up to populate a `mongomock` in-memory database with resources from a static `json` file containing the `child` resources you, as a database provider, want to serve under this index meta-database.
+There is a built-in index meta-database set up to populate a `mongomock` in-memory database with resources from a static `json` file containing the `child` resources you, as a database provider, want to serve under this index meta-database. The location of that `json` file is controllable using the `index_links_path` property of the configuration or setting via the environment variable `optimade_index_links_path`.
 
 Running the index meta-database is then as simple as writing `./run.sh index` in a terminal from the root of this package.
 You can find it at the base URL: <http://localhost:5001/v0.10.1>.
