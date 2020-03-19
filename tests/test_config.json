@@ -1,20 +1,11 @@
 {
     "debug": false,
-    "use_real_mongo": false,
-    "mongo_database": "optimade",
-    "mongo_uri": "localhost:27017",
-    "links_collection": "links",
-    "references_collection": "references",
-    "structures_collection": "structures",
-    "page_limit": 20,
-    "page_limit_max": 500,
     "default_db": "test_server",
     "base_url": "http://localhost:5000",
     "implementation": {
         "name": "Example implementation",
-        "version": "0.7.0",
         "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
-        "maintainer": null
+        "maintainer": {"email": "test@test.org"}
     },
     "provider": {
         "name": "Example provider",
