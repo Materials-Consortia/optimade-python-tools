@@ -5,7 +5,9 @@
 This package may be used to setup and run an [OPTIMADE index meta-database](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#index-meta-database).
 Install the package via `pip install optimade[server]`.
 
-The preferred method of configuring the server is to use a [JSON file](example_json.config) and setting the `optimade_config_file` environment variable to point to the location of this JSON file. The server can also be configured via environmet variables prefixed with `optimade_` and the corresponding variable names in `ServerConfig` in `optimade/server/config.py`. These environment variables are not case sensitive, so both `OPTIMADE_CONFIG_FILE` and `optimade_config_file` are valid.
+The preferred method of configuring the server is to use a [JSON file](example_json.config) and setting the `optimade_config_file` environment variable to point to the absolute location of this JSON file.
+The server can also be configured via environment variables prefixed with `optimade_` and the corresponding variable names in `ServerConfig` in the [`config.py` file](optimade/server/config.py).
+These environment variables are not case sensitive, so both `OPTIMADE_CONFIG_FILE` and `optimade_config_file` are valid.
 
 
 The index meta-database is set up to populate a `mongomock` in-memory database with resources from a static `json` file containing the `child` resources you, as a database provider, want to serve under this index meta-database.
@@ -13,9 +15,10 @@ The index meta-database is set up to populate a `mongomock` in-memory database w
 Running the index meta-database is then as simple as writing `./run.sh index` in a terminal from the root of this package.
 You can find it at the base URL: <http://localhost:5001/v0.10.1>.
 
+Here is an example of how it may look to start your server:
 ```shell
 :~$ export OPTIMADE_CONFIG_FILE=/home/optimade_server/config.json
-:~$ ./optimade/optimade-python-tools/run.sh index
+:~$ ./path/to/optimade/run.sh index
 ```
 
 ## Full development installation
