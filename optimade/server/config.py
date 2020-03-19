@@ -93,7 +93,7 @@ class ServerConfig(BaseSettings):
     )
 
     index_links_path: Path = Field(
-        Path(__file__).parent.joinpath("index_links.json").resolve(),
+        Path(__file__).parent.joinpath("index_links.json"),
         description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database",
     )
 
