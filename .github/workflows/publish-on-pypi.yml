@@ -5,6 +5,13 @@ on:
     tags:
       # After vMajor.Minor.Patch _anything_ is allowed (without "/") !
       - v[0-9]+.[0-9]+.[0-9]+*
+    branches:
+      # Only for tags on master branch
+        - master
+    release:
+      # Only when tag is created via github release
+      types:
+        - created
 
 jobs:
   publish:
