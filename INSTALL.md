@@ -5,9 +5,11 @@
 This package may be used to setup and run an [OPTIMADE index meta-database](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#index-meta-database).
 Install the package via `pip install optimade[server]`.
 
-The preferred method of configuring the server is to use a [JSON file](example_json.config) and setting the `optimade_config_file` environment variable to point to the absolute location of this JSON file.
-The server can also be configured via environment variables prefixed with `optimade_` and the corresponding variable names in `ServerConfig` in the [`config.py` file](optimade/server/config.py).
-These environment variables are not case sensitive, so both `OPTIMADE_CONFIG_FILE` and `optimade_config_file` are valid.
+This python OPTIMADE implementation can be configured in two ways:
+First, the server can be configured via environment variables prefixed with `optimade_` and the corresponding variable names in `ServerConfig` in the [`config.py` file](optimade/server/config.py). These take precedence. These environment variables are not case sensitive, so both `OPTIMADE_CONFIG_FILE` and `optimade_config_file` are valid.
+Second, and the preferred method of configuring the server, is to use a [JSON file](example_json.config) with the bulk of the configuration and setting the `optimade_config_file` environment variable to point to the absolute location of this JSON file. By default this points to `~/.optimade.json` which can also be used to store the configuration if you don't want to set `optimade_config_file`.
+
+For any configuration parameters not set by the above two, the defaults in built into `ServerConfig` in `optimade.server.config` will be used.
 
 There is a built-in index meta-database set up to populate a `mongomock` in-memory database with resources from a static `json` file containing the `child` resources you, as a database provider, want to serve under this index meta-database. The location of that `json` file is controllable using the `index_links_path` property of the configuration or setting via the environment variable `optimade_index_links_path`.
 
