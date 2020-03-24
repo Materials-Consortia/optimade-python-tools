@@ -176,11 +176,11 @@ class MongoTransformer(Transformer):
 
     def length_op_rhs(self, arg):
         # length_op_rhs: LENGTH [ OPERATOR ] value
-        # TODO: https://stackoverflow.com/questions/7811163/query-for-documents-where-array-size-is-greater-than-1
         if len(arg) == 2 or (len(arg) == 3 and arg[1] == "="):
             return {"$size": arg[-1]}
 
-        elif arg[1] in self.operator_map:
+        # the approach taken in post-process still cannot handle !=, so return error here
+        elif arg[1] in self.operator_map and arg[1] != "!=":
             # otherwise, create an invalid query that needs to be post-processed
             # e.g. {'$size': {'$gt': 2}}, which is not allowed by Mongo.
             return {"$size": {self.operator_map[arg[1]]: arg[-1]}}
@@ -340,11 +340,6 @@ class MongoTransformer(Transformer):
                 if _prop is not None:
                     subdict.pop(prop)
                     subdict[_prop] = {"$exists": existence}
-            else:
-                # we still can't handle not equals with this approach
-                raise NotImplementedError(
-                    f"Operator {operator} not implemented for LENGTH filter."
-                )
 
             return subdict
 
