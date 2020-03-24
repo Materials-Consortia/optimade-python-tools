@@ -34,6 +34,7 @@ class MongoTransformer(Transformer):
     def postprocess(self, query):
         """ Used to post-process the final parsed query. """
         if self.mapper:
+            # important to apply length alias before normal aliases
             query = self._apply_length_aliases(query)
             query = self._apply_aliases(query)
         return query
@@ -244,7 +245,7 @@ class MongoTransformer(Transformer):
         # simple case of negating one expression, from NOT (expr) to ~expr.
         return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
-    def _apply_length_aliases(self, query):
+    def _apply_length_aliases(self, filter_: dict) -> dict:
         """ Recursively search query for any $size calls, and check
         if the property can be replaced with its corresponding length
         alias.
@@ -266,7 +267,7 @@ class MongoTransformer(Transformer):
             return subdict
 
         return recursive_postprocessing(
-            query, check_for_size, replace_with_length_alias
+            filter_, check_for_size, replace_with_length_alias
         )
 
     def _apply_aliases(self, filter_: dict) -> dict:
@@ -296,7 +297,7 @@ class MongoTransformer(Transformer):
         )
 
 
-def recursive_postprocessing(filter_, condition, replacement, debug=False):
+def recursive_postprocessing(filter_, condition, replacement):
     """ Recursively descend into the query, checking each dictionary
     (contained in a list, or as an entry in another dictionary) for
     the condition passed. If the condition is true, apply the
