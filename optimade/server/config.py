@@ -1,15 +1,11 @@
-import os
 import json
-from typing import Any, Optional, Dict, List
+from typing import Optional, Dict, List
 
 try:
     from typing import Literal
 except ImportError:
     from typing_extensions import Literal
 from pathlib import Path
-from warnings import warn
-
-import json
 
 from pydantic import BaseSettings, Field, root_validator
 
@@ -117,5 +113,6 @@ class ServerConfig(BaseSettings):
 
     class Config:
         env_prefix = "optimade_"
+
 
 CONFIG = ServerConfig()
