@@ -37,6 +37,9 @@ class MongoTransformer(Transformer):
             # important to apply length alias before normal aliases
             query = self._apply_length_aliases(query)
             query = self._apply_aliases(query)
+
+        query = self._apply_length_operators(query)
+
         return query
 
     def transform(self, tree):
@@ -177,6 +180,11 @@ class MongoTransformer(Transformer):
         if len(arg) == 2 or (len(arg) == 3 and arg[1] == "="):
             return {"$size": arg[-1]}
 
+        elif arg[1] in self.operator_map:
+            # otherwise, create an invalid query that needs to be post-processed
+            # e.g. {'$size': {'$gt': 2}}, which is not allowed by Mongo.
+            return {"$size": {self.operator_map[arg[1]]: arg[-1]}}
+
         raise NotImplementedError(
             f"Operator {arg[1]} not implemented for LENGTH filter."
         )
@@ -292,8 +300,56 @@ class MongoTransformer(Transformer):
 
             return subdict
 
+        return recursive_postprocessing(filter_, check_for_alias, apply_alias)
+
+    def _apply_length_operators(self, filter_: dict) -> dict:
+        """ Check for any invalid pymongo queries that involve
+        applying an operator to the length of a field, and transform
+        them into a test for existence of the relevant entry, e.g.
+        "list LENGTH > 3" becomes "does the 4th list entry exist?".
+
+        """
+
+        def check_for_length_op_filter(prop, expr):
+            return (
+                isinstance(expr, dict)
+                and "$size" in expr
+                and isinstance(expr["$size"], dict)
+            )
+
+        def apply_length_op(subdict, prop, expr):
+            # assumes that the dictionary only has one element by design
+            # (we just made it above in the transformer)
+            operator, value = list(expr["$size"].items())[0]
+            if operator in self.operator_map.values() and operator != "$ne":
+                # worth being explicit here, I think
+                _prop = None
+                existence = None
+                if operator == "$gt":
+                    _prop = f"{prop}.{value + 1}"
+                    existence = True
+                elif operator == "$gte":
+                    _prop = f"{prop}.{value}"
+                    existence = True
+                elif operator == "$lt":
+                    _prop = f"{prop}.{value}"
+                    existence = False
+                elif operator == "$lte":
+                    _prop = f"{prop}.{value + 1}"
+                    existence = False
+                if _prop is not None:
+                    subdict.pop(prop)
+                    subdict[_prop] = {"$exists": existence}
+            else:
+                # we still can't handle not equals with this approach
+                raise NotImplementedError(
+                    f"Operator {operator} not implemented for LENGTH filter."
+                )
+
+            return subdict
+
         return recursive_postprocessing(
-            filter_, check_for_alias, apply_alias, debug=True
+            filter_, check_for_length_op_filter, apply_length_op,
         )
 
 
