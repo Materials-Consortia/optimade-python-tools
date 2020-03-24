@@ -1,260 +1,122 @@
 import os
 import json
-from typing import Any
-from configparser import ConfigParser
+from typing import Any, Optional, Dict, List
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 from pathlib import Path
 from warnings import warn
 
+import json
+
+from pydantic import BaseSettings, Field, root_validator
+
 from optimade import __version__
-from optimade.models import Implementation
+from optimade.models import Implementation, Provider
 
 
 class NoFallback(Exception):
     """No fallback value can be found."""
 
 
-class Config:
-    """Base class for loading config files and its parameters"""
-
-    index_links_path: Path = Path(__file__).parent.joinpath("index_links.json")
-    _path: Path = Path(__file__).parent.joinpath("config.ini")
-
-    def __init__(self, server_cfg: Path = None):
-        self._debug = os.getenv("OPTIMADE_DEBUG") == "1"
-        self._server = (
-            Path().resolve().joinpath("server.cfg")
-            if server_cfg is None
-            else server_cfg
-        )
-
-    def __getattr__(self, name: str) -> Any:
-        self._load_server_config()
-
-        ftype = self._path.suffix[1:]  # Remove initial "."
-        self.load(ftype)
-
-        if name not in self.__dict__:
-            raise AttributeError(
-                f"'{self.__class__.__name__}' object has no attribute '{name}'"
-            )
-
-        return getattr(self, name)
-
-    def _load_server_config(self):
-        """Load cfg-file determining paths to server config files"""
-        SECTION = "optimadeconfig"
-        INDEX_LINKS_PATH = "INDEX_LINKS"
-        SERVER_CONFIG_PATH = "CONFIG"
-
-        server = ConfigParser()
-
-        if self._server.exists():
-            server.read(self._server)
-
-        index_links_path = server.get(
-            SECTION, INDEX_LINKS_PATH, fallback=str(self.index_links_path)
-        )
-        self.index_links_path = self._server.parent.joinpath(index_links_path).resolve()
-
-        _path = server.get(SECTION, SERVER_CONFIG_PATH, fallback=str(self._path))
-        self._path = self._server.parent.joinpath(_path).resolve()
-
-        if not self._path.exists():
-            raise ValueError(
-                f'Cannot resolve {self._path}. Check the config-file exists. Note, "~" is not allowed.'
-            )
-
-        if not self.index_links_path.exists():
-            warn(
-                f'Cannot resolve {self.index_links_path}. Check the index_links.json file exists. Note, "~" is not allowed.'
-            )
-
-        if not self._server.exists():
-            server.add_section(SECTION)
-            server.set(SECTION, SERVER_CONFIG_PATH, str(self._path))
-            server.set(SECTION, INDEX_LINKS_PATH, str(self.index_links_path))
-            warn(f"No server.cfg file found, writing defaults to {self._server}")
-            with open(self._server, "w") as f:
-                server.write(f)
-
-    def _get_load_func(self, format_name) -> Any:
-        return getattr(self, f"load_from_{format_name}")
-
-    def load(self, ftype: str = None):
-        try:
-            f = self._get_load_func(ftype)
-        except AttributeError:
-            raise NotImplementedError(
-                f"load function for config format {ftype} is not implemented"
-            )
-        else:
-            f()
-
-    @property
-    def debug(self):
-        return self._debug
-
-    @debug.setter
-    def debug(self, value: bool):
-        self._debug = value
-
-
-class ServerConfig(Config):
+class ServerConfig(BaseSettings):
     """ This class stores server config parameters in a way that
     can be easily extended for new config file types.
 
     """
 
-    @staticmethod
-    def _DEFAULTS(field: str) -> Any:
-        res = {
-            "use_real_mongo": False,
-            "mongo_database": "optimade",
-            "mongo_uri": "localhost:27017",
-            "links_collection": "links",
-            "references_collection": "references",
-            "structures_collection": "structures",
-            "page_limit": 20,
-            "page_limit_max": 500,
-            "default_db": "test_server",
-            "base_url": None,
-            "implementation": {
-                "name": "Example implementation",
-                "version": __version__,
-                "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
-                "maintainer": None,
-            },
-            "provider": {
-                "prefix": "_exmpl_",
-                "name": "Example provider",
-                "description": "Provider used for examples, not to be assigned to a real database",
-                "homepage": "https://example.com",
-                "index_base_url": None,
-            },
-        }
-        if field not in res:
-            raise NoFallback(f"No fallback value found for '{field}'")
-        return res[field]
+    config_file: str = Field(
+        "~/.optimade.json", description="File to load alternative defaults from"
+    )
+    debug: bool = Field(
+        False, description="Turns on Debug Mode for the OPTIMADE Server implementation"
+    )
+    use_real_mongo: bool = Field(
+        False, description="Use a real Mongo server rather than MongoMock"
+    )
+    mongo_database: str = Field(
+        "optimade", description="Mongo database for collection data"
+    )
+    mongo_uri: str = Field("localhost:27017", description="URI for the Mongo server")
+    links_collection: str = Field(
+        "links", description="Mongo collection name for /links endpoint resources"
+    )
+    references_collection: str = Field(
+        "references",
+        description="Mongo collection name for /references endpoint resources",
+    )
+    structures_collection: str = Field(
+        "structures",
+        description="Mongo collection name for /structures endpoint resources",
+    )
+    page_limit: int = Field(20, description="Default number of resources per page")
+    page_limit_max: int = Field(
+        500, description="Max allowed number of resources per page"
+    )
+    default_db: str = Field(
+        "test_server",
+        description="ID of /links endpoint resource for the chosen default OPTIMADE implementation (only relevant for the index meta-database)",
+    )
+    base_url: Optional[str] = Field(
+        None, description="Base URL for this implementation"
+    )
+    implementation: Implementation = Field(
+        Implementation(
+            name="Example implementation",
+            version=__version__,
+            source_url="https://github.com/Materials-Consortia/optimade-python-tools",
+            maintainer=None,
+        ),
+        description="Introspective information about this OPTIMADE implementation",
+    )
+    provider: Provider = Field(
+        Provider(
+            prefix="exmpl",
+            name="Example provider",
+            description="Provider used for examples, not to be assigned to a real database",
+            homepage="https://example.com",
+            index_base_url="http://localhost:5001",
+        ),
+        description="General information about the provider of this OPTIMADE implementation",
+    )
+    provider_fields: Dict[
+        Literal["links", "references", "structures"], List[str]
+    ] = Field(
+        {},
+        description="A list of additional fields to be served with the provider's prefix attached, broken down by endpoint.",
+    )
+    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
+        {},
+        description="A mapping between field names in the database with their corresponding OPTIMADE field names, broken down by endpoint.",
+    )
 
-    def load_from_ini(self):
-        """ Load from the file "config.ini", if it exists. """
-        config = ConfigParser()
-        config.read(self._path)
+    index_links_path: Path = Field(
+        Path(__file__).parent.joinpath("index_links.json"),
+        description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database",
+    )
 
-        self.use_real_mongo = config.getboolean(
-            "BACKEND", "USE_REAL_MONGO", fallback=self._DEFAULTS("use_real_mongo")
-        )
-        self.mongo_database = config.get(
-            "BACKEND", "MONGO_DATABASE", fallback=self._DEFAULTS("mongo_database")
-        )
-        self.mongo_uri = config.get(
-            "BACKEND", "MONGO_URI", fallback=self._DEFAULTS("mongo_uri")
-        )
+    @root_validator(pre=True)
+    def load_default_settings(cls, values):
+        """
+        Loads settings from a root file if available and uses that as defaults in
+        place of built in defaults
+        """
+        config_file_path = Path(values.get("config_file", "~/.optimade.json"))
 
-        self.page_limit = config.getint(
-            "SERVER", "PAGE_LIMIT", fallback=self._DEFAULTS("page_limit")
-        )
-        self.page_limit_max = config.getint(
-            "SERVER", "PAGE_LIMIT_MAX", fallback=self._DEFAULTS("page_limit_max")
-        )
-        self.default_db = config.get(
-            "SERVER", "DEFAULT_DB", fallback=self._DEFAULTS("default_db")
-        )
-        self.base_url = config.get(
-            "SERVER", "BASE_URL", fallback=self._DEFAULTS("base_url")
-        )
+        new_values = {}
 
-        # This is done in this way, since each field is OPTIONAL
-        self.implementation = {}
-        for field in Implementation.schema()["properties"]:
-            value_config = config.get("IMPLEMENTATION", field, fallback=None)
-            value_default = self._DEFAULTS("implementation")[field]
-            if value_config is not None:
-                self.implementation[field] = value_config
-            elif value_default is not None:
-                self.implementation[field] = value_default
+        if config_file_path.exists():
+            with open(config_file_path) as f:
+                new_values = json.load(f)
 
-        if "PROVIDER" in config.sections():
-            self.provider = dict(config["PROVIDER"])
-        else:
-            self.provider = self._DEFAULTS("provider")
+        new_values.update(values)
 
-        self.aliases = {}
-        for endpoint in {"links", "references", "structures"}:
-            if f"{endpoint}.aliases" in config:
-                section = config[f"{endpoint}.aliases"]
-                self.aliases[endpoint] = tuple(section.items())
+        return new_values
 
-        self.provider_fields = {}
-        for endpoint in {"links", "references", "structures"}:
-            self.provider_fields[endpoint] = (
-                list({field for field, _ in config[endpoint].items() if _ == ""})
-                if endpoint in config
-                else []
-            )
-
-            # MONGO collections
-            setattr(
-                self,
-                f"{endpoint}_collection",
-                config.get(
-                    "BACKEND",
-                    f"{endpoint.upper()}_COLLECTION",
-                    fallback=self._DEFAULTS(f"{endpoint}_collection"),
-                ),
-            )
-
-    def load_from_json(self):
-        """ Load from the file "config.json", if it exists. """
-        with open(self._path, "r") as f:
-            config = json.load(f)
-
-        self.use_real_mongo = bool(
-            config.get("use_real_mongo", self._DEFAULTS("use_real_mongo"))
-        )
-        self.mongo_database = config.get(
-            "mongo_database", self._DEFAULTS("mongo_database")
-        )
-        self.mongo_uri = config.get("mongo_uri", self._DEFAULTS("mongo_uri"))
-        for endpoint in {"links", "references", "structures"}:
-            setattr(
-                self,
-                f"{endpoint}_collection",
-                config.get(
-                    f"{endpoint}_collection", self._DEFAULTS(f"{endpoint}_collection")
-                ),
-            )
-
-        self.page_limit = int(config.get("page_limit", self._DEFAULTS("page_limit")))
-        self.page_limit_max = int(
-            config.get("page_limit_max", self._DEFAULTS("page_limit_max"))
-        )
-        self.default_db = config.get("default_db", self._DEFAULTS("default_db"))
-        self.base_url = config.get("base_url", self._DEFAULTS("base_url"))
-
-        # This is done in this way, since each field is OPTIONAL
-        self.implementation = config.get("implementation", {})
-        for field in Implementation.schema()["properties"]:
-            value_default = self._DEFAULTS("implementation")[field]
-            if field in self.implementation:
-                # Keep the config value
-                pass
-            elif value_default is not None:
-                self.implementation[field] = value_default
-
-        self.provider = config.get("provider", self._DEFAULTS("provider"))
-        self.provider_fields = {}
-        for endpoint in {"structures", "references"}:
-            self.provider_fields[endpoint] = list(
-                set(config.get("provider_fields", {}).get(endpoint, []))
-            )
-
-        self.aliases = {}
-        if "aliases" in config:
-            for endpoint in {"links", "references", "structures"}:
-                if endpoint in config["aliases"]:
-                    section = config["aliases"][endpoint]
-                    self.aliases[endpoint] = tuple(section.items())
+    class Config:
+        env_prefix = "optimade_"
 
 
 CONFIG = ServerConfig()

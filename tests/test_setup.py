@@ -30,7 +30,6 @@ class TestSetup(unittest.TestCase):
 
             present = {
                 r"\.lark": False,
-                r"config\.ini": False,
                 r"index_links\.json": False,
                 r"test_structures\.json": False,
                 r"test_references\.json": False,

@@ -124,6 +124,9 @@ class Error(BaseModel):
         description="a meta object containing non-standard meta-information about the error.",
     )
 
+    def __hash__(self):
+        return hash(self.json())
+
 
 class BaseResource(BaseModel):
     """Minimum requirements to represent a Resource"""

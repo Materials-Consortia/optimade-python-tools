@@ -11,6 +11,7 @@ from optimade.models import (
     ReferenceResource,
     AvailableApiVersion,
 )
+from optimade.models.jsonapi import Error
 from optimade.server.mappers import StructureMapper, ReferenceMapper
 
 
@@ -174,3 +175,7 @@ class TestPydanticValidation(unittest.TestCase):
 
         for data in good_urls:
             self.assertIsInstance(AvailableApiVersion(**data), AvailableApiVersion)
+
+    def test_hashability(self):
+        error = Error(id="test")
+        set([error])

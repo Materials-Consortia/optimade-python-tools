@@ -1,0 +1,37 @@
+{
+    "debug": false,
+    "use_real_mongo": true,
+    "mongo_database": "optimade",
+    "mongo_uri": "mongodb+srv://MongoUser:MongoPassword@FakeMongoServer.com/optimade_database",
+    "links_collection": "optimade_links",
+    "references_collection": "optimade_references",
+    "structures_collection": "optimade_structures",
+    "default_db": "example_server",
+    "base_url": "https://optimade.example.org",
+    "implementation": {
+        "name": "Example implementation",
+        "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
+        "maintainer": {"email": "maintainer@example.org"}
+    },
+    "provider": {
+        "name": "Example provider",
+        "description": "Provider used for examples, not to be assigned to a real database",
+        "prefix": "exmpl",
+        "homepage": "https://example.com",
+        "index_base_url": "https://example.com/index"
+    },
+    "provider_fields": {
+        "structures": [
+            "band_gap",
+            "chemsys"
+        ]
+    },
+    "aliases": {
+        "structures": {
+            "id": "task_id",
+            "chemical_formula_descriptive": "pretty_formula",
+            "chemical_formula_reduced": "pretty_formula",
+            "chemical_formula_anonymous": "formula_anonymous"
+        }
+    }
+}
