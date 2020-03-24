@@ -349,13 +349,7 @@ class TestMongoTransformer(unittest.TestCase):
     def test_list_length_aliases(self):
         from optimade.server.mappers import StructureMapper
 
-        class AliasedStructureMapper(StructureMapper):
-            LENGTH_ALIASES = (
-                ("elements", "nelements"),
-                ("cartesian_site_positions", "nsites"),
-            )
-
-        transformer = MongoTransformer(mapper=AliasedStructureMapper())
+        transformer = MongoTransformer(mapper=StructureMapper())
         parser = LarkParser(version=self.version, variant=self.variant)
 
         self.assertEqual(
@@ -414,6 +408,41 @@ class TestMongoTransformer(unittest.TestCase):
         self.assertEqual(
             transformer.transform(parser.parse("cartesian_site_positions LENGTH > 10")),
             {"cartesian_site_positions.11": {"$exists": True}},
+        )
+
+    def test_aliased_length_operator(self):
+        from optimade.server.mappers import StructureMapper
+
+        transformer = MongoTransformer(mapper=StructureMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
+
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH <= 3")),
+            {"nsites": {"$lte": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH < 3")),
+            {"nsites": {"$lt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
+            {"nsites": 3},
+        )
+        self.assertEqual(
+            transformer.transform(
+                parser.parse("cartesian_site_positions LENGTH >= 10")
+            ),
+            {"nsites": {"$gte": 10}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("structure_features LENGTH > 10")),
+            {"structure_features.11": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("nsites LENGTH > 10")),
+            {"nsites.11": {"$exists": True}},
         )
 
     def test_aliases(self):
