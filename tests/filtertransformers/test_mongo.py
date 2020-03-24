@@ -342,22 +342,78 @@ class TestMongoTransformer(unittest.TestCase):
                 'HAS ANY > 3:"He":>55.3 , = 6:>"Ti":<37.6 , 8:<"Ga":0'
             )
 
-        with self.assertRaises(VisitError):
-            self.transform("list LENGTH > 3")
+        self.assertEqual(
+            self.transform("list LENGTH > 3"), {"list.4": {"$exists": True}}
+        )
 
     def test_list_length_aliases(self):
         from optimade.server.mappers import StructureMapper
 
         class AliasedStructureMapper(StructureMapper):
-            LENGTH_ALIASES = (("elements", "nelements"),)
+            LENGTH_ALIASES = (
+                ("elements", "nelements"),
+                ("cartesian_site_positions", "nsites"),
+            )
 
-        t = MongoTransformer(mapper=AliasedStructureMapper())
-        p = LarkParser(version=self.version, variant=self.variant)
-        self.assertEqual(t.transform(p.parse("elements LENGTH 3")), {"nelements": 3})
+        transformer = MongoTransformer(mapper=AliasedStructureMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
 
         self.assertEqual(
-            t.transform(p.parse('elements HAS "Li" AND elements LENGTH = 3')),
+            transformer.transform(parser.parse("elements LENGTH 3")), {"nelements": 3}
+        )
+
+        self.assertEqual(
+            transformer.transform(
+                parser.parse('elements HAS "Li" AND elements LENGTH = 3')
+            ),
             {"$and": [{"elements": {"$in": ["Li"]}}, {"nelements": 3}]},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH > 3")),
+            {"nelements": {"$gt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH < 3")),
+            {"nelements": {"$lt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH = 3")), {"nelements": 3}
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH <= 3")),
+            {"nsites": {"$lte": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH >= 3")),
+            {"nsites": {"$gte": 3}},
+        )
+
+    def test_unaliased_length_operator(self):
+        transformer = MongoTransformer()
+        parser = LarkParser(version=self.version, variant=self.variant)
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH <= 3")),
+            {"cartesian_site_positions.4": {"$exists": False}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH < 3")),
+            {"cartesian_site_positions.3": {"$exists": False}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
+            {"cartesian_site_positions": {"$size": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(
+                parser.parse("cartesian_site_positions LENGTH >= 10")
+            ),
+            {"cartesian_site_positions.10": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH > 10")),
+            {"cartesian_site_positions.11": {"$exists": True}},
         )
 
     def test_aliases(self):
