@@ -25,6 +25,7 @@ class BaseResourceMapper:
     ENDPOINT: str = ""
     ALIASES: Tuple[Tuple[str, str]] = ()
     LENGTH_ALIASES: Tuple[Tuple[str, str]] = ()
+    PROVIDER_FIELDS: Tuple[str] = ()
     REQUIRED_FIELDS: set = set()
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set = {"id", "type", "relationships", "links"}
 
@@ -35,13 +36,19 @@ class BaseResourceMapper:
                 (f"_{CONFIG.provider.prefix}_{field}", field)
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
             )
+            + tuple(
+                (f"_{CONFIG.provider.prefix}_{field}", field)
+                for field in cls.PROVIDER_FIELDS
+            )
             + tuple(CONFIG.aliases.get(cls.ENDPOINT, {}).items())
             + cls.ALIASES
         )
 
     @classmethod
     def all_length_aliases(cls) -> Tuple[Tuple[str, str]]:
-        return cls.LENGTH_ALIASES + CONFIG.length_aliases.get(cls.ENDPOINT, ())
+        return cls.LENGTH_ALIASES + tuple(
+            CONFIG.length_aliases.get(cls.ENDPOINT, {}).items()
+        )
 
     @classmethod
     def length_alias_for(cls, field: str) -> str:
