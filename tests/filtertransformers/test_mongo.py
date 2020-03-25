@@ -413,7 +413,10 @@ class TestMongoTransformer(unittest.TestCase):
     def test_aliased_length_operator(self):
         from optimade.server.mappers import StructureMapper
 
-        transformer = MongoTransformer(mapper=StructureMapper())
+        class MyMapper(StructureMapper):
+            ALIASES = (("elements", "my_elements"), ("nelements", "nelem"))
+
+        transformer = MongoTransformer(mapper=MyMapper())
         parser = LarkParser(version=self.version, variant=self.variant)
 
         self.assertEqual(
@@ -423,6 +426,10 @@ class TestMongoTransformer(unittest.TestCase):
         self.assertEqual(
             transformer.transform(parser.parse("cartesian_site_positions LENGTH < 3")),
             {"nsites": {"$lt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
+            {"nsites": 3},
         )
         self.assertEqual(
             transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
@@ -443,6 +450,10 @@ class TestMongoTransformer(unittest.TestCase):
         self.assertEqual(
             transformer.transform(parser.parse("nsites LENGTH > 10")),
             {"nsites.11": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH 3")), {"nelem": 3},
         )
 
     def test_aliases(self):
