@@ -43,13 +43,11 @@ jobs:
       run: pytest -rs --cov=./optimade/ --cov-report=xml
       env:
         OPTIMADE_CI_FORCE_MONGO: 1
-        OPTIMADE_CONFIG_FILE: ${{ github.workspace }}/tests/test_config.json
 
     - name: Run tests relevant for index meta-db (using `mongomock`)
       run: pytest -rs --cov=./optimade/ --cov-report=xml --cov-append tests/server/test_middleware.py tests/server/test_server_validation.py tests/server/test_config.py
       env:
         OPTIMADE_CI_FORCE_MONGO: 0
-        OPTIMADE_CONFIG_FILE: ${{ github.workspace }}/tests/test_config.json
 
   # deps_clean-install:
   #   runs-on: ubuntu-latest
