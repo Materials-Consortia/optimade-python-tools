@@ -415,6 +415,12 @@ class TestMongoTransformer(unittest.TestCase):
 
         class MyMapper(StructureMapper):
             ALIASES = (("elements", "my_elements"), ("nelements", "nelem"))
+            LENGTH_ALIASES = (
+                ("chemsys", "nelements"),
+                ("cartesian_site_positions", "nsites"),
+                ("elements", "nelements"),
+            )
+            PROVIDER_FIELDS = ("chemsys",)
 
         transformer = MongoTransformer(mapper=MyMapper())
         parser = LarkParser(version=self.version, variant=self.variant)
@@ -454,6 +460,15 @@ class TestMongoTransformer(unittest.TestCase):
 
         self.assertEqual(
             transformer.transform(parser.parse("elements LENGTH 3")), {"nelem": 3},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse('elements HAS "Ag"')),
+            {"my_elements": {"$in": ["Ag"]}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("chemsys LENGTH 3")), {"nelem": 3},
         )
 
     def test_aliases(self):

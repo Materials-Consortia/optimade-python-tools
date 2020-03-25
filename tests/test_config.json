@@ -27,5 +27,10 @@
             "chemical_formula_reduced": "pretty_formula",
             "chemical_formula_anonymous": "formula_anonymous"
         }
+    },
+    "length_aliases": {
+        "structures": {
+            "chemsys": "nelements"
+        }
     }
 }
