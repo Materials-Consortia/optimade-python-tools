@@ -88,6 +88,17 @@ class ServerConfig(BaseSettings):
         description="A mapping between field names in the database with their corresponding OPTIMADE field names, broken down by endpoint.",
     )
 
+    length_aliases: Dict[
+        Literal["links", "references", "structures"], Dict[str, str]
+    ] = Field(
+        {},
+        description=(
+            "A mapping between a list property (or otherwise) and an integer property that defines the length of that list, "
+            "for example elements -> nelements. The standard aliases are applied first, so this dictionary must refer to the "
+            "API fields, not the database fields."
+        ),
+    )
+
     index_links_path: Path = Field(
         Path(__file__).parent.joinpath("index_links.json"),
         description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database",

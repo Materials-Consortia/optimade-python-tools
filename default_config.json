@@ -26,5 +26,6 @@
     },
     "provider_fields": {},
     "aliases": {},
+    "length_aliases": {},
     "index_links_path": "/Users/shyamd/Codes/optimade-python-tools/optimade/server/index_links.json"
 }
