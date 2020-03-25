@@ -50,14 +50,8 @@ class MongoCollection(EntryCollection):
         )  # The MongoTransformer only supports v0.10.1 as the latest grammar
 
         # check aliases do not clash with mongo operators
-        self._mapper_aliases = self.resource_mapper.all_aliases()
-        if any(
-            alias[0].startswith("$") or alias[1].startswith("$")
-            for alias in self._mapper_aliases
-        ):
-            raise RuntimeError(
-                f"Cannot define an alias starting with a '$': {self._mapper_aliases}"
-            )
+        self._check_aliases(self.resource_mapper.all_aliases())
+        self._check_aliases(self.resource_mapper.all_length_aliases())
 
     def __len__(self):
         return self.collection.estimated_document_count()
@@ -166,3 +160,10 @@ class MongoCollection(EntryCollection):
             cursor_kwargs["skip"] = params.page_offset
 
         return cursor_kwargs
+
+    def _check_aliases(self, aliases):
+        """ Check that aliases do not clash with mongo keywords. """
+        if any(
+            alias[0].startswith("$") or alias[1].startswith("$") for alias in aliases
+        ):
+            raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
