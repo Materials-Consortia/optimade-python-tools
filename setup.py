@@ -14,6 +14,7 @@ testing_deps = [
     "codecov",
     "openapi-spec-validator",
     "jsondiff",
+    "numpy~=1.18",
 ] + server_deps
 dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps
 all_deps = dev_deps + django_deps + elastic_deps
