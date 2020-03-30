@@ -1,5 +1,5 @@
-lark-parser==0.8.1
-fastapi==0.52.0
+lark-parser==0.8.5
+fastapi==0.53.1
 pydantic==1.4
 email_validator==1.0.5
 requests==2.23.0
@@ -9,3 +9,4 @@ mongomock==3.19.0
 django==3.0.4
 elasticsearch-dsl==7.1.0
 Jinja2==2.11.1
+numpy==1.18.2

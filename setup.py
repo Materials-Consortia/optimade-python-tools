@@ -20,7 +20,7 @@ client_deps = cif_deps
 
 # General
 testing_deps = (
-    ["pytest~=5.3", "pytest-cov", "codecov", "openapi-spec-validator", "jsondiff"]
+    ["pytest~=5.4", "pytest-cov", "codecov", "openapi-spec-validator", "jsondiff"]
     + server_deps
     + client_deps
 )
@@ -53,8 +53,8 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "lark-parser~=0.8.1",
-        "fastapi~=0.52",
+        "lark-parser~=0.8.5",
+        "fastapi~=0.53",
         "pydantic~=1.4",
         "email_validator",
         "requests~=2.23",
