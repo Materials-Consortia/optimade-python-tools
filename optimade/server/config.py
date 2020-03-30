@@ -1,15 +1,11 @@
-import os
 import json
-from typing import Any, Optional, Dict, List
+from typing import Optional, Dict, List
 
 try:
     from typing import Literal
 except ImportError:
     from typing_extensions import Literal
 from pathlib import Path
-from warnings import warn
-
-import json
 
 from pydantic import BaseSettings, Field, root_validator
 
@@ -90,6 +86,17 @@ class ServerConfig(BaseSettings):
     aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
         {},
         description="A mapping between field names in the database with their corresponding OPTIMADE field names, broken down by endpoint.",
+    )
+
+    length_aliases: Dict[
+        Literal["links", "references", "structures"], Dict[str, str]
+    ] = Field(
+        {},
+        description=(
+            "A mapping between a list property (or otherwise) and an integer property that defines the length of that list, "
+            "for example elements -> nelements. The standard aliases are applied first, so this dictionary must refer to the "
+            "API fields, not the database fields."
+        ),
     )
 
     index_links_path: Path = Field(

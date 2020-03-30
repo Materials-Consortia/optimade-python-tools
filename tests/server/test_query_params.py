@@ -321,26 +321,37 @@ class FilterTests(SetClient, unittest.TestCase):
 
     def test_list_length(self):
         request = "/structures?filter=elements LENGTH >= 9"
-        error_detail = "Operator >= not implemented for LENGTH filter."
-        self._check_error_response(
-            request,
-            expected_status=501,
-            expected_title="NotImplementedError",
-            expected_detail=error_detail,
-        )
-        # expected_ids = ["mpf_3819"]
-        # self._check_response(request, expected_ids, len(expected_ids))
+        expected_ids = ["mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
 
         request = "/structures?filter=structure_features LENGTH > 0"
-        error_detail = "Operator > not implemented for LENGTH filter."
+        expected_ids = []
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = "/structures?filter=structure_features LENGTH > 0"
+        expected_ids = []
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = "/structures?filter=cartesian_site_positions LENGTH > 43"
+        expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = "/structures?filter=species_at_sites LENGTH > 43"
+        expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = "/structures?filter=nsites LENGTH > 43"
+        expected_ids = []
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = "/structures?filter=structure_features LENGTH != 0"
+        error_detail = "Operator != not implemented for LENGTH filter."
         self._check_error_response(
             request,
             expected_status=501,
             expected_title="NotImplementedError",
             expected_detail=error_detail,
         )
-        # expected_ids = []
-        # self._check_response(request, expected_ids, len(expected_ids))
 
     @unittest.skipIf(MONGOMOCK_OLD, MONGOMOCK_MSG)
     def test_list_has_only(self):

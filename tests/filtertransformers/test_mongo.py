@@ -4,6 +4,7 @@ from lark.exceptions import VisitError
 
 from optimade.filterparser import LarkParser, ParserError
 from optimade.filtertransformers.mongo import MongoTransformer
+from optimade.server.mappers import BaseResourceMapper
 
 
 class TestMongoTransformer(unittest.TestCase):
@@ -341,8 +342,166 @@ class TestMongoTransformer(unittest.TestCase):
                 'HAS ANY > 3:"He":>55.3 , = 6:>"Ti":<37.6 , 8:<"Ga":0'
             )
 
-        with self.assertRaises(VisitError):
-            self.transform("list LENGTH > 3")
+        self.assertEqual(
+            self.transform("list LENGTH > 3"), {"list.4": {"$exists": True}}
+        )
+
+    def test_list_length_aliases(self):
+        from optimade.server.mappers import StructureMapper
+
+        transformer = MongoTransformer(mapper=StructureMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
+
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH 3")), {"nelements": 3}
+        )
+
+        self.assertEqual(
+            transformer.transform(
+                parser.parse('elements HAS "Li" AND elements LENGTH = 3')
+            ),
+            {"$and": [{"elements": {"$in": ["Li"]}}, {"nelements": 3}]},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH > 3")),
+            {"nelements": {"$gt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH < 3")),
+            {"nelements": {"$lt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH = 3")), {"nelements": 3}
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH <= 3")),
+            {"nsites": {"$lte": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH >= 3")),
+            {"nsites": {"$gte": 3}},
+        )
+
+    def test_unaliased_length_operator(self):
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH <= 3"),
+            {"cartesian_site_positions.4": {"$exists": False}},
+        )
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH < 3"),
+            {"cartesian_site_positions.3": {"$exists": False}},
+        )
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH 3"),
+            {"cartesian_site_positions": {"$size": 3}},
+        )
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH >= 10"),
+            {"cartesian_site_positions.10": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH > 10"),
+            {"cartesian_site_positions.11": {"$exists": True}},
+        )
+
+    def test_aliased_length_operator(self):
+        from optimade.server.mappers import StructureMapper
+
+        class MyMapper(StructureMapper):
+            ALIASES = (("elements", "my_elements"), ("nelements", "nelem"))
+            LENGTH_ALIASES = (
+                ("chemsys", "nelements"),
+                ("cartesian_site_positions", "nsites"),
+                ("elements", "nelements"),
+            )
+            PROVIDER_FIELDS = ("chemsys",)
+
+        transformer = MongoTransformer(mapper=MyMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
+
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH <= 3")),
+            {"nsites": {"$lte": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH < 3")),
+            {"nsites": {"$lt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
+            {"nsites": 3},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
+            {"nsites": 3},
+        )
+        self.assertEqual(
+            transformer.transform(
+                parser.parse("cartesian_site_positions LENGTH >= 10")
+            ),
+            {"nsites": {"$gte": 10}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("structure_features LENGTH > 10")),
+            {"structure_features.11": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("nsites LENGTH > 10")),
+            {"nsites.11": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH 3")), {"nelem": 3},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse('elements HAS "Ag"')),
+            {"my_elements": {"$in": ["Ag"]}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("chemsys LENGTH 3")), {"nelem": 3},
+        )
+
+    def test_aliases(self):
+        """ Test that valid aliases are allowed, but do not effect
+        r-values.
+
+        """
+
+        class MyStructureMapper(BaseResourceMapper):
+            ALIASES = (
+                ("elements", "my_elements"),
+                ("A", "D"),
+                ("B", "E"),
+                ("C", "F"),
+            )
+
+        mapper = MyStructureMapper()
+        t = MongoTransformer(mapper=mapper)
+
+        self.assertEqual(mapper.alias_for("elements"), "my_elements")
+
+        test_filter = {"elements": {"$in": ["A", "B", "C"]}}
+        self.assertEqual(
+            t.postprocess(test_filter), {"my_elements": {"$in": ["A", "B", "C"]}},
+        )
+        test_filter = {"$and": [{"elements": {"$in": ["A", "B", "C"]}}]}
+        self.assertEqual(
+            t.postprocess(test_filter),
+            {"$and": [{"my_elements": {"$in": ["A", "B", "C"]}}]},
+        )
+        test_filter = {"elements": "A"}
+        self.assertEqual(t.postprocess(test_filter), {"my_elements": "A"})
+        test_filter = ["A", "B", "C"]
+        self.assertEqual(t.postprocess(test_filter), ["A", "B", "C"])
+
+        test_filter = ["A", "elements", "C"]
+        self.assertEqual(t.postprocess(test_filter), ["A", "elements", "C"])
 
     def test_list_properties(self):
         """ Test the HAS ALL, ANY and optional ONLY queries.

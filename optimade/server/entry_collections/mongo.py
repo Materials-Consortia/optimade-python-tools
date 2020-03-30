@@ -1,18 +1,17 @@
 import os
-from abc import abstractmethod
-from typing import Collection, Tuple, List, Union
 
+from typing import Tuple, List, Union
 import mongomock
 import pymongo.collection
 from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
+from optimade.server.config import CONFIG
 from optimade.models import EntryResource
-
-from .config import CONFIG
-from .mappers import BaseResourceMapper
-from .query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.mappers import BaseResourceMapper
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from .entry_collections import EntryCollection
 
 try:
     CI_FORCE_MONGO = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
@@ -32,63 +31,6 @@ else:
     print("Using: Mock MongoDB (mongomock)")
 
 
-class EntryCollection(Collection):  # pylint: disable=inherit-non-class
-    def __init__(
-        self,
-        collection,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
-    ):
-        self.collection = collection
-        self.parser = LarkParser()
-        self.resource_cls = resource_cls
-        self.resource_mapper = resource_mapper
-
-    def __len__(self):
-        return self.collection.count()
-
-    def __iter__(self):
-        return self.collection.find()
-
-    def __contains__(self, entry):
-        return self.collection.count(entry) > 0
-
-    def get_attribute_fields(self) -> set:
-        schema = self.resource_cls.schema()
-        attributes = schema["properties"]["attributes"]
-        if "allOf" in attributes:
-            allOf = attributes.pop("allOf")
-            for dict_ in allOf:
-                attributes.update(dict_)
-        if "$ref" in attributes:
-            path = attributes["$ref"].split("/")[1:]
-            attributes = schema.copy()
-            while path:
-                next_key = path.pop(0)
-                attributes = attributes[next_key]
-        return set(attributes["properties"].keys())
-
-    @abstractmethod
-    def find(
-        self, params: EntryListingQueryParams
-    ) -> Tuple[List[EntryResource], int, bool, set]:
-        """
-        Fetches results and indicates if more data is available.
-
-        Also gives the total number of data available in the absence of page_limit.
-
-        Args:
-            params (EntryListingQueryParams): entry listing URL query params
-
-        Returns:
-            Tuple[List[Entry], int, bool, set]: (results, data_returned, more_data_available, fields)
-
-        """
-
-    def count(self, **kwargs):
-        return self.collection.count(**kwargs)
-
-
 class MongoCollection(EntryCollection):
     def __init__(
         self,
@@ -99,7 +41,7 @@ class MongoCollection(EntryCollection):
         resource_mapper: BaseResourceMapper,
     ):
         super().__init__(collection, resource_cls, resource_mapper)
-        self.transformer = MongoTransformer()
+        self.transformer = MongoTransformer(mapper=resource_mapper)
 
         self.provider_prefix = CONFIG.provider.prefix
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
@@ -108,14 +50,8 @@ class MongoCollection(EntryCollection):
         )  # The MongoTransformer only supports v0.10.1 as the latest grammar
 
         # check aliases do not clash with mongo operators
-        self._mapper_aliases = self.resource_mapper.all_aliases()
-        if any(
-            alias[0].startswith("$") or alias[1].startswith("$")
-            for alias in self._mapper_aliases
-        ):
-            raise RuntimeError(
-                f"Cannot define an alias starting with a '$': {self._mapper_aliases}"
-            )
+        self._check_aliases(self.resource_mapper.all_aliases())
+        self._check_aliases(self.resource_mapper.all_length_aliases())
 
     def __len__(self):
         return self.collection.estimated_document_count()
@@ -166,31 +102,6 @@ class MongoCollection(EntryCollection):
 
         return results, data_returned, more_data_available, all_fields - fields
 
-    def _alias_filter(self, _filter: dict) -> dict:
-        """ Check whether any fields in the filter have aliases so
-        that they can be renamed for the Mongo query.
-
-        """
-        # if there are no defined aliases, just skip
-        if not self._mapper_aliases:
-            return _filter
-
-        if isinstance(_filter, dict):
-            unaliased_filter = {}
-            for key, value in _filter.items():
-                unaliased_filter[
-                    self.resource_mapper.alias_for(key)
-                ] = self._alias_filter(value)
-            return unaliased_filter
-
-        elif isinstance(_filter, list):
-            return [self._alias_filter(subdict) for subdict in _filter]
-
-        # if we already have a string, or another value, then there
-        # are no more aliases to parse
-        else:
-            return _filter
-
     def _parse_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> dict:
@@ -198,8 +109,7 @@ class MongoCollection(EntryCollection):
 
         if getattr(params, "filter", False):
             tree = self.parser.parse(params.filter)
-            mongo_filter = self.transformer.transform(tree)
-            cursor_kwargs["filter"] = self._alias_filter(mongo_filter)
+            cursor_kwargs["filter"] = self.transformer.transform(tree)
         else:
             cursor_kwargs["filter"] = {}
 
@@ -250,3 +160,10 @@ class MongoCollection(EntryCollection):
             cursor_kwargs["skip"] = params.page_offset
 
         return cursor_kwargs
+
+    def _check_aliases(self, aliases):
+        """ Check that aliases do not clash with mongo keywords. """
+        if any(
+            alias[0].startswith("$") or alias[1].startswith("$") for alias in aliases
+        ):
+            raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
