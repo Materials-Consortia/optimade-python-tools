@@ -384,29 +384,25 @@ class TestMongoTransformer(unittest.TestCase):
         )
 
     def test_unaliased_length_operator(self):
-        transformer = MongoTransformer()
-        parser = LarkParser(version=self.version, variant=self.variant)
         self.assertEqual(
-            transformer.transform(parser.parse("cartesian_site_positions LENGTH <= 3")),
+            self.transform("cartesian_site_positions LENGTH <= 3"),
             {"cartesian_site_positions.4": {"$exists": False}},
         )
         self.assertEqual(
-            transformer.transform(parser.parse("cartesian_site_positions LENGTH < 3")),
+            self.transform("cartesian_site_positions LENGTH < 3"),
             {"cartesian_site_positions.3": {"$exists": False}},
         )
         self.assertEqual(
-            transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
+            self.transform("cartesian_site_positions LENGTH 3"),
             {"cartesian_site_positions": {"$size": 3}},
         )
         self.assertEqual(
-            transformer.transform(
-                parser.parse("cartesian_site_positions LENGTH >= 10")
-            ),
+            self.transform("cartesian_site_positions LENGTH >= 10"),
             {"cartesian_site_positions.10": {"$exists": True}},
         )
 
         self.assertEqual(
-            transformer.transform(parser.parse("cartesian_site_positions LENGTH > 10")),
+            self.transform("cartesian_site_positions LENGTH > 10"),
             {"cartesian_site_positions.11": {"$exists": True}},
         )
 

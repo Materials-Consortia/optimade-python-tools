@@ -15,6 +15,12 @@ class BaseResourceMapper:
         ALIASES (Tuple[Tuple[str, str]]): a tuple of aliases between
             OPTIMADE field names and the field names in the database ,
             e.g. `(("elements", "custom_elements_field"))`.
+        LENGTH_ALIASES (Tuple[Tuple[str, str]]): a tuple of aliases between
+            a field name and another field that defines its length, to be used
+            when querying, e.g. `(("elements", "nelements"))`.
+            e.g. `(("elements", "custom_elements_field"))`.
+        PROVIDER_FIELDS (Tuple[str]): a tuple of extra field names that this
+            mapper should support when querying with the database prefix.
         REQUIRED_FIELDS (set[str]): the set of fieldnames to return
             when mapping to the OPTIMADE format.
         TOP_LEVEL_NON_ATTRIBUTES_FIELDS (set[str]): the set of top-level
@@ -31,6 +37,13 @@ class BaseResourceMapper:
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
+        """ Returns all of the associated aliases for this class, including
+        those defined by the server config.
+
+        Returns:
+            Tuple[Tuple[str, str]]: a tuple of alias tuples.
+
+        """
         return (
             tuple(
                 (f"_{CONFIG.provider.prefix}_{field}", field)
@@ -46,17 +59,28 @@ class BaseResourceMapper:
 
     @classmethod
     def all_length_aliases(cls) -> Tuple[Tuple[str, str]]:
+        """ Returns all of the associated length aliases for this class, including
+        those defined by the server config.
+
+        Returns:
+            Tuple[Tuple[str, str]]: a tuple of length alias tuples.
+
+        """
         return cls.LENGTH_ALIASES + tuple(
             CONFIG.length_aliases.get(cls.ENDPOINT, {}).items()
         )
 
     @classmethod
     def length_alias_for(cls, field: str) -> str:
+        """ Returns the length alias for the particular field, or `None` if no
+        such alias is found.
+
+        """
         return dict(cls.all_length_aliases()).get(field, None)
 
     @classmethod
     def alias_for(cls, field: str) -> str:
-        """Return aliased field name
+        """Return aliased field name.
 
         :param field: OPTIMADE field name
         :type field: str

@@ -179,9 +179,8 @@ class MongoTransformer(Transformer):
         if len(arg) == 2 or (len(arg) == 3 and arg[1] == "="):
             return {"$size": arg[-1]}
 
-        # the approach taken in post-process still cannot handle !=, so return error here
         elif arg[1] in self.operator_map and arg[1] != "!=":
-            # otherwise, create an invalid query that needs to be post-processed
+            # create an invalid query that needs to be post-processed
             # e.g. {'$size': {'$gt': 2}}, which is not allowed by Mongo.
             return {"$size": {self.operator_map[arg[1]]: arg[-1]}}
 
