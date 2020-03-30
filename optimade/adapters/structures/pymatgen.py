@@ -3,6 +3,7 @@ from typing import Union, Dict, List
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
 from optimade.models.structures import Periodicity
+from optimade.adapters.exceptions import ConversionError
 
 try:
     from pymatgen import Structure, Molecule
@@ -18,7 +19,7 @@ except (ImportError, ModuleNotFoundError):
 __all__ = ("get_pymatgen",)
 
 
-def get_pymatgen(optimade_structure: OptimadeStructure,) -> Union[Structure, Molecule]:
+def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Molecule]:
     """ Get pymatgen Structure or Molecule from OPTIMADE structure
 
     :param optimade_structure: OPTIMADE structure
@@ -27,6 +28,13 @@ def get_pymatgen(optimade_structure: OptimadeStructure,) -> Union[Structure, Mol
     if globals().get("Structure", None) is None:
         warn(PYMATGEN_NOT_FOUND)
         return None
+
+    # pymatgen cannot handle unknown positions
+    for site in optimade_structure.attributes.cartesian_site_positions:
+        if None in site:
+            raise ConversionError(
+                "pymatgen cannot be used to convert structures with unknown positions."
+            )
 
     if optimade_structure.attributes.dimension_types == (Periodicity.PERIODIC,) * 3:
         return _get_structure(optimade_structure)

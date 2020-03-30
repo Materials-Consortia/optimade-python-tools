@@ -1,5 +1,5 @@
 import re
-from typing import Dict, Union
+from typing import Dict
 
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
@@ -12,7 +12,7 @@ __all__ = ("get_cif",)
 
 def get_cif(  # pylint: disable=too-many-locals,too-many-branches
     optimade_structure: OptimadeStructure, formatting: str = "default"
-) -> Union[str, bytes]:
+) -> str:
     """ Get CIF file as string from OPTIMADE structure
 
     Based on `ase.io.cif:write_cif()`.
