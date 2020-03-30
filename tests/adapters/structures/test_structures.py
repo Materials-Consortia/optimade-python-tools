@@ -60,7 +60,7 @@ class TestStructure(unittest.TestCase):
             )
 
         converted_structure = structure.convert(chosen_type)
-        self.assertIsInstance(converted_structure, Atoms.__class__)
+        self.assertIsInstance(converted_structure, (None.__class__, Atoms))
         self.assertEqual(converted_structure, structure._converted[chosen_type])
 
     def test_convert_wrong_format(self):
