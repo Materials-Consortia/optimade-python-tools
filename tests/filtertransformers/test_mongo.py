@@ -289,6 +289,41 @@ class TestMongoTransformer(unittest.TestCase):
         with self.assertRaises(VisitError):
             self.transform('"some string" > "some other string"')
 
+    def test_filtering_on_relationships(self):
+        """ Test the nested properties with special names
+        like "structures", "references" etc. are applied
+        to the relationships field.
+
+        """
+
+        self.assertEqual(
+            self.transform('references.id HAS "dummy/2019"'),
+            {"relationships.references.data.id": {"$in": ["dummy/2019"]}},
+        )
+
+        self.assertEqual(
+            self.transform('structures.id HAS ANY "dummy/2019", "dijkstra1968"'),
+            {
+                "relationships.structures.data.id": {
+                    "$in": ["dummy/2019", "dijkstra1968"]
+                }
+            },
+        )
+
+        self.assertEqual(
+            self.transform('structures.id HAS ALL "dummy/2019", "dijkstra1968"'),
+            {
+                "relationships.structures.data.id": {
+                    "$all": ["dummy/2019", "dijkstra1968"]
+                }
+            },
+        )
+
+        self.assertEqual(
+            self.transform('structures.id HAS ONLY "dummy/2019"'),
+            {"relationships.structures.data.id": {"$all": ["dummy/2019"], "$size": 1}},
+        )
+
     def test_not_implemented(self):
         """ Test that list properties that are currently not implemented
         give a sensible response.
