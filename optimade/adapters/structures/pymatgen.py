@@ -15,12 +15,10 @@ except (ImportError, ModuleNotFoundError):
     PYMATGEN_NOT_FOUND = "Pymatgen not found, cannot convert structure to a pymatgen Structure or Molecule"
 
 
-__all__ = ("get_pymatgen_structure",)
+__all__ = ("get_pymatgen",)
 
 
-def get_pymatgen_structure(
-    optimade_structure: OptimadeStructure,
-) -> Union[Structure, Molecule]:
+def get_pymatgen(optimade_structure: OptimadeStructure,) -> Union[Structure, Molecule]:
     """ Get pymatgen Structure or Molecule from OPTIMADE structure
 
     :param optimade_structure: OPTIMADE structure
