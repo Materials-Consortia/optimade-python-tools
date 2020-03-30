@@ -4,20 +4,28 @@ from setuptools import setup, find_packages
 module_dir = Path(__file__).resolve().parent
 
 # Dependencies
-mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
-server_deps = ["uvicorn", "Jinja2~=2.11"] + mongo_deps
+# Server minded
 django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
-testing_deps = [
-    "pytest~=5.3",
-    "pytest-cov",
-    "codecov",
-    "openapi-spec-validator",
-    "jsondiff",
-    "numpy~=1.18",
-] + server_deps
+mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
+server_deps = ["uvicorn", "Jinja2~=2.11"] + mongo_deps
+
+# Client minded
+aiida_deps = ["aiida-core~=1.1"]
+ase_deps = ["ase~=3.19"]
+cif_deps = ["numpy~=1.18"]
+pdb_deps = cif_deps
+pymatgen_deps = ["pymatgen~=2020.3"]
+client_deps = cif_deps
+
+# General
+testing_deps = (
+    ["pytest~=5.3", "pytest-cov", "codecov", "openapi-spec-validator", "jsondiff"]
+    + server_deps
+    + client_deps
+)
 dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps
-all_deps = dev_deps + django_deps + elastic_deps
+all_deps = dev_deps + django_deps + elastic_deps + aiida_deps + ase_deps + pymatgen_deps
 
 setup(
     name="optimade",
@@ -55,11 +63,17 @@ setup(
     extras_require={
         "all": all_deps,
         "dev": dev_deps,
-        "server": server_deps,
         "testing": testing_deps,
+        "server": server_deps,
+        "client": client_deps,
         "django": django_deps,
         "elastic": elastic_deps,
         "mongo": mongo_deps,
+        "aiida": aiida_deps,
+        "ase": ase_deps,
+        "cif": cif_deps,
+        "pdb": pdb_deps,
+        "pymatgen": pymatgen_deps,
     },
     entry_points={
         "console_scripts": ["optimade_validator=optimade.validator:validate"]
