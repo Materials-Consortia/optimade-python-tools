@@ -3,39 +3,30 @@ from pathlib import Path
 from typing import List
 
 import pytest
-import unittest
 
 from optimade.adapters import Structure
 from optimade.models import StructureResource
 
 
-class TestStructure(unittest.TestCase):
+with open(Path(__file__).parent.joinpath("raw_test_structures.json"), "r") as raw_data:
+    RAW_STRUCTURES: List[dict] = json.load(raw_data)
+
+
+class TestStructure:
     """Test Structure adapter"""
-
-    @pytest.fixture(autouse=True)
-    def capfd(self, capfd):
-        self.capfd = capfd
-
-    @classmethod
-    def setUpClass(cls):
-        """Get raw test data"""
-        with open(
-            Path(__file__).parent.joinpath("raw_test_structures.json"), "r"
-        ) as raw_data:
-            cls.raw_structures: List[dict] = json.load(raw_data)
 
     def test_instantiate(self):
         """Try instantiating Structure for all raw test structures"""
-        for structure in self.raw_structures:
+        for structure in RAW_STRUCTURES:
             new_Structure = Structure(structure)
-            self.assertIsInstance(new_Structure.entry, StructureResource)
+            assert isinstance(new_Structure.entry, StructureResource)
 
-    def test_setting_entry(self):
+    def test_setting_entry(self, capfd):
         """Make sure entry can only be set once"""
-        structure = Structure(self.raw_structures[0])
-        structure.entry = self.raw_structures[1]
-        captured = self.capfd.readouterr()
-        self.assertIn("entry can only be set once and is already set.", captured.out)
+        structure = Structure(RAW_STRUCTURES[0])
+        structure.entry = RAW_STRUCTURES[1]
+        captured = capfd.readouterr()
+        assert "entry can only be set once and is already set." in captured.out
 
     def test_convert(self):
         """Test convert() works
@@ -46,26 +37,26 @@ class TestStructure(unittest.TestCase):
         except ImportError:
             Atoms = None
 
-        structure = Structure(self.raw_structures[0])
+        structure = Structure(RAW_STRUCTURES[0])
 
         if not structure._type_converters:
-            self.fail("_type_converters is seemingly empty. This should not be.")
+            pytest.fail("_type_converters is seemingly empty. This should not be.")
 
         chosen_type = "ase"
         if chosen_type not in structure._type_converters:
-            self.fail(
+            pytest.fail(
                 f"{chosen_type} not found in _type_converters: {structure._type_converters} - "
                 "please update test tests/adapters/structures/test_structures.py:TestStructure."
                 "test_convert()"
             )
 
         converted_structure = structure.convert(chosen_type)
-        self.assertIsInstance(converted_structure, (None.__class__, Atoms))
-        self.assertEqual(converted_structure, structure._converted[chosen_type])
+        assert isinstance(converted_structure, (None.__class__, Atoms))
+        assert converted_structure == structure._converted[chosen_type]
 
     def test_convert_wrong_format(self):
         """Test AttributeError is raised if format does not exist"""
-        structure = Structure(self.raw_structures[0])
+        structure = Structure(RAW_STRUCTURES[0])
 
         nonexistant_format = 0
         right_wrong_format_found = False
@@ -76,12 +67,9 @@ class TestStructure(unittest.TestCase):
             else:
                 nonexistant_format += 1
 
-        with self.assertRaises(AttributeError) as exc:
+        with pytest.raises(AttributeError) as exc:
             structure.convert(nonexistant_format)
-        self.assertIn(
-            f"Non-valid entry type to convert to: {nonexistant_format}.",
-            str(exc.exception),
-        )
+        assert f"Non-valid entry type to convert to: {nonexistant_format}." in str(exc)
 
     def test_getattr_order(self):
         """The order of getting an attribute should be:
@@ -89,20 +77,20 @@ class TestStructure(unittest.TestCase):
         2. `<entry type attribute>`
         3. `raise AttributeError with custom message`
         """
-        structure = Structure(self.raw_structures[0])
+        structure = Structure(RAW_STRUCTURES[0])
 
         # If passing attribute starting with `get_`, it should call `self.convert()`
-        with self.assertRaises(AttributeError) as exc:
+        with pytest.raises(AttributeError) as exc:
             structure.get_
-        self.assertIn(f"Non-valid entry type to convert to: ", str(exc.exception))
+        assert f"Non-valid entry type to convert to: " in str(exc)
 
         # If passing valid StructureResource attribute, it should return said attribute
         from optimade.models.structures import Species
 
-        self.assertIsInstance(structure.attributes.species[0], Species)
+        assert isinstance(structure.attributes.species[0], Species)
 
         # Otherwise, it should raise AttributeError
         for attribute in ("nonexistant_attribute", "attributes.nonexistant_attribute"):
-            with self.assertRaises(AttributeError) as exc:
+            with pytest.raises(AttributeError) as exc:
                 getattr(structure, attribute)
-            self.assertIn(f"Unknown attribute: {attribute}.", str(exc.exception))
+            assert f"Unknown attribute: {attribute}." in str(exc)
