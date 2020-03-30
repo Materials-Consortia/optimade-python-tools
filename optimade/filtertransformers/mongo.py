@@ -38,6 +38,7 @@ class MongoTransformer(Transformer):
             query = self._apply_length_aliases(query)
             query = self._apply_aliases(query)
 
+        query = self._apply_relationship_filtering(query)
         query = self._apply_length_operators(query)
 
         return query
@@ -344,6 +345,29 @@ class MongoTransformer(Transformer):
 
         return recursive_postprocessing(
             filter_, check_for_length_op_filter, apply_length_op,
+        )
+
+    def _apply_relationship_filtering(self, filter_: dict) -> dict:
+        """ Check query for property names that match the entry
+        types, and transform them as relationship filters rather than
+        property filters.
+
+        """
+
+        def check_for_entry_type(prop, expr):
+            return str(prop).count(".") == 1 and str(prop).split(".")[0] in (
+                "structures",
+                "references",
+            )
+
+        def replace_with_relationship(subdict, prop, expr):
+            _prop, _field = str(prop).split(".")
+            subdict[f"relationships.{_prop}.data.{_field}"] = expr
+            subdict.pop(prop)
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_entry_type, replace_with_relationship
         )
 
 
