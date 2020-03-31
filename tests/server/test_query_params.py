@@ -519,6 +519,17 @@ class FilterTests(SetClient, unittest.TestCase):
         expected_ids = ["mpf_1", "mpf_2"]
         self._check_response(request, expected_ids, len(expected_ids))
 
+        request = '/structures?filter=references.doi HAS ONLY "10/123"'
+        error_detail = (
+            'Cannot filter relationships by field "doi", only "id" is supported.'
+        )
+        self._check_error_response(
+            request,
+            expected_status=501,
+            expected_title="NotImplementedError",
+            expected_detail=error_detail,
+        )
+
     def _check_response(
         self, request: str, expected_ids: Union[List, Set], expected_return: int
     ):
