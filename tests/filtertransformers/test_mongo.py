@@ -321,7 +321,33 @@ class TestMongoTransformer(unittest.TestCase):
 
         self.assertEqual(
             self.transform('structures.id HAS ONLY "dummy/2019"'),
-            {"relationships.structures.data.id": {"$all": ["dummy/2019"], "$size": 1}},
+            {
+                "$and": [
+                    {"relationships.structures.data": {"$size": 1}},
+                    {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform(
+                'structures.id HAS ONLY "dummy/2019" AND structures.id HAS "dummy/2019"'
+            ),
+            {
+                "$and": [
+                    {
+                        "$and": [
+                            {"relationships.structures.data": {"$size": 1}},
+                            {
+                                "relationships.structures.data.id": {
+                                    "$all": ["dummy/2019"]
+                                }
+                            },
+                        ]
+                    },
+                    {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},
+                ],
+            },
         )
 
     def test_not_implemented(self):

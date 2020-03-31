@@ -362,8 +362,23 @@ class MongoTransformer(Transformer):
 
         def replace_with_relationship(subdict, prop, expr):
             _prop, _field = str(prop).split(".")
-            subdict[f"relationships.{_prop}.data.{_field}"] = expr
+
+            # in the case of HAS ONLY, the size operator needs to be applied
+            # one level up, i.e. excluding the field
+            if "$size" in expr:
+                if "$and" not in subdict:
+                    subdict["$and"] = []
+                subdict["$and"].extend(
+                    [
+                        {f"relationships.{_prop}.data": {"$size": expr.pop("$size")}},
+                        {f"relationships.{_prop}.data.{_field}": expr},
+                    ]
+                )
+            else:
+                subdict[f"relationships.{_prop}.data.{_field}"] = expr
+
             subdict.pop(prop)
+
             return subdict
 
         return recursive_postprocessing(
