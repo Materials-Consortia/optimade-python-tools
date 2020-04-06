@@ -36,7 +36,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U setuptools
         # Install package clean with all dependencies followed by eager update install
-        pip install -e .[testing,django,elastic]
+        pip install -e .[all]
         pip install -U --upgrade-strategy eager -r .github/workflows/requirements_eager.txt
 
     - name: Run tests on updated packages
