@@ -6,6 +6,14 @@ from optimade.models import StructureResource as OptimadeStructure
 
 from optimade.adapters.structures.utils import cell_to_cellpar
 
+try:
+    import numpy as np
+except ImportError:
+    from warnings import warn
+
+    np = None
+    NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to CIF"
+
 
 __all__ = ("get_cif",)
 
@@ -24,6 +32,11 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         If encoding is "str", a Python str object will be returned.
     :return: str
     """
+    # NumPy is needed for calculations
+    if globals().get("np", None) is None:
+        warn(NUMPY_NOT_FOUND)
+        return None
+
     cif = """#
 # Created from an OPTIMADE structure.
 #

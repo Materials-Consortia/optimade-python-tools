@@ -11,6 +11,16 @@ from optimade.models import StructureResource
 with open(Path(__file__).parent.joinpath("raw_test_structures.json"), "r") as raw_data:
     RAW_STRUCTURES: List[dict] = json.load(raw_data)
 
+try:
+    import aiida
+    import ase
+    import numpy
+    import pymatgen
+except ImportError:
+    all_modules_found = False
+else:
+    all_modules_found = True
+
 
 class TestStructure:
     """Test Structure adapter"""
@@ -32,17 +42,12 @@ class TestStructure:
         """Test convert() works
         Choose currently known entry type - must be updated if no longer available.
         """
-        try:
-            from ase import Atoms
-        except ImportError:
-            Atoms = None
-
         structure = Structure(RAW_STRUCTURES[0])
 
         if not structure._type_converters:
             pytest.fail("_type_converters is seemingly empty. This should not be.")
 
-        chosen_type = "ase"
+        chosen_type = "cif"
         if chosen_type not in structure._type_converters:
             pytest.fail(
                 f"{chosen_type} not found in _type_converters: {structure._type_converters} - "
@@ -51,7 +56,7 @@ class TestStructure:
             )
 
         converted_structure = structure.convert(chosen_type)
-        assert isinstance(converted_structure, (None.__class__, Atoms))
+        assert isinstance(converted_structure, (str, None.__class__))
         assert converted_structure == structure._converted[chosen_type]
 
     def test_convert_wrong_format(self):
@@ -94,3 +99,41 @@ class TestStructure:
             with pytest.raises(AttributeError) as exc:
                 getattr(structure, attribute)
             assert f"Unknown attribute: {attribute}." in str(exc)
+
+    @pytest.mark.skipif(
+        all_modules_found,
+        reason="This test checks what happens if a conversion-dependent module cannot be found. "
+        "All could be found, i.e., it has no meaning.",
+    )
+    def test_no_module_conversion(self):
+        """Make sure a warnings is raised and None is returned for conversions with non-existing modules"""
+        import importlib
+
+        structure = Structure(RAW_STRUCTURES[0])
+
+        CONVERSION_MAPPING = {
+            "aiida": ["aiida_structuredata"],
+            "ase": ["ase"],
+            "numpy": ["cif", "pdb", "pdbx_mmcif"],
+            "pymatgen": ["pymatgen"],
+        }
+
+        modules_to_test = []
+        for module in ("aiida", "ase", "numpy", "pymatgen"):
+            try:
+                importlib.import_module(module)
+            except (ImportError, ModuleNotFoundError):
+                modules_to_test.append(module)
+
+        if not modules_to_test:
+            pytest.fail(
+                "No modules found to test - it seems all modules are installed."
+            )
+
+        for module in modules_to_test:
+            for conversion_function in CONVERSION_MAPPING[module]:
+                with pytest.warns(
+                    UserWarning, match="not found, cannot convert structure to"
+                ):
+                    converted_structure = structure.convert(conversion_function)
+                assert converted_structure == None

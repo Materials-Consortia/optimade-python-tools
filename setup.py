@@ -19,12 +19,14 @@ pymatgen_deps = ["pymatgen~=2020.3"]
 client_deps = cif_deps
 
 # General
-testing_deps = (
-    ["pytest~=5.4", "pytest-cov", "codecov", "openapi-spec-validator", "jsondiff"]
-    + server_deps
-    + client_deps
-)
-dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps
+testing_deps = [
+    "pytest~=5.4",
+    "pytest-cov",
+    "codecov",
+    "openapi-spec-validator",
+    "jsondiff",
+] + server_deps
+dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps + client_deps
 all_deps = dev_deps + django_deps + elastic_deps + aiida_deps + ase_deps + pymatgen_deps
 
 setup(

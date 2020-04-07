@@ -32,6 +32,10 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     :param optimade_structure: OPTIMADE structure
     :return: str
     """
+    if globals().get("np", None) is None:
+        warn(NUMPY_NOT_FOUND)
+        return None
+
     raise NotImplementedError(
         "As of yet not implemented properly. Please use get_pdb instead."
     )

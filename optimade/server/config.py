@@ -125,7 +125,9 @@ class ServerConfig(BaseSettings):
             with open(config_file_path) as f:
                 new_values = json.load(f)
         else:
-            logger.debug("Did not find config file at: %s", config_file_path)
+            logger.debug(  # pragma: no cover
+                "Did not find config file at: %s", config_file_path
+            )
 
         new_values.update(values)
 
