@@ -504,6 +504,32 @@ class FilterTests(SetClient, unittest.TestCase):
         expected_ids = ["mpf_1"]
         self._check_response(request, expected_ids, len(expected_ids))
 
+    def test_filter_on_relationships(self):
+        request = '/structures?filter=references.id HAS "dummy/2019"'
+        expected_ids = ["mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = (
+            '/structures?filter=references.id HAS ANY "dummy/2019", "dijkstra1968"'
+        )
+        expected_ids = ["mpf_1", "mpf_2", "mpf_3819"]
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = '/structures?filter=references.id HAS ONLY "dijkstra1968"'
+        expected_ids = ["mpf_1", "mpf_2"]
+        self._check_response(request, expected_ids, len(expected_ids))
+
+        request = '/structures?filter=references.doi HAS ONLY "10/123"'
+        error_detail = (
+            'Cannot filter relationships by field "doi", only "id" is supported.'
+        )
+        self._check_error_response(
+            request,
+            expected_status=501,
+            expected_title="NotImplementedError",
+            expected_detail=error_detail,
+        )
+
     def _check_response(
         self, request: str, expected_ids: Union[List, Set], expected_return: int
     ):

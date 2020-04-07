@@ -108,5 +108,13 @@ def grammar_not_implemented_handler(request: Request, exc: VisitError):
     return general_exception(request, exc, status_code=status, errors=[error])
 
 
+def not_implemented_handler(request: Request, exc: NotImplementedError):
+    status = 501
+    title = "NotImplementedError"
+    detail = str(exc)
+    error = OptimadeError(detail=detail, status=status, title=title)
+    return general_exception(request, exc, status_code=status, errors=[error])
+
+
 def general_exception_handler(request: Request, exc: Exception):
     return general_exception(request, exc)
