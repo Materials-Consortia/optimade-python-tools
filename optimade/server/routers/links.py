@@ -26,19 +26,6 @@ links_coll = MongoCollection(
     tags=["Links"],
 )
 def get_links(request: Request, params: EntryListingQueryParams = Depends()):
-    for str_param in ["filter", "sort"]:
-        if getattr(params, str_param):
-            setattr(params, str_param, "")
-    for int_param in [
-        "page_offset",
-        "page_number",
-        "page_cursor",
-        "page_above",
-        "page_below",
-    ]:
-        if getattr(params, int_param):
-            setattr(params, int_param, 0)
-    params.page_limit = CONFIG.page_limit
     return get_entries(
         collection=links_coll, response=LinksResponse, request=request, params=params
     )
