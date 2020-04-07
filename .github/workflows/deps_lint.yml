@@ -142,16 +142,21 @@ jobs:
         image: mongo:4.2
         ports:
         - 27017:27017
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_DB: test_django
+          POSTGRES_PASSWORD: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+        - 5432:5432
 
     steps:
     - uses: actions/checkout@v2
-
-    - uses: CasperWA/postgresql-action@v1.2
-      with:
-        postgresql version: '10'
-        postgresql db: test_django
-        postgresql user: postgres
-        postgresql password: test
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
