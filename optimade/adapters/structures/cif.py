@@ -19,7 +19,7 @@ __all__ = ("get_cif",)
 
 
 def get_cif(  # pylint: disable=too-many-locals,too-many-branches
-    optimade_structure: OptimadeStructure, formatting: str = "default"
+    optimade_structure: OptimadeStructure,
 ) -> str:
     """ Get CIF file as string from OPTIMADE structure
 
@@ -49,18 +49,6 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
 
     attributes = optimade_structure.attributes
 
-    if formatting == "mp":
-        comp_name = attributes.chemical_formula_reduced
-        split_chemical_formula = re.findall(r"([A-Za-z]+)(([0-9]?)+)", comp_name)
-        formula_sum = ""
-        for symbol in split_chemical_formula:
-            formula_sum += f"{symbol[0]}{symbol[1] if symbol[1] != '' else 1} "
-
-        cif += (
-            f"_chemical_formula_structural      {comp_name}\n"
-            f"_chemical_formula_sum             '{formula_sum.strip()}'\n"
-        )
-
     # Do this only if there's three non-zero lattice vectors
     if sum(attributes.dimension_types) == 3:
         a_vector, b_vector, c_vector, alpha, beta, gamma = cell_to_cellpar(
@@ -84,34 +72,26 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         )
 
     # Is it a periodic system?
+    # NOTE: This is a bit ahead of its time, since this OPTIMADE property is part of an open PR.
+    # See https://github.com/Materials-Consortia/OPTIMADE/pull/206
     coord_type = (
         "fract" if hasattr(attributes, "fractional_site_positions") else "Cartn"
     )
 
-    cif += "loop_\n"
-    if formatting == "mp":
-        cif += (
-            "  _atom_site_type_symbol\n"
-            "  _atom_site_label\n"
-            "  _atom_site_symmetry_multiplicity\n"
-            f"  _atom_site_{coord_type}_x\n"
-            f"  _atom_site_{coord_type}_y\n"
-            f"  _atom_site_{coord_type}_z\n"
-            "  _atom_site_occupancy\n"
-        )
-    else:
-        cif += (
-            "  _atom_site_label\n"  # species.name
-            "  _atom_site_occupancy\n"  # species.concentration
-            f"  _atom_site_{coord_type}_x\n"  # cartesian_site_positions
-            f"  _atom_site_{coord_type}_y\n"  # cartesian_site_positions
-            f"  _atom_site_{coord_type}_z\n"  # cartesian_site_positions
-            "  _atom_site_thermal_displace_type\n"  # Set to 'Biso'
-            "  _atom_site_B_iso_or_equiv\n"  # Set to 1.0:f
-            "  _atom_site_type_symbol\n"  # species.chemical_symbols
-        )
+    cif += (
+        "loop_\n"
+        "  _atom_site_label\n"  # species.name
+        "  _atom_site_occupancy\n"  # species.concentration
+        f"  _atom_site_{coord_type}_x\n"  # cartesian_site_positions
+        f"  _atom_site_{coord_type}_y\n"  # cartesian_site_positions
+        f"  _atom_site_{coord_type}_z\n"  # cartesian_site_positions
+        "  _atom_site_thermal_displace_type\n"  # Set to 'Biso'
+        "  _atom_site_B_iso_or_equiv\n"  # Set to 1.0:f
+        "  _atom_site_type_symbol\n"  # species.chemical_symbols
+    )
 
-    if coord_type == "fract":
+    # TODO: Remove "pragma" comment, once Materials-Consortia/OPTIMADE#206 has been merged.
+    if coord_type == "fract":  # pragma: no cover
         sites = attributes.fractional_site_positions
     else:
         sites = attributes.cartesian_site_positions
@@ -140,15 +120,9 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
                 else:
                     label = f"{symbol}{index + 1}"
 
-            if formatting == "mp":
-                cif += (
-                    f"  {symbol:2}  {label:4s}  {'1':4}  {site[0]:8.5f}  {site[1]:8.5f}  "
-                    f"{site[2]:8.5f}  {current_species.concentration[index]:6.1f}\n"
-                )
-            else:
-                cif += (
-                    f"  {label:8} {current_species.concentration[index]:6.4f} {site[0]:8.5f}  "
-                    f"{site[1]:8.5f}  {site[2]:8.5f}  {'Biso':4}  {'1.000':6}  {symbol}\n"
-                )
+            cif += (
+                f"  {label:8} {current_species.concentration[index]:6.4f} {site[0]:8.5f}  "
+                f"{site[1]:8.5f}  {site[2]:8.5f}  {'Biso':4}  {'1.000':6}  {symbol}\n"
+            )
 
     return cif
