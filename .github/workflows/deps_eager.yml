@@ -26,6 +26,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - uses: CasperWA/postgresql-action@v1.2
+      with:
+        postgresql version: '10'
+        postgresql db: test_django
+        postgresql user: postgres
+        postgresql password: test
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -35,8 +42,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools
-        # Install package clean with all dependencies followed by eager update install
-        pip install -e .[all]
+        # Install package clean with test dependencies followed by eager update install
+        pip install -e .[testing]
         pip install -U --upgrade-strategy eager -r .github/workflows/requirements_eager.txt
 
     - name: Run tests on updated packages
@@ -48,6 +55,20 @@ jobs:
       run: pytest -rs --cov=./optimade/ --cov-report=xml --cov-append tests/server/test_middleware.py tests/server/test_server_validation.py tests/server/test_config.py
       env:
         OPTIMADE_CI_FORCE_MONGO: 0
+
+    - name: Install adapter conversion dependencies (eagerly)
+      run: |
+        pip install -U --upgrade-strategy eager -e .[all]
+        # AiiDA-specific
+        reentry scan
+
+    - name: Setup up environment for AiiDA
+      env:
+        AIIDA_TEST_BACKEND: django
+      run: .github/aiida/setup_aiida.sh
+
+    - name: Run previously skipped tests for adapter conversion
+      run: pytest -rs --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
   # deps_clean-install:
   #   runs-on: ubuntu-latest
