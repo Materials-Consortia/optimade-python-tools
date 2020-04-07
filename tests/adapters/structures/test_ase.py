@@ -55,3 +55,18 @@ def test_null_lattice_vectors():
         (0.0, 0.0, 1.0),
     )
     assert isinstance(get_ase_atoms(structure), Atoms)
+
+
+def test_special_species():
+    """Make sure vacancies and non-chemical symbols ("X") are handled"""
+    with open(Path(__file__).parent.joinpath("special_species.json"), "r") as raw_data:
+        special_structures: List[dict] = json.load(raw_data)
+
+    for special_structure in special_structures:
+        structure = Structure(special_structure)
+
+        with pytest.warns(
+            UserWarning, match="ASE cannot handle structures with partial occupancies"
+        ):
+            converted_structure = get_ase_atoms(structure)
+        assert converted_structure is None

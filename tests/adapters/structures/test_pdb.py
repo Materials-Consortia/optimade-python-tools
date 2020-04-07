@@ -28,3 +28,14 @@ def test_successful_conversion():
     """Make sure its possible to convert"""
     for structure in RAW_STRUCTURES:
         assert isinstance(get_pdb(Structure(structure)), str)
+
+
+def test_special_species():
+    """Make sure vacancies and non-chemical symbols ("X") are handled"""
+    with open(Path(__file__).parent.joinpath("special_species.json"), "r") as raw_data:
+        special_structures: List[dict] = json.load(raw_data)
+
+    for special_structure in special_structures:
+        structure = Structure(special_structure)
+
+        assert isinstance(get_pdb(structure), str)

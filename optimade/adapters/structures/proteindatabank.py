@@ -23,7 +23,7 @@ __all__ = ("get_pdb", "get_pdbx_mmcif")
 
 def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     optimade_structure: OptimadeStructure,
-) -> str:
+) -> str:  # pragma: no cover
     """ Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure
 
     Inspired by `ase.io.proteindatabank:write_proteindatabank()` in the ASE package,

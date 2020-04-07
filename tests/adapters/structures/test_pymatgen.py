@@ -98,3 +98,14 @@ def test_null_lattice_vectors():
     )
     assert isinstance(_get_molecule(structure), Molecule)
     assert isinstance(get_pymatgen(structure), Molecule)
+
+
+def test_special_species():
+    """Make sure vacancies and non-chemical symbols ("X") are handled"""
+    with open(Path(__file__).parent.joinpath("special_species.json"), "r") as raw_data:
+        special_structures: List[dict] = json.load(raw_data)
+
+    for special_structure in special_structures:
+        structure = Structure(special_structure)
+
+        assert isinstance(get_pymatgen(structure), PymatgenStructure)

@@ -136,4 +136,4 @@ class TestStructure:
                     UserWarning, match="not found, cannot convert structure to"
                 ):
                     converted_structure = structure.convert(conversion_function)
-                assert converted_structure == None
+                assert converted_structure is None

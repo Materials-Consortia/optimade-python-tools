@@ -1,4 +1,5 @@
 from typing import Dict
+from warnings import warn
 
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
@@ -6,8 +7,6 @@ from optimade.models import StructureResource as OptimadeStructure
 try:
     from ase import Atoms, Atom
 except (ImportError, ModuleNotFoundError):
-    from warnings import warn
-
     Atoms = None
     ASE_NOT_FOUND = "ASE not found, cannot convert structure to an ASE Atoms"
 
@@ -28,6 +27,11 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         return None
 
     attributes = optimade_structure.attributes
+
+    # Cannot handle partial occupancies
+    if "disorder" in attributes.structure_features:
+        warn("ASE cannot handle structures with partial occupancies, sorry.")
+        return None
 
     species: Dict[str, OptimadeStructureSpecies] = {
         species.name: species for species in attributes.species

@@ -71,15 +71,19 @@ def test_null_lattice_vectors():
     ], "The cell should have been adjusted to not anymore start with (1.0, 1.0, 1.0), which it converts all None values to."
 
 
-def test_vacancy():
-    """Make sure vacancies are handled"""
-    structure = Structure(RAW_STRUCTURES[0])
+def test_special_species():
+    """Make sure vacancies and non-chemical symbols ("X") are handled"""
+    with open(Path(__file__).parent.joinpath("special_species.json"), "r") as raw_data:
+        special_structures: List[dict] = json.load(raw_data)
 
-    # This structure should be a 1 species structure with "Ac" and no vacancies - so we add one.
-    species = structure.attributes.species[0]
-    species.chemical_symbols.append("vacancy")
-    species.concentration = [0.9, 0.1]  # Ac, vacancy
-    structure.attributes.species = [species]
+    for special_structure in special_structures:
+        structure = Structure(special_structure)
 
-    assert isinstance(get_aiida_structure_data(structure), StructureData)
-    assert get_aiida_structure_data(structure).has_vacancies
+        assert isinstance(get_aiida_structure_data(structure), StructureData)
+
+        if "vacancy" in structure.attributes.species[0].chemical_symbols:
+            assert get_aiida_structure_data(structure).has_vacancies
+            assert not get_aiida_structure_data(structure).is_alloy
+        else:
+            assert not get_aiida_structure_data(structure).has_vacancies
+            assert get_aiida_structure_data(structure).is_alloy

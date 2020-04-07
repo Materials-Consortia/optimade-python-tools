@@ -34,3 +34,15 @@ def test_successful_conversion():
             str(exc.value)
             == "As of yet not implemented properly. Please use get_pdb instead."
         )
+
+
+@pytest.mark.skip("PDFx/mmCIF has yet to be implemented.")
+def test_special_species():
+    """Make sure vacancies and non-chemical symbols ("X") are handled"""
+    with open(Path(__file__).parent.joinpath("special_species.json"), "r") as raw_data:
+        special_structures: List[dict] = json.load(raw_data)
+
+    for special_structure in special_structures:
+        structure = Structure(special_structure)
+
+        assert isinstance(get_pdbx_mmcif(structure), str)

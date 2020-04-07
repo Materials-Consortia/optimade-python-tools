@@ -78,7 +78,8 @@ def _pymatgen_species(
     nsites: int, species: List[OptimadeStructureSpecies], species_at_sites: List[str]
 ) -> List[Dict[str, float]]:
     """
-    Create list of {"symbol": "concentration"} per site for values to pymatgen species parameters
+    Create list of {"symbol": "concentration"} per site for values to pymatgen species parameters.
+    Remove vacancies, if they are present.
     """
 
     optimade_species = {_.name: _ for _ in species}
@@ -88,8 +89,17 @@ def _pymatgen_species(
         species_name = species_at_sites[site_number]
         current_species = optimade_species[species_name]
 
-        pymatgen_species.append(
-            dict(zip(current_species.chemical_symbols, current_species.concentration))
-        )
+        chemical_symbols = []
+        concentration = []
+        for index, symbol in enumerate(current_species.chemical_symbols):
+            if symbol == "vacancy":
+                # Skip. This is how pymatgen handles vacancies;
+                # to not include them, while keeping the concentration in a site less than 1.
+                continue
+            else:
+                chemical_symbols.append(symbol)
+                concentration.append(current_species.concentration[index])
+
+        pymatgen_species.append(dict(zip(chemical_symbols, concentration)))
 
     return pymatgen_species
