@@ -69,3 +69,17 @@ def test_null_lattice_vectors():
         1.0,
         1.0,
     ], "The cell should have been adjusted to not anymore start with (1.0, 1.0, 1.0), which it converts all None values to."
+
+
+def test_vacancy():
+    """Make sure vacancies are handled"""
+    structure = Structure(RAW_STRUCTURES[0])
+
+    # This structure should be a 1 species structure with "Ac" and no vacancies - so we add one.
+    species = structure.attributes.species[0]
+    species.chemical_symbols.append("vacancy")
+    species.concentration = [0.9, 0.1]  # Ac, vacancy
+    structure.attributes.species = [species]
+
+    assert isinstance(get_aiida_structure_data(structure), StructureData)
+    assert get_aiida_structure_data(structure).has_vacancies

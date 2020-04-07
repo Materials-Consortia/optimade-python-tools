@@ -47,18 +47,24 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
     # Add Kinds
     for kind in attributes.species:
         symbols = []
-        for chemical_symbol in kind.chemical_symbols:
+        concentration = []
+        for index, chemical_symbol in enumerate(kind.chemical_symbols):
+            # NOTE: The non-chemical element identifier "X" is identical to how AiiDA handles this,
+            # so it will be treated the same as any other true chemical identifier.
             if chemical_symbol == "vacancy":
-                symbols.append("X")
+                # Skip. This is how AiiDA handles vacancies;
+                # to not include them, while keeping the concentration in a site less than 1.
+                continue
             else:
                 symbols.append(chemical_symbol)
+                concentration.append(kind.concentration[index])
 
         # AiiDA needs a definition for the mass, and for it to be > 0
         # mass is OPTIONAL for OPTIMADE structures
         mass = kind.mass if kind.mass else 1
 
         structure.append_kind(
-            Kind(symbols=symbols, weights=kind.concentration, mass=mass, name=kind.name)
+            Kind(symbols=symbols, weights=concentration, mass=mass, name=kind.name)
         )
 
     # Add Sites
