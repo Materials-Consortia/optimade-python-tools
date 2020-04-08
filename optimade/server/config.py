@@ -1,3 +1,4 @@
+# pylint: disable=no-self-argument
 import json
 from typing import Optional, Dict, List
 
@@ -13,6 +14,9 @@ from optimade import __version__
 from optimade.models import Implementation, Provider
 
 
+DEFAULT_CONFIG_FILE_PATH = str(Path.home().joinpath(".optimade.json"))
+
+
 class NoFallback(Exception):
     """No fallback value can be found."""
 
@@ -24,7 +28,7 @@ class ServerConfig(BaseSettings):
     """
 
     config_file: str = Field(
-        "~/.optimade.json", description="File to load alternative defaults from"
+        DEFAULT_CONFIG_FILE_PATH, description="File to load alternative defaults from",
     )
     debug: bool = Field(
         False, description="Turns on Debug Mode for the OPTIMADE Server implementation"
@@ -110,11 +114,11 @@ class ServerConfig(BaseSettings):
         Loads settings from a root file if available and uses that as defaults in
         place of built in defaults
         """
-        config_file_path = Path(values.get("config_file", "~/.optimade.json"))
+        config_file_path = Path(values.get("config_file", DEFAULT_CONFIG_FILE_PATH))
 
         new_values = {}
 
-        if config_file_path.exists():
+        if config_file_path.exists() and config_file_path.is_file():
             with open(config_file_path) as f:
                 new_values = json.load(f)
 

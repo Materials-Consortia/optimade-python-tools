@@ -1,4 +1,5 @@
 # pylint: disable=protected-access,pointless-statement,relative-beyond-top-level
+import json
 import os
 import unittest
 
@@ -19,6 +20,48 @@ class ConfigTests(unittest.TestCase):
         os.environ.pop("OPTIMADE_DEBUG", None)
         CONFIG = ServerConfig()
         self.assertFalse(CONFIG.debug)
+
+    def test_default_config_path(self):
+        """Make sure the default config path works
+        Expected default config path: PATH/TO/USER/HOMEDIR/.optimade.json
+        """
+        # Reset OPTIMADE_CONFIG_FILE
+        original_OPTIMADE_CONFIG_FILE = os.environ.get("OPTIMADE_CONFIG_FILE", "")
+        os.environ.pop("OPTIMADE_CONFIG_FILE")
+
+        with open(
+            Path(__file__).parent.parent.joinpath("test_config.json"), "r"
+        ) as config_file:
+            config = json.load(config_file)
+
+        different_base_url = "http://something_you_will_never_think_of.com"
+        config["base_url"] = different_base_url
+
+        # Try-finally to make sure we don't overwrite possible existing `.optimade.json`
+        original = Path.home().joinpath(".optimade.json")
+        restore = False
+        if original.exists():
+            restore = True
+            with open(original, "rb") as original_file:
+                original_file_content = original_file.read()
+        try:
+            with open(
+                Path.home().joinpath(".optimade.json"), "w"
+            ) as default_config_file:
+                json.dump(config, default_config_file)
+            CONFIG = ServerConfig()
+            self.assertEqual(
+                CONFIG.base_url,
+                different_base_url,
+                f"\nDumped file content:\n{config}.\n\nLoaded CONFIG:\n{CONFIG}",
+            )
+        finally:
+            if restore:
+                with open(original, "wb") as original_file:
+                    original_file.write(original_file_content)
+
+        # Restore OPTIMADE_CONFIG_FILE
+        os.environ["OPTIMADE_CONFIG_FILE"] = original_OPTIMADE_CONFIG_FILE
 
 
 class TestRegularServerConfig(SetClient, unittest.TestCase):
