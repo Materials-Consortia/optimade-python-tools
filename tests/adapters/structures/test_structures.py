@@ -1,15 +1,7 @@
-import json
-from pathlib import Path
-from typing import List
-
 import pytest
 
 from optimade.adapters import Structure
 from optimade.models import StructureResource
-
-
-with open(Path(__file__).parent.joinpath("raw_test_structures.json"), "r") as raw_data:
-    RAW_STRUCTURES: List[dict] = json.load(raw_data)
 
 try:
     import aiida
@@ -25,25 +17,23 @@ else:
 class TestStructure:
     """Test Structure adapter"""
 
-    def test_instantiate(self):
+    def test_instantiate(self, RAW_STRUCTURES):
         """Try instantiating Structure for all raw test structures"""
         for structure in RAW_STRUCTURES:
             new_Structure = Structure(structure)
             assert isinstance(new_Structure.entry, StructureResource)
 
-    def test_setting_entry(self, capfd):
+    def test_setting_entry(self, capfd, RAW_STRUCTURES):
         """Make sure entry can only be set once"""
         structure = Structure(RAW_STRUCTURES[0])
         structure.entry = RAW_STRUCTURES[1]
         captured = capfd.readouterr()
         assert "entry can only be set once and is already set." in captured.out
 
-    def test_convert(self):
+    def test_convert(self, structure):
         """Test convert() works
         Choose currently known entry type - must be updated if no longer available.
         """
-        structure = Structure(RAW_STRUCTURES[0])
-
         if not structure._type_converters:
             pytest.fail("_type_converters is seemingly empty. This should not be.")
 
@@ -59,10 +49,8 @@ class TestStructure:
         assert isinstance(converted_structure, (str, None.__class__))
         assert converted_structure == structure._converted[chosen_type]
 
-    def test_convert_wrong_format(self):
+    def test_convert_wrong_format(self, structure):
         """Test AttributeError is raised if format does not exist"""
-        structure = Structure(RAW_STRUCTURES[0])
-
         nonexistant_format = 0
         right_wrong_format_found = False
         while not right_wrong_format_found:
@@ -72,22 +60,23 @@ class TestStructure:
             else:
                 nonexistant_format += 1
 
-        with pytest.raises(AttributeError) as exc:
+        with pytest.raises(
+            AttributeError,
+            match=f"Non-valid entry type to convert to: {nonexistant_format}.",
+        ):
             structure.convert(nonexistant_format)
-        assert f"Non-valid entry type to convert to: {nonexistant_format}." in str(exc)
 
-    def test_getattr_order(self):
+    def test_getattr_order(self, structure):
         """The order of getting an attribute should be:
         1. `get_<entry type format>`
         2. `<entry type attribute>`
         3. `raise AttributeError with custom message`
         """
-        structure = Structure(RAW_STRUCTURES[0])
-
         # If passing attribute starting with `get_`, it should call `self.convert()`
-        with pytest.raises(AttributeError) as exc:
+        with pytest.raises(
+            AttributeError, match=f"Non-valid entry type to convert to: "
+        ):
             structure.get_
-        assert f"Non-valid entry type to convert to: " in str(exc)
 
         # If passing valid StructureResource attribute, it should return said attribute
         from optimade.models.structures import Species
@@ -96,20 +85,19 @@ class TestStructure:
 
         # Otherwise, it should raise AttributeError
         for attribute in ("nonexistant_attribute", "attributes.nonexistant_attribute"):
-            with pytest.raises(AttributeError) as exc:
+            with pytest.raises(
+                AttributeError, match=f"Unknown attribute: {attribute}."
+            ):
                 getattr(structure, attribute)
-            assert f"Unknown attribute: {attribute}." in str(exc)
 
     @pytest.mark.skipif(
         all_modules_found,
         reason="This test checks what happens if a conversion-dependent module cannot be found. "
         "All could be found, i.e., it has no meaning.",
     )
-    def test_no_module_conversion(self):
+    def test_no_module_conversion(self, structure):
         """Make sure a warnings is raised and None is returned for conversions with non-existing modules"""
         import importlib
-
-        structure = Structure(RAW_STRUCTURES[0])
 
         CONVERSION_MAPPING = {
             "aiida": ["aiida_structuredata"],
@@ -138,12 +126,12 @@ class TestStructure:
                     converted_structure = structure.convert(conversion_function)
                 assert converted_structure is None
 
-    def test_common_converters(self):
+    def test_common_converters(self, raw_structure, RAW_STRUCTURES):
         """Test common converters"""
-        structure = Structure(RAW_STRUCTURES[0])
+        structure = Structure(raw_structure)
 
-        assert structure.get_json == StructureResource(**RAW_STRUCTURES[0]).json()
-        assert structure.get_dict == StructureResource(**RAW_STRUCTURES[0]).dict()
+        assert structure.get_json == StructureResource(**raw_structure).json()
+        assert structure.get_dict == StructureResource(**raw_structure).dict()
 
         # Since calling .dict() and .json() will return also all default-valued properties,
         # the raw structure should at least be a sub-set of the resource's full list of properties.

@@ -4,7 +4,7 @@ from typing import Dict
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
 
-from optimade.adapters.structures.utils import cell_to_cellpar
+from optimade.adapters.structures.utils import cell_to_cellpar, pad_positions
 
 try:
     import numpy as np
@@ -50,6 +50,7 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
     attributes = optimade_structure.attributes
 
     # Do this only if there's three non-zero lattice vectors
+    # NOTE: This also negates handling of lattice_vectors with null/None values
     if sum(attributes.dimension_types) == 3:
         a_vector, b_vector, c_vector, alpha, beta, gamma = cell_to_cellpar(
             attributes.lattice_vectors
@@ -92,9 +93,9 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
 
     # TODO: Remove "pragma" comment, once Materials-Consortia/OPTIMADE#206 has been merged.
     if coord_type == "fract":  # pragma: no cover
-        sites = attributes.fractional_site_positions
+        sites, _ = pad_positions(attributes.fractional_site_positions)
     else:
-        sites = attributes.cartesian_site_positions
+        sites, _ = pad_positions(attributes.cartesian_site_positions)
 
     species: Dict[str, OptimadeStructureSpecies] = {
         species.name: species for species in attributes.species

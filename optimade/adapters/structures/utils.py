@@ -1,4 +1,11 @@
 # pylint: disable=invalid-name
+from typing import List, Tuple, Iterable
+
+from optimade.models import StructureResourceAttributes
+from optimade.models.structures import Vector3D
+
+from optimade.adapters.exceptions import ConversionError
+
 try:
     import numpy as np
 except ImportError:
@@ -143,3 +150,52 @@ def cellpar_to_cell(cellpar, ab_normal=(0, 0, 1), a_direction=None):
     cell = np.dot(abc, T)
 
     return cell
+
+
+def _pad_iter_of_iters(
+    iterable: Iterable[Iterable],
+    padding: float = None,
+    outer: Iterable = None,
+    inner: Iterable = None,
+) -> Tuple[Iterable[Iterable], bool]:
+    """Turn any null/None values into a float in given iterable of iterables"""
+    try:
+        padding = float(padding)
+    except (TypeError, ValueError):
+        padding = float("nan")
+
+    outer = outer if outer is not None else list
+    inner = inner if outer is not None else tuple
+
+    padded_iterable = any(
+        value is None for inner_iterable in iterable for value in inner_iterable
+    )
+
+    if padded_iterable:
+        padded_iterable_of_iterables = []
+        for inner_iterable in iterable:
+            new_inner_iterable = inner(
+                value if value is not None else padding for value in inner_iterable
+            )
+            padded_iterable_of_iterables.append(new_inner_iterable)
+        iterable = outer(padded_iterable_of_iterables)
+
+    return iterable, padded_iterable
+
+
+def pad_positions(
+    positions: List[Vector3D], padding: float = None
+) -> Tuple[List[Vector3D], bool]:
+    """Turn any null/None values into a float in given list of positions"""
+    return _pad_iter_of_iters(
+        iterable=positions, padding=padding, outer=list, inner=tuple,
+    )
+
+
+def pad_cell(
+    lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D], padding: float = None
+) -> Tuple[Tuple[Vector3D, Vector3D, Vector3D], bool]:
+    """Turn any null/None values into a float in given tuple of lattice_vectors"""
+    return _pad_iter_of_iters(
+        iterable=lattice_vectors, padding=padding, outer=tuple, inner=tuple,
+    )

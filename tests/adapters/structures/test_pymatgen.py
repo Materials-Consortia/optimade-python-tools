@@ -1,6 +1,4 @@
 # pylint: disable=import-error
-import json
-from pathlib import Path
 import re
 from typing import List
 
@@ -21,7 +19,6 @@ from pymatgen import Molecule, Structure as PymatgenStructure
 from optimade.models.structures import Periodicity
 
 from optimade.adapters import Structure
-from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.pymatgen import (
     get_pymatgen,
     _get_structure,
@@ -29,11 +26,7 @@ from optimade.adapters.structures.pymatgen import (
 )
 
 
-with open(Path(__file__).parent.joinpath("raw_test_structures.json"), "r") as raw_data:
-    RAW_STRUCTURES: List[dict] = json.load(raw_data)
-
-
-def test_successful_conversion():
+def test_successful_conversion(RAW_STRUCTURES):
     """Make sure its possible to convert"""
     for structure in RAW_STRUCTURES:
         assert isinstance(
@@ -41,71 +34,30 @@ def test_successful_conversion():
         )
 
 
-def test_successful_conversion_structure():
+def test_successful_conversion_structure(structure):
     """Make sure its possible to convert to pymatgen Structure"""
-    structure = Structure(RAW_STRUCTURES[0])
-    structure.attributes.dimension_types = (Periodicity.PERIODIC,) * 3
-    structure.attributes.lattice_vectors = (
-        (1.0, 0.0, 0.0),
-        (0.0, 1.0, 0.0),
-        (0.0, 0.0, 1.0),
-    )
     assert isinstance(_get_structure(structure), PymatgenStructure)
     assert isinstance(get_pymatgen(structure), PymatgenStructure)
 
 
-def test_successful_conversion_molecule():
-    """Make sure its possible to convert to pymatgen Molecule"""
-    structure = Structure(RAW_STRUCTURES[0])
-    structure.attributes.dimension_types = (
-        Periodicity.PERIODIC,
-        Periodicity.PERIODIC,
-        Periodicity.APERIODIC,
-    )
-    structure.attributes.lattice_vectors = (
-        (1.0, 0.0, 0.0),
-        (0.0, 1.0, 0.0),
-        (0.0, 0.0, 0.0),
-    )
-    assert isinstance(_get_molecule(structure), Molecule)
-    assert isinstance(get_pymatgen(structure), Molecule)
+def test_null_lattice_vectors(null_lattice_vector_structure):
+    """Make sure null lattice vectors are handled
+
+    This also respresents a test for successful conversion to pymatgen Molecule
+    """
+    assert isinstance(_get_molecule(null_lattice_vector_structure), Molecule)
+    assert isinstance(get_pymatgen(null_lattice_vector_structure), Molecule)
 
 
-def test_null_positions():
+def test_null_positions(null_position_structure):
     """Make sure null positions are handled"""
-    structure = Structure(RAW_STRUCTURES[0])
-    structure.attributes.cartesian_site_positions[0] = (None,) * 3
-    with pytest.raises(ConversionError) as exc:
-        get_pymatgen(structure)
-    assert (
-        "pymatgen cannot be used to convert structures with unknown positions."
-        == str(exc.value)
-    )
+    assert isinstance(get_pymatgen(null_position_structure), PymatgenStructure)
+    assert isinstance(_get_structure(null_position_structure), PymatgenStructure)
+    assert isinstance(_get_molecule(null_position_structure), Molecule)
 
 
-def test_null_lattice_vectors():
-    """Make sure null lattice vectors are handled"""
-    structure = Structure(RAW_STRUCTURES[0])
-    structure.attributes.dimension_types = (
-        Periodicity.PERIODIC,
-        Periodicity.PERIODIC,
-        Periodicity.APERIODIC,
-    )
-    structure.attributes.lattice_vectors = (
-        (None, None, None),
-        (0.0, 1.0, 0.0),
-        (0.0, 0.0, 1.0),
-    )
-    assert isinstance(_get_molecule(structure), Molecule)
-    assert isinstance(get_pymatgen(structure), Molecule)
-
-
-def test_special_species():
+def test_special_species(SPECIAL_SPECIES_STRUCTURES):
     """Make sure vacancies and non-chemical symbols ("X") are handled"""
-    with open(Path(__file__).parent.joinpath("special_species.json"), "r") as raw_data:
-        special_structures: List[dict] = json.load(raw_data)
-
-    for special_structure in special_structures:
+    for special_structure in SPECIAL_SPECIES_STRUCTURES:
         structure = Structure(special_structure)
-
         assert isinstance(get_pymatgen(structure), PymatgenStructure)

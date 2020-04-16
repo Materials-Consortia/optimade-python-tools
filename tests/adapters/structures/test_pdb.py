@@ -20,22 +20,25 @@ from optimade.adapters import Structure
 from optimade.adapters.structures.proteindatabank import get_pdb
 
 
-with open(Path(__file__).parent.joinpath("raw_test_structures.json"), "r") as raw_data:
-    RAW_STRUCTURES: List[dict] = json.load(raw_data)
-
-
-def test_successful_conversion():
+def test_successful_conversion(RAW_STRUCTURES):
     """Make sure its possible to convert"""
     for structure in RAW_STRUCTURES:
         assert isinstance(get_pdb(Structure(structure)), str)
 
 
-def test_special_species():
-    """Make sure vacancies and non-chemical symbols ("X") are handled"""
-    with open(Path(__file__).parent.joinpath("special_species.json"), "r") as raw_data:
-        special_structures: List[dict] = json.load(raw_data)
+def test_null_positions(null_position_structure):
+    """Make sure null positions are handled"""
+    assert isinstance(get_pdb(null_position_structure), str)
 
-    for special_structure in special_structures:
+
+def test_null_lattice_vectors(null_lattice_vector_structure):
+    """Make sure null lattice vectors are handled"""
+    assert isinstance(get_pdb(null_lattice_vector_structure), str)
+
+
+def test_special_species(SPECIAL_SPECIES_STRUCTURES):
+    """Make sure vacancies and non-chemical symbols ("X") are handled"""
+    for special_structure in SPECIAL_SPECIES_STRUCTURES:
         structure = Structure(special_structure)
 
         assert isinstance(get_pdb(structure), str)

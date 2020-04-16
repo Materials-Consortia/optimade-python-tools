@@ -1,5 +1,6 @@
-from optimade.adapters.exceptions import ConversionError
 from optimade.models import StructureResource as OptimadeStructure
+
+from optimade.adapters.structures.utils import pad_cell, pad_positions
 
 try:
     from aiida.orm.nodes.data.structure import StructureData, Kind, Site
@@ -24,27 +25,10 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
         warn(AIIDA_NOT_FOUND)
         return None
 
-    # AiiDA cannot handle unknown positions
-    for site in optimade_structure.attributes.cartesian_site_positions:
-        if None in site:
-            raise ConversionError(
-                "AiiDA cannot be used to convert structures with unknown positions."
-            )
-
     attributes = optimade_structure.attributes
 
-    # Handle any None values in lattice_vectors (turn null/None into 1.0)
-    lattice_vectors = attributes.lattice_vectors
-    padding = 1.0
-    adjust_cell = any(value is None for vector in lattice_vectors for value in vector)
-    if adjust_cell:
-        adjusted_lattice_vectors = []
-        for vector in lattice_vectors:
-            new_vector = tuple(
-                value if value is not None else padding for value in vector
-            )
-            adjusted_lattice_vectors.append(new_vector)
-        lattice_vectors = tuple(adjusted_lattice_vectors)
+    # Convert null/None values to float("nan")
+    lattice_vectors, adjust_cell = pad_cell(attributes.lattice_vectors)
     structure = StructureData(cell=lattice_vectors)
 
     # Add Kinds
@@ -70,13 +54,16 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
             Kind(symbols=symbols, weights=concentration, mass=mass, name=kind.name)
         )
 
+    # Convert null/None values to float("nan")
+    cartesian_site_positions, _ = pad_positions(attributes.cartesian_site_positions)
+
     # Add Sites
     for index in range(attributes.nsites):
         # range() to ensure 1-to-1 between kind and site
         structure.append_site(
             Site(
                 kind_name=attributes.species_at_sites[index],
-                position=attributes.cartesian_site_positions[index],
+                position=cartesian_site_positions[index],
             )
         )
 

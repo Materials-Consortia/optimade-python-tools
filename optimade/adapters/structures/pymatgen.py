@@ -3,7 +3,8 @@ from typing import Union, Dict, List
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
 from optimade.models.structures import Periodicity
-from optimade.adapters.exceptions import ConversionError
+
+from optimade.adapters.structures.utils import pad_positions
 
 try:
     from pymatgen import Structure, Molecule
@@ -29,13 +30,6 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
         warn(PYMATGEN_NOT_FOUND)
         return None
 
-    # pymatgen cannot handle unknown positions
-    for site in optimade_structure.attributes.cartesian_site_positions:
-        if None in site:
-            raise ConversionError(
-                "pymatgen cannot be used to convert structures with unknown positions."
-            )
-
     if optimade_structure.attributes.dimension_types == (Periodicity.PERIODIC,) * 3:
         return _get_structure(optimade_structure)
 
@@ -47,6 +41,8 @@ def _get_structure(optimade_structure: OptimadeStructure) -> Structure:
 
     attributes = optimade_structure.attributes
 
+    cartesian_site_positions, _ = pad_positions(attributes.cartesian_site_positions)
+
     return Structure(
         lattice=attributes.lattice_vectors,
         species=_pymatgen_species(
@@ -54,7 +50,7 @@ def _get_structure(optimade_structure: OptimadeStructure) -> Structure:
             species=attributes.species,
             species_at_sites=attributes.species_at_sites,
         ),
-        coords=attributes.cartesian_site_positions,
+        coords=cartesian_site_positions,
         coords_are_cartesian=True,
     )
 
@@ -64,13 +60,15 @@ def _get_molecule(optimade_structure: OptimadeStructure) -> Molecule:
 
     attributes = optimade_structure.attributes
 
+    cartesian_site_positions, _ = pad_positions(attributes.cartesian_site_positions)
+
     return Molecule(
         species=_pymatgen_species(
             nsites=attributes.nsites,
             species=attributes.species,
             species_at_sites=attributes.species_at_sites,
         ),
-        coords=attributes.cartesian_site_positions,
+        coords=cartesian_site_positions,
     )
 
 

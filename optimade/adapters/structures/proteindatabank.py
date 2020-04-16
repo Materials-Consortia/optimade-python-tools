@@ -15,6 +15,8 @@ from optimade.models import StructureResource as OptimadeStructure
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
     cellpar_to_cell,
+    pad_cell,
+    pad_positions,
 )
 
 
@@ -180,7 +182,9 @@ def get_pdb(  # pylint: disable=too-many-locals
 
     rotation = None
     if any(attributes.dimension_types):
-        currentcell = np.asarray(attributes.lattice_vectors)
+        # Turn null/None values in lattice_vectors into float(nan)
+        lattice_vectors, _ = pad_cell(attributes.lattice_vectors, padding="nan")
+        currentcell = np.asarray(lattice_vectors)
         cellpar = cell_to_cellpar(currentcell)
         exportedcell = cellpar_to_cell(cellpar)
         rotation = np.linalg.solve(currentcell, exportedcell)
@@ -201,7 +205,8 @@ def get_pdb(  # pylint: disable=too-many-locals
         species.name: species for species in attributes.species
     }
 
-    sites = np.asarray(attributes.cartesian_site_positions)
+    cartesian_site_positions, _ = pad_positions(attributes.cartesian_site_positions)
+    sites = np.asarray(cartesian_site_positions)
     if rotation is not None:
         sites = sites.dot(rotation)
 
