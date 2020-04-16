@@ -9,9 +9,8 @@ __all__ = ("Reference",)
 
 
 class Reference(EntryAdapter):
-    """Lazy structure converter
-    :param structure: JSON OPTIMADE single structures resource entry.
+    """Lazy reference resource converter
+    :param reference: a single JSON OPTIMADE reference resource entry.
     """
 
     ENTRY_RESOURCE = ReferenceResource
-    _type_converters = {}

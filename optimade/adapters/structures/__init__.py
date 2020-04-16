@@ -15,8 +15,8 @@ __all__ = ("Structure",)
 
 
 class Structure(EntryAdapter):
-    """Lazy structure converter
-    :param structure: JSON OPTIMADE single structures resource entry.
+    """Lazy structure resource converter
+    :param structure: a single JSON OPTIMADE structure resource entry.
     """
 
     ENTRY_RESOURCE = StructureResource
