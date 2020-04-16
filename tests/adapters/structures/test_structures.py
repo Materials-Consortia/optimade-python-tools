@@ -137,3 +137,17 @@ class TestStructure:
                 ):
                     converted_structure = structure.convert(conversion_function)
                 assert converted_structure is None
+
+    def test_common_converters(self):
+        """Test common converters"""
+        structure = Structure(RAW_STRUCTURES[0])
+
+        assert structure.get_json == StructureResource(**RAW_STRUCTURES[0]).json()
+        assert structure.get_dict == StructureResource(**RAW_STRUCTURES[0]).dict()
+
+        # Since calling .dict() and .json() will return also all default-valued properties,
+        # the raw structure should at least be a sub-set of the resource's full list of properties.
+        for raw_structure in RAW_STRUCTURES:
+            raw_structure_property_set = set(raw_structure.keys())
+            resource_property_set = set(Structure(raw_structure).get_dict.keys())
+            assert raw_structure_property_set.issubset(resource_property_set)

@@ -13,9 +13,14 @@ class EntryAdapter:
 
     def __init__(self, entry: dict):
         self._entry = None
-        self._converted = dict.fromkeys(self._type_converters)
+        self._converted = {}
 
         self.entry = entry
+
+        self._common_converters = {
+            "json": self.entry.json,  # Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson
+            "dict": self.entry.dict,  # Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict
+        }
 
     @property
     def entry(self):
@@ -34,14 +39,20 @@ class EntryAdapter:
 
     def convert(self, format: str) -> Any:
         """Convert OPTIMADE entry to desired format"""
-        if format not in self._type_converters:
+        if (
+            format not in self._type_converters
+            and format not in self._common_converters
+        ):
             raise AttributeError(
                 f"Non-valid entry type to convert to: {format}. "
-                f"Valid entry types: {tuple(self._type_converters.keys())}"
+                f"Valid entry types: {tuple(self._type_converters.keys()) + tuple(self._common_converters.keys())}"
             )
 
-        if self._converted[format] is None:
-            self._converted[format] = self._type_converters[format](self.entry)
+        if self._converted.get(format, None) is None:
+            if format in self._type_converters:
+                self._converted[format] = self._type_converters[format](self.entry)
+            else:
+                self._converted[format] = self._common_converters[format]()
 
         return self._converted[format]
 
