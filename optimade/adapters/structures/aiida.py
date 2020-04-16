@@ -1,5 +1,3 @@
-import ast
-
 from optimade.adapters.exceptions import ConversionError
 from optimade.models import StructureResource as OptimadeStructure
 
@@ -35,13 +33,18 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
 
     attributes = optimade_structure.attributes
 
-    # Handle any None values in lattice_vectors (turn Null into 1.0)
-    lattice_vectors = str(attributes.lattice_vectors)
-    adjust_cell = False
-    if "None" in lattice_vectors:
-        adjust_cell = True
-        lattice_vectors = lattice_vectors.replace("None", "1.0")
-    lattice_vectors = ast.literal_eval(lattice_vectors)
+    # Handle any None values in lattice_vectors (turn null/None into 1.0)
+    lattice_vectors = attributes.lattice_vectors
+    padding = 1.0
+    adjust_cell = any(value is None for vector in lattice_vectors for value in vector)
+    if adjust_cell:
+        adjusted_lattice_vectors = []
+        for vector in lattice_vectors:
+            new_vector = tuple(
+                value if value is not None else padding for value in vector
+            )
+            adjusted_lattice_vectors.append(new_vector)
+        lattice_vectors = tuple(adjusted_lattice_vectors)
     structure = StructureData(cell=lattice_vectors)
 
     # Add Kinds
