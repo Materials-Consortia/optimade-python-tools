@@ -62,7 +62,7 @@ class TestStructure:
 
         with pytest.raises(
             AttributeError,
-            match=f"Non-valid entry type to convert to: {nonexistant_format}.",
+            match=f"Non-valid entry type to convert to: {nonexistant_format}",
         ):
             structure.convert(nonexistant_format)
 
@@ -70,7 +70,8 @@ class TestStructure:
         """The order of getting an attribute should be:
         1. `get_<entry type format>`
         2. `<entry type attribute>`
-        3. `raise AttributeError with custom message`
+        3. `<entry type attributes attributes>`
+        4. `raise AttributeError` with custom message
         """
         # If passing attribute starting with `get_`, it should call `self.convert()`
         with pytest.raises(
@@ -79,15 +80,16 @@ class TestStructure:
             structure.get_
 
         # If passing valid StructureResource attribute, it should return said attribute
-        from optimade.models.structures import Species
-
-        assert isinstance(structure.attributes.species[0], Species)
+        for attribute, attribute_type in (
+            ("id", str),
+            ("species", list),
+            ("attributes.species", list),
+        ):
+            assert isinstance(getattr(structure, attribute), attribute_type)
 
         # Otherwise, it should raise AttributeError
         for attribute in ("nonexistant_attribute", "attributes.nonexistant_attribute"):
-            with pytest.raises(
-                AttributeError, match=f"Unknown attribute: {attribute}."
-            ):
+            with pytest.raises(AttributeError, match=f"Unknown attribute: {attribute}"):
                 getattr(structure, attribute)
 
     @pytest.mark.skipif(

@@ -46,7 +46,7 @@ class EntryAdapter:
             and format not in self._common_converters
         ):
             raise AttributeError(
-                f"Non-valid entry type to convert to: {format}. "
+                f"Non-valid entry type to convert to: {format}\n"
                 f"Valid entry types: {tuple(self._type_converters.keys()) + tuple(self._common_converters.keys())}"
             )
 
@@ -77,7 +77,17 @@ class EntryAdapter:
         try:
             res = getattr(self.entry, name)
         except AttributeError:
-            pass
+            # Try to see if we are dealing with a nested attribute name, e.g., attributes.species
+            if "." in name:
+                res = None
+                nested_attributes = name.split(".")
+                try:
+                    for nested_attribute in nested_attributes:
+                        res = self.__getattr__(nested_attribute)
+                except AttributeError:
+                    pass
+                else:
+                    return res
         else:
             return res
 
