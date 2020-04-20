@@ -15,6 +15,32 @@ except ImportError:
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 
+def fractional_coordinates(
+    cell: Tuple[Vector3D, Vector3D, Vector3D], cartesian_positions: List[Vector3D]
+) -> List[Vector3D]:
+    """Returns fractional coordinates and wraps coordinates to be [0;1[
+
+    NOTE: Based on `ase.atoms:Atoms.get_scaled_positions()`.
+    """
+    if globals().get("np", None) is None:
+        warn(NUMPY_NOT_FOUND)
+        return None
+
+    cell = np.asarray(cell)
+    cartesian_positions = np.asarray(cartesian_positions)
+
+    fractional = np.linalg.solve(cell.T, cartesian_positions.T).T
+
+    # Expecting a bulk 3D structure here, note, this may change in the future.
+    # See `ase.atoms:Atoms.get_scaled_positions()` for ideas on how to handle lower dimensional structures.
+    # Furthermore, according to ASE we need to modulo 1.0 twice.
+    for i in range(3):
+        fractional[:, i] %= 1.0
+        fractional[:, i] %= 1.0
+
+    return [tuple(position) for position in fractional]
+
+
 def cell_to_cellpar(cell, radians=False):
     """Returns the cell parameters [a, b, c, alpha, beta, gamma].
 

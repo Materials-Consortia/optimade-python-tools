@@ -4,7 +4,11 @@ from typing import Dict
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
 
-from optimade.adapters.structures.utils import cell_to_cellpar, pad_positions
+from optimade.adapters.structures.utils import (
+    cell_to_cellpar,
+    pad_positions,
+    fractional_coordinates,
+)
 
 try:
     import numpy as np
@@ -72,8 +76,15 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
             "  'x, y, z'\n\n"
         )
 
-    # Is it a periodic system?
-    # NOTE: This is a bit ahead of its time, since this OPTIMADE property is part of an open PR.
+        # Since some structure viewers are having issues with cartesian coordinates,
+        # we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.
+        if not hasattr(attributes, "fractional_site_positions"):
+            attributes.fractional_site_positions = fractional_coordinates(
+                cell=attributes.lattice_vectors,
+                cartesian_positions=attributes.cartesian_site_positions,
+            )
+
+    # NOTE: This is otherwise a bit ahead of its time, since this OPTIMADE property is part of an open PR.
     # See https://github.com/Materials-Consortia/OPTIMADE/pull/206
     coord_type = (
         "fract" if hasattr(attributes, "fractional_site_positions") else "Cartn"
@@ -91,8 +102,7 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         "  _atom_site_type_symbol\n"  # species.chemical_symbols
     )
 
-    # TODO: Remove "pragma" comment, once Materials-Consortia/OPTIMADE#206 has been merged.
-    if coord_type == "fract":  # pragma: no cover
+    if coord_type == "fract":
         sites, _ = pad_positions(attributes.fractional_site_positions)
     else:
         sites, _ = pad_positions(attributes.cartesian_site_positions)
