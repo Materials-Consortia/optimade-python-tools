@@ -68,16 +68,16 @@ class TestStructure:
 
     def test_getattr_order(self, structure):
         """The order of getting an attribute should be:
-        1. `get_<entry type format>`
+        1. `as_<entry type format>`
         2. `<entry type attribute>`
         3. `<entry type attributes attributes>`
         4. `raise AttributeError` with custom message
         """
-        # If passing attribute starting with `get_`, it should call `self.convert()`
+        # If passing attribute starting with `as_`, it should call `self.convert()`
         with pytest.raises(
             AttributeError, match=f"Non-valid entry type to convert to: "
         ):
-            structure.get_
+            structure.as_
 
         # If passing valid StructureResource attribute, it should return said attribute
         for attribute, attribute_type in (
@@ -132,12 +132,12 @@ class TestStructure:
         """Test common converters"""
         structure = Structure(raw_structure)
 
-        assert structure.get_json == StructureResource(**raw_structure).json()
-        assert structure.get_dict == StructureResource(**raw_structure).dict()
+        assert structure.as_json == StructureResource(**raw_structure).json()
+        assert structure.as_dict == StructureResource(**raw_structure).dict()
 
         # Since calling .dict() and .json() will return also all default-valued properties,
         # the raw structure should at least be a sub-set of the resource's full list of properties.
         for raw_structure in RAW_STRUCTURES:
             raw_structure_property_set = set(raw_structure.keys())
-            resource_property_set = set(Structure(raw_structure).get_dict.keys())
+            resource_property_set = set(Structure(raw_structure).as_dict.keys())
             assert raw_structure_property_set.issubset(resource_property_set)

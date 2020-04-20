@@ -61,16 +61,16 @@ class TestReference:
 
     def test_getattr_order(self, reference):
         """The order of getting an attribute should be:
-        1. `get_<entry type format>`
+        1. `as_<entry type format>`
         2. `<entry type attribute>`
         3. `<entry type attributes attributes>`
         3. `raise AttributeError with custom message`
         """
-        # If passing attribute starting with `get_`, it should call `self.convert()`
+        # If passing attribute starting with `as_`, it should call `self.convert()`
         with pytest.raises(
             AttributeError, match=f"Non-valid entry type to convert to: "
         ):
-            reference.get_
+            reference.as_
 
         # If passing valid ReferenceResource attribute, it should return said attribute
         for attribute, attribute_type in (

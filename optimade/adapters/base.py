@@ -61,13 +61,13 @@ class EntryAdapter:
     def __getattr__(self, name: str) -> Any:
         """Get converted entry or attribute from OPTIMADE entry
         Order:
-        - Try to return converted entry if using `get_<_type_converters value>`.
+        - Try to return converted entry if using `as_<_type_converters value>`.
         - Try to return OPTIMADE ENTRY_RESOURCE attribute.
         - Try to return OPTIMADE ENTRY_RESOURCE.attributes attribute.
         - Raise AttributeError
         """
-        # get_<entry_type>
-        if name.startswith("get_"):
+        # as_<entry_type>
+        if name.startswith("as_"):
             entry_type = "_".join(name.split("_")[1:])
             return self.convert(entry_type)
 
@@ -109,7 +109,7 @@ class EntryAdapter:
         )
         raise AttributeError(
             f"Unknown attribute: {name}\n"
-            "If you want to get a converted entry use `get_<entry_type>`, "
+            "If you want to get a converted entry as <entry_type> use `as_<entry_type>`, "
             f"where `<entry_type>` is one of {tuple(self._type_converters.keys()) + tuple(self._common_converters.keys())}\n"
             f"Otherwise, you can try to retrieve an OPTIMADE {entry_resource_name} attribute or property."
         )
