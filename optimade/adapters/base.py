@@ -1,5 +1,7 @@
 import re
-from typing import Union, Dict, Callable, Any
+from typing import Union, Dict, Callable, Any, Tuple, List
+
+from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 from optimade.models import EntryResource
 
@@ -58,12 +60,34 @@ class EntryAdapter:
 
         return self._converted[format]
 
+    @staticmethod
+    def _get_model_attributes(
+        starting_instances: Union[Tuple[BaseModel], List[BaseModel]], name: str
+    ) -> Any:
+        """Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""
+        for res in starting_instances:
+            nested_attributes = name.split(".")
+            for nested_attribute in nested_attributes:
+                if nested_attribute in getattr(res, "__fields__", {}):
+                    res = getattr(res, nested_attribute)
+                else:
+                    res = None
+                    break
+            if res is not None:
+                return res
+        raise AttributeError
+
     def __getattr__(self, name: str) -> Any:
         """Get converted entry or attribute from OPTIMADE entry
+        Support any level of "."-nested OPTIMADE ENTRY_RESOURCE attributes, e.g., `attributes.species` for StuctureResource.
+        NOTE: All nested attributes must individually be subclasses of `pydantic.BaseModel`,
+        i.e., one can not access nested attributes in lists by passing a "."-nested `name` to this method,
+        e.g., `attributes.species.name` or `attributes.species[0].name` will not work for variable `name`.
+
         Order:
-        - Try to return converted entry if using `as_<_type_converters value>`.
-        - Try to return OPTIMADE ENTRY_RESOURCE attribute.
-        - Try to return OPTIMADE ENTRY_RESOURCE.attributes attribute.
+        - Try to return converted entry if using `as_<_type_converters key>`.
+        - Try to return OPTIMADE ENTRY_RESOURCE (nested) attribute.
+        - Try to return OPTIMADE ENTRY_RESOURCE.attributes (nested) attribute.
         - Raise AttributeError
         """
         # as_<entry_type>
@@ -71,28 +95,9 @@ class EntryAdapter:
             entry_type = "_".join(name.split("_")[1:])
             return self.convert(entry_type)
 
-        # Try returning:
-        # 1. ENTRY_RESOURCE attribute
-        # 2. ENTRY_RESOURCE.attributes attribute (an ENTRY_RESOURCE property)
+        # Try returning ENTRY_RESOURCE attribute
         try:
-            res = getattr(self.entry, name)
-        except AttributeError:
-            # Try to see if we are dealing with a nested attribute name, e.g., attributes.species
-            if "." in name:
-                res = None
-                nested_attributes = name.split(".")
-                try:
-                    for nested_attribute in nested_attributes:
-                        res = self.__getattr__(nested_attribute)
-                except AttributeError:
-                    pass
-                else:
-                    return res
-        else:
-            return res
-
-        try:
-            res = getattr(self.entry.attributes, name)
+            res = self._get_model_attributes((self.entry, self.entry.attributes), name)
         except AttributeError:
             pass
         else:

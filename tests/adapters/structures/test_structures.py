@@ -80,6 +80,7 @@ class TestStructure:
             structure.as_
 
         # If passing valid StructureResource attribute, it should return said attribute
+        # Test also nested attributes with `getattr()`.
         for attribute, attribute_type in (
             ("id", str),
             ("species", list),
