@@ -55,7 +55,7 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
 
     # Do this only if there's three non-zero lattice vectors
     # NOTE: This also negates handling of lattice_vectors with null/None values
-    if sum(attributes.dimension_types) == 3:
+    if all(attributes.dimension_types):
         a_vector, b_vector, c_vector, alpha, beta, gamma = cell_to_cellpar(
             attributes.lattice_vectors
         )
@@ -79,9 +79,9 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         # Since some structure viewers are having issues with cartesian coordinates,
         # we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.
         if not hasattr(attributes, "fractional_site_positions"):
+            sites, _ = pad_positions(attributes.cartesian_site_positions)
             attributes.fractional_site_positions = fractional_coordinates(
-                cell=attributes.lattice_vectors,
-                cartesian_positions=attributes.cartesian_site_positions,
+                cell=attributes.lattice_vectors, cartesian_positions=sites
             )
 
     # NOTE: This is otherwise a bit ahead of its time, since this OPTIMADE property is part of an open PR.

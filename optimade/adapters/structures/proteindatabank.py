@@ -15,8 +15,8 @@ from optimade.models import StructureResource as OptimadeStructure
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
     cellpar_to_cell,
-    pad_cell,
     pad_positions,
+    scaled_cell,
 )
 
 
@@ -58,7 +58,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     attributes = optimade_structure.attributes
 
     # Do this only if there's three non-zero lattice vectors
-    if sum(attributes.dimension_types) == 3:
+    if all(attributes.dimension_types):
         a_vector, b_vector, c_vector, alpha, beta, gamma = cell_to_cellpar(
             attributes.lattice_vectors
         )
@@ -77,11 +77,12 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
             f"_symmetry.entry_id                {entry_id}\n"
             "_symmetry.space_group_name_H-M    'P 1'\n"
             "_symmetry.Int_Tables_number       1\n#\n"
-            # "loop_\n"
-            # "_symmetry_equiv.pos_as_xyz\n"
-            # "'x, y, z'\n#\n"
         )
 
+    # TODO: The following lines are perhaps needed to create a "valid" PDBx/mmCIF file.
+    # However, at the same time, the information here is "default" and will for all structures "at this moment in time"
+    # be the same. I.e., no information is gained by adding this now.
+    # If it is found that they indeed are needed to create a "valid" PDBx/mmCIF file, they should be included in the output.
     # cif += (
     #     "loop_\n"
     #     "_struct_asym.id\n"
@@ -112,6 +113,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
         "_atom_site.id\n"  # number (1-counting)
         "_atom_site.type_symbol\n"  # species.chemical_symbols
         "_atom_site.label_atom_id\n"  # species.checmical_symbols symbol + number
+        # For these next keys, see the comment above.
         # "_atom_site.label_asym_id\n"  # Will be set to "A" _struct_asym.id above
         # "_atom_site.label_comp_id\n"  # Will be set to "X" _chem_comp.id above
         # "_atom_site.label_entity_id\n"  # Will be set to "1" _entity.id above
@@ -181,21 +183,23 @@ def get_pdb(  # pylint: disable=too-many-locals
     attributes = optimade_structure.attributes
 
     rotation = None
-    if any(attributes.dimension_types):
-        # Turn null/None values in lattice_vectors into float(nan)
-        lattice_vectors, _ = pad_cell(attributes.lattice_vectors, padding="nan")
-        currentcell = np.asarray(lattice_vectors)
+    if all(attributes.dimension_types):
+        currentcell = np.asarray(attributes.lattice_vectors)
         cellpar = cell_to_cellpar(currentcell)
         exportedcell = cellpar_to_cell(cellpar)
         rotation = np.linalg.solve(currentcell, exportedcell)
-        # ignoring Z-value, using P1 since we have all atoms defined explicitly
+        # Setting Z-value = 1 and using P1 since we have all atoms defined explicitly
+        Z = 1
+        spacegroup = "P 1"
         pdb += (
-            f"CRYST1{cellpar[0]:9.3f}{cellpar[1]:9.3f}{cellpar[2]:9.3f}"
-            f"{cellpar[3]:7.2f}{cellpar[4]:7.2f}{cellpar[5]:7.2f} P 1\n"
+            f"CRYST1{cellpar[0]:9.3f}{cellpar[1]:9.3f}{cellpar[2]:8.3f}"
+            f"{cellpar[3]:7.2f}{cellpar[4]:7.2f}{cellpar[5]:7.2f} {spacegroup:11s}{Z:4d}\n"
         )
 
-    # RasMol complains if the atom index exceeds 100000. There might
-    # be a limit of 5 digit numbers in this field.
+        for i, vector in enumerate(scaled_cell(currentcell)):
+            pdb += f"SCALE{i + 1}    {vector[0]:10.6f}{vector[1]:10.6f}{vector[2]:10.6f}     {0:10.5f}\n"
+
+    # There is a limit of 5 digit numbers in this field.
     pdb_maxnum = 100000
     bfactor = 1.0
 

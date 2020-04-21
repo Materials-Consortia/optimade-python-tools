@@ -15,6 +15,28 @@ except ImportError:
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 
+def scaled_cell(
+    cell: Tuple[Vector3D, Vector3D, Vector3D]
+) -> Tuple[Vector3D, Vector3D, Vector3D]:
+    """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`)
+
+    This is based on PDB's method of calculating SCALE from CRYST data.
+    For more info, see https://www.wwpdb.org/documentation/file-format-content/format33/sect8.html#SCALEn
+    """
+    if globals().get("np", None) is None:
+        warn(NUMPY_NOT_FOUND)
+        return None
+
+    cell = np.asarray(cell)
+
+    volume = np.dot(cell[0], np.cross(cell[1], cell[2]))
+    scale = []
+    for i in range(3):
+        vector = np.cross(cell[(i + 1) % 3], cell[(i + 2) % 3]) / volume
+        scale.append(tuple(vector))
+    return tuple(scale)
+
+
 def fractional_coordinates(
     cell: Tuple[Vector3D, Vector3D, Vector3D], cartesian_positions: List[Vector3D]
 ) -> List[Vector3D]:
@@ -34,6 +56,7 @@ def fractional_coordinates(
     # Expecting a bulk 3D structure here, note, this may change in the future.
     # See `ase.atoms:Atoms.get_scaled_positions()` for ideas on how to handle lower dimensional structures.
     # Furthermore, according to ASE we need to modulo 1.0 twice.
+    # This seems to be due to small floats % 1.0 becomes 1.0, hence twice makes it 0.0.
     for i in range(3):
         fractional[:, i] %= 1.0
         fractional[:, i] %= 1.0
@@ -107,7 +130,6 @@ def cellpar_to_cell(cellpar, ab_normal=(0, 0, 1), a_direction=None):
            [ 3.859, -0.745,  0.745]])
 
     NOTE: Direct copy of `ase.geometry.cell:cellpar_to_cell()`.
-
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)

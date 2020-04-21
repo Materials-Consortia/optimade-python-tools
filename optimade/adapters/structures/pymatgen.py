@@ -30,7 +30,7 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
         warn(PYMATGEN_NOT_FOUND)
         return None
 
-    if optimade_structure.attributes.dimension_types == (Periodicity.PERIODIC,) * 3:
+    if all(optimade_structure.attributes.dimension_types):
         return _get_structure(optimade_structure)
 
     return _get_molecule(optimade_structure)
