@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Build the Docker images
       run: docker-compose build
@@ -138,13 +138,25 @@ jobs:
         python-version: [3.6, 3.7, 3.8]
 
     services:
-        mongo:
-            image: mongo:4.2
-            ports:
-            - 27017:27017
+      mongo:
+        image: mongo:4.2
+        ports:
+        - 27017:27017
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_DB: test_django
+          POSTGRES_PASSWORD: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+        - 5432:5432
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -157,7 +169,7 @@ jobs:
         pip install -U setuptools
         # Install static dependencies followed by "normal" install
         python -m pip install -r .github/workflows/requirements.txt
-        pip install -e .[all]
+        pip install -e .[testing]
 
     - name: Run all tests (using a real MongoDB)
       run: pytest -rs --cov=./optimade/ --cov-report=xml
@@ -168,6 +180,20 @@ jobs:
       run: pytest -rs --cov=./optimade/ --cov-report=xml --cov-append tests/server/test_middleware.py tests/server/test_server_validation.py tests/server/test_config.py
       env:
         OPTIMADE_CI_FORCE_MONGO: 0
+
+    - name: Install adapter conversion dependencies
+      run: |
+        pip install -e .[all]
+        # AiiDA-specific
+        reentry scan
+
+    - name: Setup up environment for AiiDA
+      env:
+        AIIDA_TEST_BACKEND: django
+      run: .github/aiida/setup_aiida.sh
+
+    - name: Run previously skipped tests for adapter conversion
+      run: pytest -rs --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.7 && github.repository == 'Materials-Consortia/optimade-python-tools'

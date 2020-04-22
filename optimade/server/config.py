@@ -1,5 +1,6 @@
 # pylint: disable=no-self-argument
 import json
+import logging
 from typing import Optional, Dict, List
 
 try:
@@ -15,6 +16,7 @@ from optimade.models import Implementation, Provider
 
 
 DEFAULT_CONFIG_FILE_PATH = str(Path.home().joinpath(".optimade.json"))
+logger = logging.getLogger("optimade")
 
 
 class NoFallback(Exception):
@@ -109,7 +111,7 @@ class ServerConfig(BaseSettings):
     )
 
     @root_validator(pre=True)
-    def load_default_settings(cls, values):
+    def load_default_settings(cls, values):  # pylint: disable=no-self-argument
         """
         Loads settings from a root file if available and uses that as defaults in
         place of built in defaults
@@ -119,8 +121,13 @@ class ServerConfig(BaseSettings):
         new_values = {}
 
         if config_file_path.exists() and config_file_path.is_file():
+            logger.debug("Found config file at: %s", config_file_path)
             with open(config_file_path) as f:
                 new_values = json.load(f)
+        else:
+            logger.debug(  # pragma: no cover
+                "Did not find config file at: %s", config_file_path
+            )
 
         new_values.update(values)
 
