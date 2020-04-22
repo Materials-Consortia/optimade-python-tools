@@ -31,7 +31,7 @@ all_deps = dev_deps + django_deps + elastic_deps + aiida_deps + ase_deps + pymat
 
 setup(
     name="optimade",
-    version="0.7.0",
+    version="0.8.0",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTIMADE Development Team",
