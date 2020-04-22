@@ -15,6 +15,7 @@ from optimade.models import StructureResource as OptimadeStructure
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
     cellpar_to_cell,
+    fractional_coordinates,
     pad_positions,
     scaled_cell,
 )
@@ -38,9 +39,6 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
         warn(NUMPY_NOT_FOUND)
         return None
 
-    raise NotImplementedError(
-        "As of yet not implemented properly. Please use get_pdb instead."
-    )
     cif = """#
 # Created from an OPTIMADE structure.
 #
@@ -79,6 +77,14 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
             "_symmetry.Int_Tables_number       1\n#\n"
         )
 
+        # Since some structure viewers are having issues with cartesian coordinates,
+        # we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.
+        if not hasattr(attributes, "fractional_site_positions"):
+            sites, _ = pad_positions(attributes.cartesian_site_positions)
+            attributes.fractional_site_positions = fractional_coordinates(
+                cell=attributes.lattice_vectors, cartesian_positions=sites
+            )
+
     # TODO: The following lines are perhaps needed to create a "valid" PDBx/mmCIF file.
     # However, at the same time, the information here is "default" and will for all structures "at this moment in time"
     # be the same. I.e., no information is gained by adding this now.
@@ -102,7 +108,8 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     #     "1\n#\n"  # At this point, not using this feature.
     # )
 
-    # Is it a periodic system?
+    # NOTE: This is otherwise a bit ahead of its time, since this OPTIMADE property is part of an open PR.
+    # See https://github.com/Materials-Consortia/OPTIMADE/pull/206
     coord_type = (
         "fract" if hasattr(attributes, "fractional_site_positions") else "Cartn"
     )
@@ -127,9 +134,9 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     )
 
     if coord_type == "fract":
-        sites = attributes.fractional_site_positions
+        sites, _ = pad_positions(attributes.fractional_site_positions)
     else:
-        sites = attributes.cartesian_site_positions
+        sites, _ = pad_positions(attributes.cartesian_site_positions)
 
     species: Dict[str, OptimadeStructureSpecies] = {
         species.name: species for species in attributes.species

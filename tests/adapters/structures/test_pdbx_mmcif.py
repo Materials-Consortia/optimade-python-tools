@@ -23,27 +23,19 @@ from optimade.adapters.structures.proteindatabank import get_pdbx_mmcif
 def test_successful_conversion(RAW_STRUCTURES):
     """Make sure its possible to convert"""
     for structure in RAW_STRUCTURES:
-        # assert isinstance(get_pdbx_mmcif(Structure(structure)), str)
-        with pytest.raises(
-            NotImplementedError,
-            match="As of yet not implemented properly. Please use get_pdb instead.",
-        ):
-            get_pdbx_mmcif(Structure(structure))
+        assert isinstance(get_pdbx_mmcif(Structure(structure)), str)
 
 
-@pytest.mark.skip("PDFx/mmCIF has yet to be implemented.")
 def test_null_positions(null_position_structure):
     """Make sure null positions are handled"""
     assert isinstance(get_pdbx_mmcif(null_position_structure), str)
 
 
-@pytest.mark.skip("PDFx/mmCIF has yet to be implemented.")
 def test_null_lattice_vectors(null_lattice_vector_structure):
     """Make sure null lattice vectors are handled"""
     assert isinstance(get_pdbx_mmcif(null_lattice_vector_structure), str)
 
 
-@pytest.mark.skip("PDFx/mmCIF has yet to be implemented.")
 def test_special_species(SPECIAL_SPECIES_STRUCTURES):
     """Make sure vacancies and non-chemical symbols ("X") are handled"""
     for special_structure in SPECIAL_SPECIES_STRUCTURES:
