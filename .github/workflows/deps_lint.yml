@@ -173,7 +173,7 @@ jobs:
     - name: Install latest compatible versions of immediate dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         # Install static dependencies followed by "normal" install
         python -m pip install -r .github/workflows/requirements.txt
         pip install optimade-core/
