@@ -1,6 +1,6 @@
 """Modified JSON API v1.0 for OPTIMADE API"""
 # pylint: disable=no-self-argument,no-name-in-module
-from pydantic import Field, root_validator, BaseModel, AnyHttpUrl, EmailStr
+from pydantic import Field, root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
 from typing import Optional, Union, List
 
 from datetime import datetime
@@ -109,7 +109,7 @@ class Implementation(BaseModel):
         None, description="version string of the current implementation"
     )
 
-    source_url: Optional[AnyHttpUrl] = Field(
+    source_url: Optional[AnyUrl] = Field(
         None,
         description="URL of the implementation source, either downloadable archive or version control system",
     )
