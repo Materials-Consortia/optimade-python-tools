@@ -48,6 +48,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U setuptools
         # Install package clean with test dependencies followed by eager update install
+        pip install optimade-core/
+        pip install optimade-server/
+        pip install optimade-validator/
+        pip install optimade-client/
         pip install -e .[testing]
         pip install -U --upgrade-strategy eager -r .github/workflows/requirements_eager.txt
 

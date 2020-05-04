@@ -48,6 +48,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools
+        pip install optimade-core/
+        pip install optimade-server/
+        pip install optimade-validator/
+        pip install optimade-client/
         pip install -e .[dev]
 
     - name: Run pre-commit
@@ -70,7 +74,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -U setuptools
-        python -m pip install -r .github/workflows/requirements.txt
+        pip install optimade-core/
+        pip install optimade-server/
+        pip install optimade-validator/
+        pip install optimade-client/
         python -m pip install -e .[testing]
         docker pull quen2404/openapi-diff
 
