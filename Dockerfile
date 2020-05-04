@@ -4,8 +4,10 @@ WORKDIR /app
 
 # copy repo contents
 COPY setup.py README.md ./
-COPY optimade ./optimade
-RUN pip install -e .[server]
+COPY optimade-core ./optimade-core
+COPY optimade-server ./optimade-server
+RUN pip install -e optimade-core/
+RUN pip install -e optimade-server/
 
 ARG PORT=5000
 EXPOSE ${PORT}
