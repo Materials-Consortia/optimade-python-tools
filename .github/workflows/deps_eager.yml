@@ -51,7 +51,7 @@ jobs:
         pip install optimade-core/
         pip install optimade-server/
         pip install optimade-validator/
-        pip install optimade-client/
+        pip install optimade-client/[all]
         pip install -e .[testing]
         pip install -U --upgrade-strategy eager -r .github/workflows/requirements_eager.txt
 
@@ -67,7 +67,7 @@ jobs:
 
     - name: Install adapter conversion dependencies (eagerly)
       run: |
-        pip install -U --upgrade-strategy eager -e .
+        pip install -U --upgrade-strategy eager -e optimade-client/[all]
         # AiiDA-specific
         reentry scan
 

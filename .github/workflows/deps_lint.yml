@@ -197,7 +197,7 @@ jobs:
         pip install optimade-core/
         pip install optimade-server/
         pip install optimade-validator/
-        pip install optimade-client/
+        pip install optimade-client/[all]
         pip install -e .[dev]
         # AiiDA-specific
         reentry scan
