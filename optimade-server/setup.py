@@ -36,6 +36,7 @@ setup(
         "pymongo~=3.10",
         "mongomock~=3.19",
         "uvicorn",
+        "requests",
         "Jinja2~=2.11",
     ],
     extras_require={"django": django_deps, "elastic": elastic_deps},
