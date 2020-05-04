@@ -194,7 +194,11 @@ jobs:
 
     - name: Install adapter conversion dependencies
       run: |
-        pip install -e .[all]
+        pip install optimade-core/
+        pip install optimade-server/
+        pip install optimade-validator/
+        pip install optimade-client/
+        pip install -e .[dev]
         # AiiDA-specific
         reentry scan
 
