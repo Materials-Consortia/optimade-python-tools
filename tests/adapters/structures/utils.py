@@ -4,7 +4,7 @@ import re
 
 def get_min_ver(dependency: str) -> str:
     """Retrieve version of `dependency` from setup.py, raise if not found."""
-    setup_py = Path(__file__).parent.joinpath("../../../setup.py")
+    setup_py = Path(__file__).parent.joinpath("../../../optimade-client/setup.py")
     with open(setup_py, "r") as setup_file:
         for line in setup_file.readlines():
             min_ver = re.findall(fr'"{dependency}~=([0-9]+(\.[0-9]+){{,2}})"', line)
