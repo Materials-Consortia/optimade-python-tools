@@ -1,5 +1,0 @@
-recursive-include optimade/server/ *.json
-recursive-include optimade/server/data/ *
-recursive-include optimade/server/routers/static/ *
-recursive-include optimade/grammar/ *.lark
-recursive-include optimade/validator/data/ *.txt
