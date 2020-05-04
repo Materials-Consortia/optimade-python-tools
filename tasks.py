@@ -4,7 +4,7 @@ from pathlib import Path
 
 from invoke import task
 
-from optimade import __version__
+from optimade.server import __version__
 
 TOP_DIR = Path(__file__).parent.resolve()
 
