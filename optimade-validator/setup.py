@@ -2,11 +2,6 @@ from pathlib import Path
 from setuptools import setup, find_namespace_packages
 
 
-module_dir = Path(__file__).resolve().parent
-
-with open(module_dir.joinpath("requirements.txt")) as f:
-    requirements = f.read()
-
 setup(
     name="optimade-validator",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
@@ -30,5 +25,5 @@ setup(
     ],
     package_data={"optimade.validator.data": ["*.txt"]},
     python_requires=">=3.6",
-    install_requires=requirements,
+    install_requires=["optimade-core~=0.8.1", "fastapi~=0.53", "pydantic~=1.4",],
 )

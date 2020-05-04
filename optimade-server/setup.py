@@ -2,10 +2,8 @@ from pathlib import Path
 from setuptools import setup, find_namespace_packages
 
 
-module_dir = Path(__file__).resolve().parent
-
-with open(module_dir.joinpath("requirements.txt")) as f:
-    requirements = f.read()
+django_deps = ["django>=2.2.9,<4.0"]
+elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
 
 setup(
     name="optimade-server",
@@ -30,5 +28,16 @@ setup(
     ],
     package_data={"": ["*.json", "*.html"]},
     python_requires=">=3.6",
-    install_requires=requirements,
+    install_requires=[
+        "optimade-core~=0.8.1",
+        "fastapi~=0.53",
+        "pydantic~=1.4",
+        "email_validator",
+        'typing-extensions~=3.7.4.1;python_version<"3.8"',
+        "pymongo~=3.10",
+        "mongomock~=3.19",
+        "uvicorn",
+        "Jinja2~=2.11",
+    ],
+    extras_require={"django": django_deps, "elastic": elastic_deps},
 )

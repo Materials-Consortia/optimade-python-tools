@@ -1,6 +1,0 @@
-lark-parser~=0.8.5
-fastapi~=0.53
-pydantic~=1.4
-email_validator
-typing-extensions~=3.7.4.1;python_version<"3.8"
-optimade-core~=0.8.1

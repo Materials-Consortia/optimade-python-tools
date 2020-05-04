@@ -1,11 +1,14 @@
 from pathlib import Path
 from setuptools import setup, find_namespace_packages
 
+# Client minded
+aiida_deps = ["aiida-core~=1.1"]
+ase_deps = ["ase~=3.19"]
+cif_deps = ["numpy~=1.18"]
+pdb_deps = cif_deps
+pymatgen_deps = ["pymatgen~=2020.3"]
+client_deps = cif_deps
 
-module_dir = Path(__file__).resolve().parent
-
-with open(module_dir.joinpath("requirements.txt")) as f:
-    requirements = f.read()
 
 setup(
     name="optimade-core",
@@ -30,5 +33,17 @@ setup(
     ],
     package_data={"optimade.grammar": ["*.lark"]},
     python_requires=">=3.6",
-    install_requires=requirements,
+    install_requires=[
+        "lark-parser~=0.8.5",
+        "fastapi~=0.53" "pydantic~=1.4",
+        "email_validator",
+        'typing-extensions~=3.7.4.1;python_version<"3.8"',
+    ],
+    extras_require={
+        "aiida": aiida_deps,
+        "ase": ase_deps,
+        "cif": cif_deps,
+        "pdb": pdb_deps,
+        "pymatgen": pymatgen_deps,
+    },
 )

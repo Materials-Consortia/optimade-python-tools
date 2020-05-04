@@ -1,5 +1,0 @@
-optimade-core~=0.8.1
-pymongo~=3.10
-mongomock~=3.19
-uvicorn
-Jinja2~=2.11
