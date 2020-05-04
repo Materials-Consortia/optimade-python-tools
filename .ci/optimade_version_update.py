@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 try:
-    from optimade import __api_version__
+    from optimade.server import __api_version__
 except ImportError:
     raise ImportError(
         "optimade needs to be installed prior to running 'optimade_version_update.py'"

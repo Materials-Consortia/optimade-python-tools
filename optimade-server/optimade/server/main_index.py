@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from optimade import __api_version__, __version__
+from optimade.server import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 from .config import CONFIG

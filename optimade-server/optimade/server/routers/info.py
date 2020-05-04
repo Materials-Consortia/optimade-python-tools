@@ -5,7 +5,7 @@ from typing import Union
 from fastapi import APIRouter, Request
 from fastapi.exceptions import StarletteHTTPException
 
-from optimade import __api_version__
+from optimade.server import __api_version__
 
 from optimade.models import (
     ErrorResponse,

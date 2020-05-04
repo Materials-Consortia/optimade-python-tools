@@ -6,7 +6,7 @@ from typing import Union, List, Dict
 
 from fastapi import HTTPException, Request
 
-from optimade import __api_version__
+from optimade.server import __api_version__
 from optimade.models import (
     ResponseMeta,
     EntryResource,

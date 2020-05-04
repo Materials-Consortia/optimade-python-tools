@@ -11,7 +11,7 @@ from pathlib import Path
 
 from pydantic import BaseSettings, Field, root_validator
 
-from optimade import __version__
+from optimade.server import __version__
 from optimade.models import Implementation, Provider
 
 
