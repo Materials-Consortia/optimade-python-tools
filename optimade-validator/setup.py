@@ -25,5 +25,8 @@ setup(
     ],
     package_data={"optimade.validator.data": ["*.txt"]},
     python_requires=">=3.6",
-    install_requires=["optimade-core~=0.8.1", "fastapi~=0.53", "pydantic~=1.4",],
+    install_requires=["optimade-core~=0.8.1", "fastapi~=0.53", "pydantic~=1.4"],
+    entry_points={
+        "console_scripts": ["optimade_validator=optimade.validator:validate"]
+    },
 )

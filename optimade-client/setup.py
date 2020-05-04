@@ -1,7 +1,7 @@
 from pathlib import Path
 from setuptools import setup, find_namespace_packages
 
-# Client minded
+# Various Client Libraries
 aiida_deps = ["aiida-core~=1.1"]
 ase_deps = ["ase~=3.19"]
 cif_deps = ["numpy~=1.18"]
@@ -11,7 +11,7 @@ client_deps = cif_deps
 
 
 setup(
-    name="optimade-core",
+    name="optimade-client",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTIMADE Development Team",
