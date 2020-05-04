@@ -67,7 +67,7 @@ jobs:
 
     - name: Install adapter conversion dependencies (eagerly)
       run: |
-        pip install -U --upgrade-strategy eager -e .[all]
+        pip install -U --upgrade-strategy eager -e .
         # AiiDA-specific
         reentry scan
 
