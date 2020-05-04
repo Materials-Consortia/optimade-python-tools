@@ -1,4 +1,3 @@
-from pathlib import Path
 from setuptools import setup, find_namespace_packages
 
 # Various Client Libraries
@@ -9,6 +8,7 @@ pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2020.3"]
 client_deps = cif_deps
 
+all_deps = aiida_deps + ase_deps + cif_deps + pymatgen_deps
 
 setup(
     name="optimade-client",
@@ -35,11 +35,12 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.8.5",
-        "fastapi~=0.53" "pydantic~=1.4",
+        "pydantic~=1.4",
         "email_validator",
         'typing-extensions~=3.7.4.1;python_version<"3.8"',
     ],
     extras_require={
+        "all": all_deps,
         "aiida": aiida_deps,
         "ase": ase_deps,
         "cif": cif_deps,

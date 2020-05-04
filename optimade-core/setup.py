@@ -1,4 +1,3 @@
-from pathlib import Path
 from setuptools import setup, find_namespace_packages
 
 setup(
@@ -26,7 +25,8 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.8.5",
-        "fastapi~=0.53" "pydantic~=1.4",
+        "fastapi~=0.53",
+        "pydantic~=1.4",
         "email_validator",
         'typing-extensions~=3.7.4.1;python_version<"3.8"',
     ],
