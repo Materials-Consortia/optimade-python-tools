@@ -176,6 +176,10 @@ jobs:
         pip install -U setuptools
         # Install static dependencies followed by "normal" install
         python -m pip install -r .github/workflows/requirements.txt
+        pip install optimade-core/
+        pip install optimade-server/
+        pip install optimade-validator/
+        pip install optimade-client/
         pip install -e .[testing]
 
     - name: Run all tests (using a real MongoDB)
