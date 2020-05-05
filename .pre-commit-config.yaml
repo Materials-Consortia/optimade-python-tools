@@ -22,7 +22,8 @@ repos:
     - id: json-diff
       name: OpenAPI diff
       description: Check for differences in openapi.json and index_openapi.json with local versions.
-      entry: ./.ci/json_diff.sh
+      entry: invoke check-openapi-diff
+      pass_filenames: false
       language: system
 
     - id: optimade-version
