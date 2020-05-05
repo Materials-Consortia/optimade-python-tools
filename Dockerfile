@@ -12,7 +12,7 @@ EXPOSE ${PORT}
 
 COPY .docker/run.sh ./
 
-ARG CONFIG_FILE=tests/test_config.json
+ARG CONFIG_FILE
 COPY ${CONFIG_FILE} ./config.json
 ENV OPTIMADE_CONFIG_FILE /app/config.json
 
