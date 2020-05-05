@@ -81,8 +81,7 @@ jobs:
 
     - name: Update OpenAPI schemes
       run: |
-        python -c "from optimade.server.main import app, update_schema; update_schema(app)"
-        python -c "from optimade.server.main_index import app, update_schema; update_schema(app)"
+        invoke generate-openapi
 
     - name: Check if OpenAPI schemes match
       run: |
