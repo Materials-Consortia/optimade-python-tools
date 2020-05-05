@@ -1,11 +1,13 @@
 import os
 import re
+import sys
 from typing import Tuple
 from pathlib import Path
 import json
 
 from invoke import task
 
+from jsondiff import diff
 from optimade.server import __version__
 
 TOP_DIR = Path(__file__).parent.resolve()
@@ -165,3 +167,36 @@ def generate_openapi(_):
         os.mkdir(TOP_DIR.joinpath("openapi"))
     with open(TOP_DIR.joinpath("openapi/local_index_openapi.json"), "w") as f:
         json.dump(app_index.openapi(), f, indent=2)
+
+
+@task(generate_openapi)
+def check_openapi_diff(_):
+    with open(TOP_DIR.joinpath("openapi/openapi.json")) as f:
+        openapi = json.load(f)
+
+    with open(TOP_DIR.joinpath("openapi/local_openapi.json")) as f:
+        local_openapi = json.load(f)
+
+    with open(TOP_DIR.joinpath("openapi/index_openapi.json")) as f:
+        index_openapi = json.load(f)
+
+    with open(TOP_DIR.joinpath("openapi/local_index_openapi.json")) as f:
+        local_index_openapi = json.load(f)
+
+    openapi_diff = diff(openapi, local_openapi)
+    if openapi_diff != {}:
+        print(
+            "Generated OpenAPI spec for test server did not match committed version.\n"
+            "Run 'invoke update-openapijson' and re-commit.\n"
+            f"Diff:\n{openapi_diff}"
+        )
+        sys.exit(1)
+
+    openapi_index_diff = diff(index_openapi, local_index_openapi)
+    if openapi_index_diff != {}:
+        print(
+            "Generated OpenAPI spec for Index meta-database did not match committed version.\n"
+            "Run 'invoke update-openapijson' and re-commit.\n"
+            f"Diff:\n{openapi_index_diff}"
+        )
+        sys.exit(1)
