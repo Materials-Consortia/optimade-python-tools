@@ -483,18 +483,30 @@ class ImplementationValidator:
 
         """
         try:
-            num_entries = len(response.json()["data"])
+            response = response.json()
         except AttributeError:
             raise ResponseError("Unable to test endpoint page limit.")
+
+        try:
+            num_entries = len(response["data"])
+        except (KeyError, TypeError):
+            raise ResponseError(
+                "Response under `data` field was missing or had wrong type."
+            )
+
         if num_entries > self.page_limit:
             raise ResponseError(
                 f"Endpoint did not obey page limit: {num_entries} entries vs {self.page_limit} limit"
             )
 
-        more_data_available = response.json()["meta"]["more_data_available"]
+        try:
+            more_data_available = response["meta"]["more_data_available"]
+        except KeyError:
+            raise ResponseError("Field `meta->more_data_available` was missing.")
+
         if more_data_available:
             try:
-                next_link = response.json()["links"]["next"]
+                next_link = response["links"]["next"]
             except KeyError:
                 raise ResponseError(
                     "Endpoint suggested more data was available but provided no links->next link."
