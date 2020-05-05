@@ -46,26 +46,6 @@ def setver(_, patch=False, new_ver=""):
 
 
 @task
-def update_openapijson(c):
-    # pylint: disable=import-outside-toplevel
-    from optimade.server.main import app, update_schema
-    from optimade.server.main_index import (
-        app as app_index,
-        update_schema as update_schema_index,
-    )
-
-    update_schema(app)
-    update_schema_index(app_index)
-
-    c.run(
-        f"cp {TOP_DIR.joinpath('openapi/local_openapi.json')} {TOP_DIR.joinpath('openapi/openapi.json')}"
-    )
-    c.run(
-        f"cp {TOP_DIR.joinpath('openapi/local_index_openapi.json')} {TOP_DIR.joinpath('openapi/index_openapi.json')}"
-    )
-
-
-@task
 def set_optimade_ver(_, ver=""):
     if not ver:
         raise Exception("Please specify --ver='Major.Minor.Patch'")
@@ -200,3 +180,14 @@ def check_openapi_diff(_):
             f"Diff:\n{openapi_index_diff}"
         )
         sys.exit(1)
+
+
+@task(generate_openapi)
+def update_openapijson(c):
+    # pylint: disable=import-outside-toplevel
+    c.run(
+        f"cp {TOP_DIR.joinpath('openapi/local_openapi.json')} {TOP_DIR.joinpath('openapi/openapi.json')}"
+    )
+    c.run(
+        f"cp {TOP_DIR.joinpath('openapi/local_index_openapi.json')} {TOP_DIR.joinpath('openapi/index_openapi.json')}"
+    )
