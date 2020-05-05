@@ -114,7 +114,10 @@ class Client:  # pragma: no cover
 
         """
         if request:
-            self.last_request = f"{self.base_url}{request}".replace("\n", "")
+            if any(request.startswith(scheme) for scheme in ("http", "https")):
+                self.last_request = request
+            else:
+                self.last_request = f"{self.base_url}/{request}".replace("\n", "")
         else:
             self.last_request = self.base_url
 
@@ -460,8 +463,25 @@ class ImplementationValidator:
         self.deserialize_response(response, self.as_type_cls)
 
     @test_case
-    def test_page_limit(self, response):
-        """ Test that a multi-entry endpoint obeys the page limit. """
+    def test_page_limit(self, response, check_next_link=True):
+        """ Test that a multi-entry endpoint obeys the page limit.
+
+        Parameters:
+            response (requests.Response): the response to test for page limit
+                compliance.
+
+        Keyword arguments:
+            check_next (bool): whether or not to recursively follow and test any
+                pagination links provided under `links->next`.
+
+        Raises:
+            ResponseError: if test fails in a predictable way.
+
+        Returns:
+            bool, str: True if the test was successful, with a string describing
+                the success.
+
+        """
         try:
             num_entries = len(response.json()["data"])
         except AttributeError:
@@ -470,6 +490,19 @@ class ImplementationValidator:
             raise ResponseError(
                 f"Endpoint did not obey page limit: {num_entries} entries vs {self.page_limit} limit"
             )
+
+        more_data_available = response.json()["meta"]["more_data_available"]
+        if more_data_available:
+            try:
+                next_link = response.json()["links"]["next"]
+            except KeyError:
+                raise ResponseError(
+                    "Endpoint suggested more data was available but provided no links->next link."
+                )
+
+            next_response = self.get_endpoint(next_link)
+            self.test_page_limit(next_response, check_next_link=False)
+
         return (
             True,
             f"Endpoint obeyed page limit of {self.page_limit} by returning {num_entries} entries.",
@@ -561,8 +594,10 @@ class ImplementationValidator:
     @test_case
     def get_endpoint(self, request_str, optional=False):
         """ Gets the response from the endpoint specified by `request_str`. """
-        request_str = f"/{request_str}".replace("\n", "")
+
+        request_str = request_str.replace("\n", "")
         response = self.client.get(request_str)
+
         if response.status_code != 200:
             error_titles = [
                 error.get("title", "") for error in response.json().get("errors", [])
