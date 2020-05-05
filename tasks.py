@@ -1,6 +1,7 @@
 import re
 from typing import Tuple
 from pathlib import Path
+import json
 
 from invoke import task
 
@@ -146,3 +147,24 @@ def parse_spec_for_filters(_):
     with open(optional_filter_path, "w") as f:
         for _filter in optional_filters:
             f.write(_filter + "\n")
+
+
+@task
+def generate_openapi(_):
+    """Update OpenAPI schema in file 'local_openapi.json'"""
+    from optimade.server.main import app
+
+    package_root = Path(__file__).parent
+    if not package_root.joinpath("openapi").exists():
+        os.mkdir(package_root.joinpath("openapi"))
+    with open(package_root.joinpath("openapi/local_openapi.json"), "w") as f:
+        json.dump(app.openapi(), f, indent=2)
+
+    """Update OpenAPI schema in file 'local_index_openapi.json'"""
+    from optimade.server.main_index import app as app_index
+
+    package_root = Path(__file__).parent
+    if not package_root.joinpath("openapi").exists():
+        os.mkdir(package_root.joinpath("openapi"))
+    with open(package_root.joinpath("openapi/local_index_openapi.json"), "w") as f:
+        json.dump(app_index.openapi(), f, indent=2)
