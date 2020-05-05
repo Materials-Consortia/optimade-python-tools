@@ -78,7 +78,7 @@ jobs:
         pip install optimade-server/
         pip install optimade-validator/
         pip install optimade-client/
-        python -m pip install -e .[testing]
+        python -m pip install -e .[dev]
         docker pull quen2404/openapi-diff
 
     - name: Validate OpenAPI specifications
@@ -179,7 +179,7 @@ jobs:
         pip install optimade-server/
         pip install optimade-validator/
         pip install optimade-client/
-        pip install -e .[testing]
+        pip install -e .[dev]
 
     - name: Run all tests (using a real MongoDB)
       run: pytest -rs --cov=./optimade/ --cov-report=xml
@@ -194,7 +194,6 @@ jobs:
     - name: Install adapter conversion dependencies
       run: |
         pip install optimade-client/[all]
-        pip install -e .[dev]
         # AiiDA-specific
         reentry scan
 
