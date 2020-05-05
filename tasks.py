@@ -154,17 +154,15 @@ def generate_openapi(_):
     """Update OpenAPI schema in file 'local_openapi.json'"""
     from optimade.server.main import app
 
-    package_root = Path(__file__).parent
-    if not package_root.joinpath("openapi").exists():
-        os.mkdir(package_root.joinpath("openapi"))
-    with open(package_root.joinpath("openapi/local_openapi.json"), "w") as f:
+    if not TOP_DIR.joinpath("openapi").exists():
+        os.mkdir(TOP_DIR.joinpath("openapi"))
+    with open(TOP_DIR.joinpath("openapi/local_openapi.json"), "w") as f:
         json.dump(app.openapi(), f, indent=2)
 
     """Update OpenAPI schema in file 'local_index_openapi.json'"""
     from optimade.server.main_index import app as app_index
 
-    package_root = Path(__file__).parent
-    if not package_root.joinpath("openapi").exists():
-        os.mkdir(package_root.joinpath("openapi"))
-    with open(package_root.joinpath("openapi/local_index_openapi.json"), "w") as f:
+    if not TOP_DIR.joinpath("openapi").exists():
+        os.mkdir(TOP_DIR.joinpath("openapi"))
+    with open(TOP_DIR.joinpath("openapi/local_index_openapi.json"), "w") as f:
         json.dump(app_index.openapi(), f, indent=2)
