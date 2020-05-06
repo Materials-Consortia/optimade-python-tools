@@ -123,7 +123,9 @@ class Client:  # pragma: no cover
         if urllib.parse.urlparse(request, allow_fragments=True).scheme:
             self.last_request = request
         else:
-            self.last_request = urllib.parse.urljoin(self.base_url, request)
+            if not request.startswith("/"):
+                request = f"/{request}"
+            self.last_request = f"{self.base_url}{request}"
 
         status_code = None
         retries = 0
