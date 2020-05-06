@@ -9,8 +9,12 @@ import time
 import requests
 import sys
 import logging
-import json
 import urllib.parse
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 from typing import Union
 
@@ -485,7 +489,7 @@ class ImplementationValidator:
         """
         try:
             response = response.json()
-        except AttributeError:
+        except (AttributeError, json.JSONDecodeError):
             raise ResponseError("Unable to test endpoint page limit.")
 
         try:
