@@ -5,7 +5,7 @@ from traceback import print_exc
 
 from optimade.validator import ImplementationValidator
 
-from .utils import SetClient, TestClient
+from .utils import SetClient
 
 
 class ServerTestWithValidator(SetClient, unittest.TestCase):
