@@ -6,8 +6,10 @@ WORKDIR /app
 COPY setup.py README.md ./
 COPY optimade-core ./optimade-core
 COPY optimade-server ./optimade-server
+COPY optimade-validator ./optimade-validator
 RUN pip install -e optimade-core/
 RUN pip install -e optimade-server/
+RUN pip install -e optimade-validator/
 
 ARG PORT=5000
 EXPOSE ${PORT}
