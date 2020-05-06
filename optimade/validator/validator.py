@@ -9,7 +9,12 @@ import time
 import requests
 import sys
 import logging
-import json
+import urllib.parse
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 from typing import Union
 
@@ -93,13 +98,15 @@ class Client:  # pragma: no cover
             Note: A maximum of one slash ("/") is allowed as the last character.
 
         """
-        self.base_url = base_url[:-1] if base_url.endswith("/") else base_url
+        self.base_url = base_url
         self.last_request = None
         self.response = None
         self.max_retries = max_retries
 
     def get(self, request: str):
-        """ Makes the given request, with a number of retries if being rate limited.
+        """ Makes the given request, with a number of retries if being rate limited. The
+        request will be prepended with the `base_url` unless the request appears to be an
+        absolute URL (i.e. starts with `http://` or `https://`).
 
         Parameters:
             request (str): the request to make against the base URL of this client.
@@ -113,10 +120,12 @@ class Client:  # pragma: no cover
                 the `MAX_RETRIES` attempts.
 
         """
-        if request:
-            self.last_request = f"{self.base_url}{request}".replace("\n", "")
+        if urllib.parse.urlparse(request, allow_fragments=True).scheme:
+            self.last_request = request
         else:
-            self.last_request = self.base_url
+            if not request.startswith("/"):
+                request = f"/{request}"
+            self.last_request = f"{self.base_url}{request}"
 
         status_code = None
         retries = 0
@@ -298,6 +307,15 @@ class ImplementationValidator:
             RESPONSE_CLASSES_INDEX if self.index else RESPONSE_CLASSES
         )
 
+        # some simple checks on base_url
+        base_url = urllib.parse.urlparse(self.base_url)
+        if base_url.query or any(
+            endp in base_url.path for endp in self.expected_entry_endpoints
+        ):
+            raise SystemExit(
+                "Base URL not appropriate: should not contain an endpoint or filter."
+            )
+
         # if valid is True on exit, script returns 0 to shell
         # if valid is False on exit, script returns 1 to shell
         # if valid is None on exit, script returns 2 to shell, indicating an internal failure
@@ -338,14 +356,6 @@ class ImplementationValidator:
             self.test_as_type()
             self.valid = not bool(self.failure_count)
             return
-
-        # some simple checks on base_url
-        if "?" in self.base_url or any(
-            [self.base_url.endswith(endp) for endp in self.expected_entry_endpoints]
-        ):
-            sys.exit(
-                "Base URL not appropriate: should not contain an endpoint or filter."
-            )
 
         # test entire implementation
         print(f"Testing entire implementation at {self.base_url}...")
@@ -460,16 +470,58 @@ class ImplementationValidator:
         self.deserialize_response(response, self.as_type_cls)
 
     @test_case
-    def test_page_limit(self, response):
-        """ Test that a multi-entry endpoint obeys the page limit. """
+    def test_page_limit(self, response, check_next_link=True):
+        """ Test that a multi-entry endpoint obeys the page limit.
+
+        Parameters:
+            response (requests.Response): the response to test for page limit
+                compliance.
+
+        Keyword arguments:
+            check_next (bool): whether or not to recursively follow and test any
+                pagination links provided under `links->next`.
+
+        Raises:
+            ResponseError: if test fails in a predictable way.
+
+        Returns:
+            bool, str: True if the test was successful, with a string describing
+                the success.
+
+        """
         try:
-            num_entries = len(response.json()["data"])
-        except AttributeError:
+            response = response.json()
+        except (AttributeError, json.JSONDecodeError):
             raise ResponseError("Unable to test endpoint page limit.")
+
+        try:
+            num_entries = len(response["data"])
+        except (KeyError, TypeError):
+            raise ResponseError(
+                "Response under `data` field was missing or had wrong type."
+            )
+
         if num_entries > self.page_limit:
             raise ResponseError(
                 f"Endpoint did not obey page limit: {num_entries} entries vs {self.page_limit} limit"
             )
+
+        try:
+            more_data_available = response["meta"]["more_data_available"]
+        except KeyError:
+            raise ResponseError("Field `meta->more_data_available` was missing.")
+
+        if more_data_available:
+            try:
+                next_link = response["links"]["next"]
+            except KeyError:
+                raise ResponseError(
+                    "Endpoint suggested more data was available but provided no links->next link."
+                )
+
+            next_response = self.get_endpoint(next_link)
+            self.test_page_limit(next_response, check_next_link=False)
+
         return (
             True,
             f"Endpoint obeyed page limit of {self.page_limit} by returning {num_entries} entries.",
@@ -561,8 +613,10 @@ class ImplementationValidator:
     @test_case
     def get_endpoint(self, request_str, optional=False):
         """ Gets the response from the endpoint specified by `request_str`. """
-        request_str = f"/{request_str}".replace("\n", "")
+
+        request_str = request_str.replace("\n", "")
         response = self.client.get(request_str)
+
         if response.status_code != 200:
             error_titles = [
                 error.get("title", "") for error in response.json().get("errors", [])

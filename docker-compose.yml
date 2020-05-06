@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        CONFIG_FILE: tests/test_config.json
+        CONFIG_FILE: .ci/docker_config.json
         PORT: 5000
     environment:
       MAIN: main
@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        CONFIG_FILE: tests/test_config.json
+        CONFIG_FILE: .ci/docker_config.json
         PORT: 5001
     environment:
       MAIN: main_index
