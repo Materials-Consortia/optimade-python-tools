@@ -288,7 +288,7 @@ class ImplementationValidator:
             self.client = client
             self.base_url = self.client.base_url
         else:
-            if base_url.endswith("/"):
+            while base_url.endswith("/"):
                 base_url = base_url[:-1]
             self.base_url = base_url
             self.client = Client(base_url, max_retries=self.max_retries)
