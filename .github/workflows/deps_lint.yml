@@ -117,7 +117,8 @@ jobs:
         port: 3213
         path: /
         all versioned paths: yes
-        validator version: ${{ github.sha }}  # This ensures the head of a PR or latest push commit is tested
+        #validator version: ${{ github.sha }}  # This ensures the head of a PR or latest push commit is tested
+        validator version: b5cc923
 
     - name: Start Docker image - index server
       run: |
@@ -132,7 +133,8 @@ jobs:
         path: /
         all versioned paths: yes
         index: yes
-        validator version: ${{ github.sha }}  # This ensures the head of a PR or latest push commit is tested
+        #validator version: ${{ github.sha }}  # This ensures the head of a PR or latest push commit is tested
+        validator version: b5cc923
 
   deps_static:
     runs-on: ubuntu-latest
