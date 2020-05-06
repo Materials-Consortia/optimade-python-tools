@@ -1,5 +1,5 @@
 {
-    "debug": false,
+    "debug": true,
     "default_db": "test_server",
     "base_url": "http://gh_actions_host:3213",
     "implementation": {
