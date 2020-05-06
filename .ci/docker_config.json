@@ -1,0 +1,36 @@
+{
+    "debug": true,
+    "default_db": "test_server",
+    "base_url": "http://gh_actions_host:3213",
+    "implementation": {
+        "name": "Example implementation",
+        "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
+        "maintainer": {"email": "test@test.org"}
+    },
+    "provider": {
+        "name": "Example provider",
+        "description": "Provider used for examples, not to be assigned to a real database",
+        "prefix": "exmpl",
+        "homepage": "https://example.com",
+        "index_base_url": "http://gh_actions_host:3214"
+    },
+    "provider_fields": {
+        "structures": [
+            "band_gap",
+            "chemsys"
+        ]
+    },
+    "aliases": {
+        "structures": {
+            "id": "task_id",
+            "chemical_formula_descriptive": "pretty_formula",
+            "chemical_formula_reduced": "pretty_formula",
+            "chemical_formula_anonymous": "formula_anonymous"
+        }
+    },
+    "length_aliases": {
+        "structures": {
+            "chemsys": "nelements"
+        }
+    }
+}
