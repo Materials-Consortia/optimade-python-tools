@@ -123,7 +123,7 @@ class Client:  # pragma: no cover
         if urllib.parse.urlparse(request, allow_fragments=True).scheme:
             self.last_request = request
         else:
-            if not request.startswith("/"):
+            if request and not request.startswith("/"):
                 request = f"/{request}"
             self.last_request = f"{self.base_url}{request}"
 
@@ -311,8 +311,10 @@ class ImplementationValidator:
 
         # some simple checks on base_url
         base_url = urllib.parse.urlparse(self.base_url)
-        if base_url.query or any(
-            endp in base_url.path for endp in self.expected_entry_endpoints
+        # only allow filters/endpoints if we are working in "as_type" mode
+        if self.as_type_cls is None and (
+            base_url.query
+            or any(endp in base_url.path for endp in self.expected_entry_endpoints)
         ):
             raise SystemExit(
                 "Base URL not appropriate: should not contain an endpoint or filter."
@@ -465,11 +467,9 @@ class ImplementationValidator:
 
     def test_as_type(self):
         response = self.get_endpoint("")
-        self._log.debug(
-            "Response to deserialize:\n%s",
-            json.dumps(response.json(), indent=2),  # pylint: disable=no-member
-        )
-        self.deserialize_response(response, self.as_type_cls)
+        if response:
+            self._log.debug("Deserialzing response as type %s", self.as_type_cls)
+            self.deserialize_response(response, self.as_type_cls)
 
     @test_case
     def test_page_limit(self, response, check_next_link=True):
