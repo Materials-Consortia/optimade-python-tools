@@ -92,14 +92,14 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
 
     cif += (
         "loop_\n"
-        "  _atom_site_label\n"  # species.name
+        "  _atom_site_type_symbol\n"  # species.chemical_symbols
+        "  _atom_site_label\n"  # species.name + unique int
         "  _atom_site_occupancy\n"  # species.concentration
         f"  _atom_site_{coord_type}_x\n"  # cartesian_site_positions
         f"  _atom_site_{coord_type}_y\n"  # cartesian_site_positions
         f"  _atom_site_{coord_type}_z\n"  # cartesian_site_positions
         "  _atom_site_thermal_displace_type\n"  # Set to 'Biso'
         "  _atom_site_B_iso_or_equiv\n"  # Set to 1.0:f
-        "  _atom_site_type_symbol\n"  # species.chemical_symbols
     )
 
     if coord_type == "fract":
@@ -111,6 +111,7 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         species.name: species for species in attributes.species
     }
 
+    symbol_occurences = {}
     for site_number in range(attributes.nsites):
         species_name = attributes.species_at_sites[site_number]
         site = sites[site_number]
@@ -121,19 +122,15 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
             if symbol == "vacancy":
                 continue
 
-            label = species_name
-            if len(current_species.chemical_symbols) > 1:
-                if (
-                    "vacancy" in current_species.chemical_symbols
-                    and len(current_species.chemical_symbols) == 2
-                ):
-                    pass
-                else:
-                    label = f"{symbol}{index + 1}"
+            if symbol in symbol_occurences:
+                symbol_occurences[symbol] += 1
+            else:
+                symbol_occurences[symbol] = 1
+            label = f"{symbol}{symbol_occurences[symbol]}"
 
             cif += (
-                f"  {label:8} {current_species.concentration[index]:6.4f} {site[0]:8.5f}  "
-                f"{site[1]:8.5f}  {site[2]:8.5f}  {'Biso':4}  {'1.000':6}  {symbol}\n"
+                f"  {symbol} {label} {current_species.concentration[index]:6.4f} {site[0]:8.5f}  "
+                f"{site[1]:8.5f}  {site[2]:8.5f}  {'Biso':4}  {'1.000':6}\n"
             )
 
     return cif
