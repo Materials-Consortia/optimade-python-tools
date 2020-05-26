@@ -12,6 +12,7 @@ from optimade.server.exceptions import BadRequest, Forbidden
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import FieldValueNotRecognized
+from optimade.server.schemas import ENTRY_SCHEMAS
 
 
 class EntryCollection(ABC):
@@ -41,6 +42,7 @@ class EntryCollection(ABC):
         self.collection = collection
         self.parser = LarkParser()
         self.resource_cls = resource_cls
+        self.resource_schema = ENTRY_SCHEMAS.get(resource_mapper.ENDPOINT)
         self.resource_mapper = resource_mapper
         self.transformer = transformer
 
@@ -108,19 +110,7 @@ class EntryCollection(ABC):
             Property names.
 
         """
-        schema = self.resource_cls.schema()
-        attributes = schema["properties"]["attributes"]
-        if "allOf" in attributes:
-            allOf = attributes.pop("allOf")
-            for dict_ in allOf:
-                attributes.update(dict_)
-        if "$ref" in attributes:
-            path = attributes["$ref"].split("/")[1:]
-            attributes = schema.copy()
-            while path:
-                next_key = path.pop(0)
-                attributes = attributes[next_key]
-        return set(attributes["properties"].keys())
+        return set(self.resource_schema.keys())
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
