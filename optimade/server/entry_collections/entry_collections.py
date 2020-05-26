@@ -63,6 +63,30 @@ class EntryCollection(ABC):
 
         """
 
+    def get_attribute_fields(self) -> set:
+        """Get the set of attribute fields from the schema of the
+        resource class, resolving references along the way.
+
+        Returns:
+            Property names.
+
+        """
+        schema = self.resource_cls.schema()
+        attributes = schema["properties"]["attributes"]
+        if "allOf" in attributes:
+            allOf = attributes.pop("allOf")
+            for dict_ in allOf:
+                attributes.update(dict_)
+        if "$ref" in attributes:
+            path = attributes["$ref"].split("/")[1:]
+            attributes = schema.copy()
+            while path:
+                next_key = path.pop(0)
+                attributes = attributes[next_key]
+        return set(attributes["properties"].keys()).union(
+            set(self.resource_schema.keys())
+        )
+
     @abstractmethod
     def find(
         self, params: EntryListingQueryParams
@@ -101,16 +125,6 @@ class EntryCollection(ABC):
         }
 
         return fields
-
-    def get_attribute_fields(self) -> set:
-        """Get the set of attribute fields from the schema of the
-        resource class, resolving references along the way.
-
-        Returns:
-            Property names.
-
-        """
-        return set(self.resource_schema.keys())
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]

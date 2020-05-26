@@ -70,7 +70,7 @@ class EntrySchemas:
         self._links = None
 
     def keys(self):
-        return {"structures", "references", "links"}
+        return {"structures", "references"}
 
     def get(self, key: str):
         return getattr(self, key, {})
@@ -102,16 +102,6 @@ class EntrySchemas:
         return self._references
 
     @property
-    def links(self):
-        if self._links is None:
-            # links should not permit provider-specific fields
-            schema = self.links_model.schema()
-            self._links = retrieve_queryable_properties(
-                schema, schema["properties"].keys(), entry_provider_fields=None
-            )
-        return self._links
-
-    @property
     def structure_model(self):
         return self._structure_model
 
@@ -128,15 +118,6 @@ class EntrySchemas:
     def reference_model(self, model: EntryResource):
         self._references = None
         self._reference_model = model
-
-    @property
-    def links_model(self):
-        return self._links_model
-
-    @links_model.setter
-    def links_model(self, model: EntryResource):
-        self._links = None
-        self._links_model = model
 
 
 ENTRY_SCHEMAS = EntrySchemas()
