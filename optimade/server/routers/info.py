@@ -6,28 +6,22 @@ from fastapi import APIRouter, Request
 from fastapi.exceptions import StarletteHTTPException
 
 from optimade import __api_version__
-
+from optimade.server.config import CONFIG
 from optimade.models import (
     ErrorResponse,
     InfoResponse,
     EntryInfoResponse,
-    ReferenceResource,
-    StructureResource,
 )
 
 from optimade.server.routers.utils import (
     meta_values,
     retrieve_queryable_properties,
     get_base_url,
+    ENTRY_INFO_SCHEMAS,
 )
 
 
 router = APIRouter(redirect_slashes=True)
-
-ENTRY_INFO_SCHEMAS = {
-    "structures": StructureResource.schema,
-    "references": ReferenceResource.schema,
-}
 
 
 @router.get(

@@ -24,10 +24,20 @@ from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
-ENTRY_INFO_SCHEMAS = {
-    "structures": StructureResource.schema,
-    "references": ReferenceResource.schema,
-}
+
+class EntryInfoSchemas:
+    def __init__(self):
+        self.structures = StructureResource.schema
+        self.references = ReferenceResource.schema
+
+    def __getitem__(self, key):
+        return getattr(self, key)
+
+    def keys(self):
+        return {"structures", "references"}
+
+
+ENTRY_INFO_SCHEMAS = EntryInfoSchemas()
 
 # we need to get rid of any release tags (e.g. -rc.2) and any build metadata (e.g. +py36)
 # from the api_version before allowing the URL
