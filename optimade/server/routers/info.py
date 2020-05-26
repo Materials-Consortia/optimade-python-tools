@@ -76,7 +76,10 @@ def get_entry_info(request: Request, entry: str):
 
     schema = ENTRY_INFO_SCHEMAS[entry]()
     queryable_properties = {"id", "type", "attributes"}
-    properties = retrieve_queryable_properties(schema, queryable_properties)
+    entry_provider_fields = CONFIG.provider_fields.get(entry)
+    properties = retrieve_queryable_properties(
+        schema, queryable_properties, entry_provider_fields=entry_provider_fields
+    )
 
     output_fields_by_format = {"json": list(properties.keys())}
 
