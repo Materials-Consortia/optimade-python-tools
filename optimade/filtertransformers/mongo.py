@@ -40,6 +40,7 @@ class MongoTransformer(Transformer):
 
         query = self._apply_relationship_filtering(query)
         query = self._apply_length_operators(query)
+        query = self._apply_unknown_or_null_filter(query)
 
         return query
 
@@ -134,7 +135,10 @@ class MongoTransformer(Transformer):
 
     def known_op_rhs(self, arg):
         # known_op_rhs: IS ( KNOWN | UNKNOWN )
-        return {"$exists": arg[1] == "KNOWN"}
+        # The OPTIMADE spec also required a type comparison with null, this must be post-processed
+        # so here we use a special key "#known" which will get replaced in post-processing with the
+        # expanded dict
+        return {"#known": arg[1] == "KNOWN"}
 
     def fuzzy_string_op_rhs(self, arg):
         # fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value
@@ -387,6 +391,43 @@ class MongoTransformer(Transformer):
 
         return recursive_postprocessing(
             filter_, check_for_entry_type, replace_with_relationship
+        )
+
+    def _apply_unknown_or_null_filter(self, filter_: dict) -> dict:
+        """ This method loops through the query and replaces the check for
+        KNOWN with a check for existence and a check for not null, and the
+        inverse for UNKNOWN.
+
+        """
+
+        def check_for_known_filter(prop, expr):
+            """ Find cases where the query dict looks like
+            `{"field": {"#known": T/F}}` or
+            `{"field": "$not": {"#known": T/F}}`, which is a magic word
+            for KNOWN/UNKNOWN filters in this transformer.
+
+            """
+            return isinstance(expr, dict) and (
+                "#known" in expr or "#known" in expr.get("$not", {})
+            )
+
+        def replace_known_filter_with_or(subdict, prop, expr):
+            nor = set(expr.keys()) == {"$not"}
+            if nor:
+                expr = expr["$not"]
+            if "$or" not in subdict:
+                subdict["$or"] = []
+
+            known = expr["#known"]
+            subdict["$or"].append({prop: {"$exists": known ^ nor}})
+            subdict["$or"].append({prop: {("$ne" if known ^ nor else "$eq"): None}})
+
+            subdict.pop(prop)
+
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_known_filter, replace_known_filter_with_or
         )
 
 
