@@ -14,9 +14,6 @@ from optimade.models import (
     EntryResponseMany,
     EntryResponseOne,
     ToplevelLinks,
-    ReferenceResource,
-    StructureResource,
-    DataType,
 )
 
 from optimade.server.config import CONFIG
@@ -24,20 +21,6 @@ from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
-
-class EntryInfoSchemas:
-    def __init__(self):
-        self.structures = StructureResource.schema
-        self.references = ReferenceResource.schema
-
-    def __getitem__(self, key):
-        return getattr(self, key)
-
-    def keys(self):
-        return {"structures", "references"}
-
-
-ENTRY_INFO_SCHEMAS = EntryInfoSchemas()
 
 # we need to get rid of any release tags (e.g. -rc.2) and any build metadata (e.g. +py36)
 # from the api_version before allowing the URL
@@ -279,52 +262,6 @@ def get_single_entry(
         ),
         included=included,
     )
-
-
-def retrieve_queryable_properties(
-    schema: dict, queryable_properties: list, entry_provider_fields: list = None
-) -> dict:
-    """ For a given schema dictionary and a list of desired properties,
-    recursively descend into the schema and set the appropriate values
-    for the `description`, `sortable` and `unit` keys, returning the expanded
-    schema dict that includes nested schemas.
-
-    """
-    properties = {}
-    if entry_provider_fields is None:
-        entry_provider_fields = []
-
-    for name, value in schema["properties"].items():
-        if name in queryable_properties:
-            if "$ref" in value:
-                path = value["$ref"].split("/")[1:]
-                sub_schema = schema.copy()
-                while path:
-                    next_key = path.pop(0)
-                    sub_schema = sub_schema[next_key]
-                sub_queryable_properties = sub_schema["properties"].keys()
-                properties.update(
-                    retrieve_queryable_properties(
-                        sub_schema, sub_queryable_properties, entry_provider_fields
-                    )
-                )
-            else:
-                properties[name] = {"description": value.get("description", "")}
-                if "unit" in value:
-                    properties[name]["unit"] = value["unit"]
-                # All properties are sortable with the MongoDB backend.
-                # While the result for sorting lists may not be as expected, they are still sorted.
-                properties[name]["sortable"] = True
-                # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
-                properties[name]["type"] = DataType.from_json_type(
-                    value.get("format", value["type"])
-                )
-
-            if name in entry_provider_fields:
-                # Rename fields in schema according to provider field list
-                properties[f"_{CONFIG.provider.prefix}_{name}"] = properties.pop(name)
-
-    return properties
 
 
 def mongo_id_for_database(database_id: str, database_type: str) -> str:
