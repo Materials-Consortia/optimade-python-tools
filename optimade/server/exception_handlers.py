@@ -30,16 +30,19 @@ def general_exception(
         debug_info[f"_{CONFIG.provider.prefix}_traceback"] = tb
 
     try:
-        http_response_code = exc.status_code
+        http_response_code = int(exc.status_code)
     except AttributeError:
-        http_response_code = status_code
+        http_response_code = int(status_code)
 
     try:
-        title = exc.title
+        title = str(exc.title)
     except AttributeError:
         title = str(exc.__class__.__name__)
 
-    detail = getattr(exc, "detail", str(exc))
+    try:
+        detail = str(exc.detail)
+    except AttributeError:
+        detail = str(exc)
 
     if errors is None:
         errors = [OptimadeError(detail=detail, status=http_response_code, title=title)]
