@@ -400,7 +400,7 @@ class MongoTransformer(Transformer):
 
         """
 
-        def check_for_known_filter(prop, expr):
+        def check_for_known_filter(_, expr):
             """ Find cases where the query dict looks like
             `{"field": {"#known": T/F}}` or
             `{"field": "$not": {"#known": T/F}}`, which is a magic word
@@ -412,15 +412,15 @@ class MongoTransformer(Transformer):
             )
 
         def replace_known_filter_with_or(subdict, prop, expr):
-            nor = set(expr.keys()) == {"$not"}
-            if nor:
+            not_ = set(expr.keys()) == {"$not"}
+            if not_:
                 expr = expr["$not"]
             if "$or" not in subdict:
                 subdict["$or"] = []
 
             known = expr["#known"]
-            subdict["$or"].append({prop: {"$exists": known ^ nor}})
-            subdict["$or"].append({prop: {("$ne" if known ^ nor else "$eq"): None}})
+            subdict["$or"].append({prop: {"$exists": known ^ not_}})
+            subdict["$or"].append({prop: {("$ne" if known ^ not_ else "$eq"): None}})
 
             subdict.pop(prop)
 
