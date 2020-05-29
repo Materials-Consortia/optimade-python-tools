@@ -412,15 +412,27 @@ class MongoTransformer(Transformer):
             )
 
         def replace_known_filter_with_or(subdict, prop, expr):
+            """ Replace #known and $not->#known parsed filters with the appropriate
+            combination of $exists and/or $eq/$ne null.
+
+            """
             not_ = set(expr.keys()) == {"$not"}
             if not_:
                 expr = expr["$not"]
-            if "$or" not in subdict:
-                subdict["$or"] = []
 
-            known = expr["#known"]
-            subdict["$or"].append({prop: {"$exists": known ^ not_}})
-            subdict["$or"].append({prop: {("$ne" if known ^ not_ else "$eq"): None}})
+            exists = expr["#known"] ^ not_
+
+            top_level_key = "$or"
+            comparison_operator = "$eq"
+            if exists:
+                top_level_key = "$and"
+                comparison_operator = "$ne"
+
+            if top_level_key not in subdict:
+                subdict[top_level_key] = []
+
+            subdict[top_level_key].append({prop: {"$exists": exists}})
+            subdict[top_level_key].append({prop: {comparison_operator: None}})
 
             subdict.pop(prop)
 

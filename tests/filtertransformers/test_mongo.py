@@ -612,7 +612,7 @@ class TestMongoTransformer(unittest.TestCase):
         self.assertEqual(
             self.transform("chemical_formula_anonymous IS KNOWN"),
             {
-                "$or": [
+                "$and": [
                     {"chemical_formula_anonymous": {"$exists": True}},
                     {"chemical_formula_anonymous": {"$ne": None}},
                 ]
@@ -621,7 +621,7 @@ class TestMongoTransformer(unittest.TestCase):
         self.assertEqual(
             self.transform("NOT chemical_formula_anonymous IS UNKNOWN"),
             {
-                "$or": [
+                "$and": [
                     {"chemical_formula_anonymous": {"$exists": True}},
                     {"chemical_formula_anonymous": {"$ne": None}},
                 ]
@@ -644,13 +644,13 @@ class TestMongoTransformer(unittest.TestCase):
             {
                 "$and": [
                     {
-                        "$or": [
+                        "$and": [
                             {"chemical_formula_hill": {"$exists": True}},
                             {"chemical_formula_hill": {"$ne": None}},
                         ]
                     },
                     {
-                        "$or": [
+                        "$and": [
                             {"chemical_formula_anonymous": {"$exists": True}},
                             {"chemical_formula_anonymous": {"$ne": None}},
                         ]
@@ -666,7 +666,7 @@ class TestMongoTransformer(unittest.TestCase):
             {
                 "$and": [
                     {
-                        "$or": [
+                        "$and": [
                             {"chemical_formula_hill": {"$exists": True}},
                             {"chemical_formula_hill": {"$ne": None}},
                         ]
