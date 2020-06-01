@@ -540,6 +540,7 @@ class TestMongoTransformer(unittest.TestCase):
                 ("A", "D"),
                 ("B", "E"),
                 ("C", "F"),
+                ("_exmpl_nested_field", "nested_field"),
             )
 
         mapper = MyStructureMapper()
@@ -563,6 +564,17 @@ class TestMongoTransformer(unittest.TestCase):
 
         test_filter = ["A", "elements", "C"]
         self.assertEqual(t.postprocess(test_filter), ["A", "elements", "C"])
+
+        test_filter = {"_exmpl_nested_field.sub_property": {"$gt": 1234.5}}
+        self.assertEqual(
+            t.postprocess(test_filter), {"nested_field.sub_property": {"$gt": 1234.5}}
+        )
+
+        test_filter = {"_exmpl_nested_field.sub_property.x": {"$exists": False}}
+        self.assertEqual(
+            t.postprocess(test_filter),
+            {"nested_field.sub_property.x": {"$exists": False}},
+        )
 
     def test_list_properties(self):
         """ Test the HAS ALL, ANY and optional ONLY queries.

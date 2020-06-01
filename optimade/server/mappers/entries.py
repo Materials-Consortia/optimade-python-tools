@@ -88,7 +88,11 @@ class BaseResourceMapper:
         :return: Aliased field as found in PROVIDER_ALIASES + ALIASES
         :rtype: str
         """
-        return dict(cls.all_aliases()).get(field, field)
+        split = field.split(".")
+        alias = dict(cls.all_aliases()).get(split[0], None)
+        if alias is not None:
+            return alias + ("." + ".".join(split[1:]) if len(split) > 1 else "")
+        return field
 
     @classmethod
     def get_required_fields(cls) -> set:
