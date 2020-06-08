@@ -1,0 +1,29 @@
+site_name: OPTIMADE-Python-Tools Documentation
+site_description: Documentation for the OPTIMADE-Python-Tools
+copyright: Built by OPTIMADE Development Team
+
+theme:
+  name: 'material'
+
+nav:
+  - Home: index.md
+  - Changelog: CHANGELOG.md
+  - Reference:
+      Models: reference/models.md
+
+site_url: https://materials-consortia.github.io/optimade-python-tools/
+repo_url: https://github.com/Materials-Consortia/optimade-python-tools
+markdown_extensions:
+  - admonition
+  - codehilite
+  - attr_list
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - minify
+  - mkdocstrings
