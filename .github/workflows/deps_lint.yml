@@ -202,3 +202,23 @@ jobs:
         file: ./coverage.xml
         flags: unittests
         yml: ./.codecov.yml
+
+
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-docs.txt
+        pip install -e .
+
+    - name: Build
+      run: mkdocs build
