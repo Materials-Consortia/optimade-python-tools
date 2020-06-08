@@ -8,6 +8,8 @@ theme:
 nav:
   - Home: index.md
   - Changelog: CHANGELOG.md
+  - Reference:
+      Models: reference/models.md
 
 site_url: https://materials-consortia.github.io/optimade-python-tools/
 repo_url: https://github.com/Materials-Consortia/optimade-python-tools
