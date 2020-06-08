@@ -8,6 +8,10 @@ theme:
 nav:
   - Home: index.md
   - Changelog: CHANGELOG.md
+  - Use Cases:
+      Single Database: use_cases/single_db.md
+      Multiple Database: use_cases/multi_db.md
+      Dynamic Databases: use_cases/dynamic_db.md
   - Reference:
       Models: reference/models.md
 
