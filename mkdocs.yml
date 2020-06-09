@@ -5,18 +5,6 @@ copyright: Built by OPTIMADE Development Team
 theme:
   name: 'material'
 
-nav:
-  - Home: index.md
-  - Installing: INSTALL.md
-  - Contributing: CONTRIBUTING.md
-  - Use Cases:
-      Single Database: use_cases/single_db.md
-      Multiple Database: use_cases/multi_db.md
-      Dynamic Databases: use_cases/dynamic_db.md
-  - Changelog: CHANGELOG.md
-  - Reference:
-      Models: reference/models.md
-
 site_url: https://www.optimade.org/optimade-python-tools/
 repo_url: https://github.com/Materials-Consortia/optimade-python-tools
 markdown_extensions:
@@ -33,3 +21,4 @@ plugins:
   - search
   - minify
   - mkdocstrings
+  - awesome-pages
