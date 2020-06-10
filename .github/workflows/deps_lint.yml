@@ -52,16 +52,15 @@ jobs:
     # There might be a better way to do this
     - name: Install all packages package
       run: |
-        pip install optimade-core/
-        pip install optimade-server/
-        pip install optimade-validator/
-        pip install optimade-client/
+        python optimade-core/setup.py install
+        python optimade-server/setup.py install
+        python optimade-validator/setup.py install
+        python optimade-client/setup.py install
         pip install -e .[dev]
 
     - name: Run pre-commit
       run: |
         pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
-
 
   openapi:
     runs-on: ubuntu-latest
@@ -82,10 +81,10 @@ jobs:
     # There might be a better way to do this
     - name: Install all packages package
       run: |
-        pip install optimade-core/
-        pip install optimade-server/
-        pip install optimade-validator/
-        pip install optimade-client/
+        python optimade-core/setup.py install
+        python optimade-server/setup.py install
+        python optimade-validator/setup.py install
+        python optimade-client/setup.py install
         pip install -e .[dev]
 
     - name: Install OpenAPI Diff
@@ -105,7 +104,6 @@ jobs:
       run: |
         .ci/openapi_diff.sh
         .ci/index_openapi_diff.sh
-
 
   docker-image:
     runs-on: ubuntu-latest
@@ -196,15 +194,11 @@ jobs:
     # There might be a better way to do this
     - name: Install all packages package
       run: |
-        pip install optimade-core/
-        pip install optimade-server/
-        pip install optimade-validator/
-        pip install optimade-client/
+        python optimade-core/setup.py install
+        python optimade-server/setup.py install
+        python optimade-validator/setup.py install
+        python optimade-client/setup.py install
         pip install -e .[dev]
-
-
-
-
 
     - name: Run all tests (using a real MongoDB)
       run: pytest -rs --cov=./optimade/ --cov-report=xml
@@ -238,7 +232,6 @@ jobs:
         flags: unittests
         yml: ./.codecov.yml
 
-
   docs:
     runs-on: ubuntu-latest
 
@@ -249,12 +242,18 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Install dependencies
+    # There might be a better way to do this
+    - name: Install all packages package
       run: |
-        python -m pip install --upgrade pip
-        pip install -e .[all]
-        pip install -r .github/workflows/requirements-docs.txt --upgrade
+        python optimade-core/setup.py install
+        python optimade-server/setup.py install
+        python optimade-validator/setup.py install
+        python optimade-client/setup.py install
+        pip install -e .[dev]
 
+    - name: Install Documentation dependencies
+      run: |
+        pip install -r .github/workflows/requirements-docs.txt --upgrade
 
     - name: Build
       run: mkdocs build

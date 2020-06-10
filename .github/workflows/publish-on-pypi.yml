@@ -64,7 +64,6 @@ jobs:
         password: ${{ secrets.pypi_password }}
         packages_dir: ./${{ strategy.package }}/dist
 
-
   publish-metapackage:
     needs:
       - publish-component
