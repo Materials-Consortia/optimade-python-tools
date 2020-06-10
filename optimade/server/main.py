@@ -65,11 +65,11 @@ if not CONFIG.use_real_mongo:
     if CONFIG.include_index_api:
         print("loading index links...")
         with open(CONFIG.index_links_path) as f:
-            data = json.load(f)
+            child_list = json.load(f)
 
             processed = []
 
-            for db in data:
+            for db in child_list:
                 db["_id"] = {"$oid": mongo_id_for_database(db["id"], db["type"])}
                 processed.append(db)
 
