@@ -1,4 +1,4 @@
-# Contribute to `optimade-python-tools`
+# Contributing
 
 The [Materials Consortia](https://github.com/Materials-Consortia) is very open to contributions to this package.
 

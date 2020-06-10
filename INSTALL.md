@@ -1,4 +1,4 @@
-# Installing OPTIMADE Python tools
+# Installation
 
 ## The index meta-database
 

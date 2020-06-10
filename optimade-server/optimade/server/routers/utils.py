@@ -282,6 +282,9 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
                 properties[name] = {"description": value.get("description", "")}
                 if "unit" in value:
                     properties[name]["unit"] = value["unit"]
+                # All properties are sortable with the MongoDB backend.
+                # While the result for sorting lists may not be as expected, they are still sorted.
+                properties[name]["sortable"] = True
     return properties
 
 

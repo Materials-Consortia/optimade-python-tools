@@ -540,6 +540,7 @@ class TestMongoTransformer(unittest.TestCase):
                 ("A", "D"),
                 ("B", "E"),
                 ("C", "F"),
+                ("_exmpl_nested_field", "nested_field"),
             )
 
         mapper = MyStructureMapper()
@@ -563,6 +564,17 @@ class TestMongoTransformer(unittest.TestCase):
 
         test_filter = ["A", "elements", "C"]
         self.assertEqual(t.postprocess(test_filter), ["A", "elements", "C"])
+
+        test_filter = {"_exmpl_nested_field.sub_property": {"$gt": 1234.5}}
+        self.assertEqual(
+            t.postprocess(test_filter), {"nested_field.sub_property": {"$gt": 1234.5}}
+        )
+
+        test_filter = {"_exmpl_nested_field.sub_property.x": {"$exists": False}}
+        self.assertEqual(
+            t.postprocess(test_filter),
+            {"nested_field.sub_property.x": {"$exists": False}},
+        )
 
     def test_list_properties(self):
         """ Test the HAS ALL, ANY and optional ONLY queries.
@@ -598,15 +610,44 @@ class TestMongoTransformer(unittest.TestCase):
             },
         )
 
-    def test_properties(self):
+    def test_known_properties(self):
         #  Filtering on Properties with unknown value
-        # TODO: {'$not': {'$exists': False}} can be simplified to {'$exists': True}
-        # The { $not: { $gt: 1.99 } } is different from the $lte operator. { $lte: 1.99 } returns only the documents
-        # where price field exists and its value is less than or equal to 1.99.
-        # Remember that the $not operator only affects other operators and cannot check fields and documents
-        # independently. So, use the $not operator for logical disjunctions and the $ne operator to test
-        # the contents of fields directly.
-        # source: https://docs.mongodb.com/manual/reference/operator/query/not/
+        self.assertEqual(
+            self.transform("chemical_formula_anonymous IS UNKNOWN"),
+            {
+                "$or": [
+                    {"chemical_formula_anonymous": {"$exists": False}},
+                    {"chemical_formula_anonymous": {"$eq": None}},
+                ]
+            },
+        )
+        self.assertEqual(
+            self.transform("chemical_formula_anonymous IS KNOWN"),
+            {
+                "$and": [
+                    {"chemical_formula_anonymous": {"$exists": True}},
+                    {"chemical_formula_anonymous": {"$ne": None}},
+                ]
+            },
+        )
+        self.assertEqual(
+            self.transform("NOT chemical_formula_anonymous IS UNKNOWN"),
+            {
+                "$and": [
+                    {"chemical_formula_anonymous": {"$exists": True}},
+                    {"chemical_formula_anonymous": {"$ne": None}},
+                ]
+            },
+        )
+        self.assertEqual(
+            self.transform("NOT chemical_formula_anonymous IS KNOWN"),
+            {
+                "$or": [
+                    {"chemical_formula_anonymous": {"$exists": False}},
+                    {"chemical_formula_anonymous": {"$eq": None}},
+                ]
+            },
+        )
 
         self.assertEqual(
             self.transform(
@@ -614,8 +655,40 @@ class TestMongoTransformer(unittest.TestCase):
             ),
             {
                 "$and": [
-                    {"chemical_formula_hill": {"$exists": True}},
-                    {"chemical_formula_anonymous": {"$not": {"$exists": False}}},
+                    {
+                        "$and": [
+                            {"chemical_formula_hill": {"$exists": True}},
+                            {"chemical_formula_hill": {"$ne": None}},
+                        ]
+                    },
+                    {
+                        "$and": [
+                            {"chemical_formula_anonymous": {"$exists": True}},
+                            {"chemical_formula_anonymous": {"$ne": None}},
+                        ]
+                    },
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform(
+                "chemical_formula_hill IS KNOWN AND chemical_formula_anonymous IS UNKNOWN"
+            ),
+            {
+                "$and": [
+                    {
+                        "$and": [
+                            {"chemical_formula_hill": {"$exists": True}},
+                            {"chemical_formula_hill": {"$ne": None}},
+                        ]
+                    },
+                    {
+                        "$or": [
+                            {"chemical_formula_anonymous": {"$exists": False}},
+                            {"chemical_formula_anonymous": {"$eq": None}},
+                        ]
+                    },
                 ]
             },
         )
