@@ -1,7 +1,4 @@
-from typing import Union
-
 from optimade.models import ReferenceResource
-
 from optimade.adapters.base import EntryAdapter
 
 

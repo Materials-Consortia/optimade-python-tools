@@ -1,9 +1,4 @@
 # pylint: disable=import-error
-import json
-from pathlib import Path
-import re
-from typing import List
-
 import pytest
 
 from .utils import get_min_ver
@@ -17,8 +12,6 @@ ase = pytest.importorskip(
 )
 
 from ase import Atoms
-
-from optimade.models.structures import Periodicity
 
 from optimade.adapters import Structure
 from optimade.adapters.exceptions import ConversionError

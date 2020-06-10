@@ -2,7 +2,6 @@ from typing import Union, Dict, List
 
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
-from optimade.models.structures import Periodicity
 
 from optimade.adapters.structures.utils import pad_positions
 

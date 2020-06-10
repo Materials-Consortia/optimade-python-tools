@@ -1,9 +1,4 @@
 # pylint: disable=import-error
-import json
-from pathlib import Path
-import re
-from typing import List
-
 import pytest
 
 from .utils import get_min_ver
