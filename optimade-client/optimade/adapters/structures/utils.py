@@ -1,10 +1,7 @@
 # pylint: disable=invalid-name
 from typing import List, Tuple, Iterable
 
-from optimade.models import StructureResourceAttributes
 from optimade.models.structures import Vector3D
-
-from optimade.adapters.exceptions import ConversionError
 
 try:
     import numpy as np

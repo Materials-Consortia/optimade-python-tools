@@ -3,8 +3,6 @@ from optimade.filterparser import LarkParser
 from lark import Tree
 from lark.lexer import Token
 from django.db.models import Q
-import json
-import os
 
 
 class DjangoQueryError(Exception):

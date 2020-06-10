@@ -4,10 +4,10 @@ from optimade.adapters import Structure
 from optimade.models import StructureResource
 
 try:
-    import aiida
-    import ase
-    import numpy
-    import pymatgen
+    import aiida  # noqa: F401
+    import ase  # noqa: F401
+    import numpy  # noqa: F401
+    import pymatgen  # noqa: F401
 except ImportError:
     all_modules_found = False
 else:
@@ -75,7 +75,7 @@ class TestStructure:
         """
         # If passing attribute starting with `as_`, it should call `self.convert()`
         with pytest.raises(
-            AttributeError, match=f"Non-valid entry type to convert to: "
+            AttributeError, match="Non-valid entry type to convert to: "
         ):
             structure.as_
 

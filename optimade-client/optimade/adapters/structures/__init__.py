@@ -1,7 +1,4 @@
-from typing import Union
-
 from optimade.models import StructureResource
-
 from optimade.adapters.base import EntryAdapter
 
 from .aiida import get_aiida_structure_data

@@ -82,20 +82,20 @@ class Transformer(lark.Transformer):
 
         return quantity.es_field
 
-    def _order_terms(self, l, o, r):
-        if isinstance(l, Quantity):
-            if isinstance(r, Quantity):
+    def _order_terms(self, lhs, o, rhs):
+        if isinstance(lhs, Quantity):
+            if isinstance(rhs, Quantity):
                 raise Exception(
-                    "Cannot compare two quantities: %s, %s" % (l.name, r.name)
+                    "Cannot compare two quantities: %s, %s" % (lhs.name, rhs.name)
                 )
 
-            return l, o, r
+            return lhs, o, rhs
         else:
-            if isinstance(r, Quantity):
+            if isinstance(rhs, Quantity):
                 o = _rev_cmp_operators.get(o, o)
-                return r, o, l
+                return rhs, o, lhs
 
-            raise Exception("Cannot compare two values: %s, %s" % (str(l), str(l)))
+            raise Exception("Cannot compare two values: %s, %s" % (str(lhs), str(lhs)))
 
     def _query(self, quantity, o, value, nested=None):
         field = self._field(quantity, nested=nested)

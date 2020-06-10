@@ -1,5 +1,3 @@
-import json
-
 try:
     from optimade.filtertransformers.django import Lark2Django
 
@@ -8,7 +6,6 @@ except ImportError:
     DJANGO_NOT_IMPORTED = True
 
 from unittest import TestCase, skipIf
-import os
 
 test_data = [
     ("band_gap<1", "(AND: ('calculation__band_gap__lt', '1'))"),

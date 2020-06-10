@@ -208,7 +208,7 @@ class Success(jsonapi.Response):
 
         # errors MUST be skipped
         if values.get("errors", None) is not None:
-            raise ValueError(f"'errors' MUST be skipped for a successful response")
+            raise ValueError("'errors' MUST be skipped for a successful response")
 
         return values
 
