@@ -8,9 +8,7 @@ try:
     from jarvis.core.atoms import Atoms
 except (ImportError, ModuleNotFoundError):
     Atoms = None
-    JARVIS_NOT_FOUND = (
-        "jarvis-tools package not found, cannot convert structure to a JARVIS Atoms. Visit https://github.com/usnistgov/jarvis"
-    )
+    JARVIS_NOT_FOUND = "jarvis-tools package not found, cannot convert structure to a JARVIS Atoms. Visit https://github.com/usnistgov/jarvis"
 
 
 __all__ = ("get_jarvis_atoms",)
