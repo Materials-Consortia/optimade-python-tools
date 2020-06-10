@@ -16,7 +16,7 @@ ase_deps = ["ase~=3.19"]
 cif_deps = ["numpy~=1.18"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2020.3"]
-jarvis_tools_deps = ["jarvis~=2020.6.9"]
+jarvis_deps = ["jarvis-tools~=2020.6"]
 client_deps = cif_deps
 
 # General
@@ -35,7 +35,7 @@ all_deps = (
     + aiida_deps
     + ase_deps
     + pymatgen_deps
-    + jarvis_tools_deps
+    + jarvis_deps
 )
 
 setup(
@@ -85,7 +85,7 @@ setup(
         "cif": cif_deps,
         "pdb": pdb_deps,
         "pymatgen": pymatgen_deps,
-        "jarvis_tools": jarvis_tools_deps,
+        "jarvis": jarvis_deps,
     },
     entry_points={
         "console_scripts": ["optimade_validator=optimade.validator:validate"]

@@ -8,7 +8,7 @@ import pytest
 
 from .utils import get_min_ver
 
-min_ver = get_min_ver("jarvis")
+min_ver = get_min_ver("jarvis-tools")
 jarvis = pytest.importorskip(
     "jarvis",
     minversion=min_ver,
