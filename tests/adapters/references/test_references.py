@@ -68,7 +68,7 @@ class TestReference:
         """
         # If passing attribute starting with `as_`, it should call `self.convert()`
         with pytest.raises(
-            AttributeError, match=f"Non-valid entry type to convert to: "
+            AttributeError, match="Non-valid entry type to convert to: "
         ):
             reference.as_
 
