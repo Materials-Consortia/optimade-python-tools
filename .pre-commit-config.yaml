@@ -15,6 +15,7 @@ repos:
       exclude: README.md
     - id: check-yaml
     - id: check-json
+    - id: end-of-file-fixer
 
   - repo: local
     hooks:
