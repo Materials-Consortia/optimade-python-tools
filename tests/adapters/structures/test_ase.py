@@ -41,6 +41,7 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
 
         with pytest.raises(
             ConversionError,
-            match="ASE cannot handle structures with partial occupancies",
+            match=r"(ASE cannot handle structures with partial occupancies)|"
+            r"(ASE cannot handle structures with unknown \('X'\) chemical symbols)",
         ):
             get_ase_atoms(structure)
