@@ -1,0 +1,1 @@
+::: optimade.models.jsonapi
