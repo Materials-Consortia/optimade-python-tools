@@ -11,7 +11,8 @@ setup(
     author="OPTIMADE Development Team",
     author_email="dev@optimade.org",
     description="Python server implementation for the OPTIMADE APIs.",
-    version="0.8.1",
+    use_scm_version={"root": "..", "relative_to": __file__},
+    setup_requires=["setuptools_scm"],
     keywords="optimade jsonapi materials",
     packages=find_namespace_packages(include=["optimade.*"]),
     classifiers=[
