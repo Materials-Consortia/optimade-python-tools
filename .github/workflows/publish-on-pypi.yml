@@ -34,11 +34,6 @@ jobs:
     - name: Install package
       run: python -m pip install -e .
 
-    - name: Assert package version
-      env:
-        TAG_VERSION: ${{ github.ref }}
-      run: invoke assert_version
-
     - name: Build source distribution
       run: python ./setup.py sdist
 

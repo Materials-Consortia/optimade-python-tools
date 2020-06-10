@@ -32,28 +32,6 @@ def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
 
 
 @task
-def setver(_, patch=False, new_ver=""):
-    if (not patch and not new_ver) or (patch and new_ver):
-        raise Exception(
-            "Either use --patch or specify e.g. --new-ver='Major.Minor.Patch(a|b|rc)?[0-9]+'"
-        )
-    if patch:
-        v = [int(x) for x in __version__.split(".")]
-        v[2] += 1
-        new_ver = ".".join(map(str, v))
-
-    update_file(
-        TOP_DIR.joinpath("optimade/__init__.py"),
-        ("__version__ = .+", f'__version__ = "{new_ver}"'),
-    )
-    update_file(
-        TOP_DIR.joinpath("setup.py"), ("version=([^,]+),", f'version="{new_ver}",')
-    )
-
-    print("Bumped version to {}".format(new_ver))
-
-
-@task
 def set_optimade_ver(_, ver=""):
     if not ver:
         raise Exception("Please specify --ver='Major.Minor.Patch'")
@@ -199,30 +177,6 @@ def update_openapijson(c):
     c.run(
         f"cp {TOP_DIR.joinpath('openapi/local_index_openapi.json')} {TOP_DIR.joinpath('openapi/index_openapi.json')}"
     )
-
-
-@task
-def assert_version(_):
-
-    package_version = f"v{__version__}"
-
-    try:
-        tag_version = os.environ["TAG_VERSION"]
-        tag_version = tag_version[len("refs/tags/") :]
-    except KeyError as e:
-        print("This can only be used in a Github Workflow runner")
-        sys.exit(1)
-
-    if tag_version == package_version:
-        print(f"The versions match: tag:'{tag_version}' == package:'{package_version}'")
-        sys.exit(0)
-
-    print(
-        f"""The current package version '{package_version}' does not equal the tag version '{tag_version}'.
-    Update package version by \"invoke setver --new-ver='{tag_version[1:]}'\" and re-commit.
-    Please remove the tag from both GitHub and your local repository and try again!"""
-    )
-    sys.exit(1)
 
 
 @task
