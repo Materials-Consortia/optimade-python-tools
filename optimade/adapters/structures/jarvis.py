@@ -1,4 +1,3 @@
-from typing import Dict
 from warnings import warn
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
@@ -10,7 +9,7 @@ try:
 except (ImportError, ModuleNotFoundError):
     Atoms = None
     JARVIS_NOT_FOUND = (
-        "jarvis-tools package not found, visit https://github.com/usnistgov/jarvis"
+        "jarvis-tools package not found, cannot convert structure to a JARVIS Atoms. Visit https://github.com/usnistgov/jarvis"
     )
 
 
@@ -36,8 +35,6 @@ def get_jarvis_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         raise ConversionError(
             "jarvis-tools cannot handle structures with partial occupancies."
         )
-
-    attributes = optimade_structure.attributes
 
     cartesian_site_positions, _ = pad_positions(attributes.cartesian_site_positions)
 
