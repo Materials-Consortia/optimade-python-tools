@@ -44,10 +44,14 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -U setuptools
+        python -m pip install --upgrade setuptools requests
+
+    # There might be a better way to do this
+    - name: Install all packages package
+      run: |
         pip install optimade-core/
         pip install optimade-server/
         pip install optimade-validator/
@@ -70,15 +74,22 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Install tools
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -U setuptools
+        python -m pip install --upgrade setuptools requests
+
+    # There might be a better way to do this
+    - name: Install all packages package
+      run: |
         pip install optimade-core/
         pip install optimade-server/
         pip install optimade-validator/
         pip install optimade-client/
-        python -m pip install -e .[dev]
+        pip install -e .[dev]
+
+    - name: Install OpenAPI Diff
+      run: |
         docker pull quen2404/openapi-diff
 
     - name: Validate OpenAPI specifications
@@ -171,17 +182,29 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install latest compatible versions of immediate dependencies
+
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -U setuptools wheel
+        python -m pip install --upgrade setuptools requests
+
+    - name: Install latest compatible versions of immediate dependencies
+      run: |
         # Install static dependencies followed by "normal" install
         python -m pip install -r .github/workflows/requirements.txt
+
+    # There might be a better way to do this
+    - name: Install all packages package
+      run: |
         pip install optimade-core/
         pip install optimade-server/
         pip install optimade-validator/
         pip install optimade-client/
         pip install -e .[dev]
+
+
+
+
 
     - name: Run all tests (using a real MongoDB)
       run: pytest -rs --cov=./optimade/ --cov-report=xml
