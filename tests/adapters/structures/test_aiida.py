@@ -1,8 +1,4 @@
 # pylint: disable=import-error
-import json
-from pathlib import Path
-import re
-from typing import List
 
 import pytest
 
@@ -22,10 +18,7 @@ load_profile()
 
 from aiida.orm import StructureData
 
-from optimade.models.structures import Periodicity
-
 from optimade.adapters import Structure
-from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.aiida import get_aiida_structure_data
 
 

@@ -1,7 +1,4 @@
-# pylint: disable=import-error
-import re
-from typing import List
-
+# pylint: disable=import-error,E402
 import pytest
 
 from .utils import get_min_ver
@@ -15,8 +12,6 @@ pymatgen = pytest.importorskip(
 )
 
 from pymatgen import Molecule, Structure as PymatgenStructure
-
-from optimade.models.structures import Periodicity
 
 from optimade.adapters import Structure
 from optimade.adapters.structures.pymatgen import (

@@ -12,7 +12,9 @@ TOP_DIR = Path(__file__).parent.resolve()
 def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
     """Utility function for tasks to read, update, and write files"""
     with open(filename, "r") as handle:
-        lines = [re.sub(sub_line[0], sub_line[1], l.rstrip(strip)) for l in handle]
+        lines = [
+            re.sub(sub_line[0], sub_line[1], line.rstrip(strip)) for line in handle
+        ]
 
     with open(filename, "w") as handle:
         handle.write("\n".join(lines))

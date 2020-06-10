@@ -223,9 +223,9 @@ def test_case(test_fn):
                         print_warning(f"\t{line}")
             else:
                 if optional:
-                    print(f"✖", end="", flush=True)
+                    print("✖", end="", flush=True)
                 else:
-                    print_failure(f"✖", end="", flush=True)
+                    print_failure("✖", end="", flush=True)
 
         return result
 
@@ -402,7 +402,7 @@ class ImplementationValidator:
                 )
 
         if not self.valid:
-            print(f"\n\nFAILURES\n")
+            print("\n\nFAILURES\n")
             for message in self.failure_messages:
                 print_failure(message[0])
                 for line in message[1]:

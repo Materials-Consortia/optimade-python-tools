@@ -1,4 +1,3 @@
-import re
 from typing import Dict
 
 from optimade.models import Species as OptimadeStructureSpecies

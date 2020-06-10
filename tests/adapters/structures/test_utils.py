@@ -12,12 +12,7 @@ numpy = pytest.importorskip(
     " be able to run",
 )
 
-from optimade.models import StructureResource
-
-from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.utils import (
-    _pad_iter_of_iters,
-    cell_to_cellpar,
     fractional_coordinates,
     pad_cell,
     pad_positions,

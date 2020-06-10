@@ -49,7 +49,7 @@ def test_mongo_backend_package_used():
         assert issubclass(client.__class__, mongomock.MongoClient)
     else:
         raise Exception(
-            f"The environment variable OPTIMADE_CI_FORCE_MONGO cannot be parsed as an int."
+            "The environment variable OPTIMADE_CI_FORCE_MONGO cannot be parsed as an int."
         )
 
 

@@ -110,7 +110,7 @@ class SingleStructureWithRelationshipsTests(EndpointTestsMixin, unittest.TestCas
 
 class MultiStructureWithSharedRelationshipsTests(EndpointTestsMixin, unittest.TestCase):
 
-    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_2"
+    request_str = "/structures?filter=id=mpf_1 OR id=mpf_2"
     response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):
@@ -123,7 +123,7 @@ class MultiStructureWithSharedRelationshipsTests(EndpointTestsMixin, unittest.Te
 
 class MultiStructureWithRelationshipsTests(EndpointTestsMixin, unittest.TestCase):
 
-    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_23"
+    request_str = "/structures?filter=id=mpf_1 OR id=mpf_23"
     response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):
@@ -138,7 +138,7 @@ class MultiStructureWithOverlappingRelationshipsTests(
     EndpointTestsMixin, unittest.TestCase
 ):
 
-    request_str = f"/structures?filter=id=mpf_1 OR id=mpf_3"
+    request_str = "/structures?filter=id=mpf_1 OR id=mpf_3"
     response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):

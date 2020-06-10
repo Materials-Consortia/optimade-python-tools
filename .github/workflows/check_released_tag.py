@@ -28,7 +28,7 @@ def get_json(request: requests.Response) -> Union[dict, list]:
 GITHUB_REF = os.environ.get("GITHUB_REF", None)
 
 if GITHUB_REF is None:
-    sys.exit(f"Could not retrieve current GitHub ref from environment variable")
+    sys.exit("Could not retrieve current GitHub ref from environment variable")
 
 if re.match(r"refs/tags/v[0-9]+(\.[0-9]+){2}$", GITHUB_REF) is None:
     sys.exit(
@@ -66,7 +66,7 @@ master_commit_shas = [commit.get("sha", "") for commit in master_commits]
 GITHUB_SHA = os.environ.get("GITHUB_SHA", None)
 
 if GITHUB_SHA is None:
-    sys.exit(f"Could not retrieve current GitHub SHA from environment variable")
+    sys.exit("Could not retrieve current GitHub SHA from environment variable")
 
 if GITHUB_SHA not in master_commit_shas:
     sys.exit(

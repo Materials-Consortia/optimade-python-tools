@@ -98,7 +98,7 @@ class EnsureQueryParamIntegrityTest(SetClient, unittest.TestCase):
 
         This should hold true, no matter the chosen (valid) parameter separator (either & or ;).
         """
-        request = f"/structures?filter&include=;response_format=json"
+        request = "/structures?filter&include=;response_format=json"
         with self.assertRaises(BadRequest):
             self._check_error_response(
                 request,
