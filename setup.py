@@ -14,7 +14,8 @@ dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps
 
 setup(
     name="optimade",
-    version="0.8.1",
+    use_scm_version=True,
+    setup_requires=["setuptools_scm"],
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTIMADE Development Team",
@@ -36,10 +37,10 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "optimade-core~=0.8.1",
-        "optimade-server~=0.8.1",
-        "optimade-client~=0.8.1",
-        "optimade-validator~=0.8.1",
+        "optimade-core",
+        "optimade-server",
+        "optimade-client",
+        "optimade-validator",
     ],
-    extras_require={"dev": dev_deps, "testing": testing_deps},
+    extras_require={"dev": dev_deps, "testing": testing_deps,},
 )
