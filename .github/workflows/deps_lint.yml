@@ -79,14 +79,8 @@ jobs:
         openapi-spec-validator openapi/openapi.json
         openapi-spec-validator openapi/index_openapi.json
 
-    - name: Update OpenAPI schemes
-      run: |
-        invoke generate-openapi
-
-    - name: Check if OpenAPI schemes match
-      run: |
-        .ci/openapi_diff.sh
-        .ci/index_openapi_diff.sh
+    - name: Check OpenAPI Schemas have not changed
+      run: invoke check-openapi-diff
 
 
   docker-image:
