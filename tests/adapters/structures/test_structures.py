@@ -8,6 +8,7 @@ try:
     import ase
     import numpy
     import pymatgen
+    import jarvis
 except ImportError:
     all_modules_found = False
 else:
@@ -107,10 +108,11 @@ class TestStructure:
             "ase": ["ase"],
             "numpy": ["cif", "pdb", "pdbx_mmcif"],
             "pymatgen": ["pymatgen"],
+            "jarvis": ["jarvis"],
         }
 
         modules_to_test = []
-        for module in ("aiida", "ase", "numpy", "pymatgen"):
+        for module in ("aiida", "ase", "numpy", "pymatgen", "jarvis"):
             try:
                 importlib.import_module(module)
             except (ImportError, ModuleNotFoundError):
