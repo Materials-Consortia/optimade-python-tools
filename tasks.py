@@ -8,7 +8,14 @@ import json
 from invoke import task
 
 from jsondiff import diff
-from optimade import __version__
+
+try:
+    from optimade import __version__
+except ImportError:
+    raise ImportError(
+        "optimade needs to be installed prior to running 'assert_version.py'"
+    )
+
 
 TOP_DIR = Path(__file__).parent.resolve()
 
@@ -193,3 +200,27 @@ def update_openapijson(c):
     c.run(
         f"cp {TOP_DIR.joinpath('openapi/local_index_openapi.json')} {TOP_DIR.joinpath('openapi/index_openapi.json')}"
     )
+
+
+@task
+def assert_version(_):
+
+    package_version = f"v{__version__}"
+
+    try:
+        tag_version = os.environ["TAG_VERSION"]
+        tag_version = tag_version[len("refs/tags/") :]
+    except KeyError as e:
+        print("This can only be used in a Github Workflow runner")
+        sys.exit(1)
+
+    if tag_version == package_version:
+        print(f"The versions match: tag:'{tag_version}' == package:'{package_version}'")
+        sys.exit(0)
+
+    print(
+        f"""The current package version '{package_version}' does not equal the tag version '{tag_version}'.
+    Update package version by \"invoke setver --new-ver='{tag_version[1:]}'\" and re-commit.
+    Please remove the tag from both GitHub and your local repository and try again!"""
+    )
+    sys.exit(1)
