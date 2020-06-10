@@ -78,13 +78,11 @@ jobs:
     - name: Build source distribution
       run: python ./setup.py sdist
 
-    # This tests that publication to PyPI is possible, before properly publishing
-    - name: Publish package to TestPyPI
+    - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
-        password: ${{ secrets.test_pypi_password }}
-        repository_url: https://test.pypi.org/legacy/
+        password: ${{ secrets.pypi_password }}
 
   docs:
     runs-on: ubuntu-latest
@@ -103,6 +101,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e .[all]
         pip install -r .github/workflows/requirements-docs.txt --upgrade
+
+
 
     - name: Build
       run: mkdocs build
