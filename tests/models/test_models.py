@@ -13,34 +13,19 @@ from optimade.models import (
 )
 from optimade.models.jsonapi import Error
 from optimade.server.mappers import StructureMapper, ReferenceMapper
+import optimade.server.data
 
 
 class TestPydanticValidation(unittest.TestCase):
     def test_good_structures(self):
-        test_structures_path = (
-            Path(__file__)
-            .resolve()
-            .parent.joinpath("../../optimade/server/data/test_structures.json")
-        )
-        with open(test_structures_path, "r") as f:
-            good_structures = json.load(f)
-            # adjust dates as mongo would
-        for doc in good_structures:
-            doc["last_modified"] = doc["last_modified"]["$date"]
+
+        good_structures = optimade.server.data.structures
 
         for structure in good_structures:
             StructureResource(**StructureMapper.map_back(structure))
 
     def test_more_good_structures(self):
-        test_structures_path = (
-            Path(__file__).resolve().parent.joinpath("test_more_structures.json")
-        )
-        with open(test_structures_path, "r") as f:
-            good_structures = json.load(f)
-
-        # adjust dates as mongo would
-        for doc in good_structures:
-            doc["last_modified"] = doc["last_modified"]["$date"]
+        good_structures = optimade.server.data.structures
 
         for structure in good_structures:
             StructureResource(**StructureMapper.map_back(structure))
@@ -108,15 +93,8 @@ class TestPydanticValidation(unittest.TestCase):
             EntryRelationships(**relationship)
 
     def test_good_references(self):
-        test_refs_path = (
-            Path(__file__)
-            .resolve()
-            .parent.joinpath("../../optimade/server/data/test_references.json")
-        )
-        with open(test_refs_path, "r") as f:
-            good_refs = json.load(f)
+        good_refs = optimade.server.data.references
         for doc in good_refs:
-            doc["last_modified"] = doc["last_modified"]["$date"]
             ReferenceResource(**ReferenceMapper.map_back(doc))
 
     def test_bad_references(self):
