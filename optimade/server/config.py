@@ -32,38 +32,50 @@ class ServerConfig(BaseSettings):
     config_file: str = Field(
         DEFAULT_CONFIG_FILE_PATH, description="File to load alternative defaults from",
     )
+
     debug: bool = Field(
         False, description="Turns on Debug Mode for the OPTIMADE Server implementation"
     )
+
     use_real_mongo: bool = Field(
         False, description="Use a real Mongo server rather than MongoMock"
     )
+
     mongo_database: str = Field(
         "optimade", description="Mongo database for collection data"
     )
+
     mongo_uri: str = Field("localhost:27017", description="URI for the Mongo server")
+
     links_collection: str = Field(
         "links", description="Mongo collection name for /links endpoint resources"
     )
+
     references_collection: str = Field(
         "references",
         description="Mongo collection name for /references endpoint resources",
     )
+
     structures_collection: str = Field(
         "structures",
         description="Mongo collection name for /structures endpoint resources",
     )
+
     page_limit: int = Field(20, description="Default number of resources per page")
+
     page_limit_max: int = Field(
         500, description="Max allowed number of resources per page"
     )
+
     default_db: str = Field(
         "test_server",
         description="ID of /links endpoint resource for the chosen default OPTIMADE implementation (only relevant for the index meta-database)",
     )
+
     base_url: Optional[str] = Field(
         None, description="Base URL for this implementation"
     )
+
     implementation: Implementation = Field(
         Implementation(
             name="Example implementation",
@@ -73,22 +85,25 @@ class ServerConfig(BaseSettings):
         ),
         description="Introspective information about this OPTIMADE implementation",
     )
+
     provider: Provider = Field(
         Provider(
             prefix="exmpl",
             name="Example provider",
             description="Provider used for examples, not to be assigned to a real database",
             homepage="https://example.com",
-            index_base_url="http://localhost:5001",
+            index_base_url="http://localhost:5000/index",
         ),
         description="General information about the provider of this OPTIMADE implementation",
     )
+
     provider_fields: Dict[
         Literal["links", "references", "structures"], List[str]
     ] = Field(
         {},
         description="A list of additional fields to be served with the provider's prefix attached, broken down by endpoint.",
     )
+
     aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
         {},
         description="A mapping between field names in the database with their corresponding OPTIMADE field names, broken down by endpoint.",
@@ -108,6 +123,16 @@ class ServerConfig(BaseSettings):
     index_links_path: Path = Field(
         Path(__file__).parent.joinpath("index_links.json"),
         description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database",
+    )
+
+    include_index_api: bool = Field(
+        False,
+        description="Include the OPTIMADE index meta-database under the endpoint /index. Default: False.",
+    )
+
+    index_links_collection: str = Field(
+        "index_links",
+        description="Mongo collection name for /links endpoint resources for the index meta-database started at the /index endpoint together with the 'regular' server. Only applicable together with 'include_index_api'.",
     )
 
     @root_validator(pre=True)

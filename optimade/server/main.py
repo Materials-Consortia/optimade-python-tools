@@ -16,8 +16,11 @@ import optimade.server.exception_handlers as exc_handlers
 from .entry_collections import MongoCollection
 from .config import CONFIG
 from .middleware import EnsureQueryParamIntegrity
-from .routers import info, links, references, structures, landing
+from .routers import info, links, references, structures, landing, index_info
 from .routers.utils import get_providers, BASE_URL_PREFIXES
+
+if CONFIG.include_index_api:
+    from .routers.links import router_index as index_links_router
 
 
 if CONFIG.debug:  # pragma: no cover
@@ -42,6 +45,8 @@ if not CONFIG.use_real_mongo:
     import bson.json_util
     import optimade.server.data as data
     from .routers import ENTRY_COLLECTIONS
+    from .routers.links import index_links_coll
+    from .routers.utils import mongo_id_for_database
 
     def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
         print(f"loading test {endpoint_name}...")
@@ -56,6 +61,23 @@ if not CONFIG.use_real_mongo:
 
     for name, collection in ENTRY_COLLECTIONS.items():
         load_entries(name, collection)
+
+    if CONFIG.include_index_api:
+        print("loading index links...")
+        with open(CONFIG.index_links_path) as f:
+            data = json.load(f)
+
+            processed = []
+
+            for db in data:
+                db["_id"] = {"$oid": mongo_id_for_database(db["id"], db["type"])}
+                processed.append(db)
+
+            print("inserting index links into collection...")
+            index_links_coll.collection.insert_many(
+                bson.json_util.loads(bson.json_util.dumps(processed))
+            )
+            print("done inserting index links...")
 
 
 # Add various middleware
@@ -79,11 +101,17 @@ app.include_router(info.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(references.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(structures.router, prefix=BASE_URL_PREFIXES["major"])
+if CONFIG.include_index_api:
+    app.include_router(index_info.router, prefix=f"/index{BASE_URL_PREFIXES['major']}")
+    app.include_router(index_links_router, prefix=f"/index{BASE_URL_PREFIXES['major']}")
 
 
 # Add the router for the landing page for all prefixes
 app.include_router(landing.router)
 app.include_router(landing.router, prefix=BASE_URL_PREFIXES["major"])
+if CONFIG.include_index_api:
+    app.include_router(landing.router, prefix="/index")
+    app.include_router(landing.router, prefix=f"/index{BASE_URL_PREFIXES['major']}")
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
@@ -99,6 +127,17 @@ def add_optional_versioned_base_urls(app: FastAPI):
         app.include_router(references.router, prefix=BASE_URL_PREFIXES[version])
         app.include_router(structures.router, prefix=BASE_URL_PREFIXES[version])
         app.include_router(landing.router, prefix=BASE_URL_PREFIXES[version])
+
+        if CONFIG.include_index_api:
+            app.include_router(
+                index_info.router, prefix=f"/index{BASE_URL_PREFIXES[version]}"
+            )
+            app.include_router(
+                index_links_router, prefix=f"/index{BASE_URL_PREFIXES[version]}"
+            )
+            app.include_router(
+                landing.router, prefix=f"/index{BASE_URL_PREFIXES[version]}"
+            )
 
 
 def update_schema(app: FastAPI):

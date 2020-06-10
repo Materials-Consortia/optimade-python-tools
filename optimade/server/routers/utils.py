@@ -47,11 +47,15 @@ def meta_values(
 
     parse_result = urllib.parse.urlparse(url)
 
-    # To catch all (valid) variations of the version part of the URL, a regex is used
-    if re.match(r"/v[0-9]+(\.[0-9]+){,2}/.*", parse_result.path) is not None:
-        url_path = re.sub(r"/v[0-9]+(\.[0-9]+){,2}/", "/", parse_result.path)
+    # Remove /index for index meta-db running alongside regular implementation
+    if CONFIG.include_index_api and parse_result.path.startswith("/index"):
+        url_path = parse_result.path[len("/index") :]
     else:
         url_path = parse_result.path
+
+    # To catch all (valid) variations of the version part of the URL, a regex is used
+    if re.match(r"/v[0-9]+(\.[0-9]+){,2}/.*", url_path) is not None:
+        url_path = re.sub(r"/v[0-9]+(\.[0-9]+){,2}/", "/", url_path)
 
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
