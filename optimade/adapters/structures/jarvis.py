@@ -1,5 +1,4 @@
 from warnings import warn
-from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
 from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.utils import pad_positions
