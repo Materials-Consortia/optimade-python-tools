@@ -31,8 +31,9 @@ def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
         handle.write("\n")
 
 
-@task
-def set_optimade_ver(_, ver=""):
+@task(help={"version": "OPTIMADE API version to set"})
+def set_optimade_ver(_, api_version=""):
+    """ Sets the OPTIMADE API Version """
     if not ver:
         raise Exception("Please specify --ver='Major.Minor.Patch'")
     if not re.match("[0-9]+.[0-9]+.[0-9]+", ver):
@@ -42,10 +43,7 @@ def set_optimade_ver(_, ver=""):
         TOP_DIR.joinpath("optimade/__init__.py"),
         ("__api_version__ = .+", f'__api_version__ = "{ver}"'),
     )
-    update_file(
-        TOP_DIR.joinpath(".ci/optimade-version.json"),
-        ('"message": .+', f'"message": "v{ver}",'),
-    )
+
     for regex, version in (
         ("[0-9]+", ver.split(".")[0]),
         ("[0-9]+.[0-9]+", ".".join(ver.split(".")[:2])),
@@ -56,30 +54,21 @@ def set_optimade_ver(_, ver=""):
             (f"example/v{regex}", f"example/v{version}"),
             strip="\n",
         )
-    update_file(
-        TOP_DIR.joinpath(".github/workflows/validator_action.yml"),
-        ("/v[0-9]+", f"/v{ver.split('.')[0]}"),
-    )
+
     update_file(
         TOP_DIR.joinpath("README.md"), ("v[0-9]+", f"v{ver.split('.')[0]}"), strip="\n"
     )
-    update_file(TOP_DIR.joinpath("action.yml"), ("/v[0-9]+", f"/v{ver.split('.')[0]}"))
-    update_file(
-        TOP_DIR.joinpath("optimade/validator/github_action/entrypoint.sh"),
-        (
-            "'[0-9]+' '[0-9]+.[0-9]+' '[0-9]+.[0-9]+.[0-9]+'",
-            f"'{ver.split('.')[0]}' '{'.'.join(ver.split('.')[:2])}' '{ver}'",
-        ),
-    )
+
     update_file(
         TOP_DIR.joinpath("INSTALL.md"), (r"/v[0-9]+(\.[0-9]+){2}", f"/v{version}")
     )
 
-    print(f"Bumped OPTIMADE version to {ver}")
+    print(f"Bumped OPTIMADE API version to {ver}")
 
 
 @task
 def parse_spec_for_filters(_):
+    """Parses specification to generate validator filters"""
     import requests
 
     filter_path = TOP_DIR.joinpath("optimade/validator/data/filters.txt")
@@ -137,6 +126,7 @@ def generate_openapi(_):
 
 @task(generate_openapi)
 def check_openapi_diff(_):
+    """Checks the Generated OpenAPI spec against what is stored in the repo"""
     with open(TOP_DIR.joinpath("openapi/openapi.json")) as f:
         openapi = json.load(f)
 
@@ -170,6 +160,7 @@ def check_openapi_diff(_):
 
 @task(generate_openapi)
 def update_openapijson(c):
+    """Updates the stored OpenAPI spec to what the server returns"""
     # pylint: disable=import-outside-toplevel
     c.run(
         f"cp {TOP_DIR.joinpath('openapi/local_openapi.json')} {TOP_DIR.joinpath('openapi/openapi.json')}"
@@ -181,6 +172,7 @@ def update_openapijson(c):
 
 @task
 def update_api_shield(_):
+    """Updates the Github OPTIMADE API Shield"""
     shield = {
         "schemaVersion": 1,
         "label": "OPTIMADE",
