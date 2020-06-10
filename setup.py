@@ -1,5 +1,5 @@
 from pathlib import Path
-from setuptools import setup, find_packages
+from setuptools import setup
 
 module_dir = Path(__file__).resolve().parent
 
@@ -42,5 +42,5 @@ setup(
         "optimade-client",
         "optimade-validator",
     ],
-    extras_require={"dev": dev_deps, "testing": testing_deps,},
+    extras_require={"dev": dev_deps, "testing": testing_deps},
 )

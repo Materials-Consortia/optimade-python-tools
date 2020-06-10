@@ -1,7 +1,5 @@
 # pylint: disable=line-too-long
-import os
 import json
-from pathlib import Path
 
 from lark.exceptions import VisitError
 
