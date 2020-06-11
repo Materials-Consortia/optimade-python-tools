@@ -45,11 +45,16 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
     for special_structure in SPECIAL_SPECIES_STRUCTURES:
         structure = Structure(special_structure)
 
-        assert isinstance(get_aiida_structure_data(structure), StructureData)
+        aiida_structure = get_aiida_structure_data(structure)
+
+        assert isinstance(aiida_structure, StructureData)
 
         if "vacancy" in structure.attributes.species[0].chemical_symbols:
-            assert get_aiida_structure_data(structure).has_vacancies
-            assert not get_aiida_structure_data(structure).is_alloy
+            assert aiida_structure.has_vacancies
+            assert not aiida_structure.is_alloy
+        elif len(structure.attributes.species[0].chemical_symbols) > 1:
+            assert not aiida_structure.has_vacancies
+            assert aiida_structure.is_alloy
         else:
-            assert not get_aiida_structure_data(structure).has_vacancies
-            assert get_aiida_structure_data(structure).is_alloy
+            assert not aiida_structure.has_vacancies
+            assert not aiida_structure.is_alloy
