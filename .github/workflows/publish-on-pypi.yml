@@ -38,12 +38,18 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Generate New OpenAPI JSON
+      run: invoke update-openapijson
+
+    - name: Update Version
+      run: invoke setver -v ${GITHUB_REF#refs/tags/}
+
     - name: Commit files
       run: |
         git config --local user.email "dev@optimade.org"
         git config --local user.name "optimade_devs"
         mv CHANGELOG.md docs/
-        invoke update-openapijson
+
         git add docs/CHANGELOG.md
         git add openapi/*
         git commit -m 'Release Updates' && echo ::set-env name=push::1 || echo "No changes to CHANGELOG.md"

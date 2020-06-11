@@ -41,8 +41,7 @@ def myversion():
 
 setup(
     name="optimade",
-    use_scm_version=myversion,
-    setup_requires=["setuptools_scm"],
+    version="0.8.1",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTIMADE Development Team",

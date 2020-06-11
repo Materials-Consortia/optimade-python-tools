@@ -30,6 +30,23 @@ def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
         handle.write("\n")
 
 
+@task
+def setver(_, ver=""):
+    """Sets the OPTIMADE Python Tools Version"""
+
+    match = re.match("v?([0-9]+.[0-9]+.[0-9]+)", ver)
+    if len(match.groups()) != 1:
+        print("Please specify version as 'Major.Minor.Patch' or 'vMajor.Minor.Patch'")
+        sys.exit(1)
+
+    new_ver = match.group(1)
+    update_file(
+        TOP_DIR.joinpath("setup.py"), ("version=([^,]+),", f'version="{new_ver}",')
+    )
+
+    print("Bumped version to {}".format(match.group(1)))
+
+
 @task(help={"version": "OPTIMADE API version to set"})
 def set_optimade_ver(_, ver=""):
     """ Sets the OPTIMADE API Version """
