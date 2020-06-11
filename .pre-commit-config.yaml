@@ -31,7 +31,7 @@ repos:
       pass_filenames: false
       language: system
 
-    - id: optimade-shield- version
+    - id: optimade-shield-version
       name: Update OPTIMADE shield
       description: If needed, the JSON for the OPTIMADE shield will be updated with new config version
       entry: invoke update-api-shield
