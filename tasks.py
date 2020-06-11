@@ -185,3 +185,4 @@ def update_api_shield(_):
 
     with open(shields_json, "w") as fp:
         json.dump(shield, fp, indent=2)
+        fp.write("\n")  # Add newline cause Py JSON does not
