@@ -37,6 +37,7 @@ class TestSetup(unittest.TestCase):
                 r"filters\.txt": False,
                 r"optional_filters\.txt": False,
                 r"landing_page\.html": False,
+                r"providers\.json": False,
             }
             count = 0
             for line in lines:
