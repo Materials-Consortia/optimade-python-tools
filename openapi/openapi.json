@@ -1680,7 +1680,6 @@
         "title": "LinksResource",
         "required": [
           "id",
-          "type",
           "attributes"
         ],
         "type": "object",
@@ -1693,7 +1692,7 @@
           "type": {
             "title": "Type",
             "type": "string",
-            "description": "MUST be either \"parent\", \"child\", or \"provider\". These objects are described in detail in sections Parent and Child Objects and Provider Objects."
+            "description": "These objects are described in detail in the section Links Endpoint"
           },
           "links": {
             "title": "Links",
@@ -1740,7 +1739,8 @@
           "name",
           "description",
           "base_url",
-          "homepage"
+          "homepage",
+          "link_type"
         ],
         "type": "object",
         "properties": {
@@ -1791,6 +1791,11 @@
               }
             ],
             "description": "JSON API links object, pointing to a homepage URL for this implementation"
+          },
+          "link_type": {
+            "title": "Link Type",
+            "type": "string",
+            "description": "The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'."
           }
         },
         "description": "Links endpoint resource object attributes"
