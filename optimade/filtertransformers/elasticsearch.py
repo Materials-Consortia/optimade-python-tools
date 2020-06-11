@@ -103,9 +103,8 @@ class Transformer(lark.Transformer):
             return Q(query_type, **{field: value})
 
         if op == "!=":
-            return ~Q(
-                query_type, **{field: value}
-            )  # pylint: disable=invalid-unary-operand-type
+            return ~Q(  # pylint: disable=invalid-unary-operand-type
+                query_type, **{field: value})
 
     def _has_query_op(self, quantities, op, predicate_zip_list):
         """
