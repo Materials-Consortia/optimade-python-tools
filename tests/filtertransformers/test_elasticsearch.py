@@ -12,7 +12,10 @@ class TestTransformer:
     def set_up(self):
         from optimade.filtertransformers.elasticsearch import Transformer, Quantity
 
-        self.parser = LarkParser(version=(0, 10, 0), variant="elastic")
+@skipIf(not ELASTICSEARCH_IMPORTED, "No ElasticSearch installation, skipping tests...")
+class TestTransformer(TestCase):
+    def setUp(self):
+        self.parser = LarkParser(version=(0, 10, 1))
 
         nelements = Quantity(name="nelements")
         elements_only = Quantity(name="elements_only")
@@ -68,16 +71,16 @@ class TestTransformer:
             ('chemical_formula_reduced STARTS WITH "H2"', 3),
             ('chemical_formula_reduced ENDS WITH "C"', 1),
             ('chemical_formula_reduced ENDS "C"', 1),
-            ("LENGTH elements = 2", 3),
-            ("LENGTH elements = 3", 1),
-            ("LENGTH dimension_types = 0", 3),
-            ("LENGTH dimension_types = 1", 1),
-            ("nelements = 2 AND LENGTH dimension_types = 1", 1),
-            ("nelements = 3 AND LENGTH dimension_types = 1", 0),
-            ("nelements = 3 OR LENGTH dimension_types = 1", 2),
-            ("nelements > 1 OR LENGTH dimension_types = 1 AND nelements = 2", 4),
-            ("(nelements > 1 OR LENGTH dimension_types = 1) AND nelements = 2", 3),
-            ("NOT LENGTH dimension_types = 1", 3),
+            ("elements LENGTH = 2", 3),
+            ("elements LENGTH = 3", 1),
+            ("dimension_types LENGTH = 0", 3),
+            ("dimension_typesLENGTH = 1", 1),
+            ("nelements = 2 AND dimension_types LENGTH = 1", 1),
+            ("nelements = 3 AND dimension_types LENGTH = 1", 0),
+            ("nelements = 3 OR dimension_types LENGTH = 1", 2),
+            ("nelements > 1 OR dimension_typesLENGTH = 1 AND nelements = 2", 4),
+            ("(nelements > 1 OR dimension_types LENGTH = 1) AND nelements = 2", 3),
+            ("NOT dimension_types LENGTH = 1", 3),
         ]
 
         for query, _ in queries:
