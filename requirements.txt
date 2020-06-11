@@ -10,7 +10,3 @@ django==3.0.7
 elasticsearch-dsl==7.1.0
 Jinja2==2.11.1
 typing-extensions==3.7.4.1
-aiida-core==1.2.1
-ase==3.19.1
-numpy==1.18.4
-pymatgen==2020.6.8
