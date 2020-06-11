@@ -29,9 +29,20 @@ testing_deps = [
 dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps + client_deps
 all_deps = dev_deps + django_deps + elastic_deps + aiida_deps + ase_deps + pymatgen_deps
 
+
+def myversion():
+    """This is a temporary hack to provide git version tags and not have any dev extensions"""
+    from setuptools_scm.version import get_local_dirty_tag
+
+    def clean_version_scheme(version):
+        return version.tag.base_version
+
+    return {"local_scheme": "no-local-version", "version_scheme": clean_version_scheme}
+
+
 setup(
     name="optimade",
-    use_scm_version=True,
+    use_scm_version=myversion,
     setup_requires=["setuptools_scm"],
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
