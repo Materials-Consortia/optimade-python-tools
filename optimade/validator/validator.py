@@ -620,15 +620,12 @@ class ImplementationValidator:
         response = self.client.get(request_str)
 
         if response.status_code != 200:
-            error_titles = [
-                error.get("title", "") for error in response.json().get("errors", [])
-            ]
-            error_details = [
-                error.get("detail", "") for error in response.json().get("errors", [])
-            ]
-            message = f"Request to '{request_str}' returned HTTP code {response.status_code}. Errors:\n"
-            for error_title, error_detail in zip(error_titles, error_details):
-                message += f"{error_title}: {error_details}"
+            message = (
+                f"Request to '{request_str}' returned HTTP code {response.status_code}."
+            )
+            message += "\nError(s):"
+            for error in response.json().get("errors", []):
+                message += f'\n  {error.get("title", "N/A")}: {error.get("detail", "N/A")} ({error.get("source", {}).get("pointer", "N/A")})'
             raise ResponseError(message)
 
         return response, "request successful."

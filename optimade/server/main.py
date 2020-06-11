@@ -1,7 +1,4 @@
 # pylint: disable=line-too-long
-import json
-import os
-from pathlib import Path
 
 from lark.exceptions import VisitError
 
@@ -101,18 +98,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
         app.include_router(landing.router, prefix=BASE_URL_PREFIXES[version])
 
 
-def update_schema(app: FastAPI):
-    """Update OpenAPI schema in file 'local_openapi.json'"""
-    package_root = Path(__file__).parent.parent.parent.resolve()
-    if not package_root.joinpath("openapi").exists():
-        os.mkdir(package_root.joinpath("openapi"))
-    with open(package_root.joinpath("openapi/local_openapi.json"), "w") as f:
-        json.dump(app.openapi(), f, indent=2)
-
-
 @app.on_event("startup")
 async def startup_event():
-    # Update OpenAPI schema on versioned base URL `/vMAJOR`
-    update_schema(app)
     # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
     add_optional_versioned_base_urls(app)

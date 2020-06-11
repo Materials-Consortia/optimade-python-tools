@@ -2,60 +2,34 @@ import os
 from pathlib import Path
 import re
 import tempfile
-import unittest
+import pytest
 
 
-class TestSetup(unittest.TestCase):
-    """Test ./setup.py"""
+package_data = [
+    ".lark",
+    "index_links.json",
+    "test_structures.json",
+    "test_references.json",
+    "test_links.json",
+    "landing_page.html",
+    "filters.txt",
+    "optional_filters.txt",
+    "providers.json",
+]
 
-    def test_distributions_package(self):
-        """Make sure a distribution has all the needed package data"""
-        package_root = Path(__file__).parent.parent.resolve()
 
-        number_of_grammar_files = len(
-            list(package_root.joinpath("optimade/grammar").rglob("*.lark"))
-        )
+@pytest.mark.parametrize("package_file", package_data)
+def test_distribution_package_data(package_file):
+    """Make sure a distribution has all the needed package data"""
+    repo_root = Path(__file__).parent.parent.resolve()
 
-        with tempfile.TemporaryDirectory() as temp_dir:
-            current_dir = Path(temp_dir)
-            file_output = current_dir.joinpath("sdist.out")
+    with tempfile.TemporaryDirectory() as temp_dir:
+        file_output = Path(temp_dir).joinpath("sdist.out")
 
-            os.system(
-                f"python {package_root.joinpath('setup.py')} sdist --dry-run > {file_output}"
-            )
+        os.chdir(repo_root)
+        os.system(f"python setup.py sdist --dry-run > {file_output}")
 
-            with open(file_output, "r") as file_:
-                # Removing new-line-chars via slice
-                lines = [_[:-1] for _ in file_.readlines()]
+        with open(file_output, "r") as file_:
+            lines = file_.read()
 
-            present = {
-                r"\.lark": False,
-                r"index_links\.json": False,
-                r"test_structures\.json": False,
-                r"test_references\.json": False,
-                r"test_links\.json": False,
-                r"filters\.txt": False,
-                r"optional_filters\.txt": False,
-                r"landing_page\.html": False,
-                r"providers\.json": False,
-            }
-            count = 0
-            for line in lines:
-                for requirement in present:
-                    if re.findall(requirement, line):
-                        if requirement == r"\.lark":
-                            count += 1
-                            if count == number_of_grammar_files:
-                                present[requirement] = True
-                            else:
-                                present[requirement] = False
-                        else:
-                            present[requirement] = True
-
-            for requirement, is_present in present.items():
-                if requirement == r"\.lark":
-                    msg = f"{requirement} files NOT found. Expected {number_of_grammar_files}, found instead {count}."
-                else:
-                    msg = f"{requirement} file NOT found."
-
-                self.assertTrue(is_present, msg=msg)
+        assert re.findall(package_file, lines), f"{package_file} file NOT found."

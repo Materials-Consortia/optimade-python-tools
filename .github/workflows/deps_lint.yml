@@ -33,7 +33,6 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --statistics
 
-
   pre-commit:
     runs-on: ubuntu-latest
 
@@ -56,7 +55,6 @@ jobs:
       run: |
         pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
-
   openapi:
     runs-on: ubuntu-latest
 
@@ -72,9 +70,10 @@ jobs:
     - name: Install tools
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -U setuptools
-        python -m pip install -r .github/workflows/requirements.txt
-        python -m pip install -e .[testing]
+        pip install -U setuptools
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        pip install -e .
         docker pull quen2404/openapi-diff
 
     - name: Validate OpenAPI specifications
@@ -82,16 +81,8 @@ jobs:
         openapi-spec-validator openapi/openapi.json
         openapi-spec-validator openapi/index_openapi.json
 
-    - name: Update OpenAPI schemes
-      run: |
-        python -c "from optimade.server.main import app, update_schema; update_schema(app)"
-        python -c "from optimade.server.main_index import app, update_schema; update_schema(app)"
-
-    - name: Check if OpenAPI schemes match
-      run: |
-        .ci/openapi_diff.sh
-        .ci/index_openapi_diff.sh
-
+    - name: Check OpenAPI Schemas have not changed
+      run: invoke check-openapi-diff
 
   docker-image:
     runs-on: ubuntu-latest
@@ -172,9 +163,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools
-        # Install static dependencies followed by "normal" install
-        python -m pip install -r .github/workflows/requirements.txt
-        pip install -e .[testing]
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        pip install -e .
 
     - name: Run all tests (using a real MongoDB)
       run: pytest -rs --cov=./optimade/ --cov-report=xml
@@ -188,7 +179,7 @@ jobs:
 
     - name: Install adapter conversion dependencies
       run: |
-        pip install -e .[all]
+        pip install -r requirements-client.txt
         # AiiDA-specific
         reentry scan
 
@@ -208,7 +199,6 @@ jobs:
         flags: unittests
         yml: ./.codecov.yml
 
-
   docs:
     runs-on: ubuntu-latest
 
@@ -224,8 +214,40 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -e .[all]
-        pip install -r .github/workflows/requirements-docs.txt --upgrade
+        pip install -r requirements-docs.txt
 
 
     - name: Build
       run: mkdocs build
+
+  publish_TestPyPI:
+    if: github.event == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade setuptools requests
+
+    - name: Install package
+      run: pip install -e .
+
+    - name: Build source distribution
+      run: python ./setup.py sdist
+
+    # This tests that publication to PyPI is possible
+    - name: Publish package to TestPyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.test_pypi_password }}
+        repository_url: https://test.pypi.org/legacy/
