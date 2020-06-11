@@ -38,16 +38,6 @@ all_deps = (
     + jarvis_deps
 )
 
-
-def myversion():
-    """This is a temporary hack to provide git version tags and not have any dev extensions"""
-
-    def clean_version_scheme(version):
-        return version.tag.base_version
-
-    return {"local_scheme": "no-local-version", "version_scheme": clean_version_scheme}
-
-
 setup(
     name="optimade",
     version="0.8.1",
