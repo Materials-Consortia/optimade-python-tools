@@ -20,7 +20,6 @@ from optimade.adapters.structures.jarvis import get_jarvis_atoms
 def test_successful_conversion(RAW_STRUCTURES):
     """Make sure its possible to convert"""
     for structure in RAW_STRUCTURES:
-        print("Structure(structure)", Structure(structure))
         assert isinstance(get_jarvis_atoms(Structure(structure)), Atoms)
 
 
@@ -39,8 +38,16 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
     for special_structure in SPECIAL_SPECIES_STRUCTURES:
         structure = Structure(special_structure)
 
-        with pytest.raises(
-            ConversionError,
-            match="jarvis-tools cannot handle structures with partial occupancies",
-        ):
-            get_jarvis_atoms(structure)
+        # Since all the special species structure only have a single species, this works fine.
+        if len(structure.species[0].chemical_symbols) > 1:
+            # If the structure is disordered (has partial occupancies of any kind),
+            # jarvis-tools cannot convert the structure
+            with pytest.raises(
+                ConversionError,
+                match="jarvis-tools cannot handle structures with partial occupancies",
+            ):
+                get_jarvis_atoms(structure)
+        else:
+            # No partial occupancies, just special/non-standard species.
+            # jarvis-tools should convert these structure fine enough.
+            assert isinstance(get_jarvis_atoms(structure), Atoms)
