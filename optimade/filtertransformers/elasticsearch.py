@@ -103,7 +103,9 @@ class Transformer(lark.Transformer):
             return Q(query_type, **{field: value})
 
         if op == "!=":
-            return ~Q(query_type, **{field: value})  # pylint: disable=invalid-unary-operand-type
+            return ~Q(
+                query_type, **{field: value}
+            )  # pylint: disable=invalid-unary-operand-type
 
     def _has_query_op(self, quantities, op, predicate_zip_list):
         """
@@ -142,7 +144,8 @@ class Transformer(lark.Transformer):
             try:
                 order_numbers = list([ATOMIC_NUMBERS[element] for element in values()])
                 order_numbers.sort()
-                value = "".join([CHEMICAL_SYMBOLS[number - 1] for number in order_numbers])
+                value = "".join(
+                    [CHEMICAL_SYMBOLS[number - 1] for number in order_numbers])
             except KeyError:
                 raise Exception("HAS ONLY is only supported for chemical symbols")
 
@@ -150,7 +153,8 @@ class Transformer(lark.Transformer):
         else:
             raise NotImplementedError
 
-        queries = [self._has_query(quantities, predicates) for predicates in predicate_zip_list]
+        queries = [
+            self._has_query(quantities, predicates) for predicates in predicate_zip_list]
         return Q("bool", **{kind: queries})
 
     def _has_query(self, quantities, predicates):
@@ -169,7 +173,9 @@ class Transformer(lark.Transformer):
             return self._query_op(quantities[0], o, value)
 
         nested_quantity = quantities[0].nested_quantity
-        if nested_quantity is None or any(q.nested_quantity != nested_quantity for q in quantities):
+        same_nested_quantity = any(
+            q.nested_quantity != nested_quantity for q in quantities)
+        if nested_quantity is None or same_nested_quantity:
             raise Exception(
                 "Expression with tuples are only supported for %s"
                 % ", ".join(quantities)
@@ -223,7 +229,7 @@ class Transformer(lark.Transformer):
 
     @v_args(inline=True)
     def constant_first_comparison(self, value, op, quantity):
-        # constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )
+        # constant_first_comparison: constant OPERATOR ( non_string_value | ...not_implemented_string )
         if not isinstance(quantity, Quantity):
             raise Exception("Only quantities can be compared to constant values.")
 
@@ -279,7 +285,10 @@ class Transformer(lark.Transformer):
         else:
             op = "HAS"
 
-        return lambda quantity: self._has_query_op([quantity], op, [[value] for value in values])
+        def query(quantity):
+            return self._has_query_op([quantity], op, [[value] for value in values])
+
+        return query
 
     def set_zip_op_rhs(self, args):
         # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list | ANY value_zip_list )
@@ -316,11 +325,11 @@ class Transformer(lark.Transformer):
     def fuzzy_string_op_rhs(self, args):
         op = args[0]
         value = args[-1]
-        if op == 'CONTAINS':
+        if op == "CONTAINS":
             wildcard = "*%s*" % value
-        if op == 'STARTS':
+        if op == "STARTS":
             wildcard = "%s*" % value
-        if op == 'ENDS':
+        if op == "ENDS":
             wildcard = "*%s" % value
 
         return lambda quantity: Q("wildcard", **{self._field(quantity): wildcard})
