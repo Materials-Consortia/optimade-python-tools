@@ -180,7 +180,6 @@ def check_openapi_diff(_):
 @task(pre=[generate_openapi, generate_index_openapi])
 def update_openapijson(c):
     """Updates the stored OpenAPI spec to what the server returns"""
-    # pylint: disable=import-outside-toplevel
     c.run(
         f"cp {TOP_DIR.joinpath('openapi/local_openapi.json')} {TOP_DIR.joinpath('openapi/openapi.json')}"
     )
