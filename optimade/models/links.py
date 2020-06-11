@@ -2,14 +2,10 @@
 from pydantic import (  # pylint: disable=no-name-in-module
     Field,
     AnyUrl,
+    validator,
     root_validator,
 )
 from typing import Union
-
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
 
 from .jsonapi import Link, Attributes
 from .entries import EntryResource
@@ -44,10 +40,18 @@ class LinksResourceAttributes(Attributes):
         description="JSON API links object, pointing to a homepage URL for this implementation",
     )
 
-    link_type: Literal["child", "root", "external", "providers"] = Field(
+    link_type: str = Field(
         ...,
-        description="The link type of the represented resource in relation to this implementation.",
+        description="The link type of the represented resource in relation to this implementation. MUST any of these values: 'child', 'root', 'external', 'providers'.",
     )
+
+    @validator("link_type")
+    def link_type_must_be_in_specific_set(cls, value):
+        if value not in {"child", "root", "external", "providers"}:
+            raise ValueError(
+                "link_type MUST be either 'child, 'root', 'external', or 'providers'"
+            )
+        return value
 
 
 class LinksResource(EntryResource):

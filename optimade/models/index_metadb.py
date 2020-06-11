@@ -1,10 +1,6 @@
-from pydantic import Field, BaseModel  # pylint: disable=no-name-in-module
+# pylint: disable=no-self-argument
+from pydantic import Field, BaseModel, validator  # pylint: disable=no-name-in-module
 from typing import Union, Dict
-
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
 
 from .jsonapi import BaseResource
 from .baseinfo import BaseInfoAttributes, BaseInfoResource
@@ -50,10 +46,18 @@ class IndexInfoResource(BaseInfoResource):
     """Index Meta-Database Base URL Info endpoint resource"""
 
     attributes: IndexInfoAttributes = Field(...)
-    relationships: Dict[Literal["default"], IndexRelationship] = Field(
+    relationships: Union[None, Dict[str, IndexRelationship]] = Field(
         ...,
         description="Reference to the child identifier object under the links endpoint "
         "that the provider has chosen as their 'default' OPTIMADE API database. "
         "A client SHOULD present this database as the first choice when an end-user "
         "chooses this provider.",
     )
+
+    @validator("relationships")
+    def relationships_key_must_be_default(cls, value):
+        if value is not None and all([key != "default" for key in value]):
+            raise ValueError(
+                "if the relationships value is a dict, the key MUST be 'default'"
+            )
+        return value

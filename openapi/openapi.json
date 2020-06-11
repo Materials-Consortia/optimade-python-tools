@@ -1794,25 +1794,8 @@
           },
           "link_type": {
             "title": "Link Type",
-            "anyOf": [
-              {
-                "const": "child",
-                "type": "string"
-              },
-              {
-                "const": "root",
-                "type": "string"
-              },
-              {
-                "const": "external",
-                "type": "string"
-              },
-              {
-                "const": "providers",
-                "type": "string"
-              }
-            ],
-            "description": "The link type of the represented resource in relation to this implementation."
+            "type": "string",
+            "description": "The link type of the represented resource in relation to this implementation. MUST any of these values: 'child', 'root', 'external', 'providers'."
           }
         },
         "description": "Links endpoint resource object attributes"
