@@ -73,9 +73,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -U setuptools
-        python -m pip install -r .github/workflows/requirements.txt
+        python -m pip install -r requirements.txt
         python -m pip install -e .[testing]
-        python -m pip install invoke
         docker pull quen2404/openapi-diff
 
     - name: Validate OpenAPI specifications
@@ -169,8 +168,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U setuptools
         # Install static dependencies followed by "normal" install
-        python -m pip install -r .github/workflows/requirements.txt
-        pip install -e .[testing]
+        python -m pip install -r requirements.txt
+        pip install -e .
 
     - name: Run all tests (using a real MongoDB)
       run: pytest -rs --cov=./optimade/ --cov-report=xml
@@ -223,7 +222,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -e .[all]
-        pip install -r .github/workflows/requirements-docs.txt --upgrade
+        pip install -r requirements-docs.txt --upgrade
 
 
     - name: Build
