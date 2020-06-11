@@ -38,6 +38,9 @@ repos:
       pass_filenames: false
       files:
         (?x)^(
-          setup.py
+          optimade/__init__.py|
+          README.md|
+          INSTALL.md|
+          optimade-version.json
         )$
       language: system

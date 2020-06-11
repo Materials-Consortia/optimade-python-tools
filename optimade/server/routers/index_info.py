@@ -10,6 +10,7 @@ from optimade.models import (
     IndexInfoAttributes,
     IndexInfoResource,
     IndexRelationship,
+    RelatedLinksResource,
 )
 
 from optimade.server.config import CONFIG
@@ -47,7 +48,12 @@ def get_info(request: Request):
             ),
             relationships={
                 "default": IndexRelationship(
-                    data={"type": "child", "id": CONFIG.default_db}
+                    data={
+                        "type": RelatedLinksResource.schema()["properties"]["type"][
+                            "const"
+                        ],
+                        "id": CONFIG.default_db,
+                    }
                 )
             },
         ),
