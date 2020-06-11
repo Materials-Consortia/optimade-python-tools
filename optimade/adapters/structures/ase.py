@@ -40,6 +40,13 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         species.name: species for species in attributes.species
     }
 
+    # Since we've made sure there are no species with more than 1 chemical symbol,
+    # asking for index 0 will always work.
+    if "X" in [specie.chemical_symbols[0] for specie in species.values()]:
+        raise ConversionError(
+            "ASE cannot handle structures with unknown ('X') chemical symbols, sorry."
+        )
+
     atoms = []
     for site_number in range(attributes.nsites):
         species_name = attributes.species_at_sites[site_number]
