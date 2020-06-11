@@ -215,7 +215,7 @@ jobs:
       run: mkdocs build
 
   publish_TestPyPI:
-    if: github.repository == 'Materials-Consortia/optimade-python-tools'
+    if: github.event == 'push'
     runs-on: ubuntu-latest
 
     steps:
