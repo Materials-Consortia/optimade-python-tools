@@ -14,7 +14,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -95,7 +96,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
 
     - uses: actions/setup-python@v1
       with:

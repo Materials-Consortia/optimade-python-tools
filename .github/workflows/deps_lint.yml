@@ -13,7 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -38,7 +39,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -60,7 +62,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
@@ -89,7 +92,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
 
     - name: Build the Docker images
       run: docker-compose build
@@ -152,7 +156,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -204,7 +209,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      submodules: true
+      with:
+        submodules: true
 
     - uses: actions/setup-python@v1
       with:
