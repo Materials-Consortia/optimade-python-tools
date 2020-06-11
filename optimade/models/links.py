@@ -2,7 +2,6 @@
 from pydantic import (  # pylint: disable=no-name-in-module
     Field,
     AnyUrl,
-    validator,
     root_validator,
 )
 from typing import Union
