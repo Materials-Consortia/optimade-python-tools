@@ -55,11 +55,6 @@ jobs:
 
   openapi:
     runs-on: ubuntu-latest
-    needs:
-      - lint
-      - pre-commit
-      - deps_static
-
 
     steps:
     - uses: actions/checkout@v2
@@ -88,11 +83,6 @@ jobs:
 
   docker-image:
     runs-on: ubuntu-latest
-    needs:
-      - lint
-      - pre-commit
-      - openapi
-      - deps_static
 
     steps:
     - uses: actions/checkout@v2
@@ -205,11 +195,6 @@ jobs:
         yml: ./.codecov.yml
 
   docs:
-    needs:
-      - lint
-      - pre-commit
-      - openapi
-      - deps_static
     runs-on: ubuntu-latest
 
     steps:
@@ -231,12 +216,6 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs:
-      - lint
-      - pre-commit
-      - openapi
-      - docker-image
-      - deps_static
 
     steps:
     - name: Checkout repository
