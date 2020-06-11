@@ -168,6 +168,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -U setuptools
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
         pip install -e .
 
     - name: Run all tests (using a real MongoDB)
