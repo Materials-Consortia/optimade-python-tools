@@ -69,7 +69,11 @@ class Quantity:
 
 
 class ElasticTransformer(lark.Transformer):
+<<<<<<< HEAD
     """Transformer that transforms ``v0.10.1`` grammer parse trees into queries.
+=======
+    """ Transformer that transforms ``v0.10.1`` grammar parse trees into queries.
+>>>>>>> ec7deea (Renamed elastic transformer class. Minor fixes and typos.)
 
     Uses elasticsearch_dsl and will produce a `Q` instance.
     """
@@ -108,9 +112,9 @@ class ElasticTransformer(lark.Transformer):
             return Q(query_type, **{field: value})
 
         if op == "!=":
-            return ~Q(
+            return ~Q(  # pylint: disable=invalid-unary-operand-type
                 query_type, **{field: value}
-            )  # pylint: disable=invalid-unary-operand-type
+            )
 
     def _has_query_op(self, quantities, op, predicate_zip_list):
         """
@@ -180,9 +184,10 @@ class ElasticTransformer(lark.Transformer):
             return self._query_op(quantities[0], o, value)
 
         nested_quantity = quantities[0].nested_quantity
-        if nested_quantity is None or any(
+        same_nested_quantity = any(
             q.nested_quantity != nested_quantity for q in quantities
-        ):
+        )
+        if nested_quantity is None or same_nested_quantity:
             raise Exception(
                 "Expression with tuples are only supported for %s"
                 % ", ".join(quantities)
@@ -236,7 +241,7 @@ class ElasticTransformer(lark.Transformer):
 
     @v_args(inline=True)
     def constant_first_comparison(self, value, op, quantity):
-        # constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )
+        # constant_first_comparison: constant OPERATOR ( non_string_value | ...not_implemented_string )
         if not isinstance(quantity, Quantity):
             raise Exception("Only quantities can be compared to constant values.")
 

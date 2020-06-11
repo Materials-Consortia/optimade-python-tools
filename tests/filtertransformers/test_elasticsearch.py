@@ -78,7 +78,7 @@ class TestTransformer(TestCase):
             ("nelements = 2 AND dimension_types LENGTH = 1", 1),
             ("nelements = 3 AND dimension_types LENGTH = 1", 0),
             ("nelements = 3 OR dimension_types LENGTH = 1", 2),
-            ("nelements > 1 OR dimension_typesLENGTH = 1 AND nelements = 2", 4),
+            ("nelements > 1 OR dimension_types LENGTH = 1 AND nelements = 2", 4),
             ("(nelements > 1 OR dimension_types LENGTH = 1) AND nelements = 2", 3),
             ("NOT dimension_types LENGTH = 1", 3),
         ]
