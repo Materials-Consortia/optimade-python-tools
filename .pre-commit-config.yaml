@@ -17,6 +17,11 @@ repos:
     - id: check-json
     - id: end-of-file-fixer
 
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: ''  # pick a git hash / tag to point to
+    hooks:
+    -   id: flake8
+
   - repo: local
     hooks:
     - id: json-diff
