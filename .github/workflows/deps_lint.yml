@@ -260,6 +260,7 @@ jobs:
 
     # This tests that publication to PyPI is possible
     - name: Publish package to TestPyPI
+      if: github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
