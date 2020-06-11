@@ -3,7 +3,8 @@ FROM python:3.7
 WORKDIR /app
 
 # copy repo contents
-ADD ./  /app/
+COPY setup.py README.md ./
+COPY optimade ./optimade
 RUN pip install -e .[server]
 
 ARG PORT=5000
