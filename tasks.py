@@ -10,7 +10,6 @@ from invoke import task
 from jsondiff import diff
 
 try:
-    from optimade import __version__
     from optimade import __api_version__
 except ImportError:
     raise ImportError("optimade needs to be installed prior to running invoke tasks")
@@ -32,7 +31,7 @@ def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
 
 
 @task(help={"version": "OPTIMADE API version to set"})
-def set_optimade_ver(_, api_version=""):
+def set_optimade_ver(_, ver=""):
     """ Sets the OPTIMADE API Version """
     if not ver:
         raise Exception("Please specify --ver='Major.Minor.Patch'")

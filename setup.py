@@ -32,7 +32,6 @@ all_deps = dev_deps + django_deps + elastic_deps + aiida_deps + ase_deps + pymat
 
 def myversion():
     """This is a temporary hack to provide git version tags and not have any dev extensions"""
-    from setuptools_scm.version import get_local_dirty_tag
 
     def clean_version_scheme(version):
         return version.tag.base_version
