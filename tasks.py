@@ -30,7 +30,7 @@ def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
         handle.write("\n")
 
 
-@task
+@task(help={"ver": "OPTIMADE Python tools version to set"})
 def setver(_, ver=""):
     """Sets the OPTIMADE Python Tools Version"""
 
