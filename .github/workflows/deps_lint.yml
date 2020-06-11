@@ -169,7 +169,7 @@ jobs:
         pip install -U setuptools
         # Install static dependencies followed by "normal" install
         python -m pip install -r requirements.txt
-        pip install -e .
+        pip install -e .[testing]
 
     - name: Run all tests (using a real MongoDB)
       run: pytest -rs --cov=./optimade/ --cov-report=xml
