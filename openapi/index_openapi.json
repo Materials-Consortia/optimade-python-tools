@@ -760,7 +760,7 @@
             "description": "Reference to the child identifier object under the links endpoint that the provider has chosen as their 'default' OPTIMADE API database. A client SHOULD present this database as the first choice when an end-user chooses this provider."
           }
         },
-        "description": "Index Meta-Database Base URL Info enpoint resource"
+        "description": "Index Meta-Database Base URL Info endpoint resource"
       },
       "IndexInfoResponse": {
         "title": "IndexInfoResponse",
@@ -837,10 +837,10 @@
             "title": "Data",
             "allOf": [
               {
-                "$ref": "#/components/schemas/RelatedChildResource"
+                "$ref": "#/components/schemas/RelatedLinksResource"
               }
             ],
-            "description": "JSON API resource linkage. It MUST be either null or contain a single child identifier object with the fields 'id' and 'type'"
+            "description": "JSON API resource linkage. It MUST be either null or contain a single Links identifier object with the fields 'id' and 'type'"
           }
         },
         "description": "Index Meta-Database relationship"
@@ -898,7 +898,6 @@
         "title": "LinksResource",
         "required": [
           "id",
-          "type",
           "attributes"
         ],
         "type": "object",
@@ -911,7 +910,7 @@
           "type": {
             "title": "Type",
             "type": "string",
-            "description": "MUST be either \"parent\", \"child\", or \"provider\". These objects are described in detail in sections Parent and Child Objects and Provider Objects."
+            "description": "These objects are described in detail in the section Links Endpoint"
           },
           "links": {
             "title": "Links",
@@ -958,7 +957,8 @@
           "name",
           "description",
           "base_url",
-          "homepage"
+          "homepage",
+          "link_type"
         ],
         "type": "object",
         "properties": {
@@ -1009,6 +1009,11 @@
               }
             ],
             "description": "JSON API links object, pointing to a homepage URL for this implementation"
+          },
+          "link_type": {
+            "title": "Link Type",
+            "type": "string",
+            "description": "The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'."
           }
         },
         "description": "Links endpoint resource object attributes"
@@ -1274,8 +1279,8 @@
         },
         "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"
       },
-      "RelatedChildResource": {
-        "title": "RelatedChildResource",
+      "RelatedLinksResource": {
+        "title": "RelatedLinksResource",
         "required": [
           "id"
         ],
@@ -1291,7 +1296,7 @@
             "type": "string"
           }
         },
-        "description": "Keep only type and id of a ChildResource"
+        "description": "A related Links resource object"
       },
       "RelationshipLinks": {
         "title": "RelationshipLinks",
