@@ -104,7 +104,8 @@ class Transformer(lark.Transformer):
 
         if op == "!=":
             return ~Q(  # pylint: disable=invalid-unary-operand-type
-                query_type, **{field: value})
+                query_type, **{field: value}
+            )
 
     def _has_query_op(self, quantities, op, predicate_zip_list):
         """
@@ -144,7 +145,8 @@ class Transformer(lark.Transformer):
                 order_numbers = list([ATOMIC_NUMBERS[element] for element in values()])
                 order_numbers.sort()
                 value = "".join(
-                    [CHEMICAL_SYMBOLS[number - 1] for number in order_numbers])
+                    [CHEMICAL_SYMBOLS[number - 1] for number in order_numbers]
+                )
             except KeyError:
                 raise Exception("HAS ONLY is only supported for chemical symbols")
 
@@ -153,7 +155,8 @@ class Transformer(lark.Transformer):
             raise NotImplementedError
 
         queries = [
-            self._has_query(quantities, predicates) for predicates in predicate_zip_list]
+            self._has_query(quantities, predicates) for predicates in predicate_zip_list
+        ]
         return Q("bool", **{kind: queries})
 
     def _has_query(self, quantities, predicates):
@@ -173,7 +176,8 @@ class Transformer(lark.Transformer):
 
         nested_quantity = quantities[0].nested_quantity
         same_nested_quantity = any(
-            q.nested_quantity != nested_quantity for q in quantities)
+            q.nested_quantity != nested_quantity for q in quantities
+        )
         if nested_quantity is None or same_nested_quantity:
             raise Exception(
                 "Expression with tuples are only supported for %s"
