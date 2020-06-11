@@ -27,7 +27,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
 
 
 class RelatedLinksResource(BaseResource):
-    """Keep only type and id of a LinksResource of type 'child'"""
+    """A related Links resource object"""
 
     type: str = Field("links", const=True)
 

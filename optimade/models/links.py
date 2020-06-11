@@ -42,7 +42,7 @@ class LinksResourceAttributes(Attributes):
 
     link_type: str = Field(
         ...,
-        description="The link type of the represented resource in relation to this implementation. MUST any of these values: 'child', 'root', 'external', 'providers'.",
+        description="The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'.",
     )
 
     @validator("link_type")

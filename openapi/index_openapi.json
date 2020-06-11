@@ -1013,7 +1013,7 @@
           "link_type": {
             "title": "Link Type",
             "type": "string",
-            "description": "The link type of the represented resource in relation to this implementation. MUST any of these values: 'child', 'root', 'external', 'providers'."
+            "description": "The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'."
           }
         },
         "description": "Links endpoint resource object attributes"
@@ -1296,7 +1296,7 @@
             "type": "string"
           }
         },
-        "description": "Keep only type and id of a LinksResource of type 'child'"
+        "description": "A related Links resource object"
       },
       "RelationshipLinks": {
         "title": "RelationshipLinks",
