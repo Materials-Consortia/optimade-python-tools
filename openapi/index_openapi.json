@@ -760,7 +760,7 @@
             "description": "Reference to the child identifier object under the links endpoint that the provider has chosen as their 'default' OPTIMADE API database. A client SHOULD present this database as the first choice when an end-user chooses this provider."
           }
         },
-        "description": "Index Meta-Database Base URL Info enpoint resource"
+        "description": "Index Meta-Database Base URL Info endpoint resource"
       },
       "IndexInfoResponse": {
         "title": "IndexInfoResponse",
@@ -837,10 +837,10 @@
             "title": "Data",
             "allOf": [
               {
-                "$ref": "#/components/schemas/RelatedChildResource"
+                "$ref": "#/components/schemas/RelatedLinksResource"
               }
             ],
-            "description": "JSON API resource linkage. It MUST be either null or contain a single child identifier object with the fields 'id' and 'type'"
+            "description": "JSON API resource linkage. It MUST be either null or contain a single Links identifier object with the fields 'id' and 'type'"
           }
         },
         "description": "Index Meta-Database relationship"
@@ -1296,8 +1296,8 @@
         },
         "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"
       },
-      "RelatedChildResource": {
-        "title": "RelatedChildResource",
+      "RelatedLinksResource": {
+        "title": "RelatedLinksResource",
         "required": [
           "id"
         ],
@@ -1313,7 +1313,7 @@
             "type": "string"
           }
         },
-        "description": "Keep only type and id of a ChildResource"
+        "description": "Keep only type and id of a LinksResource of type 'child'"
       },
       "RelationshipLinks": {
         "title": "RelationshipLinks",

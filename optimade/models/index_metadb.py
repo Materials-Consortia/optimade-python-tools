@@ -1,5 +1,10 @@
-from pydantic import Field, BaseModel
+from pydantic import Field, BaseModel  # pylint: disable=no-name-in-module
 from typing import Union, Dict
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 from .jsonapi import BaseResource
 from .baseinfo import BaseInfoAttributes, BaseInfoResource
@@ -7,7 +12,7 @@ from .baseinfo import BaseInfoAttributes, BaseInfoResource
 
 __all__ = (
     "IndexInfoAttributes",
-    "RelatedChildResource",
+    "RelatedLinksResource",
     "IndexRelationship",
     "IndexInfoResource",
 )
@@ -25,27 +30,27 @@ class IndexInfoAttributes(BaseInfoAttributes):
     )
 
 
-class RelatedChildResource(BaseResource):
-    """Keep only type and id of a ChildResource"""
+class RelatedLinksResource(BaseResource):
+    """Keep only type and id of a LinksResource of type 'child'"""
 
-    type: str = Field("child", const=True)
+    type: str = Field("links", const=True)
 
 
 class IndexRelationship(BaseModel):
     """Index Meta-Database relationship"""
 
-    data: Union[None, RelatedChildResource] = Field(
+    data: Union[None, RelatedLinksResource] = Field(
         ...,
         description="JSON API resource linkage. It MUST be either null or contain "
-        "a single child identifier object with the fields 'id' and 'type'",
+        "a single Links identifier object with the fields 'id' and 'type'",
     )
 
 
 class IndexInfoResource(BaseInfoResource):
-    """Index Meta-Database Base URL Info enpoint resource"""
+    """Index Meta-Database Base URL Info endpoint resource"""
 
     attributes: IndexInfoAttributes = Field(...)
-    relationships: Dict[str, IndexRelationship] = Field(
+    relationships: Dict[Literal["default"], IndexRelationship] = Field(
         ...,
         description="Reference to the child identifier object under the links endpoint "
         "that the provider has chosen as their 'default' OPTIMADE API database. "
