@@ -131,6 +131,9 @@ def generate_openapi(_):
     with open(TOP_DIR.joinpath("openapi/local_openapi.json"), "w") as f:
         json.dump(app.openapi(), f, indent=2)
 
+
+@task
+def generate_index_openapi(_):
     """Update OpenAPI schema in file 'local_index_openapi.json'"""
     from optimade.server.main_index import app as app_index
 
@@ -140,7 +143,7 @@ def generate_openapi(_):
         json.dump(app_index.openapi(), f, indent=2)
 
 
-@task(generate_openapi)
+@task(pre=[generate_openapi, generate_index_openapi])
 def check_openapi_diff(_):
     """Checks the Generated OpenAPI spec against what is stored in the repo"""
     with open(TOP_DIR.joinpath("openapi/openapi.json")) as f:
@@ -174,7 +177,7 @@ def check_openapi_diff(_):
         sys.exit(1)
 
 
-@task(generate_openapi)
+@task(pre=[generate_openapi, generate_index_openapi])
 def update_openapijson(c):
     """Updates the stored OpenAPI spec to what the server returns"""
     # pylint: disable=import-outside-toplevel
