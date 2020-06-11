@@ -38,11 +38,11 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Generate New OpenAPI JSON
-      run: invoke update-openapijson
-
     - name: Update Version
       run: invoke setver -v ${GITHUB_REF#refs/tags/}
+
+    - name: Generate New OpenAPI JSON
+      run: invoke update-openapijson
 
     - name: Commit files
       run: |
