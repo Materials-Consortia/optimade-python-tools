@@ -36,4 +36,8 @@ repos:
       description: If needed, the JSON for the OPTIMADE shield will be updated with new config version
       entry: invoke update-api-shield
       pass_filenames: false
+      files:
+        (?x)^(
+          setup.py
+        )$
       language: system
