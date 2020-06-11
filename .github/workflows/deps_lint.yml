@@ -214,7 +214,7 @@ jobs:
     - name: Build
       run: mkdocs build
 
-  publish:
+  publish_TestPyPI:
     runs-on: ubuntu-latest
 
     steps:
