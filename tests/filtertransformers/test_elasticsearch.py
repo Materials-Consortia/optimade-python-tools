@@ -3,7 +3,7 @@ from unittest import TestCase, skipIf
 from optimade.filterparser import LarkParser
 
 try:
-    from optimade.filtertransformers.elasticsearch import Transformer, Quantity
+    from optimade.filtertransformers.elasticsearch import ElasticTransformer, Quantity
 
     ELASTICSEARCH_IMPORTED = True
 except ImportError:
@@ -37,7 +37,7 @@ class TestTransformer(TestCase):
             Quantity(name="chemical_formula_reduced"),
         ]
 
-        self.transformer = Transformer(quantities=quantities)
+        self.transformer = ElasticTransformer(quantities=quantities)
 
     def test_parse_n_transform(self):
         queries = [
