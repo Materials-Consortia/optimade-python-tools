@@ -1,6 +1,6 @@
 lark-parser==0.8.6
-fastapi==0.53.1
-pydantic==1.4
+fastapi==0.56.0
+pydantic==1.5.1
 email_validator==1.1.1
 requests==2.23.0
 uvicorn==0.11.5
