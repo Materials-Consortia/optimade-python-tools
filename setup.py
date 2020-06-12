@@ -16,6 +16,7 @@ ase_deps = ["ase~=3.19"]
 cif_deps = ["numpy~=1.18"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2020.3"]
+jarvis_deps = ["jarvis-tools~=2020.6"]
 client_deps = cif_deps
 
 # General
@@ -27,7 +28,15 @@ testing_deps = [
     "jsondiff",
 ] + server_deps
 dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps + client_deps
-all_deps = dev_deps + django_deps + elastic_deps + aiida_deps + ase_deps + pymatgen_deps
+all_deps = (
+    dev_deps
+    + django_deps
+    + elastic_deps
+    + aiida_deps
+    + ase_deps
+    + pymatgen_deps
+    + jarvis_deps
+)
 
 setup(
     name="optimade",
@@ -76,6 +85,7 @@ setup(
         "cif": cif_deps,
         "pdb": pdb_deps,
         "pymatgen": pymatgen_deps,
+        "jarvis": jarvis_deps,
     },
     entry_points={
         "console_scripts": ["optimade_validator=optimade.validator:validate"]

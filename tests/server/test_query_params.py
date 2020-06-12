@@ -196,7 +196,7 @@ class ResponseFieldTests(SetClient, unittest.TestCase):
         illegal_top_level_field = "relationships"
         non_used_top_level_fields = {"links"}
         non_used_top_level_fields.add(illegal_top_level_field)
-        expected_fields = {"homepage", "base_url"}
+        expected_fields = {"homepage", "base_url", "link_type"}
         self.required_fields_test_helper(
             endpoint, non_used_top_level_fields, expected_fields
         )
