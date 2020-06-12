@@ -1,17 +1,17 @@
 from optimade.models import (
     StructureResource,
     ReferenceResource,
-    LinksResource,
     EntryResource,
-    DataType
+    DataType,
 )
 from .config import CONFIG
+from typing import Dict, Union
 
 
 def retrieve_queryable_properties(
     schema: dict, queryable_properties: list, entry_provider_fields: list = None
 ) -> dict:
-    """ For a given schema dictionary and a list of desired properties,
+    """For a given schema dictionary and a list of desired properties,
     recursively descend into the schema and set the appropriate values
     for the `description`, `sortable` and `unit` keys, returning the expanded
     schema dict that includes nested schemas.
@@ -44,7 +44,7 @@ def retrieve_queryable_properties(
                 properties[name]["sortable"] = True
                 # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
                 properties[name]["type"] = DataType.from_json_type(
-                    value.get("format", value["type"])
+                    value.get("format", value.get("type", "object"))
                 )
 
             if name in entry_provider_fields:
@@ -55,69 +55,56 @@ def retrieve_queryable_properties(
 
 
 class EntrySchemas:
-    """ Wrapper class for EntryResource schemas used in this server. Any
+    """Wrapper class for EntryResource schemas used in this server. Any
     references in the schema are resolved to allow for easy use. If the
     underyling model is updated, the schema will be refreshed.
 
     """
 
     def __init__(self):
-        self._structure_model = StructureResource
-        self._reference_model = ReferenceResource
-        self._links_model = LinksResource
-        self._structures = None
-        self._references = None
-        self._links = None
+        self._entry_models: Dict[str, EntryResource] = {
+            "structures": StructureResource,
+            "references": ReferenceResource,
+        }
+        self._entry_schemas: Dict[str, Union[None, dict]] = {}
 
     def keys(self):
-        return {"structures", "references"}
+        return self._entry_models.keys()
 
-    def get(self, key: str):
-        return getattr(self, key, {})
+    def get(self, entry_type, default=None):
+        return getattr(self, entry_type, default)
 
-    @property
-    def structures(self):
-        if self._structures is None:
-            schema = self.structure_model.schema()
-            entry_provider_fields = CONFIG.provider_fields.get("structures")
-            self._structures = retrieve_queryable_properties(
+    def __contains__(self, entry_type):
+        return entry_type in self.keys()
+
+    def __getitem__(self, entry_type: str):
+        return getattr(self, entry_type)
+
+    def __setitem__(self, entry_type: str, entry_model: EntryResource):
+        if entry_type in self._entry_models:
+            self._entry_models[entry_type] = entry_model
+            self._entry_schemas[entry_type] = None
+
+    def __getattr__(self, entry_type, default=None):
+        if entry_type not in self._entry_models:
+            raise AttributeError(f"Requested entry type {entry_type} has no model.")
+        return self._get_expanded_entry_schema(entry_type)
+
+    def _get_expanded_entry_schema(self, entry_type):
+        if self._entry_schemas.get(entry_type, None) is None:
+            model = self._entry_models.get(entry_type, None)
+            if model is None:
+                raise AttributeError(f"Missing model for {entry_type} in EntrySchemas.")
+            schema = model.schema()
+
+            entry_provider_fields = CONFIG.provider_fields.get(entry_type)
+            self._entry_schemas[entry_type] = retrieve_queryable_properties(
                 schema,
                 schema["properties"].keys(),
                 entry_provider_fields=entry_provider_fields,
             )
 
-        return self._structures
-
-    @property
-    def references(self):
-        if self._references is None:
-            schema = self.reference_model.schema()
-            entry_provider_fields = CONFIG.provider_fields.get("references")
-            self._references = retrieve_queryable_properties(
-                schema,
-                schema["properties"].keys(),
-                entry_provider_fields=entry_provider_fields,
-            )
-
-        return self._references
-
-    @property
-    def structure_model(self):
-        return self._structure_model
-
-    @structure_model.setter
-    def structure_model(self, model: EntryResource):
-        self._structures = None
-        self._structure_model = model
-
-    @property
-    def reference_model(self):
-        return self._reference_model
-
-    @reference_model.setter
-    def reference_model(self, model: EntryResource):
-        self._references = None
-        self._reference_model = model
+        return self._entry_schemas[entry_type]
 
 
 ENTRY_SCHEMAS = EntrySchemas()
