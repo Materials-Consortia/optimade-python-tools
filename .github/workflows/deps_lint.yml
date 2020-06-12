@@ -215,7 +215,7 @@ jobs:
       run: mkdocs build
 
   publish_TestPyPI:
-    if: github.event == 'push'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
