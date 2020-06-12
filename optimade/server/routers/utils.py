@@ -288,19 +288,6 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
     return properties
 
 
-def mongo_id_for_database(database_id: str, database_type: str) -> str:
-    """Produce a MondoDB ObjectId for a database"""
-    from bson.objectid import ObjectId
-
-    oid = f"{database_id}{database_type}"
-    if len(oid) > 12:
-        oid = oid[:12]
-    elif len(oid) < 12:
-        oid = f"{oid}{'0' * (12 - len(oid))}"
-
-    return str(ObjectId(oid.encode("UTF-8")))
-
-
 def get_providers():
     """Retrieve Materials-Consortia providers (from https://providers.optimade.org/providers.json)"""
     import requests
@@ -316,12 +303,6 @@ def get_providers():
             continue
 
         provider.update(provider.pop("attributes"))
-
-        # Add MongoDB ObjectId
-        provider["_id"] = {
-            "$oid": mongo_id_for_database(provider["id"], provider["type"])
-        }
-
         providers_list.append(provider)
 
     return providers_list

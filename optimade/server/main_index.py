@@ -39,22 +39,12 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     import bson.json_util
     from .routers.links import links_coll
-    from .routers.utils import mongo_id_for_database
 
     print("loading index links...")
     with open(CONFIG.index_links_path) as f:
         data = json.load(f)
-
-        processed = []
-
-        for db in data:
-            db["_id"] = {"$oid": mongo_id_for_database(db["id"], db["type"])}
-            processed.append(db)
-
         print("inserting index links into collection...")
-        links_coll.collection.insert_many(
-            bson.json_util.loads(bson.json_util.dumps(processed))
-        )
+        links_coll.insert(data)
         print("done inserting index links...")
 
 

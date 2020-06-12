@@ -3,6 +3,8 @@ import os
 from typing import Tuple, List, Union
 import mongomock
 import pymongo.collection
+from bson.objectid import ObjectId
+import bson
 from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
@@ -31,16 +33,27 @@ else:
     print("Using: Mock MongoDB (mongomock)")
 
 
+def _mongo_id_for_database(database_id: str, database_type: str) -> str:
+    """Produce a MondoDB ObjectId for a database"""
+    oid = f"{database_id}{database_type}"
+    if len(oid) > 12:
+        oid = oid[:12]
+    elif len(oid) < 12:
+        oid = f"{oid}{'0' * (12 - len(oid))}"
+
+    return str(ObjectId(oid.encode("UTF-8")))
+
+
 class MongoCollection(EntryCollection):
     def __init__(
         self,
-        collection: Union[
-            pymongo.collection.Collection, mongomock.collection.Collection
-        ],
+        name: str,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
+        database: str = CONFIG.mongo_database,
     ):
-        super().__init__(collection, resource_cls, resource_mapper)
+        super().__init__(resource_cls, resource_mapper)
+        self.collection = client[database][name]
         self.transformer = MongoTransformer(mapper=resource_mapper)
 
         self.provider_prefix = CONFIG.provider.prefix
@@ -56,6 +69,9 @@ class MongoCollection(EntryCollection):
     def __len__(self):
         return self.collection.estimated_document_count()
 
+    def __iter__(self):
+        return self.collection.find()
+
     def __contains__(self, entry):
         return self.collection.count_documents(entry.dict()) > 0
 
@@ -66,6 +82,20 @@ class MongoCollection(EntryCollection):
         if "filter" not in kwargs:  # "filter" is needed for count_documents()
             kwargs["filter"] = {}
         return self.collection.count_documents(**kwargs)
+
+    def insert(self, data: List[EntryResource]):
+        if self.collection.name.endswith('links'):
+            for db in data:
+                db["_id"] = {"$oid": _mongo_id_for_database(db["id"], db["type"])}
+            data = bson.json_util.loads(bson.json_util.dumps(data))
+        # This should not be necessary, mongo can create the ids or the existing mongo
+        # ids are used
+        # else:
+        #     for db in data:
+        #         if "_id" not in db:
+        #             db["_id"] = {"$oid": ObjectId()}
+
+        self.collection.insert_many(data)
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]

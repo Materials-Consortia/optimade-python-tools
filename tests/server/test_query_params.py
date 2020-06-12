@@ -4,7 +4,7 @@ from typing import Union, List, Set
 
 from optimade.server.config import CONFIG
 from optimade.server import mappers
-from optimade.server.entry_collections import CI_FORCE_MONGO
+from optimade.server.entry_collections.mongo import CI_FORCE_MONGO
 
 from .utils import SetClient
 

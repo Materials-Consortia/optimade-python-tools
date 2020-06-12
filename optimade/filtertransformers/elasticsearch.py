@@ -1,3 +1,4 @@
+from typing import List
 import lark
 from lark import v_args
 from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
@@ -74,7 +75,7 @@ class ElasticTransformer(lark.Transformer):
             quantities are mapped to the elasticsearch index.
     """
 
-    def __init__(self, quantities):
+    def __init__(self, quantities: List[Quantity]):
         self.index_mapping = {quantity.name: quantity for quantity in quantities}
 
     def _field(self, quantity, nested=None):

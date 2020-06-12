@@ -1,32 +1,56 @@
 from abc import abstractmethod
-from typing import Collection, Tuple, List
+from typing import Collection, Tuple, List, Any
 
 from optimade.server.mappers import BaseResourceMapper
-from optimade.filterparser import LarkParser
 from optimade.models import EntryResource
+from optimade.filterparser import LarkParser
 from optimade.server.query_params import EntryListingQueryParams
+from optimade.server.config import CONFIG
+
+
+def create_collection(name: str, resource_cls: EntryResource, resource_mapper: BaseResourceMapper):
+    if CONFIG.database_backend == 'mongo':
+        from .mongo import MongoCollection
+        return MongoCollection(
+            name=name,
+            resource_cls=resource_cls,
+            resource_mapper=resource_mapper,
+        )
+
+    if CONFIG.database_backend == 'elastic':
+        from .elasticsearch import ElasticCollection
+        return ElasticCollection(
+            index=name,
+            resource_cls=resource_cls,
+            resource_mapper=resource_mapper,
+        )
+
+    raise NotImplementedError(
+        'The database backend %s is not implemented' % CONFIG.database_backend
+    )
 
 
 class EntryCollection(Collection):  # pylint: disable=inherit-non-class
     def __init__(
         self,
-        collection,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
     ):
-        self.collection = collection
         self.parser = LarkParser()
         self.resource_cls = resource_cls
         self.resource_mapper = resource_mapper
 
+    @abstractmethod
     def __len__(self):
-        return self.collection.count()
+        pass
 
+    @abstractmethod
     def __iter__(self):
-        return self.collection.find()
+        pass
 
+    @abstractmethod
     def __contains__(self, entry):
-        return self.collection.count(entry) > 0
+        pass
 
     def get_attribute_fields(self) -> set:
         schema = self.resource_cls.schema()
@@ -42,6 +66,15 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
                 next_key = path.pop(0)
                 attributes = attributes[next_key]
         return set(attributes["properties"].keys())
+
+    @abstractmethod
+    def insert(self, data: List[EntryResource]) -> None:
+        """
+        Adds the given items to the underlying database.
+
+        Args:
+            data List[EntryResource]: The items as a list of optimade entry resources.
+        """
 
     @abstractmethod
     def find(
@@ -60,5 +93,6 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
 
         """
 
+    @abstractmethod
     def count(self, **kwargs):
-        return self.collection.count(**kwargs)
+        pass

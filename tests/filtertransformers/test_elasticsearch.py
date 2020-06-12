@@ -13,8 +13,6 @@ except ImportError:
 @skipIf(not ELASTICSEARCH_IMPORTED, "No ElasticSearch installation, skipping tests...")
 class TestTransformer(TestCase):
     def setUp(self):
-        self.parser = LarkParser(version=(0, 10, 1))
-
         nelements = Quantity(name="nelements")
         elements_only = Quantity(name="elements_only")
         elements_ratios = Quantity(name="elements_ratios")
@@ -37,6 +35,7 @@ class TestTransformer(TestCase):
             Quantity(name="chemical_formula_reduced"),
         ]
 
+        self.parser = LarkParser(version=(0, 10, 1))
         self.transformer = ElasticTransformer(quantities=quantities)
 
     def test_parse_n_transform(self):

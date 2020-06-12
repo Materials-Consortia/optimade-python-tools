@@ -3,7 +3,7 @@ import unittest
 import mongomock
 
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.entry_collections import MongoCollection
+from optimade.server.entry_collections.mongo import MongoCollection
 from optimade.models import StructureResource
 
 
@@ -13,9 +13,8 @@ class ResourceMapperTests(unittest.TestCase):
             ALIASES = (("$and", "my_special_and"), ("not", "$not"))
 
         mapper = MyMapper()
-        toy_collection = mongomock.MongoClient()["fake"]["fake"]
         with self.assertRaises(RuntimeError):
-            MongoCollection(toy_collection, StructureResource, mapper)
+            MongoCollection("fake", StructureResource, mapper, database="fake")
 
     def test_property_aliases(self):
         class MyMapper(BaseResourceMapper):

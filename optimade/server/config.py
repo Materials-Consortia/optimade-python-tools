@@ -35,6 +35,9 @@ class ServerConfig(BaseSettings):
     debug: bool = Field(
         False, description="Turns on Debug Mode for the OPTIMADE Server implementation"
     )
+    database_backend: str = Field(
+        "mongo", description="The database backend that should be used, e.g. mongo or elastic"
+    )
     use_real_mongo: bool = Field(
         False, description="Use a real Mongo server rather than MongoMock"
     )
@@ -44,6 +47,9 @@ class ServerConfig(BaseSettings):
     mongo_uri: str = Field("localhost:27017", description="URI for the Mongo server")
     links_collection: str = Field(
         "links", description="Mongo collection name for /links endpoint resources"
+    )
+    use_real_elastic: bool = Field(
+        False, description="Use a real Elasticsearch server rather than a different DB"
     )
     references_collection: str = Field(
         "references",

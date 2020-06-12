@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
-from .entry_collections import MongoCollection
+from .entry_collections import EntryCollection
 from .config import CONFIG
 from .middleware import EnsureQueryParamIntegrity
 from .routers import info, links, references, structures, landing
@@ -40,15 +40,9 @@ if not CONFIG.use_real_mongo:
     import optimade.server.data as data
     from .routers import ENTRY_COLLECTIONS
 
-    def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
+    def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
         print(f"loading test {endpoint_name}...")
-
-        endpoint_collection.collection.insert_many(getattr(data, endpoint_name, []))
-        if endpoint_name == "links":
-            print("adding Materials-Consortia providers to links from optimade.org")
-            endpoint_collection.collection.insert_many(
-                bson.json_util.loads(bson.json_util.dumps(get_providers()))
-            )
+        endpoint_collection.insert(getattr(data, endpoint_name, []))
         print(f"done inserting test {endpoint_name}...")
 
     for name, collection in ENTRY_COLLECTIONS.items():
