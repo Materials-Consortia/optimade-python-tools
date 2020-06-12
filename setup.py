@@ -73,7 +73,7 @@ setup(
         "pydantic~=1.5",
         "email_validator~=1.1",
         "requests~=2.23",
-        'typing-extensions~=3.7.4.2;python_version<"3.8"',
+        'typing-extensions~=3.7;python_version<"3.8"',
     ],
     extras_require={
         "all": all_deps,
