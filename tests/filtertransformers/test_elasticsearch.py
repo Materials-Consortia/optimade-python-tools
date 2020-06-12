@@ -6,14 +6,15 @@ elasticsearch_dsl = pytest.importorskip(
     "elasticsearch_dsl", reason="No ElasticSearch installation, skipping tests..."
 )
 
+from optimade.filtertransformers.elasticsearch import ElasticTransformer, Quantity
+
 
 class TestTransformer:
     @pytest.fixture(autouse=True)
     def set_up(self):
         from optimade.filtertransformers.elasticsearch import Transformer, Quantity
 
-@skipIf(not ELASTICSEARCH_IMPORTED, "No ElasticSearch installation, skipping tests...")
-class TestTransformer(TestCase):
+class TestTransformer(unittest.TestCase):
     def setUp(self):
         self.parser = LarkParser(version=(0, 10, 1))
 
@@ -39,7 +40,7 @@ class TestTransformer(TestCase):
             Quantity(name="chemical_formula_reduced"),
         ]
 
-        self.transformer = Transformer(quantities=quantities)
+        self.transformer = ElasticTransformer(quantities=quantities)
 
     def test_parse_n_transform(self):
         queries = [
