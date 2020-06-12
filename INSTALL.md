@@ -41,7 +41,7 @@ conda create -n optimade python=3.7
 conda activate optimade
 
 # Install package and dependencies in editable mode (including "dev" requirements).
-pip install -e .[dev]
+pip install -e ".[dev]"
 
 # Run the tests with pytest
 py.test
