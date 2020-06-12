@@ -12,3 +12,15 @@ updates:
   - shyamd
   labels:
   - dependency_updates
+- package-ecosystem: submodules
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  target-branch: master
+  reviewers:
+  - CasperWA
+  - ml-evs
+  - shyamd
+  labels:
+  - providers_updates
