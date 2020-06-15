@@ -73,7 +73,7 @@ def get_entry_info(request: Request, entry: str):
     if entry not in valid_entry_info_endpoints:
         raise StarletteHTTPException(
             status_code=404,
-            detail=f"Entry info not found for {entry}, valid entry info endpoints are: {valid_entry_info_endpoints}",
+            detail=f"Entry info not found for {entry}, valid entry info endpoints are: {', '.join(valid_entry_info_endpoints)}",
         )
 
     schema = ENTRY_INFO_SCHEMAS[entry]()
