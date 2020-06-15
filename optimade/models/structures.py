@@ -835,6 +835,20 @@ class StructureResourceAttributes(EntryResourceAttributes):
                 raise ValueError(
                     "site_attachments MUST NOT be present, since no species includes the attached and nattached fields"
                 )
+        # implicit_atoms
+        species_names = [_.name for _ in values.get("species", [])]
+        for name in species_names:
+            if name not in values.get("species_at_sites", []):
+                if "implicit_atoms" not in v:
+                    raise ValueError(
+                        "implicit_atoms MUST be present when any one entry in species is not represented in species_at_sites"
+                    )
+                break
+        else:
+            if "implicit_atoms" in v:
+                raise ValueError(
+                    "implicit_atoms MUST NOT be present, since all species are represented in species_at_sites"
+                )
         return v
 
 
