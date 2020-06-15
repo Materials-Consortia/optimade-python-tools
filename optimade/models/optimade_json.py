@@ -74,12 +74,18 @@ class DataType(Enum):
             "datetime": cls.TIMESTAMP,
             "date": cls.TIMESTAMP,
             "time": cls.TIMESTAMP,
+            "datetime.datetime": cls.TIMESTAMP,
+            "datetime.date": cls.TIMESTAMP,
+            "datetime.time": cls.TIMESTAMP,
         }
 
         if isinstance(python_type, type):
-            python_type = type.__name__
+            python_type = python_type.__name__
         elif isinstance(python_type, object):
-            python_type = type(python_type).__name__
+            if str(python_type) in mapping:
+                python_type = str(python_type)
+            else:
+                python_type = type(python_type).__name__
 
         return mapping.get(python_type, None)
 
