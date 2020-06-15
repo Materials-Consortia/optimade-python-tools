@@ -673,7 +673,6 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - **List of strings used to indicate special structure features**:
 
     - :val:`disorder`: This flag MUST be present if any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element.
-    - :val:`unknown_positions`: This flag MUST be present if at least one component of the :property:`cartesian_site_positions` list of lists has value :val:`null`.
     - :val:`assemblies`: This flag MUST be present if the property `assemblies`_ is present.
 
 -  **Examples**: A structure having unknown positions and using assemblies: :val:`["assemblies", "unknown_positions"]`""",
@@ -795,19 +794,6 @@ class StructureResourceAttributes(EntryResourceAttributes):
             if "disorder" in v:
                 raise ValueError(
                     "disorder MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
-                )
-        # unknown_positions
-        for site in values.get("cartesian_site_positions", []):
-            if None in site or float("nan") in site:
-                if "unknown_positions" not in v:
-                    raise ValueError(
-                        "unknown_positions MUST be present when a single component of cartesian_site_positions has value null"
-                    )
-                break
-        else:
-            if "unknown_positions" in v:
-                raise ValueError(
-                    "unknown_positions MUST NOT be present, since there are no null values in cartesian_site_positions"
                 )
         # assemblies
         if values.get("assemblies", None) is not None:
