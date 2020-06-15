@@ -8,26 +8,30 @@ module_dir = Path(__file__).resolve().parent
 django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
 mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
-server_deps = ["uvicorn", "Jinja2~=2.11"] + mongo_deps
+server_deps = ["uvicorn~=0.11.5", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
-aiida_deps = ["aiida-core~=1.1"]
+aiida_deps = ["aiida-core~=1.2"]
 ase_deps = ["ase~=3.19"]
 cif_deps = ["numpy~=1.18"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen~=2020.3"]
+pymatgen_deps = ["pymatgen~=2020.6"]
 jarvis_deps = ["jarvis-tools~=2020.6"]
 client_deps = cif_deps
 
 # General
 testing_deps = [
     "pytest~=5.4",
-    "pytest-cov",
-    "codecov",
-    "openapi-spec-validator",
-    "jsondiff",
+    "pytest-cov~=2.9",
+    "codecov~=2.1",
+    "openapi-spec-validator~=0.2.8",
+    "jsondiff~=1.2",
 ] + server_deps
-dev_deps = ["pylint", "black", "pre-commit", "invoke"] + testing_deps + client_deps
+dev_deps = (
+    ["pylint~=2.5", "black~=19.10b0", "pre-commit~=2.5", "invoke~=1.4"]
+    + testing_deps
+    + client_deps
+)
 all_deps = (
     dev_deps
     + django_deps
@@ -64,12 +68,12 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "lark-parser~=0.8.5",
-        "fastapi~=0.53",
-        "pydantic~=1.4",
-        "email_validator",
+        "lark-parser~=0.8.6",
+        "fastapi~=0.56.0",
+        "pydantic~=1.5",
+        "email_validator~=1.1",
         "requests~=2.23",
-        'typing-extensions~=3.7.4.1;python_version<"3.8"',
+        'typing-extensions~=3.7;python_version<"3.8"',
     ],
     extras_require={
         "all": all_deps,

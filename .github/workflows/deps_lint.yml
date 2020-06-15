@@ -214,8 +214,7 @@ jobs:
     - name: Build
       run: mkdocs build
 
-  publish_TestPyPI:
-    if: github.event == 'push'
+  test_build:
     runs-on: ubuntu-latest
 
     steps:
@@ -237,11 +236,3 @@ jobs:
 
     - name: Build source distribution
       run: python ./setup.py sdist
-
-    # This tests that publication to PyPI is possible
-    - name: Publish package to TestPyPI
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        user: __token__
-        password: ${{ secrets.test_pypi_password }}
-        repository_url: https://test.pypi.org/legacy/
