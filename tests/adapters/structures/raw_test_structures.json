@@ -19,6 +19,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           1.2503264826932692,
@@ -96,6 +97,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           8.79234151692028,
@@ -209,6 +211,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           7.698325441636717,
@@ -320,6 +323,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           1.2755343366952576,
@@ -406,6 +410,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           5.270508031864836,
@@ -508,6 +513,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           8.877504144188517,
@@ -622,6 +628,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           9.637799319633432,
@@ -691,6 +698,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           5.327614134703666,
@@ -881,6 +889,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           7.7673999365129625,
@@ -1051,6 +1060,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           6.436155587878937,
@@ -1296,6 +1306,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           2.9527224047457192,
@@ -1551,6 +1562,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           1.2419933831646812,
@@ -1810,6 +1822,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           5.132691156529571,
@@ -2034,6 +2047,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           5.055370731514176,
@@ -2610,6 +2624,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           4.438269887249414,
@@ -2909,6 +2924,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           3.6001175409341037,
@@ -3309,6 +3325,7 @@
         1,
         1
       ],
+      "nperiodic_dimensions": 3,
       "lattice_vectors": [
         [
           0.541264110585089,

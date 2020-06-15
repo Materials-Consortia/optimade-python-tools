@@ -61,4 +61,5 @@ def null_lattice_vector_structure(raw_structure) -> Structure:
     """Create and return adapters.Structure with lattice_vectors that have None values"""
     raw_structure["attributes"]["lattice_vectors"][0] = [None] * 3
     raw_structure["attributes"]["dimension_types"][0] = 0
+    raw_structure["attributes"]["nperiodic_dimensions"] = 2
     return Structure(raw_structure)
