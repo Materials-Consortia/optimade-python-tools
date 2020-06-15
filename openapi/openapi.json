@@ -1818,18 +1818,18 @@
           },
           "aggregate": {
             "title": "Aggregate",
-            "type": "string",
-            "description": "A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.\nThis flag SHOULD NOT be indicated for links where :property:`link_type` is not :val:`child`.\n\nIf not specified, clients MAY assume that the value is :val:`ok`.\nIf specified, and the value is anything different than :val:`ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).\n\nSpecific values indicate the reason why the server is providing the suggestion.\nA client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with :property:`aggregate`=:val:`test`).\n\nIf specified, it MUST be one of the values listed in section Link Aggregate Options.",
-            "default": "ok"
-          },
-          "no_aggregate_reason": {
-            "title": "No Aggregate Reason",
             "enum": [
               "ok",
               "test",
               "staging",
               "no"
             ],
+            "description": "A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.\nThis flag SHOULD NOT be indicated for links where :property:`link_type` is not :val:`child`.\n\nIf not specified, clients MAY assume that the value is :val:`ok`.\nIf specified, and the value is anything different than :val:`ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).\n\nSpecific values indicate the reason why the server is providing the suggestion.\nA client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with :property:`aggregate`=:val:`test`).\n\nIf specified, it MUST be one of the values listed in section Link Aggregate Options.",
+            "default": "ok"
+          },
+          "no_aggregate_reason": {
+            "title": "No Aggregate Reason",
+            "type": "string",
             "description": "An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.\nIt SHOULD NOT be present if :property:`aggregate`=:val:`ok`."
           }
         },

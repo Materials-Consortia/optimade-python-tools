@@ -64,7 +64,7 @@ class LinksResourceAttributes(Attributes):
         description="The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'.",
     )
 
-    aggregate: Optional[str] = Field(
+    aggregate: Optional[Aggregate] = Field(
         "ok",
         description="""A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.
 This flag SHOULD NOT be indicated for links where :property:`link_type` is not :val:`child`.
@@ -78,7 +78,7 @@ A client MAY follow the link anyway if it has reason to do so (e.g., if the clie
 If specified, it MUST be one of the values listed in section Link Aggregate Options.""",
     )
 
-    no_aggregate_reason: Optional[Aggregate] = Field(
+    no_aggregate_reason: Optional[str] = Field(
         None,
         description="""An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.
 It SHOULD NOT be present if :property:`aggregate`=:val:`ok`.""",
