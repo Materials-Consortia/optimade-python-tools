@@ -6,7 +6,7 @@
       "$date": "2019-06-08T05:13:37.331Z"
     },
     "band_gap": 1.23456,
-    "_mp_chemsys": "Ge-Si",
+    "chemsys": "Ge-Si",
     "elements": ["Ge", "Si"],
     "nsites": 3,
     "nelements": 2,
@@ -37,7 +37,7 @@
       "$date": "2019-06-08T05:13:37.331Z"
     },
     "band_gap": 1.23456,
-    "_mp_chemsys": "Ge-Si",
+    "chemsys": "Ge-Si",
     "elements": ["Ge", "Si"],
     "nelements": 2,
     "nsites": 3,
@@ -68,7 +68,7 @@
       "$date": "2019-06-08T05:13:37.331Z"
     },
     "band_gap": 1.23456,
-    "_mp_chemsys": "Ge-Si",
+    "chemsys": "Ge-Si",
     "elements": ["Ge", "Si"],
     "nelements": 2,
     "nsites": 3,

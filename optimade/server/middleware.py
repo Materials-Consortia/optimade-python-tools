@@ -1,22 +1,31 @@
-from starlette.datastructures import URL
+import urllib.parse
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
-from starlette.responses import RedirectResponse
+
+from optimade.server.exceptions import BadRequest
 
 
-class RedirectSlashedURLs(BaseHTTPMiddleware):
+class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
+    """Ensure all query parameters are followed by an equal sign (`=`)"""
+
+    @staticmethod
+    def check_url(url_query: str):
+        """Check parsed URL query part for parameters not followed by `=`"""
+        queries_amp = set(url_query.split("&"))
+        queries = set()
+        for query in queries_amp:
+            queries.update(set(query.split(";")))
+        for query in queries:
+            if "=" not in query and query != "":
+                raise BadRequest(
+                    detail="A query parameter without an equal sign (=) is not supported by this server"
+                )
+        return queries  # Useful for testing
+
     async def dispatch(self, request: Request, call_next):
-        """Redirect URL requests ending with a slash to non-slashed URLs
-
-        E.g., `http://example.org/info/` -> `http://example.org/info`
-        """
-        if request.scope["path"].endswith("/"):
-            redirect_scope = dict(request.scope)
-
-            # Make sure we're not dealing with a URL path (after the domain) of `/`
-            if redirect_scope["path"] != "/":
-                redirect_scope["path"] = redirect_scope["path"][:-1]
-                redirect_url = URL(scope=redirect_scope)
-                return RedirectResponse(url=str(redirect_url))
+        parsed_url = urllib.parse.urlsplit(str(request.url))
+        if parsed_url.query:
+            self.check_url(parsed_url.query)
         response = await call_next(request)
         return response

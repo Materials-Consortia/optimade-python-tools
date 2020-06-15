@@ -1,0 +1,56 @@
+[
+  {
+    "id": "dijkstra1968",
+    "type": "references",
+    "attributes": {
+      "last_modified": "2019-11-12T14:24:37.331000",
+      "authors": [
+        {
+          "name": "Edsger W. Dijkstra",
+          "firstname": "Edsger",
+          "lastname": "Dijkstra"
+        }
+      ],
+      "doi": "10.1145/362929.362947",
+      "journal": "Communications of the ACM",
+      "title": "Go To Statement Considered Harmful",
+      "year": "1968"
+    }
+  },
+  {
+    "id": "maddox1988",
+    "type": "references",
+    "attributes": {
+      "last_modified": "2019-11-27T14:24:37.331000",
+      "authors": [
+        {
+          "name": "John Maddox",
+          "firstname": "John",
+          "lastname": "Maddox"
+        }
+      ],
+      "doi": "10.1038/335201a0",
+      "journal": "Nature",
+      "title": "Crystals From First Principles",
+      "year": "1988"
+    }
+  },
+  {
+    "id": "dummy/2019",
+    "type": "references",
+    "attributes": {
+      "last_modified": "2019-11-23T14:24:37.332000",
+      "authors": [
+        {
+          "name": "A Nother",
+          "firstname": "A",
+          "lastname": "Nother"
+        }
+      ],
+      "doi": "10.1038/00000",
+      "journal": "JACS",
+      "title": "Dummy reference that should remain orphaned from all structures for testing purposes",
+      "year": "2019"
+    }
+  }
+]

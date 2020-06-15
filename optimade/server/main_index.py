@@ -1,28 +1,30 @@
 # pylint: disable=line-too-long
-import os
 import json
-from pathlib import Path
 
 from lark.exceptions import VisitError
 
 from pydantic import ValidationError
 from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
-
-from .config import CONFIG
-from .middleware import RedirectSlashedURLs
-from .routers import index_info, links
-from .routers.utils import BASE_URL_PREFIXES
+from fastapi.exceptions import RequestValidationError, StarletteHTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
+from .config import CONFIG
+from .middleware import EnsureQueryParamIntegrity
+from .routers import index_info, links
+from .routers.utils import BASE_URL_PREFIXES
+
+
+if CONFIG.debug:  # pragma: no cover
+    print("DEBUG MODE")
+
 
 app = FastAPI(
-    title="OPTiMaDe API - Index meta-database",
+    title="OPTIMADE API - Index meta-database",
     description=(
-        f"""The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.
+        f"""The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.
 This is the "special" index meta-database.
 
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
@@ -57,7 +59,8 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
 
 
 # Add various middleware
-app.add_middleware(RedirectSlashedURLs)
+app.add_middleware(CORSMiddleware, allow_origins=["*"])
+app.add_middleware(EnsureQueryParamIntegrity)
 
 
 # Add various exception handlers
@@ -70,7 +73,7 @@ app.add_exception_handler(VisitError, exc_handlers.grammar_not_implemented_handl
 app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
-# Add various endpoints to `/optimade/vMAJOR`
+# Add various endpoints to `/vMAJOR`
 app.include_router(index_info.router, prefix=BASE_URL_PREFIXES["major"])
 app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 
@@ -78,8 +81,8 @@ app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 def add_optional_versioned_base_urls(app: FastAPI):
     """Add the following OPTIONAL prefixes/base URLs to server:
     ```
-        /optimade/vMajor.Minor
-        /optimade/vMajor.Minor.Patch
+        /vMajor.Minor
+        /vMajor.Minor.Patch
     ```
     """
     for version in ("minor", "patch"):
@@ -87,18 +90,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
         app.include_router(links.router, prefix=BASE_URL_PREFIXES[version])
 
 
-def update_schema(app: FastAPI):
-    """Update OpenAPI schema in file 'local_index_openapi.json'"""
-    package_root = Path(__file__).parent.parent.parent.resolve()
-    if not package_root.joinpath("openapi").exists():
-        os.mkdir(package_root.joinpath("openapi"))
-    with open(package_root.joinpath("openapi/local_index_openapi.json"), "w") as f:
-        json.dump(app.openapi(), f, indent=2)
-
-
 @app.on_event("startup")
 async def startup_event():
-    # Update OpenAPI schema on versioned base URL `/optimade/vMAJOR`
-    update_schema(app)
-    # Add API endpoints for OPTIONAL base URLs `/optimade/vMAJOR.MINOR` and `/optimade/vMAJOR.MINOR.PATCH`
+    # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
     add_optional_versioned_base_urls(app)

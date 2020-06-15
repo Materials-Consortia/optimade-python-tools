@@ -1,14 +1,15 @@
-from .entries import ResourceMapper
+from .entries import BaseResourceMapper
 
 __all__ = ("StructureMapper",)
 
 
-class StructureMapper(ResourceMapper):
+class StructureMapper(BaseResourceMapper):
 
     ENDPOINT = "structures"
-    ALIASES = (
-        ("id", "task_id"),
-        ("chemical_formula_descriptive", "pretty_formula"),
-        ("chemical_formula_reduced", "pretty_formula"),
-        ("chemical_formula_anonymous", "formula_anonymous"),
+
+    LENGTH_ALIASES = (
+        ("elements", "nelements"),
+        ("element_ratios", "nelements"),
+        ("cartesian_site_positions", "nsites"),
+        ("species_at_sites", "nsites"),
     )

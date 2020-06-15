@@ -4,6 +4,7 @@ from lark.exceptions import VisitError
 
 from optimade.filterparser import LarkParser, ParserError
 from optimade.filtertransformers.mongo import MongoTransformer
+from optimade.server.mappers import BaseResourceMapper
 
 
 class TestMongoTransformer(unittest.TestCase):
@@ -98,6 +99,16 @@ class TestMongoTransformer(unittest.TestCase):
         self.assertEqual(self.transform("a=3"), {"a": {"$eq": 3}})
         self.assertEqual(self.transform("a!=3"), {"a": {"$ne": 3}})
 
+    def test_id(self):
+        self.assertEqual(self.transform('id="example/1"'), {"id": {"$eq": "example/1"}})
+        self.assertEqual(
+            self.transform('"example/1" = id'), {"id": {"$eq": "example/1"}}
+        )
+        self.assertEqual(
+            self.transform('id="test/2" OR "example/1" = id'),
+            {"$or": [{"id": {"$eq": "test/2"}}, {"id": {"$eq": "example/1"}}]},
+        )
+
     def test_operators(self):
         # Basic boolean operations
         # TODO: {"a": {"$not": {"$lt": 3}}} can be simplified to {"a": {"$gte": 3}}
@@ -106,26 +117,26 @@ class TestMongoTransformer(unittest.TestCase):
         # TODO: {'$not': {'$eq': 'Ti'}} can be simplified to {'$ne': 'Ti'}
         self.assertEqual(
             self.transform(
-                'NOT ( chemical_formula_hill = "Al" AND chemical_formula_anonymous = "A" OR '
-                'chemical_formula_anonymous = "H2O" AND NOT chemical_formula_hill = "Ti" )'
+                "NOT ( "
+                'chemical_formula_hill = "Al" AND chemical_formula_anonymous = "A" OR '
+                'chemical_formula_anonymous = "H2O" AND NOT chemical_formula_hill = "Ti" '
+                ")"
             ),
             {
-                "$or": {
-                    "$not": [
-                        {
-                            "$and": [
-                                {"chemical_formula_hill": {"$eq": "Al"}},
-                                {"chemical_formula_anonymous": {"$eq": "A"}},
-                            ]
-                        },
-                        {
-                            "$and": [
-                                {"chemical_formula_anonymous": {"$eq": "H2O"}},
-                                {"chemical_formula_hill": {"$not": {"$eq": "Ti"}}},
-                            ]
-                        },
-                    ]
-                }
+                "$nor": [
+                    {
+                        "$and": [
+                            {"chemical_formula_hill": {"$eq": "Al"}},
+                            {"chemical_formula_anonymous": {"$eq": "A"}},
+                        ]
+                    },
+                    {
+                        "$and": [
+                            {"chemical_formula_anonymous": {"$eq": "H2O"}},
+                            {"chemical_formula_hill": {"$not": {"$eq": "Ti"}}},
+                        ]
+                    },
+                ]
             },
         )
 
@@ -154,12 +165,10 @@ class TestMongoTransformer(unittest.TestCase):
                         "$and": [
                             {"nelements": {"$gte": 10}},
                             {
-                                "$or": {
-                                    "$not": [
-                                        {"_exmpl_x": {"$ne": "Some string"}},
-                                        {"_exmpl_a": {"$not": {"$eq": 7}}},
-                                    ]
-                                }
+                                "$nor": [
+                                    {"_exmpl_x": {"$ne": "Some string"}},
+                                    {"_exmpl_a": {"$not": {"$eq": 7}}},
+                                ]
                             },
                         ]
                     },
@@ -218,40 +227,161 @@ class TestMongoTransformer(unittest.TestCase):
         # OPTIONAL
         # self.assertEqual(self.transform("((NOT (_exmpl_a>_exmpl_b)) AND _exmpl_x>0)"), {})
 
+        self.assertEqual(
+            self.transform("NOT (a>1 AND b>1)"),
+            {"$and": [{"a": {"$not": {"$gt": 1}}}, {"b": {"$not": {"$gt": 1}}}]},
+        )
+
+        self.assertEqual(
+            self.transform("NOT (a>1 AND b>1 OR c>1)"),
+            {
+                "$nor": [
+                    {"$and": [{"a": {"$gt": 1}}, {"b": {"$gt": 1}}]},
+                    {"c": {"$gt": 1}},
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform("NOT (a>1 AND ( b>1 OR c>1 ))"),
+            {
+                "$and": [
+                    {"a": {"$not": {"$gt": 1}}},
+                    {"$nor": [{"b": {"$gt": 1}}, {"c": {"$gt": 1}}]},
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform("NOT (a>1 AND ( b>1 OR (c>1 AND d>1 ) ))"),
+            {
+                "$and": [
+                    {"a": {"$not": {"$gt": 1}}},
+                    {
+                        "$nor": [
+                            {"b": {"$gt": 1}},
+                            {"$and": [{"c": {"$gt": 1}}, {"d": {"$gt": 1}}]},
+                        ]
+                    },
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform(
+                'elements HAS "Ag" AND NOT ( elements HAS "Ir" AND elements HAS "Ac" )'
+            ),
+            {
+                "$and": [
+                    {"elements": {"$in": ["Ag"]}},
+                    {
+                        "$and": [
+                            {"elements": {"$not": {"$in": ["Ir"]}}},
+                            {"elements": {"$not": {"$in": ["Ac"]}}},
+                        ]
+                    },
+                ]
+            },
+        )
+
         self.assertEqual(self.transform("5 < 7"), {7: {"$gt": 5}})
 
         with self.assertRaises(VisitError):
             self.transform('"some string" > "some other string"')
 
-    def test_list_properties(self):
-        """Test queries using list properties
+    def test_filtering_on_relationships(self):
+        """ Test the nested properties with special names
+        like "structures", "references" etc. are applied
+        to the relationships field.
 
-        NOTE: Some of these are not implemented yet, these will be tested to raise.
         """
-        # Comparisons of list properties
+
+        self.assertEqual(
+            self.transform('references.id HAS "dummy/2019"'),
+            {"relationships.references.data.id": {"$in": ["dummy/2019"]}},
+        )
+
+        self.assertEqual(
+            self.transform('structures.id HAS ANY "dummy/2019", "dijkstra1968"'),
+            {
+                "relationships.structures.data.id": {
+                    "$in": ["dummy/2019", "dijkstra1968"]
+                }
+            },
+        )
+
+        self.assertEqual(
+            self.transform('structures.id HAS ALL "dummy/2019", "dijkstra1968"'),
+            {
+                "relationships.structures.data.id": {
+                    "$all": ["dummy/2019", "dijkstra1968"]
+                }
+            },
+        )
+
+        self.assertEqual(
+            self.transform('structures.id HAS ONLY "dummy/2019"'),
+            {
+                "$and": [
+                    {"relationships.structures.data": {"$size": 1}},
+                    {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform(
+                'structures.id HAS ONLY "dummy/2019" AND structures.id HAS "dummy/2019"'
+            ),
+            {
+                "$and": [
+                    {
+                        "$and": [
+                            {"relationships.structures.data": {"$size": 1}},
+                            {
+                                "relationships.structures.data.id": {
+                                    "$all": ["dummy/2019"]
+                                }
+                            },
+                        ]
+                    },
+                    {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},
+                ],
+            },
+        )
+
+    def test_not_implemented(self):
+        """ Test that list properties that are currently not implemented
+        give a sensible response.
+
+        """
+        # NOTE: Lark catches underlying filtertransformer exceptions and
+        # raises VisitErrors, most of these actually correspond to NotImplementedError
         with self.assertRaises(VisitError):
-            self.transform("list HAS < 3")
+            try:
+                self.transform("list HAS < 3")
+            except Exception as exc:
+                self.assertTrue("not implemented" in str(exc))
+                raise exc
 
         with self.assertRaises(VisitError):
-            self.transform("list HAS ALL < 3, > 3")
+            try:
+                self.transform("list HAS ALL < 3, > 3")
+            except Exception as exc:
+                self.assertTrue("not implemented" in str(exc))
+                raise exc
 
         with self.assertRaises(VisitError):
-            self.transform("list HAS ANY > 3, < 6")
+            try:
+                self.transform("list HAS ANY > 3, < 6")
+            except Exception as exc:
+                self.assertTrue("not implemented" in str(exc))
+                raise exc
 
         self.assertEqual(self.transform("list LENGTH 3"), {"list": {"$size": 3}})
 
         with self.assertRaises(VisitError):
             self.transform("list:list HAS >=2:<=5")
-
-        with self.assertRaises(VisitError):
-            self.transform(
-                'elements HAS "H" AND elements HAS ALL "H","He","Ga","Ta" AND elements HAS '
-                'ONLY "H","He","Ga","Ta" AND elements HAS ANY "H", "He", "Ga", "Ta"'
-            )
-
-        # OPTIONAL:
-        with self.assertRaises(VisitError):
-            self.transform('elements HAS ONLY "H","He","Ga","Ta"')
 
         with self.assertRaises(VisitError):
             self.transform(
@@ -273,18 +403,251 @@ class TestMongoTransformer(unittest.TestCase):
                 'HAS ANY > 3:"He":>55.3 , = 6:>"Ti":<37.6 , 8:<"Ga":0'
             )
 
-        with self.assertRaises(VisitError):
-            self.transform("list LENGTH > 3")
+        self.assertEqual(
+            self.transform("list LENGTH > 3"), {"list.4": {"$exists": True}}
+        )
 
-    def test_properties(self):
+    def test_list_length_aliases(self):
+        from optimade.server.mappers import StructureMapper
+
+        transformer = MongoTransformer(mapper=StructureMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
+
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH 3")), {"nelements": 3}
+        )
+
+        self.assertEqual(
+            transformer.transform(
+                parser.parse('elements HAS "Li" AND elements LENGTH = 3')
+            ),
+            {"$and": [{"elements": {"$in": ["Li"]}}, {"nelements": 3}]},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH > 3")),
+            {"nelements": {"$gt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH < 3")),
+            {"nelements": {"$lt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH = 3")), {"nelements": 3}
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH <= 3")),
+            {"nsites": {"$lte": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH >= 3")),
+            {"nsites": {"$gte": 3}},
+        )
+
+    def test_unaliased_length_operator(self):
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH <= 3"),
+            {"cartesian_site_positions.4": {"$exists": False}},
+        )
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH < 3"),
+            {"cartesian_site_positions.3": {"$exists": False}},
+        )
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH 3"),
+            {"cartesian_site_positions": {"$size": 3}},
+        )
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH >= 10"),
+            {"cartesian_site_positions.10": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            self.transform("cartesian_site_positions LENGTH > 10"),
+            {"cartesian_site_positions.11": {"$exists": True}},
+        )
+
+    def test_aliased_length_operator(self):
+        from optimade.server.mappers import StructureMapper
+
+        class MyMapper(StructureMapper):
+            ALIASES = (("elements", "my_elements"), ("nelements", "nelem"))
+            LENGTH_ALIASES = (
+                ("chemsys", "nelements"),
+                ("cartesian_site_positions", "nsites"),
+                ("elements", "nelements"),
+            )
+            PROVIDER_FIELDS = ("chemsys",)
+
+        transformer = MongoTransformer(mapper=MyMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
+
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH <= 3")),
+            {"nsites": {"$lte": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH < 3")),
+            {"nsites": {"$lt": 3}},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
+            {"nsites": 3},
+        )
+        self.assertEqual(
+            transformer.transform(parser.parse("cartesian_site_positions LENGTH 3")),
+            {"nsites": 3},
+        )
+        self.assertEqual(
+            transformer.transform(
+                parser.parse("cartesian_site_positions LENGTH >= 10")
+            ),
+            {"nsites": {"$gte": 10}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("structure_features LENGTH > 10")),
+            {"structure_features.11": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("nsites LENGTH > 10")),
+            {"nsites.11": {"$exists": True}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("elements LENGTH 3")), {"nelem": 3},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse('elements HAS "Ag"')),
+            {"my_elements": {"$in": ["Ag"]}},
+        )
+
+        self.assertEqual(
+            transformer.transform(parser.parse("chemsys LENGTH 3")), {"nelem": 3},
+        )
+
+    def test_aliases(self):
+        """ Test that valid aliases are allowed, but do not effect
+        r-values.
+
+        """
+
+        class MyStructureMapper(BaseResourceMapper):
+            ALIASES = (
+                ("elements", "my_elements"),
+                ("A", "D"),
+                ("B", "E"),
+                ("C", "F"),
+                ("_exmpl_nested_field", "nested_field"),
+            )
+
+        mapper = MyStructureMapper()
+        t = MongoTransformer(mapper=mapper)
+
+        self.assertEqual(mapper.alias_for("elements"), "my_elements")
+
+        test_filter = {"elements": {"$in": ["A", "B", "C"]}}
+        self.assertEqual(
+            t.postprocess(test_filter), {"my_elements": {"$in": ["A", "B", "C"]}},
+        )
+        test_filter = {"$and": [{"elements": {"$in": ["A", "B", "C"]}}]}
+        self.assertEqual(
+            t.postprocess(test_filter),
+            {"$and": [{"my_elements": {"$in": ["A", "B", "C"]}}]},
+        )
+        test_filter = {"elements": "A"}
+        self.assertEqual(t.postprocess(test_filter), {"my_elements": "A"})
+        test_filter = ["A", "B", "C"]
+        self.assertEqual(t.postprocess(test_filter), ["A", "B", "C"])
+
+        test_filter = ["A", "elements", "C"]
+        self.assertEqual(t.postprocess(test_filter), ["A", "elements", "C"])
+
+        test_filter = {"_exmpl_nested_field.sub_property": {"$gt": 1234.5}}
+        self.assertEqual(
+            t.postprocess(test_filter), {"nested_field.sub_property": {"$gt": 1234.5}}
+        )
+
+        test_filter = {"_exmpl_nested_field.sub_property.x": {"$exists": False}}
+        self.assertEqual(
+            t.postprocess(test_filter),
+            {"nested_field.sub_property.x": {"$exists": False}},
+        )
+
+    def test_list_properties(self):
+        """ Test the HAS ALL, ANY and optional ONLY queries.
+
+        """
+        self.assertEqual(
+            self.transform('elements HAS ONLY "H","He","Ga","Ta"'),
+            {"elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}},
+        )
+
+        self.assertEqual(
+            self.transform('elements HAS ANY "H","He","Ga","Ta"'),
+            {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},
+        )
+
+        self.assertEqual(
+            self.transform('elements HAS ALL "H","He","Ga","Ta"'),
+            {"elements": {"$all": ["H", "He", "Ga", "Ta"]}},
+        )
+
+        self.assertEqual(
+            self.transform(
+                'elements HAS "H" AND elements HAS ALL "H","He","Ga","Ta" AND elements HAS '
+                'ONLY "H","He","Ga","Ta" AND elements HAS ANY "H", "He", "Ga", "Ta"'
+            ),
+            {
+                "$and": [
+                    {"elements": {"$in": ["H"]}},
+                    {"elements": {"$all": ["H", "He", "Ga", "Ta"]}},
+                    {"elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}},
+                    {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},
+                ]
+            },
+        )
+
+    def test_known_properties(self):
         #  Filtering on Properties with unknown value
-        # TODO: {'$not': {'$exists': False}} can be simplified to {'$exists': True}
-        # The { $not: { $gt: 1.99 } } is different from the $lte operator. { $lte: 1.99 } returns only the documents
-        # where price field exists and its value is less than or equal to 1.99.
-        # Remember that the $not operator only affects other operators and cannot check fields and documents
-        # independently. So, use the $not operator for logical disjunctions and the $ne operator to test
-        # the contents of fields directly.
-        # source: https://docs.mongodb.com/manual/reference/operator/query/not/
+        self.assertEqual(
+            self.transform("chemical_formula_anonymous IS UNKNOWN"),
+            {
+                "$or": [
+                    {"chemical_formula_anonymous": {"$exists": False}},
+                    {"chemical_formula_anonymous": {"$eq": None}},
+                ]
+            },
+        )
+        self.assertEqual(
+            self.transform("chemical_formula_anonymous IS KNOWN"),
+            {
+                "$and": [
+                    {"chemical_formula_anonymous": {"$exists": True}},
+                    {"chemical_formula_anonymous": {"$ne": None}},
+                ]
+            },
+        )
+        self.assertEqual(
+            self.transform("NOT chemical_formula_anonymous IS UNKNOWN"),
+            {
+                "$and": [
+                    {"chemical_formula_anonymous": {"$exists": True}},
+                    {"chemical_formula_anonymous": {"$ne": None}},
+                ]
+            },
+        )
+        self.assertEqual(
+            self.transform("NOT chemical_formula_anonymous IS KNOWN"),
+            {
+                "$or": [
+                    {"chemical_formula_anonymous": {"$exists": False}},
+                    {"chemical_formula_anonymous": {"$eq": None}},
+                ]
+            },
+        )
 
         self.assertEqual(
             self.transform(
@@ -292,8 +655,40 @@ class TestMongoTransformer(unittest.TestCase):
             ),
             {
                 "$and": [
-                    {"chemical_formula_hill": {"$exists": True}},
-                    {"chemical_formula_anonymous": {"$not": {"$exists": False}}},
+                    {
+                        "$and": [
+                            {"chemical_formula_hill": {"$exists": True}},
+                            {"chemical_formula_hill": {"$ne": None}},
+                        ]
+                    },
+                    {
+                        "$and": [
+                            {"chemical_formula_anonymous": {"$exists": True}},
+                            {"chemical_formula_anonymous": {"$ne": None}},
+                        ]
+                    },
+                ]
+            },
+        )
+
+        self.assertEqual(
+            self.transform(
+                "chemical_formula_hill IS KNOWN AND chemical_formula_anonymous IS UNKNOWN"
+            ),
+            {
+                "$and": [
+                    {
+                        "$and": [
+                            {"chemical_formula_hill": {"$exists": True}},
+                            {"chemical_formula_hill": {"$ne": None}},
+                        ]
+                    },
+                    {
+                        "$or": [
+                            {"chemical_formula_anonymous": {"$exists": False}},
+                            {"chemical_formula_anonymous": {"$eq": None}},
+                        ]
+                    },
                 ]
             },
         )

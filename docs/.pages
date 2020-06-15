@@ -1,0 +1,7 @@
+arrange:
+    - index.md
+    - INSTALL.md
+    - CONTRIBUTING.md
+    - use_cases
+    - CHANGELOG.md
+    - reference

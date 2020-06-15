@@ -1,4 +1,5 @@
-from pydantic import Field, BaseModel
+# pylint: disable=no-self-argument
+from pydantic import Field, BaseModel, validator  # pylint: disable=no-name-in-module
 from typing import Union, Dict
 
 from .jsonapi import BaseResource
@@ -7,7 +8,7 @@ from .baseinfo import BaseInfoAttributes, BaseInfoResource
 
 __all__ = (
     "IndexInfoAttributes",
-    "RelatedChildResource",
+    "RelatedLinksResource",
     "IndexRelationship",
     "IndexInfoResource",
 )
@@ -25,30 +26,38 @@ class IndexInfoAttributes(BaseInfoAttributes):
     )
 
 
-class RelatedChildResource(BaseResource):
-    """Keep only type and id of a ChildResource"""
+class RelatedLinksResource(BaseResource):
+    """A related Links resource object"""
 
-    type: str = Field("child", const=True)
+    type: str = Field("links", const=True)
 
 
 class IndexRelationship(BaseModel):
     """Index Meta-Database relationship"""
 
-    data: Union[None, RelatedChildResource] = Field(
+    data: Union[None, RelatedLinksResource] = Field(
         ...,
         description="JSON API resource linkage. It MUST be either null or contain "
-        "a single child identifier object with the fields 'id' and 'type'",
+        "a single Links identifier object with the fields 'id' and 'type'",
     )
 
 
 class IndexInfoResource(BaseInfoResource):
-    """Index Meta-Database Base URL Info enpoint resource"""
+    """Index Meta-Database Base URL Info endpoint resource"""
 
     attributes: IndexInfoAttributes = Field(...)
-    relationships: Dict[str, IndexRelationship] = Field(
+    relationships: Union[None, Dict[str, IndexRelationship]] = Field(
         ...,
         description="Reference to the child identifier object under the links endpoint "
-        "that the provider has chosen as their 'default' OPTiMaDe API database. "
+        "that the provider has chosen as their 'default' OPTIMADE API database. "
         "A client SHOULD present this database as the first choice when an end-user "
         "chooses this provider.",
     )
+
+    @validator("relationships")
+    def relationships_key_must_be_default(cls, value):
+        if value is not None and all([key != "default" for key in value]):
+            raise ValueError(
+                "if the relationships value is a dict, the key MUST be 'default'"
+            )
+        return value

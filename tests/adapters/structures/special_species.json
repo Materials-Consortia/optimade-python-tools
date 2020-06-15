@@ -1,0 +1,209 @@
+[
+  {
+    "id": "mpf_1",
+    "type": "structures",
+    "attributes": {
+        "last_modified": "2019-06-08T05:13:37.331000",
+        "elements": [
+        "Ac"
+        ],
+        "nelements": 1,
+        "elements_ratios": [
+        1
+        ],
+        "chemical_formula_descriptive": "Ac",
+        "chemical_formula_reduced": "Ac",
+        "chemical_formula_anonymous": "A",
+        "dimension_types": [
+        1,
+        1,
+        1
+        ],
+        "lattice_vectors": [
+        [
+            1.2503264826932692,
+            0,
+            0
+        ],
+        [
+            0,
+            9.888509716321765,
+            0
+        ],
+        [
+            0,
+            0,
+            0.2972637673241818
+        ]
+        ],
+        "cartesian_site_positions": [
+        [
+            0.17570227444196573,
+            0.17570227444196573,
+            0.17570227444196573
+        ]
+        ],
+        "nsites": 1,
+        "species_at_sites": [
+        "Ac"
+        ],
+        "species": [
+        {
+            "name": "Ac",
+            "chemical_symbols": ["Ac", "vacancy"],
+            "concentration": [0.9, 0.1]
+        }
+        ],
+        "structure_features": ["disorder"],
+        "_exmpl_chemsys": "Ac"
+    },
+    "relationships": {
+        "references": {
+        "data": [
+            {
+            "id": "dijkstra1968",
+            "type": "references"
+            }
+        ]
+        }
+    }
+  },
+  {
+    "id": "mpf_1",
+    "type": "structures",
+    "attributes": {
+        "last_modified": "2019-06-08T05:13:37.331000",
+        "elements": [
+        "Ac"
+        ],
+        "nelements": 1,
+        "elements_ratios": [
+        1
+        ],
+        "chemical_formula_descriptive": "Ac",
+        "chemical_formula_reduced": "Ac",
+        "chemical_formula_anonymous": "A",
+        "dimension_types": [
+        1,
+        1,
+        1
+        ],
+        "lattice_vectors": [
+        [
+            1.2503264826932692,
+            0,
+            0
+        ],
+        [
+            0,
+            9.888509716321765,
+            0
+        ],
+        [
+            0,
+            0,
+            0.2972637673241818
+        ]
+        ],
+        "cartesian_site_positions": [
+        [
+            0.17570227444196573,
+            0.17570227444196573,
+            0.17570227444196573
+        ]
+        ],
+        "nsites": 1,
+        "species_at_sites": [
+        "AcX"
+        ],
+        "species": [
+        {
+            "name": "AcX",
+            "chemical_symbols": ["Ac", "X"],
+            "concentration": [0.9, 0.1]
+        }
+        ],
+        "structure_features": ["disorder"],
+        "_exmpl_chemsys": "AcX"
+    },
+    "relationships": {
+        "references": {
+        "data": [
+            {
+            "id": "dijkstra1968",
+            "type": "references"
+            }
+        ]
+        }
+    }
+  },
+  {
+    "id": "mpf_1",
+    "type": "structures",
+    "attributes": {
+        "last_modified": "2019-06-08T05:13:37.331000",
+        "elements": [
+        "Ac"
+        ],
+        "nelements": 1,
+        "elements_ratios": [
+        1
+        ],
+        "chemical_formula_descriptive": "Ac",
+        "chemical_formula_reduced": "Ac",
+        "chemical_formula_anonymous": "A",
+        "dimension_types": [
+        1,
+        1,
+        1
+        ],
+        "lattice_vectors": [
+        [
+            1.2503264826932692,
+            0,
+            0
+        ],
+        [
+            0,
+            9.888509716321765,
+            0
+        ],
+        [
+            0,
+            0,
+            0.2972637673241818
+        ]
+        ],
+        "cartesian_site_positions": [
+        [
+            0.17570227444196573,
+            0.17570227444196573,
+            0.17570227444196573
+        ]
+        ],
+        "nsites": 1,
+        "species_at_sites": [
+        "Unknown"
+        ],
+        "species": [
+        {
+            "name": "Unknown",
+            "chemical_symbols": ["X"],
+            "concentration": [1.0]
+        }
+        ],
+        "structure_features": [],
+        "_exmpl_chemsys": "Unknown"
+    },
+    "relationships": {
+        "references": {
+        "data": [
+            {
+            "id": "dijkstra1968",
+            "type": "references"
+            }
+        ]
+        }
+    }
+  }
+]

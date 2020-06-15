@@ -1,10 +1,10 @@
-# pylint: disable=import-outside-toplevel
+# pylint: disable=import-outside-toplevel,too-many-locals
+import re
 import urllib
 from datetime import datetime
 from typing import Union, List, Dict
 
-from fastapi import HTTPException
-from starlette.requests import Request
+from fastapi import HTTPException, Request
 
 from optimade import __api_version__
 from optimade.models import (
@@ -18,8 +18,9 @@ from optimade.models import (
 )
 
 from optimade.server.config import CONFIG
-from optimade.server.deps import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.entry_collections import EntryCollection
+from optimade.server.exceptions import BadRequest
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 
 ENTRY_INFO_SCHEMAS = {
@@ -28,9 +29,9 @@ ENTRY_INFO_SCHEMAS = {
 }
 
 BASE_URL_PREFIXES = {
-    "major": f"/optimade/v{__api_version__.split('.')[0]}",
-    "minor": f"/optimade/v{__api_version__.split('.')[1]}",
-    "patch": f"/optimade/v{__api_version__.split('.')[2]}",
+    "major": f"/v{__api_version__.split('.')[0]}",
+    "minor": f"/v{'.'.join(__api_version__.split('.')[:2])}",
+    "patch": f"/v{__api_version__}",
 }
 
 
@@ -42,29 +43,25 @@ def meta_values(
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
-    from optimade.models import ResponseMetaQuery, Provider, Implementation
+    from optimade.models import ResponseMetaQuery
 
     parse_result = urllib.parse.urlparse(url)
 
-    for prefix in list(BASE_URL_PREFIXES.values()):
-        if parse_result.path.startswith(prefix):
-            url_path = parse_result.path[len(prefix) :]
-            break
+    # To catch all (valid) variations of the version part of the URL, a regex is used
+    if re.match(r"/v[0-9]+(\.[0-9]+){,2}/.*", parse_result.path) is not None:
+        url_path = re.sub(r"/v[0-9]+(\.[0-9]+){,2}/", "/", parse_result.path)
     else:
-        # Raise warning
         url_path = parse_result.path
 
-    provider = CONFIG.provider.copy()
-    provider["prefix"] = provider["prefix"][1:-1]  # Remove surrounding `_`
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
         api_version=f"v{__api_version__}",
         time_stamp=datetime.utcnow(),
         data_returned=data_returned,
         more_data_available=more_data_available,
-        provider=Provider(**provider),
+        provider=CONFIG.provider,
         data_available=data_available,
-        implementation=Implementation(**CONFIG.implementation),
+        implementation=CONFIG.implementation,
         **kwargs,
     )
 
@@ -96,6 +93,7 @@ def handle_response_fields(
 def get_included_relationships(
     results: Union[EntryResource, List[EntryResource]],
     ENTRY_COLLECTIONS: Dict[str, EntryCollection],
+    include_param: List[str],
 ) -> Dict[str, List[EntryResource]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
@@ -104,6 +102,8 @@ def get_included_relationships(
         results: list of returned documents.
         ENTRY_COLLECTIONS: dictionary containing collections to query, with key
             based on endpoint type.
+        include_param: list of queried related resources that should be included in
+            `included`.
 
     Returns:
         Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list
@@ -114,6 +114,13 @@ def get_included_relationships(
 
     if not isinstance(results, list):
         results = [results]
+
+    for entry_type in include_param:
+        if entry_type not in ENTRY_COLLECTIONS and entry_type != "":
+            raise BadRequest(
+                detail=f"'{entry_type}' cannot be identified as a valid relationship type. "
+                f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
+            )
 
     endpoint_includes = defaultdict(dict)
     for doc in results:
@@ -127,6 +134,10 @@ def get_included_relationships(
 
         relationships = relationships.dict()
         for entry_type in ENTRY_COLLECTIONS:
+            # Skip entry type if it is not in `include_param`
+            if entry_type not in include_param:
+                continue
+
             entry_relationship = relationships.get(entry_type, {})
             if entry_relationship is not None:
                 refs = entry_relationship.get("data", [])
@@ -137,7 +148,7 @@ def get_included_relationships(
     included = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
-            ["id={}".format(ref_id) for ref_id in endpoint_includes[entry_type]]
+            ['id="{}"'.format(ref_id) for ref_id in endpoint_includes[entry_type]]
         )
         params = EntryListingQueryParams(
             filter=compound_filter,
@@ -179,7 +190,10 @@ def get_entries(
 
     results, data_returned, more_data_available, fields = collection.find(params)
 
-    included = get_included_relationships(results, ENTRY_COLLECTIONS)
+    include = []
+    if getattr(params, "include", False):
+        include.extend(params.include.split(","))
+    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
         # Deduce the `next` link from the current request
@@ -221,7 +235,10 @@ def get_single_entry(
     params.filter = f'id="{entry_id}"'
     results, data_returned, more_data_available, fields = collection.find(params)
 
-    included = get_included_relationships(results, ENTRY_COLLECTIONS)
+    include = []
+    if getattr(params, "include", False):
+        include.extend(params.include.split(","))
+    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
         raise HTTPException(
@@ -261,14 +278,13 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
                 properties.update(
                     retrieve_queryable_properties(sub_schema, sub_queryable_properties)
                 )
-            elif value.get("description", "") == "Not allowed key":
-                # Special case used in models to make sure not-allowed fields are not present under "attributes"
-                # NOTE: This may be removed when upgrading to pydantic v1 !
-                continue
             else:
                 properties[name] = {"description": value.get("description", "")}
                 if "unit" in value:
                     properties[name]["unit"] = value["unit"]
+                # All properties are sortable with the MongoDB backend.
+                # While the result for sorting lists may not be as expected, they are still sorted.
+                properties[name]["sortable"] = True
     return properties
 
 
@@ -286,11 +302,11 @@ def mongo_id_for_database(database_id: str, database_type: str) -> str:
 
 
 def get_providers():
-    """Retrieve Materials-Consortia providers (from https://www.optimade.org/providers/links)"""
+    """Retrieve Materials-Consortia providers (from https://providers.optimade.org/providers.json)"""
     import requests
 
     mat_consortia_providers = requests.get(
-        "https://www.optimade.org/providers/links"
+        "https://providers.optimade.org/providers.json"
     ).json()
 
     providers_list = []

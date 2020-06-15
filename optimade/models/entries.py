@@ -1,7 +1,7 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
 from typing import Optional, Dict, List
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator  # pylint: disable=no-name-in-module
 
 from .jsonapi import Relationships, Attributes, Resource
 from .optimade_json import Relationship
@@ -146,7 +146,8 @@ class EntryInfoProperty(BaseModel):
 
     sortable: Optional[bool] = Field(
         None,
-        description='defines whether the entry property can be used for sorting with the "sort" parameter. If the entry listing endpoint supports sorting, this key MUST be present for all properties.',
+        description='defines whether the entry property can be used for sorting with the "sort" parameter. '
+        "If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.",
     )
 
 

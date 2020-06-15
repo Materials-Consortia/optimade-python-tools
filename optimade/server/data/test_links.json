@@ -4,10 +4,11 @@
       "$oid": "696e646578706172656e7430"
     },
     "id": "index",
-    "type": "parent",
+    "type": "links",
     "name": "Index meta-database",
-    "description": "Index for example's OPTiMaDe databases",
-    "base_url": "http://localhost:5001/index/optimade",
-    "homepage": "https://example.com"
+    "description": "Index for example's OPTIMADE databases",
+    "base_url": "http://localhost:5001",
+    "homepage": "https://example.com",
+    "link_type": "root"
   }
 ]

@@ -1,25 +1,25 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "OPTiMaDe API",
-    "description": "The [Open Databases Integration for Materials Design (OPTiMaDe) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.4.0) v0.4.0.",
+    "title": "OPTIMADE API",
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.8.1) v0.8.1.",
     "version": "0.10.1"
   },
   "paths": {
-    "/optimade/v0/info": {
+    "/v0/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_optimade_v0_info_get",
+        "operationId": "get_info_v0_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info Optimade V0 Info Get",
+                  "title": "Response Get Info V0 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/InfoResponse"
@@ -35,13 +35,13 @@
         }
       }
     },
-    "/optimade/v0/info/{entry}": {
+    "/v0/info/{entry}": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Entry Info",
-        "operationId": "get_entry_info_optimade_v0_info__entry__get",
+        "operationId": "get_entry_info_v0_info__entry__get",
         "parameters": [
           {
             "required": true,
@@ -59,7 +59,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Entry Info Optimade V0 Info  Entry  Get",
+                  "title": "Response Get Entry Info V0 Info  Entry  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/EntryInfoResponse"
@@ -85,45 +85,45 @@
         }
       }
     },
-    "/optimade/v0/links": {
+    "/v0/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_optimade_v0_links_get",
+        "operationId": "get_links_v0_links_get",
         "parameters": [
           {
-            "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst).",
+            "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTIMADE spec](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst).",
             "required": false,
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst).",
+              "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTIMADE spec](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst).",
               "default": ""
             },
             "name": "filter",
             "in": "query"
           },
           {
-            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
             "required": false,
             "schema": {
               "title": "Response Format",
               "type": "string",
-              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
               "default": "json"
             },
             "name": "response_format",
             "in": "query"
           },
           {
-            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
             "required": false,
             "schema": {
               "title": "Email Address",
               "type": "string",
-              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
               "format": "email",
               "default": ""
             },
@@ -131,39 +131,39 @@
             "in": "query"
           },
           {
-            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
             "required": false,
             "schema": {
               "title": "Response Fields",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
               "default": ""
             },
             "name": "response_fields",
             "in": "query"
           },
           {
-            "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-info-endpoints).",
+            "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-info-endpoints).",
             "required": false,
             "schema": {
               "title": "Sort",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-info-endpoints).",
+              "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-info-endpoints).",
               "default": ""
             },
             "name": "sort",
             "in": "query"
           },
           {
-            "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
+            "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
             "required": false,
             "schema": {
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
+              "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
               "default": 20
             },
             "name": "page_limit",
@@ -233,6 +233,18 @@
             },
             "name": "page_below",
             "in": "query"
+          },
+          {
+            "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+            "required": false,
+            "schema": {
+              "title": "Include",
+              "type": "string",
+              "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+              "default": "references"
+            },
+            "name": "include",
+            "in": "query"
           }
         ],
         "responses": {
@@ -241,7 +253,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links Optimade V0 Links Get",
+                  "title": "Response Get Links V0 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
@@ -267,45 +279,45 @@
         }
       }
     },
-    "/optimade/v0/references": {
+    "/v0/references": {
       "get": {
         "tags": [
           "References"
         ],
         "summary": "Get References",
-        "operationId": "get_references_optimade_v0_references_get",
+        "operationId": "get_references_v0_references_get",
         "parameters": [
           {
-            "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst).",
+            "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTIMADE spec](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst).",
             "required": false,
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst).",
+              "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTIMADE spec](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst).",
               "default": ""
             },
             "name": "filter",
             "in": "query"
           },
           {
-            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
             "required": false,
             "schema": {
               "title": "Response Format",
               "type": "string",
-              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
               "default": "json"
             },
             "name": "response_format",
             "in": "query"
           },
           {
-            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
             "required": false,
             "schema": {
               "title": "Email Address",
               "type": "string",
-              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
               "format": "email",
               "default": ""
             },
@@ -313,39 +325,39 @@
             "in": "query"
           },
           {
-            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
             "required": false,
             "schema": {
               "title": "Response Fields",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
               "default": ""
             },
             "name": "response_fields",
             "in": "query"
           },
           {
-            "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-info-endpoints).",
+            "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-info-endpoints).",
             "required": false,
             "schema": {
               "title": "Sort",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-info-endpoints).",
+              "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-info-endpoints).",
               "default": ""
             },
             "name": "sort",
             "in": "query"
           },
           {
-            "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
+            "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
             "required": false,
             "schema": {
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
+              "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
               "default": 20
             },
             "name": "page_limit",
@@ -415,6 +427,18 @@
             },
             "name": "page_below",
             "in": "query"
+          },
+          {
+            "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+            "required": false,
+            "schema": {
+              "title": "Include",
+              "type": "string",
+              "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+              "default": "references"
+            },
+            "name": "include",
+            "in": "query"
           }
         ],
         "responses": {
@@ -423,7 +447,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get References Optimade V0 References Get",
+                  "title": "Response Get References V0 References Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseMany"
@@ -449,13 +473,13 @@
         }
       }
     },
-    "/optimade/v0/references/{entry_id}": {
+    "/v0/references/{entry_id}": {
       "get": {
         "tags": [
           "References"
         ],
         "summary": "Get Single Reference",
-        "operationId": "get_single_reference_optimade_v0_references__entry_id__get",
+        "operationId": "get_single_reference_v0_references__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -467,24 +491,24 @@
             "in": "path"
           },
           {
-            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
             "required": false,
             "schema": {
               "title": "Response Format",
               "type": "string",
-              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
               "default": "json"
             },
             "name": "response_format",
             "in": "query"
           },
           {
-            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
             "required": false,
             "schema": {
               "title": "Email Address",
               "type": "string",
-              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
               "format": "email",
               "default": ""
             },
@@ -492,16 +516,28 @@
             "in": "query"
           },
           {
-            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
             "required": false,
             "schema": {
               "title": "Response Fields",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
               "default": ""
             },
             "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+            "required": false,
+            "schema": {
+              "title": "Include",
+              "type": "string",
+              "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+              "default": "references"
+            },
+            "name": "include",
             "in": "query"
           }
         ],
@@ -511,7 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Single Reference Optimade V0 References  Entry Id  Get",
+                  "title": "Response Get Single Reference V0 References  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseOne"
@@ -537,45 +573,45 @@
         }
       }
     },
-    "/optimade/v0/structures": {
+    "/v0/structures": {
       "get": {
         "tags": [
           "Structures"
         ],
         "summary": "Get Structures",
-        "operationId": "get_structures_optimade_v0_structures_get",
+        "operationId": "get_structures_v0_structures_get",
         "parameters": [
           {
-            "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst).",
+            "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTIMADE spec](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst).",
             "required": false,
             "schema": {
               "title": "Filter",
               "type": "string",
-              "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTiMaDe spec](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst).",
+              "description": "A filter string, in the format described in section [API Filtering Format Specification](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#api-filtering-format-specification) of the [OPTIMADE spec](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst).",
               "default": ""
             },
             "name": "filter",
             "in": "query"
           },
           {
-            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
             "required": false,
             "schema": {
               "title": "Response Format",
               "type": "string",
-              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
               "default": "json"
             },
             "name": "response_format",
             "in": "query"
           },
           {
-            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
             "required": false,
             "schema": {
               "title": "Email Address",
               "type": "string",
-              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
               "format": "email",
               "default": ""
             },
@@ -583,39 +619,39 @@
             "in": "query"
           },
           {
-            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
             "required": false,
             "schema": {
               "title": "Response Fields",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
               "default": ""
             },
             "name": "response_fields",
             "in": "query"
           },
           {
-            "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-info-endpoints).",
+            "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-info-endpoints).",
             "required": false,
             "schema": {
               "title": "Sort",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#entry-listing-info-endpoints).",
+              "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query. If it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an [entry listing endpoint](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-endpoints), then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`. If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name. The set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification. The field `sortable` is in addition to each property description (and the OPTIONAL field `unit`). An example is shown in section [Entry Listing Info Endpoints](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#entry-listing-info-endpoints).",
               "default": ""
             },
             "name": "sort",
             "in": "query"
           },
           {
-            "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
+            "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
             "required": false,
             "schema": {
               "title": "Page Limit",
               "minimum": 0.0,
               "type": "integer",
-              "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
+              "description": "Sets a numerical limit on the number of entries returned. See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination). The API implementation MUST return no more than the number specified. It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned). The default limit value is up to the API implementation to decide.\n\nA server MUST implement pagination in the case of no user-specified `sort` parameter (via the `links` response field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields)). A server MAY implement pagination in concert with `sort`.",
               "default": 20
             },
             "name": "page_limit",
@@ -685,6 +721,18 @@
             },
             "name": "page_below",
             "in": "query"
+          },
+          {
+            "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+            "required": false,
+            "schema": {
+              "title": "Include",
+              "type": "string",
+              "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+              "default": "references"
+            },
+            "name": "include",
+            "in": "query"
           }
         ],
         "responses": {
@@ -693,7 +741,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Structures Optimade V0 Structures Get",
+                  "title": "Response Get Structures V0 Structures Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseMany"
@@ -719,13 +767,13 @@
         }
       }
     },
-    "/optimade/v0/structures/{entry_id}": {
+    "/v0/structures/{entry_id}": {
       "get": {
         "tags": [
           "Structures"
         ],
         "summary": "Get Single Structure",
-        "operationId": "get_single_structure_optimade_v0_structures__entry_id__get",
+        "operationId": "get_single_structure_v0_structures__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -737,24 +785,24 @@
             "in": "path"
           },
           {
-            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+            "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
             "required": false,
             "schema": {
               "title": "Response Format",
               "type": "string",
-              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTiMaDe/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/optimade/v0.9/structures?response_format=xml",
+              "description": "The output format requested (see section [Response Format](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#response-format) in the spec). Defaults to the format string 'json', which specifies the standard output format described in this specification.\n**Example**: http://example.com/v1/structures?response_format=xml",
               "default": "json"
             },
             "name": "response_format",
             "in": "query"
           },
           {
-            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+            "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
             "required": false,
             "schema": {
               "title": "Email Address",
               "type": "string",
-              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/optimade/v0.9/structures?email_address=user@example.com",
+              "description": "An email address of the user making the request. The email SHOULD be that of a person and not an automatic system.\n**Example**: http://example.com/v1/structures?email_address=user@example.com",
               "format": "email",
               "default": ""
             },
@@ -762,16 +810,28 @@
             "in": "query"
           },
           {
-            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+            "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
             "required": false,
             "schema": {
               "title": "Response Fields",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
               "type": "string",
-              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/optimade/v0.9/structures?response_fields=last_modified,nsites",
+              "description": "A comma-delimited set of fields to be provided in the output. If provided, these fields MUST be returned along with the REQUIRED fields. Other OPTIONAL fields MUST NOT be returned when this parameter is present.\n**Example**: http://example.com/v1/structures?response_fields=last_modified,nsites",
               "default": ""
             },
             "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+            "required": false,
+            "schema": {
+              "title": "Include",
+              "type": "string",
+              "description": "The JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes). If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`. Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section [JSON Response Schema: Common Fields](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields).\n\n- **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+              "default": "references"
+            },
+            "name": "include",
             "in": "query"
           }
         ],
@@ -781,7 +841,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Single Structure Optimade V0 Structures  Entry Id  Get",
+                  "title": "Response Get Single Structure V0 Structures  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseOne"
@@ -858,12 +918,14 @@
             "title": "Url",
             "maxLength": 65536,
             "minLength": 1,
+            "pattern": ".+/v[0-1](\\.[0-9]+)*/?$",
             "type": "string",
             "description": "a string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
             "format": "uri"
           },
           "version": {
             "title": "Version",
+            "pattern": "^[0-9]+(\\.[0-9]+){,2}$",
             "type": "string",
             "description": "a string containing the full version number of the API served at that versioned base URL. The version number string MUST NOT be prefixed by, e.g., 'v'."
           }
@@ -883,7 +945,7 @@
           "api_version": {
             "title": "Api Version",
             "type": "string",
-            "description": "Presently used version of the OPTiMaDe API"
+            "description": "Presently used version of the OPTIMADE API"
           },
           "available_api_versions": {
             "title": "Available Api Versions",
@@ -980,8 +1042,8 @@
         },
         "description": "Resource objects appear in a JSON:API document to represent resources."
       },
-      "BaseRealationshipMeta": {
-        "title": "BaseRealationshipMeta",
+      "BaseRelationshipMeta": {
+        "title": "BaseRelationshipMeta",
         "required": [
           "description"
         ],
@@ -1017,7 +1079,7 @@
             "title": "Meta",
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseRealationshipMeta"
+                "$ref": "#/components/schemas/BaseRelationshipMeta"
               }
             ],
             "description": "Relationship meta field. MUST contain 'description' if supplied."
@@ -1045,7 +1107,7 @@
           "sortable": {
             "title": "Sortable",
             "type": "boolean",
-            "description": "defines whether the entry property can be used for sorting with the \"sort\" parameter. If the entry listing endpoint supports sorting, this key MUST be present for all properties."
+            "description": "defines whether the entry property can be used for sorting with the \"sort\" parameter. If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`."
           }
         }
       },
@@ -1101,19 +1163,31 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/EntryInfoResource"
+            "title": "Data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntryInfoResource"
+              }
+            ],
+            "description": "OPTIMADE information for an entry endpoint"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
@@ -1122,7 +1196,7 @@
             "items": {
               "$ref": "#/components/schemas/Resource"
             },
-            "description": "A list of resources that are included"
+            "description": "A list of unique included resources"
           },
           "links": {
             "title": "Links",
@@ -1131,7 +1205,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -1249,6 +1323,65 @@
         },
         "description": "Contains key-value pairs representing the entry's properties."
       },
+      "Error": {
+        "title": "Error",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "A unique identifier for this particular occurrence of the problem."
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorLinks"
+              }
+            ],
+            "description": "A links object storing about"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "description": "the HTTP status code applicable to this problem, expressed as a string value."
+          },
+          "code": {
+            "title": "Code",
+            "type": "string",
+            "description": "an application-specific error code, expressed as a string value."
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "title": "Source",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorSource"
+              }
+            ],
+            "description": "An object containing references to the source of the error"
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object containing non-standard meta-information about the error."
+          }
+        },
+        "description": "An error response"
+      },
       "ErrorLinks": {
         "title": "ErrorLinks",
         "type": "object",
@@ -1284,6 +1417,7 @@
         "properties": {
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "allOf": [
@@ -1296,21 +1430,28 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Resource"
-                },
-                "uniqueItems": true
+                }
               }
             ],
             "description": "Outputted Data"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
+            "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__optimade_json__Error"
-            }
+              "$ref": "#/components/schemas/OptimadeError"
+            },
+            "description": "A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present."
           },
           "included": {
             "title": "Included",
@@ -1319,7 +1460,7 @@
             "items": {
               "$ref": "#/components/schemas/Resource"
             },
-            "description": "A list of resources that are included"
+            "description": "A list of unique included resources"
           },
           "links": {
             "title": "Links",
@@ -1328,7 +1469,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -1430,19 +1571,31 @@
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/BaseInfoResource"
+            "title": "Data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseInfoResource"
+              }
+            ],
+            "description": "The implementations /info data"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
@@ -1451,7 +1604,7 @@
             "items": {
               "$ref": "#/components/schemas/Resource"
             },
-            "description": "A list of resources that are included"
+            "description": "A list of unique included resources"
           },
           "links": {
             "title": "Links",
@@ -1460,7 +1613,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -1527,7 +1680,6 @@
         "title": "LinksResource",
         "required": [
           "id",
-          "type",
           "attributes"
         ],
         "type": "object",
@@ -1540,7 +1692,7 @@
           "type": {
             "title": "Type",
             "type": "string",
-            "description": "MUST be either \"parent\", \"child\", or \"provider\". These objects are described in detail in sections Parent and Child Objects and Provider Objects."
+            "description": "These objects are described in detail in the section Links Endpoint"
           },
           "links": {
             "title": "Links",
@@ -1587,19 +1739,20 @@
           "name",
           "description",
           "base_url",
-          "homepage"
+          "homepage",
+          "link_type"
         ],
         "type": "object",
         "properties": {
           "name": {
             "title": "Name",
             "type": "string",
-            "description": "Human-readable name for the OPTiMaDe API implementation a client may provide in a list to an end-user."
+            "description": "Human-readable name for the OPTIMADE API implementation a client may provide in a list to an end-user."
           },
           "description": {
             "title": "Description",
             "type": "string",
-            "description": "Human-readable description for the OPTiMaDe API implementation a client may provide in a list to an end-user."
+            "description": "Human-readable description for the OPTIMADE API implementation a client may provide in a list to an end-user."
           },
           "base_url": {
             "title": "Base Url",
@@ -1638,6 +1791,11 @@
               }
             ],
             "description": "JSON API links object, pointing to a homepage URL for this implementation"
+          },
+          "link_type": {
+            "title": "Link Type",
+            "type": "string",
+            "description": "The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'."
           }
         },
         "description": "Links endpoint resource object attributes"
@@ -1651,6 +1809,7 @@
         "properties": {
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -1664,22 +1823,30 @@
                   "type": "object"
                 }
               }
-            ]
+            ],
+            "description": "List of unique OPTIMADE links resource objects"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -1702,7 +1869,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -1721,6 +1888,68 @@
         "type": "object",
         "properties": {},
         "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
+      },
+      "OptimadeError": {
+        "title": "OptimadeError",
+        "required": [
+          "detail"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "A unique identifier for this particular occurrence of the problem."
+          },
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorLinks"
+              }
+            ],
+            "description": "A links object storing about"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "description": "the HTTP status code applicable to this problem, expressed as a string value."
+          },
+          "code": {
+            "title": "Code",
+            "type": "string",
+            "description": "an application-specific error code, expressed as a string value."
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "source": {
+            "title": "Source",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorSource"
+              }
+            ],
+            "description": "An object containing references to the source of the error"
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object containing non-standard meta-information about the error."
+          }
+        },
+        "description": "detail MUST be present"
       },
       "Person": {
         "title": "Person",
@@ -1825,6 +2054,7 @@
           },
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "allOf": [
@@ -2074,6 +2304,7 @@
         "properties": {
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -2087,22 +2318,30 @@
                   "type": "object"
                 }
               }
-            ]
+            ],
+            "description": "List of unique OPTIMADE references entry resource objects"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -2125,7 +2364,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -2150,27 +2389,39 @@
             "title": "Data",
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ReferenceResource"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ReferenceResource"
+                  }
+                ]
               },
               {
                 "type": "object"
               }
-            ]
+            ],
+            "description": "A single references entry resource"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -2193,7 +2444,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -2419,6 +2670,7 @@
           },
           "warnings": {
             "title": "Warnings",
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Warnings"
@@ -2480,7 +2732,7 @@
           "original_name": {
             "title": "Original Name",
             "type": "string",
-            "description": "Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\nNote: With regards to \"source database\", we refer to the immediate source being queried via the OPTiMaDe API implementation.\nThe main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_)."
+            "description": "Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\nNote: With regards to \"source database\", we refer to the immediate source being queried via the OPTIMADE API implementation.\nThe main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_)."
           }
         },
         "description": "A list describing the species of the sites of this structure.\nSpecies can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.\n\n- **Examples**:\n\n    - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n    - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n    - :val:`[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n    - :val:`[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n    - :val:`[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13."
@@ -2500,6 +2752,7 @@
           },
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "allOf": [
@@ -2745,7 +2998,7 @@
                 }
               ]
             },
-            "description": "Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).\n- **Type**: list of list of floats and/or unknown values\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\n  - It MUST be a list of length N times 3, where N is the number of sites in the structure.\n  - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`_).\n  - If a component of the position is unknown, the :val:`null` value should be provided instead (see section `Properties with unknown value`_).\n    Otherwise, it should be a float value, expressed in angstrom (\u00c5).\n    If at least one of the coordinates is unknown, the correct flag in the list property `structure_features`_ MUST be set.\n  - **Notes**: (for implementers) While this is unrelated to this OPTiMaDe specification: If you decide to store internally the :property: `cartesian_site_positions` as a float array, you might want to represent :val:`null` values with :field-val:`NaN` values.\n    The latter being valid float numbers in the IEEE 754 standard in `IEEE 754-1985 <https://doi.org/10.1109/IEEESTD.1985.82928>`__ and in the updated version `IEEE 754-2008 <https://doi.org/10.1109/IEEESTD.2008.4610935>`__.\n\n- **Examples**:\n\n  - :val:`[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin."
+            "description": "Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).\n- **Type**: list of list of floats and/or unknown values\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\n  - It MUST be a list of length N times 3, where N is the number of sites in the structure.\n  - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`_).\n  - If a component of the position is unknown, the :val:`null` value should be provided instead (see section `Properties with unknown value`_).\n    Otherwise, it should be a float value, expressed in angstrom (\u00c5).\n    If at least one of the coordinates is unknown, the correct flag in the list property `structure_features`_ MUST be set.\n  - **Notes**: (for implementers) While this is unrelated to this OPTIMADE specification: If you decide to store internally the :property: `cartesian_site_positions` as a float array, you might want to represent :val:`null` values with :field-val:`NaN` values.\n    The latter being valid float numbers in the IEEE 754 standard in `IEEE 754-1985 <https://doi.org/10.1109/IEEESTD.1985.82928>`__ and in the updated version `IEEE 754-2008 <https://doi.org/10.1109/IEEESTD.2008.4610935>`__.\n\n- **Examples**:\n\n  - :val:`[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin."
           },
           "nsites": {
             "title": "Nsites",
@@ -2766,7 +3019,7 @@
             "items": {
               "$ref": "#/components/schemas/Species"
             },
-            "description": "A list describing the species of the sites of this structure. Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.\n- **Type**: list of dictionary with keys:\n\n  - :property:`name`: string (REQUIRED)\n  - :property:`chemical_symbols`: list of strings (REQUIRED)\n  - :property:`concentration`: list of float (REQUIRED)\n  - :property:`mass`: float (OPTIONAL)\n  - :property:`original_name`: string (OPTIONAL).\n\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL.\n    If supported, filters MAY support only a subset of comparison operators.\n  - Each list member MUST be a dictionary with the following keys:\n\n    - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;\n\n    - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.\n\n      - It MUST be one of the following:\n\n        - a valid chemical-element name, or\n        - the special value :val:`\"X\"` to represent a non-chemical element, or\n        - the special value :val:`\"vacancy\"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the :property:`concentration` list, see below).\n\n      -  If any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).\n\n    - **concentration**: REQUIRED; MUST be a list of floats, with same length as :property:`chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species.\n      The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:\n\n      - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.\n      - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.\n\n      Note that concentrations are uncorrelated between different site (even of the same species).\n\n    - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.\n    - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\n        Note: With regards to \"source database\", we refer to the immediate source being queried via the OPTiMaDe API implementation.\n            The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).\n\n  - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., :val:`\"Ti\"` for titanium, :val:`\"O\"` for oxygen, etc.)\n    However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.\n    This means that a species :val:`{\"name\": \"C\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]}` is valid and represents a titanium species (and *not* a carbon species).\n  - It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.\n\n- **Examples**:\n\n  - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n  - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n  - :val:`[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n  - :val:`[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n  - :val:`[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13."
+            "description": "A list describing the species of the sites of this structure. Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.\n- **Type**: list of dictionary with keys:\n\n  - :property:`name`: string (REQUIRED)\n  - :property:`chemical_symbols`: list of strings (REQUIRED)\n  - :property:`concentration`: list of float (REQUIRED)\n  - :property:`mass`: float (OPTIONAL)\n  - :property:`original_name`: string (OPTIONAL).\n\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL.\n    If supported, filters MAY support only a subset of comparison operators.\n  - Each list member MUST be a dictionary with the following keys:\n\n    - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;\n\n    - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.\n\n      - It MUST be one of the following:\n\n        - a valid chemical-element name, or\n        - the special value :val:`\"X\"` to represent a non-chemical element, or\n        - the special value :val:`\"vacancy\"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the :property:`concentration` list, see below).\n\n      -  If any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).\n\n    - **concentration**: REQUIRED; MUST be a list of floats, with same length as :property:`chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species.\n      The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:\n\n      - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.\n      - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.\n\n      Note that concentrations are uncorrelated between different site (even of the same species).\n\n    - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.\n    - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\n        Note: With regards to \"source database\", we refer to the immediate source being queried via the OPTIMADE API implementation.\n            The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).\n\n  - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., :val:`\"Ti\"` for titanium, :val:`\"O\"` for oxygen, etc.)\n    However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.\n    This means that a species :val:`{\"name\": \"C\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]}` is valid and represents a titanium species (and *not* a carbon species).\n  - It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.\n\n- **Examples**:\n\n  - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n  - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n  - :val:`[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n  - :val:`[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n  - :val:`[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13."
           },
           "assemblies": {
             "title": "Assemblies",
@@ -2796,6 +3049,7 @@
         "properties": {
           "data": {
             "title": "Data",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -2809,22 +3063,30 @@
                   "type": "object"
                 }
               }
-            ]
+            ],
+            "description": "List of unique OPTIMADE structures entry resource objects"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -2847,7 +3109,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -2872,27 +3134,39 @@
             "title": "Data",
             "anyOf": [
               {
-                "$ref": "#/components/schemas/StructureResource"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/StructureResource"
+                  }
+                ]
               },
               {
                 "type": "object"
               }
-            ]
+            ],
+            "description": "A single structures entry resource"
           },
           "meta": {
-            "$ref": "#/components/schemas/ResponseMeta"
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              }
+            ],
+            "description": "A meta object containing non-standard information"
           },
           "errors": {
             "title": "Errors",
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/optimade__models__jsonapi__Error"
+              "$ref": "#/components/schemas/Error"
             },
-            "description": "A list of errors"
+            "description": "A list of unique errors"
           },
           "included": {
             "title": "Included",
+            "uniqueItems": true,
             "anyOf": [
               {
                 "type": "array",
@@ -2915,7 +3189,7 @@
                 "$ref": "#/components/schemas/ToplevelLinks"
               }
             ],
-            "description": "Links associated with the primary data"
+            "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
             "title": "Jsonapi",
@@ -3097,128 +3371,7 @@
             "description": "Warnings must be of type \"warning\""
           }
         },
-        "description": "OPTiMaDe-specific warning class based on OPTiMaDe-specific JSON API Error.\nFrom the specification:\n\n    A warning resource object is defined similarly to a JSON API\n    error object, but MUST also include the field type, which MUST\n    have the value \"warning\". The field detail MUST be present and\n    SHOULD contain a non-critical message, e.g., reporting\n    unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
-      },
-      "optimade__models__jsonapi__Error": {
-        "title": "Error",
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "description": "A unique identifier for this particular occurrence of the problem."
-          },
-          "links": {
-            "title": "Links",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorLinks"
-              }
-            ],
-            "description": "A links object storing about"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string",
-            "description": "the HTTP status code applicable to this problem, expressed as a string value."
-          },
-          "code": {
-            "title": "Code",
-            "type": "string",
-            "description": "an application-specific error code, expressed as a string value."
-          },
-          "title": {
-            "title": "Title",
-            "type": "string",
-            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
-          },
-          "detail": {
-            "title": "Detail",
-            "type": "string",
-            "description": "A human-readable explanation specific to this occurrence of the problem."
-          },
-          "source": {
-            "title": "Source",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorSource"
-              }
-            ],
-            "description": "An object containing references to the source of the error"
-          },
-          "meta": {
-            "title": "Meta",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Meta"
-              }
-            ],
-            "description": "a meta object containing non-standard meta-information about the error."
-          }
-        },
-        "description": "An error response"
-      },
-      "optimade__models__optimade_json__Error": {
-        "title": "Error",
-        "required": [
-          "detail"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "string",
-            "description": "A unique identifier for this particular occurrence of the problem."
-          },
-          "links": {
-            "title": "Links",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorLinks"
-              }
-            ],
-            "description": "A links object storing about"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string",
-            "description": "the HTTP status code applicable to this problem, expressed as a string value."
-          },
-          "code": {
-            "title": "Code",
-            "type": "string",
-            "description": "an application-specific error code, expressed as a string value."
-          },
-          "title": {
-            "title": "Title",
-            "type": "string",
-            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
-          },
-          "detail": {
-            "title": "Detail",
-            "type": "string",
-            "description": "A human-readable explanation specific to this occurrence of the problem."
-          },
-          "source": {
-            "title": "Source",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ErrorSource"
-              }
-            ],
-            "description": "An object containing references to the source of the error"
-          },
-          "meta": {
-            "title": "Meta",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Meta"
-              }
-            ],
-            "description": "a meta object containing non-standard meta-information about the error."
-          }
-        },
-        "description": "detail MUST be present"
+        "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\nFrom the specification:\n\n    A warning resource object is defined similarly to a JSON API\n    error object, but MUST also include the field type, which MUST\n    have the value \"warning\". The field detail MUST be present and\n    SHOULD contain a non-critical message, e.g., reporting\n    unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
       }
     }
   }

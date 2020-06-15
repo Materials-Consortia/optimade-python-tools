@@ -1,41 +1,51 @@
 import traceback
-from typing import Dict, Any
+from typing import List
 
 from lark.exceptions import VisitError
 
 from pydantic import ValidationError
 from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.requests import Request
-from starlette.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError, StarletteHTTPException
+from fastapi import Request
+from fastapi.responses import JSONResponse
 
-from optimade.models import Error, ErrorResponse, ErrorSource
+from optimade.models import OptimadeError, ErrorResponse, ErrorSource
 
 from .config import CONFIG
 from .routers.utils import meta_values
 
 
 def general_exception(
-    request: Request, exc: Exception, **kwargs: Dict[str, Any]
+    request: Request,
+    exc: Exception,
+    status_code: int = 500,  # A status_code in `exc` will take precedence
+    errors: List[OptimadeError] = None,
 ) -> JSONResponse:
-    tb = "".join(
-        traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
-    )
-    print(tb)
+    debug_info = {}
+    if CONFIG.debug:
+        tb = "".join(
+            traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
+        )
+        print(tb)
+        debug_info[f"_{CONFIG.provider.prefix}_traceback"] = tb
 
     try:
-        status_code = exc.status_code
+        http_response_code = int(exc.status_code)
     except AttributeError:
-        status_code = kwargs.get("status_code", 500)
+        http_response_code = int(status_code)
 
-    detail = getattr(exc, "detail", str(exc))
+    try:
+        title = str(exc.title)
+    except AttributeError:
+        title = str(exc.__class__.__name__)
 
-    errors = kwargs.get("errors", None)
-    if not errors:
-        errors = [
-            Error(detail=detail, status=status_code, title=str(exc.__class__.__name__))
-        ]
+    try:
+        detail = str(exc.detail)
+    except AttributeError:
+        detail = str(exc)
+
+    if errors is None:
+        errors = [OptimadeError(detail=detail, status=http_response_code, title=title)]
 
     try:
         response = ErrorResponse(
@@ -44,20 +54,21 @@ def general_exception(
                 data_returned=0,
                 data_available=0,
                 more_data_available=False,
-                **{CONFIG.provider["prefix"] + "traceback": tb},
+                **debug_info,
             ),
             errors=errors,
         )
     except Exception:
         # This was introduced due to the original raise of an HTTPException if the
-        # path prefix could not be found, e.g., `/optimade/v0`.
+        # path prefix could not be found, e.g., `/v0`.
         # However, due to the testing, this error cannot be raised anymore.
-        # Instead, an OPTiMaDe warning should be issued.
+        # Instead, an OPTIMADE warning should be issued.
         # Having this try and except is still good practice though.
         response = ErrorResponse(errors=errors)
 
     return JSONResponse(
-        status_code=status_code, content=jsonable_encoder(response, exclude_unset=True)
+        status_code=http_response_code,
+        content=jsonable_encoder(response, exclude_unset=True),
     )
 
 
@@ -72,16 +83,18 @@ def request_validation_exception_handler(request: Request, exc: RequestValidatio
 def validation_exception_handler(request: Request, exc: ValidationError):
     status = 500
     title = "ValidationError"
-    errors = []
+    errors = set()
     for error in exc.errors():
         pointer = "/" + "/".join([str(_) for _ in error["loc"]])
         source = ErrorSource(pointer=pointer)
         code = error["type"]
         detail = error["msg"]
-        errors.append(
-            Error(detail=detail, status=status, title=title, source=source, code=code)
+        errors.add(
+            OptimadeError(
+                detail=detail, status=status, title=title, source=source, code=code
+            )
         )
-    return general_exception(request, exc, status_code=status, errors=errors)
+    return general_exception(request, exc, status_code=status, errors=list(errors))
 
 
 def grammar_not_implemented_handler(request: Request, exc: VisitError):
@@ -94,7 +107,15 @@ def grammar_not_implemented_handler(request: Request, exc: VisitError):
         if not str(exc.orig_exc)
         else str(exc.orig_exc)
     )
-    error = Error(detail=detail, status=status, title=title)
+    error = OptimadeError(detail=detail, status=status, title=title)
+    return general_exception(request, exc, status_code=status, errors=[error])
+
+
+def not_implemented_handler(request: Request, exc: NotImplementedError):
+    status = 501
+    title = "NotImplementedError"
+    detail = str(exc)
+    error = OptimadeError(detail=detail, status=status, title=title)
     return general_exception(request, exc, status_code=status, errors=[error])
 
 

@@ -3,34 +3,44 @@ default_language_version:
 
 repos:
   - repo: https://github.com/ambv/black
-    rev: stable
+    rev: 19.10b0
     hooks:
     - id: black
       name: Blacken
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v3.1.0
     hooks:
     - id: trailing-whitespace
       exclude: README.md
     - id: check-yaml
     - id: check-json
+    - id: end-of-file-fixer
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: '3.8.3'
+    hooks:
+    -   id: flake8
 
   - repo: local
     hooks:
     - id: json-diff
       name: OpenAPI diff
       description: Check for differences in openapi.json and index_openapi.json with local versions.
-      entry: ./.ci/json_diff.sh
+      entry: invoke check-openapi-diff
+      pass_filenames: false
       language: system
 
-    - id: optimade-version
-      name: Update OPTiMaDe shield
-      description: If needed, the JSON for the OPTiMaDe shield will be updated with new config version
-      entry: python ./.ci/optimade_version_update.py
-      files: >
+    - id: optimade-shield-version
+      name: Update OPTIMADE shield
+      description: If needed, the JSON for the OPTIMADE shield will be updated with new config version
+      entry: invoke update-api-shield
+      pass_filenames: false
+      files:
         (?x)^(
-          .ci/optimade-version.json|
-          optimade/server/config.ini
+          optimade/__init__.py|
+          README.md|
+          INSTALL.md|
+          optimade-version.json
         )$
       language: system

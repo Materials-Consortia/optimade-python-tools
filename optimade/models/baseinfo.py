@@ -16,31 +16,21 @@ class AvailableApiVersion(BaseModel):
     url: AnyHttpUrl = Field(
         ...,
         description="a string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
+        pattern=r".+/v[0-1](\.[0-9]+)*/?$",
     )
 
     version: str = Field(
         ...,
         description="a string containing the full version number of the API served at that versioned base URL. "
         "The version number string MUST NOT be prefixed by, e.g., 'v'.",
+        regex=r"^[0-9]+(\.[0-9]+){,2}$",
     )
 
     @validator("url")
     def url_must_be_versioned_base_url(cls, v):
-        """The URL must be a versioned Base URL"""
-        if not re.match(r".*/v[0-9]+(\.[0-9]+)*/?", v):
+        """The URL must be a valid versioned Base URL"""
+        if not re.match(r".+/v[0-1](\.[0-9]+)*/?$", v):
             raise ValueError(f"url MUST be a versioned base URL. It is: {v}")
-        return v
-
-    @validator("version")
-    def version_must_be_valid(cls, v):
-        """The version number string MUST NOT be prefixed by, e.g., 'v'"""
-        if not re.match(r"[0-9]+\.[0-9]+(\.[0-9]+)?", v):
-            raise ValueError(f"version MUST NOT be prefixed by, e.g., 'v'. It is: {v}")
-        try:
-            tuple(int(val) for val in v.split("."))
-        except ValueError:
-            raise ValueError(f"failed to parse version {v} sections as integers.")
-
         return v
 
     @root_validator(pre=False, skip_on_failure=True)
@@ -57,7 +47,6 @@ class AvailableApiVersion(BaseModel):
             raise ValueError(
                 f"API version {api_version} is not compatible with url version {url_version}."
             )
-
         return values
 
 
@@ -65,7 +54,7 @@ class BaseInfoAttributes(BaseModel):
     """Attributes for Base URL Info endpoint"""
 
     api_version: str = Field(
-        ..., description="Presently used version of the OPTiMaDe API"
+        ..., description="Presently used version of the OPTIMADE API"
     )
     available_api_versions: List[AvailableApiVersion] = Field(
         ...,

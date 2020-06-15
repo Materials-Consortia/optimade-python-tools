@@ -1,0 +1,41 @@
+_exmpl1_bandgap<2.0 OR _exmpl2_bandgap<2.5
+NOT ( chemical_formula_hill = "Al" AND chemical_formula_anonymous = "A" OR chemical_formula_anonymous = "H2O" AND NOT chemical_formula_hill = "Ti" )
+nelements > 3
+chemical_formula_hill = "H2O" AND chemical_formula_anonymous != "AB"
+_exmpl_aax <= +.1e8 OR nelements >= 10 AND NOT ( _exmpl_x != "Some string" OR NOT _exmpl_a = 7)
+_exmpl_spacegroup="P2"
+_exmpl_cell_volume<100.0
+_exmpl_bandgap > 5.0 AND _exmpl_molecular_weight < 350
+_exmpl_melting_point<300 AND nelements=4 AND elements="Si,O2"
+_exmpl_some_string_property = 42
+5 < _exmpl_a
+identifier CONTAINS x
+identifier STARTS WITH x
+identifier ENDS WITH x
+chemical_formula_anonymous CONTAINS "C2" AND chemical_formula_anonymous STARTS WITH "A2"
+chemical_formula_anonymous STARTS "B2" AND chemical_formula_anonymous ENDS WITH "D2"
+list HAS value
+list HAS ALL values
+list HAS ANY values
+list LENGTH value
+NOT list HAS inverse
+calculations.id HAS "calc-id-96"
+authors.lastname HAS "Schmit"
+identifier IS UNKNOWN
+NOT identifier IS KNOWN
+chemical_formula_hill IS KNOWN AND NOT chemical_formula_anonymous IS UNKNOWN
+NOT a > b OR c = 100 AND f = "C2 H6"
+(NOT (a > b)) OR ( (c = 100) AND (f = "C2 H6") )
+a >= 0 AND NOT b < c OR c = 0
+((a >= 0) AND (NOT (b < c))) OR (c = 0)
+elements HAS ALL "Si", "Al", "O"
+elements HAS ALL "Si", "Al", "O" AND elements LENGTH 3
+nelements=4
+nelements>=2 AND nelements<=7
+chemical_formula_descriptive="(H2O)2 Na"
+chemical_formula_descriptive CONTAINS "H2O"
+chemical_formula_reduced="H2NaO"
+chemical_formula_hill="H2O2"
+chemical_formula_anonymous="A2B"
+nsites=4
+nsites>=2 AND nsites<=7

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <title>{{ optimade_title }}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="optimade,materials,crystals,database">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        {% endblock %}
+
+    <style>
+        html { margin: 2em; }
+        h4, p { margin-left: 2em; }
+        span.version {background-color: lightgrey; font-weight: bold; font-family: monospace; padding: 0em 0.5em 0em 0.5em; border-radius: 1em;}
+    </style>
+    </head>
+    <body>
+        <img id="logo" width="100" src="https://avatars0.githubusercontent.com/u/23107754?s=400&u=e1580af496ac195a3ac4c445a66a5699efb0c3d3"></img>
+        <h3>This is an <a href="https://www.optimade.org">OPTIMADE</a> base URL which can be queried with an OPTIMADE client.</h3>
+        <h3>OPTIMADE version:</h3>
+        <h3><span class="version">{{ api_version }}</span></h3>
+        <h3>Provider:</h3>
+        <h4>{{ provider.name }}</h4>
+        <p> Prefix: <span class="version">{{ provider.prefix }}</span></p>
+        <p> {{ provider.description }} </p>
+        <p><a href={{provider.homepage}}>{{ provider.homepage }}</a></p>
+        <h3>Implementation:</h3>
+        <h4>{{ implementation.name }}</h4>
+        <p>Version: <span class="version">{{ implementation.version }}</span></p>
+        <p><a href={{ implementation.source_url }}>{{ implementation.source_url }}</a></p>
+        <h3>Available endpoints:</h3>
+        <ul>
+        {% for endpoint in endpoints %}
+        {{ '<li><a href="{}{}">{}{}</a></li>'.format(versioned_url, endpoint, versioned_url, endpoint) | safe }}
+        {% endfor %}
+        </ul>
+        <h3>Index base URL:</h3>
+        <p><a href={{ provider.index_base_url }}>{{ provider.index_base_url }}</a></p>
+    </body>
+    <footer>
+        <div class="footer_text">
+            <ul style="list-style-type: none; margin: 0; padding:0; overflow: hidden">
+                <li style="padding-top: 5px;">Compliant with the <i class="fa fa-github"></i> <a href="https://github.com/Materials-Consortia/OPTIMADE">OPTIMADE specification</a>.</li>
+                <li style="padding-top: 5px;">Powered by <i class="fa fa-github"></i> <a href="https://www.github.com/Materials-Consortia/optimade-python-tools">Materials-Consortia/optimade-python-tools</a></li>
+            </ul>
+        </div>
+    </footer>
+</html>

@@ -11,35 +11,21 @@ from optimade.models import (
     ReferenceResource,
     AvailableApiVersion,
 )
+from optimade.models.jsonapi import Error
 from optimade.server.mappers import StructureMapper, ReferenceMapper
+import optimade.server.data
 
 
 class TestPydanticValidation(unittest.TestCase):
     def test_good_structures(self):
-        test_structures_path = (
-            Path(__file__)
-            .resolve()
-            .parent.joinpath("../../optimade/server/data/test_structures.json")
-        )
-        with open(test_structures_path, "r") as f:
-            good_structures = json.load(f)
-            # adjust dates as mongo would
-        for doc in good_structures:
-            doc["last_modified"] = doc["last_modified"]["$date"]
+
+        good_structures = optimade.server.data.structures
 
         for structure in good_structures:
             StructureResource(**StructureMapper.map_back(structure))
 
     def test_more_good_structures(self):
-        test_structures_path = (
-            Path(__file__).resolve().parent.joinpath("test_more_structures.json")
-        )
-        with open(test_structures_path, "r") as f:
-            good_structures = json.load(f)
-
-        # adjust dates as mongo would
-        for doc in good_structures:
-            doc["last_modified"] = doc["last_modified"]["$date"]
+        good_structures = optimade.server.data.structures
 
         for structure in good_structures:
             StructureResource(**StructureMapper.map_back(structure))
@@ -107,15 +93,8 @@ class TestPydanticValidation(unittest.TestCase):
             EntryRelationships(**relationship)
 
     def test_good_references(self):
-        test_refs_path = (
-            Path(__file__)
-            .resolve()
-            .parent.joinpath("../../optimade/server/data/test_references.json")
-        )
-        with open(test_refs_path, "r") as f:
-            good_refs = json.load(f)
+        good_refs = optimade.server.data.references
         for doc in good_refs:
-            doc["last_modified"] = doc["last_modified"]["$date"]
             ReferenceResource(**ReferenceMapper.map_back(doc))
 
     def test_bad_references(self):
@@ -133,36 +112,48 @@ class TestPydanticValidation(unittest.TestCase):
             with self.assertRaises(ValidationError):
                 ReferenceResource(**ReferenceMapper.map_back(ref))
 
+    def test_available_api_versions(self):
+        bad_urls = [
+            {"url": "asfdsafhttps://example.com/v0.0", "version": "0.0.0"},
+            {"url": "https://example.com/optimade", "version": "1.0.0"},
+            {"url": "https://example.com/v0999", "version": "0999.0.0"},
+            {"url": "http://example.com/v2.3", "version": "2.3.0"},
+        ]
+        good_urls = [
+            {"url": "https://example.com/v0", "version": "0.1.9"},
+            {"url": "https://example.com/v1.0.2", "version": "1.0.2"},
+            {"url": "https://example.com/optimade/v1.2", "version": "1.2.3"},
+        ]
+        bad_combos = [
+            {"url": "https://example.com/v0", "version": "1.0.0"},
+            {"url": "https://example.com/v1.0.2", "version": "1.0.3"},
+            {"url": "https://example.com/optimade/v1.2", "version": "1.3.2"},
+        ]
 
-def test_available_api_versions():
-    bad_urls = [
-        "asfdsafhttps://example.com/optimade/v0.0",
-        "https://example.com/optimade",
-        "https://example.com/optimade/v0",
-        "https://example.com/optimade/v0999",
-    ]
-    good_urls = [
-        {"url": "https://example.com/optimade/v0", "version": "0.1.9"},
-        {"url": "https://example.com/optimade/v1.0.2", "version": "1.0.2"},
-        {"url": "http://example.com/optimade/v2.3", "version": "2.3.1"},
-    ]
+        for data in bad_urls:
+            with pytest.raises(ValueError) as exc:
+                AvailableApiVersion(**data)
+                pytest.fail(f"Url {data['url']} should have failed")
+            self.assertTrue(
+                "url MUST be a versioned base URL" in exc.exconly()
+                or "URL scheme not permitted" in exc.exconly(),
+                msg=f"Validator 'url_must_be_versioned_base_url' not triggered as it should.\nException message: {exc.exconly()}.\nInputs: {data}",
+            )
 
-    bad_combos = [
-        {"url": "https://example.com/optimade/v0", "version": "1.0.0"},
-        {"url": "https://example.com/optimade/v1.0.2", "version": "1.0.3"},
-        {"url": "http://example.com/optimade/v2.3", "version": "2.0.1"},
-    ]
+        for data in bad_combos:
+            with pytest.raises(ValueError) as exc:
+                AvailableApiVersion(**data)
+                pytest.fail(
+                    f"{data['url']} should have failed with version {data['version']}"
+                )
+            self.assertTrue(
+                "is not compatible with url version" in exc.exconly(),
+                msg=f"Validator 'crosscheck_url_and_version' not triggered as it should.\nException message: {exc.exconly()}.\nInputs: {data}",
+            )
 
-    for url in bad_urls:
-        with pytest.raises(ValueError, message=f"Url {url} should have failed"):
-            AvailableApiVersion(url=url, version="1.0")
+        for data in good_urls:
+            self.assertIsInstance(AvailableApiVersion(**data), AvailableApiVersion)
 
-    for data in bad_combos:
-        with pytest.raises(
-            ValueError,
-            message=f"{data['url']} should have failed with version {data['version']}",
-        ):
-            AvailableApiVersion(**data)
-
-    for data in good_urls:
-        AvailableApiVersion(**data)
+    def test_hashability(self):
+        error = Error(id="test")
+        set([error])

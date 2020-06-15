@@ -1,0 +1,12 @@
+((NOT (_exmpl_a>_exmpl_b)) AND _exmpl_x>0)
+5 < 7
+list HAS ONLY values
+list HAS < 3
+list HAS ALL < 3, > 3
+list:list HAS >=2:<=5
+elements HAS "H" AND elements HAS ALL "H","He","Ga","Ta" AND elements HAS ONLY "H","He","Ga","Ta" AND elements HAS ANY "H", "He", "Ga", "Ta"
+elements HAS ONLY "H","He","Ga","Ta"
+elements:_exmpl_element_counts HAS "H":6 AND elements:_exmpl_element_counts HAS ALL "H":6,"He":7 AND elements:_exmpl_element_counts HAS ONLY "H":6 AND elements:_exmpl_element_counts HAS ANY "H":6,"He":7 AND elements:_exmpl_element_counts HAS ONLY "H":6,"He":7
+_exmpl_element_counts HAS < 3 AND _exmpl_element_counts HAS ANY > 3, = 6, 4, != 8
+elements:_exmpl_element_counts:_exmpl_element_weights HAS ANY > 3:"He":>55.3 , = 6:>"Ti":<37.6 , 8:<"Ga":0
+elements:elements_ratios HAS ALL "Al":>0.3333, "Al":<0.3334

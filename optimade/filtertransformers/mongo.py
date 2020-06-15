@@ -1,4 +1,6 @@
+import copy
 from lark import Transformer, v_args, Token
+from optimade.server.mappers import BaseResourceMapper
 
 
 class MongoTransformer(Transformer):
@@ -21,8 +23,29 @@ class MongoTransformer(Transformer):
         "$eq": "$eq",
     }
 
-    def __init__(self):
+    def __init__(self, mapper: BaseResourceMapper = None):
+        """ Initialise the object, optionally loading in a
+        resource mapper for use when post-processing.
+
+        """
+        self.mapper = mapper
         super().__init__()
+
+    def postprocess(self, query):
+        """ Used to post-process the final parsed query. """
+        if self.mapper:
+            # important to apply length alias before normal aliases
+            query = self._apply_length_aliases(query)
+            query = self._apply_aliases(query)
+
+        query = self._apply_relationship_filtering(query)
+        query = self._apply_length_operators(query)
+        query = self._apply_unknown_or_null_filter(query)
+
+        return query
+
+    def transform(self, tree):
+        return self.postprocess(super().transform(tree))
 
     def filter(self, arg):
         # filter: expression*
@@ -51,14 +74,22 @@ class MongoTransformer(Transformer):
         """ not_implemented_string: value
 
         Raise NotImplementedError.
-        For further information, see Materials-Consortia/OPTiMaDe issue 157:
-        https://github.com/Materials-Consortia/OPTiMaDe/issues/157
+        For further information, see Materials-Consortia/OPTIMADE issue 157:
+        https://github.com/Materials-Consortia/OPTIMADE/issues/157
         """
         raise NotImplementedError("Comparing strings is not yet implemented.")
 
     def value_list(self, arg):
         # value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
-        raise NotImplementedError
+        # NOTE: no support for optional OPERATOR, yet, so this takes the
+        # parsed values and returns an error if that is being attempted
+        for value in arg:
+            if str(value) in self.operator_map.keys():
+                raise NotImplementedError(
+                    f"OPERATOR {value} inside value_list {arg} not implemented."
+                )
+
+        return arg
 
     def value_zip(self, arg):
         # value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
@@ -80,13 +111,7 @@ class MongoTransformer(Transformer):
 
     def expression_phrase(self, arg):
         # expression_phrase: [ NOT ] ( comparison | "(" expression ")" )
-        if len(arg) == 1:
-            # without NOT
-            return arg[0]
-
-        # with NOT
-        # TODO: This implementation probably fails in the case of `"(" expression ")"`
-        return {prop: {"$not": expr} for prop, expr in arg[1].items()}
+        return self._recursive_expression_phrase(arg)
 
     @v_args(inline=True)
     def comparison(self, value):
@@ -110,7 +135,10 @@ class MongoTransformer(Transformer):
 
     def known_op_rhs(self, arg):
         # known_op_rhs: IS ( KNOWN | UNKNOWN )
-        return {"$exists": arg[1] == "KNOWN"}
+        # The OPTIMADE spec also required a type comparison with null, this must be post-processed
+        # so here we use a special key "#known" which will get replaced in post-processing with the
+        # expanded dict
+        return {"#known": arg[1] == "KNOWN"}
 
     def fuzzy_string_op_rhs(self, arg):
         # fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value
@@ -138,20 +166,28 @@ class MongoTransformer(Transformer):
             return {"$in": arg[1:]}
 
         if arg[1] == "ALL":
-            raise NotImplementedError
+            return {"$all": arg[2]}
+
         if arg[1] == "ANY":
-            raise NotImplementedError
+            return {"$in": arg[2]}
+
         if arg[1] == "ONLY":
-            raise NotImplementedError
+            return {"$all": arg[2], "$size": len(arg[2])}
 
         # value with OPERATOR
-        raise NotImplementedError
+        raise NotImplementedError(
+            f"set_op_rhs not implemented for use with OPERATOR. Given: {arg}"
+        )
 
     def length_op_rhs(self, arg):
         # length_op_rhs: LENGTH [ OPERATOR ] value
-        # TODO: https://stackoverflow.com/questions/7811163/query-for-documents-where-array-size-is-greater-than-1
         if len(arg) == 2 or (len(arg) == 3 and arg[1] == "="):
             return {"$size": arg[-1]}
+
+        elif arg[1] in self.operator_map and arg[1] != "!=":
+            # create an invalid query that needs to be post-processed
+            # e.g. {'$size': {'$gt': 2}}, which is not allowed by Mongo.
+            return {"$size": {self.operator_map[arg[1]]: arg[-1]}}
 
         raise NotImplementedError(
             f"Operator {arg[1]} not implemented for LENGTH filter."
@@ -175,16 +211,287 @@ class MongoTransformer(Transformer):
         # string: ESCAPED_STRING
         return string.strip('"')
 
-    def number(self, arg):
+    @v_args(inline=True)
+    def signed_int(self, number):
+        # signed_int : SIGNED_INT
+        return int(number)
+
+    @v_args(inline=True)
+    def number(self, number):
         # number: SIGNED_INT | SIGNED_FLOAT
-        token = arg[0]
-        if token.type == "SIGNED_INT":
+        if number.type == "SIGNED_INT":
             type_ = int
-        elif token.type == "SIGNED_FLOAT":
+        elif number.type == "SIGNED_FLOAT":
             type_ = float
-        return type_(token)
+        return type_(number)
 
     def __default__(self, data, children, meta):
         raise NotImplementedError(
             f"Calling __default__, i.e., unknown grammar concept. data: {data}, children: {children}, meta: {meta}"
         )
+
+    def _recursive_expression_phrase(self, arg):
+        """ Helper function for parsing `expression_phrase`. Recursively sorts out
+        the correct precedence for $and, $or and $nor.
+
+        """
+        if len(arg) == 1:
+            # without NOT
+            return arg[0]
+
+        # handle the case of {"$not": {"$or": [expr1, expr2]}} using {"$nor": [expr1, expr2]}.
+        if "$or" in arg[1]:
+            return {"$nor": self._recursive_expression_phrase([arg[1]["$or"]])}
+
+        # handle the case of {"$not": {"$and": [expr1, expr2]}} using per-expression negation,
+        # e.g. {"$and": [{prop1: {"$not": expr1}}, {prop2: {"$not": ~expr2}}]}.
+        # Note that this is not the same as NOT (expr1 AND expr2)!
+        if "$and" in arg[1]:
+            return {
+                "$and": [
+                    self._recursive_expression_phrase(["NOT", subdict])
+                    for subdict in arg[1]["$and"]
+                ]
+            }
+
+        # simple case of negating one expression, from NOT (expr) to ~expr.
+        return {prop: {"$not": expr} for prop, expr in arg[1].items()}
+
+    def _apply_length_aliases(self, filter_: dict) -> dict:
+        """ Recursively search query for any $size calls, and check
+        if the property can be replaced with its corresponding length
+        alias.
+
+        """
+
+        def check_for_size(prop, expr):
+            return (
+                isinstance(expr, dict)
+                and "$size" in expr
+                and self.mapper.length_alias_for(prop)
+            )
+
+        def replace_with_length_alias(subdict, prop, expr):
+            subdict[self.mapper.length_alias_for(prop)] = expr["$size"]
+            subdict[prop].pop("$size")
+            if not subdict[prop]:
+                subdict.pop(prop)
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_size, replace_with_length_alias
+        )
+
+    def _apply_aliases(self, filter_: dict) -> dict:
+        """ Check whether any fields in the filter have aliases so
+        that they can be renamed for the Mongo query.
+
+        """
+        # if there are no defined aliases, just skip
+        if not self.mapper.all_aliases():
+            return filter_
+
+        def check_for_alias(prop, expr):
+            return self.mapper.alias_for(prop) != prop
+
+        def apply_alias(subdict, prop, expr):
+            if isinstance(subdict, dict):
+                subdict[self.mapper.alias_for(prop)] = self._apply_aliases(
+                    subdict.pop(prop)
+                )
+            elif isinstance(subdict, str):
+                subdict = self.mapper.alias_for(subdict)
+
+            return subdict
+
+        return recursive_postprocessing(filter_, check_for_alias, apply_alias)
+
+    def _apply_length_operators(self, filter_: dict) -> dict:
+        """ Check for any invalid pymongo queries that involve
+        applying an operator to the length of a field, and transform
+        them into a test for existence of the relevant entry, e.g.
+        "list LENGTH > 3" becomes "does the 4th list entry exist?".
+
+        """
+
+        def check_for_length_op_filter(prop, expr):
+            return (
+                isinstance(expr, dict)
+                and "$size" in expr
+                and isinstance(expr["$size"], dict)
+            )
+
+        def apply_length_op(subdict, prop, expr):
+            # assumes that the dictionary only has one element by design
+            # (we just made it above in the transformer)
+            operator, value = list(expr["$size"].items())[0]
+            if operator in self.operator_map.values() and operator != "$ne":
+                # worth being explicit here, I think
+                _prop = None
+                existence = None
+                if operator == "$gt":
+                    _prop = f"{prop}.{value + 1}"
+                    existence = True
+                elif operator == "$gte":
+                    _prop = f"{prop}.{value}"
+                    existence = True
+                elif operator == "$lt":
+                    _prop = f"{prop}.{value}"
+                    existence = False
+                elif operator == "$lte":
+                    _prop = f"{prop}.{value + 1}"
+                    existence = False
+                if _prop is not None:
+                    subdict.pop(prop)
+                    subdict[_prop] = {"$exists": existence}
+
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_length_op_filter, apply_length_op,
+        )
+
+    def _apply_relationship_filtering(self, filter_: dict) -> dict:
+        """ Check query for property names that match the entry
+        types, and transform them as relationship filters rather than
+        property filters.
+
+        """
+
+        def check_for_entry_type(prop, expr):
+            return str(prop).count(".") == 1 and str(prop).split(".")[0] in (
+                "structures",
+                "references",
+            )
+
+        def replace_with_relationship(subdict, prop, expr):
+            _prop, _field = str(prop).split(".")
+            if _field != "id":
+                raise NotImplementedError(
+                    f'Cannot filter relationships by field "{_field}", only "id" is supported.'
+                )
+
+            # in the case of HAS ONLY, the size operator needs to be applied
+            # one level up, i.e. excluding the field
+            if "$size" in expr:
+                if "$and" not in subdict:
+                    subdict["$and"] = []
+                subdict["$and"].extend(
+                    [
+                        {f"relationships.{_prop}.data": {"$size": expr.pop("$size")}},
+                        {f"relationships.{_prop}.data.{_field}": expr},
+                    ]
+                )
+            else:
+                subdict[f"relationships.{_prop}.data.{_field}"] = expr
+
+            subdict.pop(prop)
+
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_entry_type, replace_with_relationship
+        )
+
+    def _apply_unknown_or_null_filter(self, filter_: dict) -> dict:
+        """ This method loops through the query and replaces the check for
+        KNOWN with a check for existence and a check for not null, and the
+        inverse for UNKNOWN.
+
+        """
+
+        def check_for_known_filter(_, expr):
+            """ Find cases where the query dict looks like
+            `{"field": {"#known": T/F}}` or
+            `{"field": "$not": {"#known": T/F}}`, which is a magic word
+            for KNOWN/UNKNOWN filters in this transformer.
+
+            """
+            return isinstance(expr, dict) and (
+                "#known" in expr or "#known" in expr.get("$not", {})
+            )
+
+        def replace_known_filter_with_or(subdict, prop, expr):
+            """ Replace #known and $not->#known parsed filters with the appropriate
+            combination of $exists and/or $eq/$ne null.
+
+            """
+            not_ = set(expr.keys()) == {"$not"}
+            if not_:
+                expr = expr["$not"]
+
+            exists = expr["#known"] ^ not_
+
+            top_level_key = "$or"
+            comparison_operator = "$eq"
+            if exists:
+                top_level_key = "$and"
+                comparison_operator = "$ne"
+
+            if top_level_key not in subdict:
+                subdict[top_level_key] = []
+
+            subdict[top_level_key].append({prop: {"$exists": exists}})
+            subdict[top_level_key].append({prop: {comparison_operator: None}})
+
+            subdict.pop(prop)
+
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_known_filter, replace_known_filter_with_or
+        )
+
+
+def recursive_postprocessing(filter_, condition, replacement):
+    """ Recursively descend into the query, checking each dictionary
+    (contained in a list, or as an entry in another dictionary) for
+    the condition passed. If the condition is true, apply the
+    replacement to the dictionary.
+
+    Parameters:
+        filter_ (list/dict): the filter_ to process.
+        condition (callable): a function that returns True if the
+            replacement function should be applied. It should take
+            as arguments the property and expression from the filter_,
+            as would be returned by iterating over `filter_.items()`.
+        replacement (callable): a function that returns the processed
+            dictionary. It should take as arguments the dictionary
+            to modify, the property and the expression (as described
+            above).
+
+    Example:
+        For the simple case of replacing one field name with
+        another, the following functions could be used:
+
+        ```python
+        def condition(prop, expr):
+            return prop == "field_name_old"
+
+        def replacement(d, prop, expr):
+            d["field_name_old"] = d.pop(prop)
+
+        filter_ = recursive_postprocessing(
+            filter_, condition, replacement
+        )
+
+        ```
+
+    """
+    if isinstance(filter_, list):
+        result = [recursive_postprocessing(q, condition, replacement) for q in filter_]
+        return result
+
+    if isinstance(filter_, dict):
+        # this could potentially lead to memory leaks if the filter_ is *heavily* nested
+        _cached_filter = copy.deepcopy(filter_)
+        for prop, expr in filter_.items():
+            if condition(prop, expr):
+                _cached_filter = replacement(_cached_filter, prop, expr)
+            elif isinstance(expr, list):
+                _cached_filter[prop] = [
+                    recursive_postprocessing(q, condition, replacement) for q in expr
+                ]
+        return _cached_filter
+
+    return filter_

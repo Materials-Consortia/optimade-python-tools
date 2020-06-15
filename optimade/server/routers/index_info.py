@@ -1,7 +1,6 @@
 from typing import Union
 
-from fastapi import APIRouter
-from starlette.requests import Request
+from fastapi import APIRouter, Request
 
 from optimade import __api_version__
 
@@ -11,6 +10,7 @@ from optimade.models import (
     IndexInfoAttributes,
     IndexInfoResource,
     IndexRelationship,
+    RelatedLinksResource,
 )
 
 from optimade.server.config import CONFIG
@@ -18,7 +18,7 @@ from optimade.server.config import CONFIG
 from .utils import meta_values
 
 
-router = APIRouter()
+router = APIRouter(redirect_slashes=True)
 
 
 @router.get(
@@ -37,7 +37,7 @@ def get_info(request: Request):
                 api_version=f"v{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"{CONFIG.provider['index_base_url']}/v{__api_version__.split('.')[0]}/",
+                        "url": f"{CONFIG.provider.index_base_url}/v{__api_version__.split('.')[0]}/",
                         "version": f"{__api_version__}",
                     }
                 ],
@@ -48,7 +48,12 @@ def get_info(request: Request):
             ),
             relationships={
                 "default": IndexRelationship(
-                    data={"type": "child", "id": CONFIG.default_db}
+                    data={
+                        "type": RelatedLinksResource.schema()["properties"]["type"][
+                            "const"
+                        ],
+                        "id": CONFIG.default_db,
+                    }
                 )
             },
         ),
