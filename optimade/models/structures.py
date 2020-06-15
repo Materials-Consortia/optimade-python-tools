@@ -3,7 +3,7 @@ from enum import IntEnum
 from sys import float_info
 from typing import List, Optional, Tuple, Union
 
-from pydantic import Field, BaseModel, validator
+from pydantic import Field, BaseModel, validator, root_validator
 
 from .entries import EntryResourceAttributes, EntryResource
 from .utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
@@ -18,7 +18,8 @@ __all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResou
 EPS = float_info.epsilon
 
 
-Vector3D = Tuple[Union[float, None], Union[float, None], Union[float, None]]
+Vector3D = Tuple[float, float, float]
+Vector3D_unknown = Tuple[Union[float, None], Union[float, None], Union[float, None]]
 
 
 class Periodicity(IntEnum):
@@ -83,6 +84,16 @@ Note: With regards to "source database", we refer to the immediate source being 
 The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).""",
     )
 
+    attached: Optional[List[str]] = Field(
+        None,
+        description="""If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.""",
+    )
+
+    nattached: Optional[List[int]] = Field(
+        None,
+        description="""If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.""",
+    )
+
     @validator("chemical_symbols", each_item=True)
     def validate_chemical_symbols(cls, v):
         if not (v in EXTENDED_CHEMICAL_SYMBOLS):
@@ -96,6 +107,38 @@ The main use of this field is for source databases that use species names, conta
                 f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', 'Not specified'))})"
             )
         return v
+
+    @validator("attached", "nattached")
+    def validate_minimum_list_length(cls, v):
+        if v is not None and len(v) <= 1:
+            raise ValueError(
+                f"The list's length MUST be 1 or more, instead it was found to be {len(v)}"
+            )
+        return v
+
+    @root_validator
+    def attached_nattached_mutually_exclusive(cls, values):
+        attached, nattached = (
+            values.get("attached", None),
+            values.get("nattached", None),
+        )
+        if not all([attached, nattached]) or not all(
+            (_ is None for _ in [attached, nattached])
+        ):
+            raise ValueError(
+                f"Either both or none of attached ({attached}) and nattached ({nattached}) MUST be set."
+            )
+
+        if (
+            attached is not None
+            and nattached is not None
+            and len(attached) != len(nattached)
+        ):
+            raise ValueError(
+                f"attached ({attached}) and nattached ({nattached}) MUST be lists of equal length."
+            )
+
+        return values
 
 
 class Assembly(BaseModel):
@@ -359,7 +402,9 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - Match all structures with 2 or fewer periodic dimensions: :filter:`nperiodic_dimensions<=2`""",
     )
 
-    lattice_vectors: Optional[Tuple[Vector3D, Vector3D, Vector3D]] = Field(
+    lattice_vectors: Optional[
+        Tuple[Vector3D_unknown, Vector3D_unknown, Vector3D_unknown]
+    ] = Field(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
 - **Type**: list of list of floats.
@@ -385,7 +430,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     cartesian_site_positions: List[Vector3D] = Field(
         ...,
         description="""Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).
-- **Type**: list of list of floats and/or unknown values
+- **Type**: list of list of floats
 - **Requirements/Conventions**:
 
   - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
@@ -774,6 +819,21 @@ class StructureResourceAttributes(EntryResourceAttributes):
             if "assemblies" in v:
                 raise ValueError(
                     "assemblies MUST NOT be present, since the property of the same name is not present"
+                )
+        # site_attachments
+        for species in values.get("species", []):
+            # There is no need to also test "nattached",
+            # since a Species validator makes sure either both are present or both are None.
+            if "attached" in species and species.get("attached", None) is not None:
+                if "site_attachments" not in v:
+                    raise ValueError(
+                        "site_attachments MUST be present when any one entry in species includes attached and nattached"
+                    )
+                break
+        else:
+            if "site_attachments" in v:
+                raise ValueError(
+                    "site_attachments MUST NOT be present, since no species includes the attached and nattached fields"
                 )
         return v
 
