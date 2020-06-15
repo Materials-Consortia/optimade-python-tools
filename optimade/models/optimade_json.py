@@ -1,5 +1,7 @@
 """Modified JSON API v1.0 for OPTIMADE API"""
 # pylint: disable=no-self-argument,no-name-in-module
+from enum import Enum
+
 from pydantic import Field, root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
 from typing import Optional, Union, List
 
@@ -21,6 +23,27 @@ __all__ = (
     "BaseRelationshipResource",
     "Relationship",
 )
+
+
+class DataType(Enum):
+    """Optimade Data Types
+
+    See the section "Data types" in the OPTIMADE API specification for more information.
+    """
+
+    STRING = "string"
+    INTEGER = "integer"
+    FLOAT = "float"
+    BOOLEAN = "boolean"
+    TIMESTAMP = "timestamp"
+    LIST = "list"
+    DICTIONARY = "dictionary"
+    UNKNOWN = "unknown"
+
+    @classmethod
+    def get_values(cls):
+        """Get OPTIMADE data types (enum values) as a (sorted) list"""
+        return sorted((_.value for _ in cls))
 
 
 class OptimadeError(jsonapi.Error):

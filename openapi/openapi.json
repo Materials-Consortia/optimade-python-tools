@@ -1108,6 +1108,20 @@
             "title": "Sortable",
             "type": "boolean",
             "description": "defines whether the entry property can be used for sorting with the \"sort\" parameter. If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`."
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "string",
+              "integer",
+              "float",
+              "boolean",
+              "timestamp",
+              "list",
+              "dictionary",
+              "unknown"
+            ],
+            "description": "Data type of value. Must equal a valid OPTIMADE data type as listed and defined under 'Data types'."
           }
         }
       },
