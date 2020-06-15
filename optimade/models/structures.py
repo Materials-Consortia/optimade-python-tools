@@ -1,5 +1,5 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
-from enum import IntEnum
+from enum import IntEnum, Enum
 from sys import float_info
 from typing import List, Optional, Tuple, Union
 
@@ -12,7 +12,15 @@ from .utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
 
 
-__all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResource")
+__all__ = (
+    "Vector3D",
+    "Periodicity",
+    "StructureFeatures",
+    "Species",
+    "Assembly",
+    "StructureResourceAttributes",
+    "StructureResource",
+)
 
 
 EPS = float_info.epsilon
@@ -25,6 +33,15 @@ Vector3D_unknown = Tuple[Union[float, None], Union[float, None], Union[float, No
 class Periodicity(IntEnum):
     APERIODIC = 0
     PERIODIC = 1
+
+
+class StructureFeatures(Enum):
+    """Enumeration of structure_features values"""
+
+    DISORDER = "disorder"
+    IMPLICIT_ATOMS = "implicit_atoms"
+    SITE_ATTACHMENTS = "site_attachments"
+    ASSEMBLIES = "assemblies"
 
 
 class Species(BaseModel):
@@ -658,7 +675,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability).""",
     )
 
-    structure_features: List[str] = Field(
+    structure_features: List[StructureFeatures] = Field(
         ...,
         description="""A list of strings that flag which special features are used by the structure.
 - **Type**: list of strings
@@ -785,55 +802,55 @@ class StructureResourceAttributes(EntryResourceAttributes):
         # disorder
         for species in values.get("species", []):
             if len(species.chemical_symbols) > 1:
-                if "disorder" not in v:
+                if StructureFeatures.DISORDER not in v:
                     raise ValueError(
-                        "disorder MUST be present when any one entry in species has a chemical_symbols list greater than one element"
+                        f"{StructureFeatures.DISORDER.value} MUST be present when any one entry in species has a chemical_symbols list greater than one element"
                     )
                 break
         else:
-            if "disorder" in v:
+            if StructureFeatures.DISORDER in v:
                 raise ValueError(
-                    "disorder MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
+                    f"{StructureFeatures.DISORDER.value} MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
                 )
         # assemblies
         if values.get("assemblies", None) is not None:
-            if "assemblies" not in v:
+            if StructureFeatures.ASSEMBLIES not in v:
                 raise ValueError(
-                    "assemblies MUST be present, since the property of the same name is present"
+                    f"{StructureFeatures.ASSEMBLIES.value} MUST be present, since the property of the same name is present"
                 )
         else:
-            if "assemblies" in v:
+            if StructureFeatures.ASSEMBLIES in v:
                 raise ValueError(
-                    "assemblies MUST NOT be present, since the property of the same name is not present"
+                    f"{StructureFeatures.ASSEMBLIES.value} MUST NOT be present, since the property of the same name is not present"
                 )
         # site_attachments
         for species in values.get("species", []):
             # There is no need to also test "nattached",
             # since a Species validator makes sure either both are present or both are None.
             if "attached" in species and species.get("attached", None) is not None:
-                if "site_attachments" not in v:
+                if StructureFeatures.SITE_ATTACHMENTS not in v:
                     raise ValueError(
-                        "site_attachments MUST be present when any one entry in species includes attached and nattached"
+                        f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST be present when any one entry in species includes attached and nattached"
                     )
                 break
         else:
-            if "site_attachments" in v:
+            if StructureFeatures.SITE_ATTACHMENTS in v:
                 raise ValueError(
-                    "site_attachments MUST NOT be present, since no species includes the attached and nattached fields"
+                    f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST NOT be present, since no species includes the attached and nattached fields"
                 )
         # implicit_atoms
         species_names = [_.name for _ in values.get("species", [])]
         for name in species_names:
             if name not in values.get("species_at_sites", []):
-                if "implicit_atoms" not in v:
+                if StructureFeatures.IMPLICIT_ATOMS not in v:
                     raise ValueError(
-                        "implicit_atoms MUST be present when any one entry in species is not represented in species_at_sites"
+                        f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST be present when any one entry in species is not represented in species_at_sites"
                     )
                 break
         else:
-            if "implicit_atoms" in v:
+            if StructureFeatures.IMPLICIT_ATOMS in v:
                 raise ValueError(
-                    "implicit_atoms MUST NOT be present, since all species are represented in species_at_sites"
+                    f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST NOT be present, since all species are represented in species_at_sites"
                 )
         return v
 

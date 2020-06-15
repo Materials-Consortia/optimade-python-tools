@@ -1,5 +1,10 @@
 # pylint: disable=line-too-long,no-self-argument
-from pydantic import Field, BaseModel, AnyUrl, validator
+from pydantic import (  # pylint: disable=no-name-in-module
+    Field,
+    BaseModel,
+    AnyUrl,
+    validator,
+)
 from typing import List, Optional
 
 from .entries import EntryResource, EntryResourceAttributes

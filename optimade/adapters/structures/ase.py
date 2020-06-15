@@ -3,6 +3,7 @@ from warnings import warn
 
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
+from optimade.models import StructureFeatures
 
 from optimade.adapters.exceptions import ConversionError
 
@@ -31,7 +32,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
     attributes = optimade_structure.attributes
 
     # Cannot handle partial occupancies
-    if "disorder" in attributes.structure_features:
+    if StructureFeatures.DISORDER in attributes.structure_features:
         raise ConversionError(
             "ASE cannot handle structures with partial occupancies, sorry."
         )
