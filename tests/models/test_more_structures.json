@@ -80,7 +80,7 @@
     "dimension_types": [1, 0, 1],
     "nperiodic_dimensions": 2,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0, 4.0, 0.0],[0.0,1.0,4.0]],
-    "cartesian_site_positions": [ [0,null,0], [0,0,0], [0,"nan",0] ],
+    "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
     "species_at_sites": ["Si", "Ge", "vac"],
     "species": [
       {"name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0] },
@@ -113,7 +113,7 @@
     "nperiodic_dimensions": 2,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0, 4.0, 0.0],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
-    "species_at_sites": ["Si", "Ge"],
+    "species_at_sites": ["Si", "Ge", "Ge"],
     "species": [
       {"name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0] },
       {"name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0] },
@@ -143,7 +143,7 @@
     "formula_anonymous": "AB",
     "dimension_types": [1, 0, 1],
     "nperiodic_dimensions": 2,
-    "lattice_vectors": [[4.0,0.0,0.0],[null,4.0, null],[0.0,1.0,4.0]],
+    "lattice_vectors": [[4.0,0.0,0.0],[null, null, null],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
     "species_at_sites": ["Si", "Ge", "vac"],
     "species": [

@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 from pathlib import Path
 
 import pytest
@@ -18,17 +19,28 @@ import optimade.server.data
 
 class TestPydanticValidation(unittest.TestCase):
     def test_good_structures(self):
-
         good_structures = optimade.server.data.structures
 
         for structure in good_structures:
             StructureResource(**StructureMapper.map_back(structure))
 
     def test_more_good_structures(self):
-        good_structures = optimade.server.data.structures
+        test_structures_path = (
+            Path(__file__).resolve().parent.joinpath("test_more_structures.json")
+        )
+        with open(test_structures_path, "r") as f:
+            good_structures = json.load(f)
+        for doc in good_structures:
+            doc["last_modified"] = doc["last_modified"]["$date"]
 
-        for structure in good_structures:
-            StructureResource(**StructureMapper.map_back(structure))
+        for index, structure in enumerate(good_structures):
+            try:
+                StructureResource(**StructureMapper.map_back(structure))
+            except ValidationError:
+                print(
+                    f"Good test structure {index} failed to validate.\nContents: {json.dumps(structure, indent=2)}"
+                )
+                raise
 
     def test_bad_structures(self):
         test_structures_path = (
@@ -39,11 +51,11 @@ class TestPydanticValidation(unittest.TestCase):
         for doc in bad_structures:
             doc["last_modified"] = doc["last_modified"]["$date"]
 
-        for ind, structure in enumerate(bad_structures):
+        for index, structure in enumerate(bad_structures):
             with self.assertRaises(
                 ValidationError,
-                msg="Bad test structure {} failed to raise an error\nContents: {}".format(
-                    ind, json.dumps(structure, indent=2)
+                msg="Bad test structure {} failed to raise an error.\nContents: {}".format(
+                    index, json.dumps(structure, indent=2)
                 ),
             ):
                 StructureResource(**StructureMapper.map_back(structure))

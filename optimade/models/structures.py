@@ -127,7 +127,7 @@ The main use of this field is for source databases that use species names, conta
 
     @validator("attached", "nattached")
     def validate_minimum_list_length(cls, v):
-        if v is not None and len(v) <= 1:
+        if v is not None and len(v) < 1:
             raise ValueError(
                 f"The list's length MUST be 1 or more, instead it was found to be {len(v)}"
             )
@@ -485,27 +485,6 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - Match structures that have between 2 and 7 sites: :filter:`nsites>=2 AND nsites<=7`""",
     )
 
-    species_at_sites: List[str] = Field(
-        ...,
-        description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`_).
-  The properties of the species are found in the property `species`_.
-- **Type**: list of strings.
-- **Requirements/Conventions**:
-
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
-  - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`_).
-  - Each species MUST have a unique name.
-  - Each species name mentioned in the :property:`species_at_sites` list MUST be described in the list property `species`_ (i.e. for each value in the :property:`species_at_sites` list there MUST exist exactly one dictionary in the :property:`species` list with the :property:`name` attribute equal to the corresponding :property:`species_at_sites` value).
-  - Each site MUST be associated only to a single species.
-    **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.
-    This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.
-
-- **Examples**:
-
-  - :val:`["Ti","O2"]` indicates that the first site is hosting a species labeled :val:`"Ti"` and the second a species labeled :val:`"O2"`.""",
-    )
-
     species: List[Species] = Field(
         ...,
         description="""A list describing the species of the sites of this structure. Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.
@@ -562,6 +541,27 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - :val:`[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
   - :val:`[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
   - :val:`[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.""",
+    )
+
+    species_at_sites: List[str] = Field(
+        ...,
+        description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`_).
+  The properties of the species are found in the property `species`_.
+- **Type**: list of strings.
+- **Requirements/Conventions**:
+
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
+  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
+  - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`_).
+  - Each species MUST have a unique name.
+  - Each species name mentioned in the :property:`species_at_sites` list MUST be described in the list property `species`_ (i.e. for each value in the :property:`species_at_sites` list there MUST exist exactly one dictionary in the :property:`species` list with the :property:`name` attribute equal to the corresponding :property:`species_at_sites` value).
+  - Each site MUST be associated only to a single species.
+    **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.
+    This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.
+
+- **Examples**:
+
+  - :val:`["Ti","O2"]` indicates that the first site is hosting a species labeled :val:`"Ti"` and the second a species labeled :val:`"O2"`.""",
     )
 
     assemblies: Optional[List[Assembly]] = Field(
@@ -783,19 +783,30 @@ class StructureResourceAttributes(EntryResourceAttributes):
             raise ValueError(
                 f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 'Not specified')})"
             )
+        all_species_names = {
+            getattr(_, "name", None) for _ in values.get("species", [{}])
+        }
+        all_species_names -= {None}
+        for value in v:
+            if value not in all_species_names:
+                raise ValueError(
+                    f"species_at_sites MUST be represented by a species' name, but {value} was not found in the list of species names: {all_species_names}"
+                )
         return v
 
-    @validator("species", each_item=True)
-    def validate_species(cls, v, values):
-        if v.name not in values.get("species_at_sites", []):
+    @validator("species")
+    def validate_species(cls, v):
+        all_species = [_.name for _ in v]
+        unique_species = set(all_species)
+        if len(all_species) != len(unique_species):
             raise ValueError(
-                f"{v.name} not found in species_at_sites: {values.get('species_at_sites', 'Not specified')}"
+                f"Species MUST be unique based on their 'name'. Found species names: {all_species}"
             )
         return v
 
     @validator("structure_features", always=True)
     def validate_structure_features(cls, v, values):
-        if sorted(v) != v:
+        if [StructureFeatures(value) for value in sorted((_.value for _ in v))] != v:
             raise ValueError(
                 f"structure_features MUST be sorted alphabetically, given value: {v}"
             )
@@ -827,7 +838,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
         for species in values.get("species", []):
             # There is no need to also test "nattached",
             # since a Species validator makes sure either both are present or both are None.
-            if "attached" in species and species.get("attached", None) is not None:
+            if getattr(species, "attached", None) is not None:
                 if StructureFeatures.SITE_ATTACHMENTS not in v:
                     raise ValueError(
                         f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST be present when any one entry in species includes attached and nattached"
