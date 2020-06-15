@@ -16,6 +16,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Acc"
     ],
@@ -94,6 +95,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Ag",
@@ -193,6 +195,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Ag",
@@ -292,6 +295,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Mg"
@@ -389,6 +393,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "O"
@@ -488,6 +493,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Cu",
@@ -590,6 +596,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag"
     ],
@@ -729,6 +736,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "Cl",
@@ -886,6 +894,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1129,6 +1138,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1380,6 +1390,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1516,6 +1527,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac"
     ],
@@ -1584,6 +1596,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac"
     ],
@@ -1648,6 +1661,7 @@
       1,
       0
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac"
     ],
@@ -1710,6 +1724,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0] ],
     "species": [
@@ -1741,6 +1756,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0,0] ],
     "species": [
@@ -1772,6 +1788,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
     "species": [
@@ -1803,6 +1820,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0,5.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
     "species": [
