@@ -1250,7 +1250,7 @@
       "N",
       "N"
     ],
-    "structure_features": ["unknown_positions"],
+    "structure_features": ["implicit_atoms"],
     "task_id": "mpf_272"
   },
   {
@@ -1966,5 +1966,378 @@
     ],
     "structure_features": [],
     "task_id": "mpf_1"
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        null
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac"
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac"
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": ["site_attachments"],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac",
+        "attached": ["H"],
+        "nattached": [3, 1]
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac",
+        "attached": ["H"],
+        "nattached": null
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac"
+      },
+      {
+        "chemical_symbols": [
+          "Ag"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ag"
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
   }
 ]

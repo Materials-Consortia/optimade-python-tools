@@ -228,15 +228,6 @@ def _pad_iter_of_iters(
     return iterable, padded_iterable
 
 
-def pad_positions(
-    positions: List[Vector3D], padding: float = None
-) -> Tuple[List[Vector3D], bool]:
-    """Turn any null/None values into a float in given list of positions"""
-    return _pad_iter_of_iters(
-        iterable=positions, padding=padding, outer=list, inner=tuple,
-    )
-
-
 def pad_cell(
     lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D], padding: float = None
 ) -> Tuple[Tuple[Vector3D, Vector3D, Vector3D], bool]:

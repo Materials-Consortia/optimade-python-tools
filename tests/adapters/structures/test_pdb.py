@@ -21,11 +21,6 @@ def test_successful_conversion(RAW_STRUCTURES):
         assert isinstance(get_pdb(Structure(structure)), str)
 
 
-def test_null_positions(null_position_structure):
-    """Make sure null positions are handled"""
-    assert isinstance(get_pdb(null_position_structure), str)
-
-
 def test_null_lattice_vectors(null_lattice_vector_structure):
     """Make sure null lattice vectors are handled"""
     assert isinstance(get_pdb(null_lattice_vector_structure), str)

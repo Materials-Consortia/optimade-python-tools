@@ -15,27 +15,11 @@ numpy = pytest.importorskip(
 from optimade.adapters.structures.utils import (
     fractional_coordinates,
     pad_cell,
-    pad_positions,
     scaled_cell,
 )
 
 
 # TODO: Add tests for cell_to_cellpar, unit_vector, cellpar_to_cell
-
-
-def test_pad_positions(null_position_structure):
-    """Make sure None values in cartesian_site_positions are converted to padding float value"""
-    positions, padded_position = pad_positions(
-        null_position_structure.attributes.cartesian_site_positions
-    )
-
-    assert not any(value is None for vector in positions for value in vector)
-    assert padded_position
-
-    positions, padded_position = pad_positions(positions)
-
-    assert not any(value is None for vector in positions for value in vector)
-    assert not padded_position
 
 
 def test_pad_cell(null_lattice_vector_structure):

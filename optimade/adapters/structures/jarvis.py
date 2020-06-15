@@ -1,7 +1,6 @@
 from warnings import warn
 from optimade.models import StructureResource as OptimadeStructure
 from optimade.adapters.exceptions import ConversionError
-from optimade.adapters.structures.utils import pad_positions
 
 try:
     from jarvis.core.atoms import Atoms
@@ -33,11 +32,9 @@ def get_jarvis_atoms(optimade_structure: OptimadeStructure) -> Atoms:
             "jarvis-tools cannot handle structures with partial occupancies."
         )
 
-    cartesian_site_positions, _ = pad_positions(attributes.cartesian_site_positions)
-
     return Atoms(
         lattice_mat=attributes.lattice_vectors,
         elements=[specie.name for specie in attributes.species],
-        coords=cartesian_site_positions,
+        coords=attributes.cartesian_site_positions,
         cartesian=True,
     )

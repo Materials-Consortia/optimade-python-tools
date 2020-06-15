@@ -122,8 +122,8 @@ The main use of this field is for source databases that use species names, conta
             values.get("attached", None),
             values.get("nattached", None),
         )
-        if not all([attached, nattached]) or not all(
-            (_ is None for _ in [attached, nattached])
+        if (attached is None and nattached is not None) or (
+            attached is not None and nattached is None
         ):
             raise ValueError(
                 f"Either both or none of attached ({attached}) and nattached ({nattached}) MUST be set."
@@ -675,7 +675,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - :val:`disorder`: This flag MUST be present if any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element.
     - :val:`assemblies`: This flag MUST be present if the property `assemblies`_ is present.
 
--  **Examples**: A structure having unknown positions and using assemblies: :val:`["assemblies", "unknown_positions"]`""",
+-  **Examples**: A structure having implicit atoms and using assemblies: :val:`["assemblies", "implicit_atoms"]`""",
     )
 
     @validator("elements", each_item=True)
