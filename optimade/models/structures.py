@@ -338,6 +338,27 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - For a bulk 3D system: :val:`[1, 1, 1]`""",
     )
 
+    nperiodic_dimensions: Optional[int] = Field(
+        None,
+        description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in :property:`dimension_types`.
+- **Type**: integer
+- **Requirements/Conventions**:
+
+  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.
+  - **Query**: MUST be a queryable property with support for all mandatory filter features.
+  - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types`_ property.
+  - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.
+
+- **Examples**:
+
+  - :val:`2` should be indicated in cases where :property:`dimension_types` is any of :val:`[1, 1, 0]`, :val:`[1, 0, 1]`, :val:`[0, 1, 1]`.
+
+- **Query examples**:
+
+  - Match only structures with exactly 3 periodic dimensions: :filter:`nperiodic_dimensions=3`
+  - Match all structures with 2 or fewer periodic dimensions: :filter:`nperiodic_dimensions<=2`""",
+    )
+
     lattice_vectors: Optional[Tuple[Vector3D, Vector3D, Vector3D]] = Field(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
@@ -637,6 +658,21 @@ class StructureResourceAttributes(EntryResourceAttributes):
     def no_spaces_in_reduced(cls, v):
         if v and " " in v:
             raise ValueError(f"Spaces are not allowed, you passed: {v}")
+        return v
+
+    @validator("nperiodic_dimensions")
+    def check_periodic_dimensions(cls, v, values):
+        if values.get("dimension_types", []) and v is None:
+            raise ValueError(
+                "nperiodic_dimensions is REQUIRED, since dimension_types was provided."
+            )
+
+        if v != sum(values.get("dimension_types")):
+            raise ValueError(
+                f"nperiodic_dimensions ({v}) does not match expected value of {sum(values['dimension_types'])} "
+                f"from dimension_types ({values['dimension_types']})"
+            )
+
         return v
 
     @validator("lattice_vectors", always=True)
