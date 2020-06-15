@@ -1012,7 +1012,12 @@
           },
           "link_type": {
             "title": "Link Type",
-            "type": "string",
+            "enum": [
+              "child",
+              "root",
+              "external",
+              "providers"
+            ],
             "description": "The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'."
           },
           "aggregate": {
@@ -1023,7 +1028,12 @@
           },
           "no_aggregate_reason": {
             "title": "No Aggregate Reason",
-            "type": "string",
+            "enum": [
+              "ok",
+              "test",
+              "staging",
+              "no"
+            ],
             "description": "An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.\nIt SHOULD NOT be present if :property:`aggregate`=:val:`ok`."
           }
         },

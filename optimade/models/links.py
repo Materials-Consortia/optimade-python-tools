@@ -1,8 +1,9 @@
 # pylint: disable=no-self-argument
+from enum import Enum
+
 from pydantic import (  # pylint: disable=no-name-in-module
     Field,
     AnyUrl,
-    validator,
     root_validator,
 )
 from typing import Union, Optional
@@ -15,6 +16,24 @@ __all__ = (
     "LinksResourceAttributes",
     "LinksResource",
 )
+
+
+class LinkType(Enum):
+    """Enumeration of link_type values"""
+
+    CHILD = "child"
+    ROOT = "root"
+    EXTERNAL = "external"
+    PROVIDERS = "providers"
+
+
+class Aggregate(Enum):
+    """Enumeration of aggregate values"""
+
+    OK = "ok"
+    TEST = "test"
+    STAGING = "staging"
+    NO = "no"
 
 
 class LinksResourceAttributes(Attributes):
@@ -40,7 +59,7 @@ class LinksResourceAttributes(Attributes):
         description="JSON API links object, pointing to a homepage URL for this implementation",
     )
 
-    link_type: str = Field(
+    link_type: LinkType = Field(
         ...,
         description="The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'.",
     )
@@ -59,25 +78,11 @@ A client MAY follow the link anyway if it has reason to do so (e.g., if the clie
 If specified, it MUST be one of the values listed in section Link Aggregate Options.""",
     )
 
-    no_aggregate_reason: Optional[str] = Field(
+    no_aggregate_reason: Optional[Aggregate] = Field(
         None,
         description="""An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.
 It SHOULD NOT be present if :property:`aggregate`=:val:`ok`.""",
     )
-
-    @validator("link_type")
-    def link_type_must_be_in_specific_set(cls, value):
-        if value not in {"child", "root", "external", "providers"}:
-            raise ValueError(
-                "link_type MUST be either 'child, 'root', 'external', or 'providers'"
-            )
-        return value
-
-    @validator("aggregate")
-    def aggregate_must_be_in_specific_set(cls, value):
-        if value is not None and value not in {"ok", "test", "staging", "no"}:
-            raise ValueError("aggregate MUST be either 'ok, 'test', 'staging', or 'no'")
-        return value
 
 
 class LinksResource(EntryResource):
