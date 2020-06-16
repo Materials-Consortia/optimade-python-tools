@@ -59,7 +59,7 @@ jobs:
       if: env.push == 1
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
 
   publish:
     runs-on: ubuntu-latest
