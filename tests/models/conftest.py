@@ -47,3 +47,19 @@ def good_structures() -> list:
     structures = load_test_data(filename)
     structures = remove_mongo_date(structures)
     return structures
+
+
+@pytest.fixture
+def starting_links() -> dict:
+    """A good starting links resource"""
+    return {
+        "id": "test",
+        "type": "links",
+        "name": "Test",
+        "description": "This is a test",
+        "base_url": "https://example.org/optimade",
+        "homepage": "https://example.org",
+        "link_type": "child",
+        "aggregate": "test",
+        "no_aggregate_reason": "This is a test database",
+    }
