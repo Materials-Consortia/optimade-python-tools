@@ -47,11 +47,11 @@ jobs:
     - name: Commit files
       run: |
         git config --local user.email "dev@optimade.org"
-        git config --local user.name "optimade_devs"
-        mv CHANGELOG.md docs/
+        git config --local user.name "OPTIMADE Developers"
+        mv -f CHANGELOG.md docs/
 
         git add docs/CHANGELOG.md
-        git add openapi/*
+        git add openapi/index_openapi.json openapi/openapi.json
         git commit -m 'Release Updates' && echo ::set-env name=push::1 || echo "No changes to CHANGELOG.md"
 
     - name: Push changes
