@@ -52,9 +52,11 @@ jobs:
 
         git add docs/CHANGELOG.md
         git add openapi/index_openapi.json openapi/openapi.json
-        git commit -m 'Release Updates' && echo ::set-env name=push::1 || echo "No changes to CHANGELOG.md"
+        echo "::set-env name=push::0"
+        git commit -m 'Release Updates' && echo "::set-env name=push::1" || echo "No changes to CHANGELOG.md"
 
     - name: Push changes
+      if: env.push == 1
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
