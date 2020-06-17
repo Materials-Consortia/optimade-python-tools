@@ -36,7 +36,7 @@ jobs:
     - name: Generate changelog
       uses: charmixer/auto-changelog-action@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
 
     - name: Update Version
       run: invoke setver -v ${GITHUB_REF#refs/tags/}
