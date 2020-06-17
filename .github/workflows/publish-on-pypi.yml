@@ -67,11 +67,27 @@ jobs:
         user: __token__
         password: ${{ secrets.pypi_password }}
 
+    - name: Temporarily disable "include administrators" branch protection
+      uses: benjefferies/branch-protection-bot@master
+      if: env.push == 1
+      with:
+        access-token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
+        branch: master
+        enforce_admins: false
+
     - name: Push changes
       if: env.push == 1
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
+
+    - name: Enable "include administrators" branch protection
+      uses: benjefferies/branch-protection-bot@master
+      if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
+      with:
+        access-token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
+        enforce_admins: true
+        branch: master
 
     - name: Build
       run: mkdocs build
