@@ -76,7 +76,7 @@ jobs:
         access-token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
         owner: benjefferies
         enforce_admins: true
-        branch: maste
+        branch: master
 
   publish:
     runs-on: ubuntu-latest
