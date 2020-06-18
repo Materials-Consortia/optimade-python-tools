@@ -1818,5 +1818,73 @@
       }
     ],
     "structure_features": ["assemblies"]
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "type": "structure",
+    "links": ["C-H"],
+    "relationships": "single",
+    "id": "some_id",
+    "_mp_chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      0,
+      1
+    ],
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        10,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        null
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac"
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1"
   }
 ]

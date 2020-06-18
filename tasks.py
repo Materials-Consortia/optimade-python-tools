@@ -112,13 +112,13 @@ def parse_spec_for_filters(_):
                 else:
                     filters.append(_filter)
 
-    with open(filter_path, "w") as f:
+    with open(filter_path, "w") as handle:
         for _filter in filters:
-            f.write(_filter + "\n")
+            handle.write(_filter + "\n")
 
-    with open(optional_filter_path, "w") as f:
+    with open(optional_filter_path, "w") as handle:
         for _filter in optional_filters:
-            f.write(_filter + "\n")
+            handle.write(_filter + "\n")
 
 
 @task
@@ -128,8 +128,9 @@ def generate_openapi(_):
 
     if not TOP_DIR.joinpath("openapi").exists():
         os.mkdir(TOP_DIR.joinpath("openapi"))
-    with open(TOP_DIR.joinpath("openapi/local_openapi.json"), "w") as f:
-        json.dump(app.openapi(), f, indent=2)
+    with open(TOP_DIR.joinpath("openapi/local_openapi.json"), "w") as handle:
+        json.dump(app.openapi(), handle, indent=2)
+        handle.write("\n")  # Final empty EOL
 
 
 @task
@@ -139,24 +140,25 @@ def generate_index_openapi(_):
 
     if not TOP_DIR.joinpath("openapi").exists():
         os.mkdir(TOP_DIR.joinpath("openapi"))
-    with open(TOP_DIR.joinpath("openapi/local_index_openapi.json"), "w") as f:
-        json.dump(app_index.openapi(), f, indent=2)
+    with open(TOP_DIR.joinpath("openapi/local_index_openapi.json"), "w") as handle:
+        json.dump(app_index.openapi(), handle, indent=2)
+        handle.write("\n")  # Final empty EOL
 
 
 @task(pre=[generate_openapi, generate_index_openapi])
 def check_openapi_diff(_):
     """Checks the Generated OpenAPI spec against what is stored in the repo"""
-    with open(TOP_DIR.joinpath("openapi/openapi.json")) as f:
-        openapi = json.load(f)
+    with open(TOP_DIR.joinpath("openapi/openapi.json")) as handle:
+        openapi = json.load(handle)
 
-    with open(TOP_DIR.joinpath("openapi/local_openapi.json")) as f:
-        local_openapi = json.load(f)
+    with open(TOP_DIR.joinpath("openapi/local_openapi.json")) as handle:
+        local_openapi = json.load(handle)
 
-    with open(TOP_DIR.joinpath("openapi/index_openapi.json")) as f:
-        index_openapi = json.load(f)
+    with open(TOP_DIR.joinpath("openapi/index_openapi.json")) as handle:
+        index_openapi = json.load(handle)
 
-    with open(TOP_DIR.joinpath("openapi/local_index_openapi.json")) as f:
-        local_index_openapi = json.load(f)
+    with open(TOP_DIR.joinpath("openapi/local_index_openapi.json")) as handle:
+        local_index_openapi = json.load(handle)
 
     openapi_diff = diff(openapi, local_openapi)
     if openapi_diff != {}:
@@ -201,6 +203,6 @@ def update_api_shield(_):
 
     shields_json = Path(__file__).parent.resolve().joinpath("optimade-version.json")
 
-    with open(shields_json, "w") as fp:
-        json.dump(shield, fp, indent=2)
-        fp.write("\n")  # Add newline cause Py JSON does not
+    with open(shields_json, "w") as handle:
+        json.dump(shield, handle, indent=2)
+        handle.write("\n")  # Add newline cause Py JSON does not

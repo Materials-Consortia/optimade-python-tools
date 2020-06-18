@@ -1,6 +1,7 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-self-argument
 from typing import Optional, Union, List
+from datetime import datetime, timezone
 from pydantic import (  # pylint: disable=no-name-in-module
     BaseModel,
     AnyUrl,
@@ -286,3 +287,10 @@ class Response(BaseModel):
                 f"At least one of {required_fields} MUST be specified in the top-level response"
             )
         return values
+
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.astimezone(timezone.utc).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            ),
+        }
