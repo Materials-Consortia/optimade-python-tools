@@ -128,9 +128,9 @@ def generate_openapi(_):
 
     if not TOP_DIR.joinpath("openapi").exists():
         os.mkdir(TOP_DIR.joinpath("openapi"))
-    with open(TOP_DIR.joinpath("openapi/local_openapi.json"), "w") as handle:
-        json.dump(app.openapi(), handle, indent=2)
-        handle.write("\n")  # Final empty EOL
+    with open(TOP_DIR.joinpath("openapi/local_openapi.json"), "w") as f:
+        json.dump(app.openapi(), f, indent=2)
+        print("", file=f)  # Empty EOL
 
 
 @task
@@ -140,9 +140,9 @@ def generate_index_openapi(_):
 
     if not TOP_DIR.joinpath("openapi").exists():
         os.mkdir(TOP_DIR.joinpath("openapi"))
-    with open(TOP_DIR.joinpath("openapi/local_index_openapi.json"), "w") as handle:
-        json.dump(app_index.openapi(), handle, indent=2)
-        handle.write("\n")  # Final empty EOL
+    with open(TOP_DIR.joinpath("openapi/local_index_openapi.json"), "w") as f:
+        json.dump(app_index.openapi(), f, indent=2)
+        print("", file=f)  # Empty EOL
 
 
 @task(pre=[generate_openapi, generate_index_openapi])

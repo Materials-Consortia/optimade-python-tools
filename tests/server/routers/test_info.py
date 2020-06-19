@@ -1,7 +1,7 @@
 # pylint: disable=relative-beyond-top-level
 import unittest
 
-from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
+from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse, DataType
 
 from ..utils import EndpointTestsMixin
 
@@ -36,11 +36,36 @@ class InfoStructuresEndpointTests(EndpointTestsMixin, unittest.TestCase):
         data_keys = ["description", "properties", "formats", "output_fields_by_format"]
         self.check_keys(data_keys, self.json_response["data"])
 
+    def test_properties_type(self):
+        types = {
+            _.get("type", None)
+            for _ in self.json_response.get("data", {}).get("properties", {}).values()
+        }
+        for data_type in types:
+            if data_type is None:
+                continue
+            assert isinstance(DataType(data_type), DataType)
+
 
 class InfoReferencesEndpointTests(EndpointTestsMixin, unittest.TestCase):
 
     request_str = "/info/references"
     response_cls = EntryInfoResponse
+
+    def test_info_references_endpoint_data(self):
+        self.assertTrue("data" in self.json_response)
+        data_keys = ["description", "properties", "formats", "output_fields_by_format"]
+        self.check_keys(data_keys, self.json_response["data"])
+
+    def test_properties_type(self):
+        types = {
+            _.get("type", None)
+            for _ in self.json_response.get("data", {}).get("properties", {}).values()
+        }
+        for data_type in types:
+            if data_type is None:
+                continue
+            assert isinstance(DataType(data_type), DataType)
 
 
 class IndexInfoEndpointTests(EndpointTestsMixin, unittest.TestCase):

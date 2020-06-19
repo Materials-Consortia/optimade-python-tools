@@ -44,13 +44,6 @@ def test_null_lattice_vectors(null_lattice_vector_structure):
     assert isinstance(get_pymatgen(null_lattice_vector_structure), Molecule)
 
 
-def test_null_positions(null_position_structure):
-    """Make sure null positions are handled"""
-    assert isinstance(get_pymatgen(null_position_structure), PymatgenStructure)
-    assert isinstance(_get_structure(null_position_structure), PymatgenStructure)
-    assert isinstance(_get_molecule(null_position_structure), Molecule)
-
-
 def test_special_species(SPECIAL_SPECIES_STRUCTURES):
     """Make sure vacancies and non-chemical symbols ("X") are handled"""
     for special_structure in SPECIAL_SPECIES_STRUCTURES:

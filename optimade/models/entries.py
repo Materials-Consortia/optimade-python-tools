@@ -4,7 +4,7 @@ from typing import Optional, Dict, List
 from pydantic import BaseModel, Field, validator  # pylint: disable=no-name-in-module
 
 from .jsonapi import Relationships, Attributes, Resource
-from .optimade_json import Relationship
+from .optimade_json import Relationship, DataType
 
 
 __all__ = (
@@ -148,6 +148,11 @@ class EntryInfoProperty(BaseModel):
         None,
         description='defines whether the entry property can be used for sorting with the "sort" parameter. '
         "If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.",
+    )
+
+    type: Optional[DataType] = Field(
+        None,
+        description="Data type of value. Must equal a valid OPTIMADE data type as listed and defined under 'Data types'.",
     )
 
 

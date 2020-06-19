@@ -5,7 +5,6 @@ from optimade.models import StructureResource as OptimadeStructure
 
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
-    pad_positions,
     fractional_coordinates,
 )
 
@@ -78,9 +77,9 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         # Since some structure viewers are having issues with cartesian coordinates,
         # we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.
         if not hasattr(attributes, "fractional_site_positions"):
-            sites, _ = pad_positions(attributes.cartesian_site_positions)
             attributes.fractional_site_positions = fractional_coordinates(
-                cell=attributes.lattice_vectors, cartesian_positions=sites
+                cell=attributes.lattice_vectors,
+                cartesian_positions=attributes.cartesian_site_positions,
             )
 
     # NOTE: This is otherwise a bit ahead of its time, since this OPTIMADE property is part of an open PR.
@@ -102,9 +101,9 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
     )
 
     if coord_type == "fract":
-        sites, _ = pad_positions(attributes.fractional_site_positions)
+        sites = attributes.fractional_site_positions
     else:
-        sites, _ = pad_positions(attributes.cartesian_site_positions)
+        sites = attributes.cartesian_site_positions
 
     species: Dict[str, OptimadeStructureSpecies] = {
         species.name: species for species in attributes.species

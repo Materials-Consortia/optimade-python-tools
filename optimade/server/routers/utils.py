@@ -15,6 +15,7 @@ from optimade.models import (
     ToplevelLinks,
     ReferenceResource,
     StructureResource,
+    DataType,
 )
 
 from optimade.server.config import CONFIG
@@ -285,6 +286,10 @@ def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> d
                 # All properties are sortable with the MongoDB backend.
                 # While the result for sorting lists may not be as expected, they are still sorted.
                 properties[name]["sortable"] = True
+                # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
+                properties[name]["type"] = DataType.from_json_type(
+                    value.get("format", value["type"])
+                )
     return properties
 
 

@@ -1,5 +1,7 @@
 # pylint: disable=no-self-argument
-from pydantic import Field, BaseModel, validator  # pylint: disable=no-name-in-module
+from enum import Enum
+
+from pydantic import Field, BaseModel  # pylint: disable=no-name-in-module
 from typing import Union, Dict
 
 from .jsonapi import BaseResource
@@ -12,6 +14,12 @@ __all__ = (
     "IndexRelationship",
     "IndexInfoResource",
 )
+
+
+class DefaultRelationship(Enum):
+    """Enumeration of key(s) for relationship dictionary in IndexInfoResource"""
+
+    DEFAULT = "default"
 
 
 class IndexInfoAttributes(BaseInfoAttributes):
@@ -46,18 +54,10 @@ class IndexInfoResource(BaseInfoResource):
     """Index Meta-Database Base URL Info endpoint resource"""
 
     attributes: IndexInfoAttributes = Field(...)
-    relationships: Union[None, Dict[str, IndexRelationship]] = Field(
+    relationships: Union[None, Dict[DefaultRelationship, IndexRelationship]] = Field(
         ...,
         description="Reference to the child identifier object under the links endpoint "
         "that the provider has chosen as their 'default' OPTIMADE API database. "
         "A client SHOULD present this database as the first choice when an end-user "
         "chooses this provider.",
     )
-
-    @validator("relationships")
-    def relationships_key_must_be_default(cls, value):
-        if value is not None and all([key != "default" for key in value]):
-            raise ValueError(
-                "if the relationships value is a dict, the key MUST be 'default'"
-            )
-        return value

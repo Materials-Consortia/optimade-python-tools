@@ -1108,6 +1108,20 @@
             "title": "Sortable",
             "type": "boolean",
             "description": "defines whether the entry property can be used for sorting with the \"sort\" parameter. If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`."
+          },
+          "type": {
+            "title": "Type",
+            "enum": [
+              "string",
+              "integer",
+              "float",
+              "boolean",
+              "timestamp",
+              "list",
+              "dictionary",
+              "unknown"
+            ],
+            "description": "Data type of value. Must equal a valid OPTIMADE data type as listed and defined under 'Data types'."
           }
         }
       },
@@ -1794,8 +1808,29 @@
           },
           "link_type": {
             "title": "Link Type",
-            "type": "string",
+            "enum": [
+              "child",
+              "root",
+              "external",
+              "providers"
+            ],
             "description": "The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'."
+          },
+          "aggregate": {
+            "title": "Aggregate",
+            "enum": [
+              "ok",
+              "test",
+              "staging",
+              "no"
+            ],
+            "description": "A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.\nThis flag SHOULD NOT be indicated for links where :property:`link_type` is not :val:`child`.\n\nIf not specified, clients MAY assume that the value is :val:`ok`.\nIf specified, and the value is anything different than :val:`ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).\n\nSpecific values indicate the reason why the server is providing the suggestion.\nA client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with :property:`aggregate`=:val:`test`).\n\nIf specified, it MUST be one of the values listed in section Link Aggregate Options.",
+            "default": "ok"
+          },
+          "no_aggregate_reason": {
+            "title": "No Aggregate Reason",
+            "type": "string",
+            "description": "An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.\nIt SHOULD NOT be present if :property:`aggregate`=:val:`ok`."
           }
         },
         "description": "Links endpoint resource object attributes"
@@ -2733,6 +2768,22 @@
             "title": "Original Name",
             "type": "string",
             "description": "Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\nNote: With regards to \"source database\", we refer to the immediate source being queried via the OPTIMADE API implementation.\nThe main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_)."
+          },
+          "attached": {
+            "title": "Attached",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or \"X\" for a non-chemical element."
+          },
+          "nattached": {
+            "title": "Nattached",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key."
           }
         },
         "description": "A list describing the species of the sites of this structure.\nSpecies can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.\n\n- **Examples**:\n\n    - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n    - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n    - :val:`[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n    - :val:`[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n    - :val:`[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13."
@@ -2846,8 +2897,8 @@
           "dimension_types",
           "cartesian_site_positions",
           "nsites",
-          "species_at_sites",
           "species",
+          "species_at_sites",
           "structure_features"
         ],
         "type": "object",
@@ -2932,6 +2983,11 @@
             ],
             "description": "List of three integers.\n  For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`_).\n  This list indicates if the direction is periodic (value :val:`1`) or non-periodic (value :val:`0`).\n  Note: the elements in this list each refer to the direction of the corresponding entry in property `lattice_vectors`_ and *not* the Cartesian x, y, z directions.\n- **Type**: list of integers.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property. Support for equality comparison is REQUIRED, support for other comparison operators are OPTIONAL.\n  - MUST be a list of length 3.\n  - Each integer element MUST assume only the value 0 or 1.\n\n- **Examples**:\n\n  - For a molecule: :val:`[0, 0, 0]`\n  - For a wire along the direction specified by the third lattice vector: :val:`[0, 0, 1]`\n  - For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: :val:`[1, 0, 1]`\n  - For a bulk 3D system: :val:`[1, 1, 1]`"
           },
+          "nperiodic_dimensions": {
+            "title": "Nperiodic Dimensions",
+            "type": "integer",
+            "description": "An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in :property:`dimension_types`.\n- **Type**: integer\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types`_ property.\n  - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.\n\n- **Examples**:\n\n  - :val:`2` should be indicated in cases where :property:`dimension_types` is any of :val:`[1, 1, 0]`, :val:`[1, 0, 1]`, :val:`[0, 1, 1]`.\n\n- **Query examples**:\n\n  - Match only structures with exactly 3 periodic dimensions: :filter:`nperiodic_dimensions=3`\n  - Match all structures with 2 or fewer periodic dimensions: :filter:`nperiodic_dimensions<=2`"
+          },
           "lattice_vectors": {
             "title": "Lattice Vectors",
             "type": "array",
@@ -2998,20 +3054,12 @@
                 }
               ]
             },
-            "description": "Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).\n- **Type**: list of list of floats and/or unknown values\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\n  - It MUST be a list of length N times 3, where N is the number of sites in the structure.\n  - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`_).\n  - If a component of the position is unknown, the :val:`null` value should be provided instead (see section `Properties with unknown value`_).\n    Otherwise, it should be a float value, expressed in angstrom (\u00c5).\n    If at least one of the coordinates is unknown, the correct flag in the list property `structure_features`_ MUST be set.\n  - **Notes**: (for implementers) While this is unrelated to this OPTIMADE specification: If you decide to store internally the :property: `cartesian_site_positions` as a float array, you might want to represent :val:`null` values with :field-val:`NaN` values.\n    The latter being valid float numbers in the IEEE 754 standard in `IEEE 754-1985 <https://doi.org/10.1109/IEEESTD.1985.82928>`__ and in the updated version `IEEE 754-2008 <https://doi.org/10.1109/IEEESTD.2008.4610935>`__.\n\n- **Examples**:\n\n  - :val:`[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin."
+            "description": "Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).\n- **Type**: list of list of floats\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\n  - It MUST be a list of length N times 3, where N is the number of sites in the structure.\n  - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`_).\n  - If a component of the position is unknown, the :val:`null` value should be provided instead (see section `Properties with unknown value`_).\n    Otherwise, it should be a float value, expressed in angstrom (\u00c5).\n    If at least one of the coordinates is unknown, the correct flag in the list property `structure_features`_ MUST be set.\n  - **Notes**: (for implementers) While this is unrelated to this OPTIMADE specification: If you decide to store internally the :property: `cartesian_site_positions` as a float array, you might want to represent :val:`null` values with :field-val:`NaN` values.\n    The latter being valid float numbers in the IEEE 754 standard in `IEEE 754-1985 <https://doi.org/10.1109/IEEESTD.1985.82928>`__ and in the updated version `IEEE 754-2008 <https://doi.org/10.1109/IEEESTD.2008.4610935>`__.\n\n- **Examples**:\n\n  - :val:`[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin."
           },
           "nsites": {
             "title": "Nsites",
             "type": "integer",
             "description": "An integer specifying the length of the :property:`cartesian_site_positions` property.\n- **Type**: integer\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter operators.\n\n- **Examples**:\n\n  - :val:`42`\n\n- **Query examples**:\n\n  - Match only structures with exactly 4 sites: :filter:`nsites=4`\n  - Match structures that have between 2 and 7 sites: :filter:`nsites>=2 AND nsites<=7`"
-          },
-          "species_at_sites": {
-            "title": "Species At Sites",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`_).\n  The properties of the species are found in the property `species`_.\n- **Type**: list of strings.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\n  - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`_).\n  - Each species MUST have a unique name.\n  - Each species name mentioned in the :property:`species_at_sites` list MUST be described in the list property `species`_ (i.e. for each value in the :property:`species_at_sites` list there MUST exist exactly one dictionary in the :property:`species` list with the :property:`name` attribute equal to the corresponding :property:`species_at_sites` value).\n  - Each site MUST be associated only to a single species.\n    **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.\n    This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.\n\n- **Examples**:\n\n  - :val:`[\"Ti\",\"O2\"]` indicates that the first site is hosting a species labeled :val:`\"Ti\"` and the second a species labeled :val:`\"O2\"`."
           },
           "species": {
             "title": "Species",
@@ -3020,6 +3068,14 @@
               "$ref": "#/components/schemas/Species"
             },
             "description": "A list describing the species of the sites of this structure. Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.\n- **Type**: list of dictionary with keys:\n\n  - :property:`name`: string (REQUIRED)\n  - :property:`chemical_symbols`: list of strings (REQUIRED)\n  - :property:`concentration`: list of float (REQUIRED)\n  - :property:`mass`: float (OPTIONAL)\n  - :property:`original_name`: string (OPTIONAL).\n\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL.\n    If supported, filters MAY support only a subset of comparison operators.\n  - Each list member MUST be a dictionary with the following keys:\n\n    - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;\n\n    - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.\n\n      - It MUST be one of the following:\n\n        - a valid chemical-element name, or\n        - the special value :val:`\"X\"` to represent a non-chemical element, or\n        - the special value :val:`\"vacancy\"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the :property:`concentration` list, see below).\n\n      -  If any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).\n\n    - **concentration**: REQUIRED; MUST be a list of floats, with same length as :property:`chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species.\n      The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:\n\n      - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.\n      - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.\n\n      Note that concentrations are uncorrelated between different site (even of the same species).\n\n    - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.\n    - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\n        Note: With regards to \"source database\", we refer to the immediate source being queried via the OPTIMADE API implementation.\n            The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).\n\n  - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., :val:`\"Ti\"` for titanium, :val:`\"O\"` for oxygen, etc.)\n    However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.\n    This means that a species :val:`{\"name\": \"C\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]}` is valid and represents a titanium species (and *not* a carbon species).\n  - It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.\n\n- **Examples**:\n\n  - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n  - :val:`[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n  - :val:`[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n  - :val:`[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n  - :val:`[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13."
+          },
+          "species_at_sites": {
+            "title": "Species At Sites",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`_).\n  The properties of the species are found in the property `species`_.\n- **Type**: list of strings.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\n  - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`_).\n  - Each species MUST have a unique name.\n  - Each species name mentioned in the :property:`species_at_sites` list MUST be described in the list property `species`_ (i.e. for each value in the :property:`species_at_sites` list there MUST exist exactly one dictionary in the :property:`species` list with the :property:`name` attribute equal to the corresponding :property:`species_at_sites` value).\n  - Each site MUST be associated only to a single species.\n    **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.\n    This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.\n\n- **Examples**:\n\n  - :val:`[\"Ti\",\"O2\"]` indicates that the first site is hosting a species labeled :val:`\"Ti\"` and the second a species labeled :val:`\"O2\"`."
           },
           "assemblies": {
             "title": "Assemblies",
@@ -3033,9 +3089,14 @@
             "title": "Structure Features",
             "type": "array",
             "items": {
-              "type": "string"
+              "enum": [
+                "disorder",
+                "implicit_atoms",
+                "site_attachments",
+                "assemblies"
+              ]
             },
-            "description": "A list of strings that flag which special features are used by the structure.\n- **Type**: list of strings\n- **Requirements/Conventions**:\n\n  - **Support**: REQUIRED, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property. Filters on the list MUST support all mandatory HAS-type queries. Filter operators for comparisons on the string components MUST support equality, support for other comparison operators are OPTIONAL.\n  - MUST be an empty list if no special features are used.\n  - MUST be sorted alphabetically.\n  - If a special feature listed below is used, the list MUST contain the corresponding string.\n  - If a special feature listed below is not used, the list MUST NOT contain the corresponding string.\n  - **List of strings used to indicate special structure features**:\n\n    - :val:`disorder`: This flag MUST be present if any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element.\n    - :val:`unknown_positions`: This flag MUST be present if at least one component of the :property:`cartesian_site_positions` list of lists has value :val:`null`.\n    - :val:`assemblies`: This flag MUST be present if the property `assemblies`_ is present.\n\n-  **Examples**: A structure having unknown positions and using assemblies: :val:`[\"assemblies\", \"unknown_positions\"]`"
+            "description": "A list of strings that flag which special features are used by the structure.\n- **Type**: list of strings\n- **Requirements/Conventions**:\n\n  - **Support**: REQUIRED, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property. Filters on the list MUST support all mandatory HAS-type queries. Filter operators for comparisons on the string components MUST support equality, support for other comparison operators are OPTIONAL.\n  - MUST be an empty list if no special features are used.\n  - MUST be sorted alphabetically.\n  - If a special feature listed below is used, the list MUST contain the corresponding string.\n  - If a special feature listed below is not used, the list MUST NOT contain the corresponding string.\n  - **List of strings used to indicate special structure features**:\n\n    - :val:`disorder`: This flag MUST be present if any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element.\n    - :val:`assemblies`: This flag MUST be present if the property `assemblies`_ is present.\n\n-  **Examples**: A structure having implicit atoms and using assemblies: :val:`[\"assemblies\", \"implicit_atoms\"]`"
           }
         },
         "description": "This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."

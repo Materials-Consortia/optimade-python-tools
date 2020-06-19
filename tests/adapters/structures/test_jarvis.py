@@ -23,11 +23,6 @@ def test_successful_conversion(RAW_STRUCTURES):
         assert isinstance(get_jarvis_atoms(Structure(structure)), Atoms)
 
 
-def test_null_positions(null_position_structure):
-    """Make sure null positions are handled"""
-    assert isinstance(get_jarvis_atoms(null_position_structure), Atoms)
-
-
 def test_null_lattice_vectors(null_lattice_vector_structure):
     """Make sure null lattice vectors are handled"""
     assert isinstance(get_jarvis_atoms(null_lattice_vector_structure), Atoms)

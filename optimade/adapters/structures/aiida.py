@@ -1,6 +1,6 @@
 from optimade.models import StructureResource as OptimadeStructure
 
-from optimade.adapters.structures.utils import pad_cell, pad_positions
+from optimade.adapters.structures.utils import pad_cell
 
 try:
     from aiida.orm.nodes.data.structure import StructureData, Kind, Site
@@ -54,16 +54,13 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
             Kind(symbols=symbols, weights=concentration, mass=mass, name=kind.name)
         )
 
-    # Convert null/None values to float("nan")
-    cartesian_site_positions, _ = pad_positions(attributes.cartesian_site_positions)
-
     # Add Sites
     for index in range(attributes.nsites):
         # range() to ensure 1-to-1 between kind and site
         structure.append_site(
             Site(
                 kind_name=attributes.species_at_sites[index],
-                position=cartesian_site_positions[index],
+                position=attributes.cartesian_site_positions[index],
             )
         )
 
