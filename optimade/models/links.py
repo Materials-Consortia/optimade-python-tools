@@ -1,11 +1,12 @@
 # pylint: disable=no-self-argument
+from enum import Enum
+
 from pydantic import (  # pylint: disable=no-name-in-module
     Field,
     AnyUrl,
-    validator,
     root_validator,
 )
-from typing import Union
+from typing import Union, Optional
 
 from .jsonapi import Link, Attributes
 from .entries import EntryResource
@@ -15,6 +16,24 @@ __all__ = (
     "LinksResourceAttributes",
     "LinksResource",
 )
+
+
+class LinkType(Enum):
+    """Enumeration of link_type values"""
+
+    CHILD = "child"
+    ROOT = "root"
+    EXTERNAL = "external"
+    PROVIDERS = "providers"
+
+
+class Aggregate(Enum):
+    """Enumeration of aggregate values"""
+
+    OK = "ok"
+    TEST = "test"
+    STAGING = "staging"
+    NO = "no"
 
 
 class LinksResourceAttributes(Attributes):
@@ -40,18 +59,30 @@ class LinksResourceAttributes(Attributes):
         description="JSON API links object, pointing to a homepage URL for this implementation",
     )
 
-    link_type: str = Field(
+    link_type: LinkType = Field(
         ...,
         description="The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'.",
     )
 
-    @validator("link_type")
-    def link_type_must_be_in_specific_set(cls, value):
-        if value not in {"child", "root", "external", "providers"}:
-            raise ValueError(
-                "link_type MUST be either 'child, 'root', 'external', or 'providers'"
-            )
-        return value
+    aggregate: Optional[Aggregate] = Field(
+        "ok",
+        description="""A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.
+This flag SHOULD NOT be indicated for links where :property:`link_type` is not :val:`child`.
+
+If not specified, clients MAY assume that the value is :val:`ok`.
+If specified, and the value is anything different than :val:`ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).
+
+Specific values indicate the reason why the server is providing the suggestion.
+A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with :property:`aggregate`=:val:`test`).
+
+If specified, it MUST be one of the values listed in section Link Aggregate Options.""",
+    )
+
+    no_aggregate_reason: Optional[str] = Field(
+        None,
+        description="""An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.
+It SHOULD NOT be present if :property:`aggregate`=:val:`ok`.""",
+    )
 
 
 class LinksResource(EntryResource):

@@ -43,22 +43,9 @@ def structures(RAW_STRUCTURES) -> List[Structure]:
 
 
 @pytest.fixture
-def null_position_structure(raw_structure) -> Structure:
-    """Create and return adapters.Structure with sites that have None values"""
-    raw_structure["attributes"]["cartesian_site_positions"][0] = [None] * 3
-    if "structure_features" in raw_structure["attributes"]:
-        if "unknown_positions" not in raw_structure["attributes"]["structure_features"]:
-            raw_structure["attributes"]["structure_features"].append(
-                "unknown_positions"
-            )
-    else:
-        raw_structure["attributes"]["structure_feature"] = ["unknown_positions"]
-    return Structure(raw_structure)
-
-
-@pytest.fixture
 def null_lattice_vector_structure(raw_structure) -> Structure:
     """Create and return adapters.Structure with lattice_vectors that have None values"""
     raw_structure["attributes"]["lattice_vectors"][0] = [None] * 3
     raw_structure["attributes"]["dimension_types"][0] = 0
+    raw_structure["attributes"]["nperiodic_dimensions"] = 2
     return Structure(raw_structure)

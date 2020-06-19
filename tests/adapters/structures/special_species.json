@@ -19,6 +19,7 @@
         1,
         1
         ],
+        "nperiodic_dimensions": 3,
         "lattice_vectors": [
         [
             1.2503264826932692,
@@ -88,6 +89,7 @@
         1,
         1
         ],
+        "nperiodic_dimensions": 3,
         "lattice_vectors": [
         [
             1.2503264826932692,
@@ -157,6 +159,7 @@
         1,
         1
         ],
+        "nperiodic_dimensions": 3,
         "lattice_vectors": [
         [
             1.2503264826932692,

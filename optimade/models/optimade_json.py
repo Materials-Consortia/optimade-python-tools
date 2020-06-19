@@ -1,5 +1,7 @@
 """Modified JSON API v1.0 for OPTIMADE API"""
 # pylint: disable=no-self-argument,no-name-in-module
+from enum import Enum
+
 from pydantic import Field, root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
 from typing import Optional, Union, List
 
@@ -9,6 +11,7 @@ from . import jsonapi
 
 
 __all__ = (
+    "DataType",
     "ResponseMetaQuery",
     "Provider",
     "ImplementationMaintainer",
@@ -21,6 +24,102 @@ __all__ = (
     "BaseRelationshipResource",
     "Relationship",
 )
+
+
+class DataType(Enum):
+    """Optimade Data Types
+
+    See the section "Data types" in the OPTIMADE API specification for more information.
+    """
+
+    STRING = "string"
+    INTEGER = "integer"
+    FLOAT = "float"
+    BOOLEAN = "boolean"
+    TIMESTAMP = "timestamp"
+    LIST = "list"
+    DICTIONARY = "dictionary"
+    UNKNOWN = "unknown"
+
+    @classmethod
+    def get_values(cls):
+        """Get OPTIMADE data types (enum values) as a (sorted) list"""
+        return sorted((_.value for _ in cls))
+
+    @classmethod
+    def from_python_type(cls, python_type: Union[type, str, object]):
+        """Get OPTIMADE data type from a Python type"""
+        mapping = {
+            "bool": cls.BOOLEAN,
+            "int": cls.INTEGER,
+            "float": cls.FLOAT,
+            "complex": None,
+            "generator": cls.LIST,
+            "list": cls.LIST,
+            "tuple": cls.LIST,
+            "range": cls.LIST,
+            "hash": cls.INTEGER,
+            "str": cls.STRING,
+            "bytes": cls.STRING,
+            "bytearray": None,
+            "memoryview": None,
+            "set": cls.LIST,
+            "frozenset": cls.LIST,
+            "dict": cls.DICTIONARY,
+            "dict_keys": cls.LIST,
+            "dict_values": cls.LIST,
+            "dict_items": cls.LIST,
+            "NoneType": cls.UNKNOWN,
+            "None": cls.UNKNOWN,
+            "datetime": cls.TIMESTAMP,
+            "date": cls.TIMESTAMP,
+            "time": cls.TIMESTAMP,
+            "datetime.datetime": cls.TIMESTAMP,
+            "datetime.date": cls.TIMESTAMP,
+            "datetime.time": cls.TIMESTAMP,
+        }
+
+        if isinstance(python_type, type):
+            python_type = python_type.__name__
+        elif isinstance(python_type, object):
+            if str(python_type) in mapping:
+                python_type = str(python_type)
+            else:
+                python_type = type(python_type).__name__
+
+        return mapping.get(python_type, None)
+
+    @classmethod
+    def from_json_type(cls, json_type: str):
+        """Get OPTIMADE data type from a named JSON type"""
+        mapping = {
+            "string": cls.STRING,
+            "integer": cls.INTEGER,
+            "number": cls.FLOAT,  # actually includes both integer and float
+            "object": cls.DICTIONARY,
+            "array": cls.LIST,
+            "boolean": cls.BOOLEAN,
+            "null": cls.UNKNOWN,
+            # OpenAPI "format"s:
+            "double": cls.FLOAT,
+            "float": cls.FLOAT,
+            "int32": cls.INTEGER,
+            "int64": cls.INTEGER,
+            "date": cls.TIMESTAMP,
+            "date-time": cls.TIMESTAMP,
+            "password": cls.STRING,
+            "byte": cls.STRING,
+            "binary": cls.STRING,
+            # Non-OpenAPI "format"s, but may still be used by pydantic/FastAPI
+            "email": cls.STRING,
+            "uuid": cls.STRING,
+            "uri": cls.STRING,
+            "hostname": cls.STRING,
+            "ipv4": cls.STRING,
+            "ipv6": cls.STRING,
+        }
+
+        return mapping.get(json_type, None)
 
 
 class OptimadeError(jsonapi.Error):

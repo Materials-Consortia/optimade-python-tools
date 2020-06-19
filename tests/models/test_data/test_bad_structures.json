@@ -16,6 +16,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Acc"
     ],
@@ -94,6 +95,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Ag",
@@ -193,6 +195,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Ag",
@@ -292,6 +295,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Mg"
@@ -389,6 +393,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "O"
@@ -488,6 +493,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Cu",
@@ -590,6 +596,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag"
     ],
@@ -729,6 +736,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "Cl",
@@ -886,6 +894,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1129,6 +1138,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1240,7 +1250,7 @@
       "N",
       "N"
     ],
-    "structure_features": ["unknown_positions"],
+    "structure_features": ["implicit_atoms"],
     "task_id": "mpf_272"
   },
   {
@@ -1380,6 +1390,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1516,6 +1527,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac"
     ],
@@ -1584,6 +1596,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac"
     ],
@@ -1648,6 +1661,7 @@
       1,
       0
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac"
     ],
@@ -1710,6 +1724,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0] ],
     "species": [
@@ -1741,6 +1756,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0,0] ],
     "species": [
@@ -1772,6 +1788,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
     "species": [
@@ -1803,6 +1820,7 @@
     "pretty_formula": "GeSi",
     "formula_anonymous": "AB",
     "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0,5.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
     "species": [
@@ -1823,11 +1841,7 @@
     "_id": {
       "$oid": "5cfb441f053b174410700d02"
     },
-    "type": "structure",
-    "links": ["C-H"],
-    "relationships": "single",
-    "id": "some_id",
-    "_mp_chemsys": "Ac",
+    "chemsys": "Ac",
     "cartesian_site_positions": [
       [
         0.17570227444196573,
@@ -1840,6 +1854,7 @@
       0,
       1
     ],
+    "nperiodic_dimensions": 2,
     "elements": [
       "Ac"
     ],
@@ -1886,5 +1901,507 @@
     ],
     "structure_features": [],
     "task_id": "mpf_1"
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      0,
+      0
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac"
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1"
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        null
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac"
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac"
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": ["site_attachments"],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac",
+        "attached": ["H"],
+        "nattached": [3, 1]
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": ["site_attachments"],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac"
+    ],
+    "elements_ratios": [
+      1.0
+    ],
+    "formula_anonymous": "A",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 1,
+    "nsites": 1,
+    "pretty_formula": "Ac",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac",
+        "attached": ["H"],
+        "nattached": [4]
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "5cfb441f053b174410700d02"
+    },
+    "chemsys": "Ac",
+    "cartesian_site_positions": [
+      [
+        0.17570227444196573,
+        0.17570227444196573,
+        0.17570227444196573
+      ]
+    ],
+    "dimension_types": [
+      1,
+      1,
+      1
+    ],
+    "nperiodic_dimensions": 3,
+    "elements": [
+      "Ac", "Ag"
+    ],
+    "elements_ratios": [
+      0.5, 0.5
+    ],
+    "formula_anonymous": "AB",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "lattice_vectors": [
+      [
+        1.2503264826932692,
+        0,
+        0
+      ],
+      [
+        0,
+        9.888509716321765,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2972637673241818
+      ]
+    ],
+    "nelements": 2,
+    "nsites": 1,
+    "pretty_formula": "AcAg",
+    "species": [
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac"
+      },
+      {
+        "chemical_symbols": [
+          "Ag"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ag"
+      }
+    ],
+    "species_at_sites": [
+      "Ac"
+    ],
+    "structure_features": [],
+    "task_id": "mpf_1",
+    "relationships": {
+        "references": {
+            "data": [
+                {"type": "references", "id": "dijkstra1968"}
+            ]
+        }
+    }
+  },
+  {
+    "task_id": "db/1234567",
+    "type": "structure",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "band_gap": 1.23456,
+    "chemsys": "Ge-Si",
+    "elements": ["Ge", "Si"],
+    "nsites": 3,
+    "nelements": 2,
+    "elements_ratios": [0.5, 0.5],
+    "pretty_formula": "GeSi",
+    "formula_anonymous": "AB",
+    "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
+    "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
+    "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
+    "species": [
+      {"name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0] },
+      {"name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0] },
+      {"name": "vac", "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+    ],
+    "species_at_sites": ["Si", "Ge", "vac"],
+    "assemblies": [
+      {
+        "sites_in_groups": [ [0], [1], [2] ],
+        "group_probabilities": [0.3, 0.5, 0.2]
+      }
+    ],
+    "structure_features": []
+  },
+  {
+    "task_id": "db/1234567",
+    "type": "structure",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "band_gap": 1.23456,
+    "chemsys": "Ge-Si",
+    "elements": ["Ge", "Si"],
+    "nsites": 3,
+    "nelements": 2,
+    "elements_ratios": [0.5, 0.5],
+    "pretty_formula": "GeSi",
+    "formula_anonymous": "AB",
+    "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": null,
+    "lattice_vectors": [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]],
+    "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
+    "species": [
+      {"name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0] },
+      {"name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0] },
+      {"name": "vac", "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+    ],
+    "species_at_sites": ["Si", "Ge", "vac"],
+    "assemblies": [
+      {
+        "sites_in_groups": [ [0], [1], [2] ],
+        "group_probabilities": [0.3, 0.5, 0.2]
+      }
+    ],
+    "structure_features": ["assemblies"]
   }
 ]

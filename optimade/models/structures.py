@@ -1,9 +1,9 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
-from enum import IntEnum
+from enum import IntEnum, Enum
 from sys import float_info
 from typing import List, Optional, Tuple, Union
 
-from pydantic import Field, BaseModel, validator
+from pydantic import Field, BaseModel, validator, root_validator
 
 from .entries import EntryResourceAttributes, EntryResource
 from .utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
@@ -12,18 +12,36 @@ from .utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
 
 
-__all__ = ("Species", "Assembly", "StructureResourceAttributes", "StructureResource")
+__all__ = (
+    "Vector3D",
+    "Periodicity",
+    "StructureFeatures",
+    "Species",
+    "Assembly",
+    "StructureResourceAttributes",
+    "StructureResource",
+)
 
 
 EPS = float_info.epsilon
 
 
-Vector3D = Tuple[Union[float, None], Union[float, None], Union[float, None]]
+Vector3D = Tuple[float, float, float]
+Vector3D_unknown = Tuple[Union[float, None], Union[float, None], Union[float, None]]
 
 
 class Periodicity(IntEnum):
     APERIODIC = 0
     PERIODIC = 1
+
+
+class StructureFeatures(Enum):
+    """Enumeration of structure_features values"""
+
+    DISORDER = "disorder"
+    IMPLICIT_ATOMS = "implicit_atoms"
+    SITE_ATTACHMENTS = "site_attachments"
+    ASSEMBLIES = "assemblies"
 
 
 class Species(BaseModel):
@@ -83,6 +101,16 @@ Note: With regards to "source database", we refer to the immediate source being 
 The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).""",
     )
 
+    attached: Optional[List[str]] = Field(
+        None,
+        description="""If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.""",
+    )
+
+    nattached: Optional[List[int]] = Field(
+        None,
+        description="""If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.""",
+    )
+
     @validator("chemical_symbols", each_item=True)
     def validate_chemical_symbols(cls, v):
         if not (v in EXTENDED_CHEMICAL_SYMBOLS):
@@ -96,6 +124,38 @@ The main use of this field is for source databases that use species names, conta
                 f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', 'Not specified'))})"
             )
         return v
+
+    @validator("attached", "nattached")
+    def validate_minimum_list_length(cls, v):
+        if v is not None and len(v) < 1:
+            raise ValueError(
+                f"The list's length MUST be 1 or more, instead it was found to be {len(v)}"
+            )
+        return v
+
+    @root_validator
+    def attached_nattached_mutually_exclusive(cls, values):
+        attached, nattached = (
+            values.get("attached", None),
+            values.get("nattached", None),
+        )
+        if (attached is None and nattached is not None) or (
+            attached is not None and nattached is None
+        ):
+            raise ValueError(
+                f"Either both or none of attached ({attached}) and nattached ({nattached}) MUST be set."
+            )
+
+        if (
+            attached is not None
+            and nattached is not None
+            and len(attached) != len(nattached)
+        ):
+            raise ValueError(
+                f"attached ({attached}) and nattached ({nattached}) MUST be lists of equal length."
+            )
+
+        return values
 
 
 class Assembly(BaseModel):
@@ -338,7 +398,30 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - For a bulk 3D system: :val:`[1, 1, 1]`""",
     )
 
-    lattice_vectors: Optional[Tuple[Vector3D, Vector3D, Vector3D]] = Field(
+    nperiodic_dimensions: Optional[int] = Field(
+        None,
+        description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in :property:`dimension_types`.
+- **Type**: integer
+- **Requirements/Conventions**:
+
+  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.
+  - **Query**: MUST be a queryable property with support for all mandatory filter features.
+  - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types`_ property.
+  - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.
+
+- **Examples**:
+
+  - :val:`2` should be indicated in cases where :property:`dimension_types` is any of :val:`[1, 1, 0]`, :val:`[1, 0, 1]`, :val:`[0, 1, 1]`.
+
+- **Query examples**:
+
+  - Match only structures with exactly 3 periodic dimensions: :filter:`nperiodic_dimensions=3`
+  - Match all structures with 2 or fewer periodic dimensions: :filter:`nperiodic_dimensions<=2`""",
+    )
+
+    lattice_vectors: Optional[
+        Tuple[Vector3D_unknown, Vector3D_unknown, Vector3D_unknown]
+    ] = Field(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
 - **Type**: list of list of floats.
@@ -364,7 +447,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     cartesian_site_positions: List[Vector3D] = Field(
         ...,
         description="""Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).
-- **Type**: list of list of floats and/or unknown values
+- **Type**: list of list of floats
 - **Requirements/Conventions**:
 
   - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
@@ -400,27 +483,6 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
   - Match only structures with exactly 4 sites: :filter:`nsites=4`
   - Match structures that have between 2 and 7 sites: :filter:`nsites>=2 AND nsites<=7`""",
-    )
-
-    species_at_sites: List[str] = Field(
-        ...,
-        description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`_).
-  The properties of the species are found in the property `species`_.
-- **Type**: list of strings.
-- **Requirements/Conventions**:
-
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
-  - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`_).
-  - Each species MUST have a unique name.
-  - Each species name mentioned in the :property:`species_at_sites` list MUST be described in the list property `species`_ (i.e. for each value in the :property:`species_at_sites` list there MUST exist exactly one dictionary in the :property:`species` list with the :property:`name` attribute equal to the corresponding :property:`species_at_sites` value).
-  - Each site MUST be associated only to a single species.
-    **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.
-    This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.
-
-- **Examples**:
-
-  - :val:`["Ti","O2"]` indicates that the first site is hosting a species labeled :val:`"Ti"` and the second a species labeled :val:`"O2"`.""",
     )
 
     species: List[Species] = Field(
@@ -479,6 +541,27 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - :val:`[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
   - :val:`[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
   - :val:`[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.""",
+    )
+
+    species_at_sites: List[str] = Field(
+        ...,
+        description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`_).
+  The properties of the species are found in the property `species`_.
+- **Type**: list of strings.
+- **Requirements/Conventions**:
+
+  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
+  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
+  - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`_).
+  - Each species MUST have a unique name.
+  - Each species name mentioned in the :property:`species_at_sites` list MUST be described in the list property `species`_ (i.e. for each value in the :property:`species_at_sites` list there MUST exist exactly one dictionary in the :property:`species` list with the :property:`name` attribute equal to the corresponding :property:`species_at_sites` value).
+  - Each site MUST be associated only to a single species.
+    **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.
+    This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.
+
+- **Examples**:
+
+  - :val:`["Ti","O2"]` indicates that the first site is hosting a species labeled :val:`"Ti"` and the second a species labeled :val:`"O2"`.""",
     )
 
     assemblies: Optional[List[Assembly]] = Field(
@@ -592,7 +675,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability).""",
     )
 
-    structure_features: List[str] = Field(
+    structure_features: List[StructureFeatures] = Field(
         ...,
         description="""A list of strings that flag which special features are used by the structure.
 - **Type**: list of strings
@@ -607,10 +690,9 @@ class StructureResourceAttributes(EntryResourceAttributes):
   - **List of strings used to indicate special structure features**:
 
     - :val:`disorder`: This flag MUST be present if any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element.
-    - :val:`unknown_positions`: This flag MUST be present if at least one component of the :property:`cartesian_site_positions` list of lists has value :val:`null`.
     - :val:`assemblies`: This flag MUST be present if the property `assemblies`_ is present.
 
--  **Examples**: A structure having unknown positions and using assemblies: :val:`["assemblies", "unknown_positions"]`""",
+-  **Examples**: A structure having implicit atoms and using assemblies: :val:`["assemblies", "implicit_atoms"]`""",
     )
 
     @validator("elements", each_item=True)
@@ -637,6 +719,21 @@ class StructureResourceAttributes(EntryResourceAttributes):
     def no_spaces_in_reduced(cls, v):
         if v and " " in v:
             raise ValueError(f"Spaces are not allowed, you passed: {v}")
+        return v
+
+    @validator("nperiodic_dimensions")
+    def check_periodic_dimensions(cls, v, values):
+        if values.get("dimension_types", []) and v is None:
+            raise ValueError(
+                "nperiodic_dimensions is REQUIRED, since dimension_types was provided."
+            )
+
+        if v != sum(values.get("dimension_types")):
+            raise ValueError(
+                f"nperiodic_dimensions ({v}) does not match expected value of {sum(values['dimension_types'])} "
+                f"from dimension_types ({values['dimension_types']})"
+            )
+
         return v
 
     @validator("lattice_vectors", always=True)
@@ -686,58 +783,85 @@ class StructureResourceAttributes(EntryResourceAttributes):
             raise ValueError(
                 f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 'Not specified')})"
             )
+        all_species_names = {
+            getattr(_, "name", None) for _ in values.get("species", [{}])
+        }
+        all_species_names -= {None}
+        for value in v:
+            if value not in all_species_names:
+                raise ValueError(
+                    f"species_at_sites MUST be represented by a species' name, but {value} was not found in the list of species names: {all_species_names}"
+                )
         return v
 
-    @validator("species", each_item=True)
-    def validate_species(cls, v, values):
-        if v.name not in values.get("species_at_sites", []):
+    @validator("species")
+    def validate_species(cls, v):
+        all_species = [_.name for _ in v]
+        unique_species = set(all_species)
+        if len(all_species) != len(unique_species):
             raise ValueError(
-                f"{v.name} not found in species_at_sites: {values.get('species_at_sites', 'Not specified')}"
+                f"Species MUST be unique based on their 'name'. Found species names: {all_species}"
             )
         return v
 
     @validator("structure_features", always=True)
     def validate_structure_features(cls, v, values):
-        if sorted(v) != v:
+        if [StructureFeatures(value) for value in sorted((_.value for _ in v))] != v:
             raise ValueError(
                 f"structure_features MUST be sorted alphabetically, given value: {v}"
             )
         # disorder
         for species in values.get("species", []):
             if len(species.chemical_symbols) > 1:
-                if "disorder" not in v:
+                if StructureFeatures.DISORDER not in v:
                     raise ValueError(
-                        "disorder MUST be present when any one entry in species has a chemical_symbols list greater than one element"
+                        f"{StructureFeatures.DISORDER.value} MUST be present when any one entry in species has a chemical_symbols list greater than one element"
                     )
                 break
         else:
-            if "disorder" in v:
+            if StructureFeatures.DISORDER in v:
                 raise ValueError(
-                    "disorder MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
-                )
-        # unknown_positions
-        for site in values.get("cartesian_site_positions", []):
-            if None in site or float("nan") in site:
-                if "unknown_positions" not in v:
-                    raise ValueError(
-                        "unknown_positions MUST be present when a single component of cartesian_site_positions has value null"
-                    )
-                break
-        else:
-            if "unknown_positions" in v:
-                raise ValueError(
-                    "unknown_positions MUST NOT be present, since there are no null values in cartesian_site_positions"
+                    f"{StructureFeatures.DISORDER.value} MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
                 )
         # assemblies
         if values.get("assemblies", None) is not None:
-            if "assemblies" not in v:
+            if StructureFeatures.ASSEMBLIES not in v:
                 raise ValueError(
-                    "assemblies MUST be present, since the property of the same name is present"
+                    f"{StructureFeatures.ASSEMBLIES.value} MUST be present, since the property of the same name is present"
                 )
         else:
-            if "assemblies" in v:
+            if StructureFeatures.ASSEMBLIES in v:
                 raise ValueError(
-                    "assemblies MUST NOT be present, since the property of the same name is not present"
+                    f"{StructureFeatures.ASSEMBLIES.value} MUST NOT be present, since the property of the same name is not present"
+                )
+        # site_attachments
+        for species in values.get("species", []):
+            # There is no need to also test "nattached",
+            # since a Species validator makes sure either both are present or both are None.
+            if getattr(species, "attached", None) is not None:
+                if StructureFeatures.SITE_ATTACHMENTS not in v:
+                    raise ValueError(
+                        f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST be present when any one entry in species includes attached and nattached"
+                    )
+                break
+        else:
+            if StructureFeatures.SITE_ATTACHMENTS in v:
+                raise ValueError(
+                    f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST NOT be present, since no species includes the attached and nattached fields"
+                )
+        # implicit_atoms
+        species_names = [_.name for _ in values.get("species", [])]
+        for name in species_names:
+            if name not in values.get("species_at_sites", []):
+                if StructureFeatures.IMPLICIT_ATOMS not in v:
+                    raise ValueError(
+                        f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST be present when any one entry in species is not represented in species_at_sites"
+                    )
+                break
+        else:
+            if StructureFeatures.IMPLICIT_ATOMS in v:
+                raise ValueError(
+                    f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST NOT be present, since all species are represented in species_at_sites"
                 )
         return v
 

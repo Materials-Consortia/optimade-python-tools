@@ -16,7 +16,6 @@ from optimade.adapters.structures.utils import (
     cell_to_cellpar,
     cellpar_to_cell,
     fractional_coordinates,
-    pad_positions,
     scaled_cell,
 )
 
@@ -80,9 +79,9 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
         # Since some structure viewers are having issues with cartesian coordinates,
         # we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.
         if not hasattr(attributes, "fractional_site_positions"):
-            sites, _ = pad_positions(attributes.cartesian_site_positions)
             attributes.fractional_site_positions = fractional_coordinates(
-                cell=attributes.lattice_vectors, cartesian_positions=sites
+                cell=attributes.lattice_vectors,
+                cartesian_positions=attributes.cartesian_site_positions,
             )
 
     # TODO: The following lines are perhaps needed to create a "valid" PDBx/mmCIF file.
@@ -134,9 +133,9 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     )
 
     if coord_type == "fract":
-        sites, _ = pad_positions(attributes.fractional_site_positions)
+        sites = attributes.fractional_site_positions
     else:
-        sites, _ = pad_positions(attributes.cartesian_site_positions)
+        sites = attributes.cartesian_site_positions
 
     species: Dict[str, OptimadeStructureSpecies] = {
         species.name: species for species in attributes.species
@@ -216,8 +215,7 @@ def get_pdb(  # pylint: disable=too-many-locals
         species.name: species for species in attributes.species
     }
 
-    cartesian_site_positions, _ = pad_positions(attributes.cartesian_site_positions)
-    sites = np.asarray(cartesian_site_positions)
+    sites = np.asarray(attributes.cartesian_site_positions)
     if rotation is not None:
         sites = sites.dot(rotation)
 

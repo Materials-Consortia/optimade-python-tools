@@ -16,6 +16,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac"
     ],
@@ -102,6 +103,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Ag",
@@ -213,6 +215,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Ag",
@@ -319,6 +322,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Mg"
@@ -416,6 +420,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "O"
@@ -515,6 +520,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ac",
       "Cu",
@@ -616,6 +622,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag"
     ],
@@ -755,6 +762,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "Br",
@@ -912,6 +920,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1155,6 +1164,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1406,6 +1416,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1648,6 +1659,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -1885,6 +1897,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "Br",
@@ -2386,6 +2399,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "B",
@@ -2740,6 +2754,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ag",
       "C",
@@ -3113,6 +3128,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ba",
       "Ce",
@@ -3512,6 +3528,7 @@
       1,
       1
     ],
+    "nperiodic_dimensions": 3,
     "elements": [
       "Ba",
       "F",
