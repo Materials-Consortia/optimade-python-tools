@@ -13,7 +13,8 @@ pip install -U -e .[dev]
 pip install -r requirements-docs.txt
 
 echo "-o- Update version -o-"
-invoke setver -v ${GITHUB_REF#refs/tags/}
+# invoke setver -v ${GITHUB_REF#refs/tags/}
+invoke setver -v "0.10.0"
 
 echo "-o- Generate new OpenAPI JSON files -o-"
 pip install -U -e .[dev]
@@ -34,4 +35,5 @@ echo "-o- Commit updates -o-"
 git add setup.py
 git add openapi/index_openapi.json openapi/openapi.json
 git add docs/CHANGELOG.md
-git commit -m "Releasing ${GITHUB_REF#refs/tags/}"
+# git commit -m "Releasing ${GITHUB_REF#refs/tags/}"
+git commit -m "Releasing v0.10.0"
