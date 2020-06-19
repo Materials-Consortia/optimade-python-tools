@@ -32,6 +32,15 @@ jarvis_deps = ["jarvis-tools~=2020.6"]
 client_deps = cif_deps
 
 # General
+docs_deps = [
+    "mkdocs~=1.1",
+    "mkdocs-awesome-pages-plugin~=2.2",
+    "mkdocs-material~=5.2",
+    "mkdocs-material-components~=1.10",
+    "mkdocs-material-extensions~=1.0",
+    "mkdocs-minify-plugin~=0.3.0",
+    "mkdocstrings~=0.11.4",
+]
 testing_deps = [
     "pytest~=5.4",
     "pytest-cov~=2.9",
@@ -41,6 +50,7 @@ testing_deps = [
 ] + server_deps
 dev_deps = (
     ["pylint~=2.5", "black~=19.10b0", "pre-commit~=2.5", "invoke~=1.4"]
+    + docs_deps
     + testing_deps
     + client_deps
 )
@@ -90,6 +100,7 @@ setup(
     extras_require={
         "all": all_deps,
         "dev": dev_deps,
+        "docs": docs_deps,
         "testing": testing_deps,
         "server": server_deps,
         "client": client_deps,

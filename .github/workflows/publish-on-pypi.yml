@@ -1,21 +1,21 @@
 name: Publish on PyPI
 
-on:
-  release:
-    types:
-    - published
+on: [push]
+  # release:
+  #   types:
+  #   - published
 
 jobs:
 
   publish:
     runs-on: ubuntu-latest
-    if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
+    if: github.repository == 'Materials-Consortia/optimade-python-tools'
+    # if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        persist-credentials: false
         submodules: true
 
     - name: Set up Python 3.7
@@ -26,9 +26,8 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install --upgrade setuptools requests
-        pip install invoke
-        pip install -e .[all]
+        pip install --upgrade setuptools
+        pip install -e .[dev]
         pip install -r requirements-docs.txt
 
     - name: Check released tag
@@ -37,55 +36,29 @@ jobs:
         GITHUB_REF: ${{ github.ref }}
       run: python .github/workflows/check_released_tag.py
 
-    - name: Generate changelog
-      uses: charmixer/auto-changelog-action@v1
+    - name: Update version, generate changelog, and update 'master'
+      uses: CasperWA/push-protected@master
       with:
         token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-
-    - name: Update Version
-      run: invoke setver -v ${GITHUB_REF#refs/tags/}
-
-    - name: Generate New OpenAPI JSON
-      run: invoke update-openapijson
-
-    - name: Commit files
-      run: |
-        git config --local user.email "dev@optimade.org"
-        git config --local user.name "OPTIMADE Developers"
-        mv -f CHANGELOG.md docs/
-
-        git add docs/CHANGELOG.md
-        git add openapi/index_openapi.json openapi/openapi.json
-        git add optimade/__init__.py
-        echo "::set-env name=push::0"
-        git commit -m 'Release Updates' && echo "::set-env name=push::1" || echo "No changes to CHANGELOG.md"
+        repository: ${{ github.repository }}
+        branch: master
+        changes: .github/workflows/update_changelog.sh
 
     - name: Build source distribution
       run: python ./setup.py sdist
 
-    - name: Temporarily disable "include administrators" branch protection
-      uses: benjefferies/branch-protection-bot@master
-      if: env.push == 1
+    - name: Publish package to Test PyPI
+      uses: pypa/gh-action-pypi-publish@master
       with:
-        access-token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-        branch: master
-        enforce_admins: false
+        user: __token__
+        password: ${{ secrets.TEST_PYPI_PASSWORD }}
+        repository_url: https://test.pypi.org/legacy/
 
-    - name: Push changes
-      if: env.push == 1
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-        tags: true
-        branch: master
-
-    - name: Enable "include administrators" branch protection
-      uses: benjefferies/branch-protection-bot@master
-      if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
-      with:
-        access-token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-        enforce_admins: true
-        branch: master
+    # - name: Publish package to PyPI
+    #   uses: pypa/gh-action-pypi-publish@master
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.PYPI_PASSWORD }}
 
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@master
@@ -102,9 +75,9 @@ jobs:
     - name: Build
       run: mkdocs build
 
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: ./site
+    # - name: Deploy
+    #   uses: peaceiris/actions-gh-pages@v3
+    #   with:
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    #     publish_branch: gh-pages
+    #     publish_dir: ./site
