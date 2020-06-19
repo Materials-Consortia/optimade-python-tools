@@ -39,7 +39,7 @@ jobs:
     - name: Update version, generate changelog, and update 'master'
       uses: CasperWA/push-protected@master
       with:
-        token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
         repository: ${{ github.repository }}
         branch: test_release
         changes: .github/workflows/update_changelog.sh
