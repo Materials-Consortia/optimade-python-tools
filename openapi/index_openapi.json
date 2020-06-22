@@ -346,12 +346,12 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: REQUIRED, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`"
           },
           "type": {
             "title": "Type",
             "type": "string",
-            "description": "The name of the type of an entry.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: REQUIRED, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - MUST be an existing entry type.\n  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.\n\n- **Example**: :val:`\"structures\"`"
+            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Example**: `\"structures\"`"
           },
           "links": {
             "title": "Links",
@@ -378,7 +378,7 @@
                 "$ref": "#/components/schemas/EntryResourceAttributes"
               }
             ],
-            "description": "a dictionary, containing key-value pairs representing the entry's properties, except for type and id.\n\nDatabase-provider-specific properties need to include the database-provider-specific prefix\n(see appendix `Database-Provider-Specific Namespace Prefixes`_)."
+            "description": "A dictionary, containing key-value pairs representing the entry's properties, except for `type` and `id`.\nDatabase-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes)."
           },
           "relationships": {
             "title": "Relationships",
@@ -387,10 +387,10 @@
                 "$ref": "#/components/schemas/EntryRelationships"
               }
             ],
-            "description": "a dictionary containing references to other entries according to the description in section `Relationships`_\nencoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.\nThe OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary."
+            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
           }
         },
-        "description": "Resource objects appear in a JSON:API document to represent resources."
+        "description": "Resource objects appear in a JSON API document to represent resources."
       },
       "EntryResourceAttributes": {
         "title": "EntryResourceAttributes",
@@ -402,12 +402,12 @@
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
-            "description": "The entry's immutable ID (e.g., an UUID).\nThis is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants.\nThis ID maps to the version-specific record, in case it changes in the future.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: OPTIONAL, i.e., MAY be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n\n  - :val:`\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n  - :val:`\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
+            "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
           },
           "last_modified": {
             "title": "Last Modified",
             "type": "string",
-            "description": "Date and time representing when the entry was last modified.\n- **Type**: timestamp.\n- **Requirements/Conventions**:\n\n  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.\n\n- **Example**:\n\n  - As part of JSON response format: :VAL:`\"2007-04-05T14:30Z\"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)",
+            "description": "Date and time representing when the entry was last modified.\n\n- **Type**: timestamp.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.\n\n- **Example**:\n    - As part of JSON response format: `\"2007-04-05T14:30:20Z\"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)",
             "format": "date-time"
           }
         },
@@ -709,7 +709,7 @@
           "is_index": {
             "title": "Is Index",
             "type": "boolean",
-            "description": "If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for is_index to be false)."
+            "description": "If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for `is_index` to be false)."
           }
         },
         "description": "Attributes for Base URL Info endpoint for an Index Meta-Database"
@@ -757,7 +757,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/IndexRelationship"
             },
-            "description": "Reference to the child identifier object under the links endpoint that the provider has chosen as their 'default' OPTIMADE API database. A client SHOULD present this database as the first choice when an end-user chooses this provider."
+            "description": "Reference to the child identifier object under the `links` endpoint that the provider has chosen as their 'default' OPTIMADE API database.\nA client SHOULD present this database as the first choice when an end-user chooses this provider."
           }
         },
         "description": "Index Meta-Database Base URL Info endpoint resource"
@@ -840,7 +840,7 @@
                 "$ref": "#/components/schemas/RelatedLinksResource"
               }
             ],
-            "description": "JSON API resource linkage. It MUST be either null or contain a single Links identifier object with the fields 'id' and 'type'"
+            "description": "JSON API resource linkage.\nIt MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`"
           }
         },
         "description": "Index Meta-Database relationship"
@@ -905,7 +905,7 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section `Definition of Terms`_.\n- **Type**: string.\n- **Requirements/Conventions**:\n\n  - **Support**: REQUIRED, MUST NOT be :val:`null`.\n  - **Query**: MUST be a queryable property with support for all mandatory filter features.\n  - **Response**: REQUIRED in the response.\n  - See section `Definition of Terms`_.\n\n- **Examples**:\n\n  - :val:`\"db/1234567\"`\n  - :val:`\"cod/2000000\"`\n  - :val:`\"cod/2000000@1234567\"`\n  - :val:`\"nomad/L1234567890\"`\n  - :val:`\"42\"`"
+            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`"
           },
           "type": {
             "title": "Type",
@@ -937,7 +937,7 @@
                 "$ref": "#/components/schemas/LinksResourceAttributes"
               }
             ],
-            "description": "a dictionary containing key-value pairs representing the entry's properties."
+            "description": "A dictionary containing key-value pairs representing the entry's properties."
           },
           "relationships": {
             "title": "Relationships",
@@ -946,7 +946,7 @@
                 "$ref": "#/components/schemas/EntryRelationships"
               }
             ],
-            "description": "a dictionary containing references to other entries according to the description in section `Relationships`_\nencoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.\nThe OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary."
+            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
           }
         },
         "description": "A Links endpoint resource object"
@@ -965,12 +965,12 @@
           "name": {
             "title": "Name",
             "type": "string",
-            "description": "Human-readable name for the OPTIMADE API implementation a client may provide in a list to an end-user."
+            "description": "Human-readable name for the OPTIMADE API implementation, e.g., for use in clients to show the name to the end-user."
           },
           "description": {
             "title": "Description",
             "type": "string",
-            "description": "Human-readable description for the OPTIMADE API implementation a client may provide in a list to an end-user."
+            "description": "Human-readable description for the OPTIMADE API implementation, e.g., for use in clients to show a description to the end-user."
           },
           "base_url": {
             "title": "Base Url",
@@ -1018,7 +1018,7 @@
               "external",
               "providers"
             ],
-            "description": "The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'."
+            "description": "The link type of the represented resource in relation to this implementation.\nMUST be one of these values: 'child', 'root', 'external', 'providers'."
           },
           "aggregate": {
             "title": "Aggregate",
@@ -1028,13 +1028,13 @@
               "staging",
               "no"
             ],
-            "description": "A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.\nThis flag SHOULD NOT be indicated for links where :property:`link_type` is not :val:`child`.\n\nIf not specified, clients MAY assume that the value is :val:`ok`.\nIf specified, and the value is anything different than :val:`ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).\n\nSpecific values indicate the reason why the server is providing the suggestion.\nA client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with :property:`aggregate`=:val:`test`).\n\nIf specified, it MUST be one of the values listed in section Link Aggregate Options.",
+            "description": "A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.\nThis flag SHOULD NOT be indicated for links where `link_type` is not `child`.\n\nIf not specified, clients MAY assume that the value is `ok`.\nIf specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).\n\nSpecific values indicate the reason why the server is providing the suggestion.\nA client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).\n\nIf specified, it MUST be one of the values listed in section [Link Aggregate Options](#link-aggregate-options).",
             "default": "ok"
           },
           "no_aggregate_reason": {
             "title": "No Aggregate Reason",
             "type": "string",
-            "description": "An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.\nIt SHOULD NOT be present if :property:`aggregate`=:val:`ok`."
+            "description": "An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.\nIt SHOULD NOT be present if `aggregate`=`ok`."
           }
         },
         "description": "Links endpoint resource object attributes"
@@ -1362,7 +1362,7 @@
             "description": "A related resource link"
           }
         },
-        "description": "A resource object **MAY** contain references to other resource objects (\"relationships\").\nRelationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."
+        "description": "A resource object **MAY** contain references to other resource objects (\"relationships\").\nRelationships may be to-one or to-many.\nRelationships can be specified by including a member in a resource's links object."
       },
       "Relationships": {
         "title": "Relationships",
@@ -1422,10 +1422,10 @@
                 "$ref": "#/components/schemas/Relationships"
               }
             ],
-            "description": "a relationships object describing relationships between the resource and other JSON:API resources."
+            "description": "a relationships object describing relationships between the resource and other JSON API resources."
           }
         },
-        "description": "Resource objects appear in a JSON:API document to represent resources."
+        "description": "Resource objects appear in a JSON API document to represent resources."
       },
       "ResourceLinks": {
         "title": "ResourceLinks",
@@ -1482,19 +1482,19 @@
           "time_stamp": {
             "title": "Time Stamp",
             "type": "string",
-            "description": "a string containing the date and time at which the query was exexcuted",
+            "description": "a timestamp containing the date and time at which the query was executed.",
             "format": "date-time"
           },
           "data_returned": {
             "title": "Data Returned",
             "minimum": 0.0,
             "type": "integer",
-            "description": "an integer containing the number of data objects returned for the query."
+            "description": "an integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination."
           },
           "more_data_available": {
             "title": "More Data Available",
             "type": "boolean",
-            "description": "`false` if all data has been returned, and `true` if not."
+            "description": "`false` if all data resource objects for this `filter` query have been returned in the response or if it is the last page of a paginated response, and `true` otherwise."
           },
           "provider": {
             "title": "Provider",
@@ -1508,7 +1508,7 @@
           "data_available": {
             "title": "Data Available",
             "type": "integer",
-            "description": "an integer containing the total number of data objects available in the database"
+            "description": "an integer containing the total number of data resource objects available in the database for the endpoint."
           },
           "last_id": {
             "title": "Last Id",
@@ -1536,7 +1536,7 @@
             "items": {
               "$ref": "#/components/schemas/Warnings"
             },
-            "description": "List of warning resource objects representing non-critical errors or warnings. A warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value \"warning\". The field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features. The field status, representing a HTTP response status code, MUST NOT be present for a warning resource object. This is an exclusive field for error resource objects."
+            "description": "A list of warning resource objects representing non-critical errors or warnings.\nA warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `\"warning\"`.\nThe field `detail` MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\nThe field `status`, representing a HTTP response status code, MUST NOT be present for a warning resource object.\nThis is an exclusive field for error resource objects."
           }
         },
         "description": "A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)\nthat contains JSON API meta objects of non-standard\nmeta-information.\n\nOPTIONAL additional information global to the query that is not\nspecified in this document, MUST start with a\ndatabase-provider-specific prefix."
@@ -1769,7 +1769,7 @@
             "description": "Warnings must be of type \"warning\""
           }
         },
-        "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\nFrom the specification:\n\n    A warning resource object is defined similarly to a JSON API\n    error object, but MUST also include the field type, which MUST\n    have the value \"warning\". The field detail MUST be present and\n    SHOULD contain a non-critical message, e.g., reporting\n    unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
+        "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\n\nFrom the specification:\n\n    A warning resource object is defined similarly to a JSON API\n    error object, but MUST also include the field type, which MUST\n    have the value \"warning\". The field detail MUST be present and\n    SHOULD contain a non-critical message, e.g., reporting\n    unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
       }
     }
   }

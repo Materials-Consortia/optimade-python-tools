@@ -133,6 +133,7 @@ class OptimadeError(jsonapi.Error):
 
 class Warnings(OptimadeError):
     """OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.
+
     From the specification:
 
         A warning resource object is defined similarly to a JSON API
@@ -142,6 +143,7 @@ class Warnings(OptimadeError):
         unrecognized search attributes or deprecated features.
 
     Note: Must be named "Warnings", since "Warning" is a built-in Python class.
+
     """
 
     type: str = Field(
@@ -236,24 +238,23 @@ class ResponseMeta(jsonapi.Meta):
 
     api_version: str = Field(
         ...,
-        description="a string containing the version of the API "
-        "implementation, e.g. v0.9.5",
+        description="a string containing the version of the API implementation, e.g. v0.9.5",
     )
 
     time_stamp: datetime = Field(
         ...,
-        description="a string containing the date and time at which the query was exexcuted",
+        description="a timestamp containing the date and time at which the query was executed.",
     )
 
     data_returned: int = Field(
         ...,
-        description="an integer containing the number of data objects "
-        "returned for the query.",
+        description="an integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.",
         ge=0,
     )
 
     more_data_available: bool = Field(
-        ..., description="`false` if all data has been returned, and `true` " "if not."
+        ...,
+        description="`false` if all data resource objects for this `filter` query have been returned in the response or if it is the last page of a paginated response, and `true` otherwise.",
     )
 
     provider: Provider = Field(
@@ -262,8 +263,7 @@ class ResponseMeta(jsonapi.Meta):
 
     data_available: Optional[int] = Field(
         None,
-        description="an integer containing the total number of data "
-        "objects available in the database",
+        description="an integer containing the total number of data resource objects available in the database for the endpoint.",
     )
 
     last_id: Optional[str] = Field(
@@ -280,11 +280,11 @@ class ResponseMeta(jsonapi.Meta):
 
     warnings: Optional[List[Warnings]] = Field(
         None,
-        description="List of warning resource objects representing non-critical errors or warnings. "
-        "A warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, "
-        'which MUST have the value "warning". The field detail MUST be present and SHOULD contain a non-critical message, '
-        "e.g., reporting unrecognized search attributes or deprecated features. The field status, representing a HTTP "
-        "response status code, MUST NOT be present for a warning resource object. This is an exclusive field for error resource objects.",
+        description="""A list of warning resource objects representing non-critical errors or warnings.
+A warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `"warning"`.
+The field `detail` MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.
+The field `status`, representing a HTTP response status code, MUST NOT be present for a warning resource object.
+This is an exclusive field for error resource objects.""",
         uniqueItems=True,
     )
 

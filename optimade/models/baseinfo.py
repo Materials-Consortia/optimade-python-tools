@@ -74,7 +74,7 @@ class BaseInfoAttributes(BaseModel):
         default=False,
         description="If true, this is an index meta-database base URL (see section Index Meta-Database). "
         "If this member is not provided, the client MUST assume this is not an index meta-database base URL "
-        "(i.e., the default is for is_index to be false).",
+        "(i.e., the default is for `is_index` to be false).",
     )
 
     @validator("entry_types_by_format", check_fields=False)

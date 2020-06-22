@@ -137,8 +137,11 @@ class BaseResource(BaseModel):
 
 
 class RelationshipLinks(BaseModel):
-    """A resource object **MAY** contain references to other resource objects (\"relationships\").
-    Relationships may be to-one or to-many. Relationships can be specified by including a member in a resource's links object."""
+    """ A resource object **MAY** contain references to other resource objects (\"relationships\").
+    Relationships may be to-one or to-many.
+    Relationships can be specified by including a member in a resource's links object.
+
+    """
 
     self: Optional[Union[AnyUrl, Link]] = Field(None, description="A link to itself")
     related: Optional[Union[AnyUrl, Link]] = Field(
@@ -237,7 +240,7 @@ class Attributes(BaseModel):
 
 
 class Resource(BaseResource):
-    """Resource objects appear in a JSON:API document to represent resources."""
+    """Resource objects appear in a JSON API document to represent resources."""
 
     links: Optional[ResourceLinks] = Field(
         None, description="a links object containing links related to the resource."
@@ -252,7 +255,7 @@ class Resource(BaseResource):
     )
     relationships: Optional[Relationships] = Field(
         None,
-        description="a relationships object describing relationships between the resource and other JSON:API resources.",
+        description="a relationships object describing relationships between the resource and other JSON API resources.",
     )
 
 

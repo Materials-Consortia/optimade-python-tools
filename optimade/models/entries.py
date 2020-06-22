@@ -52,34 +52,32 @@ class EntryResourceAttributes(Attributes):
 
     immutable_id: Optional[str] = Field(
         None,
-        description="""The entry's immutable ID (e.g., an UUID).
-This is important for databases having preferred IDs that point to "the latest version" of a record, but still offer access to older variants.
-This ID maps to the version-specific record, in case it changes in the future.
-- **Type**: string.
-- **Requirements/Conventions**:
+        description="""The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to "the latest version" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.
 
-  - **Support**: OPTIONAL, i.e., MAY be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter features.
+- **Type**: string.
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
 
 - **Examples**:
-
-  - :val:`"8bd3e750-b477-41a0-9b11-3a799f21b44f"`
-  - :val:`"fjeiwoj,54;@=%<>#32"` (Strings that are not URL-safe are allowed.)""",
+    - `"8bd3e750-b477-41a0-9b11-3a799f21b44f"`
+    - `"fjeiwoj,54;@=%<>#32"` (Strings that are not URL-safe are allowed.)""",
     )
 
     last_modified: datetime = Field(
         ...,
         description="""Date and time representing when the entry was last modified.
-- **Type**: timestamp.
-- **Requirements/Conventions**:
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter features.
-  - **Response**: REQUIRED in the response unless the query parameter :query-param:`response_fields` is present and does not include this property.
+- **Type**: timestamp.
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.
 
 - **Example**:
-
-  - As part of JSON response format: :VAL:`"2007-04-05T14:30Z"` (i.e., encoded as an `RFC 3339 Internet Date/Time Format <https://tools.ietf.org/html/rfc3339#section-5.6>`__ string.)""",
+    - As part of JSON response format: `"2007-04-05T14:30:20Z"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)""",
     )
 
 
@@ -87,90 +85,96 @@ class EntryResource(Resource):
 
     id: str = Field(
         ...,
-        description="""An entry's ID as defined in section `Definition of Terms`_.
-- **Type**: string.
-- **Requirements/Conventions**:
+        description="""An entry's ID as defined in section Definition of Terms.
 
-  - **Support**: REQUIRED, MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter features.
-  - **Response**: REQUIRED in the response.
-  - See section `Definition of Terms`_.
+- **Type**: string.
+
+- **Requirements/Conventions**:
+    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Response**: REQUIRED in the response.
 
 - **Examples**:
-
-  - :val:`"db/1234567"`
-  - :val:`"cod/2000000"`
-  - :val:`"cod/2000000@1234567"`
-  - :val:`"nomad/L1234567890"`
-  - :val:`"42"`""",
+    - `"db/1234567"`
+    - `"cod/2000000"`
+    - `"cod/2000000@1234567"`
+    - `"nomad/L1234567890"`
+    - `"42"`""",
     )
 
     type: str = Field(
-        ...,
         description="""The name of the type of an entry.
+
 - **Type**: string.
+
 - **Requirements/Conventions**:
+    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Response**: REQUIRED in the response.
+    - MUST be an existing entry type.
+    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
 
-  - **Support**: REQUIRED, MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter features.
-  - **Response**: REQUIRED in the response.
-  - MUST be an existing entry type.
-  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.
-
-- **Example**: :val:`"structures"`""",
+- **Example**: `"structures"`""",
     )
 
     attributes: EntryResourceAttributes = Field(
         ...,
-        description="""a dictionary, containing key-value pairs representing the entry's properties, except for type and id.
-
-Database-provider-specific properties need to include the database-provider-specific prefix
-(see appendix `Database-Provider-Specific Namespace Prefixes`_).""",
+        description="""A dictionary, containing key-value pairs representing the entry's properties, except for `type` and `id`.
+Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
     )
 
     relationships: Optional[EntryRelationships] = Field(
         None,
-        description="""a dictionary containing references to other entries according to the description in section `Relationships`_
-encoded as `JSON API Relationships <https://jsonapi.org/format/1.0/#document-resource-object-relationships>`__.
-The OPTIONAL human-readable description of the relationship MAY be provided in the :field:`description` field inside the :field:`meta` dictionary.""",
+        description="""A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).
+The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
     )
 
 
 class EntryInfoProperty(BaseModel):
 
-    description: str = Field(..., description="description of the entry property")
+    description: str = Field(
+        ..., description="A human-readable description of the entry property"
+    )
 
     unit: Optional[str] = Field(
-        None, description="the physical unit of the entry property"
+        None,
+        description="""The physical unit of the entry property.
+It is RECOMMENDED that non-standard (non-SI) units are described in the description for the property.""",
     )
 
     sortable: Optional[bool] = Field(
         None,
-        description='defines whether the entry property can be used for sorting with the "sort" parameter. '
-        "If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.",
+        description="""Defines whether the entry property can be used for sorting with the "sort" parameter.
+If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.""",
     )
 
     type: Optional[DataType] = Field(
         None,
-        description="Data type of value. Must equal a valid OPTIMADE data type as listed and defined under 'Data types'.",
+        description="""String.
+The type of the property's value.
+
+This MUST be any of the types defined in the Data types section.
+For the purpose of compatibility with future versions of this specification, a client MUST accept values that are not `string` values specifying any of the OPTIMADE Data types, but MUST then also disregard the `type` field.
+Note, if the value is a nested type, only the outermost type should be reported.
+E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`.
+Data type of value. Must equal a valid OPTIMADE data type as listed and defined under 'Data types'.""",
     )
 
 
 class EntryInfoResource(BaseModel):
 
-    formats: List[str] = Field(..., description="list of available output formats.")
+    formats: List[str] = Field(
+        ..., description="List of output formats available for this type of entry."
+    )
 
-    description: str = Field(..., description="description of the entry")
+    description: str = Field(..., description="Description of the entry")
 
     properties: Dict[str, EntryInfoProperty] = Field(
         ...,
-        description="a dictionary describing queryable properties for this "
-        "entry type, where each key is a property ID.",
+        description="A dictionary describing queryable properties for this entry type, where each key is a property name.",
     )
 
     output_fields_by_format: Dict[str, List[str]] = Field(
         ...,
-        description="a dictionary of available output fields for this entry "
-        "type, where the keys are the values of the `formats` list "
-        "and the values are the keys of the `properties` dictionary.",
+        description="Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.",
     )

@@ -111,41 +111,35 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
 
 
 class ReferenceResource(EntryResource):
-    """ The :entry:`references` entries describe bibliographic references.
-The following properties are used to provide the bibliographic details:
+    """ The `references` entries describe bibliographic references.
+    The following properties are used to provide the bibliographic details:
 
-- **address**, **annote**, **booktitle**, **chapter**, **crossref**, **edition**, **howpublished**, **institution**, **journal**, **key**, **month**,
-  **note**, **number**, **organization**, **pages**, **publisher**, **school**, **series**, **title**, **type**, **volume**, **year**:
-  Meanings of these properties match the `BibTeX specification <http://bibtexml.sourceforge.net/btxdoc.pdf>`__, values are strings;
+    - **address**, **annote**, **booktitle**, **chapter**, **crossref**, **edition**, **howpublished**, **institution**, **journal**, **key**, **month**, **note**, **number**, **organization**, **pages**, **publisher**, **school**, **series**, **title**, **volume**, **year**: meanings of these properties match the [BibTeX specification](http://bibtexml.sourceforge.net/btxdoc.pdf), values are strings;
+    - **bib_type**: type of the reference, corresponding to **type** property in the BibTeX specification, value is string;
+    - **authors** and **editors**: lists of *person objects* which are dictionaries with the following keys:
+        - **name**: Full name of the person, REQUIRED.
+        - **firstname**, **lastname**: Parts of the person's name, OPTIONAL.
+    - **doi** and **url**: values are strings.
+    - **Requirements/Conventions**:
+        - **Support**: OPTIONAL support in implementations, i.e., any of the properties MAY be `null`.
+        - **Query**: Support for queries on any of these properties is OPTIONAL.
+            If supported, filters MAY support only a subset of comparison operators.
+        - Every references entry MUST contain at least one of the properties.
 
-- **authors** and **editors**: lists of *person objects* which are dictionaries with the following keys:
-
-  - **name**: Full name of the person, REQUIRED.
-  - **firstname**, **lastname**: Parts of the person's name, OPTIONAL.
-
-- **doi** and **url**: values are strings.
-
-- **Requirements/Conventions**:
-
-  - **Support**: OPTIONAL, i.e., any of the properties MAY be :val:`null`.
-  - **Query**: Support for queries on any of these properties is OPTIONAL.
-    If supported, filters MAY support only a subset of comparison operators.
-  - Every references entry MUST contain at least one of the properties."""
+    """
 
     type: str = Field(
         default="references",
         const=True,
-        description="""The name of the type of an entry. Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.
+        description="""The name of the type of an entry.
 - **Type**: string.
 - **Requirements/Conventions**:
-
-  - **Support**: REQUIRED, MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter features.
-  - **Response**: REQUIRED in the response.
-  - MUST be an existing entry type.
-  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.
-
-- **Example**: :val:`"structures"`""",
+    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Response**: REQUIRED in the response.
+    - MUST be an existing entry type.
+    - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
+- **Example**: `"structures"`""",
     )
     attributes: ReferenceResourceAttributes
 
