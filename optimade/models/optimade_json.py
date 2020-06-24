@@ -29,7 +29,7 @@ __all__ = (
 class DataType(Enum):
     """Optimade Data Types
 
-    See the section "Data types" in the OPTIMADE API specification for more information.
+See the section "Data types" in the OPTIMADE API specification for more information.
     """
 
     STRING = "string"
