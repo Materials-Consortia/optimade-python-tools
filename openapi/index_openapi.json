@@ -1422,7 +1422,7 @@
                 "$ref": "#/components/schemas/Relationships"
               }
             ],
-            "description": "a relationships object describing relationships between the resource and other JSON API resources."
+            "description": "Relationships object describing relationships between the resource and other JSON API resources."
           }
         },
         "description": "Resource objects appear in a JSON API document to represent resources."
@@ -1477,19 +1477,19 @@
           "api_version": {
             "title": "Api Version",
             "type": "string",
-            "description": "a string containing the version of the API implementation, e.g. v0.9.5"
+            "description": "A string containing the version of the API implementation, e.g. v0.9.5"
           },
           "time_stamp": {
             "title": "Time Stamp",
             "type": "string",
-            "description": "a timestamp containing the date and time at which the query was executed.",
+            "description": "A timestamp containing the date and time at which the query was executed.",
             "format": "date-time"
           },
           "data_returned": {
             "title": "Data Returned",
             "minimum": 0.0,
             "type": "integer",
-            "description": "an integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination."
+            "description": "An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination."
           },
           "more_data_available": {
             "title": "More Data Available",
@@ -1508,7 +1508,7 @@
           "data_available": {
             "title": "Data Available",
             "type": "integer",
-            "description": "an integer containing the total number of data resource objects available in the database for the endpoint."
+            "description": "An integer containing the total number of data resource objects available in the database for the endpoint."
           },
           "last_id": {
             "title": "Last Id",

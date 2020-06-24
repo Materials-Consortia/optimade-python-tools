@@ -45,7 +45,7 @@ class StructureFeatures(Enum):
 
 
 class Species(BaseModel):
-    """ A list describing the species of the sites of this structure.
+    """A list describing the species of the sites of this structure.
     Species can represent pure chemical elements, virtual-crystal atoms representing a
     statistical occupation of a given site by multiple chemical elements, and/or a
     location to which there are attached atoms, i.e., atoms whose precise location are
@@ -245,7 +245,8 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
 
-- **Example**: `3`
+- **Examples**:
+    - `3`
 
 - **Querying**:
     - Note: queries on this property can equivalently be formulated using `elements LENGTH`.
@@ -884,7 +885,8 @@ class StructureResource(EntryResource):
     - MUST be an existing entry type.
     - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
 
-- **Example**: `"structures"`""",
+- **Examples**:
+    - `"structures"`""",
     )
 
     attributes: StructureResourceAttributes

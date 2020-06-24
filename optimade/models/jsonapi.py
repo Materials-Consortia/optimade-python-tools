@@ -137,7 +137,7 @@ class BaseResource(BaseModel):
 
 
 class RelationshipLinks(BaseModel):
-    """ A resource object **MAY** contain references to other resource objects (\"relationships\").
+    """A resource object **MAY** contain references to other resource objects (\"relationships\").
     Relationships may be to-one or to-many.
     Relationships can be specified by including a member in a resource's links object.
 
@@ -255,7 +255,7 @@ class Resource(BaseResource):
     )
     relationships: Optional[Relationships] = Field(
         None,
-        description="a relationships object describing relationships between the resource and other JSON API resources.",
+        description="Relationships object describing relationships between the resource and other JSON API resources.",
     )
 
 

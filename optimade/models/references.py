@@ -111,7 +111,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
 
 
 class ReferenceResource(EntryResource):
-    """ The `references` entries describe bibliographic references.
+    """The `references` entries describe bibliographic references.
     The following properties are used to provide the bibliographic details:
 
     - **address**, **annote**, **booktitle**, **chapter**, **crossref**, **edition**, **howpublished**, **institution**, **journal**, **key**, **month**, **note**, **number**, **organization**, **pages**, **publisher**, **school**, **series**, **title**, **volume**, **year**: meanings of these properties match the [BibTeX specification](http://bibtexml.sourceforge.net/btxdoc.pdf), values are strings;

@@ -1037,7 +1037,7 @@
                 "$ref": "#/components/schemas/Relationships"
               }
             ],
-            "description": "a relationships object describing relationships between the resource and other JSON API resources."
+            "description": "Relationships object describing relationships between the resource and other JSON API resources."
           }
         },
         "description": "Resource objects appear in a JSON API document to represent resources."
@@ -2596,7 +2596,7 @@
                 "$ref": "#/components/schemas/Relationships"
               }
             ],
-            "description": "a relationships object describing relationships between the resource and other JSON API resources."
+            "description": "Relationships object describing relationships between the resource and other JSON API resources."
           }
         },
         "description": "Resource objects appear in a JSON API document to represent resources."
@@ -2651,19 +2651,19 @@
           "api_version": {
             "title": "Api Version",
             "type": "string",
-            "description": "a string containing the version of the API implementation, e.g. v0.9.5"
+            "description": "A string containing the version of the API implementation, e.g. v0.9.5"
           },
           "time_stamp": {
             "title": "Time Stamp",
             "type": "string",
-            "description": "a timestamp containing the date and time at which the query was executed.",
+            "description": "A timestamp containing the date and time at which the query was executed.",
             "format": "date-time"
           },
           "data_returned": {
             "title": "Data Returned",
             "minimum": 0.0,
             "type": "integer",
-            "description": "an integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination."
+            "description": "An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination."
           },
           "more_data_available": {
             "title": "More Data Available",
@@ -2682,7 +2682,7 @@
           "data_available": {
             "title": "Data Available",
             "type": "integer",
-            "description": "an integer containing the total number of data resource objects available in the database for the endpoint."
+            "description": "An integer containing the total number of data resource objects available in the database for the endpoint."
           },
           "last_id": {
             "title": "Last Id",
@@ -2849,7 +2849,7 @@
           "type": {
             "title": "Type",
             "type": "string",
-            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Example**: `\"structures\"`"
+            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Examples**:\n    - `\"structures\"`"
           },
           "links": {
             "title": "Links",
@@ -2925,7 +2925,7 @@
           "nelements": {
             "title": "Nelements",
             "type": "integer",
-            "description": "Number of different elements in the structure as an integer.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Example**: `3`\n\n- **Querying**:\n    - Note: queries on this property can equivalently be formulated using `elements LENGTH`.\n    - A filter that matches structures that have exactly 4 elements: `nelements=4`.\n    - A filter that matches structures that have between 2 and 7 elements: `nelements>=2 AND nelements<=7`."
+            "description": "Number of different elements in the structure as an integer.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `3`\n\n- **Querying**:\n    - Note: queries on this property can equivalently be formulated using `elements LENGTH`.\n    - A filter that matches structures that have exactly 4 elements: `nelements=4`.\n    - A filter that matches structures that have between 2 and 7 elements: `nelements>=2 AND nelements<=7`."
           },
           "elements_ratios": {
             "title": "Elements Ratios",

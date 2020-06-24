@@ -238,17 +238,17 @@ class ResponseMeta(jsonapi.Meta):
 
     api_version: str = Field(
         ...,
-        description="a string containing the version of the API implementation, e.g. v0.9.5",
+        description="A string containing the version of the API implementation, e.g. v0.9.5",
     )
 
     time_stamp: datetime = Field(
         ...,
-        description="a timestamp containing the date and time at which the query was executed.",
+        description="A timestamp containing the date and time at which the query was executed.",
     )
 
     data_returned: int = Field(
         ...,
-        description="an integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.",
+        description="An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.",
         ge=0,
     )
 
@@ -263,7 +263,7 @@ class ResponseMeta(jsonapi.Meta):
 
     data_available: Optional[int] = Field(
         None,
-        description="an integer containing the total number of data resource objects available in the database for the endpoint.",
+        description="An integer containing the total number of data resource objects available in the database for the endpoint.",
     )
 
     last_id: Optional[str] = Field(
