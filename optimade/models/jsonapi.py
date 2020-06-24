@@ -137,15 +137,22 @@ class BaseResource(BaseModel):
 
 
 class RelationshipLinks(BaseModel):
-    """A resource object **MAY** contain references to other resource objects (\"relationships\").
+    """A resource object **MAY** contain references to other resource objects ("relationships").
     Relationships may be to-one or to-many.
     Relationships can be specified by including a member in a resource's links object.
 
     """
 
-    self: Optional[Union[AnyUrl, Link]] = Field(None, description="A link to itself")
+    self: Optional[Union[AnyUrl, Link]] = Field(
+        None,
+        description="""A link for the relationship itself (a 'relationship link').
+This link allows the client to directly manipulate the relationship.
+When fetched successfully, this link returns the [linkage](https://jsonapi.org/format/1.0/#document-resource-object-linkage) for the related resources as its primary data.
+(See [Fetching Relationships](https://jsonapi.org/format/1.0/#fetching-relationships).)""",
+    )
     related: Optional[Union[AnyUrl, Link]] = Field(
-        None, description="A related resource link"
+        None,
+        description="A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links).",
     )
 
     @root_validator(pre=True)
@@ -255,7 +262,8 @@ class Resource(BaseResource):
     )
     relationships: Optional[Relationships] = Field(
         None,
-        description="Relationships object describing relationships between the resource and other JSON API resources.",
+        description="""[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)
+describing relationships between the resource and other JSON API resources.""",
     )
 
 

@@ -150,14 +150,11 @@ If the entry listing endpoint supports sorting, this key MUST be present for sor
 
     type: Optional[DataType] = Field(
         None,
-        description="""String.
-The type of the property's value.
-
+        description="""The type of the property's value.
 This MUST be any of the types defined in the Data types section.
 For the purpose of compatibility with future versions of this specification, a client MUST accept values that are not `string` values specifying any of the OPTIMADE Data types, but MUST then also disregard the `type` field.
 Note, if the value is a nested type, only the outermost type should be reported.
-E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`.
-Data type of value. Must equal a valid OPTIMADE data type as listed and defined under 'Data types'.""",
+E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`.""",
     )
 
 
@@ -167,7 +164,7 @@ class EntryInfoResource(BaseModel):
         ..., description="List of output formats available for this type of entry."
     )
 
-    description: str = Field(..., description="Description of the entry")
+    description: str = Field(..., description="Description of the entry.")
 
     properties: Dict[str, EntryInfoProperty] = Field(
         ...,

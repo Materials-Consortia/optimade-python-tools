@@ -709,7 +709,7 @@
           "is_index": {
             "title": "Is Index",
             "type": "boolean",
-            "description": "If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for `is_index` to be false)."
+            "description": "This must be `true` since this is an index meta-database (see section Index Meta-Database)."
           }
         },
         "description": "Attributes for Base URL Info endpoint for an Index Meta-Database"
@@ -757,7 +757,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/IndexRelationship"
             },
-            "description": "Reference to the child identifier object under the `links` endpoint that the provider has chosen as their 'default' OPTIMADE API database.\nA client SHOULD present this database as the first choice when an end-user chooses this provider."
+            "description": "Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their 'default' OPTIMADE API database.\nA client SHOULD present this database as the first choice when an end-user chooses this provider."
           }
         },
         "description": "Index Meta-Database Base URL Info endpoint resource"
@@ -840,7 +840,7 @@
                 "$ref": "#/components/schemas/RelatedLinksResource"
               }
             ],
-            "description": "JSON API resource linkage.\nIt MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`"
+            "description": "[JSON API resource linkage](http://jsonapi.org/format/1.0/#document-links).\nIt MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`"
           }
         },
         "description": "Index Meta-Database relationship"
@@ -937,7 +937,7 @@
                 "$ref": "#/components/schemas/LinksResourceAttributes"
               }
             ],
-            "description": "A dictionary containing key-value pairs representing the entry's properties."
+            "description": "A dictionary containing key-value pairs representing the Links resource's properties."
           },
           "relationships": {
             "title": "Relationships",
@@ -1018,7 +1018,7 @@
               "external",
               "providers"
             ],
-            "description": "The link type of the represented resource in relation to this implementation.\nMUST be one of these values: 'child', 'root', 'external', 'providers'."
+            "description": "The type of the linked relation.\nMUST be one of these values: 'child', 'root', 'external', 'providers'."
           },
           "aggregate": {
             "title": "Aggregate",
@@ -1340,7 +1340,7 @@
                 ]
               }
             ],
-            "description": "A link to itself"
+            "description": "A link for the relationship itself (a 'relationship link').\nThis link allows the client to directly manipulate the relationship.\nWhen fetched successfully, this link returns the [linkage](https://jsonapi.org/format/1.0/#document-resource-object-linkage) for the related resources as its primary data.\n(See [Fetching Relationships](https://jsonapi.org/format/1.0/#fetching-relationships).)"
           },
           "related": {
             "title": "Related",
@@ -1359,7 +1359,7 @@
                 ]
               }
             ],
-            "description": "A related resource link"
+            "description": "A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links)."
           }
         },
         "description": "A resource object **MAY** contain references to other resource objects (\"relationships\").\nRelationships may be to-one or to-many.\nRelationships can be specified by including a member in a resource's links object."
@@ -1422,7 +1422,7 @@
                 "$ref": "#/components/schemas/Relationships"
               }
             ],
-            "description": "Relationships object describing relationships between the resource and other JSON API resources."
+            "description": "[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)\ndescribing relationships between the resource and other JSON API resources."
           }
         },
         "description": "Resource objects appear in a JSON API document to represent resources."
@@ -1472,12 +1472,12 @@
                 "$ref": "#/components/schemas/ResponseMetaQuery"
               }
             ],
-            "description": "information on the query that was requested"
+            "description": "Information on the Query that was requested"
           },
           "api_version": {
             "title": "Api Version",
             "type": "string",
-            "description": "A string containing the version of the API implementation, e.g. v0.9.5"
+            "description": "A string containing the version of the API implementation."
           },
           "time_stamp": {
             "title": "Time Stamp",
@@ -1769,7 +1769,7 @@
             "description": "Warnings must be of type \"warning\""
           }
         },
-        "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\n\nFrom the specification:\n\n    A warning resource object is defined similarly to a JSON API\n    error object, but MUST also include the field type, which MUST\n    have the value \"warning\". The field detail MUST be present and\n    SHOULD contain a non-critical message, e.g., reporting\n    unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
+        "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\n\nFrom the specification:\n\nA warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value \"warning\".\nThe field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
       }
     }
   }

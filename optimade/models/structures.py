@@ -76,7 +76,7 @@ hydrogens might represent a methyl group, -CH3).
 - the special value `"X"` to represent a non-chemical element, or
 - the special value `"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).
 
-If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features` (see property [structure_features](#structure_features)).""",
+If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.""",
     )
 
     concentration: List[float] = Field(
@@ -164,10 +164,10 @@ class Assembly(BaseModel):
 
 - **Examples** (for each entry of the assemblies list):
     - `{"sites_in_groups": [[0], [1]], "group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.
-    Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.
+      Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.
     - `{"sites_in_groups": [[1,2], [3]], "group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.
-    The second group is formed by the fourth site. Sites of the first group (the second and the third) are never present at the same time as the fourth site.
-    30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).
+      The second group is formed by the fourth site. Sites of the first group (the second and the third) are never present at the same time as the fourth site.
+      30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).
 
     """
 
@@ -185,7 +185,7 @@ class Assembly(BaseModel):
         description="""Statistical probability of each group. It MUST have the same length as `sites_in_groups`.
 It SHOULD sum to one.
 See below for examples of how to specify the probability of the occurrence of a vacancy.
-The possible reasons for the values not to sum to one are the same as already specified above for the `concentration` of each `species`, see property [species](#species).""",
+The possible reasons for the values not to sum to one are the same as already specified above for the `concentration` of each `species`.""",
     )
 
     @validator("sites_in_groups")
@@ -426,13 +426,13 @@ Note: the elements in this list each refer to the direction of the corresponding
 - **Requirements/Conventions**:
     - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
     - **Query**: Support for queries on this property is OPTIONAL.
-        If supported, filters MAY support only a subset of comparison operators.
+      If supported, filters MAY support only a subset of comparison operators.
     - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates.
-        (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).
+      (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).
     - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.
     - MUST always contain three vectors of three coordinates each, independently of the elements of property `dimension_types`.
-        The vectors SHOULD by convention be chosen so the determinant of the `lattice_vectors` matrix is different from zero.
-        The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.
+      The vectors SHOULD by convention be chosen so the determinant of the `lattice_vectors` matrix is different from zero.
+      The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.
     - The coordinates of the lattice vectors of non-periodic dimensions (i.e., those dimensions for which `dimension_types` is `0`) MAY be given as a list of all `null` values.
         If a lattice vector contains the value `null`, all coordinates of that lattice vector MUST be `null`.
 
@@ -451,7 +451,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
 - **Requirements/Conventions**:
     - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
     - **Query**: Support for queries on this property is OPTIONAL.
-        If supported, filters MAY support only a subset of comparison operators.
+      If supported, filters MAY support only a subset of comparison operators.
     - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three Cartesian coordinates of a site expressed as float values in the unit angstrom (Å).
     - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`).
 
@@ -502,7 +502,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
             - the special value `"X"` to represent a non-chemical element, or
             - the special value `"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).
 
-            If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features` (see property [structure_features](#structure_features)).
+          If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.
 
         - **concentration**: REQUIRED; MUST be a list of floats, with same length as `chemical_symbols`.
           The numbers represent the relative concentration of the corresponding chemical symbol in this species.
@@ -517,8 +517,8 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
 
         - **nattached**: OPTIONAL; if provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the `attached` key.
 
-            The implementation MUST include either both or none of the `attached` and `nattached` keys, and if they are provided, they MUST be of the same length.
-            Furthermore, if they are provided, the [structure_features](#structure_features) property MUST include the string `site_attachments`.
+          The implementation MUST include either both or none of the `attached` and `nattached` keys, and if they are provided, they MUST be of the same length.
+          Furthermore, if they are provided, the `structure_features` property MUST include the string `site_attachments`.
 
         - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.
 
@@ -526,7 +526,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
 
           Note: With regards to "source database", we refer to the immediate source being queried via the OPTIMADE API implementation.
 
-          The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property [species_at_sites](#species_at_sites)).
+          The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`).
 
     - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., `"Ti"` for titanium, `"O"` for oxygen, etc.)
       However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.

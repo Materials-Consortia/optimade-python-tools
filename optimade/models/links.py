@@ -59,7 +59,7 @@ class LinksResourceAttributes(Attributes):
 
     link_type: LinkType = Field(
         ...,
-        description="""The link type of the represented resource in relation to this implementation.
+        description="""The type of the linked relation.
 MUST be one of these values: 'child', 'root', 'external', 'providers'.""",
     )
 
@@ -95,7 +95,7 @@ class LinksResource(EntryResource):
 
     attributes: LinksResourceAttributes = Field(
         ...,
-        description="A dictionary containing key-value pairs representing the entry's properties.",
+        description="A dictionary containing key-value pairs representing the Links resource's properties.",
     )
 
     @root_validator(pre=True)
