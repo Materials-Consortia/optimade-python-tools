@@ -74,7 +74,7 @@ If specified, and the value is anything different than `ok`, the client MUST ass
 Specific values indicate the reason why the server is providing the suggestion.
 A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).
 
-If specified, it MUST be one of the values listed in section [Link Aggregate Options](#link-aggregate-options).""",
+If specified, it MUST be one of the values listed in section Link Aggregate Options.""",
     )
 
     no_aggregate_reason: Optional[str] = Field(
