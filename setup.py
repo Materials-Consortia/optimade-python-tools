@@ -5,7 +5,6 @@ from setuptools import setup, find_packages
 module_dir = Path(__file__).resolve().parent
 
 with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
-    print(version_file.name)
     for line in version_file:
         match = re.match(r'__version__ = "(.*)"', line)
         if match is not None:
