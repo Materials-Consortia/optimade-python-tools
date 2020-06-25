@@ -41,13 +41,11 @@ class LinksResourceAttributes(Attributes):
 
     name: str = Field(
         ...,
-        description="Human-readable name for the OPTIMADE API implementation "
-        "a client may provide in a list to an end-user.",
+        description="Human-readable name for the OPTIMADE API implementation, e.g., for use in clients to show the name to the end-user.",
     )
     description: str = Field(
         ...,
-        description="Human-readable description for the OPTIMADE API implementation "
-        "a client may provide in a list to an end-user.",
+        description="Human-readable description for the OPTIMADE API implementation, e.g., for use in clients to show a description to the end-user.",
     )
     base_url: Union[AnyUrl, Link, None] = Field(
         ...,
@@ -61,19 +59,20 @@ class LinksResourceAttributes(Attributes):
 
     link_type: LinkType = Field(
         ...,
-        description="The link type of the represented resource in relation to this implementation. MUST be one of these values: 'child', 'root', 'external', 'providers'.",
+        description="""The type of the linked relation.
+MUST be one of these values: 'child', 'root', 'external', 'providers'.""",
     )
 
     aggregate: Optional[Aggregate] = Field(
         "ok",
         description="""A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.
-This flag SHOULD NOT be indicated for links where :property:`link_type` is not :val:`child`.
+This flag SHOULD NOT be indicated for links where `link_type` is not `child`.
 
-If not specified, clients MAY assume that the value is :val:`ok`.
-If specified, and the value is anything different than :val:`ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).
+If not specified, clients MAY assume that the value is `ok`.
+If specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).
 
 Specific values indicate the reason why the server is providing the suggestion.
-A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with :property:`aggregate`=:val:`test`).
+A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).
 
 If specified, it MUST be one of the values listed in section Link Aggregate Options.""",
     )
@@ -81,7 +80,7 @@ If specified, it MUST be one of the values listed in section Link Aggregate Opti
     no_aggregate_reason: Optional[str] = Field(
         None,
         description="""An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.
-It SHOULD NOT be present if :property:`aggregate`=:val:`ok`.""",
+It SHOULD NOT be present if `aggregate`=`ok`.""",
     )
 
 
@@ -96,8 +95,7 @@ class LinksResource(EntryResource):
 
     attributes: LinksResourceAttributes = Field(
         ...,
-        description="a dictionary containing key-value pairs representing the "
-        "entry's properties.",
+        description="A dictionary containing key-value pairs representing the Links resource's properties.",
     )
 
     @root_validator(pre=True)

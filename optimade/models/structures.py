@@ -46,43 +46,45 @@ class StructureFeatures(Enum):
 
 class Species(BaseModel):
     """A list describing the species of the sites of this structure.
-    Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.
+Species can represent pure chemical elements, virtual-crystal atoms representing a
+statistical occupation of a given site by multiple chemical elements, and/or a
+location to which there are attached atoms, i.e., atoms whose precise location are
+unknown beyond that they are attached to that position (frequently used to indicate
+hydrogen atoms attached to another element, e.g., a carbon with three attached
+hydrogens might represent a methyl group, -CH3).
 
-    - **Examples**:
-
-        - :val:`[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]`: any site with this species is occupied by a Ti atom.
-        - :val:`[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
-        - :val:`[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
-        - :val:`[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
-        - :val:`[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
+- **Examples**:
+    - `[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]`: any site with this species is occupied by a Ti atom.
+    - `[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
+    - `[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
+    - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
+    - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
+    - `[ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.
 
     """
 
     name: str = Field(
         ...,
-        decsription="""REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;""",
+        decsription="""Gives the name of the species; the **name** value MUST be unique in the `species` list.""",
     )
 
     chemical_symbols: List[str] = Field(
         ...,
-        description="""MUST be a list of strings of all chemical elements composing this species.
+        description="""MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
 
-- It MUST be one of the following:
+- a valid chemical-element name, or
+- the special value `"X"` to represent a non-chemical element, or
+- the special value `"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).
 
-  - a valid chemical-element name, or
-  - the special value :val:`"X"` to represent a non-chemical element, or
-  - the special value :val:`"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the :property:`concentration` list, see below).
-
--  If any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).""",
+If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.""",
     )
 
     concentration: List[float] = Field(
         ...,
-        description="""MUST be a list of floats, with same length as :property:`chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species.
-The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
+        description="""MUST be a list of floats, with same length as `chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species. The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
 
-  - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.
-  - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.
+- Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations `1/3` and `2/3`, the concentration might look something like `[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.
+- Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.
 
 Note that concentrations are uncorrelated between different site (even of the same species).""",
     )
@@ -97,8 +99,7 @@ Note that concentrations are uncorrelated between different site (even of the sa
         None,
         description="""Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
-Note: With regards to "source database", we refer to the immediate source being queried via the OPTIMADE API implementation.
-The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).""",
+Note: With regards to "source database", we refer to the immediate source being queried via the OPTIMADE API implementation.""",
     )
 
     attached: Optional[List[str]] = Field(
@@ -161,14 +162,12 @@ The main use of this field is for source databases that use species names, conta
 class Assembly(BaseModel):
     """A description of groups of sites that are statistically correlated.
 
-    - **Examples** (for each entry of the assemblies list):
-
-        - :val:`{"sites_in_groups": [[0], [1]], "group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.
-            Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.
-        - :val:`{"sites_in_groups": [[1,2], [3]], "group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.
-            The second group is formed by the fourth site.
-            Sites of the first group (the second and the third) are never present at the same time as the fourth site.
-            30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).
+- **Examples** (for each entry of the assemblies list):
+    - `{"sites_in_groups": [[0], [1]], "group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.
+      Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.
+    - `{"sites_in_groups": [[1,2], [3]], "group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.
+      The second group is formed by the fourth site. Sites of the first group (the second and the third) are never present at the same time as the fourth site.
+      30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).
 
     """
 
@@ -176,16 +175,17 @@ class Assembly(BaseModel):
         ...,
         description="""Index of the sites (0-based) that belong to each group for each assembly.
 
-Example: :val:`[[1], [2]]`: two groups, one with the second site, one with the third.
-Example: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth.""",
+- **Examples**:
+    - `[[1], [2]]`: two groups, one with the second site, one with the third.
+    - `[[1,2], [3]]`: one group with the second and third site, one with the fourth.""",
     )
 
     group_probabilities: List[float] = Field(
         ...,
-        description="""Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.
+        description="""Statistical probability of each group. It MUST have the same length as `sites_in_groups`.
 It SHOULD sum to one.
 See below for examples of how to specify the probability of the occurrence of a vacancy.
-The possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_.""",
+The possible reasons for the values not to sum to one are the same as already specified above for the `concentration` of each `species`.""",
     )
 
     @validator("sites_in_groups")
@@ -214,209 +214,205 @@ class StructureResourceAttributes(EntryResourceAttributes):
     elements: List[str] = Field(
         ...,
         description="""Names of the different elements present in the structure.
-- **Type**: list of strings.
-- **Requirements/Conventions**:
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter operators.
-  - The strings are the chemical symbols, written as uppercase letter plus optional lowercase letters.
-  - The order MUST be alphabetical.
-  - Note: This may not contain the "x" that is suggested in chemical_symbols for the :property:`species` property.
+- **Type**: list of strings.
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - The strings are the chemical symbols, i.e., either a single uppercase letter or an uppercase letter followed by a number of lowercase letters.
+    - The order MUST be alphabetical.
+    - Note: This property SHOULD NOT contain the string "X" to indicate non-chemical elements or "vacancy" to indicate vacancies (in contrast to the field `chemical_symbols` for the `species` property).
 
 - **Examples**:
-
-  - :val:`["Si"]`
-  - :val:`["Al","O","Si"]`
+    - `["Si"]`
+    - `["Al","O","Si"]`
 
 - **Query examples**:
-  - A filter that matches all records of structures that contain Si, Al **and** O, and possibly other elements: :filter:`elements HAS ALL "Si", "Al", "O"`.
-  - To match structures with exactly these three elements, use :filter:`elements HAS ALL "Si", "Al", "O" AND LENGTH elements = 3`.""",
+    - A filter that matches all records of structures that contain Si, Al **and** O, and possibly other elements: `elements HAS ALL "Si", "Al", "O"`.
+    - To match structures with exactly these three elements, use `elements HAS ALL "Si", "Al", "O" AND elements LENGTH 3`.""",
     )
 
     nelements: int = Field(
         ...,
         description="""Number of different elements in the structure as an integer.
+
 - **Type**: integer
+
 - **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter operators.
+- **Examples**:
+    - `3`
 
-- **Example**: :val:`3`
 - **Querying**:
-
-  -  Note: queries on this property can equivalently be formulated using :filter-fragment:`LENGTH elements`.
-  -  A filter that matches structures that have exactly 4 elements: :filter:`nelements=4`.
-  -  A filter that matches structures that have between 2 and 7 elements: :filter:`nelements>=2 AND nelements<=7`.""",
+    - Note: queries on this property can equivalently be formulated using `elements LENGTH`.
+    - A filter that matches structures that have exactly 4 elements: `nelements=4`.
+    - A filter that matches structures that have between 2 and 7 elements: `nelements>=2 AND nelements<=7`.""",
     )
 
     elements_ratios: List[float] = Field(
         ...,
         description="""Relative proportions of different elements in the structure.
-- **Type**: list of floats
-- **Requirements/Conventions**:
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter operators.
-  - Composed by the proportions of elements in the structure as a list of floating point numbers.
-  - The sum of the numbers MUST be 1.0 (within floating point accuracy)
+- **Type**: list of floats
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - Composed by the proportions of elements in the structure as a list of floating point numbers.
+    - The sum of the numbers MUST be 1.0 (within floating point accuracy)
 
 - **Examples**:
-
-  - :val:`[1.0]`
-  - :val:`[0.3333333333333333, 0.2222222222222222, 0.4444444444444444]`
+    - `[1.0]`
+    - `[0.3333333333333333, 0.2222222222222222, 0.4444444444444444]`
 
 - **Query examples**:
-
-  - Note: useful filters can be formulated using the set operator syntax for correlated values. However, since the values are floating point values, the use of equality comparisons is generally not recommended.
-  - A filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: :filter:`elements:elements_ratios HAS ALL "Al":>0.3333, "Al":<0.3334`.""",
+    - Note: Useful filters can be formulated using the set operator syntax for correlated values.
+      However, since the values are floating point values, the use of equality comparisons is generally inadvisable.
+    - OPTIONAL: a filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: `elements:elements_ratios HAS ALL "Al":>0.3333, "Al":<0.3334`.""",
     )
 
     chemical_formula_descriptive: str = Field(
         ...,
         description="""The chemical formula for a structure as a string in a form chosen by the API implementation.
-- **Type**: string
-- **Requirements/Conventions**:
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter operators.
-  - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets ``(``, ``)``, ``[``, ``]``, ``{``, ``}``, commas, the ``+``, ``-``, ``:`` and ``=`` symbols.
-    The parentheses are allowed to be followed by a number.
-    Spaces are allowed anywhere except within chemical symbols.
-    The order of elements and any groupings indicated by parentheses or brackets are chosen freely by the API implementation.
-  - The string SHOULD be arithmetically consistent with the element ratios in the :property:`chemical_formula_reduced` property.
-  - It is RECOMMENDED, but not mandatory, that symbols, parentheses and brackets, if used, are used with the meanings prescribed by `IUPAC's Nomenclature of Organic Chemistry <https://www.qmul.ac.uk/sbcs/iupac/bibliog/blue.html>`__.
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets `(`,`)`, `[`,`]`, `{`, `}`, commas, the `+`, `-`, `:` and `=` symbols. The parentheses are allowed to be followed by a number. Spaces are allowed anywhere except within chemical symbols. The order of elements and any groupings indicated by parentheses or brackets are chosen freely by the API implementation.
+    - The string SHOULD be arithmetically consistent with the element ratios in the `chemical_formula_reduced` property.
+    - It is RECOMMENDED, but not mandatory, that symbols, parentheses and brackets, if used, are used with the meanings prescribed by [IUPAC's Nomenclature of Organic Chemistry](https://www.qmul.ac.uk/sbcs/iupac/bibliog/blue.html).
 
 - **Examples**:
-
-  - :val:`"(H2O)2 Na"`
-  - :val:`"NaCl"`
-  - :val:`"CaCO3"`
-  - :val:`"CCaO3"`
-  - :val:`"(CH3)3N+ - [CH2]2-OH = Me3N+ - CH2 - CH2OH"`
+    - `"(H2O)2 Na"`
+    - `"NaCl"`
+    - `"CaCO3"`
+    - `"CCaO3"`
+    - `"(CH3)3N+ - [CH2]2-OH = Me3N+ - CH2 - CH2OH"`
 
 - **Query examples**:
-
-  - Note: the free-form nature of this property is likely to make queries on it across different databases inconsistent.
-  - A filter that matches an exactly given formula: :filter:`chemical_formula_descriptive="(H2O)2 Na"`.
-  - A filter that does a partial match: :filter:`chemical_formula_descriptive CONTAINS "H2O"`.""",
+    - Note: the free-form nature of this property is likely to make queries on it across different databases inconsistent.
+    - A filter that matches an exactly given formula: `chemical_formula_descriptive="(H2O)2 Na"`.
+    - A filter that does a partial match: `chemical_formula_descriptive CONTAINS "H2O"`.""",
     )
 
     chemical_formula_reduced: str = Field(
         ...,
         description="""The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.
-  The proportion number MUST be omitted if it is 1.
-- **Type**: string
-- **Requirements/Conventions**:
+The proportion number MUST be omitted if it is 1.
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property.
-    However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
-    Intricate querying on formula components are instead recommended to be formulated using set-type filter operators on the multi valued :property:`elements` and :property:`elements_proportions` properties.
-  - Element names MUST have proper capitalization (e.g., :val:`"Si"`, not :VAL:`"SI"` for "silicon").
-  - Elements MUST be placed in alphabetical order, followed by their integer chemical proportion number.
-  - For structures with no partial occupation, the chemical proportion numbers are the smallest integers for which the chemical proportion is exactly correct.
-  - For structures with partial occupation, the chemical proportion numbers are integers that within reasonable approximation indicate the correct chemical proportions. The precise details of how to perform the rounding is chosen by the API implementation.
-  - No spaces or separators are allowed.
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property.
+      However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
+      Intricate queries on formula components are instead suggested to be formulated using set-type filter operators on the multi valued `elements` and `elements_ratios` properties.
+    - Element names MUST have proper capitalization (e.g., `"Si"`, not `"SI"` for "silicon").
+    - Elements MUST be placed in alphabetical order, followed by their integer chemical proportion number.
+    - For structures with no partial occupation, the chemical proportion numbers are the smallest integers for which the chemical proportion is exactly correct.
+    - For structures with partial occupation, the chemical proportion numbers are integers that within reasonable approximation indicate the correct chemical proportions. The precise details of how to perform the rounding is chosen by the API implementation.
+    - No spaces or separators are allowed.
 
 - **Examples**:
-
-  - :val:`"H2NaO"`
-  - :val:`"ClNa"`
-  - :val:`"CCaO3"`
+    - `"H2NaO"`
+    - `"ClNa"`
+    - `"CCaO3"`
 
 - **Query examples**:
-
-  - A filter that matches an exactly given formula is :filter:`chemical_formula_reduced="H2NaO"`.""",
+    - A filter that matches an exactly given formula is `chemical_formula_reduced="H2NaO"`.""",
     )
 
     chemical_formula_hill: Optional[str] = Field(
         None,
-        description="""The chemical formula for a structure in `Hill form <https://dx.doi.org/10.1021/ja02046a005>`__ with element symbols followed by integer chemical proportion numbers.
-  The proportion number MUST be omitted if it is 1.
-- **Type**: string
-- **Requirements/Conventions**:
+        description="""The chemical formula for a structure in [Hill form](https://dx.doi.org/10.1021/ja02046a005) with element symbols followed by integer chemical proportion numbers. The proportion number MUST be omitted if it is 1.
 
-  - **Support**: OPTIONAL, i.e., MAY be :val:`null`.
-  - **Query**: Support for queries on these properties are OPTIONAL. If supported, only a subset of filter operators MAY be supported.
-  - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.
-    For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, :property:`chemical_formula_hill` is :val:`"H2O2"` (i.e., not :val:`"HO"`, nor :val:`"H4O4"`).
-  - If the chemical insight needed to ascribe a Hill formula to the system is not present, the property MUST be handled as unset.
-  - Element names MUST have proper capitalization (e.g., :val:`"Si"`, not :VAL:`"SI"` for "silicon").
-  - Elements MUST be placed in `Hill order <https://dx.doi.org/10.1021/ja02046a005>`__, followed by their integer chemical proportion number.
-    Hill order means: if carbon is present, it is placed first, and if also present, hydrogen is placed second.
-    After that, all other elements are ordered alphabetically.
-    If carbon is not present, all elements are ordered alphabetically.
-  - If the system has sites with partial occupation and the total occupations of each element do not all sum up to integers, then the Hill formula SHOULD be handled as unset.
-  - No spaces or separators are allowed.
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+      If supported, only a subset of the filter features MAY be supported.
+    - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.
+      For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, `chemical_formula_hill` is `"H2O2"` (i.e., not `"HO"`, nor `"H4O4"`).
+    - If the chemical insight needed to ascribe a Hill formula to the system is not present, the property MUST be handled as unset.
+    - Element names MUST have proper capitalization (e.g., `"Si"`, not `"SI"` for "silicon").
+    - Elements MUST be placed in [Hill order](https://dx.doi.org/10.1021/ja02046a005), followed by their integer chemical proportion number.
+      Hill order means: if carbon is present, it is placed first, and if also present, hydrogen is placed second.
+      After that, all other elements are ordered alphabetically.
+      If carbon is not present, all elements are ordered alphabetically.
+    - If the system has sites with partial occupation and the total occupations of each element do not all sum up to integers, then the Hill formula SHOULD be handled as unset.
+    - No spaces or separators are allowed.
 
 - **Examples**:
-  - :val:`"H2O2"`
+    - `"H2O2"`
 
 - **Query examples**:
-
-  - A filter that matches an exactly given formula is :filter:`chemical_formula_hill="H2O2"`.""",
+    - A filter that matches an exactly given formula is `chemical_formula_hill="H2O2"`.""",
     )
 
     chemical_formula_anonymous: str = Field(
         ...,
-        description="""The anonymous formula is the :property:`chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
-- **Type**: string
-- **Requirements/Conventions**:
+        description="""The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property. However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property.
+      However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
 
 - **Examples**:
-
-  - :val:`"A2B"`
-  - :val:`"A42B42C16D12E10F9G5"`
+    - `"A2B"`
+    - `"A42B42C16D12E10F9G5"`
 
 - **Querying**:
-  - A filter that matches an exactly given formula is :filter:`chemical_formula_anonymous="A2B"`.""",
+    - A filter that matches an exactly given formula is `chemical_formula_anonymous="A2B"`.""",
     )
 
     dimension_types: Tuple[Periodicity, Periodicity, Periodicity] = Field(
         ...,
         description="""List of three integers.
-  For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`_).
-  This list indicates if the direction is periodic (value :val:`1`) or non-periodic (value :val:`0`).
-  Note: the elements in this list each refer to the direction of the corresponding entry in property `lattice_vectors`_ and *not* the Cartesian x, y, z directions.
-- **Type**: list of integers.
-- **Requirements/Conventions**:
+For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`), this list indicates if the direction is periodic (value `1`) or non-periodic (value `0`).
+Note: the elements in this list each refer to the direction of the corresponding entry in `lattice_vectors` and *not* the Cartesian x, y, z directions.
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property. Support for equality comparison is REQUIRED, support for other comparison operators are OPTIONAL.
-  - MUST be a list of length 3.
-  - Each integer element MUST assume only the value 0 or 1.
+- **Type**: list of integers.
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - MUST be a list of length 3.
+    - Each integer element MUST assume only the value 0 or 1.
 
 - **Examples**:
-
-  - For a molecule: :val:`[0, 0, 0]`
-  - For a wire along the direction specified by the third lattice vector: :val:`[0, 0, 1]`
-  - For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: :val:`[1, 0, 1]`
-  - For a bulk 3D system: :val:`[1, 1, 1]`""",
+    - For a molecule: `[0, 0, 0]`
+    - For a wire along the direction specified by the third lattice vector: `[0, 0, 1]`
+    - For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: `[1, 0, 1]`
+    - For a bulk 3D system: `[1, 1, 1]`""",
     )
 
     nperiodic_dimensions: Optional[int] = Field(
         None,
-        description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in :property:`dimension_types`.
-- **Type**: integer
-- **Requirements/Conventions**:
+        description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.
 
-  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter features.
-  - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types`_ property.
-  - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.
+- **Type**: integer
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types` property.
+    - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.
 
 - **Examples**:
-
-  - :val:`2` should be indicated in cases where :property:`dimension_types` is any of :val:`[1, 1, 0]`, :val:`[1, 0, 1]`, :val:`[0, 1, 1]`.
+    - `2` should be indicated in cases where `dimension_types` is any of `[1, 1, 0]`, `[1, 0, 1]`, `[0, 1, 1]`.
 
 - **Query examples**:
-
-  - Match only structures with exactly 3 periodic dimensions: :filter:`nperiodic_dimensions=3`
-  - Match all structures with 2 or fewer periodic dimensions: :filter:`nperiodic_dimensions<=2`""",
+    - Match only structures with exactly 3 periodic dimensions: `nperiodic_dimensions=3`
+    - Match all structures with 2 or fewer periodic dimensions: `nperiodic_dimensions<=2`""",
     )
 
     lattice_vectors: Optional[
@@ -424,275 +420,279 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = Field(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
-- **Type**: list of list of floats.
-- **Requirements/Conventions**:
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: Support for queries on this property is OPTIONAL.
-    If supported, filters MAY support only a subset of comparison operators.
-  - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates.
-    (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).
-  - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.
-  - This property MUST be an array of dimensions 3 times 3 regardless of the elements of :property:`dimension_types`.
-    The vectors SHOULD by convention be chosen so the determinant of the :property:`lattice_vectors` matrix is different from zero.
-    The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.
-  - All three elements of the inner lists of floats MAY be :val:`null` for non-periodic dimensions, i.e., those dimensions for which :property:`dimension_types` is :val:`0`.
+- **Type**: list of list of floats or unknown values.
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+      If supported, filters MAY support only a subset of comparison operators.
+    - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates.
+      (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).
+    - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.
+    - MUST always contain three vectors of three coordinates each, independently of the elements of property `dimension_types`.
+      The vectors SHOULD by convention be chosen so the determinant of the `lattice_vectors` matrix is different from zero.
+      The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.
+    - The coordinates of the lattice vectors of non-periodic dimensions (i.e., those dimensions for which `dimension_types` is `0`) MAY be given as a list of all `null` values.
+        If a lattice vector contains the value `null`, all coordinates of that lattice vector MUST be `null`.
 
 - **Examples**:
-
-  - :val:`[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is :val:`(4, 0, 0)`, i.e., a vector aligned along the :val:`x` axis of length 4 Å; the second vector is :val:`(0, 4, 0)`; and the third vector is :val:`(0, 1, 4)`.""",
+    - `[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is `(4, 0, 0)`, i.e., a vector aligned along the `x` axis of length 4 Å; the second vector is `(0, 4, 0)`; and the third vector is `(0, 1, 4)`.""",
         unit="Å",
     )
 
     cartesian_site_positions: List[Vector3D] = Field(
         ...,
-        description="""Cartesian positions of each site. A site is an atom, a site potentially occupied by an atom, or a placeholder for a virtual mixture of atoms (e.g., in a virtual crystal approximation).
-- **Type**: list of list of floats
-- **Requirements/Conventions**:
+        description="""Cartesian positions of each site in the structure.
+A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
-  - It MUST be a list of length N times 3, where N is the number of sites in the structure.
-  - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`_).
-  - If a component of the position is unknown, the :val:`null` value should be provided instead (see section `Properties with unknown value`_).
-    Otherwise, it should be a float value, expressed in angstrom (Å).
-    If at least one of the coordinates is unknown, the correct flag in the list property `structure_features`_ MUST be set.
-  - **Notes**: (for implementers) While this is unrelated to this OPTIMADE specification: If you decide to store internally the :property: `cartesian_site_positions` as a float array, you might want to represent :val:`null` values with :field-val:`NaN` values.
-    The latter being valid float numbers in the IEEE 754 standard in `IEEE 754-1985 <https://doi.org/10.1109/IEEESTD.1985.82928>`__ and in the updated version `IEEE 754-2008 <https://doi.org/10.1109/IEEESTD.2008.4610935>`__.
+- **Type**: list of list of floats
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+      If supported, filters MAY support only a subset of comparison operators.
+    - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three Cartesian coordinates of a site expressed as float values in the unit angstrom (Å).
+    - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`).
 
 - **Examples**:
-
-  - :val:`[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 Å away from the origin.""",
+    - `[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 Å away from the origin.""",
         unit="Å",
     )
 
     nsites: int = Field(
         ...,
-        description="""An integer specifying the length of the :property:`cartesian_site_positions` property.
-- **Type**: integer
-- **Requirements/Conventions**:
+        description="""An integer specifying the length of the `cartesian_site_positions` property.
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter operators.
+- **Type**: integer
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
 
 - **Examples**:
-
-  - :val:`42`
+    - `42`
 
 - **Query examples**:
-
-  - Match only structures with exactly 4 sites: :filter:`nsites=4`
-  - Match structures that have between 2 and 7 sites: :filter:`nsites>=2 AND nsites<=7`""",
+    - Match only structures with exactly 4 sites: `nsites=4`
+    - Match structures that have between 2 and 7 sites: `nsites>=2 AND nsites<=7`""",
     )
 
     species: List[Species] = Field(
         ...,
-        description="""A list describing the species of the sites of this structure. Species can be pure chemical elements, or virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements.
-- **Type**: list of dictionary with keys:
+        description="""A list describing the species of the sites of this structure.
+Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
 
-  - :property:`name`: string (REQUIRED)
-  - :property:`chemical_symbols`: list of strings (REQUIRED)
-  - :property:`concentration`: list of float (REQUIRED)
-  - :property:`mass`: float (OPTIONAL)
-  - :property:`original_name`: string (OPTIONAL).
+- **Type**: list of dictionary with keys:
+    - `name`: string (REQUIRED)
+    - `chemical_symbols`: list of strings (REQUIRED)
+    - `concentration`: list of float (REQUIRED)
+    - `mass`: float (OPTIONAL)
+    - `original_name`: string (OPTIONAL).
 
 - **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+        If supported, filters MAY support only a subset of comparison operators.
+    - Each list member MUST be a dictionary with the following keys:
+        - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the `species` list;
+        - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.
+          Each item of the list MUST be one of the following:
+            - a valid chemical-element name, or
+            - the special value `"X"` to represent a non-chemical element, or
+            - the special value `"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: Support for queries on this property is OPTIONAL.
-    If supported, filters MAY support only a subset of comparison operators.
-  - Each list member MUST be a dictionary with the following keys:
+          If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.
 
-    - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the :property:`species` list;
+        - **concentration**: REQUIRED; MUST be a list of floats, with same length as `chemical_symbols`.
+          The numbers represent the relative concentration of the corresponding chemical symbol in this species.
+          The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
 
-    - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.
+            - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations `1/3` and `2/3`, the concentration might look something like `[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.
+            - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.
 
-      - It MUST be one of the following:
+            Note that concentrations are uncorrelated between different sites (even of the same species).
 
-        - a valid chemical-element name, or
-        - the special value :val:`"X"` to represent a non-chemical element, or
-        - the special value :val:`"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the :property:`concentration` list, see below).
+        - **attached**: OPTIONAL; if provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.
 
-      -  If any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).
+        - **nattached**: OPTIONAL; if provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the `attached` key.
 
-    - **concentration**: REQUIRED; MUST be a list of floats, with same length as :property:`chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species.
-      The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
+          The implementation MUST include either both or none of the `attached` and `nattached` keys, and if they are provided, they MUST be of the same length.
+          Furthermore, if they are provided, the `structure_features` property MUST include the string `site_attachments`.
 
-      - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations :val:`1/3` and :val:`2/3`, the concentration might look something like :val:`[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.
-      - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.
+        - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.
 
-      Note that concentrations are uncorrelated between different site (even of the same species).
+        - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
-    - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.
-    - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
+          Note: With regards to "source database", we refer to the immediate source being queried via the OPTIMADE API implementation.
 
-        Note: With regards to "source database", we refer to the immediate source being queried via the OPTIMADE API implementation.
-            The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`_).
+          The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`).
 
-  - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., :val:`"Ti"` for titanium, :val:`"O"` for oxygen, etc.)
-    However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.
-    This means that a species :val:`{"name": "C", "chemical_symbols": ["Ti"], "concentration": [1.0]}` is valid and represents a titanium species (and *not* a carbon species).
-  - It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.
+    - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., `"Ti"` for titanium, `"O"` for oxygen, etc.)
+      However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.
+      This means that a species `{"name": "C", "chemical_symbols": ["Ti"], "concentration": [1.0]}` is valid and represents a titanium species (and *not* a carbon species).
+    - It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.
 
 - **Examples**:
-
-  - :val:`[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]`: any site with this species is occupied by a Ti atom.
-  - :val:`[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
-  - :val:`[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
-  - :val:`[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
-  - :val:`[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.""",
+    - `[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]`: any site with this species is occupied by a Ti atom.
+    - `[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
+    - `[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
+    - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
+    - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
+    - `[ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.""",
     )
 
     species_at_sites: List[str] = Field(
         ...,
-        description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`_).
-  The properties of the species are found in the property `species`_.
-- **Type**: list of strings.
-- **Requirements/Conventions**:
+        description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).
+The properties of the species are found in the property `species`.
 
-  - **Support**: SHOULD be supported, i.e., SHOULD NOT be :val:`null`. Is REQUIRED in this implementation, i.e., MUST NOT be :val:`null`.
-  - **Query**: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
-  - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`_).
-  - Each species MUST have a unique name.
-  - Each species name mentioned in the :property:`species_at_sites` list MUST be described in the list property `species`_ (i.e. for each value in the :property:`species_at_sites` list there MUST exist exactly one dictionary in the :property:`species` list with the :property:`name` attribute equal to the corresponding :property:`species_at_sites` value).
-  - Each site MUST be associated only to a single species.
-    **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.
-    This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.
+- **Type**: list of strings.
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+      If supported, filters MAY support only a subset of comparison operators.
+    - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`).
+    - Each species name mentioned in the `species_at_sites` list MUST be described in the list property `species` (i.e. for each value in the `species_at_sites` list there MUST exist exactly one dictionary in the `species` list with the `name` attribute equal to the corresponding `species_at_sites` value).
+    - Each site MUST be associated only to a single species.
+      **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.
+      This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.
 
 - **Examples**:
-
-  - :val:`["Ti","O2"]` indicates that the first site is hosting a species labeled :val:`"Ti"` and the second a species labeled :val:`"O2"`.""",
+    - `["Ti","O2"]` indicates that the first site is hosting a species labeled `"Ti"` and the second a species labeled `"O2"`.
+    - `["Ac", "Ac", "Ag", "Ir"]` indicating the first two sites contains the `"Ac"` species, while the third and fourth sites contain the `"Ag"` and `"Ir"` species, respectively.""",
     )
 
     assemblies: Optional[List[Assembly]] = Field(
         None,
         description="""A description of groups of sites that are statistically correlated.
-- **Type**: list of dictionary with keys:
 
-  - :property:`sites_in_groups`: list of list of integers (REQUIRED)
-  - :property:`group_probabilities`: list of floats (REQUIRED)
+- **Type**: list of dictionary with keys:
+    - `sites_in_groups`: list of list of integers (REQUIRED)
+    - `group_probabilities`: list of floats (REQUIRED)
 
 - **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+        If supported, filters MAY support only a subset of comparison operators.
+    - The property SHOULD be `null` for entries that have no partial occupancies.
+    - If present, the correct flag MUST be set in the list `structure_features`.
+    - Client implementations MUST check its presence (as its presence changes the interpretation of the structure).
+    - If present, it MUST be a list of dictionaries, each of which represents an assembly and MUST have the following two keys:
+        - **sites_in_groups**: Index of the sites (0-based) that belong to each group for each assembly.
 
-  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.
-  - **Query**: Support for queries on this property is OPTIONAL.
-    If supported, filters MAY support only a subset of comparison operators.
-  - If present, the correct flag MUST be set in the list :property:`structure_features` (see property `structure_features`_).
-  - Client implementations MUST check its presence (as its presence changes the interpretation of the structure).
-  - If present, it MUST be a list of dictionaries, each of which represents an assembly and MUST have the following two keys:
+            Example: `[[1], [2]]`: two groups, one with the second site, one with the third.
+            Example: `[[1,2], [3]]`: one group with the second and third site, one with the fourth.
 
-    - **sites_in_groups**: Index of the sites (0-based) that belong to each group for each assembly.
+        - **group_probabilities**: Statistical probability of each group. It MUST have the same length as `sites_in_groups`.
+            It SHOULD sum to one.
+            See below for examples of how to specify the probability of the occurrence of a vacancy.
+            The possible reasons for the values not to sum to one are the same as already specified above for the `concentration` of each `species`.
 
-      Example: :val:`[[1], [2]]`: two groups, one with the second site, one with the third.
-
-      Example: :val:`[[1,2], [3]]`: one group with the second and third site, one with the fourth.
-
-   - **group_probabilities**: Statistical probability of each group. It MUST have the same length as :property:`sites_in_groups`.
-     It SHOULD sum to one.
-     See below for examples of how to specify the probability of the occurrence of a vacancy.
-     The possible reasons for the values not to sum to one are the same as already specified above for the :property:`concentration` of each :property:`species`, see property `species`_.
-
-  - If a site is not present in any group, it means that it is present with 100 % probability (as if no assembly was specified).
-  - A site MUST NOT appear in more than one group.
+    - If a site is not present in any group, it means that it is present with 100 % probability (as if no assembly was specified).
+    - A site MUST NOT appear in more than one group.
 
 - **Examples** (for each entry of the assemblies list):
-
-  - :val:`{"sites_in_groups": [[0], [1]], "group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.
-    Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.
-  - :val:`{"sites_in_groups": [[1,2], [3]], "group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.
-    The second group is formed by the fourth site.
-    Sites of the first group (the second and the third) are never present at the same time as the fourth site.
-    30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).
+    - `{"sites_in_groups": [[0], [1]], "group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.
+        Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.
+    - `{"sites_in_groups": [[1,2], [3]], "group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.
+        The second group is formed by the fourth site.
+        Sites of the first group (the second and the third) are never present at the same time as the fourth site.
+        30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).
 
 - **Notes**:
+    - Assemblies are essential to represent, for instance, the situation where an atom can statistically occupy two different positions (sites).
 
-  - Assemblies are essential to represent, for instance, the situation where an atom can statistically occupy two different positions (sites).
-  - By defining groups, it is possible to represent, e.g., the case where a functional molecule (and not just one atom) is either present or absent (or the case where it it is present in two conformations)
-  - Considerations on virtual alloys and on vacancies: In the special case of a virtual alloy, these specifications allow two different, equivalent ways of specifying them.
-    For instance, for a site at the origin with 30 % probability of being occupied by Si, 50 % probability of being occupied by Ge, and 20 % of being a vacancy, the following two representations are possible:
+    - By defining groups, it is possible to represent, e.g., the case where a functional molecule (and not just one atom) is either present or absent (or the case where it it is present in two conformations)
 
-    - Using a single species:
+    - Considerations on virtual alloys and on vacancies: In the special case of a virtual alloy, these specifications allow two different, equivalent ways of specifying them.
+        For instance, for a site at the origin with 30 % probability of being occupied by Si, 50 % probability of being occupied by Ge, and 20 % of being a vacancy, the following two representations are possible:
 
-      .. code:: jsonc
+        - Using a single species:
+            ```json
+            {
+              "cartesian_site_positions": [[0,0,0]],
+              "species_at_sites": ["SiGe-vac"],
+              "species": [
+              {
+                "name": "SiGe-vac",
+                "chemical_symbols": ["Si", "Ge", "vacancy"],
+                "concentration": [0.3, 0.5, 0.2]
+              }
+              ]
+              // ...
+            }
+            ```
 
-           {
-             "cartesian_site_positions": [[0,0,0]],
-             "species_at_sites": ["SiGe-vac"],
-             "species": [
-                 {
-                   "name": "SiGe-vac",
-                   "chemical_symbols": ["Si", "Ge", "vacancy"],
-                   "concentration": [0.3, 0.5, 0.2]
-                 }
-             ]
-             // ...
-           }
+        - Using multiple species and the assemblies:
+            ```json
+            {
+              "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
+              "species_at_sites": ["Si", "Ge", "vac"],
+              "species": {
+                "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
+                "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
+                "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+              },
+              "assemblies": [
+                {
+              "sites_in_groups": [ [0], [1], [2] ],
+              "group_probabilities": [0.3, 0.5, 0.2]
+                }
+              ]
+              // ...
+            }
+            ```
 
+    - It is up to the database provider to decide which representation to use, typically depending on the internal format in which the structure is stored.
+        However, given a structure identified by a unique ID, the API implementation MUST always provide the same representation for it.
 
-    - Using multiple species and the assemblies:
+    - The probabilities of occurrence of different assemblies are uncorrelated.
+        So, for instance in the following case with two assemblies:
+        ```json
+        {
+          "assemblies": [
+            {
+              "sites_in_groups": [ [0], [1] ],
+              "group_probabilities": [0.2, 0.8],
+            },
+            {
+              "sites_in_groups": [ [2], [3] ],
+              "group_probabilities": [0.3, 0.7]
+            }
+          ]
+        }
+        ```
 
-      .. code:: jsonc
-
-           {
-             "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
-             "species_at_sites": ["Si", "Ge", "vac"],
-             "species": {
-               "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
-               "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
-               "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
-             },
-             "assemblies": [
-               {
-                 "sites_in_groups": [ [0], [1], [2] ],
-                 "group_probabilities": [0.3, 0.5, 0.2]
-               }
-             ]
-             // ...
-           }
-
-  - It is up to the database provider to decide which representation to use, typically depending on the internal format in which the structure is stored.
-    However, given a structure identified by a unique ID, the API implementation MUST always provide the same representation for it.
-  - The probabilities of occurrence of different assemblies are uncorrelated.
-    So, for instance in the following case with two assemblies:
-
-    .. code:: jsonc
-
-         {
-           "assemblies": [
-             {
-               "sites_in_groups": [ [0], [1] ],
-               "group_probabilities": [0.2, 0.8],
-             },
-             {
-               "sites_in_groups": [ [2], [3] ],
-               "group_probabilities": [0.3, 0.7]
-             }
-           ]
-         }
-
-    Site 0 is present with a probability of 20 % and site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 % and site 3 with a probability of 70 %.
-    These two sites are correlated (either site 2 or 3 is present).
-    However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability).""",
+        Site 0 is present with a probability of 20 % and site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 % and site 3 with a probability of 70 %.
+        These two sites are correlated (either site 2 or 3 is present).
+        However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability).""",
     )
 
     structure_features: List[StructureFeatures] = Field(
         ...,
         description="""A list of strings that flag which special features are used by the structure.
+
 - **Type**: list of strings
+
 - **Requirements/Conventions**:
+    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
+    - **Query**: MUST be a queryable property.
+    Filters on the list MUST support all mandatory HAS-type queries.
+    Filter operators for comparisons on the string components MUST support equality, support for other comparison operators are OPTIONAL.
+    - MUST be an empty list if no special features are used.
+    - MUST be sorted alphabetically.
+    - If a special feature listed below is used, the list MUST contain the corresponding string.
+    - If a special feature listed below is not used, the list MUST NOT contain the corresponding string.
+    - **List of strings used to indicate special structure features**:
+        - `disorder`: this flag MUST be present if any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element.
+        - `implicit_atoms`: this flag MUST be present if the structure contains atoms that are not assigned to sites via the property `species_at_sites` (e.g., because their positions are unknown).
+           When this flag is present, the properties related to the chemical formula will likely not match the type and count of atoms represented by the `species_at_sites`, `species` and `assemblies` properties.
+        - `site_attachments`: this flag MUST be present if any one entry in the `species` list includes `attached` and `nattached`.
+        - `assemblies`: this flag MUST be present if the property `assemblies` is present.
 
-  - **Support**: REQUIRED, MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property. Filters on the list MUST support all mandatory HAS-type queries. Filter operators for comparisons on the string components MUST support equality, support for other comparison operators are OPTIONAL.
-  - MUST be an empty list if no special features are used.
-  - MUST be sorted alphabetically.
-  - If a special feature listed below is used, the list MUST contain the corresponding string.
-  - If a special feature listed below is not used, the list MUST NOT contain the corresponding string.
-  - **List of strings used to indicate special structure features**:
-
-    - :val:`disorder`: This flag MUST be present if any one entry in the :property:`species` list has a :property:`chemical_symbols` list that is longer than 1 element.
-    - :val:`assemblies`: This flag MUST be present if the property `assemblies`_ is present.
-
--  **Examples**: A structure having implicit atoms and using assemblies: :val:`["assemblies", "implicit_atoms"]`""",
+- **Examples**: A structure having implicit atoms and using assemblies: `["assemblies", "implicit_atoms"]`""",
     )
 
     @validator("elements", each_item=True)
@@ -872,17 +872,19 @@ class StructureResource(EntryResource):
     type: str = Field(
         "structures",
         const=True,
-        description="""The name of the type of an entry. Any entry MUST be able to be fetched using the `base URL <Base URL_>`_ type and ID at the url :endpoint:`<base URL>/<type>/<id>`.
+        description="""The name of the type of an entry.
+
 - **Type**: string.
+
 - **Requirements/Conventions**:
+    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Response**: REQUIRED in the response.
+    - MUST be an existing entry type.
+    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
 
-  - **Support**: REQUIRED, MUST NOT be :val:`null`.
-  - **Query**: MUST be a queryable property with support for all mandatory filter features.
-  - **Response**: REQUIRED in the response.
-  - MUST be an existing entry type.
-  - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for :endpoint:`/<type>/<id>` under the versioned base URL.
-
-- **Example**: :val:`"structures"`""",
+- **Examples**:
+    - `"structures"`""",
     )
 
     attributes: StructureResourceAttributes

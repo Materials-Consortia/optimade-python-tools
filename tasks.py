@@ -122,6 +122,18 @@ def parse_spec_for_filters(_):
 
 
 @task
+def get_markdown_spec(ctx):
+    print("Attempting to run pandoc...")
+    ctx.run(
+        "pandoc "
+        "-f rst -t markdown_strict "
+        "--wrap=preserve --columns=50000 "
+        "https://raw.githubusercontent.com/Materials-Consortia/OPTIMADE/develop/optimade.rst "
+        "> optimade.md"
+    )
+
+
+@task
 def generate_openapi(_):
     """Update OpenAPI schema in file 'local_openapi.json'"""
     from optimade.server.main import app

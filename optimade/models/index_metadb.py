@@ -28,9 +28,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
     is_index: bool = Field(
         default=True,
         const=True,
-        description="If true, this is an index meta-database base URL (see section Index Meta-Database). "
-        "If this member is not provided, the client MUST assume this is not an index meta-database base URL "
-        "(i.e., the default is for is_index to be false).",
+        description="This must be `true` since this is an index meta-database (see section Index Meta-Database).",
     )
 
 
@@ -45,8 +43,8 @@ class IndexRelationship(BaseModel):
 
     data: Union[None, RelatedLinksResource] = Field(
         ...,
-        description="JSON API resource linkage. It MUST be either null or contain "
-        "a single Links identifier object with the fields 'id' and 'type'",
+        description="""[JSON API resource linkage](http://jsonapi.org/format/1.0/#document-links).
+It MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`""",
     )
 
 
@@ -56,8 +54,6 @@ class IndexInfoResource(BaseInfoResource):
     attributes: IndexInfoAttributes = Field(...)
     relationships: Union[None, Dict[DefaultRelationship, IndexRelationship]] = Field(
         ...,
-        description="Reference to the child identifier object under the links endpoint "
-        "that the provider has chosen as their 'default' OPTIMADE API database. "
-        "A client SHOULD present this database as the first choice when an end-user "
-        "chooses this provider.",
+        description="""Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their 'default' OPTIMADE API database.
+A client SHOULD present this database as the first choice when an end-user chooses this provider.""",
     )
