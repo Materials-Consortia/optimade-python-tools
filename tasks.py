@@ -113,8 +113,6 @@ def setver(_, ver=""):
         (r'__version__ = ".*"', f'__version__ = "{ver}"'),
     )
 
-    update_file(TOP_DIR.joinpath("setup.py"), ("version=([^,]+),", f'version="{ver}",'))
-
     print("Bumped version to {}".format(ver))
 
 
