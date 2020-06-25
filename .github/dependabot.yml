@@ -8,7 +8,7 @@ updates:
   target-branch: master
   labels:
   - dependency_updates
-- package-ecosystem: submodules
+- package-ecosystem: gitsubmodule
   directory: "/"
   schedule:
     interval: daily
