@@ -1,7 +1,19 @@
 from pathlib import Path
+import re
 from setuptools import setup, find_packages
 
 module_dir = Path(__file__).resolve().parent
+
+with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
+    for line in version_file:
+        match = re.match(r'__version__ = "(.*)"', line)
+        if match is not None:
+            VERSION = match.group(1)
+            break
+    else:
+        raise RuntimeError(
+            f"Could not determine package version from {version_file.name} !"
+        )
 
 # Dependencies
 # Server minded
@@ -44,7 +56,7 @@ all_deps = (
 
 setup(
     name="optimade",
-    version="0.8.1",
+    version=VERSION,
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTIMADE Development Team",

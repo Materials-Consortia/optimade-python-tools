@@ -30,17 +30,3 @@ repos:
       entry: invoke check-openapi-diff
       pass_filenames: false
       language: system
-
-    - id: optimade-shield-version
-      name: Update OPTIMADE shield
-      description: If needed, the JSON for the OPTIMADE shield will be updated with new config version
-      entry: invoke update-api-shield
-      pass_filenames: false
-      files:
-        (?x)^(
-          optimade/__init__.py|
-          README.md|
-          INSTALL.md|
-          optimade-version.json
-        )$
-      language: system

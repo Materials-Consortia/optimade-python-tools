@@ -1,9 +1,2 @@
-from pkg_resources import DistributionNotFound, get_distribution
-
-try:
-    __version__ = get_distribution(__name__).version
-except DistributionNotFound:
-    # package is not installed
-    pass
-
-__api_version__ = "0.10.1"
+__version__ = "0.9.1"
+__api_version__ = "1.0.0-rc.2"

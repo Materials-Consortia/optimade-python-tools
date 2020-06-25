@@ -28,10 +28,12 @@ ENTRY_INFO_SCHEMAS = {
     "references": ReferenceResource.schema,
 }
 
+# we need to get rid of any release tags (e.g. -rc.2) and any build metadata (e.g. +py36)
+# from the api_version before allowing the URL
 BASE_URL_PREFIXES = {
-    "major": f"/v{__api_version__.split('.')[0]}",
-    "minor": f"/v{'.'.join(__api_version__.split('.')[:2])}",
-    "patch": f"/v{__api_version__}",
+    "major": f"/v{__api_version__.split('-')[0].split('+')[0].split('.')[0]}",
+    "minor": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:2])}",
+    "patch": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:3])}",
 }
 
 
@@ -55,7 +57,7 @@ def meta_values(
 
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
-        api_version=f"v{__api_version__}",
+        api_version=__api_version__,
         time_stamp=datetime.now(),
         data_returned=data_returned,
         more_data_available=more_data_available,

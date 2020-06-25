@@ -2,24 +2,24 @@
   "openapi": "3.0.2",
   "info": {
     "title": "OPTIMADE API",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.8.1) v0.8.1.",
-    "version": "0.10.1"
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.9.1) v0.9.1.",
+    "version": "1.0.0-rc.2"
   },
   "paths": {
-    "/v0/info": {
+    "/v1/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_v0_info_get",
+        "operationId": "get_info_v1_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info V0 Info Get",
+                  "title": "Response Get Info V1 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/InfoResponse"
@@ -35,13 +35,13 @@
         }
       }
     },
-    "/v0/info/{entry}": {
+    "/v1/info/{entry}": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Entry Info",
-        "operationId": "get_entry_info_v0_info__entry__get",
+        "operationId": "get_entry_info_v1_info__entry__get",
         "parameters": [
           {
             "required": true,
@@ -59,7 +59,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Entry Info V0 Info  Entry  Get",
+                  "title": "Response Get Entry Info V1 Info  Entry  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/EntryInfoResponse"
@@ -85,13 +85,13 @@
         }
       }
     },
-    "/v0/links": {
+    "/v1/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_v0_links_get",
+        "operationId": "get_links_v1_links_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
@@ -253,7 +253,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links V0 Links Get",
+                  "title": "Response Get Links V1 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
@@ -279,13 +279,13 @@
         }
       }
     },
-    "/v0/references": {
+    "/v1/references": {
       "get": {
         "tags": [
           "References"
         ],
         "summary": "Get References",
-        "operationId": "get_references_v0_references_get",
+        "operationId": "get_references_v1_references_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
@@ -447,7 +447,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get References V0 References Get",
+                  "title": "Response Get References V1 References Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseMany"
@@ -473,13 +473,13 @@
         }
       }
     },
-    "/v0/references/{entry_id}": {
+    "/v1/references/{entry_id}": {
       "get": {
         "tags": [
           "References"
         ],
         "summary": "Get Single Reference",
-        "operationId": "get_single_reference_v0_references__entry_id__get",
+        "operationId": "get_single_reference_v1_references__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -547,7 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Single Reference V0 References  Entry Id  Get",
+                  "title": "Response Get Single Reference V1 References  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseOne"
@@ -573,13 +573,13 @@
         }
       }
     },
-    "/v0/structures": {
+    "/v1/structures": {
       "get": {
         "tags": [
           "Structures"
         ],
         "summary": "Get Structures",
-        "operationId": "get_structures_v0_structures_get",
+        "operationId": "get_structures_v1_structures_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
@@ -741,7 +741,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Structures V0 Structures Get",
+                  "title": "Response Get Structures V1 Structures Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseMany"
@@ -767,13 +767,13 @@
         }
       }
     },
-    "/v0/structures/{entry_id}": {
+    "/v1/structures/{entry_id}": {
       "get": {
         "tags": [
           "Structures"
         ],
         "summary": "Get Single Structure",
-        "operationId": "get_single_structure_v0_structures__entry_id__get",
+        "operationId": "get_single_structure_v1_structures__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -841,7 +841,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Single Structure V0 Structures  Entry Id  Get",
+                  "title": "Response Get Single Structure V1 Structures  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseOne"
@@ -920,14 +920,14 @@
             "minLength": 1,
             "pattern": ".+/v[0-1](\\.[0-9]+)*/?$",
             "type": "string",
-            "description": "a string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
+            "description": "A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
             "format": "uri"
           },
           "version": {
             "title": "Version",
-            "pattern": "^[0-9]+(\\.[0-9]+){,2}$",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
-            "description": "a string containing the full version number of the API served at that versioned base URL. The version number string MUST NOT be prefixed by, e.g., 'v'."
+            "description": "A string containing the full version number of the API served at that versioned base URL. The version number string MUST NOT be prefixed by, e.g., 'v'."
           }
         },
         "description": "A JSON object containing information about an available API version"
@@ -944,6 +944,7 @@
         "properties": {
           "api_version": {
             "title": "Api Version",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
             "description": "Presently used version of the OPTIMADE API"
           },
@@ -2650,6 +2651,7 @@
           },
           "api_version": {
             "title": "Api Version",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
             "description": "A string containing the version of the API implementation."
           },

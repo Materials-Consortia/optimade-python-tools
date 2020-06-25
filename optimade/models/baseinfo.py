@@ -5,6 +5,7 @@ from typing import Dict, List, Optional
 from pydantic import BaseModel, AnyHttpUrl, Field, validator, root_validator
 
 from .jsonapi import Resource
+from .utils import SemanticVersion
 
 
 __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
@@ -15,15 +16,14 @@ class AvailableApiVersion(BaseModel):
 
     url: AnyHttpUrl = Field(
         ...,
-        description="a string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
+        description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
         pattern=r".+/v[0-1](\.[0-9]+)*/?$",
     )
 
-    version: str = Field(
+    version: SemanticVersion = Field(
         ...,
-        description="a string containing the full version number of the API served at that versioned base URL. "
+        description="A string containing the full version number of the API served at that versioned base URL. "
         "The version number string MUST NOT be prefixed by, e.g., 'v'.",
-        regex=r"^[0-9]+(\.[0-9]+){,2}$",
     )
 
     @validator("url")
@@ -41,8 +41,13 @@ class AvailableApiVersion(BaseModel):
             .split("/")[-2 if values["url"].endswith("/") else -1]
             .replace("v", "")
         )
-        url_version = tuple(int(val) for val in url_version.split("."))
-        api_version = tuple(int(val) for val in values["version"].split("."))
+        # as with version urls, we need to split any release tags or build metadata out of these URLs
+        url_version = tuple(
+            int(val) for val in url_version.split("-")[0].split("+")[0].split(".")
+        )
+        api_version = tuple(
+            int(val) for val in values["version"].split("-")[0].split("+")[0].split(".")
+        )
         if any(a != b for a, b in zip(url_version, api_version)):
             raise ValueError(
                 f"API version {api_version} is not compatible with url version {url_version}."
@@ -53,7 +58,7 @@ class AvailableApiVersion(BaseModel):
 class BaseInfoAttributes(BaseModel):
     """Attributes for Base URL Info endpoint"""
 
-    api_version: str = Field(
+    api_version: SemanticVersion = Field(
         ..., description="Presently used version of the OPTIMADE API"
     )
     available_api_versions: List[AvailableApiVersion] = Field(
