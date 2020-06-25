@@ -16,10 +16,6 @@ echo "-o- Update version -o-"
 # invoke setver -v ${GITHUB_REF#refs/tags/}
 invoke setver -v "0.10.0"
 
-echo "-o- Generate new OpenAPI JSON files -o-"
-pip install -U -e .[dev]
-invoke update-openapijson
-
 echo "-o- Generate changelog -o-"
 apt-get update
 apt-get -y install ruby-full
@@ -32,7 +28,7 @@ echo "-o- Overwrite old CHANGELOG.md -o-"
 mv -f CHANGELOG.md docs/
 
 echo "-o- Commit updates -o-"
-git add setup.py
+git add optimade/__init__.py
 git add openapi/index_openapi.json openapi/openapi.json
 git add docs/CHANGELOG.md
 # git commit -m "Releasing ${GITHUB_REF#refs/tags/}"
