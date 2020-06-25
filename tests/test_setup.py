@@ -14,6 +14,7 @@ package_data = [
     "landing_page.html",
     "filters.txt",
     "optional_filters.txt",
+    "providers.json",
 ]
 
 
