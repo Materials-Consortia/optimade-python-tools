@@ -69,7 +69,7 @@ class ServerConfig(BaseSettings):
             name="Optimade Python Tools",
             version=__version__,
             source_url="https://github.com/Materials-Consortia/optimade-python-tools",
-            maintainer={"email": "dev@optimade.org"}
+            maintainer={"email": "dev@optimade.org"},
         ),
         description="Introspective information about this OPTIMADE implementation",
     )
