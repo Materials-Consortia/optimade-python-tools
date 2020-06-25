@@ -34,7 +34,7 @@ def get_info(request: Request):
             id=IndexInfoResource.schema()["properties"]["id"]["const"],
             type=IndexInfoResource.schema()["properties"]["type"]["const"],
             attributes=IndexInfoAttributes(
-                api_version=f"v{__api_version__}",
+                api_version=f"{__api_version__}",
                 available_api_versions=[
                     {
                         "url": f"{CONFIG.provider.index_base_url}/v{__api_version__.split('.')[0]}/",

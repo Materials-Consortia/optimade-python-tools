@@ -57,7 +57,7 @@ def meta_values(
 
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
-        api_version=f"v{__api_version__}",
+        api_version=f"{__api_version__}",
         time_stamp=datetime.now(),
         data_returned=data_returned,
         more_data_available=more_data_available,
