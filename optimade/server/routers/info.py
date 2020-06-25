@@ -44,7 +44,7 @@ def get_info(request: Request):
             id=BaseInfoResource.schema()["properties"]["id"]["const"],
             type=BaseInfoResource.schema()["properties"]["type"]["const"],
             attributes=BaseInfoAttributes(
-                api_version=f"{__api_version__}",
+                api_version=__api_version__,
                 available_api_versions=[
                     {
                         "url": f"{base_url}/v{__api_version__.split('.')[0]}",
