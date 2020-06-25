@@ -15,15 +15,16 @@ class AvailableApiVersion(BaseModel):
 
     url: AnyHttpUrl = Field(
         ...,
-        description="a string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
+        description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
         pattern=r".+/v[0-1](\.[0-9]+)*/?$",
     )
 
     version: str = Field(
         ...,
-        description="a string containing the full version number of the API served at that versioned base URL. "
+        description="A string containing the full version number of the API served at that versioned base URL. "
         "The version number string MUST NOT be prefixed by, e.g., 'v'.",
-        regex=r"^[0-9]+(\.[0-9]+){,2}$",
+        # officially recommended semver regexp from https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+        pattern=r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$",
     )
 
     @validator("url")
