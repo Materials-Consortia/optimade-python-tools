@@ -8,6 +8,7 @@ from typing import Optional, Union, List
 from datetime import datetime
 
 from . import jsonapi
+from .utils import SemanticVersion
 
 
 __all__ = (
@@ -232,7 +233,7 @@ class ResponseMeta(jsonapi.Meta):
         ..., description="Information on the Query that was requested"
     )
 
-    api_version: str = Field(
+    api_version: SemanticVersion = Field(
         ..., description="A string containing the version of the API implementation.",
     )
 
