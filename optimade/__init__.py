@@ -6,4 +6,4 @@ except DistributionNotFound:
     # package is not installed
     pass
 
-__api_version__ = "0.10.1"
+__api_version__ = "1.0.0"

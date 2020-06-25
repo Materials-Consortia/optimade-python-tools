@@ -3,23 +3,23 @@
   "info": {
     "title": "OPTIMADE API - Index meta-database",
     "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.8.1) v0.8.1.",
-    "version": "0.10.1"
+    "version": "1.0.0"
   },
   "paths": {
-    "/v0/info": {
+    "/v1/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_v0_info_get",
+        "operationId": "get_info_v1_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info V0 Info Get",
+                  "title": "Response Get Info V1 Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/IndexInfoResponse"
@@ -35,13 +35,13 @@
         }
       }
     },
-    "/v0/links": {
+    "/v1/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_v0_links_get",
+        "operationId": "get_links_v1_links_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
@@ -203,7 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links V0 Links Get",
+                  "title": "Response Get Links V1 Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
