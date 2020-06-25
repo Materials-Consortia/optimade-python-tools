@@ -5,6 +5,7 @@ on:
   push:
     branches:
     - master
+    - test_release
     - 'push-action/**'
 
 jobs:
