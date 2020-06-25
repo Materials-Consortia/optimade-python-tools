@@ -44,7 +44,7 @@ all_deps = (
 
 setup(
     name="optimade",
-    version="0.8.1",
+    version="0.9.1",
     url="https://github.com/Materials-Consortia/optimade-python-tools",
     license="MIT",
     author="OPTIMADE Development Team",

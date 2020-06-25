@@ -14,9 +14,10 @@ For any configuration parameters not set by the above two, the defaults in built
 There is a built-in index meta-database set up to populate a `mongomock` in-memory database with resources from a static `json` file containing the `child` resources you, as a database provider, want to serve under this index meta-database. The location of that `json` file is controllable using the `index_links_path` property of the configuration or setting via the environment variable `optimade_index_links_path`.
 
 Running the index meta-database is then as simple as writing `./run.sh index` in a terminal from the root of this package.
-You can find it at the base URL: <http://localhost:5001/v1.0.0>.
+You can find it at the base URL: <http://localhost:5001/v1>.
 
 Here is an example of how it may look to start your server:
+
 ```shell
 :~$ export OPTIMADE_CONFIG_FILE=/home/optimade_server/config.json
 :~$ ./path/to/optimade/run.sh index
@@ -75,4 +76,4 @@ Running the following:
 uvicorn optimade.server.main_index:app --reload --port 5001
 ```
 
-will run the index meta-database server at <http://localhost:5001/v1.0.0>.
+will run the index meta-database server at <http://localhost:5001/v1>.
