@@ -12,5 +12,9 @@ data_paths = {
 
 
 for var, path in data_paths.items():
-    with open(Path(__file__).parent / path) as f:
-        globals()[var] = bson.json_util.loads(f.read())
+    try:
+        with open(Path(__file__).parent / path) as f:
+            globals()[var] = bson.json_util.loads(f.read())
+    except FileNotFoundError:
+        if var != "providers":
+            raise
