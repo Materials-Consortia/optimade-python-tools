@@ -22,7 +22,6 @@ from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.data import providers
 
 ENTRY_INFO_SCHEMAS = {
     "structures": StructureResource.schema,
@@ -307,7 +306,32 @@ def mongo_id_for_database(database_id: str, database_type: str) -> str:
 
 
 def get_providers():
-    """Retrieve Materials-Consortia providers (from https://providers.optimade.org/providers.json)"""
+    """Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links)"""
+    import requests
+
+    try:
+        from optimade.server.data import providers
+    except ImportError:
+        providers = None
+
+    if providers is None:
+        try:
+            import simplejson as json
+        except ImportError:
+            import json
+
+        try:
+            providers = requests.get("https://providers.optimade.org/v1/links").json()
+        except (
+            requests.exceptions.ConnectionError,
+            requests.exceptions.ConnectTimeout,
+            json.JSONDecodeError,
+        ):
+            raise BadRequest(
+                status_code=500,
+                detail="Could not retrieve providers list from https://providers.optimade.org",
+            )
+
     providers_list = []
     for provider in providers.get("data", []):
         # Remove/skip "exmpl"
