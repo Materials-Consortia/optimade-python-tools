@@ -1,10 +1,9 @@
 name: Publish on PyPI
 
-on:
-  release:
-    types:
-    # - published
-    - created
+on: [push]
+  # release:
+  #   types:
+  #   - published
 
 jobs:
 
