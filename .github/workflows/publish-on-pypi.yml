@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/test_')
     # if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
+    env:
+      PUBLISH_UPDATE_BRANCH: test_release
 
     steps:
     - name: Checkout repository
@@ -23,37 +25,21 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Test tag stuff
+    - name: Install Python dependencies
       run: |
-        git fetch origin
+        python -m pip install -U pip
+        pip install -U setuptools
 
-        TAG_NAME=${{ github.ref }}
-        TAG_MSG=$(git tag -n1000 --format="%(contents)" ${TAG_NAME#refs/tags/})
-        echo "${TAG_MSG}"
-        echo "$(git tag -n1000 --format="%(*body)" ${TAG_NAME})"
+    - name: Update version, generate changelog, and update 'master'
+      uses: CasperWA/push-protected@master
+      with:
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        repository: ${{ github.repository }}
+        branch: ${PUBLISH_UPDATE_BRANCH}
+        changes: .github/workflows/update_changelog.sh
 
-    # - name: Install Python dependencies
-    #   run: |
-    #     python -m pip install --upgrade pip
-    #     pip install --upgrade setuptools
-    #     pip install -e .[all]
-
-    # - name: Check released tag
-    #   env:
-    #     GITHUB_SHA: ${{ github.sha }}
-    #     GITHUB_REF: ${{ github.ref }}
-    #   run: python .github/workflows/check_released_tag.py
-
-    # - name: Update version, generate changelog, and update 'master'
-    #   uses: CasperWA/push-protected@master
-    #   with:
-    #     token: ${{ secrets.RELEASE_PAT_CASPER }}
-    #     repository: ${{ github.repository }}
-    #     branch: test_release
-    #     changes: .github/workflows/update_changelog.sh
-
-    # - name: Build source distribution
-    #   run: python ./setup.py sdist
+    - name: Build source distribution
+      run: python ./setup.py sdist
 
     # - name: Publish package to PyPI
     #   uses: pypa/gh-action-pypi-publish@master
@@ -61,19 +47,40 @@ jobs:
     #     user: __token__
     #     password: ${{ secrets.PYPI_PASSWORD }}
 
-    # - name: Update tag to latest commit
-    #   run: |
-    #     git config --local user.email "dev@optimade.org"
-    #     git config --local user.name "OPTIMADE Developers"
+    - name: Update tag to latest commit
+      run: |
+        git config --local user.email "dev@optimade.org"
+        git config --local user.name "OPTIMADE Developers"
 
-    #     git fetch origin
+        git fetch origin
 
-    #     TAG_MSG=$(git tag -n1000 --format="%(contents)" ${GITHUB_REF#refs/tags/})
-    #     git tag -f -m "${TAG_MSG}" ${GITHUB_REF#refs/tags/} origin/test_release
-    #     git push -f --tags
+        TAG_MSG="${GITHUB_REF#refs/tags/}\n\nFull release changelog can be seen at https://www.optimade.org/optimade-python-tools/CHANGELOG/ and at https://github.com/Materials-Consortia/optimade-python-tools/blob/${GITHUB_REF#refs/tags/}/docs/CHANGELOG.md."
+        git tag -f -m "${TAG_MSG}" ${GITHUB_REF#refs/tags/} origin/${PUBLISH_UPDATE_BRANCH}
+        git push -f --tags
 
-    # - name: Build docs
-    #   run: mkdocs build
+  build_docs:
+    runs-on: ubuntu-latest
+    needs: publish
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade setuptools
+        pip install -e .[all]
+
+    - name: Build docs
+      run: mkdocs build
 
     # - name: Deploy
     #   uses: peaceiris/actions-gh-pages@v3

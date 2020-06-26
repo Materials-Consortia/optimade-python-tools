@@ -202,7 +202,6 @@ jobs:
       with:
         file: ./coverage.xml
         flags: unittests
-        yml: ./.codecov.yml
 
   docs:
     runs-on: ubuntu-latest
