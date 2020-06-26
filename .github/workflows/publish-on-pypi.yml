@@ -37,6 +37,7 @@ jobs:
         repository: ${{ github.repository }}
         branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         changes: .github/workflows/update_changelog.sh
+        unprotect_reviews: true
 
     - name: Build source distribution
       run: python ./setup.py sdist
