@@ -63,12 +63,6 @@ jobs:
     - name: Build source distribution
       run: python ./setup.py sdist
 
-    - name: Publish package to PyPI
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        user: __token__
-        password: ${{ secrets.pypi_password }}
-
     - name: Push forward version tag
       if: env.push == 1
       run: |
@@ -98,6 +92,12 @@ jobs:
         access-token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
         enforce_admins: true
         branch: master
+
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_password }}
 
     - name: Build
       run: mkdocs build
