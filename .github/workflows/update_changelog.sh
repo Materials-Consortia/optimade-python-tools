@@ -13,9 +13,7 @@ pip install -U -e .[server]
 pip install invoke jsondiff
 
 echo "-o- Update version -o-"
-# invoke setver -v ${GITHUB_REF#refs/tags/}
-echo "Will actually be the tag name: ${GITHUB_REF#refs/tags/}, but is now 0.10.5"
-invoke setver -v "v0.10.5"
+invoke setver -v ${GITHUB_REF#refs/tags/}
 
 echo "\n-o- Generate changelog -o-"
 apt-get update
@@ -32,4 +30,4 @@ echo "\n-o- Commit updates -o-"
 git add optimade/__init__.py
 git add openapi/index_openapi.json openapi/openapi.json
 git add docs/CHANGELOG.md
-git commit -m "Release ${GITHUB_REF#refs/tags/} (test, using 0.10.5)"
+git commit -m "Release ${GITHUB_REF#refs/tags/}"

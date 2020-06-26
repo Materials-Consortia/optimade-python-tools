@@ -25,7 +25,7 @@ server_deps = ["uvicorn~=0.11.5", "Jinja2~=2.11"] + mongo_deps
 # Client minded
 aiida_deps = ["aiida-core~=1.2"]
 ase_deps = ["ase~=3.19"]
-cif_deps = ["numpy~=1.18"]
+cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2020.6"]
 jarvis_deps = ["jarvis-tools~=2020.6"]
@@ -35,15 +35,15 @@ client_deps = cif_deps
 docs_deps = [
     "mkdocs~=1.1",
     "mkdocs-awesome-pages-plugin~=2.2",
-    "mkdocs-material~=5.2",
+    "mkdocs-material~=5.3",
     "mkdocs-material-components~=1.10",
     "mkdocs-material-extensions~=1.0",
     "mkdocs-minify-plugin~=0.3.0",
-    "mkdocstrings~=0.11.4",
+    "mkdocstrings~=0.12.0",
 ]
 testing_deps = [
     "pytest~=5.4",
-    "pytest-cov~=2.9",
+    "pytest-cov~=2.10",
     "codecov~=2.1",
     "openapi-spec-validator~=0.2.8",
     "jsondiff~=1.2",
@@ -90,11 +90,11 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "lark-parser~=0.8.6",
+        "lark-parser~=0.8.9",
         "fastapi~=0.58.0",
         "pydantic~=1.5",
         "email_validator~=1.1",
-        "requests~=2.23",
+        "requests~=2.24",
         'typing-extensions~=3.7;python_version<"3.8"',
     ],
     extras_require={
