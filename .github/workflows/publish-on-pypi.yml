@@ -1,15 +1,16 @@
 name: Publish on PyPI
 
-on: [push]
-  # release:
-  #   types:
-  #   - published
+on:
+  release:
+    types:
+    # - published
+    - created
 
 jobs:
 
   publish:
     runs-on: ubuntu-latest
-    if: github.repository == 'Materials-Consortia/optimade-python-tools'
+    if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/test_')
     # if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
 
     steps:
@@ -27,8 +28,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade setuptools
-        pip install -e .[dev]
-        pip install -r requirements-docs.txt
+        pip install -e .[all]
+
+    - name: Build docs
+      run: mkdocs build
 
     # - name: Check released tag
     #   env:
@@ -53,20 +56,12 @@ jobs:
     #     user: __token__
     #     password: ${{ secrets.PYPI_PASSWORD }}
 
-    - name: Publish package to PyPI
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        user: __token__
-        password: ${{ secrets.pypi_password }}
-
-    - name: Push forward version tag
-      if: env.push == 1
+    - name: Update tag to latest commit
+      shell: bash
       run: |
-        git push "https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${REPOSITORY}.git" origin :refs/tags/${GITHUB_REF#refs/tags/}
-        git tag -fa ${GITHUB_REF#refs/tags/} -m "Push release ${GITHUB_REF#refs/tags/} tag to new release commit"
-
-    - name: Build
-      run: mkdocs build
+        TAG_MSG=$(git tag -n1000 --format="%(contents)" ${GITHUB_REF#refs/tags/})
+        git tag -f -m "${TAG_MSG}" ${GITHUB_REF#refs/tags/}
+        git push -f --tags
 
     # - name: Deploy
     #   uses: peaceiris/actions-gh-pages@v3
