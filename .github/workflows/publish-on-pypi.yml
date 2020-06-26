@@ -89,6 +89,7 @@ jobs:
       with:
         github_token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
         tags: true
+        branch: master
 
     - name: Enable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
