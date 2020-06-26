@@ -10,12 +10,13 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
+    env:
+      PUBLISH_UPDATE_BRANCH: master
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        persist-credentials: false
         submodules: true
 
     - name: Set up Python 3.7
@@ -25,81 +26,41 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade setuptools requests
-        pip install invoke
-        pip install -e .[all]
-        pip install -r requirements-docs.txt
+        python -m pip install -U pip
+        pip install -U setuptools
+        pip install -U -e .[dev]
 
-    - name: Check released tag
-      env:
-        GITHUB_SHA: ${{ github.sha }}
-        GITHUB_REF: ${{ github.ref }}
-      run: python .github/workflows/check_released_tag.py
-
-    - name: Generate changelog
-      uses: charmixer/auto-changelog-action@v1
+    - name: Update version, generate changelog, and update '${{ env.PUBLISH_UPDATE_BRANCH }}'
+      uses: CasperWA/push-protected@master
       with:
-        token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-
-    - name: Update Version
-      run: invoke setver -v ${GITHUB_REF#refs/tags/}
-
-    - name: Generate New OpenAPI JSON
-      run: invoke update-openapijson
-
-    - name: Commit files
-      run: |
-        git config --local user.email "dev@optimade.org"
-        git config --local user.name "OPTIMADE Developers"
-        mv -f CHANGELOG.md docs/
-
-        git add docs/CHANGELOG.md
-        git add openapi/index_openapi.json openapi/openapi.json
-        git add optimade/__init__.py
-        echo "::set-env name=push::0"
-        git commit -m 'Release Updates' && echo "::set-env name=push::1" || echo "No changes to CHANGELOG.md"
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        repository: ${{ github.repository }}
+        branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        changes: .github/workflows/update_changelog.sh
 
     - name: Build source distribution
       run: python ./setup.py sdist
-
-    - name: Temporarily disable "include administrators" branch protection
-      uses: benjefferies/branch-protection-bot@master
-      if: env.push == 1
-      with:
-        access-token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-        branch: master
-        enforce_admins: false
-
-    - name: Push changes
-      if: env.push == 1
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-        tags: true
-        branch: master
-
-    - name: Enable "include administrators" branch protection
-      uses: benjefferies/branch-protection-bot@master
-      if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
-      with:
-        access-token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-        enforce_admins: true
-        branch: master
 
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
-        password: ${{ secrets.pypi_password }}
+        password: ${{ secrets.PYPI_PASSWORD }}
 
-    - name: Push forward version tag
-      if: env.push == 1
+    - name: Update tag to latest commit
       run: |
-        git push "https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${REPOSITORY}.git" origin :refs/tags/${GITHUB_REF#refs/tags/}
-        git tag -fa ${GITHUB_REF#refs/tags/} -m "Push release ${GITHUB_REF#refs/tags/} tag to new release commit"
+        git config --local user.email "dev@optimade.org"
+        git config --local user.name "OPTIMADE Developers"
 
-    - name: Build
+        git fetch origin
+
+        TAG_MSG=.github/workflows/release_tag_msg.txt
+        sed -i "s|TAG_NAME|${GITHUB_REF#refs/tags/}|" "${TAG_MSG}"
+
+        git tag -af -F "${TAG_MSG}" ${GITHUB_REF#refs/tags/} origin/${{ env.PUBLISH_UPDATE_BRANCH }}
+        git push -f --tags
+
+    - name: Build docs
       run: mkdocs build
 
     - name: Deploy
