@@ -35,7 +35,7 @@ jobs:
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         repository: ${{ github.repository }}
-        branch: ${PUBLISH_UPDATE_BRANCH}
+        branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         changes: .github/workflows/update_changelog.sh
 
     - name: Build source distribution
@@ -55,7 +55,7 @@ jobs:
         git fetch origin
 
         TAG_MSG="${GITHUB_REF#refs/tags/}\n\nFull release changelog can be seen at https://www.optimade.org/optimade-python-tools/CHANGELOG/ and at https://github.com/Materials-Consortia/optimade-python-tools/blob/${GITHUB_REF#refs/tags/}/docs/CHANGELOG.md."
-        git tag -f -m "${TAG_MSG}" ${GITHUB_REF#refs/tags/} origin/${PUBLISH_UPDATE_BRANCH}
+        git tag -f -m "${TAG_MSG}" ${GITHUB_REF#refs/tags/} origin/${{ env.PUBLISH_UPDATE_BRANCH }}
         git push -f --tags
 
   build_docs:
