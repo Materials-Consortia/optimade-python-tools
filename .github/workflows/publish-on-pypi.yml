@@ -25,9 +25,12 @@ jobs:
 
     - name: Test tag stuff
       run: |
+        git fetch origin
+
         TAG_NAME=${{ github.ref }}
         TAG_MSG=$(git tag -n1000 --format="%(contents)" ${TAG_NAME#refs/tags/})
         echo "${TAG_MSG}"
+        echo "$(git tag -n1000 --format="%(*body)" ${TAG_NAME})"
 
     # - name: Install Python dependencies
     #   run: |
