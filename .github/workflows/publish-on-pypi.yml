@@ -71,7 +71,7 @@ jobs:
 
     - name: Push forward version tag
       if: env.push == 1
-      run: git tag --force v1.0 MASTER
+      run: git tag -fa ${GITHUB_REF#refs/tags/}
 
     - name: Temporarily disable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
