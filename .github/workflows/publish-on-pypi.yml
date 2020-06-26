@@ -71,7 +71,9 @@ jobs:
 
     - name: Push forward version tag
       if: env.push == 1
-      run: git tag -fa ${GITHUB_REF#refs/tags/} -m "Push release ${GITHUB_REF#refs/tags/} tag to new release commit"
+      run: |
+        git push origin :refs/tags/${GITHUB_REF#refs/tags/}
+        git tag -fa ${GITHUB_REF#refs/tags/} -m "Push release ${GITHUB_REF#refs/tags/} tag to new release commit"
 
     - name: Temporarily disable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
@@ -86,7 +88,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
-        force: true
+        tags: true
 
     - name: Enable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
