@@ -1,0 +1,3 @@
+${GITHUB_REF#refs/tags/}
+
+Full release changelog can be seen at https://www.optimade.org/optimade-python-tools/CHANGELOG/ and at https://github.com/Materials-Consortia/optimade-python-tools/blob/${GITHUB_REF#refs/tags/}/docs/CHANGELOG.md.

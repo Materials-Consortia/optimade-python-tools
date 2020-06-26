@@ -55,13 +55,7 @@ jobs:
 
         git fetch origin
 
-        read -r -d '' TAG_MSG << EOM
-        ${GITHUB_REF#refs/tags/}
-
-        Full release changelog can be seen at https://www.optimade.org/optimade-python-tools/CHANGELOG/ and at https://github.com/Materials-Consortia/optimade-python-tools/blob/${GITHUB_REF#refs/tags/}/docs/CHANGELOG.md.
-        EOM
-
-        git tag -f -m "${TAG_MSG}" ${GITHUB_REF#refs/tags/} origin/${{ env.PUBLISH_UPDATE_BRANCH }}
+        git tag -f -F ".github/workflows/release_tag_msg.txt" ${GITHUB_REF#refs/tags/} origin/${{ env.PUBLISH_UPDATE_BRANCH }}
         git push -f --tags
 
     - name: Build docs
