@@ -56,6 +56,7 @@ jobs:
 
         git add docs/CHANGELOG.md
         git add openapi/index_openapi.json openapi/openapi.json
+        git add optimade/__init__.py
         echo "::set-env name=push::0"
         git commit -m 'Release Updates' && echo "::set-env name=push::1" || echo "No changes to CHANGELOG.md"
 
@@ -67,6 +68,12 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
+
+    - name: Push forward version tag
+      if: env.push == 1
+      run: |
+        git push origin :refs/tags/${GITHUB_REF#refs/tags/}
+        git tag -fa ${GITHUB_REF#refs/tags/} -m "Push release ${GITHUB_REF#refs/tags/} tag to new release commit"
 
     - name: Temporarily disable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
@@ -81,6 +88,8 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.OPTIMADE_PYTHON_TOOLS_RELEASE_TOKEN }}
+        tags: true
+        branch: master
 
     - name: Enable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
