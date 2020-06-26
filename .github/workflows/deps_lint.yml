@@ -171,7 +171,7 @@ jobs:
         pip install -e .
 
     - name: Run all tests (using a real MongoDB)
-      run: pytest -rs --cov=./optimade/ --cov-report=xml
+      run: pytest -rs --cov=./optimade/ --cov-report=xml tests/
       env:
         OPTIMADE_CI_FORCE_MONGO: 1
 
