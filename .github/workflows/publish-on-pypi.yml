@@ -71,7 +71,7 @@ jobs:
 
     - name: Push forward version tag
       if: env.push == 1
-      run: git tag -fa ${GITHUB_REF#refs/tags/}
+      run: git tag -fa ${GITHUB_REF#refs/tags/} -m "Push release ${GITHUB_REF#refs/tags/} tag to new release commit"
 
     - name: Temporarily disable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
