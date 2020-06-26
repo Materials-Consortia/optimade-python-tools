@@ -63,12 +63,6 @@ jobs:
     - name: Build source distribution
       run: python ./setup.py sdist
 
-    - name: Push forward version tag
-      if: env.push == 1
-      run: |
-        git push origin :refs/tags/${GITHUB_REF#refs/tags/}
-        git tag -fa ${GITHUB_REF#refs/tags/} -m "Push release ${GITHUB_REF#refs/tags/} tag to new release commit"
-
     - name: Temporarily disable "include administrators" branch protection
       uses: benjefferies/branch-protection-bot@master
       if: env.push == 1
@@ -98,6 +92,12 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
+
+    - name: Push forward version tag
+      if: env.push == 1
+      run: |
+        git push "https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${REPOSITORY}.git" origin :refs/tags/${GITHUB_REF#refs/tags/}
+        git tag -fa ${GITHUB_REF#refs/tags/} -m "Push release ${GITHUB_REF#refs/tags/} tag to new release commit"
 
     - name: Build
       run: mkdocs build
