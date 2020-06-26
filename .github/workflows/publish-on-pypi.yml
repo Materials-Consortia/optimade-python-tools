@@ -29,9 +29,6 @@ jobs:
         pip install --upgrade setuptools
         pip install -e .[all]
 
-    - name: Build docs
-      run: mkdocs build
-
     # - name: Check released tag
     #   env:
     #     GITHUB_SHA: ${{ github.sha }}
@@ -61,6 +58,9 @@ jobs:
         TAG_MSG=$(git tag -n1000 --format="%(contents)" ${GITHUB_REF#refs/tags/})
         git tag -f -m "${TAG_MSG}" ${GITHUB_REF#refs/tags/}
         git push -f --tags
+
+    - name: Build docs
+      run: mkdocs build
 
     # - name: Deploy
     #   uses: peaceiris/actions-gh-pages@v3
