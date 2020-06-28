@@ -38,6 +38,22 @@ jobs:
         branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         changes: .github/workflows/update_changelog.sh
         unprotect_reviews: true
+        sleep: 15
+
+    - name: Update tag to latest commit (getting the newest version locally)
+      run: |
+        git config --local user.email "dev@optimade.org"
+        git config --local user.name "OPTIMADE Developers"
+
+        git fetch origin
+        git branch ${{ env.PUBLISH_UPDATE_BRANCH }} origin/${{ env.PUBLISH_UPDATE_BRANCH }}
+        git checkout ${{ env.PUBLISH_UPDATE_BRANCH }}
+
+        TAG_MSG=.github/workflows/release_tag_msg.txt
+        sed -i "s|TAG_NAME|${GITHUB_REF#refs/tags/}|" "${TAG_MSG}"
+
+        git tag -af -F "${TAG_MSG}" ${GITHUB_REF#refs/tags/}
+        git push -f --tags
 
     - name: Build source distribution
       run: python ./setup.py sdist
@@ -47,19 +63,6 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_PASSWORD }}
-
-    - name: Update tag to latest commit
-      run: |
-        git config --local user.email "dev@optimade.org"
-        git config --local user.name "OPTIMADE Developers"
-
-        git fetch origin
-
-        TAG_MSG=.github/workflows/release_tag_msg.txt
-        sed -i "s|TAG_NAME|${GITHUB_REF#refs/tags/}|" "${TAG_MSG}"
-
-        git tag -af -F "${TAG_MSG}" ${GITHUB_REF#refs/tags/} origin/${{ env.PUBLISH_UPDATE_BRANCH }}
-        git push -f --tags
 
     - name: Build docs
       run: mkdocs build
