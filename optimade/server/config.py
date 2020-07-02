@@ -9,7 +9,7 @@ except ImportError:
     from typing_extensions import Literal
 from pathlib import Path
 
-from pydantic import BaseSettings, Field, root_validator
+from pydantic import BaseSettings, Field, root_validator, AnyHttpUrl
 
 from optimade import __version__
 from optimade.models import Implementation, Provider
@@ -73,13 +73,16 @@ class ServerConfig(BaseSettings):
         ),
         description="Introspective information about this OPTIMADE implementation",
     )
+    index_base_url: Optional[AnyHttpUrl] = Field(
+        None,
+        description="An optional link to the base URL for the index meta-database of the provider.",
+    )
     provider: Provider = Field(
         Provider(
             prefix="exmpl",
             name="Example provider",
             description="Provider used for examples, not to be assigned to a real database",
             homepage="https://example.com",
-            index_base_url="http://localhost:5001",
         ),
         description="General information about the provider of this OPTIMADE implementation",
     )

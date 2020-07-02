@@ -7,6 +7,7 @@ from optimade import __api_version__
 
 from . import ENTRY_COLLECTIONS
 from .utils import meta_values
+from optimade.server.config import CONFIG
 
 template_dir = Path(__file__).parent.joinpath("static").resolve()
 TEMPLATES = Jinja2Templates(directory=[template_dir])
@@ -31,6 +32,7 @@ async def landing(request):
         "implementation": meta.implementation,
         "versioned_url": versioned_url,
         "provider": meta.provider,
+        "index_base_url": CONFIG.index_base_url,
         "endpoints": list(ENTRY_COLLECTIONS.keys()) + ["info"],
     }
 

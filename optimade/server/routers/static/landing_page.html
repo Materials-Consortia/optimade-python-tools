@@ -35,8 +35,10 @@
         {{ '<li><a href="{}{}">{}{}</a></li>'.format(versioned_url, endpoint, versioned_url, endpoint) | safe }}
         {% endfor %}
         </ul>
-        <h3>Index base URL:</h3>
-        <p><a href={{ provider.index_base_url }}>{{ provider.index_base_url }}</a></p>
+        {% if index_base_url != None %}
+            <h3>Index base URL:</h3>
+            <p><a href={{ index_base_url }}>{{ index_base_url }}</a></p>
+        {% endif %}
     </body>
     <footer>
         <div class="footer_text">

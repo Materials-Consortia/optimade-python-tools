@@ -3,7 +3,6 @@ import os
 import unittest
 from traceback import print_exc
 
-from optimade import __api_version__
 from optimade.validator import ImplementationValidator
 
 from .utils import SetClient
@@ -60,14 +59,13 @@ class AsTypeTestsWithValidator(SetClient, unittest.TestCase):
 
     def test_as_type_with_validator(self):
 
-        base_url = f"http://example.org/v{__api_version__.split('.')[0]}"
         test_urls = {
-            f"{base_url}/structures": "structures",
-            f"{base_url}/structures/mpf_1": "structure",
-            f"{base_url}/references": "references",
-            f"{base_url}/references/dijkstra1968": "reference",
-            f"{base_url}/info": "info",
-            f"{base_url}/links": "links",
+            f"{self.client.base_url}/structures": "structures",
+            f"{self.client.base_url}/structures/mpf_1": "structure",
+            f"{self.client.base_url}/references": "references",
+            f"{self.client.base_url}/references/dijkstra1968": "reference",
+            f"{self.client.base_url}/info": "info",
+            f"{self.client.base_url}/links": "links",
         }
         with unittest.mock.patch(
             "requests.get", unittest.mock.Mock(side_effect=self.client.get)
