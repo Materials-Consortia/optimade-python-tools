@@ -21,9 +21,9 @@
         "name": "Example provider",
         "description": "Provider used for examples, not to be assigned to a real database",
         "prefix": "exmpl",
-        "homepage": "https://example.com",
-        "index_base_url": "http://localhost:5001"
+        "homepage": "https://example.com"
     },
+    "index_base_url": "http://localhost:5001",
     "provider_fields": {},
     "aliases": {},
     "length_aliases": {},

@@ -1,3 +1,4 @@
+import urllib
 from typing import Union
 
 from fastapi import APIRouter, Request
@@ -15,7 +16,7 @@ from optimade.models import (
 
 from optimade.server.config import CONFIG
 
-from .utils import meta_values
+from .utils import meta_values, get_base_url
 
 
 router = APIRouter(redirect_slashes=True)
@@ -28,6 +29,10 @@ router = APIRouter(redirect_slashes=True)
     tags=["Info"],
 )
 def get_info(request: Request):
+
+    parse_result = urllib.parse.urlparse(str(request.url))
+    base_url = get_base_url(parse_result)
+
     return IndexInfoResponse(
         meta=meta_values(str(request.url), 1, 1, more_data_available=False),
         data=IndexInfoResource(
@@ -37,7 +42,7 @@ def get_info(request: Request):
                 api_version=f"{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"{CONFIG.provider.index_base_url}/v{__api_version__.split('.')[0]}/",
+                        "url": f"{base_url}/v{__api_version__.split('.')[0]}/",
                         "version": f"{__api_version__}",
                     }
                 ],

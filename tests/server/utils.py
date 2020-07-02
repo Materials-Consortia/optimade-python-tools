@@ -6,6 +6,10 @@ from pydantic import BaseModel
 
 from fastapi.testclient import TestClient
 
+from optimade import __api_version__
+
+VERSION_PREFIX = f"/v{__api_version__.split('.')[0]}"
+
 
 def get_regular_client() -> TestClient:
     """Return TestClient for regular OPTIMADE server"""
@@ -13,13 +17,13 @@ def get_regular_client() -> TestClient:
     from optimade.server.routers import info, links, references, structures
 
     # We need to remove the version prefixes in order to have the tests run correctly.
-    app.include_router(info.router)
-    app.include_router(links.router)
-    app.include_router(references.router)
-    app.include_router(structures.router)
+    app.include_router(info.router, prefix=VERSION_PREFIX)
+    app.include_router(links.router, prefix=VERSION_PREFIX)
+    app.include_router(references.router, prefix=VERSION_PREFIX)
+    app.include_router(structures.router, prefix=VERSION_PREFIX)
     # need to explicitly set base_url, as the default "http://testserver"
     # does not validate as pydantic AnyUrl model
-    return TestClient(app, base_url="http://example.org/v0")
+    return TestClient(app, base_url=f"http://example.org{VERSION_PREFIX}")
 
 
 def get_index_client() -> TestClient:
@@ -28,11 +32,11 @@ def get_index_client() -> TestClient:
     from optimade.server.routers import index_info, links
 
     # # We need to remove the version prefixes in order to have the tests run correctly.
-    app.include_router(index_info.router)
-    app.include_router(links.router)
+    app.include_router(index_info.router, prefix=VERSION_PREFIX)
+    app.include_router(links.router, prefix=VERSION_PREFIX)
     # need to explicitly set base_url, as the default "http://testserver"
     # does not validate as pydantic UrlStr model
-    return TestClient(app, base_url="http://example.org/v0")
+    return TestClient(app, base_url=f"http://example.org{VERSION_PREFIX}")
 
 
 class SetClient(abc.ABC):

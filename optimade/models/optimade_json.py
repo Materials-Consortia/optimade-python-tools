@@ -183,14 +183,6 @@ class Provider(BaseModel):
         "directly as a string, or as a link object.",
     )
 
-    index_base_url: Optional[Union[AnyHttpUrl, jsonapi.Link]] = Field(
-        None,
-        description="a [JSON API links object](http://jsonapi.org/format/1.0#document-links) "
-        "pointing to the base URL for the `index` meta-database as "
-        "specified in Appendix 1, either directly as a string, or "
-        "as a link object.",
-    )
-
 
 class ImplementationMaintainer(BaseModel):
     """Details about the maintainer of the implementation"""
