@@ -6,20 +6,20 @@
     "version": "1.0.0-rc.2"
   },
   "paths": {
-    "/v1/info": {
+    "/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_v1_info_get",
+        "operationId": "get_info_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info V1 Info Get",
+                  "title": "Response Get Info Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/InfoResponse"
@@ -35,13 +35,13 @@
         }
       }
     },
-    "/v1/info/{entry}": {
+    "/info/{entry}": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Entry Info",
-        "operationId": "get_entry_info_v1_info__entry__get",
+        "operationId": "get_entry_info_info__entry__get",
         "parameters": [
           {
             "required": true,
@@ -59,7 +59,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Entry Info V1 Info  Entry  Get",
+                  "title": "Response Get Entry Info Info  Entry  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/EntryInfoResponse"
@@ -85,13 +85,13 @@
         }
       }
     },
-    "/v1/links": {
+    "/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_v1_links_get",
+        "operationId": "get_links_links_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
@@ -253,7 +253,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links V1 Links Get",
+                  "title": "Response Get Links Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"
@@ -279,13 +279,13 @@
         }
       }
     },
-    "/v1/references": {
+    "/references": {
       "get": {
         "tags": [
           "References"
         ],
         "summary": "Get References",
-        "operationId": "get_references_v1_references_get",
+        "operationId": "get_references_references_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
@@ -447,7 +447,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get References V1 References Get",
+                  "title": "Response Get References References Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseMany"
@@ -473,13 +473,13 @@
         }
       }
     },
-    "/v1/references/{entry_id}": {
+    "/references/{entry_id}": {
       "get": {
         "tags": [
           "References"
         ],
         "summary": "Get Single Reference",
-        "operationId": "get_single_reference_v1_references__entry_id__get",
+        "operationId": "get_single_reference_references__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -547,7 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Single Reference V1 References  Entry Id  Get",
+                  "title": "Response Get Single Reference References  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/ReferenceResponseOne"
@@ -573,13 +573,13 @@
         }
       }
     },
-    "/v1/structures": {
+    "/structures": {
       "get": {
         "tags": [
           "Structures"
         ],
         "summary": "Get Structures",
-        "operationId": "get_structures_v1_structures_get",
+        "operationId": "get_structures_structures_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
@@ -741,7 +741,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Structures V1 Structures Get",
+                  "title": "Response Get Structures Structures Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseMany"
@@ -767,13 +767,13 @@
         }
       }
     },
-    "/v1/structures/{entry_id}": {
+    "/structures/{entry_id}": {
       "get": {
         "tags": [
           "Structures"
         ],
         "summary": "Get Single Structure",
-        "operationId": "get_single_structure_v1_structures__entry_id__get",
+        "operationId": "get_single_structure_structures__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -841,7 +841,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Single Structure V1 Structures  Entry Id  Get",
+                  "title": "Response Get Single Structure Structures  Entry Id  Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/StructureResponseOne"
