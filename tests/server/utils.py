@@ -134,3 +134,21 @@ class EndpointTestsMixin(SetClient):
                 key in response_subset,
                 msg="{} missing from response {}".format(key, response_subset),
             )
+
+
+class SimpleEndpointTestsMixin(SetClient):
+    """ A simplified mixin class for tests on non-JSON endpoints. """
+
+    server: str = "regular"
+    request_str: str = None
+    response_cls = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.response = self.client.get(self.request_str)
+        self.assertEqual(
+            self.response.status_code,
+            200,
+            msg=f"Request failed: {self.response.content}",
+        )

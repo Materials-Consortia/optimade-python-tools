@@ -13,7 +13,7 @@ import optimade.server.exception_handlers as exc_handlers
 
 from .config import CONFIG
 from .middleware import EnsureQueryParamIntegrity
-from .routers import index_info, links
+from .routers import index_info, links, versions
 from .routers.utils import BASE_URL_PREFIXES
 
 
@@ -74,7 +74,7 @@ app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
 # Add all endpoints to unversioned URL
-for endpoint in (index_info, links):
+for endpoint in (index_info, links, versions):
     app.include_router(endpoint.router)
 
 

@@ -13,7 +13,7 @@ import optimade.server.exception_handlers as exc_handlers
 from .entry_collections import MongoCollection
 from .config import CONFIG
 from .middleware import EnsureQueryParamIntegrity
-from .routers import info, links, references, structures, landing
+from .routers import info, links, references, structures, landing, versions
 from .routers.utils import get_providers, BASE_URL_PREFIXES
 
 
@@ -71,7 +71,7 @@ app.add_exception_handler(NotImplementedError, exc_handlers.not_implemented_hand
 app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 # Add various endpoints to unversioned URL
-for endpoint in (info, links, references, structures, landing):
+for endpoint in (info, links, references, structures, landing, versions):
     app.include_router(endpoint.router)
 
 
