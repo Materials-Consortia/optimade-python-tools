@@ -879,11 +879,10 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/json": {
-                "schema": {}
-              },
               "text/csv": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -2783,7 +2782,7 @@
           "representation": {
             "title": "Representation",
             "type": "string",
-            "description": "A string with the part of the URL following the versioned or unversioned base URL that serves the API.\nQuery parameters that have not been used in processing the request MAY be omitted.\nIn particular, if no query parameters have been involved in processing the request, the query pary of the URL MAY be excluded.\nExample: `/structures?filter=nelements=2`"
+            "description": "A string with the part of the URL following the versioned or unversioned base URL that serves the API.\nQuery parameters that have not been used in processing the request MAY be omitted.\nIn particular, if no query parameters have been involved in processing the request, the query part of the URL MAY be excluded.\nExample: `/structures?filter=nelements=2`"
           }
         },
         "description": "Information on the query that was requested. "

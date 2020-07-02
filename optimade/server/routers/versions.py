@@ -6,20 +6,15 @@ from .utils import BASE_URL_PREFIXES
 router = APIRouter(redirect_slashes=True)
 
 
+class CsvResponse(Response):
+    media_type = "text/csv"
+
+
 @router.get(
-    "/versions",
-    tags=["Versions"],
-    responses={
-        200: {
-            "description": "Successful Response",
-            "content": {"text/csv": {"schema": {}}},
-        }
-    },
+    "/versions", tags=["Versions"], response_class=CsvResponse,
 )
 def get_versions(request: Request):
     """Respond with the text/csv representation for the served versions."""
     version = BASE_URL_PREFIXES["major"].replace("/v", "")
     response = f"version\n{version}"
-    return Response(
-        content=response, media_type="text/csv", headers={"header": "present"}
-    )
+    return CsvResponse(content=response, headers={"header": "present"})
