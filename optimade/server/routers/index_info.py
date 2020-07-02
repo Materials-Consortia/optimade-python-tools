@@ -16,7 +16,7 @@ from optimade.models import (
 
 from optimade.server.config import CONFIG
 
-from .utils import meta_values, get_base_url
+from optimade.server.routers.utils import meta_values, get_base_url
 
 
 router = APIRouter(redirect_slashes=True)

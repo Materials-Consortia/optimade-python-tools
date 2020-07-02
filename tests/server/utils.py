@@ -16,11 +16,8 @@ def get_regular_client() -> TestClient:
     from optimade.server.main import app
     from optimade.server.routers import info, links, references, structures
 
-    # We need to remove the version prefixes in order to have the tests run correctly.
-    app.include_router(info.router, prefix=VERSION_PREFIX)
-    app.include_router(links.router, prefix=VERSION_PREFIX)
-    app.include_router(references.router, prefix=VERSION_PREFIX)
-    app.include_router(structures.router, prefix=VERSION_PREFIX)
+    for endpoint in (info, links, references, structures):
+        app.include_router(endpoint.router, prefix=VERSION_PREFIX)
     # need to explicitly set base_url, as the default "http://testserver"
     # does not validate as pydantic AnyUrl model
     return TestClient(app, base_url=f"http://example.org{VERSION_PREFIX}")
@@ -31,7 +28,6 @@ def get_index_client() -> TestClient:
     from optimade.server.main_index import app
     from optimade.server.routers import index_info, links
 
-    # # We need to remove the version prefixes in order to have the tests run correctly.
     app.include_router(index_info.router, prefix=VERSION_PREFIX)
     app.include_router(links.router, prefix=VERSION_PREFIX)
     # need to explicitly set base_url, as the default "http://testserver"

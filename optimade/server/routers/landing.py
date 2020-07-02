@@ -5,8 +5,8 @@ from fastapi.templating import Jinja2Templates
 from starlette.routing import Router, Route
 from optimade import __api_version__
 
-from . import ENTRY_COLLECTIONS
-from .utils import meta_values
+from optimade.server.routers import ENTRY_COLLECTIONS
+from optimade.server.routers.utils import meta_values
 from optimade.server.config import CONFIG
 
 template_dir = Path(__file__).parent.joinpath("static").resolve()
