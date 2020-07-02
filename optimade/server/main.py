@@ -70,17 +70,15 @@ app.add_exception_handler(VisitError, exc_handlers.grammar_not_implemented_handl
 app.add_exception_handler(NotImplementedError, exc_handlers.not_implemented_handler)
 app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
-
-# Add various endpoints to `/vMAJOR`
-app.include_router(info.router, prefix=BASE_URL_PREFIXES["major"])
-app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
-app.include_router(references.router, prefix=BASE_URL_PREFIXES["major"])
-app.include_router(structures.router, prefix=BASE_URL_PREFIXES["major"])
+# Add various endpoints to unversioned URL
+for endpoint in (info, links, references, structures, landing):
+    app.include_router(endpoint.router)
 
 
-# Add the router for the landing page for all prefixes
-app.include_router(landing.router)
-app.include_router(landing.router, prefix=BASE_URL_PREFIXES["major"])
+def add_major_version_base_url(app: FastAPI):
+    """ Add mandatory vMajor endpoints, i.e. all except versions. """
+    for endpoint in (info, links, references, structures, landing):
+        app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
@@ -91,14 +89,13 @@ def add_optional_versioned_base_urls(app: FastAPI):
     ```
     """
     for version in ("minor", "patch"):
-        app.include_router(info.router, prefix=BASE_URL_PREFIXES[version])
-        app.include_router(links.router, prefix=BASE_URL_PREFIXES[version])
-        app.include_router(references.router, prefix=BASE_URL_PREFIXES[version])
-        app.include_router(structures.router, prefix=BASE_URL_PREFIXES[version])
-        app.include_router(landing.router, prefix=BASE_URL_PREFIXES[version])
+        for endpoint in (info, links, references, structures, landing):
+            app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES[version])
 
 
 @app.on_event("startup")
 async def startup_event():
+    # Add API endpoints for MANDATORY base URL `/vMAJOR`
+    add_major_version_base_url(app)
     # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
     add_optional_versioned_base_urls(app)

@@ -6,20 +6,20 @@
     "version": "1.0.0-rc.2"
   },
   "paths": {
-    "/v1/info": {
+    "/info": {
       "get": {
         "tags": [
           "Info"
         ],
         "summary": "Get Info",
-        "operationId": "get_info_v1_info_get",
+        "operationId": "get_info_info_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Info V1 Info Get",
+                  "title": "Response Get Info Info Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/IndexInfoResponse"
@@ -35,13 +35,13 @@
         }
       }
     },
-    "/v1/links": {
+    "/links": {
       "get": {
         "tags": [
           "Links"
         ],
         "summary": "Get Links",
-        "operationId": "get_links_v1_links_get",
+        "operationId": "get_links_links_get",
         "parameters": [
           {
             "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
@@ -203,7 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Links V1 Links Get",
+                  "title": "Response Get Links Links Get",
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/LinksResponse"

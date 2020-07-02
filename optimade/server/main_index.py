@@ -73,9 +73,15 @@ app.add_exception_handler(VisitError, exc_handlers.grammar_not_implemented_handl
 app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
 
 
-# Add various endpoints to `/vMAJOR`
-app.include_router(index_info.router, prefix=BASE_URL_PREFIXES["major"])
-app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
+# Add all endpoints to unversioned URL
+for endpoint in (index_info, links):
+    app.include_router(endpoint.router)
+
+
+def add_major_version_base_url(app: FastAPI):
+    """ Add mandatory endpoints to `/vMAJOR` base URL. """
+    for endpoint in (index_info, links):
+        app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):
@@ -92,5 +98,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
 
 @app.on_event("startup")
 async def startup_event():
+    # Add API endpoints for MANDATORY base URL `/vMAJOR`
+    add_major_version_base_url(app)
     # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
     add_optional_versioned_base_urls(app)
