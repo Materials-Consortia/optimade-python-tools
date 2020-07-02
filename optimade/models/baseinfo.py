@@ -22,8 +22,9 @@ class AvailableApiVersion(BaseModel):
 
     version: SemanticVersion = Field(
         ...,
-        description="A string containing the full version number of the API served at that versioned base URL. "
-        "The version number string MUST NOT be prefixed by, e.g., 'v'.",
+        description="""A string containing the full version number of the API served at that versioned base URL.
+The version number string MUST NOT be prefixed by, e.g., 'v'.
+Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
 
     @validator("url")
@@ -59,7 +60,10 @@ class BaseInfoAttributes(BaseModel):
     """Attributes for Base URL Info endpoint"""
 
     api_version: SemanticVersion = Field(
-        ..., description="Presently used version of the OPTIMADE API"
+        ...,
+        description="""Presently used full version of the OPTIMADE API.
+The version number string MUST NOT be prefixed by, e.g., "v".
+Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
     available_api_versions: List[AvailableApiVersion] = Field(
         ...,

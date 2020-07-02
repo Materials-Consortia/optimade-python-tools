@@ -31,8 +31,8 @@ __all__ = (
 class ErrorResponse(Response):
     """errors MUST be present and data MUST be skipped"""
 
-    meta: Optional[ResponseMeta] = Field(
-        None, description="A meta object containing non-standard information"
+    meta: ResponseMeta = Field(
+        ..., description="A meta object containing non-standard information"
     )
     errors: List[OptimadeError] = Field(
         ...,
