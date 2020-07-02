@@ -228,6 +228,29 @@
           }
         }
       }
+    },
+    "/versions": {
+      "get": {
+        "tags": [
+          "Versions"
+        ],
+        "summary": "Get Versions",
+        "description": "Respond with the text/csv representation for the served versions.",
+        "operationId": "get_versions_versions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "text/csv": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
