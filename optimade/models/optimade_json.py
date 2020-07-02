@@ -159,7 +159,10 @@ class ResponseMetaQuery(BaseModel):
 
     representation: str = Field(
         ...,
-        description="a string with the part of the URL that follows the base URL. Example: '/structures?'",
+        description="""A string with the part of the URL following the versioned or unversioned base URL that serves the API.
+Query parameters that have not been used in processing the request MAY be omitted.
+In particular, if no query parameters have been involved in processing the request, the query pary of the URL MAY be excluded.
+Example: `/structures?filter=nelements=2`""",
     )
 
 
@@ -173,7 +176,8 @@ class Provider(BaseModel):
     )
 
     prefix: str = Field(
-        ..., description="database-provider-specific prefix as found in " "Appendix 1."
+        ...,
+        description="database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes.",
     )
 
     homepage: Optional[Union[AnyHttpUrl, jsonapi.Link]] = Field(
@@ -199,9 +203,14 @@ class Implementation(BaseModel):
         None, description="version string of the current implementation"
     )
 
-    source_url: Optional[AnyUrl] = Field(
+    homepage: Optional[Union[AnyHttpUrl, jsonapi.Link]] = Field(
         None,
-        description="URL of the implementation source, either downloadable archive or version control system",
+        description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the homepage of the implementation.",
+    )
+
+    source_url: Optional[Union[AnyUrl, jsonapi.Link]] = Field(
+        None,
+        description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation source, either downloadable archive or version control system.",
     )
 
     maintainer: Optional[ImplementationMaintainer] = Field(
@@ -226,29 +235,43 @@ class ResponseMeta(jsonapi.Meta):
     )
 
     api_version: SemanticVersion = Field(
-        ..., description="A string containing the version of the API implementation.",
-    )
-
-    time_stamp: datetime = Field(
         ...,
-        description="A timestamp containing the date and time at which the query was executed.",
-    )
-
-    data_returned: int = Field(
-        ...,
-        description="An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.",
-        ge=0,
+        description="""Presently used full version of the OPTIMADE API.
+The version number string MUST NOT be prefixed by, e.g., "v".
+Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
 
     more_data_available: bool = Field(
         ...,
-        description="`false` if all data resource objects for this `filter` query have been returned in the response or if it is the last page of a paginated response, and `true` otherwise.",
+        description="`false` if the response contains all data for the request (e.g., a request issued to a single entry endpoint, or a `filter` query at the last page of a paginated response) and `true` if the response is incomplete in the sense that multiple objects match the request, and not all of them have been included in the response (e.g., a query with multiple pages that is not at the last page).",
     )
 
-    provider: Provider = Field(
-        ..., description="information on the database provider of the implementation."
+    # start of "SHOULD" fields for meta response
+    optimade_schema: Optional[Union[AnyHttpUrl, jsonapi.Link]] = Field(
+        None,
+        alias="schema",
+        description="""A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.
+If it is a string, or a dictionary containing no `meta` field, the provided URL MUST point at an [OpenAPI](https://swagger.io/specification/) schema.
+It is possible that future versions of this specification allows for alternative schema types.
+Hence, if the `meta` field of the JSON API links object is provided and contains a field `schema_type` that is not equal to the string `OpenAPI` the client MUST not handle failures to parse the schema or to validate the response against the schema as errors.""",
     )
 
+    time_stamp: Optional[datetime] = Field(
+        None,
+        description="A timestamp containing the date and time at which the query was executed.",
+    )
+
+    data_returned: Optional[int] = Field(
+        None,
+        description="An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.",
+        ge=0,
+    )
+
+    provider: Optional[Provider] = Field(
+        None, description="information on the database provider of the implementation."
+    )
+
+    # start of "MAY" fields for meta response
     data_available: Optional[int] = Field(
         None,
         description="An integer containing the total number of data resource objects available in the database for the endpoint.",
@@ -280,8 +303,8 @@ This is an exclusive field for error resource objects.""",
 class Success(jsonapi.Response):
     """errors are not allowed"""
 
-    meta: Optional[ResponseMeta] = Field(
-        None, description="A meta object containing non-standard information"
+    meta: ResponseMeta = Field(
+        ..., description="A meta object containing non-standard information"
     )
 
     @root_validator(pre=True)

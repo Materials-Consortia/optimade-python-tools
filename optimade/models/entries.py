@@ -139,6 +139,7 @@ class EntryInfoProperty(BaseModel):
     unit: Optional[str] = Field(
         None,
         description="""The physical unit of the entry property.
+This MUST be a valid representation of units according to version 2.1 of [The Unified Code for Units of Measure](https://unitsofmeasure.org/ucum.html).
 It is RECOMMENDED that non-standard (non-SI) units are described in the description for the property.""",
     )
 
