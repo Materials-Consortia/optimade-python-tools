@@ -9,7 +9,13 @@ except ImportError:
     from typing_extensions import Literal
 from pathlib import Path
 
-from pydantic import BaseSettings, Field, root_validator, AnyHttpUrl
+from pydantic import (  # pylint: disable=no-name-in-module
+    BaseSettings,
+    Field,
+    root_validator,
+    AnyHttpUrl,
+    validator,
+)
 
 from optimade import __version__
 from optimade.models import Implementation, Provider
@@ -112,6 +118,13 @@ class ServerConfig(BaseSettings):
         Path(__file__).parent.joinpath("index_links.json"),
         description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database",
     )
+
+    @validator("implementation", pre=True)
+    def set_implementation_version(cls, v):
+        """Set defaults and modify by passed value(s)"""
+        res = {"version": __version__}
+        res.update(v)
+        return res
 
     @root_validator(pre=True)
     def load_default_settings(cls, values):  # pylint: disable=no-self-argument
