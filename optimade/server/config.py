@@ -9,7 +9,13 @@ except ImportError:
     from typing_extensions import Literal
 from pathlib import Path
 
-from pydantic import BaseSettings, Field, root_validator, AnyHttpUrl, validator  # pylint: disable=no-name-in-module
+from pydantic import (  # pylint: disable=no-name-in-module
+    BaseSettings,
+    Field,
+    root_validator,
+    AnyHttpUrl,
+    validator,
+)
 
 from optimade import __version__
 from optimade.models import Implementation, Provider
@@ -114,27 +120,9 @@ class ServerConfig(BaseSettings):
     )
 
     @validator("implementation", pre=True)
-    def set_implementation_defaults(cls, v):
+    def set_implementation_version(cls, v):
         """Set defaults and modify by passed value(s)"""
-        res = {
-            "name": "Optimade Python Tools",
-            "version": __version__,
-            "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
-            "maintainer": {"email": "dev@optimade.org"},
-        }
-        res.update(v)
-        return res
-
-    @validator("provider", pre=True)
-    def set_provider_defaults(cls, v):
-        """Set defaults and modify by passed value(s)"""
-        res = {
-            "prefix": "exmpl",
-            "name": "Example provider",
-            "description": "Provider used for examples, not to be assigned to a real database",
-            "homepage": "https://example.com",
-            "index_base_url": "http://localhost:5001",
-        }
+        res = {"version": __version__}
         res.update(v)
         return res
 
