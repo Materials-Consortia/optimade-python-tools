@@ -35,7 +35,7 @@ client_deps = cif_deps
 docs_deps = [
     "mkdocs~=1.1",
     "mkdocs-awesome-pages-plugin~=2.2",
-    "mkdocs-material~=5.3",
+    "mkdocs-material~=5.4",
     "mkdocs-material-components~=1.10",
     "mkdocs-material-extensions~=1.0",
     "mkdocs-minify-plugin~=0.3.0",
@@ -91,7 +91,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.8.9",
-        "fastapi~=0.58.0",
+        "fastapi~=0.58.1",
         "pydantic~=1.5",
         "email_validator~=1.1",
         "requests~=2.24",
