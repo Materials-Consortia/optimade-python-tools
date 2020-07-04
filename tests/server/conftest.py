@@ -65,6 +65,7 @@ def check_response(get_good_response):
         expected_ids: List[str],
         page_limit: int = CONFIG.page_limit,
         expected_return: int = None,
+        expected_as_is: bool = False,
         server: str = "regular",
     ):
         response = get_good_response(request, server)
@@ -76,10 +77,13 @@ def check_response(get_good_response):
 
         assert response["meta"]["data_returned"] == expected_return
 
+        if not expected_as_is:
+            expected_ids = sorted(expected_ids)
+
         if len(expected_ids) > page_limit:
-            assert sorted(expected_ids)[:page_limit] == sorted(response_ids)
+            assert expected_ids[:page_limit] == response_ids
         else:
-            assert sorted(expected_ids) == sorted(response_ids)
+            assert expected_ids == response_ids
 
     return inner
 

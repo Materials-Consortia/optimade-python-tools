@@ -140,11 +140,11 @@ def test_list_length(check_response, check_error_response):
 
     request = "/structures?filter=cartesian_site_positions LENGTH > 43"
     expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
     request = "/structures?filter=species_at_sites LENGTH > 43"
     expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
     request = "/structures?filter=nsites LENGTH > 43"
     expected_ids = []
@@ -192,35 +192,35 @@ def test_list_correlated(check_error_response):
 def test_is_known(check_response):
     request = "/structures?filter=nsites IS KNOWN AND nsites>=44"
     expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
     request = "/structures?filter=lattice_vectors IS KNOWN AND nsites>=44"
     expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
 
 def test_aliased_is_known(check_response):
     request = "/structures?filter=id IS KNOWN AND nsites>=44"
     expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
     request = "/structures?filter=chemical_formula_reduced IS KNOWN AND nsites>=44"
     expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
     request = "/structures?filter=chemical_formula_descriptive IS KNOWN AND nsites>=44"
     expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
 
 def test_aliased_fields(check_response):
     request = '/structures?filter=chemical_formula_anonymous="A"'
     expected_ids = ["mpf_1", "mpf_200"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
     request = '/structures?filter=chemical_formula_anonymous CONTAINS "A2BC"'
     expected_ids = ["mpf_2", "mpf_3", "mpf_110"]
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
 
 def test_string_contains(check_response):
@@ -288,7 +288,7 @@ def test_awkward_not_queries(check_response, client):
         'NOT chemical_formula_descriptive = "Ac2AgPb" '
         ")"
     )
-    check_response(request, expected_ids)
+    check_response(request, expected_ids, expected_as_is=True)
 
 
 def test_not_or_and_precedence(check_response):

@@ -147,13 +147,13 @@ class MongoCollection(EntryCollection):
 
         if getattr(params, "sort", False):
             sort_spec = []
-            for elt in params.sort.split(","):
-                field = elt
+            for field in params.sort.split(","):
                 sort_dir = 1
-                if elt.startswith("-"):
+                if field.startswith("-"):
                     field = field[1:]
                     sort_dir = -1
-                sort_spec.append((field, sort_dir))
+                aliased_field = self.resource_mapper.alias_for(field)
+                sort_spec.append((aliased_field, sort_dir))
             cursor_kwargs["sort"] = sort_spec
 
         if getattr(params, "page_offset", False):
