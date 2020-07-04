@@ -44,3 +44,37 @@ def check_include_response(get_good_response):
         assert sorted(set(included_resources)) == sorted(expected_included_resources)
 
     return inner
+
+
+@pytest.fixture
+def check_required_fields_response(get_good_response):
+    """Fixture to check "good" `required_fields` response"""
+    from optimade.server import mappers
+
+    get_mapper = {
+        "links": mappers.LinksMapper,
+        "references": mappers.ReferenceMapper,
+        "structures": mappers.StructureMapper,
+    }
+
+    def inner(
+        endpoint: str,
+        known_unused_fields: set,
+        expected_fields: set,
+        server: str = "regular",
+    ):
+        expected_fields |= (
+            get_mapper[endpoint].get_required_fields() - known_unused_fields
+        )
+        expected_fields.add("attributes")
+        request = f"/{endpoint}?response_fields={','.join(expected_fields)}"
+
+        response = get_good_response(request, server)
+
+        response_fields = set()
+        for entry in response["data"]:
+            response_fields.update(set(entry.keys()))
+            response_fields.update(set(entry["attributes"].keys()))
+        assert sorted(expected_fields) == sorted(response_fields)
+
+    return inner

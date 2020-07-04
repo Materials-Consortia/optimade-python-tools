@@ -55,23 +55,27 @@ def test_wrong_html_form_one_wrong(check_error_response):
         )
 
 
-def test_parameter_separation(client):
+def test_parameter_separation(both_clients):
     """No matter the chosen (valid) parameter separator (either & or ;) the parameters should be split correctly"""
     from optimade.server.middleware import EnsureQueryParamIntegrity
 
     query_part = 'filter=id="mpf_1"&include=;response_format=json'
     expected_result = {'filter=id="mpf_1"', "include=", "response_format=json"}
 
-    parsed_set_of_queries = EnsureQueryParamIntegrity(client.app).check_url(query_part)
+    parsed_set_of_queries = EnsureQueryParamIntegrity(both_clients.app).check_url(
+        query_part
+    )
     assert expected_result == parsed_set_of_queries
 
 
-def test_empy_parameters(client):
+def test_empty_parameters(both_clients):
     """If parameter separators are present, the middleware should still succeed"""
     from optimade.server.middleware import EnsureQueryParamIntegrity
 
     query_part = ";;&&;&"
     expected_result = {""}
 
-    parsed_set_of_queries = EnsureQueryParamIntegrity(client.app).check_url(query_part)
+    parsed_set_of_queries = EnsureQueryParamIntegrity(both_clients.app).check_url(
+        query_part
+    )
     assert expected_result == parsed_set_of_queries

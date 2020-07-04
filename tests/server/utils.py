@@ -24,7 +24,7 @@ class OptimadeTestClient(TestClient):
 
     This is needed, since `urllib.parse.urljoin` removes paths from the passed
     `base_url`.
-    So this will prepend any requests with the MAJOR OPTIMADE version path.
+    So this will prepend any requests with the passed `version`.
     """
 
     def __init__(
@@ -33,7 +33,7 @@ class OptimadeTestClient(TestClient):
         base_url: str = "http://example.org",
         raise_server_exceptions: bool = True,
         root_path: str = "",
-        version: str = f"v{__api_version__.split('.')[0]}",
+        version: str = "",
     ) -> None:
         super(OptimadeTestClient, self).__init__(
             app=app,
@@ -41,14 +41,15 @@ class OptimadeTestClient(TestClient):
             raise_server_exceptions=raise_server_exceptions,
             root_path=root_path,
         )
-        if not version.startswith("v"):
-            version = f"v{version}"
-        if re.match(r"v[0-9](.[0-9]){0,2}", version) is None:
-            warnings.warn(
-                f"Invalid version passed to client: '{version}'. "
-                f"Will use the default: 'v{__api_version__.split('.')[0]}'"
-            )
-            version = f"v{__api_version__.split('.')[0]}"
+        if version:
+            if not version.startswith("v"):
+                version = f"v{version}"
+            if re.match(r"v[0-9](.[0-9]){0,2}", version) is None:
+                warnings.warn(
+                    f"Invalid version passed to client: '{version}'. "
+                    f"Will use the default: 'v{__api_version__.split('.')[0]}'"
+                )
+                version = f"v{__api_version__.split('.')[0]}"
         self.version = version
 
     def request(  # pylint: disable=too-many-locals
@@ -74,8 +75,8 @@ class OptimadeTestClient(TestClient):
             re.match(r"/?v[0-9](.[0-9]){0,2}/", url) is None
             and not urlparse(url).scheme
         ):
-            if not url.startswith("/"):
-                url = f"/{url}"
+            while url.startswith("/"):
+                url = url[1:]
             url = f"/{self.version}{url}"
         return super(OptimadeTestClient, self).request(
             method=method,
@@ -97,24 +98,14 @@ class OptimadeTestClient(TestClient):
         )
 
 
-class EndpointTests:
+class BaseEndpointTests:
     """Base class for common tests of endpoints"""
 
-    server: str = "regular"
     request_str: str = None
     response_cls: BaseModel = None
 
     response: Response = None
     json_response: dict = None
-
-    @pytest.fixture(autouse=True)
-    def get_response(self, client):
-        """Get response from client"""
-        self.response = client.get(self.request_str)
-        self.json_response = self.response.json()
-        yield
-        self.response = None
-        self.json_response = None
 
     @staticmethod
     def check_keys(keys: list, response_subset: typing.Iterable):
@@ -138,7 +129,7 @@ class EndpointTests:
             set(ResponseMeta.schema()["properties"].keys()) - set(meta_required_keys)
         )
         implemented_optional_keys = [
-            "schema",
+            # "schema",
             "time_stamp",
             "data_returned",
             "provider",
@@ -160,18 +151,65 @@ class EndpointTests:
         self.response_cls(**self.json_response)  # pylint: disable=not-callable
 
 
+class EndpointTests(BaseEndpointTests):
+    """Run tests for an endpoint for both servers"""
+
+    @pytest.fixture(autouse=True)
+    def get_response(self, both_clients):
+        self.response = both_clients.get(self.request_str)
+        self.json_response = self.response.json()
+        yield
+        self.response = None
+        self.json_response = None
+
+
+class RegularEndpointTests(BaseEndpointTests):
+    """Run tests for an endpoint, but _only_ for the regular server"""
+
+    @pytest.fixture(autouse=True)
+    def get_response(self, client):
+        self.response = client.get(self.request_str)
+        self.json_response = self.response.json()
+        yield
+        self.response = None
+        self.json_response = None
+
+
+class IndexEndpointTests(BaseEndpointTests):
+    """Run tests for an endpoint, but _only_ for the index server"""
+
+    @pytest.fixture(autouse=True)
+    def get_response(self, index_client):
+        self.response = index_client.get(self.request_str)
+        self.json_response = self.response.json()
+        yield
+        self.response = None
+        self.json_response = None
+
+
 def client_factory():
     """Return TestClient for OPTIMADE server"""
 
     def inner(version: str = None, server: str = "regular") -> OptimadeTestClient:
         if server == "regular":
-            from optimade.server.main import app
+            from optimade.server.main import (
+                app,
+                add_major_version_base_url,
+                add_optional_versioned_base_urls,
+            )
         elif server == "index":
-            from optimade.server.main_index import app
+            from optimade.server.main_index import (
+                app,
+                add_major_version_base_url,
+                add_optional_versioned_base_urls,
+            )
         else:
             pytest.fail(
                 f"Wrong value for 'server': {server}. It must be either 'regular' or 'index'."
             )
+
+        add_major_version_base_url(app)
+        add_optional_versioned_base_urls(app)
 
         if version:
             return OptimadeTestClient(
@@ -185,23 +223,15 @@ def client_factory():
 class NoJsonEndpointTests:
     """ A simplified mixin class for tests on non-JSON endpoints. """
 
-    server: str = "regular"
     request_str: str = None
     response_cls: BaseModel = None
 
     response: Response = None
 
     @pytest.fixture(autouse=True)
-    def get_response(self, client, index_client):
+    def get_response(self, both_clients):
         """Get response from client"""
-        if self.server == "regular":
-            self.response = client.get(self.request_str)
-        elif self.server == "index":
-            self.response = index_client.get(self.request_str)
-        else:
-            pytest.fail(
-                f"Wrong value for 'server': {self.server}. It must be either 'regular' or 'index'."
-            )
+        self.response = both_clients.get(self.request_str)
         yield
         self.response = None
 

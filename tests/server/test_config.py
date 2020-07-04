@@ -18,13 +18,12 @@ def test_env_variable():
     assert not CONFIG.debug
 
 
-def test_default_config_path():
+def test_default_config_path(monkeypatch):
     """Make sure the default config path works
     Expected default config path: PATH/TO/USER/HOMEDIR/.optimade.json
     """
-    # Reset OPTIMADE_CONFIG_FILE
-    original_OPTIMADE_CONFIG_FILE = os.environ.get("OPTIMADE_CONFIG_FILE", "")
-    os.environ.pop("OPTIMADE_CONFIG_FILE")
+    # Momentarily remove OPTIMADE_CONFIG_FILE
+    monkeypatch.delenv("OPTIMADE_CONFIG_FILE")
 
     with open(
         Path(__file__).parent.parent.joinpath("test_config.json"), "r"
@@ -52,9 +51,6 @@ def test_default_config_path():
         if restore:
             with open(original, "wb") as original_file:
                 original_file.write(original_file_content)
-
-    # Restore OPTIMADE_CONFIG_FILE
-    os.environ["OPTIMADE_CONFIG_FILE"] = original_OPTIMADE_CONFIG_FILE
 
 
 def test_debug_is_respected_when_off(both_clients):

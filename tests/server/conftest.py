@@ -1,5 +1,7 @@
 import pytest
 
+from optimade.server.config import CONFIG
+
 
 @pytest.fixture(scope="session")
 def client():
@@ -19,7 +21,7 @@ def index_client():
 
 @pytest.fixture(scope="session", params=["regular", "index"])
 def both_clients(request):
-    """Return TestClient for the index OPTIMADE server"""
+    """Return TestClient for both the regular and index OPTIMADE server"""
     from .utils import client_factory
 
     return client_factory()(server=request.param)
@@ -57,23 +59,27 @@ def get_good_response(client, index_client):
 def check_response(get_good_response):
     """Fixture to check "good" response"""
     from typing import List
-    from optimade.server.config import CONFIG
 
     def inner(
         request: str,
         expected_ids: List[str],
         page_limit: int = CONFIG.page_limit,
+        expected_return: int = None,
         server: str = "regular",
     ):
         response = get_good_response(request, server)
 
         response_ids = [struct["id"] for struct in response["data"]]
-        assert response["meta"]["data_returned"] == len(expected_ids)
+
+        if expected_return is None:
+            expected_return = len(expected_ids)
+
+        assert response["meta"]["data_returned"] == expected_return
 
         if len(expected_ids) > page_limit:
-            assert expected_ids[:page_limit] == response_ids
+            assert sorted(expected_ids)[:page_limit] == sorted(response_ids)
         else:
-            assert expected_ids == response_ids
+            assert sorted(expected_ids) == sorted(response_ids)
 
     return inner
 
