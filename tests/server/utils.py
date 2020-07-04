@@ -1,154 +1,212 @@
-# pylint: disable=import-outside-toplevel,no-name-in-module
-import abc
-from typing import Dict
+import re
+import typing
+from urllib.parse import urlparse
+import warnings
 
-from pydantic import BaseModel
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
+import pytest
+from requests import Response
+
+from pydantic import BaseModel  # pylint: disable=no-name-in-module
 from fastapi.testclient import TestClient
+from starlette import testclient
 
 from optimade import __api_version__
-
-VERSION_PREFIX = f"/v{__api_version__.split('.')[0]}"
-
-
-def get_regular_client() -> TestClient:
-    """Return TestClient for regular OPTIMADE server"""
-    from optimade.server.main import app
-    from optimade.server.routers import info, links, references, structures
-
-    for endpoint in (info, links, references, structures):
-        app.include_router(endpoint.router, prefix=VERSION_PREFIX)
-    # need to explicitly set base_url, as the default "http://testserver"
-    # does not validate as pydantic AnyUrl model
-    return TestClient(app, base_url=f"http://example.org{VERSION_PREFIX}")
+from optimade.models import ResponseMeta
 
 
-def get_index_client() -> TestClient:
-    """Return TestClient for index meta-database OPTIMADE server"""
-    from optimade.server.main_index import app
-    from optimade.server.routers import index_info, links
+class OptimadeTestClient(TestClient):
+    """Special OPTIMADE edition of FastAPI's (Starlette's) TestClient
 
-    app.include_router(index_info.router, prefix=VERSION_PREFIX)
-    app.include_router(links.router, prefix=VERSION_PREFIX)
-    # need to explicitly set base_url, as the default "http://testserver"
-    # does not validate as pydantic UrlStr model
-    return TestClient(app, base_url=f"http://example.org{VERSION_PREFIX}")
+    This is needed, since `urllib.parse.urljoin` removes paths from the passed
+    `base_url`.
+    So this will prepend any requests with the MAJOR OPTIMADE version path.
+    """
 
-
-class SetClient(abc.ABC):
-    """Metaclass to instantiate the TestClients once"""
-
-    server: str = None
-    _client: Dict[str, TestClient] = {
-        "index": get_index_client(),
-        "regular": get_regular_client(),
-    }
-
-    @property
-    def client(self) -> TestClient:
-        exception_message = "Test classes using EndpointTestsMixin MUST specify a `server` attribute with a value that is either 'regular' or 'index'"
-        if not hasattr(self, "server"):
-            raise AttributeError(exception_message)
-        if self.server in self._client:
-            return self._client[self.server]
-        raise ValueError(exception_message)
-
-    # pylint: disable=no-member
-    def _check_error_response(
+    def __init__(
         self,
-        request: str,
-        expected_status: int = None,
-        expected_title: str = None,
-        expected_detail: str = None,
-    ):
-        try:
-            response = self.client.get(request)
-            self.assertEqual(
-                response.status_code,
-                expected_status,
-                msg=f"Request should have been an error with status code {expected_status}, "
-                f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
+        app: typing.Union[testclient.ASGI2App, testclient.ASGI3App],
+        base_url: str = "http://example.org",
+        raise_server_exceptions: bool = True,
+        root_path: str = "",
+        version: str = f"v{__api_version__.split('.')[0]}",
+    ) -> None:
+        super(OptimadeTestClient, self).__init__(
+            app=app,
+            base_url=base_url,
+            raise_server_exceptions=raise_server_exceptions,
+            root_path=root_path,
+        )
+        if not version.startswith("v"):
+            version = f"v{version}"
+        if re.match(r"v[0-9](.[0-9]){0,2}", version) is None:
+            warnings.warn(
+                f"Invalid version passed to client: '{version}'. "
+                f"Will use the default: 'v{__api_version__.split('.')[0]}'"
             )
-            response = response.json()
-            self.assertEqual(len(response["errors"]), 1)
-            self.assertEqual(response["meta"]["data_returned"], 0)
+            version = f"v{__api_version__.split('.')[0]}"
+        self.version = version
 
-            error = response["errors"][0]
-            self.assertEqual(str(expected_status), error["status"])
-            self.assertEqual(expected_title, error["title"])
+    def request(  # pylint: disable=too-many-locals
+        self,
+        method: str,
+        url: str,
+        params: testclient.Params = None,
+        data: testclient.DataType = None,
+        headers: typing.MutableMapping[str, str] = None,
+        cookies: testclient.Cookies = None,
+        files: testclient.FileType = None,
+        auth: testclient.AuthType = None,
+        timeout: testclient.TimeOut = None,
+        allow_redirects: bool = None,
+        proxies: typing.MutableMapping[str, str] = None,
+        hooks: typing.Any = None,
+        stream: bool = None,
+        verify: typing.Union[bool, str] = None,
+        cert: typing.Union[str, typing.Tuple[str, str]] = None,
+        json: typing.Any = None,  # pylint: disable=redefined-outer-name
+    ) -> Response:
+        if (
+            re.match(r"/?v[0-9](.[0-9]){0,2}/", url) is None
+            and not urlparse(url).scheme
+        ):
+            if not url.startswith("/"):
+                url = f"/{url}"
+            url = f"/{self.version}{url}"
+        return super(OptimadeTestClient, self).request(
+            method=method,
+            url=url,
+            params=params,
+            data=data,
+            headers=headers,
+            cookies=cookies,
+            files=files,
+            auth=auth,
+            timeout=timeout,
+            allow_redirects=allow_redirects,
+            proxies=proxies,
+            hooks=hooks,
+            stream=stream,
+            verify=verify,
+            cert=cert,
+            json=json,
+        )
 
-            if expected_detail is None:
-                expected_detail = "Error trying to process rule "
-                self.assertTrue(error["detail"].startswith(expected_detail))
-            else:
-                self.assertEqual(expected_detail, error["detail"])
 
-        except Exception as exc:
-            print("Request attempted:")
-            print(f"{self.client.base_url}{request}")
-            raise exc
-
-
-class EndpointTestsMixin(SetClient):
-    """ Mixin "base" class for common tests between endpoints. """
+class EndpointTests:
+    """Base class for common tests of endpoints"""
 
     server: str = "regular"
     request_str: str = None
     response_cls: BaseModel = None
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    response: Response = None
+    json_response: dict = None
 
-        self.response = self.client.get(self.request_str)
+    @pytest.fixture(autouse=True)
+    def get_response(self, client):
+        """Get response from client"""
+        self.response = client.get(self.request_str)
         self.json_response = self.response.json()
-        self.assertEqual(
-            self.response.status_code,
-            200,
-            msg=f"Request failed: {self.response.json()}",
+        yield
+        self.response = None
+        self.json_response = None
+
+    @staticmethod
+    def check_keys(keys: list, response_subset: typing.Iterable):
+        for key in keys:
+            assert (
+                key in response_subset
+            ), f"{key} missing from response {response_subset}"
+
+    def test_response_okay(self):
+        """Make sure the response was successful"""
+        assert self.response.status_code == 200, (
+            f"Request to {self.request_str} failed: "
+            f"{json.dumps(self.json_response, indent=2)}"
         )
 
     def test_meta_response(self):
-        self.assertTrue("meta" in self.json_response)
-        meta_required_keys = [
-            "query",
-            "api_version",
+        """General test for `meta` property in response"""
+        assert "meta" in self.json_response
+        meta_required_keys = ResponseMeta.schema()["required"]
+        meta_optional_keys = list(
+            set(ResponseMeta.schema()["properties"].keys()) - set(meta_required_keys)
+        )
+        implemented_optional_keys = [
+            "schema",
             "time_stamp",
             "data_returned",
-            "more_data_available",
             "provider",
+            "data_available",
+            "implementation",
         ]
-        meta_optional_keys = ["data_available", "implementation"]
+        # meta_may_keys = [
+        #     "last_id",
+        #     "response_message",
+        #     "warnings",
+        # ]
 
         self.check_keys(meta_required_keys, self.json_response["meta"])
-        self.check_keys(meta_optional_keys, self.json_response["meta"])
+        self.check_keys(implemented_optional_keys, meta_optional_keys)
+        self.check_keys(implemented_optional_keys, self.json_response["meta"])
 
     def test_serialize_response(self):
-        self.assertTrue(
-            self.response_cls is not None, msg="Response class unset for this endpoint"
-        )
+        assert self.response_cls is not None, "Response class unset for this endpoint"
         self.response_cls(**self.json_response)  # pylint: disable=not-callable
 
-    def check_keys(self, keys: list, response_subset: dict):
-        for key in keys:
-            self.assertTrue(
-                key in response_subset,
-                msg="{} missing from response {}".format(key, response_subset),
+
+def client_factory():
+    """Return TestClient for OPTIMADE server"""
+
+    def inner(version: str = None, server: str = "regular") -> OptimadeTestClient:
+        if server == "regular":
+            from optimade.server.main import app
+        elif server == "index":
+            from optimade.server.main_index import app
+        else:
+            pytest.fail(
+                f"Wrong value for 'server': {server}. It must be either 'regular' or 'index'."
             )
 
+        if version:
+            return OptimadeTestClient(
+                app, base_url="http://example.org/", version=version
+            )
+        return OptimadeTestClient(app, base_url="http://example.org/")
 
-class SimpleEndpointTestsMixin(SetClient):
+    return inner
+
+
+class NoJsonEndpointTests:
     """ A simplified mixin class for tests on non-JSON endpoints. """
 
     server: str = "regular"
     request_str: str = None
-    response_cls = None
+    response_cls: BaseModel = None
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    response: Response = None
 
-        self.response = self.client.get(self.request_str)
-        self.assertEqual(
-            self.response.status_code,
-            200,
-            msg=f"Request failed: {self.response.content}",
-        )
+    @pytest.fixture(autouse=True)
+    def get_response(self, client, index_client):
+        """Get response from client"""
+        if self.server == "regular":
+            self.response = client.get(self.request_str)
+        elif self.server == "index":
+            self.response = index_client.get(self.request_str)
+        else:
+            pytest.fail(
+                f"Wrong value for 'server': {self.server}. It must be either 'regular' or 'index'."
+            )
+        yield
+        self.response = None
+
+    def test_response_okay(self):
+        """Make sure the response was successful"""
+        assert (
+            self.response.status_code == 200
+        ), f"Request to {self.request_str} failed: {self.response.content}"
