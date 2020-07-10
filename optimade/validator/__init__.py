@@ -39,7 +39,11 @@ def validate():
         ),
     )
     parser.add_argument(
-        "--verbosity", "-v", type=int, default=0, help="The verbosity of the output"
+        "--verbosity",
+        "-v",
+        type=int,
+        default=0,
+        help="""The verbosity of the output [default=0]. 0 (SUMMARY), 1 (INFO), 2 (DEBUG).""",
     )
     parser.add_argument(
         "--as_type",
