@@ -630,7 +630,10 @@ class ImplementationValidator:
                 deserialized.data[0].id,
             )
         else:
-            raise ResponseError("No entries found under endpoint to scrape ID from.")
+            raise ResponseError(
+                "No entries found under endpoint to scrape ID from. "
+                "This may be caused by previous errors, if e.g. the endpoint failed deserialization."
+            )
         return (
             self.test_id_by_type[deserialized.data[0].type],
             f"successfully scraped test ID from {deserialized.data[0].type} endpoint",
