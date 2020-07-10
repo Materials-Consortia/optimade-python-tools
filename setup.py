@@ -23,7 +23,7 @@ mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
 server_deps = ["uvicorn~=0.11.5", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
-aiida_deps = ["aiida-core~=1.2"]
+aiida_deps = ["aiida-core~=1.3"]
 ase_deps = ["ase~=3.19"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
