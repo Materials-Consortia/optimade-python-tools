@@ -61,6 +61,21 @@ def validate():
             "Flag for whether the specified OPTIMADE implementation is an Index meta-database or not. [default=False]"
         ),
     )
+    parser.add_argument(
+        "--skip_optional",
+        action="store_true",
+        default=False,
+        help=(
+            "Flag for whether the skip the tests of optional features. [default=False]"
+        ),
+    )
+
+    parser.add_argument(
+        "--fail_fast",
+        action="store_true",
+        default=False,
+        help=("Whether to exit on first test failure."),
+    )
 
     args = vars(parser.parse_args())
 
@@ -88,6 +103,8 @@ def validate():
         verbosity=args["verbosity"],
         as_type=args["as_type"],
         index=args["index"],
+        run_optional_tests=not args["skip_optional"],
+        fail_fast=args["fail_fast"],
     )
 
     try:

@@ -272,6 +272,10 @@ def test_case(test_fn):
                 # set failure result to None as this is expected by other functions
                 result = None
 
+                if validator.fail_fast:
+                    validator.print_summary()
+                    raise SystemExit
+
             return result
 
     return wrapper
@@ -297,6 +301,8 @@ class ImplementationValidator:
         verbosity: int = 0,
         page_limit: int = 5,
         max_retries: int = 5,
+        run_optional_tests: bool = True,
+        fail_fast: bool = False,
         as_type: str = None,
         index: bool = False,
     ):
@@ -309,6 +315,8 @@ class ImplementationValidator:
         self.max_retries = max_retries
         self.page_limit = page_limit
         self.index = index
+        self.run_optional_tests = run_optional_tests
+        self.fail_fast = fail_fast
 
         if as_type is None:
             self.as_type_cls = None
@@ -477,11 +485,18 @@ class ImplementationValidator:
                     for line in message[1]:
                         print_warning("\t" + line)
 
-        final_message = f"\n\nPassed {self.success_count} out of {self.success_count + self.failure_count + self.internal_failure_count} tests."
-        if not self.valid:
-            print_failure(final_message)
-        else:
-            print_success(final_message)
+        if not self.valid and not self.fail_fast:
+            final_message = f"\n\nPassed {self.success_count} out of {self.success_count + self.failure_count + self.internal_failure_count} tests."
+            if not self.valid:
+                print_failure(final_message)
+            else:
+                print_success(final_message)
+
+            if self.run_optional_tests:
+                print(
+                    f"Additionally passed {self.optional_success_count} out of "
+                    f"{self.optional_success_count + self.optional_failure_count} optional tests."
+                )
 
     def test_info_or_links_endpoints(self, request_str):
         """ Runs the test cases for the info endpoints. """
