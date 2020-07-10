@@ -551,7 +551,7 @@ class ImplementationValidator:
             self.deserialize_response(response, self.as_type_cls)
 
     @test_case
-    def test_page_limit(self, response, check_next_link=True):
+    def test_page_limit(self, response, check_next_link=5):
         """ Test that a multi-entry endpoint obeys the page limit.
 
         Parameters:
@@ -559,8 +559,8 @@ class ImplementationValidator:
                 compliance.
 
         Keyword arguments:
-            check_next (bool): whether or not to recursively follow and test any
-                pagination links provided under `links->next`.
+            check_next_link (int): maximum recursion depth for following
+                pagination links.
 
         Raises:
             ResponseError: if test fails in a predictable way.
@@ -592,16 +592,24 @@ class ImplementationValidator:
         except KeyError:
             raise ResponseError("Field `meta->more_data_available` was missing.")
 
-        if more_data_available:
+        if more_data_available and bool(check_next_link):
             try:
                 next_link = response["links"]["next"]
+                if isinstance(next_link, dict):
+                    next_link = next_link["href"]
             except KeyError:
                 raise ResponseError(
-                    "Endpoint suggested more data was available but provided no links->next link."
+                    "Endpoint suggested more data was available but provided no valid links->next link."
                 )
 
+            if not isinstance(next_link, str):
+                raise ResponseError(
+                    f"Unable to parse links->next {next_link} as a link"
+                )
+
+            self._log.debug(f"Following pagination link to {next_link}.")
             next_response = self.get_endpoint(next_link)
-            self.test_page_limit(next_response, check_next_link=False)
+            self.test_page_limit(next_response, check_next_link=check_next_link - 1)
 
         return (
             True,
