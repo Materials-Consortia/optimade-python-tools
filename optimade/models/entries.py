@@ -20,7 +20,11 @@ class TypedRelationship(Relationship):
     # This may be updated when moving to Python 3.8
     @validator("data")
     def check_rel_type(cls, data):
-        if hasattr(cls, "_req_type") and any(obj.type != cls._req_type for obj in data):
+        if not isinstance(data, list):
+            raise ValueError("`data` key in a relationship must always store a list.")
+        if hasattr(cls, "_req_type") and any(
+            getattr(obj, "type", None) != cls._req_type for obj in data
+        ):
             raise ValueError("Object stored in relationship data has wrong type")
         return data
 
