@@ -90,7 +90,7 @@ def check_response(get_good_response):
 
 @pytest.fixture
 def check_error_response(client, index_client):
-    """General method for testing expected errornous response"""
+    """General method for testing expected erroneous response"""
 
     def inner(
         request: str,
