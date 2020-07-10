@@ -47,7 +47,7 @@ def validate():
         type=str,
         help=(
             "Validate the request URL with the provided type, rather than scanning the entire implementation e.g. "
-            "optimade_validator `http://example.com/optimade/v1/structures/0 --as_type structures`"
+            "optimade_validator `http://example.com/optimade/v1/structures/0 --as_type structure`"
         ),
     )
     parser.add_argument(
