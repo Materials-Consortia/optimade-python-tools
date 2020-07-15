@@ -130,7 +130,10 @@ def check_error_response(client, index_client):
 
             if expected_detail is None:
                 expected_detail = "Error trying to process rule "
-                assert error["detail"].startswith(expected_detail), error
+                assert error["detail"].startswith(expected_detail), (
+                    "No expected_detail provided and the error did not start with a standard Lark "
+                    "error message."
+                )
             else:
                 assert expected_detail == error["detail"], error
 

@@ -112,7 +112,7 @@ class BaseEndpointTests:
         for key in keys:
             assert (
                 key in response_subset
-            ), f"{key} missing from response {response_subset}"
+            ), f"{key!r} missing from response {response_subset}"
 
     def test_response_okay(self):
         """Make sure the response was successful"""
@@ -129,18 +129,18 @@ class BaseEndpointTests:
             set(ResponseMeta.schema()["properties"].keys()) - set(meta_required_keys)
         )
         implemented_optional_keys = [
-            # "schema",
             "time_stamp",
             "data_returned",
             "provider",
             "data_available",
             "implementation",
+            # These keys are not implemented in the example server implementations
+            # Add them in when they are.
+            # "schema",
+            # "last_id",
+            # "response_message",
+            # "warnings",
         ]
-        # meta_may_keys = [
-        #     "last_id",
-        #     "response_message",
-        #     "warnings",
-        # ]
 
         self.check_keys(meta_required_keys, self.json_response["meta"])
         self.check_keys(implemented_optional_keys, meta_optional_keys)
