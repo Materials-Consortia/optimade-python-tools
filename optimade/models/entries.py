@@ -21,6 +21,8 @@ class TypedRelationship(Relationship):
     @validator("data")
     def check_rel_type(cls, data):
         if not isinstance(data, list):
+            # All relationships at this point are empty-to-many relationships in JSON:API:
+            # https://jsonapi.org/format/1.0/#document-resource-object-linkage
             raise ValueError("`data` key in a relationship must always store a list.")
         if hasattr(cls, "_req_type") and any(
             getattr(obj, "type", None) != cls._req_type for obj in data

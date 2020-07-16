@@ -21,11 +21,11 @@ def validate():
 
     - To test a particular response of an implementation against a particular model:
 
-        $ optimade_validator http://example.com/optimade/v1/structures/id=1234 --as_type structure
+        $ optimade_validator http://example.com/optimade/v1/structures/id=1234 --as-type structure
 
     - To test a particular response of an implementation against a particular model:
 
-        $ optimade_validator http://example.com/optimade/v1/structures --as_type structures
+        $ optimade_validator http://example.com/optimade/v1/structures --as-type structures
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -41,40 +41,36 @@ def validate():
     parser.add_argument(
         "--verbosity",
         "-v",
-        type=int,
+        action="count",
         default=0,
-        help="""The verbosity of the output [default=0]. 0 (SUMMARY), 1 (INFO), 2 (DEBUG).""",
+        help="""Increase the verbosity of the output.""",
     )
     parser.add_argument(
-        "--as_type",
+        "--as-type",
         "-a",
         type=str,
         help=(
             "Validate the request URL with the provided type, rather than scanning the entire implementation e.g. "
-            "optimade_validator `http://example.com/optimade/v1/structures/0 --as_type structure`"
+            "optimade_validator `http://example.com/optimade/v1/structures/0 --as-type structure`"
         ),
     )
     parser.add_argument(
         "--index",
         action="store_true",
         help=(
-            "Flag for whether the specified OPTIMADE implementation is an Index meta-database or not. [default=False]"
+            "Flag for whether the specified OPTIMADE implementation is an Index meta-database or not."
         ),
     )
     parser.add_argument(
-        "--skip_optional",
+        "--skip-optional",
         action="store_true",
-        default=False,
-        help=(
-            "Flag for whether the skip the tests of optional features. [default=False]"
-        ),
+        help=("Flag for whether the skip the tests of optional features."),
     )
 
     parser.add_argument(
-        "--fail_fast",
+        "--fail-fast",
         action="store_true",
-        default=False,
-        help=("Whether to exit on first test failure."),
+        help="Whether to exit on first test failure.",
     )
 
     args = vars(parser.parse_args())

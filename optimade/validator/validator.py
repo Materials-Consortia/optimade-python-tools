@@ -92,7 +92,7 @@ class ResponseError(Exception):
 
 class InternalError(Exception):
     """ This exception should be raised when validation throws an unexpected error.
-    These should be counted separlately from `ResponseError`'s and `ValidationError`'s.
+    These should be counted separately from `ResponseError`'s and `ValidationError`'s.
 
     """
 
@@ -189,14 +189,14 @@ def test_case(test_fn):
             except json.JSONDecodeError as exc:
                 msg = (
                     "Critical: unable to parse server response as JSON. "
-                    f"Error: {type(exc).__name__}: {exc}"
+                    f"Error: {exc.__class__.__name__}: {exc}"
                 )
                 raise exc
             except (ResponseError, ValidationError) as exc:
-                msg = f"{type(exc).__name__}: {exc}"
+                msg = f"{exc.__class__.__name__}: {exc}"
                 raise exc
             except Exception as exc:
-                msg = f"! InternalError: {type(exc).__name__}: {exc}"
+                msg = f"{exc.__class__.__name__}: {exc}"
                 raise InternalError(msg)
 
         except Exception as exc:
@@ -220,17 +220,16 @@ def test_case(test_fn):
                         print(message)
                     else:
                         print_success(message)
+                elif optional:
+                    print(".", end="", flush=True)
                 else:
-                    if optional:
-                        print(".", end="", flush=True)
-                    else:
-                        print_success(".", end="", flush=True)
+                    print_success(".", end="", flush=True)
             else:
                 internal_error = False
                 request = request.replace("\n", "")
-                message = f"{msg}".split("\n")
+                message = msg.split("\n")
                 if validator.verbosity > 1:
-                    # ValidationError's from pydantic already include very detailed errors
+                    # ValidationErrors from pydantic already include very detailed errors
                     # that get duplicated in the traceback
                     if not isinstance(result, ValidationError):
                         message += traceback.split("\n")
@@ -485,7 +484,7 @@ class ImplementationValidator:
                     for line in message[1]:
                         print_warning("\t" + line)
 
-        if not self.valid and not self.fail_fast:
+        if self.valid or (not self.valid and self.fail_fast):
             final_message = f"\n\nPassed {self.success_count} out of {self.success_count + self.failure_count + self.internal_failure_count} tests."
             if not self.valid:
                 print_failure(final_message)
@@ -551,7 +550,7 @@ class ImplementationValidator:
             self.deserialize_response(response, self.as_type_cls)
 
     @test_case
-    def test_page_limit(self, response, check_next_link=5):
+    def test_page_limit(self, response, check_next_link: int = 5):
         """ Test that a multi-entry endpoint obeys the page limit.
 
         Parameters:
@@ -592,7 +591,7 @@ class ImplementationValidator:
         except KeyError:
             raise ResponseError("Field `meta->more_data_available` was missing.")
 
-        if more_data_available and bool(check_next_link):
+        if more_data_available and check_next_link:
             try:
                 next_link = response["links"]["next"]
                 if isinstance(next_link, dict):
@@ -604,10 +603,10 @@ class ImplementationValidator:
 
             if not isinstance(next_link, str):
                 raise ResponseError(
-                    f"Unable to parse links->next {next_link} as a link"
+                    f"Unable to parse links->next {next_link!r} as a link."
                 )
 
-            self._log.debug(f"Following pagination link to {next_link}.")
+            self._log.debug("Following pagination link to %r.", next_link)
             next_response = self.get_endpoint(next_link)
             self.test_page_limit(next_response, check_next_link=check_next_link - 1)
 
@@ -644,7 +643,13 @@ class ImplementationValidator:
         """ Try to create the appropriate pydantic model from the response. """
         if not response:
             raise ResponseError("Request failed")
-        json_response = response.json()
+        try:
+            json_response = response.json()
+        except json.JSONDecodeError:
+            raise ResponseError(
+                f"Unable to decode response as JSON. Response: {response}"
+            )
+
         self._log.debug(
             f"Deserializing {json.dumps(json_response, indent=2)} as model {response_cls}"
         )

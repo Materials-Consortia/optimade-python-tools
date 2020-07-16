@@ -1,3 +1,4 @@
+_exmpl1_bandgap<2.0 OR _exmpl2_bandgap<2.5
 NOT ( chemical_formula_anonymous = "A" OR chemical_formula_anonymous = "H2O" )
 nelements > 3
 chemical_formula_anonymous CONTAINS "C2" AND chemical_formula_anonymous STARTS WITH "A2"
