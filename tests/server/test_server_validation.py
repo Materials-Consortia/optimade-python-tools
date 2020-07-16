@@ -1,37 +1,20 @@
-# pylint: disable=relative-beyond-top-level,import-outside-toplevel
 import os
-import unittest
 from traceback import print_exc
 
 from optimade.validator import ImplementationValidator
 
-from .utils import SetClient
 
+def test_with_validator(both_clients):
+    from optimade.server.main_index import app
 
-class ServerTestWithValidator(SetClient, unittest.TestCase):
-
-    server = "regular"
-
-    def test_with_validator(self):
-        validator = ImplementationValidator(client=self.client)
-        try:
-            validator.main()
-        except Exception:
-            print_exc()
-        self.assertTrue(validator.valid)
-
-
-class IndexServerTestWithValidator(SetClient, unittest.TestCase):
-
-    server = "index"
-
-    def test_with_validator(self):
-        validator = ImplementationValidator(client=self.client, index=True)
-        try:
-            validator.main()
-        except Exception:
-            print_exc()
-        self.assertTrue(validator.valid)
+    validator = ImplementationValidator(
+        client=both_clients, index=both_clients.app == app,
+    )
+    try:
+        validator.main()
+    except Exception:
+        print_exc()
+    assert validator.valid
 
 
 def test_mongo_backend_package_used():
@@ -53,29 +36,26 @@ def test_mongo_backend_package_used():
         )
 
 
-class AsTypeTestsWithValidator(SetClient, unittest.TestCase):
+def test_as_type_with_validator(client):
+    import unittest
 
-    server = "regular"
-
-    def test_as_type_with_validator(self):
-
-        test_urls = {
-            f"{self.client.base_url}/structures": "structures",
-            f"{self.client.base_url}/structures/mpf_1": "structure",
-            f"{self.client.base_url}/references": "references",
-            f"{self.client.base_url}/references/dijkstra1968": "reference",
-            f"{self.client.base_url}/info": "info",
-            f"{self.client.base_url}/links": "links",
-        }
-        with unittest.mock.patch(
-            "requests.get", unittest.mock.Mock(side_effect=self.client.get)
-        ):
-            for url, as_type in test_urls.items():
-                validator = ImplementationValidator(
-                    base_url=url, as_type=as_type, verbosity=5
-                )
-                try:
-                    validator.main()
-                except Exception:
-                    print_exc()
-                self.assertTrue(validator.valid)
+    test_urls = {
+        f"{client.base_url}structures": "structures",
+        f"{client.base_url}structures/mpf_1": "structure",
+        f"{client.base_url}references": "references",
+        f"{client.base_url}references/dijkstra1968": "reference",
+        f"{client.base_url}info": "info",
+        f"{client.base_url}links": "links",
+    }
+    with unittest.mock.patch(
+        "requests.get", unittest.mock.Mock(side_effect=client.get)
+    ):
+        for url, as_type in test_urls.items():
+            validator = ImplementationValidator(
+                base_url=url, as_type=as_type, verbosity=5
+            )
+            try:
+                validator.main()
+            except Exception:
+                print_exc()
+            assert validator.valid
