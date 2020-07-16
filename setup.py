@@ -27,8 +27,8 @@ aiida_deps = ["aiida-core~=1.3"]
 ase_deps = ["ase~=3.19"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen~=2020.6"]
-jarvis_deps = ["jarvis-tools~=2020.6"]
+pymatgen_deps = ["pymatgen==2020.7.14"]
+jarvis_deps = ["jarvis-tools==2020.7.14"]
 client_deps = cif_deps
 
 # General
@@ -39,7 +39,7 @@ docs_deps = [
     "mkdocs-material-components~=1.10",
     "mkdocs-material-extensions~=1.0",
     "mkdocs-minify-plugin~=0.3.0",
-    "mkdocstrings~=0.12.0",
+    "mkdocstrings~=0.12.1",
 ]
 testing_deps = [
     "pytest~=5.4",
@@ -49,7 +49,7 @@ testing_deps = [
     "jsondiff~=1.2",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.5", "black~=19.10b0", "pre-commit~=2.5", "invoke~=1.4"]
+    ["pylint~=2.5", "black~=19.10b0", "pre-commit~=2.6", "invoke~=1.4"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -90,8 +90,8 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "lark-parser~=0.8.9",
-        "fastapi~=0.58.1",
+        "lark-parser~=0.9.0",
+        "fastapi~=0.59.0",
         "pydantic~=1.5",
         "email_validator~=1.1",
         "requests~=2.24",
