@@ -115,6 +115,6 @@ setup(
         "jarvis": jarvis_deps,
     },
     entry_points={
-        "console_scripts": ["optimade_validator=optimade.validator:validate"]
+        "console_scripts": ["optimade-validator=optimade.validator:validate"]
     },
 )

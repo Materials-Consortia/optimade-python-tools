@@ -12,20 +12,20 @@ def validate():
     import traceback
 
     parser = argparse.ArgumentParser(
-        prog="optimade_validator",
+        prog="optimade-validator",
         description="""Tests OPTIMADE implementations for compliance with the optimade-python-tools models.
 
     - To test an entire implementation (at say example.com/optimade/v1) for all required/available endpoints:
 
-        $ optimade_validator http://example.com/optimade/v1
+        $ optimade-validator http://example.com/optimade/v1
 
     - To test a particular response of an implementation against a particular model:
 
-        $ optimade_validator http://example.com/optimade/v1/structures/id=1234 --as_type structure
+        $ optimade-validator http://example.com/optimade/v1/structures/id=1234 --as-type structure
 
     - To test a particular response of an implementation against a particular model:
 
-        $ optimade_validator http://example.com/optimade/v1/structures --as_type structures
+        $ optimade-validator http://example.com/optimade/v1/structures --as-type structures
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -39,23 +39,38 @@ def validate():
         ),
     )
     parser.add_argument(
-        "--verbosity", "-v", type=int, default=0, help="The verbosity of the output"
+        "-v",
+        "--verbosity",
+        action="count",
+        default=0,
+        help="""Increase the verbosity of the output.""",
     )
     parser.add_argument(
-        "--as_type",
-        "-a",
+        "-t",
+        "--as-type",
         type=str,
         help=(
             "Validate the request URL with the provided type, rather than scanning the entire implementation e.g. "
-            "optimade_validator `http://example.com/optimade/v1/structures/0 --as_type structure`"
+            "optimade-validator `http://example.com/optimade/v1/structures/0 --as-type structure`"
         ),
     )
     parser.add_argument(
         "--index",
         action="store_true",
         help=(
-            "Flag for whether the specified OPTIMADE implementation is an Index meta-database or not. [default=False]"
+            "Flag for whether the specified OPTIMADE implementation is an Index meta-database or not."
         ),
+    )
+    parser.add_argument(
+        "--skip-optional",
+        action="store_true",
+        help=("Flag for whether the skip the tests of optional features."),
+    )
+
+    parser.add_argument(
+        "--fail-fast",
+        action="store_true",
+        help="Whether to exit on first test failure.",
     )
 
     args = vars(parser.parse_args())
@@ -84,6 +99,8 @@ def validate():
         verbosity=args["verbosity"],
         as_type=args["as_type"],
         index=args["index"],
+        run_optional_tests=not args["skip_optional"],
+        fail_fast=args["fail_fast"],
     )
 
     try:

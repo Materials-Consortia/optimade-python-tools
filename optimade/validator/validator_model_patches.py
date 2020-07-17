@@ -27,13 +27,13 @@ class ValidatorLinksResponse(Success):
 class ValidatorEntryResponseOne(Success):
     meta: ResponseMeta = Field(...)
     data: EntryResource = Field(...)
-    included: Optional[List[Dict[str, Any]]] = Field(...)
+    included: Optional[List[Dict[str, Any]]] = Field(None)
 
 
 class ValidatorEntryResponseMany(Success):
     meta: ResponseMeta = Field(...)
     data: List[EntryResource] = Field(...)
-    included: Optional[List[Dict[str, Any]]] = Field(...)
+    included: Optional[List[Dict[str, Any]]] = Field(None)
 
 
 class ValidatorReferenceResponseOne(ValidatorEntryResponseOne):

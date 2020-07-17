@@ -10,6 +10,7 @@ import requests
 import sys
 import logging
 import urllib.parse
+import traceback as tb
 
 try:
     import simplejson as json
@@ -70,9 +71,14 @@ def print_warning(string, **kwargs):
     print(f"\033[93m{string}\033[0m", **kwargs)
 
 
+def print_notify(string, **kwargs):
+    """ Print but louder. """
+    print(f"\033[94m\033[1m{string}\033[0m", **kwargs)
+
+
 def print_failure(string, **kwargs):
     """ Print but sad. """
-    print(f"\033[91m\033[4m{string}\033[0m", **kwargs)
+    print(f"\033[91m\033[1m{string}\033[0m", **kwargs)
 
 
 def print_success(string, **kwargs):
@@ -82,6 +88,13 @@ def print_success(string, **kwargs):
 
 class ResponseError(Exception):
     """ This exception should be raised for a manual hardcoded test failure. """
+
+
+class InternalError(Exception):
+    """ This exception should be raised when validation throws an unexpected error.
+    These should be counted separately from `ResponseError`'s and `ValidationError`'s.
+
+    """
 
 
 class Client:  # pragma: no cover
@@ -171,63 +184,98 @@ def test_case(test_fn):
     @wraps(test_fn)
     def wrapper(validator, *args, optional=False, **kwargs):
         try:
-            result, msg = test_fn(validator, *args, **kwargs)
-        except json.JSONDecodeError as exc:
-            result = None
-            msg = (
-                "Critical: unable to parse server response as JSON. "
-                f"Error: {type(exc).__name__}: {exc}"
-            )
-        except (ResponseError, ValidationError) as exc:
-            result = None
-            msg = f"{type(exc).__name__}: {exc}"
+            try:
+                result, msg = test_fn(validator, *args, **kwargs)
+            except json.JSONDecodeError as exc:
+                msg = (
+                    "Critical: unable to parse server response as JSON. "
+                    f"Error: {exc.__class__.__name__}: {exc}"
+                )
+                raise exc
+            except (ResponseError, ValidationError) as exc:
+                msg = f"{exc.__class__.__name__}: {exc}"
+                raise exc
+            except Exception as exc:
+                msg = f"{exc.__class__.__name__}: {exc}"
+                raise InternalError(msg)
 
-        try:
-            request = validator.client.last_request
-        except AttributeError:
-            request = validator.base_url
+        except Exception as exc:
+            result = exc
+            traceback = tb.format_exc()
 
-        if result is not None:
-            if not optional:
-                validator.success_count += 1
-            else:
-                validator.optional_success_count += 1
-            message = f"✔: {request} - {msg}"
-            if validator.verbosity > 0:
-                if optional:
-                    print(message)
+        finally:
+            try:
+                request = validator.client.last_request
+            except AttributeError:
+                request = validator.base_url
+
+            if not isinstance(result, Exception):
+                if not optional:
+                    validator.success_count += 1
                 else:
-                    print_success(message)
-            else:
-                if optional:
+                    validator.optional_success_count += 1
+                message = f"✔: {request} - {msg}"
+                if validator.verbosity > 0:
+                    if optional:
+                        print(message)
+                    else:
+                        print_success(message)
+                elif optional:
                     print(".", end="", flush=True)
                 else:
                     print_success(".", end="", flush=True)
-        else:
-            if not optional:
-                validator.failure_count += 1
             else:
-                validator.optional_failure_count += 1
-            request = request.replace("\n", "")
-            message = f"{msg}".split("\n")
-            summary = f"✖: {request} - {test_fn.__name__} - failed with error"
-            validator.failure_messages.append((summary, message))
-            if validator.verbosity > 0:
-                if optional:
-                    print(summary)
-                    for line in message:
-                        print(f"\t{line}")
-                else:
-                    print_failure(summary)
-                    for line in message:
-                        print_warning(f"\t{line}")
-            else:
-                if optional:
-                    print("✖", end="", flush=True)
-                else:
-                    print_failure("✖", end="", flush=True)
+                internal_error = False
+                request = request.replace("\n", "")
+                message = msg.split("\n")
+                if validator.verbosity > 1:
+                    # ValidationErrors from pydantic already include very detailed errors
+                    # that get duplicated in the traceback
+                    if not isinstance(result, ValidationError):
+                        message += traceback.split("\n")
 
-        return result
+                if isinstance(result, InternalError):
+                    internal_error = True
+                    validator.internal_failure_count += 1
+                    summary = f"!: {request} - {test_fn.__name__} - failed with internal error"
+                    validator.internal_failure_messages.append((summary, message))
+                else:
+                    if not optional:
+                        validator.failure_count += 1
+                    else:
+                        validator.optional_failure_count += 1
+                    summary = f"✖: {request} - {test_fn.__name__} - failed with error"
+                    validator.failure_messages.append((summary, message))
+
+                if validator.verbosity > 0:
+                    if internal_error:
+                        print_notify(summary)
+                        for line in message:
+                            print_warning(f"\t{line}")
+                    elif optional:
+                        print(summary)
+                        for line in message:
+                            print(f"\t{line}")
+                    else:
+                        print_failure(summary)
+                        for line in message:
+                            print_warning(f"\t{line}")
+                else:
+                    if internal_error:
+                        print_notify("!", end="", flush=True)
+                    elif optional:
+                        print("✖", end="", flush=True)
+                    else:
+                        print_failure("✖", end="", flush=True)
+
+                # set failure result to None as this is expected by other functions
+                result = None
+
+                if validator.fail_fast:
+                    validator.print_summary()
+                    raise SystemExit
+
+            return result
 
     return wrapper
 
@@ -252,6 +300,8 @@ class ImplementationValidator:
         verbosity: int = 0,
         page_limit: int = 5,
         max_retries: int = 5,
+        run_optional_tests: bool = True,
+        fail_fast: bool = False,
         as_type: str = None,
         index: bool = False,
     ):
@@ -264,6 +314,8 @@ class ImplementationValidator:
         self.max_retries = max_retries
         self.page_limit = page_limit
         self.index = index
+        self.run_optional_tests = run_optional_tests
+        self.fail_fast = fail_fast
 
         if as_type is None:
             self.as_type_cls = None
@@ -327,9 +379,11 @@ class ImplementationValidator:
 
         self.success_count = 0
         self.failure_count = 0
+        self.internal_failure_count = 0
         self.optional_success_count = 0
         self.optional_failure_count = 0
         self.failure_messages = []
+        self.internal_failure_messages = []
 
     def _setup_log(self):
         """ Define stdout log based on given verbosity. """
@@ -390,34 +444,58 @@ class ImplementationValidator:
         self._log.debug("Testing %s endpoint", LINKS_ENDPOINT)
         self.test_info_or_links_endpoints(LINKS_ENDPOINT)
 
-        self.valid = not bool(self.failure_count)
+        self.valid = not (bool(self.failure_count) or bool(self.internal_failure_count))
 
-        print("\nOptional tests:")
-        for endp in self.endpoint_optional_queries:
-            # skip empty endpoint query lists
-            if self.endpoint_mandatory_queries[endp]:
-                self._log.debug("Testing optional query syntax on endpoint %s", endp)
-                self.test_query_syntax(
-                    endp, self.endpoint_optional_queries[endp], optional=True
+        if self.run_optional_tests:
+            print("\nOptional tests:")
+            for endp in self.endpoint_optional_queries:
+                # skip empty endpoint query lists
+                if self.endpoint_mandatory_queries[endp]:
+                    self._log.debug(
+                        "Testing optional query syntax on endpoint %s", endp
+                    )
+                    self.test_query_syntax(
+                        endp, self.endpoint_optional_queries[endp], optional=True
+                    )
+
+        self.print_summary()
+
+    def print_summary(self):
+        if not self.valid:
+            if self.failure_messages:
+                print("\n\nFAILURES")
+                print("========\n")
+                for message in self.failure_messages:
+                    print_failure(message[0])
+                    for line in message[1]:
+                        print_warning("\t" + line)
+
+            if self.internal_failure_messages:
+                print("\n\nINTERNAL FAILURES")
+                print("=================\n")
+                print(
+                    "There were internal valiator failures associated with this run.\n"
+                    "If this problem persists, please report it at:\n"
+                    "https://github.com/Materials-Consortia/optimade-python-tools/issues/new.\n"
                 )
 
-        if not self.valid:
-            print("\n\nFAILURES\n")
-            for message in self.failure_messages:
-                print_failure(message[0])
-                for line in message[1]:
-                    print_warning("\t" + line)
+                for message in self.internal_failure_messages:
+                    print_notify(message[0])
+                    for line in message[1]:
+                        print_warning("\t" + line)
 
-        final_message = f"\n\nPassed {self.success_count} out of {self.success_count + self.failure_count} tests."
-        if not self.valid:
-            print_failure(final_message)
-        else:
-            print_success(final_message)
+        if self.valid or (not self.valid and self.fail_fast):
+            final_message = f"\n\nPassed {self.success_count} out of {self.success_count + self.failure_count + self.internal_failure_count} tests."
+            if not self.valid:
+                print_failure(final_message)
+            else:
+                print_success(final_message)
 
-        print(
-            f"Additionally passed {self.optional_success_count} out of "
-            f"{self.optional_success_count + self.optional_failure_count} optional tests."
-        )
+            if self.run_optional_tests:
+                print(
+                    f"Additionally passed {self.optional_success_count} out of "
+                    f"{self.optional_success_count + self.optional_failure_count} optional tests."
+                )
 
     def test_info_or_links_endpoints(self, request_str):
         """ Runs the test cases for the info endpoints. """
@@ -472,7 +550,7 @@ class ImplementationValidator:
             self.deserialize_response(response, self.as_type_cls)
 
     @test_case
-    def test_page_limit(self, response, check_next_link=True):
+    def test_page_limit(self, response, check_next_link: int = 5):
         """ Test that a multi-entry endpoint obeys the page limit.
 
         Parameters:
@@ -480,8 +558,8 @@ class ImplementationValidator:
                 compliance.
 
         Keyword arguments:
-            check_next (bool): whether or not to recursively follow and test any
-                pagination links provided under `links->next`.
+            check_next_link (int): maximum recursion depth for following
+                pagination links.
 
         Raises:
             ResponseError: if test fails in a predictable way.
@@ -513,16 +591,24 @@ class ImplementationValidator:
         except KeyError:
             raise ResponseError("Field `meta->more_data_available` was missing.")
 
-        if more_data_available:
+        if more_data_available and check_next_link:
             try:
                 next_link = response["links"]["next"]
+                if isinstance(next_link, dict):
+                    next_link = next_link["href"]
             except KeyError:
                 raise ResponseError(
-                    "Endpoint suggested more data was available but provided no links->next link."
+                    "Endpoint suggested more data was available but provided no valid links->next link."
                 )
 
+            if not isinstance(next_link, str):
+                raise ResponseError(
+                    f"Unable to parse links->next {next_link!r} as a link."
+                )
+
+            self._log.debug("Following pagination link to %r.", next_link)
             next_response = self.get_endpoint(next_link)
-            self.test_page_limit(next_response, check_next_link=False)
+            self.test_page_limit(next_response, check_next_link=check_next_link - 1)
 
         return (
             True,
@@ -543,7 +629,10 @@ class ImplementationValidator:
                 deserialized.data[0].id,
             )
         else:
-            raise ResponseError("No entries found under endpoint to scrape ID from.")
+            raise ResponseError(
+                "No entries found under endpoint to scrape ID from. "
+                "This may be caused by previous errors, if e.g. the endpoint failed deserialization."
+            )
         return (
             self.test_id_by_type[deserialized.data[0].type],
             f"successfully scraped test ID from {deserialized.data[0].type} endpoint",
@@ -554,8 +643,18 @@ class ImplementationValidator:
         """ Try to create the appropriate pydantic model from the response. """
         if not response:
             raise ResponseError("Request failed")
+        try:
+            json_response = response.json()
+        except json.JSONDecodeError:
+            raise ResponseError(
+                f"Unable to decode response as JSON. Response: {response}"
+            )
+
+        self._log.debug(
+            f"Deserializing {json.dumps(json_response, indent=2)} as model {response_cls}"
+        )
         return (
-            response_cls(**response.json()),
+            response_cls(**json_response),
             "deserialized correctly as object of type {}".format(response_cls),
         )
 
