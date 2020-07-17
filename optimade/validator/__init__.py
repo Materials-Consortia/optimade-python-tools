@@ -39,15 +39,15 @@ def validate():
         ),
     )
     parser.add_argument(
-        "--verbosity",
         "-v",
+        "--verbosity",
         action="count",
         default=0,
         help="""Increase the verbosity of the output.""",
     )
     parser.add_argument(
+        "-t",
         "--as-type",
-        "-a",
         type=str,
         help=(
             "Validate the request URL with the provided type, rather than scanning the entire implementation e.g. "
