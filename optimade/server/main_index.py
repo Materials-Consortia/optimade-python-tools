@@ -81,7 +81,7 @@ for endpoint in (index_info, links, versions):
 def add_major_version_base_url(app: FastAPI):
     """ Add mandatory endpoints to `/vMAJOR` base URL. """
     for endpoint in (index_info, links):
-        app.include_router(links.router, prefix=BASE_URL_PREFIXES["major"])
+        app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES["major"])
 
 
 def add_optional_versioned_base_urls(app: FastAPI):

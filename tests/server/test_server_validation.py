@@ -1,6 +1,8 @@
 import os
 from traceback import print_exc
 
+import pytest
+
 from optimade.validator import ImplementationValidator
 
 
@@ -59,3 +61,41 @@ def test_as_type_with_validator(client):
             except Exception:
                 print_exc()
             assert validator.valid
+
+
+@pytest.mark.parametrize("server", ["regular", "index"])
+def test_versioned_base_urls(client, index_client, server: str):
+    """Test all expected versioned base URLs responds with 200
+
+    This depends on the routers for each kind of server.
+    """
+    try:
+        import simplejson as json
+    except ImportError:
+        import json
+
+    from optimade.server.routers.utils import BASE_URL_PREFIXES
+
+    clients = {
+        "regular": client,
+        "index": index_client,
+    }
+
+    valid_endpoints = {
+        "regular": ("/info", "/links", "/references", "/structures"),
+        "index": ("/info", "/links"),
+    }
+
+    for version in BASE_URL_PREFIXES.values():
+        for endpoint in valid_endpoints[server]:
+            response = clients[server].get(url=version + endpoint)
+            json_response = response.json()
+
+            assert response.status_code == 200, (
+                f"Request to {response.url} failed for server {server!r}: "
+                f"{json.dumps(json_response, indent=2)}"
+            )
+            assert "meta" in json_response, (
+                f"Mandatory 'meta' top-level field not found in request to {response.url} for "
+                f"server {server!r}. Response: {json.dumps(json_response, indent=2)}"
+            )
