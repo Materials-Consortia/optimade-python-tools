@@ -879,7 +879,7 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "text/csv; header=present": {
+              "text/csv": {
                 "schema": {
                   "type": "string"
                 }
