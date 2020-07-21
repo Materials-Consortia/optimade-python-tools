@@ -245,6 +245,19 @@
             },
             "name": "include",
             "in": "query"
+          },
+          {
+            "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            "required": false,
+            "schema": {
+              "title": "Api Hint",
+              "pattern": "(v[0-9]+(\\.[0-9]+)?)?",
+              "type": "string",
+              "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+              "default": ""
+            },
+            "name": "api_hint",
+            "in": "query"
           }
         ],
         "responses": {
@@ -439,6 +452,19 @@
             },
             "name": "include",
             "in": "query"
+          },
+          {
+            "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            "required": false,
+            "schema": {
+              "title": "Api Hint",
+              "pattern": "(v[0-9]+(\\.[0-9]+)?)?",
+              "type": "string",
+              "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+              "default": ""
+            },
+            "name": "api_hint",
+            "in": "query"
           }
         ],
         "responses": {
@@ -538,6 +564,19 @@
               "default": "references"
             },
             "name": "include",
+            "in": "query"
+          },
+          {
+            "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            "required": false,
+            "schema": {
+              "title": "Api Hint",
+              "pattern": "(v[0-9]+(\\.[0-9]+)?)?",
+              "type": "string",
+              "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+              "default": ""
+            },
+            "name": "api_hint",
             "in": "query"
           }
         ],
@@ -733,6 +772,19 @@
             },
             "name": "include",
             "in": "query"
+          },
+          {
+            "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            "required": false,
+            "schema": {
+              "title": "Api Hint",
+              "pattern": "(v[0-9]+(\\.[0-9]+)?)?",
+              "type": "string",
+              "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+              "default": ""
+            },
+            "name": "api_hint",
+            "in": "query"
           }
         ],
         "responses": {
@@ -832,6 +884,19 @@
               "default": "references"
             },
             "name": "include",
+            "in": "query"
+          },
+          {
+            "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            "required": false,
+            "schema": {
+              "title": "Api Hint",
+              "pattern": "(v[0-9]+(\\.[0-9]+)?)?",
+              "type": "string",
+              "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+              "default": ""
+            },
+            "name": "api_hint",
             "in": "query"
           }
         ],

@@ -1,10 +1,12 @@
-from typing import Optional, IO, Type, Generator
+import re
+from typing import Optional, IO, Type, Generator, List, Union
 import urllib.parse
 import warnings
 
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 
+from optimade.server.exceptions import BadRequest, VersionNotSupported
 from optimade.server.warnings import OptimadeWarning
 
 
@@ -14,8 +16,6 @@ class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
     @staticmethod
     def check_url(url_query: str):
         """Check parsed URL query part for parameters not followed by `=`"""
-        from optimade.server.exceptions import BadRequest
-
         queries_amp = set(url_query.split("&"))
         queries = set()
         for query in queries_amp:
@@ -41,9 +41,6 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     @staticmethod
     def check_url(parsed_url: urllib.parse.ParseResult):
         """Check URL path for versioned part"""
-        import re
-
-        from optimade.server.exceptions import VersionNotSupported
         from optimade.server.routers.utils import get_base_url, BASE_URL_PREFIXES
 
         base_url = get_base_url(parsed_url)
@@ -68,6 +65,90 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
         parsed_url = urllib.parse.urlparse(str(request.url))
         if parsed_url.path:
             self.check_url(parsed_url)
+
+
+class HandleApiHint(BaseHTTPMiddleware):
+    """Handle `api_hint` query parameter"""
+
+    @staticmethod
+    def handle_api_hint(api_hint: List[str]) -> Union[None, str]:
+        """Handle `api_hint` parameter"""
+        from optimade.server.routers.utils import BASE_URL_PREFIXES
+
+        if len(api_hint) > 1:
+            # TODO: Warning:
+            # detail="`api_hint` should only be supplied once, with a single value."
+            return None
+
+        api_hint = f"/{api_hint[0]}"
+        if re.match(r"^/v[0-9]+(\.[0-9]+)?$", api_hint) is None:
+            # TODO: Warning:
+            # detail=f"{api_hint[1:]!r} is not recognized as a valid `api_hint` value."
+            return None
+
+        if api_hint in BASE_URL_PREFIXES.values():
+            return api_hint
+
+        major_api_hint = int(re.findall(r"/v([0-9]+)", api_hint))
+        major_implementation = int(BASE_URL_PREFIXES["major"][len("/v") :])
+
+        if major_api_hint > major_implementation:
+            # Let's not try to handle a request for a newer major version
+            raise VersionNotSupported(
+                detail=(
+                    f"The provided `api_hint` ({api_hint[1:]!r}) is not supported by this implementation. "
+                    f"Supported versions include: {', '.join(BASE_URL_PREFIXES.values())}"
+                )
+            )
+        if major_api_hint <= major_implementation:
+            # If less than:
+            # Use the current implementation in hope that it can still handle older requests
+            #
+            # If equal:
+            # Go to /v<MAJOR>, since this should point to the latest available
+            return BASE_URL_PREFIXES["major"]
+
+    @staticmethod
+    def is_versioned_base_url(url: str) -> bool:
+        """Determine whether a URL is for a versioned base URL
+
+        First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.
+        If not, return False.
+        Else, remove unversioned base URL from URL and check again.
+        Return bool of final result.
+        """
+        from optimade.server.routers.utils import get_base_url
+
+        if not re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url):
+            return False
+
+        base_url = get_base_url(urllib.parse.urlparse(url))
+        return bool(re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url[len(base_url) :]))
+
+    async def dispatch(self, request: Request, call_next):
+        parsed_query = urllib.parse.parse_qs(request.url.query, keep_blank_values=True)
+
+        if "api_hint" in parsed_query:
+            if self.is_versioned_base_url(str(request.url)):
+                # If this is a versioned base URL, don't handle `api_hint`, but add a warning
+                # TODO: Warning:
+                # detail=(
+                #     f"`api_hint` provided with value(s) {\"', '\".parsed_query['api_hint']!r} for a versioned base URL. "
+                #     "According with the specification, this will not be handled by the implementation."
+                # )
+                pass
+            else:
+                from optimade.server.routers.utils import get_base_url
+
+                version_path = self.handle_api_hint(parsed_query["api_hint"])
+                base_url = get_base_url(request.url)
+
+                new_request = (
+                    f"{base_url}{version_path}{str(request.url)[len(base_url):]}"
+                )
+                path = urllib.parse.urlsplit(new_request).path
+                request.url.replace(path=path)
+
         response = await call_next(request)
         return response
 
