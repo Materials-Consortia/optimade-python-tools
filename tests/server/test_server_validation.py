@@ -42,12 +42,12 @@ def test_as_type_with_validator(client):
     import unittest
 
     test_urls = {
-        f"{client.base_url}structures": "structures",
-        f"{client.base_url}structures/mpf_1": "structure",
-        f"{client.base_url}references": "references",
-        f"{client.base_url}references/dijkstra1968": "reference",
-        f"{client.base_url}info": "info",
-        f"{client.base_url}links": "links",
+        f"{client.base_url}/structures": "structures",
+        f"{client.base_url}/structures/mpf_1": "structure",
+        f"{client.base_url}/references": "references",
+        f"{client.base_url}/references/dijkstra1968": "reference",
+        f"{client.base_url}/info": "info",
+        f"{client.base_url}/links": "links",
     }
     with unittest.mock.patch(
         "requests.get", unittest.mock.Mock(side_effect=client.get)

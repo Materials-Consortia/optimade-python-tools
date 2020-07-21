@@ -213,9 +213,9 @@ def client_factory():
 
         if version:
             return OptimadeTestClient(
-                app, base_url="http://example.org/", version=version
+                app, base_url="http://example.org", version=version
             )
-        return OptimadeTestClient(app, base_url="http://example.org/")
+        return OptimadeTestClient(app, base_url="http://example.org")
 
     return inner
 
