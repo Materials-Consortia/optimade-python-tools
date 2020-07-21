@@ -32,7 +32,7 @@ class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
 
 
 class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
-    """If a non-supported versioned base URL is supplied return `533 Version Not Supported`"""
+    """If a non-supported versioned base URL is supplied return `553 Version Not Supported`"""
 
     @staticmethod
     def check_url(parsed_url: urllib.parse.ParseResult):

@@ -87,7 +87,7 @@ def test_empty_parameters(both_clients):
 
 
 def test_wrong_version(both_clients):
-    """If a non-supported versioned base URL is passed, `533 Version Not Supported` should be returned"""
+    """If a non-supported versioned base URL is passed, `553 Version Not Supported` should be returned"""
     from optimade.server.config import CONFIG
     from optimade.server.middleware import CheckWronglyVersionedBaseUrls
 
@@ -102,7 +102,7 @@ def test_wrong_version(both_clients):
 
 @pytest.mark.parametrize("server", ("regular", "index"))
 def test_wrong_version_json_response(check_error_response, server):
-    """If a non-supported versioned base URL is passed, `533 Version Not Supported` should be returned
+    """If a non-supported versioned base URL is passed, `553 Version Not Supported` should be returned
 
     A specific JSON response should also occur.
     """
@@ -114,7 +114,7 @@ def test_wrong_version_json_response(check_error_response, server):
     with pytest.raises(VersionNotSupported):
         check_error_response(
             request,
-            expected_status=533,
+            expected_status=553,
             expected_title="Version Not Supported",
             expected_detail=(
                 f"The parsed versioned base URL '/{version}' from '{CONFIG.base_url}{request}' is not supported by this implementation. "

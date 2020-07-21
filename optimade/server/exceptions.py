@@ -16,11 +16,11 @@ class BadRequest(HTTPException):
 
 
 class VersionNotSupported(HTTPException):
-    """533 Version Not Supported"""
+    """553 Version Not Supported"""
 
     def __init__(
         self,
-        status_code: int = 533,
+        status_code: int = 553,
         detail: str = None,
         headers: dict = None,
         title: str = "Version Not Supported",
