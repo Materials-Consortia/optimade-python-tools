@@ -109,7 +109,7 @@ def test_wrong_version_json_response(check_error_response, server):
     from optimade.server.config import CONFIG
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
-    version = "v0"
+    version = "/v0"
     request = f"{version}/info"
     with pytest.raises(VersionNotSupported):
         check_error_response(
