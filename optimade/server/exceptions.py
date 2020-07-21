@@ -13,3 +13,17 @@ class BadRequest(HTTPException):
     ) -> None:
         super().__init__(status_code=status_code, detail=detail, headers=headers)
         self.title = title
+
+
+class VersionNotSupported(HTTPException):
+    """533 Version Not Supported"""
+
+    def __init__(
+        self,
+        status_code: int = 533,
+        detail: str = None,
+        headers: dict = None,
+        title: str = "Version Not Supported",
+    ) -> None:
+        super().__init__(status_code=status_code, detail=detail, headers=headers)
+        self.title = title
