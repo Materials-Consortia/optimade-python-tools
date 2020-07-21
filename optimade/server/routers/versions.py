@@ -7,7 +7,7 @@ router = APIRouter(redirect_slashes=True)
 
 
 class CsvResponse(Response):
-    media_type = "text/csv"
+    media_type = "text/csv; header=present"
 
 
 @router.get(
@@ -17,4 +17,4 @@ def get_versions(request: Request):
     """Respond with the text/csv representation for the served versions."""
     version = BASE_URL_PREFIXES["major"].replace("/v", "")
     response = f"version\n{version}"
-    return CsvResponse(content=response, headers={"header": "present"})
+    return CsvResponse(content=response)
