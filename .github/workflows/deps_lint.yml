@@ -178,8 +178,8 @@ jobs:
       env:
         OPTIMADE_CI_FORCE_MONGO: 1
 
-    - name: Run tests only for index meta-db (using `mongomock`)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server/test_middleware.py tests/server/test_server_validation.py tests/server/test_config.py
+    - name: Run all tests (using `mongomock`)
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/
       env:
         OPTIMADE_CI_FORCE_MONGO: 0
 
