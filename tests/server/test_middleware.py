@@ -117,7 +117,7 @@ def test_wrong_version_json_response(check_error_response, server):
             expected_status=553,
             expected_title="Version Not Supported",
             expected_detail=(
-                f"The parsed versioned base URL '/{version}' from '{CONFIG.base_url}{request}' is not supported by this implementation. "
+                f"The parsed versioned base URL {version!r} from '{CONFIG.base_url}{request}' is not supported by this implementation. "
                 f"Supported versioned base URLs are: {', '.join(BASE_URL_PREFIXES.values())}"
             ),
             server=server,
