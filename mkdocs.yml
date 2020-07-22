@@ -70,3 +70,4 @@ plugins:
       watch:
         - optimade
   - awesome-pages
+  - codeinclude
