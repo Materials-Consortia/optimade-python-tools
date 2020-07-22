@@ -51,9 +51,7 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
                 if optimade_path.startswith(f"{version_prefix}/"):
                     break
             else:
-                version_prefix = re.findall(
-                    r"(/v[0-9]+(\.[0-9]+){0,2})", optimade_path
-                )
+                version_prefix = re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", optimade_path)
                 raise VersionNotSupported(
                     detail=(
                         f"The parsed versioned base URL {version_prefix[0][0]!r} from {urllib.parse.urlunparse(parsed_url)!r} is not supported by this implementation. "
