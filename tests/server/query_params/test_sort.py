@@ -98,3 +98,63 @@ def test_datetime_desc(get_good_response, structures):
         struct.get("attributes", {}).get("last_modified") for struct in response["data"]
     ]
     assert last_modified_list == expected_last_modified
+
+
+def test_unknown_fields(get_good_response, check_error_response):
+    """Sorting with one valid field and many other *implementation-specific* fields should return only
+    sorted data on the valid field.
+
+    If *only* implementation-specific fields are provided, then raise a `BadRequest`.
+
+    If *any* invalid field, i.e. one without an implementation specific prefix is supplied,
+    a `BadRequest` should be raised.
+
+    """
+
+    # case 1: non-prefixed field that does not exist
+    limit = 5
+    request = f"/structures?sort=field_that_does_not_exist&page_limit={limit}"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail="Unable to sort on unknown field 'field_that_does_not_exist'",
+    )
+
+    # case 2: multiple non-prefixed fields that do not exist
+    request = f"/structures?sort=field_that_does_not_exist,-other_field_that_does_not_exist&page_limit={limit}"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail="Unable to sort on unknown fields 'field_that_does_not_exist', 'other_field_that_does_not_exist'",
+    )
+
+    # case 3: prefixed field and a valid field should be fine
+    request = f"/structures?sort=_exmpl_field_that_does_not_exist,nelements&page_limit={limit}"
+    data = structures_coll.collection.find(sort=[("nelements", 1)], limit=limit)
+    expected_nelements = [_["nelements"] for _ in data]
+
+    response = get_good_response(request)
+    nelements_list = [
+        struct.get("attributes", {}).get("nelements") for struct in response["data"]
+    ]
+    assert nelements_list == expected_nelements
+
+    # case 4: unprefixed field and a valid field should fail
+    request = f"/structures?sort=field_that_does_not_exist,nelements&page_limit={limit}"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail="Unable to sort on unknown field 'field_that_does_not_exist'",
+    )
+
+    # case 5: only prefixed fields
+    request = f"/structures?sort=_exmpl_field_that_does_not_exist,_exmpl_other_field&page_limit={limit}"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail="Unable to sort on unknown fields '_exmpl_field_that_does_not_exist', '_exmpl_other_field'",
+    )
