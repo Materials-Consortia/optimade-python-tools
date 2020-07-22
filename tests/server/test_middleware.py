@@ -96,6 +96,13 @@ def test_wrong_version(both_clients):
         CheckWronglyVersionedBaseUrls(both_clients.app).check_url(
             urllib.parse.urlparse(url)
         )
+        
+    url = f"{CONFIG.base_url}{version}"
+
+    with pytest.raises(VersionNotSupported):
+        CheckWronglyVersionedBaseUrls(both_clients.app).check_url(
+            urllib.parse.urlparse(url)
+        )
 
 
 def test_wrong_version_json_response(check_error_response, both_clients):

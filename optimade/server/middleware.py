@@ -52,7 +52,7 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
                     break
             else:
                 version_prefix = re.findall(
-                    r"(/v[0-9]+(\.[0-9]+){0,2})/", optimade_path
+                    r"(/v[0-9]+(\.[0-9]+){0,2})", optimade_path
                 )
                 raise VersionNotSupported(
                     detail=(
