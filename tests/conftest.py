@@ -5,10 +5,7 @@ import pytest
 
 
 def pytest_configure(config):
-    """
-    Method that runs before pytest collects tests so no modules
-    are imported
-    """
+    """Method that runs before pytest collects tests so no modules are imported"""
     cwd = Path(__file__).parent
     os.environ["OPTIMADE_CONFIG_FILE"] = str(cwd / "test_config.json")
 
@@ -17,22 +14,6 @@ def pytest_configure(config):
 def top_dir() -> Path:
     """Return Path instance for the repository's top (root) directory"""
     return Path(__file__).parent.parent.resolve()
-
-
-@pytest.fixture(scope="session", autouse=True)
-def setup_config(top_dir):
-    """Method that runs before pytest collects tests so no modules are imported"""
-    filename = top_dir.joinpath("tests/test_config.json")
-
-    original_env_var = os.getenv("OPTIMADE_CONFIG_FILE")
-    try:
-        os.environ["OPTIMADE_CONFIG_FILE"] = str(filename)
-        yield
-    finally:
-        if original_env_var is not None:
-            os.environ["OPTIMADE_CONFIG_FILE"] = original_env_var
-        elif "OPTIMADE_CONFIG_FILE" in os.environ:
-            del os.environ["OPTIMADE_CONFIG_FILE"]
 
 
 @pytest.fixture(scope="module")
