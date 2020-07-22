@@ -1,11 +1,6 @@
-try:
-    from optimade.filtertransformers.django import Lark2Django
+import pytest
 
-    DJANGO_NOT_IMPORTED = False
-except ImportError:
-    DJANGO_NOT_IMPORTED = True
-
-from unittest import TestCase, skipIf
+django = pytest.importorskip("django", reason="Django not found")
 
 test_data = [
     ("band_gap<1", "(AND: ('calculation__band_gap__lt', '1'))"),
@@ -21,13 +16,14 @@ test_data = [
 ]
 
 
-@skipIf(DJANGO_NOT_IMPORTED, "Django not found")
-class DjangoParserTest(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.Transformer = Lark2Django()
+class TestLark2Django:
+    @pytest.fixture(autouse=True)
+    def set_up_class(self):
+        from optimade.filtertransformers.django import Lark2Django
+
+        self.Transformer = Lark2Django()
 
     def test_query_conversion(self):
         for raw_q, dj_q in test_data:
             parsed_tree = self.Transformer.parse_raw_q(raw_q)
-            self.assertEqual(str(self.Transformer.evaluate(parsed_tree)), dj_q)
+            assert str(self.Transformer.evaluate(parsed_tree)) == dj_q

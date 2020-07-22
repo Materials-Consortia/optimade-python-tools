@@ -2,19 +2,21 @@
 import pytest
 
 from optimade.models.references import ReferenceResource
-from optimade.server.mappers import ReferenceMapper
 
 
-def test_good_references():
+MAPPER = "ReferenceMapper"
+
+
+def test_good_references(mapper):
     """Check well-formed references used as example data"""
     import optimade.server.data
 
     good_refs = optimade.server.data.references
     for doc in good_refs:
-        ReferenceResource(**ReferenceMapper.map_back(doc))
+        ReferenceResource(**mapper(MAPPER).map_back(doc))
 
 
-def test_bad_references():
+def test_bad_references(mapper):
     """Check badly formed references"""
     from pydantic import ValidationError
 
@@ -26,4 +28,4 @@ def test_bad_references():
 
     for ref in bad_refs:
         with pytest.raises(ValidationError):
-            ReferenceResource(**ReferenceMapper.map_back(ref))
+            ReferenceResource(**mapper(MAPPER).map_back(ref))
