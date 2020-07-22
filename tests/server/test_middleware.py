@@ -90,19 +90,16 @@ def test_wrong_version(both_clients):
     from optimade.server.middleware import CheckWronglyVersionedBaseUrls
 
     version = "/v0"
-    url = f"{CONFIG.base_url}{version}/info"
+    urls = (
+        f"{CONFIG.base_url}{version}/info",
+        f"{CONFIG.base_url}{version}",
+    )
 
-    with pytest.raises(VersionNotSupported):
-        CheckWronglyVersionedBaseUrls(both_clients.app).check_url(
-            urllib.parse.urlparse(url)
-        )
-        
-    url = f"{CONFIG.base_url}{version}"
-
-    with pytest.raises(VersionNotSupported):
-        CheckWronglyVersionedBaseUrls(both_clients.app).check_url(
-            urllib.parse.urlparse(url)
-        )
+    for url in urls:
+        with pytest.raises(VersionNotSupported):
+            CheckWronglyVersionedBaseUrls(both_clients.app).check_url(
+                urllib.parse.urlparse(url)
+            )
 
 
 def test_wrong_version_json_response(check_error_response, both_clients):
