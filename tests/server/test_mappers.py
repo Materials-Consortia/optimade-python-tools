@@ -1,14 +1,16 @@
 import pytest
 
-from optimade.server.mappers import BaseResourceMapper
-from optimade.server.entry_collections import MongoCollection
 from optimade.models import StructureResource
 
 
-def test_disallowed_aliases():
-    import mongomock
+MAPPER = "BaseResourceMapper"
 
-    class MyMapper(BaseResourceMapper):
+
+def test_disallowed_aliases(mapper):
+    import mongomock
+    from optimade.server.entry_collections import MongoCollection
+
+    class MyMapper(mapper(MAPPER)):
         ALIASES = (("$and", "my_special_and"), ("not", "$not"))
 
     mapper = MyMapper()
@@ -17,8 +19,8 @@ def test_disallowed_aliases():
         MongoCollection(toy_collection, StructureResource, mapper)
 
 
-def test_property_aliases():
-    class MyMapper(BaseResourceMapper):
+def test_property_aliases(mapper):
+    class MyMapper(mapper(MAPPER)):
         PROVIDER_FIELDS = ("dft_parameters", "test_field")
         LENGTH_ALIASES = (("_exmpl_test_field", "test_field_len"),)
         ALIASES = (("field", "completely_different_field"),)

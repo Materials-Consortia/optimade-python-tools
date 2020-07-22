@@ -1,18 +1,17 @@
-from unittest import TestCase, skipIf
+import pytest
 
 from optimade.filterparser import LarkParser
 
-try:
-    from optimade.filtertransformers.elasticsearch import Transformer, Quantity
-
-    ELASTICSEARCH_IMPORTED = True
-except ImportError:
-    ELASTICSEARCH_IMPORTED = False
+elasticsearch_dsl = pytest.importorskip(
+    "elasticsearch_dsl", reason="No ElasticSearch installation, skipping tests..."
+)
 
 
-@skipIf(not ELASTICSEARCH_IMPORTED, "No ElasticSearch installation, skipping tests...")
-class TestTransformer(TestCase):
-    def setUp(self):
+class TestTransformer:
+    @pytest.fixture(autouse=True)
+    def set_up(self):
+        from optimade.filtertransformers.elasticsearch import Transformer, Quantity
+
         self.parser = LarkParser(version=(0, 10, 0), variant="elastic")
 
         nelements = Quantity(name="nelements")
@@ -84,12 +83,4 @@ class TestTransformer(TestCase):
         for query, _ in queries:
             tree = self.parser.parse(query)
             result = self.transformer.transform(tree)
-            self.assertIsNotNone(result)
-
-
-if __name__ == "__main__":
-    import unittest
-    import sys
-
-    suite = unittest.TestLoader().loadTestsFromModule(sys.modules[__name__])
-    unittest.TextTestRunner().run(suite)
+            assert result is not None

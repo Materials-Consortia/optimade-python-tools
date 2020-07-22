@@ -1,19 +1,26 @@
 """Make sure response_fields is handled correctly"""
 import pytest
 
-from optimade.server.config import CONFIG
-from optimade.server.entry_collections import CI_FORCE_MONGO
 
+def valid_mongomock_version() -> dict:
+    """Based on CI_FORCE_MONGO and whether or not to use a real MongoDB, return valid mongomock version"""
+    from optimade.server.config import CONFIG
+    from optimade.server.entry_collections import CI_FORCE_MONGO
 
-MONGOMOCK_OLD = False
-MONGOMOCK_MSG = ""
-if not CI_FORCE_MONGO and not CONFIG.use_real_mongo:
-    import mongomock
+    MONGOMOCK_OLD = False
+    MONGOMOCK_MSG = ""
+    if not CI_FORCE_MONGO and not CONFIG.use_real_mongo:
+        import mongomock
 
-    MONGOMOCK_OLD = tuple(
-        int(val) for val in mongomock.__version__.split(".")[0:3]
-    ) <= (3, 19, 0)
-    MONGOMOCK_MSG = f"mongomock version {mongomock.__version__}<=3.19.0 is too old for this test, skipping..."
+        MONGOMOCK_OLD = tuple(
+            int(val) for val in mongomock.__version__.split(".")[0:3]
+        ) <= (3, 19, 0)
+        MONGOMOCK_MSG = f"mongomock version {mongomock.__version__}<=3.19.0 is too old for this test, skipping..."
+
+    return {
+        "condition": MONGOMOCK_OLD,
+        "reason": MONGOMOCK_MSG,
+    }
 
 
 def test_custom_field(check_response):
@@ -71,6 +78,8 @@ def test_page_limit(check_response):
 
 
 def test_page_limit_max(check_error_response):
+    from optimade.server.config import CONFIG
+
     request = f"/structures?page_limit={CONFIG.page_limit_max + 1}"
     check_error_response(
         request,
@@ -160,7 +169,7 @@ def test_list_length(check_response, check_error_response):
     )
 
 
-@pytest.mark.skipif(MONGOMOCK_OLD, reason=MONGOMOCK_MSG)
+@pytest.mark.skipif(**valid_mongomock_version())
 def test_list_has_only(check_response):
     """ Test HAS ONLY query on elements.
 
@@ -170,7 +179,6 @@ def test_list_has_only(check_response):
     contain the bugfix for this: https://github.com/mongomock/mongomock/pull/597.
 
     """
-
     request = '/structures?filter=elements HAS ONLY "Ac", "Mg"'
     expected_ids = ["mpf_23"]
     check_response(request, expected_ids)
