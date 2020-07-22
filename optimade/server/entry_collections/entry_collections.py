@@ -1,47 +1,43 @@
-from abc import abstractmethod
-from typing import Collection, Tuple, List
+from abc import abstractmethod, ABC
+from typing import Tuple, List, Union
 
-from optimade.server.mappers import BaseResourceMapper
+from fastapi import HTTPException
+from lark import Transformer
+
 from optimade.filterparser import LarkParser
 from optimade.models import EntryResource
-from optimade.server.query_params import EntryListingQueryParams
+from optimade.server.config import CONFIG
+from optimade.server.exceptions import BadRequest
+from optimade.server.mappers import BaseResourceMapper
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 
-class EntryCollection(Collection):  # pylint: disable=inherit-non-class
+class EntryCollection(ABC):
+    """ Backend agnostic base class for collections of EntryResources. """
+
     def __init__(
         self,
         collection,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
+        transformer: Transformer,
     ):
         self.collection = collection
         self.parser = LarkParser()
         self.resource_cls = resource_cls
         self.resource_mapper = resource_mapper
+        self.transformer = transformer
 
-    def __len__(self):
-        return self.collection.count()
+    @abstractmethod
+    def __len__(self) -> int:
+        """ Returns the overall number of entries in the collection. """
 
-    def __iter__(self):
-        return self.collection.find()
+    @abstractmethod
+    def count(self, **kwargs) -> int:
+        """ Returns the number of entries matching the query specified
+        by the keyword arguments.
 
-    def __contains__(self, entry):
-        return self.collection.count(entry) > 0
-
-    def get_attribute_fields(self) -> set:
-        schema = self.resource_cls.schema()
-        attributes = schema["properties"]["attributes"]
-        if "allOf" in attributes:
-            allOf = attributes.pop("allOf")
-            for dict_ in allOf:
-                attributes.update(dict_)
-        if "$ref" in attributes:
-            path = attributes["$ref"].split("/")[1:]
-            attributes = schema.copy()
-            while path:
-                next_key = path.pop(0)
-                attributes = attributes[next_key]
-        return set(attributes["properties"].keys())
+        """
 
     @abstractmethod
     def find(
@@ -60,5 +56,154 @@ class EntryCollection(Collection):  # pylint: disable=inherit-non-class
 
         """
 
-    def count(self, **kwargs):
-        return self.collection.count(**kwargs)
+    @property
+    def all_fields(self) -> set:
+        """ Get the set of all fields handled in this collection, from
+        attribute fields in the schema, provider fields and top-level
+        OPTIMADE fields.
+
+        """
+        # All OPTIMADE fields
+        fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
+        fields |= self.get_attribute_fields()
+        # All provider-specific fields
+        fields |= {
+            f"_{self.provider_prefix}_{field_name}"
+            for field_name in self.provider_fields
+        }
+
+        return fields
+
+    def get_attribute_fields(self) -> set:
+        """ Get the set of attribute fields from the schema of the
+        resource class, resolving references along the way.
+
+        Returns:
+            the set of property names.
+
+        """
+        schema = self.resource_cls.schema()
+        attributes = schema["properties"]["attributes"]
+        if "allOf" in attributes:
+            allOf = attributes.pop("allOf")
+            for dict_ in allOf:
+                attributes.update(dict_)
+        if "$ref" in attributes:
+            path = attributes["$ref"].split("/")[1:]
+            attributes = schema.copy()
+            while path:
+                next_key = path.pop(0)
+                attributes = attributes[next_key]
+        return set(attributes["properties"].keys())
+
+    def handle_query_params(
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+    ) -> dict:
+        """ Parse and interpret the backend agnostic query parameter models into a dictionary
+        that can be used by the specific backend. Currently returns the pymongo
+        interpretation of the parameters, which will need modification for modified
+        for other backends.
+
+        Parameters:
+            params: the initialized query parameter model from the server.
+
+        Raises:
+            HTTPException: if too large a page limit is provided.
+            BadRequest: if an invalid request is made, e.g. with incorrect fields
+                or response format.
+
+        Returns:
+            dict: a dictionary representation of the query parameters, ready to be used
+                by pymongo.
+
+        """
+        cursor_kwargs = {}
+
+        if getattr(params, "filter", False):
+            tree = self.parser.parse(params.filter)
+            cursor_kwargs["filter"] = self.transformer.transform(tree)
+        else:
+            cursor_kwargs["filter"] = {}
+
+        if (
+            getattr(params, "response_format", False)
+            and params.response_format != "json"
+        ):
+            raise BadRequest(
+                status_code=400, detail="Only 'json' response_format supported"
+            )
+
+        if getattr(params, "page_limit", False):
+            limit = params.page_limit
+            if limit > CONFIG.page_limit_max:
+                raise HTTPException(
+                    status_code=403,  # 403 Forbidden is enforced by the specification
+                    detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
+                )
+            cursor_kwargs["limit"] = limit
+        else:
+            cursor_kwargs["limit"] = CONFIG.page_limit
+
+        cursor_kwargs["fields"] = self.all_fields
+        cursor_kwargs["projection"] = [
+            self.resource_mapper.alias_for(f) for f in self.all_fields
+        ]
+
+        if getattr(params, "sort", False):
+            cursor_kwargs["sort"] = self.parse_sort_params(params.sort)
+
+        if getattr(params, "page_offset", False):
+            cursor_kwargs["skip"] = params.page_offset
+
+        return cursor_kwargs
+
+    def parse_sort_params(self, sort_params) -> List[Tuple[str, int]]:
+        """ Handles any sort parameters passed to the collection,
+        resolving aliases and dealing with any invalid fields.
+
+        Raises:
+            BadRequest: if an invalid sort is requested.
+
+        Returns:
+            List[Tuple[str, int]]: a list of tuples containing the
+                aliased field name and sort direction encoded as
+                1 (ascending) or -1 (descending).
+
+        """
+        sort_spec = []
+        for field in sort_params.split(","):
+            sort_dir = 1
+            if field.startswith("-"):
+                field = field[1:]
+                sort_dir = -1
+            aliased_field = self.resource_mapper.alias_for(field)
+            sort_spec.append((aliased_field, sort_dir))
+
+        unknown_fields = [
+            field
+            for field, _ in sort_spec
+            if self.resource_mapper.alias_of(field) not in self.all_fields
+        ]
+        # if all fields are unknown, or some fields are unknown and do not
+        # have other provider prefixes, then return 400: Bad Request
+        if len(unknown_fields) == len(sort_spec) or not all(
+            [field.startswith("_") for field in unknown_fields]
+        ):
+            raise BadRequest(
+                status_code=400,
+                detail=(
+                    "Unable to sort on unknown field{} '{}'".format(
+                        "s" if len(unknown_fields) > 1 else "",
+                        "', '".join(unknown_fields),
+                    )
+                ),
+            )
+
+        # if at least one valid field has been provided for sorting, then use that
+        sort_spec = tuple(
+            (field, sort_dir)
+            for field, sort_dir in sort_spec
+            if field not in unknown_fields
+        )
+
+        return sort_spec

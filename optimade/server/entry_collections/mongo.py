@@ -10,7 +10,6 @@ from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.server.config import CONFIG
 from optimade.models import EntryResource
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from .entry_collections import EntryCollection
 
@@ -33,6 +32,8 @@ else:
 
 
 class MongoCollection(EntryCollection):
+    """ Collection class for MongoDB backends, using pymongo. """
+
     def __init__(
         self,
         collection: Union[
@@ -41,8 +42,12 @@ class MongoCollection(EntryCollection):
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
     ):
-        super().__init__(collection, resource_cls, resource_mapper)
-        self.transformer = MongoTransformer(mapper=resource_mapper)
+        super().__init__(
+            collection,
+            resource_cls,
+            resource_mapper,
+            MongoTransformer(mapper=resource_mapper),
+        )
 
         self.provider_prefix = CONFIG.provider.prefix
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
@@ -54,13 +59,10 @@ class MongoCollection(EntryCollection):
         self._check_aliases(self.resource_mapper.all_aliases())
         self._check_aliases(self.resource_mapper.all_length_aliases())
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.collection.estimated_document_count()
 
-    def __contains__(self, entry):
-        return self.collection.count_documents(entry.dict()) > 0
-
-    def count(self, **kwargs):
+    def count(self, **kwargs) -> int:
         for k in list(kwargs.keys()):
             if k not in ("filter", "skip", "limit", "hint", "maxTimeMS"):
                 del kwargs[k]
@@ -71,7 +73,16 @@ class MongoCollection(EntryCollection):
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> Tuple[List[EntryResource], int, bool, set]:
-        criteria = self._parse_params(params)
+        """ Perform the query on the underlying MongoCollection, handling projection
+        and pagination of the output.
+
+        Returns:
+            a list of entry resource objects, the number of returned entries,
+            whether more are available with pagination, fields.
+
+        """
+
+        criteria = self.handle_query_params(params)
 
         all_fields = criteria.pop("fields")
         if getattr(params, "response_fields", False):
@@ -102,93 +113,6 @@ class MongoCollection(EntryCollection):
             results = results[0] if results else None
 
         return results, data_returned, more_data_available, all_fields - fields
-
-    def _parse_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> dict:
-        cursor_kwargs = {}
-
-        if getattr(params, "filter", False):
-            tree = self.parser.parse(params.filter)
-            cursor_kwargs["filter"] = self.transformer.transform(tree)
-        else:
-            cursor_kwargs["filter"] = {}
-
-        if (
-            getattr(params, "response_format", False)
-            and params.response_format != "json"
-        ):
-            raise HTTPException(
-                status_code=400, detail="Only 'json' response_format supported"
-            )
-
-        if getattr(params, "page_limit", False):
-            limit = params.page_limit
-            if limit > CONFIG.page_limit_max:
-                raise HTTPException(
-                    status_code=403,  # Forbidden
-                    detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
-                )
-            cursor_kwargs["limit"] = limit
-        else:
-            cursor_kwargs["limit"] = CONFIG.page_limit
-
-        # All OPTIMADE fields
-        fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
-        fields |= self.get_attribute_fields()
-        # All provider-specific fields
-        fields |= {
-            f"_{self.provider_prefix}_{field_name}"
-            for field_name in self.provider_fields
-        }
-        cursor_kwargs["fields"] = fields
-        cursor_kwargs["projection"] = [
-            self.resource_mapper.alias_for(f) for f in fields
-        ]
-
-        if getattr(params, "sort", False):
-            sort_spec = []
-            for field in params.sort.split(","):
-                sort_dir = 1
-                if field.startswith("-"):
-                    field = field[1:]
-                    sort_dir = -1
-                aliased_field = self.resource_mapper.alias_for(field)
-                sort_spec.append((aliased_field, sort_dir))
-
-            unknown_fields = [
-                field
-                for field, _ in sort_spec
-                if self.resource_mapper.alias_of(field) not in fields
-            ]
-            # if all fields are unknown, or some fields are unknown and do not
-            # have other provider prefixes, then return 400: Bad Request
-            if len(unknown_fields) == len(sort_spec) or not all(
-                [field.startswith("_") for field in unknown_fields]
-            ):
-                raise BadRequest(
-                    status_code=400,
-                    detail=(
-                        "Unable to sort on unknown field{} '{}'".format(
-                            "s" if len(unknown_fields) > 1 else "",
-                            "', '".join(unknown_fields),
-                        )
-                    ),
-                )
-
-            # if at least one valid field has been provided for sorting, then use that
-            sort_spec = tuple(
-                (field, sort_dir)
-                for field, sort_dir in sort_spec
-                if field not in unknown_fields
-            )
-
-            cursor_kwargs["sort"] = sort_spec
-
-        if getattr(params, "page_offset", False):
-            cursor_kwargs["skip"] = params.page_offset
-
-        return cursor_kwargs
 
     def _check_aliases(self, aliases):
         """ Check that aliases do not clash with mongo keywords. """
