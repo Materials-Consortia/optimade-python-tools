@@ -1,6 +1,6 @@
-import pytest
+from typing import Union
 
-from optimade.server.config import CONFIG
+import pytest
 
 
 @pytest.fixture(scope="session")
@@ -59,6 +59,7 @@ def get_good_response(client, index_client):
 def check_response(get_good_response):
     """Fixture to check "good" response"""
     from typing import List
+    from optimade.server.config import CONFIG
 
     def inner(
         request: str,
@@ -91,23 +92,29 @@ def check_response(get_good_response):
 @pytest.fixture
 def check_error_response(client, index_client):
     """General method for testing expected erroneous response"""
+    from .utils import OptimadeTestClient
 
     def inner(
         request: str,
         expected_status: int = None,
         expected_title: str = None,
         expected_detail: str = None,
-        server: str = "regular",
+        server: Union[str, OptimadeTestClient] = "regular",
     ):
         response = None
-        if server == "regular":
-            used_client = client
-        elif server == "index":
-            used_client = index_client
+        if isinstance(server, str):
+            if server == "regular":
+                used_client = client
+            elif server == "index":
+                used_client = index_client
+            else:
+                pytest.fail(
+                    f"Wrong value for 'server': {server}. It must be either 'regular' or 'index'."
+                )
+        elif isinstance(server, OptimadeTestClient):
+            used_client = server
         else:
-            pytest.fail(
-                f"Wrong value for 'server': {server}. It must be either 'regular' or 'index'."
-            )
+            pytest.fail("'server' must be either a string or an OptimadeTestClient.")
 
         try:
             response = used_client.get(request)

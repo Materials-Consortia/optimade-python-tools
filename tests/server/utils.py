@@ -42,12 +42,12 @@ class OptimadeTestClient(TestClient):
             root_path=root_path,
         )
         if version:
-            if not version.startswith("v"):
+            if not version.startswith("v") and not version.startswith("/v"):
                 version = f"/v{version}"
-            if re.match(r"v[0-9](.[0-9]){0,2}", version) is None:
+            if re.match(r"/v[0-9](.[0-9]){0,2}", version) is None:
                 warnings.warn(
-                    f"Invalid version passed to client: '{version}'. "
-                    f"Will use the default: 'v{__api_version__.split('.')[0]}'"
+                    f"Invalid version passed to client: {version!r}. "
+                    f"Will use the default: '/v{__api_version__.split('.')[0]}'"
                 )
                 version = f"/v{__api_version__.split('.')[0]}"
         self.version = version
