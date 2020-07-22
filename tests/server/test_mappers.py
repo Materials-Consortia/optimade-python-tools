@@ -33,6 +33,11 @@ def test_property_aliases(mapper):
     assert mapper.length_alias_for("test_field") is None
     assert mapper.alias_for("test_field") == "test_field"
 
+    assert mapper.alias_of("dft_parameters") == "_exmpl_dft_parameters"
+    assert mapper.alias_of("test_field") == "_exmpl_test_field"
+    assert mapper.alias_of("completely_different_field") == "field"
+    assert mapper.alias_of("nonexistent_field") == "nonexistent_field"
+
     # nested properties
     assert (
         mapper.alias_for("_exmpl_dft_parameters.nested.property")

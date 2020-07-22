@@ -95,6 +95,17 @@ class BaseResourceMapper:
         return field
 
     @classmethod
+    def alias_of(cls, field: str) -> str:
+        """ Return de-aliased field name, if it exists,
+        otherwise return the input field name.
+
+        """
+        split = field.split(".")
+        return {alias: real for real, alias in cls.all_aliases()}.get(
+            split[0], split[0]
+        )
+
+    @classmethod
     def get_required_fields(cls) -> set:
         """Return set REQUIRED response fields"""
         res = cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
