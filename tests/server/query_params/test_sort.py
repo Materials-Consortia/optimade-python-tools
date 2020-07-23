@@ -100,7 +100,7 @@ def test_datetime_desc(get_good_response, structures):
     assert last_modified_list == expected_last_modified
 
 
-def test_unknown_fields(get_good_response, check_error_response):
+def test_unknown_fields(get_good_response, check_error_response, structures):
     """Sorting with one valid field and many other *implementation-specific* fields should return only
     sorted data on the valid field.
 
@@ -132,7 +132,7 @@ def test_unknown_fields(get_good_response, check_error_response):
 
     # case 3: prefixed field and a valid field should be fine
     request = f"/structures?sort=_exmpl_field_that_does_not_exist,nelements&page_limit={limit}"
-    data = structures_coll.collection.find(sort=[("nelements", 1)], limit=limit)
+    data = structures.collection.find(sort=[("nelements", 1)], limit=limit)
     expected_nelements = [_["nelements"] for _ in data]
 
     response = get_good_response(request)
