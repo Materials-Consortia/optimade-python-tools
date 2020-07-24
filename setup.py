@@ -36,8 +36,6 @@ docs_deps = [
     "mkdocs~=1.1",
     "mkdocs-awesome-pages-plugin~=2.2",
     "mkdocs-material~=5.4",
-    "mkdocs-material-components~=1.10",
-    "mkdocs-material-extensions~=1.0",
     "mkdocs-minify-plugin~=0.3.0",
     "mkdocstrings~=0.12.1",
 ]
