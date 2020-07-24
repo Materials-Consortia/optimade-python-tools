@@ -5,6 +5,7 @@ import warnings
 
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
+from starlette.responses import RedirectResponse
 
 from optimade.server.exceptions import BadRequest, VersionNotSupported
 from optimade.server.warnings import OptimadeWarning
@@ -91,7 +92,7 @@ class HandleApiHint(BaseHTTPMiddleware):
         if api_hint in BASE_URL_PREFIXES.values():
             return api_hint
 
-        major_api_hint = int(re.findall(r"/v([0-9]+)", api_hint))
+        major_api_hint = int(re.findall(r"/v([0-9]+)", api_hint)[0])
         major_implementation = int(BASE_URL_PREFIXES["major"][len("/v") :])
 
         if major_api_hint > major_implementation:
@@ -149,7 +150,14 @@ class HandleApiHint(BaseHTTPMiddleware):
                     f"{base_url}{version_path}{str(request.url)[len(base_url):]}"
                 )
                 path = urllib.parse.urlsplit(new_request).path
-                request.url.replace(path=path)
+                return RedirectResponse(
+                    request.url.replace(path=path), headers=request.headers
+                )
+                # This is the non-URL changing solution:
+                #
+                # scope = request.scope
+                # scope["path"] = path
+                # request = Request(scope=scope, receive=request.receive, send=request._send)
 
         response = await call_next(request)
         return response
