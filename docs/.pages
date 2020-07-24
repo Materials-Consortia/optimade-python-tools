@@ -4,4 +4,4 @@ arrange:
     - CONTRIBUTING.md
     - use_cases
     - CHANGELOG.md
-    - reference
+    - api_reference
