@@ -5,7 +5,6 @@ The server is based on MongoDB, using either `pymongo` or `mongomock`.
 This is an example implementation with example data.
 To implement your own server see the documentation at https://optimade.org/optimade-python-tools.
 """
-# pylint: disable=line-too-long
 from lark.exceptions import VisitError
 
 from pydantic import ValidationError
@@ -23,6 +22,7 @@ from optimade.server.middleware import (
     AddWarnings,
     CheckWronglyVersionedBaseUrls,
     EnsureQueryParamIntegrity,
+    HandleApiHint,
 )
 from optimade.server.routers import (
     info,
@@ -80,6 +80,7 @@ app.add_middleware(AddWarnings)
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 app.add_middleware(EnsureQueryParamIntegrity)
 app.add_middleware(CheckWronglyVersionedBaseUrls)
+app.add_middleware(HandleApiHint)
 
 
 # Add various exception handlers
