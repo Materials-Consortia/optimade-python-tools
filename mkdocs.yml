@@ -33,6 +33,7 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.inlinehilite
+  - pymdownx.tabbed
   - pymdownx.snippets
   - toc:
       permalink: true
@@ -70,4 +71,3 @@ plugins:
       watch:
         - optimade
   - awesome-pages
-  - codeinclude

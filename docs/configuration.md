@@ -17,9 +17,9 @@ The main way of configuring the OPTIMADE server is by creating a configuration J
 
 An example of one that works with the example implementation can be found in [`optimade_config.json`](static/optimade_config.json):
 
-??? note "Configuration file for the default OPTIMADE server"
+=== "Configuration file for the default OPTIMADE server"
     ```json
-    --8<-- "static/optimade_config.json"
+    --8<-- "optimade_config.json"
     ```
 
 ## Environment variables
