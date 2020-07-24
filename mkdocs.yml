@@ -1,12 +1,28 @@
-site_name: OPTIMADE-Python-Tools Documentation
-site_description: Documentation for the OPTIMADE-Python-Tools
-copyright: Built by OPTIMADE Development Team
+site_name: OPTIMADE Python tools
+site_description: Documentation for the OPTIMADE Python tools
+site_url: https://www.optimade.org/optimade-python-tools/
+copyright: Built by the Materials-Consortia
 
 theme:
-  name: 'material'
+  name: material
+  palette:
+    scheme: preference
+    primary: black
+    accent: red
+  icon:
+    repo: fontawesome/brands/github
+  logo: images/optimade_logo_180x180.svg
+  favicon: images/favicon.png
 
-site_url: https://www.optimade.org/optimade-python-tools/
+repo_name: optimade-python-tools
 repo_url: https://github.com/Materials-Consortia/optimade-python-tools
+edit_uri: ""
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Materials-Consortia
+
 markdown_extensions:
   - admonition
   - codehilite
@@ -14,11 +30,13 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.inlinehilite
+  - pymdownx.snippets
   - toc:
       permalink: true
 
 plugins:
-  - search
+  - search:
+      lang: en
   - minify
   - mkdocstrings
   - awesome-pages

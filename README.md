@@ -21,7 +21,7 @@ The latest stable version can be obtained from [PyPI](https://pypi.org/project/o
 
 ## Installation
 
-Installation instructions, for both the index meta-database, and for the main API can be found in [INSTALL.md](INSTALL.md).
+Installation instructions, for both the index meta-database, and for the main API can be found in [the documentation](https://www.optimade.org/optimade-python-tools/install/).
 
 ## Contributing
 

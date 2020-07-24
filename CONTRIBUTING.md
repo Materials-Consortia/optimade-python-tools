@@ -67,7 +67,7 @@ from lark.tree import pydot__tree_to_png
 pydot__tree_to_png(tree, "exampletree.png")
 ```
 
-![example tree](exampletree.png)
+![example tree](images/exampletree.png)
 
 ### Flow for Parsing User-Supplied Filter and Converting to Backend Query
 
@@ -89,7 +89,7 @@ print(query)
 {'$and': [{'_mp_bandgap': {'$gt': 5.0}}, {'_cod_molecular_weight': {'$lt': 350.0}}]}
 ```
 
-There is also a [basic JSON transformer](optimade/filtertransformers/json.py) (`optimade.filtertransformers.json.JSONTransformer`) you can use as a simple example for developing your own transformer.
+There is also a [basic JSON transformer][optimade.filtertransformers.json] you can use as a simple example for developing your own transformer.
 You can also use the JSON output it produces as an easy-to-parse input for a "transformer" in your programming language of choice.
 
 ```python
