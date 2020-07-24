@@ -1,1 +1,3 @@
+# /structures
+
 ::: optimade.models.structures
