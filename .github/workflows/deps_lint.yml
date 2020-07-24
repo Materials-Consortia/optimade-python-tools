@@ -226,7 +226,7 @@ jobs:
         pip install -r requirements-docs.txt
 
     - name: Build
-      run: mkdocs build --strict
+      run: mkdocs build --strict --verbose
 
   test_build:
     runs-on: ubuntu-latest
