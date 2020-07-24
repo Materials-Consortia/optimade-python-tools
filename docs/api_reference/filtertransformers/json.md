@@ -1,3 +1,3 @@
-# JSON
+# json
 
 ::: optimade.filtertransformers.json

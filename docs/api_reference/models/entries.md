@@ -1,1 +1,3 @@
+# entries
+
 ::: optimade.models.entries

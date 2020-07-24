@@ -1,1 +1,1 @@
-# OPTIMADE API for a single database
+# A single database

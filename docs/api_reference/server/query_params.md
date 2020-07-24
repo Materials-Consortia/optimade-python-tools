@@ -1,3 +1,3 @@
-# Query parameters
+# query_params
 
 ::: optimade.server.query_params

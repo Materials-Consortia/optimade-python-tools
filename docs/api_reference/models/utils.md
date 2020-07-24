@@ -1,3 +1,3 @@
-# Utility functions
+# utils
 
 ::: optimade.models.utils

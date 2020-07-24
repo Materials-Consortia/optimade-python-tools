@@ -1,3 +1,3 @@
-# Index Meta-Database
+# index_metadb
 
 ::: optimade.models.index_metadb

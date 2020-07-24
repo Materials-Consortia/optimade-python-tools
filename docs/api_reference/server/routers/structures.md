@@ -1,3 +1,3 @@
-# /structures
+# structures
 
 ::: optimade.server.routers.structures

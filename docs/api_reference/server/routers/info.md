@@ -1,3 +1,3 @@
-# /info
+# info
 
 ::: optimade.server.routers.info

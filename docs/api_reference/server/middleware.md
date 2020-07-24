@@ -1,1 +1,3 @@
+# middleware
+
 ::: optimade.server.middleware

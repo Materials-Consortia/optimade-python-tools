@@ -98,8 +98,7 @@ def update_openapijson(c):
 
 @task(help={"ver": "OPTIMADE Python tools version to set"}, post=[update_openapijson])
 def setver(_, ver=""):
-    """Sets the OPTIMADE Python Tools Version"""
-
+    """Sets the OPTIMADE Python tools version"""
     match = re.fullmatch(r"v?([0-9]+\.[0-9]+\.[0-9]+)", ver)
     if not match or (match and len(match.groups()) != 1):
         print(
@@ -116,9 +115,9 @@ def setver(_, ver=""):
     print("Bumped version to {}".format(ver))
 
 
-@task(help={"version": "OPTIMADE API version to set"}, post=[update_openapijson])
+@task(help={"ver": "OPTIMADE API version to set"}, post=[update_openapijson])
 def set_optimade_ver(_, ver=""):
-    """ Sets the OPTIMADE API Version """
+    """Sets the OPTIMADE API Version"""
     if not ver:
         print("Error: Please specify --ver='Major.Minor.Patch(-rc|a|b.NUMBER)'")
         sys.exit(1)
@@ -201,6 +200,7 @@ def parse_spec_for_filters(_):
 
 @task
 def get_markdown_spec(ctx):
+    """Convert the develop OPTIMADE specification from `rst` to `md`."""
     print("Attempting to run pandoc...")
     ctx.run(
         "pandoc "
@@ -209,3 +209,78 @@ def get_markdown_spec(ctx):
         "https://raw.githubusercontent.com/Materials-Consortia/OPTIMADE/develop/optimade.rst "
         "> optimade.md"
     )
+
+
+@task(
+    help={
+        "pre-clean": "Remove the 'api_reference' sub directory prior to (re)creation."
+    }
+)
+def create_api_reference_docs(_, pre_clean=False):
+    """Create the API Reference in the documentation"""
+    import shutil
+
+    def write_file(full_path: Path, content: str):
+        """Write file with `content` to `full_path`"""
+        if full_path.exists():
+            with open(full_path, "r") as handle:
+                cached_content = handle.read()
+            if content == cached_content:
+                del cached_content
+                return
+            del cached_content
+        with open(full_path, "w") as handle:
+            handle.write(content)
+
+    optimade_dir = TOP_DIR.joinpath("optimade")
+    docs_dir = TOP_DIR.joinpath("docs/api_reference")
+
+    unwanted_subdirs = ("__pycache__", "data", "grammar", "static")
+
+    pages_template = 'title: "{name}"\n'
+    md_template = "# {name}\n\n::: {py_path}\n"
+
+    if docs_dir.exists() and pre_clean:
+        shutil.rmtree(docs_dir, ignore_errors=True)
+        if docs_dir.exists():
+            raise RuntimeError(f"{docs_dir} should have been removed!")
+    docs_dir.mkdir(exist_ok=True)
+
+    for dirpath, dirnames, filenames in os.walk(optimade_dir):
+        for unwanted_dir in unwanted_subdirs:
+            if unwanted_dir in dirnames:
+                # Avoid walking into or through unwanted directories
+                dirnames.remove(unwanted_dir)
+
+        relpath = Path(dirpath).relative_to(optimade_dir)
+
+        # Create `.pages`
+        if str(relpath) == ".":
+            write_file(
+                full_path=docs_dir.joinpath(".pages"),
+                content=pages_template.format(name="API Reference"),
+            )
+            continue
+
+        docs_sub_dir = docs_dir.joinpath(relpath)
+        docs_sub_dir.mkdir(exist_ok=True)
+        write_file(
+            full_path=docs_sub_dir.joinpath(".pages"),
+            content=pages_template.format(name=str(relpath).split("/")[-1]),
+        )
+
+        # Create markdown files
+        for filename in filenames:
+            if re.match(r".*\.py$", filename) is None or filename == "__init__.py":
+                # Not a Python file: We don't care about it!
+                # Or filename is `__init__.py`: We don't want it!
+                continue
+
+            basename = filename[: -len(".py")]
+            py_path = f"optimade/{relpath}/{basename}".replace("/", ".")
+            md_filename = filename.replace(".py", ".md")
+
+            write_file(
+                full_path=docs_sub_dir.joinpath(md_filename),
+                content=md_template.format(name=basename, py_path=py_path),
+            )

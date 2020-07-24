@@ -1,3 +1,3 @@
-# Landing page (/)
+# landing
 
 ::: optimade.server.routers.landing

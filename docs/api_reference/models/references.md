@@ -1,3 +1,3 @@
-# /references
+# references
 
 ::: optimade.models.references

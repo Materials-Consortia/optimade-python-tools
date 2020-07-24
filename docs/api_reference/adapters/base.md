@@ -1,0 +1,3 @@
+# base
+
+::: optimade.adapters.base

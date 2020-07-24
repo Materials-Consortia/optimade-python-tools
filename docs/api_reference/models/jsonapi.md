@@ -1,3 +1,3 @@
-# JSON API
+# jsonapi
 
 ::: optimade.models.jsonapi

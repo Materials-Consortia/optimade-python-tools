@@ -1,3 +1,3 @@
-# Utility functions
+# utils
 
 ::: optimade.server.routers.utils

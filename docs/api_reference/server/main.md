@@ -1,3 +1,3 @@
-# Regular server
+# main
 
 ::: optimade.server.main

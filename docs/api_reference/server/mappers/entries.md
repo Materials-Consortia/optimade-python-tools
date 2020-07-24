@@ -1,3 +1,3 @@
-# Base entry mapper
+# entries
 
 ::: optimade.server.mappers.entries

@@ -1,3 +1,3 @@
-# Base /info
+# baseinfo
 
 ::: optimade.models.baseinfo

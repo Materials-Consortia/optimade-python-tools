@@ -1,3 +1,3 @@
-# /links
+# links
 
 ::: optimade.models.links

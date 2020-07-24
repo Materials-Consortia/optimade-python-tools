@@ -1,3 +1,3 @@
-# MongoDB
+# mongo
 
 ::: optimade.filtertransformers.mongo
