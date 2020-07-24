@@ -72,3 +72,5 @@ def test_multiple_versions_in_path(both_clients):
     finally:
         if org_base_url:
             CONFIG.base_url = org_base_url
+        else:
+            CONFIG.base_url = None
