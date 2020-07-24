@@ -65,6 +65,8 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
         parsed_url = urllib.parse.urlparse(str(request.url))
         if parsed_url.path:
             self.check_url(parsed_url)
+        response = await call_next(request)
+        return response
 
 
 class HandleApiHint(BaseHTTPMiddleware):
