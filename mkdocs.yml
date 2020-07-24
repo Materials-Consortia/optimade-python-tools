@@ -13,6 +13,7 @@ theme:
     repo: fontawesome/brands/github
   logo: images/optimade_logo_180x180.svg
   favicon: images/favicon.png
+  language: en
 
 repo_name: optimade-python-tools
 repo_url: https://github.com/Materials-Consortia/optimade-python-tools
@@ -25,9 +26,8 @@ extra:
 
 markdown_extensions:
   - admonition
-  - codehilite
-  - attr_list
   - pymdownx.details
+  - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.inlinehilite
   - pymdownx.snippets
@@ -37,6 +37,8 @@ markdown_extensions:
 plugins:
   - search:
       lang: en
-  - minify
-  - mkdocstrings
+  - minify:
+      minify_html: true
+  - mkdocstrings:
+      default_handler: python
   - awesome-pages
