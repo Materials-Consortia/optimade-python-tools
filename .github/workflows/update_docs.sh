@@ -26,8 +26,15 @@ github_changelog_generator --user "Materials-Consortia" --project "optimade-pyth
 echo "\n-o- Overwrite old CHANGELOG.md -o-"
 mv -f CHANGELOG.md docs/
 
-echo "\n-o- Commit updates -o-"
+echo "\n-o- Commit updates - Changelog -o-"
 git add optimade/__init__.py
 git add openapi/index_openapi.json openapi/openapi.json
 git add docs/CHANGELOG.md
-git commit -m "Release ${GITHUB_REF#refs/tags/}"
+git commit -m "Release ${GITHUB_REF#refs/tags/} - Changelog"
+
+echo "\n-o- Update 'API Reference' docs -o-"
+invoke create-api-reference-docs --pre-clean
+
+echo "\n-o- Commit update - API Reference -o-"
+git add docs/api_reference
+git commit -m "Release ${GITHUB_REF#refs/tags/} - API Reference"

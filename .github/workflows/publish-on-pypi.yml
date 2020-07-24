@@ -36,7 +36,7 @@ jobs:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         repository: ${{ github.repository }}
         branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-        changes: .github/workflows/update_changelog.sh
+        changes: .github/workflows/update_docs.sh
         unprotect_reviews: true
         sleep: 15
 
