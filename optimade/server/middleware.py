@@ -149,9 +149,18 @@ class HandleApiHint(BaseHTTPMiddleware):
                 new_request = (
                     f"{base_url}{version_path}{str(request.url)[len(base_url):]}"
                 )
-                path = urllib.parse.urlsplit(new_request).path
+                url = urllib.parse.urlsplit(new_request)
+                parsed_query = urllib.parse.parse_qsl(url.query, keep_blank_values=True)
+                parsed_query = "&".join(
+                    [
+                        f"{key}={value}"
+                        for key, value in parsed_query
+                        if key != "api_hint"
+                    ]
+                )
                 return RedirectResponse(
-                    request.url.replace(path=path), headers=request.headers
+                    request.url.replace(path=url.path, query=parsed_query),
+                    headers=request.headers,
                 )
                 # This is the non-URL changing solution:
                 #

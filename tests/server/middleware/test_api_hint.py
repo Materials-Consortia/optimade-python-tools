@@ -42,18 +42,21 @@ def test_incorrect_api_hint(both_clients, check_error_response):
 
 
 def test_url_changes(both_clients, get_good_response):
-    """Check `api_hint` redirects request from unversioned base URL to versioned base URL"""
+    """Check `api_hint` redirects request from unversioned base URL to versioned base URL
+
+    Also, the `api_hint` query parameter should be removed.
+    """
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
     links_id = "index"
     major_version = BASE_URL_PREFIXES["major"][1:]  # Remove prefixed `/`
-    query_url = f"/links?api_hint={major_version}&filter=id={links_id}"
+    query_url = f"/links?filter=id={links_id}&api_hint={major_version}"
 
     response = get_good_response(query_url, server=both_clients, return_json=False)
 
     assert (
         response.url
-        == f"{both_clients.base_url}{BASE_URL_PREFIXES['major']}{query_url}"
+        == f"{both_clients.base_url}{BASE_URL_PREFIXES['major']}{query_url.split('&')[0]}"
     )
 
     # Now to make sure the redirect would not happen when leaving out `api_hint`
