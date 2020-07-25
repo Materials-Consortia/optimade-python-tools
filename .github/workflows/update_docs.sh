@@ -12,6 +12,13 @@ echo "\n-o- Install current SHA (optimade) -o-"
 pip install -U -e .[server]
 pip install invoke jsondiff
 
+echo "\n-o- Update 'API Reference' docs -o-"
+invoke create-api-reference-docs --pre-clean
+
+echo "\n-o- Commit update - API Reference -o-"
+git add docs/api_reference
+git commit -m "Release ${GITHUB_REF#refs/tags/} - API Reference"
+
 echo "-o- Update version -o-"
 invoke setver -v ${GITHUB_REF#refs/tags/}
 
@@ -31,10 +38,3 @@ git add optimade/__init__.py
 git add openapi/index_openapi.json openapi/openapi.json
 git add docs/CHANGELOG.md
 git commit -m "Release ${GITHUB_REF#refs/tags/} - Changelog"
-
-echo "\n-o- Update 'API Reference' docs -o-"
-invoke create-api-reference-docs --pre-clean
-
-echo "\n-o- Commit update - API Reference -o-"
-git add docs/api_reference
-git commit -m "Release ${GITHUB_REF#refs/tags/} - API Reference"
