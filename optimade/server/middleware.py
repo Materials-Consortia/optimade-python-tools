@@ -1,4 +1,4 @@
-from typing import Optional, IO, Type
+from typing import Optional, IO, Type, Generator
 import urllib.parse
 import warnings
 
@@ -122,6 +122,11 @@ class AddWarnings(BaseHTTPMiddleware):
         # Add new warning to self._warnings
         self._warnings.append(new_warning.dict(exclude_unset=True))
 
+    @staticmethod
+    def chunk_it_up(content: str, chunk_size: int) -> Generator:
+        """Return generator for string in chunks of size `chunk_size`"""
+        return (content[i : chunk_size + i] for i in range(0, len(content), chunk_size))
+
     async def dispatch(self, request: Request, call_next):
         from starlette.responses import StreamingResponse
 
@@ -141,30 +146,28 @@ class AddWarnings(BaseHTTPMiddleware):
         headers = response.headers
         media_type = response.media_type
         background = response.background
+        charset = response.charset
 
         body = b""
         first_run = True
         async for chunk in response.body_iterator:
             if first_run:
                 first_run = False
+                chunk_size = len(chunk)
             if not isinstance(chunk, bytes):
-                chunk = chunk.encode(response.charset)
+                chunk = chunk.encode(charset)
             body += chunk
-        body = body.decode(response.charset)
+        body = body.decode(charset)
 
         if self._warnings:
             response = json.loads(body)
             response.get("meta", {})["warnings"] = self._warnings
-            response = json.dumps(response)
+            body = json.dumps(response)
             if "content-length" in headers:
-                headers["content-length"] = str(len(response))
-
-            response = (_ for _ in response.split("},{"))
-        else:
-            response = (_ for _ in body.split("},{"))
+                headers["content-length"] = str(len(body))
 
         response = StreamingResponse(
-            content=response,
+            content=self.chunk_it_up(body, chunk_size),
             status_code=status,
             headers=headers,
             media_type=media_type,
