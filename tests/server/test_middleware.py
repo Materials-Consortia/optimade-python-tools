@@ -160,8 +160,6 @@ def test_showwarning_overload(both_clients, recwarn):
     from optimade.server.middleware import AddWarnings
     from optimade.server.warnings import OptimadeWarning
 
-    warnings.simplefilter("always")
-
     add_warning_middleware = AddWarnings(both_clients.app)
     # Set up things that are setup usually in `dispatch()`
     add_warning_middleware._warnings = []
@@ -184,7 +182,7 @@ def test_showwarning_overload(both_clients, recwarn):
     assert recwarn.pop(UserWarning)
 
 
-def test_showwarning_debug(both_clients):
+def test_showwarning_debug(both_clients, recwarn):
     """Make sure warnings.showwarning adds 'meta' field in DEBUG MODE"""
     import warnings
 
@@ -213,6 +211,8 @@ def test_showwarning_debug(both_clients):
         assert "meta" in warning
         for meta_field in ("filename", "lineno", "line"):
             assert meta_field in warning["meta"]
+        assert len(recwarn.list) == 1
+        assert recwarn.pop(OptimadeWarning)
     finally:
         CONFIG.debug = org_debug
 
