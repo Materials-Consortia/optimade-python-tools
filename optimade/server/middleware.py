@@ -95,6 +95,7 @@ class AddWarnings(BaseHTTPMiddleware):
             # If the Warning is not an OptimadeWarning or subclass thereof,
             # use the regular 'showwarning' function.
             warnings._showwarning_orig(message, category, filename, lineno, file, line)
+            return
 
         # Format warning
         try:
@@ -134,6 +135,11 @@ class AddWarnings(BaseHTTPMiddleware):
 
         # Add new warning to self._warnings
         self._warnings.append(new_warning.dict(exclude_unset=True))
+
+        # Show warning message as normal in sys.stdout
+        warnings._showwarnmsg_impl(
+            warnings.WarningMessage(message, category, filename, lineno, file, line)
+        )
 
     @staticmethod
     def chunk_it_up(content: str, chunk_size: int) -> Generator:
