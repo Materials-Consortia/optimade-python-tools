@@ -1,7 +1,11 @@
+from typing import Optional, IO, Type
 import urllib.parse
+import warnings
 
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
+
+from optimade.server.warnings import OptimadeWarning
 
 
 class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
@@ -64,4 +68,107 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
         if parsed_url.path:
             self.check_url(parsed_url)
         response = await call_next(request)
+        return response
+
+
+class AddWarnings(BaseHTTPMiddleware):
+    """Add any raised `OptimadeWarning`s and subclasses thereof to the response meta.warnings"""
+
+    def showwarning(
+        self,
+        message: Warning,
+        category: Type[Warning],
+        filename: str,
+        lineno: int,
+        file: Optional[IO] = None,
+        line: Optional[str] = None,
+    ) -> None:
+        """Hook to write a warning to a file."""
+        from optimade.models import Warnings
+        from optimade.server.config import CONFIG
+
+        assert isinstance(
+            message, Warning
+        ), "'message' is expected to be a Warning or subclass thereof."
+
+        if not isinstance(message, OptimadeWarning):
+            # If the Warning is not an OptimadeWarning or subclass thereof,
+            # use the regular 'showwarning' function.
+            warnings._showwarning_orig(message, category, filename, lineno, file, line)
+
+        # Format warning
+        try:
+            title = str(message.title)
+        except AttributeError:
+            title = str(message.__class__.__name__)
+
+        try:
+            detail = str(message.detail)
+        except AttributeError:
+            detail = str(message)
+
+        meta = {}
+        if CONFIG.debug:
+            for extra_field in ("filename", "lineno", "line"):
+                value = getattr(message, extra_field, None)
+                if value is not None:
+                    meta[extra_field] = value
+
+        if meta:
+            new_warning = Warnings(title=title, detail=detail, meta=meta)
+        else:
+            new_warning = Warnings(title=title, detail=detail)
+
+        # Add new warning to self._warnings
+        self._warnings.append(new_warning.dict(exclude_unset=True))
+
+    async def dispatch(self, request: Request, call_next):
+        from starlette.responses import StreamingResponse
+
+        try:
+            import simplejson as json
+        except ImportError:
+            import json
+
+        self._warnings = []
+
+        warnings.simplefilter(action="default", category=OptimadeWarning)
+        warnings.showwarning = self.showwarning
+
+        response = await call_next(request)
+
+        status = response.status_code
+        headers = response.headers
+        media_type = response.media_type
+        background = response.background
+
+        body = b""
+        first_run = True
+        async for chunk in response.body_iterator:
+            if first_run:
+                first_run = False
+            if not isinstance(chunk, bytes):
+                chunk = chunk.encode(response.charset)
+            body += chunk
+        body = body.decode(response.charset)
+
+        if self._warnings:
+            response = json.loads(body)
+            response.get("meta", {})["warnings"] = self._warnings
+            response = json.dumps(response)
+            if "content-length" in headers:
+                headers["content-length"] = str(len(response))
+
+            response = (_ for _ in response.split("},{"))
+        else:
+            response = (_ for _ in body.split("},{"))
+
+        response = StreamingResponse(
+            content=response,
+            status_code=status,
+            headers=headers,
+            media_type=media_type,
+            background=background,
+        )
+
         return response
