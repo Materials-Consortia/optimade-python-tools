@@ -2,6 +2,7 @@ class OptimadeWarning(Warning):
     """Base Warning for the `optimade` package"""
 
     def __init__(self, detail: str = None, title: str = None, *args) -> None:
+        detail = detail if detail else ""
         super().__init__(detail, *args)
         self.detail = detail
         self.title = title if title else self.__class__.__name__
