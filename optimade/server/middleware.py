@@ -107,14 +107,27 @@ class AddWarnings(BaseHTTPMiddleware):
         except AttributeError:
             detail = str(message)
 
-        meta = {}
         if CONFIG.debug:
-            for extra_field in ("filename", "lineno", "line"):
-                value = getattr(message, extra_field, None)
-                if value is not None:
-                    meta[extra_field] = value
+            if line is None:
+                # All this is taken directly from the warnings library.
+                # See 'warnings._formatwarnmsg_impl()' for the original code.
+                try:
+                    import linecache
 
-        if meta:
+                    line = linecache.getline(filename, lineno)
+                except Exception:
+                    # When a warning is logged during Python shutdown, linecache
+                    # and the import machinery don't work anymore
+                    line = None
+                    linecache = None
+            meta = {
+                "filename": filename,
+                "lineno": lineno,
+            }
+            if line:
+                meta["line"] = line.strip()
+
+        if CONFIG.debug:
             new_warning = Warnings(title=title, detail=detail, meta=meta)
         else:
             new_warning = Warnings(title=title, detail=detail)
