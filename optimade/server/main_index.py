@@ -29,7 +29,7 @@ from optimade.server.routers import index_info, links, versions
 from optimade.server.routers.utils import BASE_URL_PREFIXES
 
 
-if CONFIG.debug:
+if CONFIG.debug:  # pragma: no cover
     LOGGER.info("DEBUG MODE")
 
 
