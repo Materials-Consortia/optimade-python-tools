@@ -7,11 +7,12 @@ from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
-from optimade.server.config import CONFIG
 from optimade.models import EntryResource
+from optimade.server.config import CONFIG
+from optimade.server.entry_collections import EntryCollection
+from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from .entry_collections import EntryCollection
 
 try:
     CI_FORCE_MONGO = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
@@ -23,12 +24,12 @@ if CONFIG.use_real_mongo or CI_FORCE_MONGO:
     from pymongo import MongoClient
 
     client = MongoClient(CONFIG.mongo_uri)
-    print("Using: Real MongoDB (pymongo)")
+    LOGGER.info("Using: Real MongoDB (pymongo)")
 else:
     from mongomock import MongoClient
 
     client = MongoClient()
-    print("Using: Mock MongoDB (mongomock)")
+    LOGGER.info("Using: Mock MongoDB (mongomock)")
 
 
 class MongoCollection(EntryCollection):
