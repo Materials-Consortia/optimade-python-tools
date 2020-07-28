@@ -23,7 +23,12 @@ FILE_HANDLER = logging.handlers.RotatingFileHandler(
 FILE_HANDLER.setLevel(logging.DEBUG)
 
 CONSOLE_HANDLER = logging.StreamHandler(sys.stdout)
-CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_LOG_LEVEL", "INFO").upper())
+try:
+    from optimade.server.config import CONFIG
+
+    CONSOLE_HANDLER.setLevel(CONFIG.log_level.value.upper())
+except ImportError:
+    CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_LOG_LEVEL", "INFO").upper())
 
 # Set formatters
 FILE_FORMATTER = logging.Formatter(

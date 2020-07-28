@@ -133,11 +133,14 @@ class ServerConfig(BaseSettings):
         res.update(v)
         return res
 
-    @validator("log_level", pre=True)
+    @validator("log_level")
     def force_debug_log_level(cls, v, values):
         """If `debug` is `True`, then force `log_level` to be `DEBUG` as well"""
+        from optimade.server.logger import CONSOLE_HANDLER
+
         if values.get("debug", False):
             v = LogLevel.DEBUG
+        CONSOLE_HANDLER.setLevel(v.value.upper())
         return v
 
     @root_validator(pre=True)
