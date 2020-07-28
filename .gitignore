@@ -64,3 +64,4 @@ venv.bak/
 # Package-specific
 local_openapi.json
 local_index_openapi.json
+logs
