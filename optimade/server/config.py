@@ -26,6 +26,7 @@ DEFAULT_CONFIG_FILE_PATH = str(Path.home().joinpath(".optimade.json"))
 
 class LogLevel(Enum):
     """Replication of logging LogLevels"""
+
     NOTSET = "notset"
     DEBUG = "debug"
     INFO = "info"
@@ -121,7 +122,9 @@ class ServerConfig(BaseSettings):
         Path(__file__).parent.joinpath("index_links.json"),
         description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database",
     )
-    log_level: LogLevel = Field(LogLevel.INFO, description="Logging level for the OPTIMADE server.")
+    log_level: LogLevel = Field(
+        LogLevel.INFO, description="Logging level for the OPTIMADE server."
+    )
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):

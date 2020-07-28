@@ -24,7 +24,14 @@ from optimade.server.middleware import (
     CheckWronglyVersionedBaseUrls,
     EnsureQueryParamIntegrity,
 )
-from optimade.server.routers import info, links, references, structures, landing, versions
+from optimade.server.routers import (
+    info,
+    landing,
+    links,
+    references,
+    structures,
+    versions,
+)
 from optimade.server.routers.utils import get_providers, BASE_URL_PREFIXES
 
 
@@ -56,7 +63,9 @@ if not CONFIG.use_real_mongo:
 
         endpoint_collection.collection.insert_many(getattr(data, endpoint_name, []))
         if endpoint_name == "links":
-            LOGGER.debug("Adding Materials-Consortia providers to links from optimade.org")
+            LOGGER.debug(
+                "Adding Materials-Consortia providers to links from optimade.org"
+            )
             endpoint_collection.collection.insert_many(
                 bson.json_util.loads(bson.json_util.dumps(get_providers()))
             )
