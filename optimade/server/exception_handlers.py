@@ -47,24 +47,16 @@ def general_exception(
     if errors is None:
         errors = [OptimadeError(detail=detail, status=http_response_code, title=title)]
 
-    try:
-        response = ErrorResponse(
-            meta=meta_values(
-                url=str(request.url),
-                data_returned=0,
-                data_available=0,
-                more_data_available=False,
-                **debug_info,
-            ),
-            errors=errors,
-        )
-    except Exception:
-        # This was introduced due to the original raise of an HTTPException if the
-        # path prefix could not be found, e.g., `/v0`.
-        # However, due to the testing, this error cannot be raised anymore.
-        # Instead, an OPTIMADE warning should be issued.
-        # Having this try and except is still good practice though.
-        response = ErrorResponse(errors=errors)
+    response = ErrorResponse(
+        meta=meta_values(
+            url=str(request.url),
+            data_returned=0,
+            data_available=0,
+            more_data_available=False,
+            **debug_info,
+        ),
+        errors=errors,
+    )
 
     return JSONResponse(
         status_code=http_response_code,

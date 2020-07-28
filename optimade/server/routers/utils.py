@@ -144,8 +144,8 @@ def get_included_relationships(
             if entry_relationship is not None:
                 refs = entry_relationship.get("data", [])
                 for ref in refs:
-                    # could check here and raise a warning if any IDs clash
-                    endpoint_includes[entry_type][ref["id"]] = ref
+                    if ref["id"] not in endpoint_includes[entry_type]:
+                        endpoint_includes[entry_type][ref["id"]] = ref
 
     included = {}
     for entry_type in endpoint_includes:
