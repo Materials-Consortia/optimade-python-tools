@@ -24,12 +24,11 @@ class TestStructure:
             new_Structure = Structure(structure)
             assert isinstance(new_Structure.entry, StructureResource)
 
-    def test_setting_entry(self, capfd, RAW_STRUCTURES):
+    def test_setting_entry(self, caplog, RAW_STRUCTURES):
         """Make sure entry can only be set once"""
         structure = Structure(RAW_STRUCTURES[0])
         structure.entry = RAW_STRUCTURES[1]
-        captured = capfd.readouterr()
-        assert "entry can only be set once and is already set." in captured.out
+        assert "entry can only be set once and is already set." in caplog.text
 
     def test_convert(self, structure):
         """Test convert() works

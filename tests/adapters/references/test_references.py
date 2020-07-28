@@ -13,12 +13,11 @@ class TestReference:
             new_Reference = Reference(reference)
             assert isinstance(new_Reference.entry, ReferenceResource)
 
-    def test_setting_entry(self, capfd, RAW_REFERENCES):
+    def test_setting_entry(self, caplog, RAW_REFERENCES):
         """Make sure entry can only be set once"""
         reference = Reference(RAW_REFERENCES[0])
         reference.entry = RAW_REFERENCES[1]
-        captured = capfd.readouterr()
-        assert "entry can only be set once and is already set." in captured.out
+        assert "entry can only be set once and is already set." in caplog.text
 
     @pytest.mark.skip(
         "Currently, there are no conversion types available for references"
