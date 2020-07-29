@@ -1,0 +1,3 @@
+# warnings
+
+::: optimade.server.warnings
