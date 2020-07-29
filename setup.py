@@ -20,7 +20,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
 mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
-server_deps = ["uvicorn~=0.11.5", "Jinja2~=2.11"] + mongo_deps
+server_deps = ["uvicorn~=0.11.7", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
 aiida_deps = ["aiida-core~=1.3"]
