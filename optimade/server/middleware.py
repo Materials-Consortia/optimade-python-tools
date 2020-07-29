@@ -94,7 +94,8 @@ class AddWarnings(BaseHTTPMiddleware):
     chunks of the original response's chunk size.
 
     Attributes:
-        _warnings (list): List of warnings added through usages of `warnings.warn()`.
+        _warnings (List[Warnings]): List of [Warnings][optimade.models.optimade_json.Warnings]
+            added through usages of `warnings.warn()` via [showwarning][optimade.server.middleware.AddWarnings.showwarning].
 
     """
 
