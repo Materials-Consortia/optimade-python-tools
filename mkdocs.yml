@@ -41,4 +41,10 @@ plugins:
       minify_html: true
   - mkdocstrings:
       default_handler: python
+      handlers:
+        python:
+          selection:
+            filters:
+              - "!^_[^_]"
+              - "!__json_encoder__$"
   - awesome-pages
