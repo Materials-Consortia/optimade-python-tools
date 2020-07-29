@@ -107,9 +107,7 @@ class BaseResourceMapper:
 
         """
         field = field.split(".")[0]
-        return {alias: real for real, alias in cls.all_aliases()}.get(
-            field, field
-        )
+        return {alias: real for real, alias in cls.all_aliases()}.get(field, field)
 
     @classmethod
     def get_required_fields(cls) -> set:

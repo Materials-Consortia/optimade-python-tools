@@ -84,7 +84,7 @@ def test_page_limit_max(check_error_response):
     check_error_response(
         request,
         expected_status=403,
-        expected_title="HTTPException",
+        expected_title="Forbidden",
         expected_detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {CONFIG.page_limit_max + 1}",
     )
 

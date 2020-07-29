@@ -2,13 +2,12 @@ from abc import abstractmethod, ABC
 from typing import Tuple, List, Union
 import warnings
 
-from fastapi import HTTPException
 from lark import Transformer
 
 from optimade.filterparser import LarkParser
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG
-from optimade.server.exceptions import BadRequest
+from optimade.server.exceptions import BadRequest, Forbidden
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import FieldNotRecognised
@@ -121,7 +120,7 @@ class EntryCollection(ABC):
             params (Union[EntryListingQueryParams, SingleEntryQueryParams]): The initialized query parameter model from the server.
 
         Raises:
-            HTTPException: If too large of a page limit is provided.
+            Forbidden: If too large of a page limit is provided.
             BadRequest: If an invalid request is made, e.g., with incorrect fields
                 or response format.
 
@@ -143,14 +142,13 @@ class EntryCollection(ABC):
             and params.response_format != "json"
         ):
             raise BadRequest(
-                status_code=400, detail="Only 'json' response_format supported"
+                detail=f"Response format {params.response_format} is not supported, please use response_format='json'"
             )
 
         if getattr(params, "page_limit", False):
             limit = params.page_limit
             if limit > CONFIG.page_limit_max:
-                raise HTTPException(
-                    status_code=403,  # 403 Forbidden is enforced by the specification
+                raise Forbidden(
                     detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
                 )
             cursor_kwargs["limit"] = limit
