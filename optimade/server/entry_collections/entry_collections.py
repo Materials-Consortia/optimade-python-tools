@@ -13,7 +13,7 @@ from optimade.server.query_params import EntryListingQueryParams, SingleEntryQue
 
 
 class EntryCollection(ABC):
-    """ Backend agnostic base class for collections of EntryResources. """
+    """ Backend-agnostic base class for collections of [`EntryResource`][optimade.models.EntryResource]s. """
 
     def __init__(
         self,
@@ -30,12 +30,15 @@ class EntryCollection(ABC):
 
     @abstractmethod
     def __len__(self) -> int:
-        """ Returns the overall number of entries in the collection. """
+        """ Returns the total number of entries in the collection. """
 
     @abstractmethod
     def count(self, **kwargs) -> int:
         """ Returns the number of entries matching the query specified
         by the keyword arguments.
+
+    Args:
+        kwargs (dict): Query parameters as keyword arguments.
 
         """
 
@@ -46,13 +49,13 @@ class EntryCollection(ABC):
         """
         Fetches results and indicates if more data is available.
 
-        Also gives the total number of data available in the absence of page_limit.
+        Also gives the total number of data available in the absence of [`page_limit`][optimade.server.query_params.EntryListingQueryParams.page_limit].
 
         Args:
             params (EntryListingQueryParams): entry listing URL query params
 
         Returns:
-            Tuple[List[Entry], int, bool, set]: (results, data_returned, more_data_available, fields)
+            Tuple[List[EntryResource], int, bool, set]: (`results`, `data_returned`, `more_data_available`, `fields`).
 
         """
 
@@ -61,6 +64,9 @@ class EntryCollection(ABC):
         """ Get the set of all fields handled in this collection, from
         attribute fields in the schema, provider fields and top-level
         OPTIMADE fields.
+
+    Returns:
+        set: All fields handled in this collection.
 
         """
         # All OPTIMADE fields
@@ -79,7 +85,7 @@ class EntryCollection(ABC):
         resource class, resolving references along the way.
 
         Returns:
-            the set of property names.
+            set: Property names.
 
         """
         schema = self.resource_cls.schema()
@@ -99,21 +105,22 @@ class EntryCollection(ABC):
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> dict:
-        """ Parse and interpret the backend agnostic query parameter models into a dictionary
-        that can be used by the specific backend. Currently returns the pymongo
-        interpretation of the parameters, which will need modification for modified
-        for other backends.
+        """ Parse and interpret the backend-agnostic query parameter models into a dictionary
+        that can be used by the specific backend.
+        
+        !!! note Currently returns the pymongo interpretation of the parameters,
+            which will need modification for modified for other backends.
 
         Parameters:
-            params: the initialized query parameter model from the server.
+            params (Union[EntryListingQueryParams, SingleEntryQueryParams]): The initialized query parameter model from the server.
 
         Raises:
-            HTTPException: if too large a page limit is provided.
-            BadRequest: if an invalid request is made, e.g. with incorrect fields
+            HTTPException: If too large of a page limit is provided.
+            BadRequest: If an invalid request is made, e.g., with incorrect fields
                 or response format.
 
         Returns:
-            dict: a dictionary representation of the query parameters, ready to be used
+            dict: A dictionary representation of the query parameters, ready to be used
                 by pymongo.
 
         """
@@ -165,7 +172,7 @@ class EntryCollection(ABC):
             BadRequest: if an invalid sort is requested.
 
         Returns:
-            List[Tuple[str, int]]: a list of tuples containing the
+            List[Tuple[str, int]]: A list of tuples containing the
                 aliased field name and sort direction encoded as
                 1 (ascending) or -1 (descending).
 
@@ -199,7 +206,7 @@ class EntryCollection(ABC):
                 ),
             )
 
-        # if at least one valid field has been provided for sorting, then use that
+        # If at least one valid field has been provided for sorting, then use that
         sort_spec = tuple(
             (field, sort_dir)
             for field, sort_dir in sort_spec

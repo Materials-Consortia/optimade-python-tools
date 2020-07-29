@@ -77,7 +77,7 @@ class MongoCollection(EntryCollection):
         and pagination of the output.
 
         Returns:
-            a list of entry resource objects, the number of returned entries,
+            Tuple[List[EntryResource], int, bool, set]: A list of entry resource objects, the number of returned entries,
             whether more are available with pagination, fields.
 
         """

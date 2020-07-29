@@ -99,6 +99,12 @@ class BaseResourceMapper:
         """ Return de-aliased field name, if it exists,
         otherwise return the input field name.
 
+    Args:
+        field (str): Field name to be de-aliased.
+
+    Returns:
+        str: De-aliased field name, falling back to returning `field`.
+
         """
         split = field.split(".")
         return {alias: real for real, alias in cls.all_aliases()}.get(
