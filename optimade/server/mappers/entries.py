@@ -106,9 +106,9 @@ class BaseResourceMapper:
         str: De-aliased field name, falling back to returning `field`.
 
         """
-        split = field.split(".")
+        field = field.split(".")[0]
         return {alias: real for real, alias in cls.all_aliases()}.get(
-            split[0], split[0]
+            field, field
         )
 
     @classmethod
