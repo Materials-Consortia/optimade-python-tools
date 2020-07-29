@@ -12,7 +12,11 @@ import optimade.server.exception_handlers as exc_handlers
 
 from .entry_collections import MongoCollection
 from .config import CONFIG
-from .middleware import EnsureQueryParamIntegrity, CheckWronglyVersionedBaseUrls
+from .middleware import (
+    AddWarnings,
+    CheckWronglyVersionedBaseUrls,
+    EnsureQueryParamIntegrity,
+)
 from .routers import info, links, references, structures, landing, versions
 from .routers.utils import get_providers, BASE_URL_PREFIXES
 
@@ -56,6 +60,7 @@ if not CONFIG.use_real_mongo:
 
 
 # Add various middleware
+app.add_middleware(AddWarnings)
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 app.add_middleware(EnsureQueryParamIntegrity)
 app.add_middleware(CheckWronglyVersionedBaseUrls)

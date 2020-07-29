@@ -84,7 +84,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
                 cartesian_positions=attributes.cartesian_site_positions,
             )
 
-    # TODO: The following lines are perhaps needed to create a "valid" PDBx/mmCIF file.
+    # NOTE: The following lines are perhaps needed to create a "valid" PDBx/mmCIF file.
     # However, at the same time, the information here is "default" and will for all structures "at this moment in time"
     # be the same. I.e., no information is gained by adding this now.
     # If it is found that they indeed are needed to create a "valid" PDBx/mmCIF file, they should be included in the output.
