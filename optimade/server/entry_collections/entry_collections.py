@@ -14,7 +14,8 @@ from optimade.server.warnings import FieldNotRecognised
 
 
 class EntryCollection(ABC):
-    """ Backend-agnostic base class for collections of [`EntryResource`][optimade.models.EntryResource]s. """
+    """ Backend-agnostic base class for querying collections of
+    `EntryResource`. """
 
     def __init__(
         self,
@@ -23,6 +24,19 @@ class EntryCollection(ABC):
         resource_mapper: BaseResourceMapper,
         transformer: Transformer,
     ):
+        """ Initialize the collection for the given parameters.
+
+        Parameters:
+            collection: The backend-specific collection.
+            resource_cls (EntryResource): The `EntryResource` model
+                that is stored by the collection.
+            resource_mapper (BaseResourceMapper): A resource mapper
+                object that handles aliases and format changes between
+                deserialization and response.
+            transformer (Transformer): The Lark `Transformer` used to
+                interpret the filter.
+
+        """
         self.collection = collection
         self.parser = LarkParser()
         self.resource_cls = resource_cls
@@ -38,8 +52,8 @@ class EntryCollection(ABC):
         """ Returns the number of entries matching the query specified
         by the keyword arguments.
 
-    Args:
-        kwargs (dict): Query parameters as keyword arguments.
+        Parameters:
+            kwargs (dict): Query parameters as keyword arguments.
 
         """
 
@@ -52,15 +66,11 @@ class EntryCollection(ABC):
 
         Also gives the total number of data available in the absence of [`page_limit`][optimade.server.query_params.EntryListingQueryParams.page_limit].
 
-        Args:
+        Parameters:
             params (EntryListingQueryParams): entry listing URL query params
 
         Returns:
-<<<<<<< Updated upstream
             Tuple[List[EntryResource], int, bool, set]: (`results`, `data_returned`, `more_data_available`, `fields`).
-=======
-            Tuple[List[Entry], int, bool, set, List[OptimadeWarnings]: (results, data_returned, more_data_available, fields)
->>>>>>> Stashed changes
 
         """
 
@@ -113,7 +123,8 @@ class EntryCollection(ABC):
         """ Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
-        !!! note Currently returns the pymongo interpretation of the parameters,
+        Note:
+            Currently this method returns the pymongo interpretation of the parameters,
             which will need modification for modified for other backends.
 
         Parameters:
@@ -176,9 +187,8 @@ class EntryCollection(ABC):
             BadRequest: if an invalid sort is requested.
 
         Returns:
-            List[Tuple[str, int]]: A list of tuples containing the
-                aliased field name and sort direction encoded as
-                1 (ascending) or -1 (descending).
+            A list of tuples containing the aliased field name and
+            sort direction encoded as 1 (ascending) or -1 (descending).
 
         """
         sort_spec = []

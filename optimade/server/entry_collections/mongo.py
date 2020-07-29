@@ -32,7 +32,10 @@ else:
 
 
 class MongoCollection(EntryCollection):
-    """ Collection class for MongoDB backends, using pymongo. """
+    """ Class for querying MongoDB collections (implemented by either pymongo or mongomock)
+    containing serialized [`EntryResource`][optimade.models.EntryResource]s objects.
+
+    """
 
     def __init__(
         self,
@@ -42,6 +45,18 @@ class MongoCollection(EntryCollection):
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
     ):
+        """ Initialize the MongoCollection for the given parameters.
+
+        Parameters:
+            collection (Union[pymongo.collection.Collection, mongomock.collection.Collection]):
+                The backend-specific collection.
+            resource_cls (EntryResource): The `EntryResource` model
+                that is stored by the collection.
+            resource_mapper (BaseResourceMapper): A resource mapper
+                object that handles aliases and format changes between
+                deserialization and response.
+
+        """
         super().__init__(
             collection,
             resource_cls,
@@ -63,6 +78,15 @@ class MongoCollection(EntryCollection):
         return self.collection.estimated_document_count()
 
     def count(self, **kwargs) -> int:
+        """ Returns the number of entries matching the query specified
+        by the keyword arguments.
+
+        Parameters:
+            kwargs (dict): Query parameters as keyword arguments. The keys
+                'filter', 'skip', 'limit', 'hint' and 'maxTimeMS' will be passed
+                to the `pymongo.collection.Collection.count_documents` method.
+
+        """
         for k in list(kwargs.keys()):
             if k not in ("filter", "skip", "limit", "hint", "maxTimeMS"):
                 del kwargs[k]
