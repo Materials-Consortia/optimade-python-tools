@@ -131,11 +131,17 @@ def test_unknown_fields(get_good_response, check_error_response, structures):
     )
 
     # case 3: prefixed field and a valid field should be fine
-    request = f"/structures?sort=_exmpl_field_that_does_not_exist,nelements&page_limit={limit}"
+    request = f"/structures?sort=_exmpl3_field_that_does_not_exist,nelements&page_limit={limit}"
     data = structures.collection.find(sort=[("nelements", 1)], limit=limit)
     expected_nelements = [_["nelements"] for _ in data]
 
     response = get_good_response(request)
+    expected_detail = (
+        "Unable to sort on unknown field '_exmpl3_field_that_does_not_exist'"
+    )
+    assert len(response["meta"]["warnings"]) == 1
+    assert response["meta"]["warnings"][0]["detail"] == expected_detail
+
     nelements_list = [
         struct.get("attributes", {}).get("nelements") for struct in response["data"]
     ]
@@ -151,10 +157,20 @@ def test_unknown_fields(get_good_response, check_error_response, structures):
     )
 
     # case 5: only prefixed fields
-    request = f"/structures?sort=_exmpl_field_that_does_not_exist,_exmpl_other_field&page_limit={limit}"
+    request = f"/structures?sort=-_exmpl2_field_that_does_not_exist,_exmpl3_other_field&page_limit={limit}"
+    response = get_good_response(request)
+
+    expected_detail = "Unable to sort on unknown fields '_exmpl2_field_that_does_not_exist', '_exmpl3_other_field'"
+    assert len(response["meta"]["warnings"]) == 1
+    assert response["meta"]["warnings"][0]["detail"] == expected_detail
+
+    print(get_good_response("/info"))
+
+    # case 6: non-existent provider field
+    request = f"/structures?sort=_exmpl_provider_field_that_does_not_exist,nelements&page_limit={limit}"
     check_error_response(
         request,
         expected_status=400,
         expected_title="Bad Request",
-        expected_detail="Unable to sort on unknown fields '_exmpl_field_that_does_not_exist', '_exmpl_other_field'",
+        expected_detail="Unable to sort on unknown field '_exmpl_provider_field_that_does_not_exist'",
     )

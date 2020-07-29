@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 from typing import Tuple, List, Union
+import warnings
 
 from fastapi import HTTPException
 from lark import Transformer
@@ -10,6 +11,7 @@ from optimade.server.config import CONFIG
 from optimade.server.exceptions import BadRequest
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.warnings import OptimadeWarning
 
 
 class EntryCollection(ABC):
@@ -55,7 +57,11 @@ class EntryCollection(ABC):
             params (EntryListingQueryParams): entry listing URL query params
 
         Returns:
+<<<<<<< Updated upstream
             Tuple[List[EntryResource], int, bool, set]: (`results`, `data_returned`, `more_data_available`, `fields`).
+=======
+            Tuple[List[Entry], int, bool, set, List[OptimadeWarnings]: (results, data_returned, more_data_available, fields)
+>>>>>>> Stashed changes
 
         """
 
@@ -107,7 +113,7 @@ class EntryCollection(ABC):
     ) -> dict:
         """ Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
-        
+
         !!! note Currently returns the pymongo interpretation of the parameters,
             which will need modification for modified for other backends.
 
@@ -191,20 +197,26 @@ class EntryCollection(ABC):
             for field, _ in sort_spec
             if self.resource_mapper.alias_of(field) not in self.all_fields
         ]
-        # if all fields are unknown, or some fields are unknown and do not
-        # have other provider prefixes, then return 400: Bad Request
-        if len(unknown_fields) == len(sort_spec) or not all(
-            [field.startswith("_") for field in unknown_fields]
-        ):
-            raise BadRequest(
-                status_code=400,
-                detail=(
-                    "Unable to sort on unknown field{} '{}'".format(
-                        "s" if len(unknown_fields) > 1 else "",
-                        "', '".join(unknown_fields),
-                    )
-                ),
+
+        if unknown_fields:
+            error_detail = "Unable to sort on unknown field{} '{}'".format(
+                "s" if len(unknown_fields) > 1 else "", "', '".join(unknown_fields),
             )
+
+            # If all unknown fields are "other" provider-specific, then only provide a warning
+            if all(
+                (
+                    field.startswith("_")
+                    and not field.startswith(f"_{self.provider_prefix}_")
+                )
+                for field in unknown_fields
+            ):
+                warnings.warn(error_detail, OptimadeWarning)
+
+            # Otherwise, if all fields are unknown, or some fields are unknown and do not
+            # have other provider prefixes, then return 400: Bad Request
+            else:
+                raise BadRequest(detail=error_detail)
 
         # If at least one valid field has been provided for sorting, then use that
         sort_spec = tuple(
