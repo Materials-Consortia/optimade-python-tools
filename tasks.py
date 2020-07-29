@@ -239,6 +239,9 @@ def create_api_reference_docs(_, pre_clean=False):
 
     pages_template = 'title: "{name}"\n'
     md_template = "# {name}\n\n::: {py_path}\n"
+    models_template = (
+        md_template + f"{' ' * 4}rendering:\n{' ' * 6}show_if_no_docstring: true\n"
+    )
 
     if docs_dir.exists() and pre_clean:
         shutil.rmtree(docs_dir, ignore_errors=True)
@@ -280,7 +283,10 @@ def create_api_reference_docs(_, pre_clean=False):
             py_path = f"optimade/{relpath}/{basename}".replace("/", ".")
             md_filename = filename.replace(".py", ".md")
 
+            # For models we want to include EVERYTHING, even if it doesn't have a doc-string
+            template = models_template if str(relpath) == "models" else md_template
+
             write_file(
                 full_path=docs_sub_dir.joinpath(md_filename),
-                content=md_template.format(name=basename, py_path=py_path),
+                content=template.format(name=basename, py_path=py_path),
             )
