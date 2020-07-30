@@ -290,7 +290,7 @@ class ImplementationValidator:
     Uses the pydantic models in `optimade.models` to validate the
     response from the server and crawl through the available endpoints.
 
-    !!! caution "Drawbacks"
+    Caution:
         Only works for current version of the specification as defined
         by `optimade.models`.
 
