@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABC
 from typing import Tuple, List, Union
 import warnings
+import re
 
 from lark import Transformer
 
@@ -214,7 +215,7 @@ class EntryCollection(ABC):
             # If all unknown fields are "other" provider-specific, then only provide a warning
             if all(
                 (
-                    field.startswith("_")
+                    re.match(r"_[a-z_0-9]+_[a-z_0-9]*", field)
                     and not field.startswith(f"_{self.provider_prefix}_")
                 )
                 for field in unknown_fields
