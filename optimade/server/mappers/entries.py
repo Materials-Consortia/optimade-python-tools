@@ -43,7 +43,7 @@ class BaseResourceMapper:
         those defined by the server config.
 
         Returns:
-            Tuple[Tuple[str, str]]: A tuple of alias tuples.
+            A tuple of alias tuples.
 
         """
         return (
