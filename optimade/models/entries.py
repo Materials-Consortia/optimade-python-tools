@@ -88,6 +88,7 @@ class EntryResourceAttributes(Attributes):
 
 
 class EntryResource(Resource):
+    """The base model for an entry resource."""
 
     id: str = Field(
         ...,

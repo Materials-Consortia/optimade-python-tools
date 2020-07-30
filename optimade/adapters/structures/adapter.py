@@ -10,11 +10,32 @@ from .jarvis import get_jarvis_atoms
 
 
 class Structure(EntryAdapter):
-    """Lazy structure resource converter
-    :param structure: a single JSON OPTIMADE structure resource entry.
+    """
+    Lazy structure resource converter.
+
+    Go to [`EntryAdapter`][optimade.adapters.base.EntryAdapter] to see the full list of methods
+    and properties.
+
+    Attributes:
+        ENTRY_RESOURCE (StructureResource): This adapter stores entry resources as
+            [`StructureResource`][optimade.models.structures.StructureResource]s.
+        _type_converters (Dict[str, Callable]): Dictionary of valid conversion types for entry.
+
+            Currently available types:
+
+            - `aiida_structuredata`
+            - `ase`
+            - `cif`
+            - `pdb`
+            - `pdbx_mmcif`
+            - `pymatgen`
+            - `jarvis`
+
+        as_<_type_converters>: Convert entry to a type listed in `_type_converters`.
+
     """
 
-    ENTRY_RESOURCE = StructureResource
+    ENTRY_RESOURCE: StructureResource = StructureResource
     _type_converters = {
         "aiida_structuredata": get_aiida_structure_data,
         "ase": get_ase_atoms,
