@@ -2,6 +2,8 @@ from datetime import datetime, timezone
 
 import pytest
 
+from optimade.server.warnings import FieldNotRecognised
+
 
 @pytest.fixture(scope="module")
 def structures():
@@ -137,7 +139,6 @@ def test_unknown_field_errors(check_error_response, structures):
     )
 
 
-@pytest.mark.filterwarnings("ignore", category="FieldNotRecognised")
 def test_unknown_field_prefixed(get_good_response, structures):
     """ If any other-provider-specific fields are requested, return a warning but still sort. """
     limit = 5
@@ -145,7 +146,9 @@ def test_unknown_field_prefixed(get_good_response, structures):
     data = structures.collection.find(sort=[("nelements", 1)], limit=limit)
     expected_nelements = [_["nelements"] for _ in data]
 
-    response = get_good_response(request)
+    with pytest.warns(FieldNotRecognised):
+        response = get_good_response(request)
+
     expected_detail = (
         "Unable to sort on unknown field '_exmpl3_field_that_does_not_exist'"
     )
@@ -160,7 +163,8 @@ def test_unknown_field_prefixed(get_good_response, structures):
 
     # case 5: only prefixed fields
     request = f"/structures?sort=-_exmpl2_field_that_does_not_exist,_exmpl3_other_field&page_limit={limit}"
-    response = get_good_response(request)
+    with pytest.warns(FieldNotRecognised):
+        response = get_good_response(request)
 
     expected_detail = "Unable to sort on unknown fields '_exmpl2_field_that_does_not_exist', '_exmpl3_other_field'"
     assert len(response["meta"]["warnings"]) == 1
