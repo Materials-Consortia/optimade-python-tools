@@ -38,8 +38,7 @@ class BaseResourceMapper:
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
-        """
-        Returns all of the associated aliases for this class, including
+        """ Returns all of the associated aliases for this class, including
         those defined by the server config.
 
         Returns:
@@ -61,12 +60,11 @@ class BaseResourceMapper:
 
     @classmethod
     def all_length_aliases(cls) -> Tuple[Tuple[str, str]]:
-        """
-        Returns all of the associated length aliases for this class, including
+        """ Returns all of the associated length aliases for this class, including
         those defined by the server config.
 
         Returns:
-            Tuple[Tuple[str, str]]: A tuple of length alias tuples.
+            A tuple of length alias tuples.
 
         """
         return cls.LENGTH_ALIASES + tuple(
@@ -75,29 +73,28 @@ class BaseResourceMapper:
 
     @classmethod
     def length_alias_for(cls, field: str) -> Optional[str]:
-        """
-        Returns the length alias for the particular field, or `None` if no
+        """ Returns the length alias for the particular field, or `None` if no
         such alias is found.
 
         Parameters:
             field (str): OPTIMADE field name.
 
         Returns:
-            `Optional[str]`: Aliased field as found in [`all_length_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases].
+            Aliased field as found in [`all_length_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases].
 
         """
         return dict(cls.all_length_aliases()).get(field, None)
 
     @classmethod
     def alias_for(cls, field: str) -> str:
-        """
-        Return aliased field name.
+        """Return aliased field name.
 
         Parameters:
             field (str): OPTIMADE field name.
 
         Returns:
-            str: Aliased field as found in [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].
+            Aliased field as found in [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].
+
         """
         split = field.split(".")
         alias = dict(cls.all_aliases()).get(split[0], None)
@@ -114,7 +111,7 @@ class BaseResourceMapper:
             field (str): Field name to be de-aliased.
 
         Returns:
-            str: De-aliased field name, falling back to returning `field`.
+            De-aliased field name, falling back to returning `field`.
 
         """
         field = field.split(".")[0]
@@ -122,11 +119,10 @@ class BaseResourceMapper:
 
     @classmethod
     def get_required_fields(cls) -> set:
-        """
-        Get REQUIRED response fields.
+        """Get REQUIRED response fields.
 
         Returns:
-            set: REQUIRED response fields.
+            REQUIRED response fields.
 
         """
         res = cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
@@ -135,8 +131,7 @@ class BaseResourceMapper:
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
-        """
-        Map properties from MongoDB to OPTIMADE.
+        """Map properties from MongoDB to OPTIMADE.
 
         Starting from a MongoDB document `doc`, map the DB fields to the corresponding OPTIMADE fields.
         Then, the fields are all added to the top-level field "attributes",
@@ -148,7 +143,7 @@ class BaseResourceMapper:
             doc (dict): A resource object in MongoDB format.
 
         Returns:
-            dict: A resource object in OPTIMADE format.
+            A resource object in OPTIMADE format.
 
         """
         if "_id" in doc:
