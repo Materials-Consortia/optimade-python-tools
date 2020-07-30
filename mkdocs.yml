@@ -24,6 +24,9 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/Materials-Consortia
 
+extra_css:
+  - css/reference.css
+
 markdown_extensions:
   - admonition
   - pymdownx.details
@@ -52,7 +55,7 @@ plugins:
             show_if_no_docstring: false
             show_source: true
             group_by_category: true
-            heading_level: 3
+            heading_level: 2
           selection:
             filters:
               - "!^_[^_]"
@@ -64,4 +67,6 @@ plugins:
             docstring_style: google
             docstring_options:
               replace_admonitions: true
+      watch:
+        - optimade
   - awesome-pages
