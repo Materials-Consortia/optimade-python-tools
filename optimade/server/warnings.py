@@ -33,3 +33,7 @@ class FieldNotCreated(OptimadeWarning):
 
 class UnmatchedValues(OptimadeWarning):
     """Values of the same field or resource differ, where they should be equal"""
+
+
+class FieldNotRecognized(OptimadeWarning):
+    """A field used in the request is not recognised by this implementation."""
