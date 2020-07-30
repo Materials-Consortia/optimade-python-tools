@@ -6,7 +6,7 @@ copyright: Built by the Materials-Consortia
 theme:
   name: material
   palette:
-    scheme: preference
+    scheme: default
     primary: black
     accent: red
   icon:

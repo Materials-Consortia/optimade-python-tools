@@ -5,7 +5,7 @@
 This package may be used to setup and run an [OPTIMADE index meta-database](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#index-meta-database).
 Install the package via `pip install optimade[server]`.
 
-This python OPTIMADE implementation can be configured in two ways:
+This Python OPTIMADE implementation can be configured in two ways:
 First, the server can be configured via environment variables prefixed with `optimade_` and the corresponding variable names in `ServerConfig` in the [`config.py` file][optimade.server.config]. These take precedence. These environment variables are not case sensitive, so both `OPTIMADE_CONFIG_FILE` and `optimade_config_file` are valid.
 Second, and the preferred method of configuring the server, is to use a [JSON file](static/example_config.json) with the bulk of the configuration and setting the `optimade_config_file` environment variable to point to the absolute location of this JSON file. By default this points to `~/.optimade.json` which can also be used to store the configuration if you don't want to set `optimade_config_file`.
 

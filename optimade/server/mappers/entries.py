@@ -140,8 +140,8 @@ class BaseResourceMapper:
 
         Starting from a MongoDB document `doc`, map the DB fields to the corresponding OPTIMADE fields.
         Then, the fields are all added to the top-level field "attributes",
-        with the exception of other top-level fields, defined in `cls.TOPLEVEL_NON_ATTRIBUTES_FIELDS`.
-        All fields not in `cls.TOPLEVEL_NON_ATTRIBUTES_FIELDS` + "attributes" will be removed.
+        with the exception of other top-level fields, defined in `cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS`.
+        All fields not in `cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS` + "attributes" will be removed.
         Finally, the `type` is given the value of the specified `cls.ENDPOINT`.
 
         Parameters:
