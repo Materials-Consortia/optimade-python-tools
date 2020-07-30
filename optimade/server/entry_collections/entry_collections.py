@@ -11,7 +11,7 @@ from optimade.server.config import CONFIG
 from optimade.server.exceptions import BadRequest, Forbidden
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.warnings import FieldNotRecognised
+from optimade.server.warnings import FieldNotRecognized
 
 
 class EntryCollection(ABC):
@@ -220,7 +220,7 @@ class EntryCollection(ABC):
                 )
                 for field in unknown_fields
             ):
-                warnings.warn(error_detail, FieldNotRecognised)
+                warnings.warn(error_detail, FieldNotRecognized)
 
             # Otherwise, if all fields are unknown, or some fields are unknown and do not
             # have other provider prefixes, then return 400: Bad Request
