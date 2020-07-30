@@ -1,3 +1,12 @@
+"""
+Convert an OPTIMADE structure, in the format of
+[`StructureResource`][optimade.models.structures.StructureResource]
+to an ASE `Atoms` object.
+
+This conversion function relies on the ASE code.
+
+For more information on the ASE code see [their documentation](https://wiki.fysik.dtu.dk/ase/).
+"""
 from typing import Dict
 from warnings import warn
 
@@ -18,12 +27,17 @@ __all__ = ("get_ase_atoms",)
 
 
 def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
-    """ Get ASE Atoms from OPTIMADE structure
+    """ Get ASE `Atoms` from OPTIMADE structure.
 
-    NOTE: Cannot handle partial occupancies (this includes vacancies)
+    Caution:
+        Cannot handle partial occupancies (this includes vacancies).
 
-    :param optimade_structure: OPTIMADE structure
-    :return: ASE.Atoms
+    Parameters:
+        optimade_structure: OPTIMADE structure.
+
+    Returns:
+        ASE `Atoms` object.
+
     """
     if globals().get("Atoms", None) is None:
         warn(ASE_NOT_FOUND)

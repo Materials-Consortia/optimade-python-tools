@@ -1,3 +1,12 @@
+"""
+Convert an OPTIMADE structure, in the format of
+[`StructureResource`][optimade.models.structures.StructureResource]
+to a pymatgen `Molecule` or `Structure` object.
+
+This conversion function relies on the [pymatgen](https://github.com/materialsproject/pymatgen) package.
+
+For more information on the pymatgen code see [their documentation](https://pymatgen.org).
+"""
 from typing import Union, Dict, List
 
 from optimade.models import Species as OptimadeStructureSpecies
@@ -18,10 +27,24 @@ __all__ = ("get_pymatgen",)
 
 
 def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Molecule]:
-    """ Get pymatgen Structure or Molecule from OPTIMADE structure
+    """ Get pymatgen Structure or Molecule from OPTIMADE structure.
 
-    :param optimade_structure: OPTIMADE structure
-    :return: pymatgen.Structure , pymatgen.Molecule
+    This function will return either a pymatgen `Structure` or `Molecule` based
+    on the periodicity or periodic dimensionality of OPTIMADE structure.
+
+    For bulk, three-dimensional structures, a pymatgen `Structure` is returned.
+    This means, if the [`dimension_types`][optimade.models.structures.StructureResourceAttributes.dimension_types]
+    attribute is comprised of all `1`s (or [`Periodicity.PERIODIC`][optimade.models.structures.Periodicity.PERIODIC]s).
+
+    Otherwise, a pymatgen `Molecule` is returned.
+
+    Parameters:
+        optimade_structure: OPTIMADE structure.
+
+    Returns:
+        A pymatgen `Structure` or `Molecule` based on the periodicity of the
+        OPTIMADE structure.
+
     """
     if globals().get("Structure", None) is None:
         warn(PYMATGEN_NOT_FOUND)

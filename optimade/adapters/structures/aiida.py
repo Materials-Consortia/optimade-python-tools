@@ -1,3 +1,12 @@
+"""
+Convert an OPTIMADE structure, in the format of
+[`StructureResource`][optimade.models.structures.StructureResource]
+to an AiiDA `StructureData` Node.
+
+For more information on the AiiDA code see [their website](http://www.aiida.net).
+
+This conversion function relies on the [`aiida-core`](https://github.com/aiidateam/aiida-core) package.
+"""
 from optimade.models import StructureResource as OptimadeStructure
 
 from optimade.adapters.structures.utils import pad_cell
@@ -17,9 +26,14 @@ __all__ = ("get_aiida_structure_data",)
 
 
 def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> StructureData:
-    """ Get AiiDA StructureData from OPTIMADE structure
-    :param optimade_structure: OPTIMADE structure
-    :return: StructureData
+    """ Get AiiDA `StructureData` from OPTIMADE structure.
+
+    Parameters:
+        optimade_structure: OPTIMADE structure.
+
+    Returns:
+        AiiDA `StructureData` Node.
+
     """
     if globals().get("StructureData", None) is None:
         warn(AIIDA_NOT_FOUND)

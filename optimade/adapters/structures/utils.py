@@ -1,4 +1,8 @@
-# pylint: disable=invalid-name
+"""
+Utility functions to help the conversion functions along.
+
+Most of these functions rely on the [NumPy](https://numpy.org/) library.
+"""
 from typing import List, Tuple, Iterable
 
 from optimade.models.structures import Vector3D
@@ -15,10 +19,18 @@ except ImportError:
 def scaled_cell(
     cell: Tuple[Vector3D, Vector3D, Vector3D]
 ) -> Tuple[Vector3D, Vector3D, Vector3D]:
-    """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`)
+    """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).
 
     This is based on PDB's method of calculating SCALE from CRYST data.
-    For more info, see https://www.wwpdb.org/documentation/file-format-content/format33/sect8.html#SCALEn
+    For more info, see [this site](https://www.wwpdb.org/documentation/file-format-content/format33/sect8.html#SCALEn).
+
+    Parameters:
+        cell: A cartesian 3x3 cell. This equates to the
+            [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
+
+    Returns:
+        A scaled 3x3 cell.
+
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)
@@ -37,9 +49,21 @@ def scaled_cell(
 def fractional_coordinates(
     cell: Tuple[Vector3D, Vector3D, Vector3D], cartesian_positions: List[Vector3D]
 ) -> List[Vector3D]:
-    """Returns fractional coordinates and wraps coordinates to be [0;1[
+    """Returns fractional coordinates and wraps coordinates to be `[0;1[`.
 
-    NOTE: Based on `ase.atoms:Atoms.get_scaled_positions()`.
+    Note:
+        Based on [ASE code](https://wiki.fysik.dtu.dk/ase/_modules/ase/atoms.html#Atoms.get_scaled_positions).
+
+    Parameters:
+        cell: A cartesian 3x3 cell. This equates to the
+            [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
+        cartesian_positions: A list of cartesian atomic positions. This equates to the
+            [`cartesian_site_positions`][optimade.models.structures.StructureResourceAttributes.cartesian_site_positions]
+            attribute.
+
+    Returns:
+        A list of fractional coordinates for the atomic positions.
+
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)
@@ -61,12 +85,24 @@ def fractional_coordinates(
     return [tuple(position) for position in fractional]
 
 
-def cell_to_cellpar(cell, radians=False):
-    """Returns the cell parameters [a, b, c, alpha, beta, gamma].
+def cell_to_cellpar(
+    cell: Tuple[Vector3D, Vector3D, Vector3D], radians: bool = False
+) -> List[float]:
+    """Returns the cell parameters `[a, b, c, alpha, beta, gamma]`.
 
-    Angles are in degrees unless radian=True is used.
+    Angles are in degrees unless `radian=True` is used.
 
-    NOTE: Based on `ase.geometry.cell:cell_to_cellpar()`.
+    Note:
+        Based on [ASE code](https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cell_to_cellpar).
+
+    Parameters:
+        cell: A cartesian 3x3 cell. This equates to the
+            [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
+        radians: Use radians instead of degrees (default) for angles.
+
+    Returns:
+        The unit cell parameters as a `list` of `float` values.
+
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)
@@ -91,8 +127,16 @@ def cell_to_cellpar(cell, radians=False):
     return np.array(lengths + angles)
 
 
-def unit_vector(x):
-    """Return a unit vector in the same direction as x."""
+def unit_vector(x: Vector3D) -> Vector3D:
+    """Return a unit vector in the same direction as `x`.
+
+    Parameters:
+        x: A three-dimensional vector.
+
+    Returns:
+        A unit vector in the same direction as `x`.
+
+    """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)
         return None
@@ -101,8 +145,12 @@ def unit_vector(x):
     return y / np.linalg.norm(y)
 
 
-def cellpar_to_cell(cellpar, ab_normal=(0, 0, 1), a_direction=None):
-    """Return a 3x3 cell matrix from cellpar=[a,b,c,alpha,beta,gamma].
+def cellpar_to_cell(
+    cellpar: List[float],
+    ab_normal: Tuple[int, int, int] = (0, 0, 1),
+    a_direction: Tuple[int, int, int] = None,
+) -> List[Vector3D]:
+    """Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.
 
     Angles must be in degrees.
 
@@ -119,14 +167,29 @@ def cellpar_to_cell(cellpar, ab_normal=(0, 0, 1), a_direction=None):
     plane.
 
     Example:
+        >>> cell = cellpar_to_cell([1, 2, 4, 10, 20, 30], (0, 1, 1), (1, 2, 3))
+        >>> np.round(cell, 3)
+        array([[ 0.816, -0.408,  0.408],
+            [ 1.992, -0.13 ,  0.13 ],
+            [ 3.859, -0.745,  0.745]])
 
-    >>> cell = cellpar_to_cell([1, 2, 4, 10, 20, 30], (0, 1, 1), (1, 2, 3))
-    >>> np.round(cell, 3)
-    array([[ 0.816, -0.408,  0.408],
-           [ 1.992, -0.13 ,  0.13 ],
-           [ 3.859, -0.745,  0.745]])
+    Note:
+        Direct copy of [ASE code](https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cellpar_to_cell).
 
-    NOTE: Direct copy of `ase.geometry.cell:cellpar_to_cell()`.
+    Parameters:
+        cellpar: The unit cell parameters as a `list` of `float` values.
+
+            !!! note
+                The angles must be given in degrees.
+        ab_normal: Unit vector normal to the ab-plane.
+        a_direction: Unit vector defining the a-direction (default: `(1, 0, 0)`).
+
+    Returns:
+        A cartesian 3x3 cell.
+
+        This should equate to the
+        [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
+
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)
@@ -231,7 +294,21 @@ def _pad_iter_of_iters(
 def pad_cell(
     lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D], padding: float = None
 ) -> Tuple[Tuple[Vector3D, Vector3D, Vector3D], bool]:
-    """Turn any null/None values into a float in given tuple of lattice_vectors"""
+    """Turn any `null`/`None` values into a `float` in given `tuple` of
+    [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].
+
+    Parameters:
+        lattice_vectors: A 3x3 cartesian cell. This is the
+            [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors]
+            attribute.
+        padding: A value with which `null` or `None` values should be replaced.
+
+    Returns:
+        The possibly redacted/padded `lattice_vectors` and a `bool` declaring whether or not
+        the value has been redacted/padded or not, i.e., whether it contained `null` or `None`
+        values.
+
+    """
     return _pad_iter_of_iters(
         iterable=lattice_vectors, padding=padding, outer=tuple, inner=tuple,
     )

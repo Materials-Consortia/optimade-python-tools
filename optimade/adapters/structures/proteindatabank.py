@@ -1,4 +1,26 @@
-# pylint: disable=unreachable
+"""
+Convert an OPTIMADE structure, in the format of
+[`StructureResource`][optimade.models.structures.StructureResource]
+to a PDB file or PDBx/mmCIF file (Protein Data Bank).
+
+For more information on the file formats, see
+[this FAQ page](http://www.wwpdb.org/documentation/file-formats-and-the-pdb)
+from the [wwPDB](http://www.wwpdb.org) website.
+
+Note:
+    These conversion functions are inspired heavily by the similar conversion
+    functions in the ASE library.
+
+    See [here (PDB)](https://wiki.fysik.dtu.dk/ase/_modules/ase/io/proteindatabank.html#write_proteindatabank)
+    and [here (PDBx/mmCIF)](https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif) for the original ASE code.
+
+    For more information on the ASE library, see [their documentation](https://wiki.fysik.dtu.dk/ase/).
+
+These conversion functions both rely on the [NumPy](https://numpy.org/) library.
+
+Warning:
+    Currently, the PDBx/mmCIF conversion function is not parsing as a complete PDBx/mmCIF file.
+"""
 from typing import Dict
 
 try:
@@ -25,14 +47,18 @@ __all__ = ("get_pdb", "get_pdbx_mmcif")
 
 def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     optimade_structure: OptimadeStructure,
-) -> str:  # pragma: no cover
-    """ Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure
+) -> str:
+    """ Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure.
 
-    Inspired by `ase.io.proteindatabank:write_proteindatabank()` in the ASE package,
-    as well as `ase.io.cif:write_cif()`.
+    Warning:
+        The result of this function can currently not be parsed as a complete PDBx/mmCIF file.
 
-    :param optimade_structure: OPTIMADE structure
-    :return: str
+    Parameters:
+        optimade_structure: OPTIMADE structure.
+
+    Return:
+        A modern PDBx/mmCIF file as a single Python `str` object.
+
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)
@@ -173,12 +199,14 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
 def get_pdb(  # pylint: disable=too-many-locals
     optimade_structure: OptimadeStructure,
 ) -> str:
-    """ Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure
+    """ Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure.
 
-    Inspired by `ase.io.proteindatabank.write_proteindatabank()` in the ASE package.
+    Parameters:
+        optimade_structure: OPTIMADE structure.
 
-    :param optimade_structure: OPTIMADE structure
-    :return: str
+    Returns:
+        A PDB file as a single Python `str` object.
+
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)

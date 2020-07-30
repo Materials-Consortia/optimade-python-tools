@@ -1,3 +1,23 @@
+"""
+The base for all adapters.
+
+An entry resource adapter is a tool to wrap OPTIMADE JSON-deserialized Python dictionaries
+in the relevant pydantic model for the particular resource.
+
+This means data resources in an OPTIMADE REST API response can be converted to valid Python
+types written specifically for them.
+One can then use the standard pydantic functionality on the wrapped objects, reasoning about
+the embedded hierarchical types as well as retrieve default values for properties not supplied
+by the raw API response resource.
+
+Furthermore, the entry resource adapter allows conversion between the entry resource and any
+implemented equivalent data structure.
+
+See [`Reference`][optimade.adapters.references.adapter.Reference] and
+[`Structure`][optimade.adapters.structures.adapter.Structure] to find out what the entry
+resources can be converted to for [`ReferenceResource`][optimade.models.references.ReferenceResource]s
+and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
+"""
 import re
 from typing import Union, Dict, Callable, Any, Tuple, List
 
