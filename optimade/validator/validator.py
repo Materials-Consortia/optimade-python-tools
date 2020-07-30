@@ -284,14 +284,14 @@ def test_case(test_fn):
 
 
 class ImplementationValidator:
-    """ Class to call test functions on a particular OPTIMADE
-    implementation.
+    """
+    Class to call test functions on a particular OPTIMADE implementation.
 
     Uses the pydantic models in `optimade.models` to validate the
     response from the server and crawl through the available endpoints.
 
-    Drawbacks:
-        - only works for current version of the specification as defined
+    !!! caution "Drawbacks"
+        Only works for current version of the specification as defined
         by `optimade.models`.
 
     """
