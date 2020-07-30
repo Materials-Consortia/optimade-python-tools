@@ -77,7 +77,7 @@ class BaseResourceMapper:
         such alias is found.
 
         Parameters:
-            field (str): OPTIMADE field name.
+            field: OPTIMADE field name.
 
         Returns:
             Aliased field as found in [`all_length_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases].
@@ -90,7 +90,7 @@ class BaseResourceMapper:
         """Return aliased field name.
 
         Parameters:
-            field (str): OPTIMADE field name.
+            field: OPTIMADE field name.
 
         Returns:
             Aliased field as found in [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].
@@ -108,7 +108,7 @@ class BaseResourceMapper:
         otherwise return the input field name.
 
         Args:
-            field (str): Field name to be de-aliased.
+            field: Field name to be de-aliased.
 
         Returns:
             De-aliased field name, falling back to returning `field`.
@@ -140,7 +140,7 @@ class BaseResourceMapper:
         Finally, the `type` is given the value of the specified `cls.ENDPOINT`.
 
         Parameters:
-            doc (dict): A resource object in MongoDB format.
+            doc: A resource object in MongoDB format.
 
         Returns:
             A resource object in OPTIMADE format.
