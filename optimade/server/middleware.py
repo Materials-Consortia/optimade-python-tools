@@ -32,7 +32,7 @@ from optimade.server.routers.utils import get_base_url, BASE_URL_PREFIXES
 
 
 class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
-    """Ensure all query parameters are followed by an equal sign (`=`)"""
+    """Ensure all query parameters are followed by an equal sign (`=`)."""
 
     @staticmethod
     def check_url(url_query: str) -> set:
@@ -75,7 +75,7 @@ class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
 
 
 class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
-    """If a non-supported versioned base URL is supplied return `553 Version Not Supported`"""
+    """If a non-supported versioned base URL is supplied return `553 Version Not Supported`."""
 
     @staticmethod
     def check_url(parsed_url: urllib.parse.ParseResult):
@@ -116,7 +116,7 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
 
 
 class HandleApiHint(BaseHTTPMiddleware):
-    """Handle `api_hint` query parameter"""
+    """Handle `api_hint` query parameter."""
 
     @staticmethod
     def handle_api_hint(api_hint: List[str]) -> Union[None, str]:
@@ -130,11 +130,11 @@ class HandleApiHint(BaseHTTPMiddleware):
         response and the `api_hint` query parameter will not be applied.
 
         If the passed value does not comply with the rules set out in
-        [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation)
+        [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation),
         a warning will be added to the response and the `api_hint` query parameter
         will not be applied.
 
-        If the value is part of the implementations accepted versioned base URLs,
+        If the value is part of the implementation's accepted versioned base URLs,
         it will be returned as is.
 
         If the value represents a major version that is newer than what is supported
@@ -204,12 +204,11 @@ class HandleApiHint(BaseHTTPMiddleware):
 
     @staticmethod
     def is_versioned_base_url(url: str) -> bool:
-        """Determine whether a URL is for a versioned base URL.
+        """Determine whether a request is for a versioned base URL.
 
         First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.
-        If not, return `False`.
-        Else, remove unversioned base URL from URL and check again.
-        Return bool of final result.
+        If not, return `False`, else, remove unversioned base URL from the URL and check again.
+        Return `bool` of final result.
 
         Parameters:
             url: The full URL to check.
@@ -282,7 +281,8 @@ class AddWarnings(BaseHTTPMiddleware):
     Add [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning]s to the response.
 
     All sub-classes of [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning]
-    will also be added to the response's `meta.warnings` list.
+    will also be added to the response's
+    [`meta.warnings`][optimade.models.optimade_json.ResponseMeta.warnings] list.
 
     By overriding the `warnings.showwarning()` function with the
     [showwarning method][optimade.server.middleware.AddWarnings.showwarning],
@@ -290,7 +290,8 @@ class AddWarnings(BaseHTTPMiddleware):
     warning message to `stderr`, but also its addition to an in-memory list of
     warnings.
     This middleware will, after the URL request has been handled, add the list of
-    accumulated warnings to the JSON response under the `meta.warnings` field.
+    accumulated warnings to the JSON response under the
+    [`meta.warnings`][optimade.models.optimade_json.ResponseMeta.warnings] field.
 
     To make sure the last part happens correctly and a Starlette `StreamingResponse`
     is returned, as is expected from a `BaseHTTPMiddleware` sub-class, one is
@@ -327,7 +328,7 @@ class AddWarnings(BaseHTTPMiddleware):
         This method will also print warning messages to `stderr` by calling
         `warnings._showwarning_orig()` or `warnings._showwarnmsg_impl()`.
         The first function will be called if the issued warning is not recognized
-        as an [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning].'
+        as an [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning].
         This is equivalent to "standard behaviour".
         The second function will be called _after_ an
         [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning] has been handled.
