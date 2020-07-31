@@ -1,3 +1,10 @@
+"""
+Custom ASGI app middleware.
+
+These middleware are based on [Starlette](https://www.starlette.io)'s `BaseHTTPMiddleware`.
+See the specific Starlette [documentation page](https://www.starlette.io/middleware/) for more
+information on it's middleware implementation.
+"""
 import re
 from typing import Optional, IO, Type, Generator, List, Union
 import urllib.parse
@@ -28,8 +35,26 @@ class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
     """Ensure all query parameters are followed by an equal sign (`=`)"""
 
     @staticmethod
-    def check_url(url_query: str):
-        """Check parsed URL query part for parameters not followed by `=`"""
+    def check_url(url_query: str) -> set:
+        """Check parsed URL query part for parameters not followed by `=`.
+
+        URL query parameters are considered to be split by ampersand (`&`)
+        and semi-colon (`;`).
+
+        Parameters:
+            url_query: The raw urllib-parsed query part.
+
+        Raises:
+            BadRequest: If a query parameter does not come with a value.
+
+        Returns:
+            The set of individual query parameters and their values.
+
+            This is mainly for testing and not actually neeeded by the middleware,
+            since if the URL exhibits an invalid query part a `400 Bad Request`
+            response will be returned.
+
+        """
         queries_amp = set(url_query.split("&"))
         queries = set()
         for query in queries_amp:
@@ -54,7 +79,16 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
 
     @staticmethod
     def check_url(parsed_url: urllib.parse.ParseResult):
-        """Check URL path for versioned part"""
+        """Check URL path for versioned part.
+
+        Parameters:
+            parsed_url: A complete urllib-parsed raw URL.
+
+        Raises:
+            VersionNotSupported: If the URL represents an OPTIMADE versioned base URL
+                and the version part is not supported by the implementation.
+
+        """
         base_url = get_base_url(parsed_url)
         optimade_path = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"[
             len(base_url) :
@@ -86,7 +120,42 @@ class HandleApiHint(BaseHTTPMiddleware):
 
     @staticmethod
     def handle_api_hint(api_hint: List[str]) -> Union[None, str]:
-        """Handle `api_hint` parameter"""
+        """Handle `api_hint` parameter value.
+
+        There are several scenarios that can play out, when handling the `api_hint`
+        query parameter:
+
+        If several `api_hint` query parameters have been used, or a "standard" JSON
+        list (`,`-separated value) has been supplied, a warning will be added to the
+        response and the `api_hint` query parameter will not be applied.
+
+        If the passed value does not comply with the rules set out in
+        [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation)
+        a warning will be added to the response and the `api_hint` query parameter
+        will not be applied.
+
+        If the value is part of the implementations accepted versioned base URLs,
+        it will be returned as is.
+
+        If the value represents a major version that is newer than what is supported
+        by the implementation, a `553 Version Not Supported` response will be returned,
+        as is stated by [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation).
+
+        On the other hand, if the value represents a major version equal to or lower
+        than the implementation's supported major version, then the implementation's
+        supported major version will be returned and tried for the request.
+
+        Parameters:
+            api_hint: The urllib-parsed query parameter value for `api_hint`.
+
+        Raises:
+            VersionNotSupported: If the requested major version is newer than the
+                supported major version of the implementation.
+
+        Returns:
+            Either a valid `api_hint` value or `None`.
+
+        """
         # Try to split by `,` if value is provided once, but in JSON-type "list" format
         _api_hint = []
         for value in api_hint:
@@ -135,12 +204,19 @@ class HandleApiHint(BaseHTTPMiddleware):
 
     @staticmethod
     def is_versioned_base_url(url: str) -> bool:
-        """Determine whether a URL is for a versioned base URL
+        """Determine whether a URL is for a versioned base URL.
 
         First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.
-        If not, return False.
+        If not, return `False`.
         Else, remove unversioned base URL from URL and check again.
         Return bool of final result.
+
+        Parameters:
+            url: The full URL to check.
+
+        Returns:
+            Whether or not the full URL represents an OPTIMADE versioned base URL.
+
         """
         if not re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url):
             return False
@@ -262,12 +338,12 @@ class AddWarnings(BaseHTTPMiddleware):
         This process is similar to the [Exception handlers][optimade.server.exception_handlers].
 
         Parameters:
-            message (Warning): The `Warning` object to show and possibly handle.
-            category (Type[Warning]): `Warning` type being warned about. This amounts to `type(message)`.
-            filename (str): Name of the file, where the warning was issued.
-            lineno (int): Line number in the file, where the warning was issued.
-            file (Optional[IO]): A file-like object to which the warning should be written.
-            line (Optional[str]): Source content of the line that issued the warning.
+            message: The `Warning` object to show and possibly handle.
+            category: `Warning` type being warned about. This amounts to `type(message)`.
+            filename: Name of the file, where the warning was issued.
+            lineno: Line number in the file, where the warning was issued.
+            file: A file-like object to which the warning should be written.
+            line: Source content of the line that issued the warning.
 
         """
         assert isinstance(
@@ -326,12 +402,14 @@ class AddWarnings(BaseHTTPMiddleware):
 
     @staticmethod
     def chunk_it_up(content: str, chunk_size: int) -> Generator:
-        """
-        Return generator for string in chunks of size `chunk_size`
+        """Return generator for string in chunks of size `chunk_size`.
 
         Parameters:
-            content (str): String-content to separate into chunks.
-            chunk_size (int): The size of the chunks, i.e. the length of the string-chunks.
+            content: String-content to separate into chunks.
+            chunk_size: The size of the chunks, i.e. the length of the string-chunks.
+
+        Returns:
+            A Python generator to be converted later to an `asyncio` generator.
 
         """
         if chunk_size <= 0:
