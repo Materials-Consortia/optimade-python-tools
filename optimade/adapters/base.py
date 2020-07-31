@@ -136,7 +136,7 @@ class EntryAdapter:
         Support any level of "."-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,
         `attributes.species` for [`StuctureResource`][optimade.models.structures.StructureResource].
 
-        !!! note
+        Note:
             All nested attributes must individually be subclasses of `pydantic.BaseModel`,
             i.e., one can not access nested attributes in lists by passing a "."-nested `name` to this method,
             e.g., `attributes.species.name` or `attributes.species[0].name` will not work for variable `name`.
