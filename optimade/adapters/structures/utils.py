@@ -25,7 +25,7 @@ def scaled_cell(
     For more info, see [this site](https://www.wwpdb.org/documentation/file-format-content/format33/sect8.html#SCALEn).
 
     Parameters:
-        cell: A cartesian 3x3 cell. This equates to the
+        cell: A Cartesian 3x3 cell. This equates to the
             [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
 
     Returns:
@@ -49,13 +49,13 @@ def scaled_cell(
 def fractional_coordinates(
     cell: Tuple[Vector3D, Vector3D, Vector3D], cartesian_positions: List[Vector3D]
 ) -> List[Vector3D]:
-    """Returns fractional coordinates and wraps coordinates to be `[0;1[`.
+    """Returns fractional coordinates and wraps coordinates to `[0,1[`.
 
     Note:
         Based on [ASE code](https://wiki.fysik.dtu.dk/ase/_modules/ase/atoms.html#Atoms.get_scaled_positions).
 
     Parameters:
-        cell: A cartesian 3x3 cell. This equates to the
+        cell: A Cartesian 3x3 cell. This equates to the
             [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
         cartesian_positions: A list of cartesian atomic positions. This equates to the
             [`cartesian_site_positions`][optimade.models.structures.StructureResourceAttributes.cartesian_site_positions]
@@ -96,7 +96,7 @@ def cell_to_cellpar(
         Based on [ASE code](https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cell_to_cellpar).
 
     Parameters:
-        cell: A cartesian 3x3 cell. This equates to the
+        cell: A Cartesian 3x3 cell. This equates to the
             [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
         radians: Use radians instead of degrees (default) for angles.
 
@@ -185,7 +185,7 @@ def cellpar_to_cell(
         a_direction: Unit vector defining the a-direction (default: `(1, 0, 0)`).
 
     Returns:
-        A cartesian 3x3 cell.
+        A Cartesian 3x3 cell.
 
         This should equate to the
         [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
