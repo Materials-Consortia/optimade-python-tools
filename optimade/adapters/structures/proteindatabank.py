@@ -28,7 +28,7 @@ try:
 except ImportError:
     from warnings import warn
 
-    np = type("np", (), {})
+    np = None
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 from optimade.models import Species as OptimadeStructureSpecies
@@ -60,7 +60,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
         A modern PDBx/mmCIF file as a single Python `str` object.
 
     """
-    if "optimade.adapters" in repr(globals().get("np")):
+    if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)
         return None
 
@@ -208,7 +208,7 @@ def get_pdb(  # pylint: disable=too-many-locals
         A PDB file as a single Python `str` object.
 
     """
-    if "optimade.adapter" in repr(globals().get("np")):
+    if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND)
         return None
 
