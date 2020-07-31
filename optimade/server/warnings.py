@@ -37,15 +37,3 @@ class UnmatchedValues(OptimadeWarning):
 
 class FieldNotRecognized(OptimadeWarning):
     """A field used in the request is not recognised by this implementation."""
-
-
-class LogsNotSaved(OptimadeWarning):
-    """Log files are not saved.
-
-    This is usually due to not being able to a specified log folder or write to files
-    in the specified log location, i.e., a `PermissionError` has been raised.
-
-    To solve this, either set the `OPTIMADE_LOG_DIR` environment variable to a location
-    you have permission to write to or create the `/var/log/optimade` folder, which is
-    the default logging folder, with write permissions for the Unix user running the server.
-    """

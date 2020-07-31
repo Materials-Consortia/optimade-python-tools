@@ -34,13 +34,21 @@ try:
     LOGS_DIR = CONFIG.log_dir
 except ImportError:
     LOGS_DIR = Path(os.getenv("OPTIMADE_LOG_DIR", "/var/log/optimade/")).resolve()
+
 try:
     LOGS_DIR.mkdir(exist_ok=True)
 except PermissionError:
-    import warnings
-    from optimade.server.warnings import LogsNotSaved
+    LOGGER.warning(
+        """Log files are not saved.
 
-    warnings.warn(LogsNotSaved())
+    This is usually due to not being able to access a specified log folder or write to files
+    in the specified log location, i.e., a `PermissionError` has been raised.
+
+    To solve this, either set the OPTIMADE_LOG_DIR environment variable to a location
+    you have permission to write to or create the /var/log/optimade folder, which is
+    the default logging folder, with write permissions for the Unix user running the server.
+    """
+    )
 else:
     # Handlers
     FILE_HANDLER = logging.handlers.RotatingFileHandler(
