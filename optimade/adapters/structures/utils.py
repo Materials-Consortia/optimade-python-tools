@@ -179,8 +179,7 @@ def cellpar_to_cell(
     Parameters:
         cellpar: The unit cell parameters as a `list` of `float` values.
 
-            !!! note
-                The angles must be given in degrees.
+            **Note**: The angles must be given in degrees.
         ab_normal: Unit vector normal to the ab-plane.
         a_direction: Unit vector defining the a-direction (default: `(1, 0, 0)`).
 
