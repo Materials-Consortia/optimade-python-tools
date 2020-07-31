@@ -8,7 +8,12 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
 from optimade.server.exceptions import BadRequest, VersionNotSupported
-from optimade.server.warnings import OptimadeWarning
+from optimade.server.warnings import (
+    FieldValueNotRecognized,
+    OptimadeWarning,
+    QueryParamNotUsed,
+    TooManyValues,
+)
 
 
 class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
@@ -79,14 +84,20 @@ class HandleApiHint(BaseHTTPMiddleware):
         from optimade.server.routers.utils import BASE_URL_PREFIXES
 
         if len(api_hint) > 1:
-            # TODO: Warning:
-            # detail="`api_hint` should only be supplied once, with a single value."
+            warnings.warn(
+                TooManyValues(
+                    detail="`api_hint` should only be supplied once, with a single value."
+                )
+            )
             return None
 
         api_hint = f"/{api_hint[0]}"
         if re.match(r"^/v[0-9]+(\.[0-9]+)?$", api_hint) is None:
-            # TODO: Warning:
-            # detail=f"{api_hint[1:]!r} is not recognized as a valid `api_hint` value."
+            warnings.warn(
+                FieldValueNotRecognized(
+                    detail=f"{api_hint[1:]!r} is not recognized as a valid `api_hint` value."
+                )
+            )
             return None
 
         if api_hint in BASE_URL_PREFIXES.values():
@@ -133,12 +144,18 @@ class HandleApiHint(BaseHTTPMiddleware):
 
         if "api_hint" in parsed_query:
             if self.is_versioned_base_url(str(request.url)):
-                # If this is a versioned base URL, don't handle `api_hint`, but add a warning
-                # TODO: Warning:
-                # detail=(
-                #     f"`api_hint` provided with value(s) {\"', '\".parsed_query['api_hint']!r} for a versioned base URL. "
-                #     "According with the specification, this will not be handled by the implementation."
-                # )
+                warnings.warn(
+                    QueryParamNotUsed(
+                        detail=(
+                            "`api_hint` provided with value{:s} {:r} for a versioned base URL. "
+                            "In accordance with the specification, this will not be handled by "
+                            "the implementation.".format(
+                                "s" if len(parsed_query["api_hint"]) > 1 else "",
+                                "', '".join(parsed_query["api_hint"]),
+                            )
+                        )
+                    )
+                )
                 pass
             else:
                 from optimade.server.routers.utils import get_base_url

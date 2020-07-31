@@ -35,5 +35,13 @@ class UnmatchedValues(OptimadeWarning):
     """Values of the same field or resource differ, where they should be equal"""
 
 
-class FieldNotRecognized(OptimadeWarning):
-    """A field used in the request is not recognised by this implementation."""
+class FieldValueNotRecognized(OptimadeWarning):
+    """A field or value used in the request is not recognised by this implementation."""
+
+
+class TooManyValues(OptimadeWarning):
+    """A field or query parameter has too many values to be handled by this implementation."""
+
+
+class QueryParamNotUsed(OptimadeWarning):
+    """A query parameter is not used in this request."""
