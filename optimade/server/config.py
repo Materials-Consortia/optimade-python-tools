@@ -125,6 +125,10 @@ class ServerConfig(BaseSettings):
     log_level: LogLevel = Field(
         LogLevel.INFO, description="Logging level for the OPTIMADE server."
     )
+    log_dir: Path = Field(
+        Path("/var/log/optimade/"),
+        description="Folder in which log files will be saved.",
+    )
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):
