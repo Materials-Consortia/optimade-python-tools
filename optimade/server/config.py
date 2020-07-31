@@ -137,23 +137,15 @@ class ServerConfig(BaseSettings):
         res.update(v)
         return res
 
-    @validator("log_level")
-    def force_debug_log_level(cls, v, values):
-        """If `debug` is `True`, then force `log_level` to be `DEBUG` as well"""
-        from optimade.server.logger import CONSOLE_HANDLER
-
-        if values.get("debug", False):
-            v = LogLevel.DEBUG
-        CONSOLE_HANDLER.setLevel(v.value.upper())
-        return v
-
     @root_validator(pre=True)
     def load_default_settings(cls, values):  # pylint: disable=no-self-argument
         """
         Loads settings from a root file if available and uses that as defaults in
         place of built in defaults
         """
-        from optimade.server.logger import LOGGER
+        import logging
+
+        LOGGER = logging.getLogger("optimade")
 
         config_file_path = Path(values.get("config_file", DEFAULT_CONFIG_FILE_PATH))
 

@@ -17,6 +17,11 @@ try:
     from optimade.server.config import CONFIG
 
     CONSOLE_HANDLER.setLevel(CONFIG.log_level.value.upper())
+
+    if CONFIG.debug:
+        CONSOLE_HANDLER.setLevel(logging.DEBUG)
+
+
 except ImportError:
     CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_LOG_LEVEL", "INFO").upper())
 
@@ -37,23 +42,25 @@ except ImportError:
 
 try:
     LOGS_DIR.mkdir(exist_ok=True)
+
+    # Handlers
+    FILE_HANDLER = logging.handlers.RotatingFileHandler(
+        LOGS_DIR.joinpath("optimade.log"), maxBytes=1000000, backupCount=5
+    )
+
 except OSError:
     LOGGER.warning(
-        """Log files are not saved.
+        f"""Log files are not saved.
 
     This is usually due to not being able to access a specified log folder or write to files
     in the specified log location, i.e., a `PermissionError` has been raised.
 
     To solve this, either set the OPTIMADE_LOG_DIR environment variable to a location
-    you have permission to write to or create the /var/log/optimade folder, which is
+    you have permission to write to or create the {LOGS_DIR} folder, which is
     the default logging folder, with write permissions for the Unix user running the server.
     """
     )
 else:
-    # Handlers
-    FILE_HANDLER = logging.handlers.RotatingFileHandler(
-        LOGS_DIR.joinpath("optimade.log"), maxBytes=1000000, backupCount=5
-    )
     FILE_HANDLER.setLevel(logging.DEBUG)
 
     # Formatter
