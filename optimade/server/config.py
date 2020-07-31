@@ -1,6 +1,6 @@
 # pylint: disable=no-self-argument
+from enum import Enum
 import json
-import logging
 from typing import Optional, Dict, List
 
 try:
@@ -22,11 +22,17 @@ from optimade.models import Implementation, Provider
 
 
 DEFAULT_CONFIG_FILE_PATH = str(Path.home().joinpath(".optimade.json"))
-logger = logging.getLogger("optimade")
 
 
-class NoFallback(Exception):
-    """No fallback value can be found."""
+class LogLevel(Enum):
+    """Replication of logging LogLevels"""
+
+    NOTSET = "notset"
+    DEBUG = "debug"
+    INFO = "info"
+    WARNING = "warning"
+    ERROR = "error"
+    CRITICAL = "critical"
 
 
 class ServerConfig(BaseSettings):
@@ -102,7 +108,6 @@ class ServerConfig(BaseSettings):
         {},
         description="A mapping between field names in the database with their corresponding OPTIMADE field names, broken down by endpoint.",
     )
-
     length_aliases: Dict[
         Literal["links", "references", "structures"], Dict[str, str]
     ] = Field(
@@ -113,18 +118,34 @@ class ServerConfig(BaseSettings):
             "API fields, not the database fields."
         ),
     )
-
     index_links_path: Path = Field(
         Path(__file__).parent.joinpath("index_links.json"),
         description="Absolute path to a JSON file containing the MongoDB collection of /links resources for the index meta-database",
     )
+    log_level: LogLevel = Field(
+        LogLevel.INFO, description="Logging level for the OPTIMADE server."
+    )
+    log_dir: Path = Field(
+        Path("/var/log/optimade/"),
+        description="Folder in which log files will be saved.",
+    )
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):
-        """Set defaults and modify by passed value(s)"""
+        """Set defaults and modify bypassed value(s)"""
         res = {"version": __version__}
         res.update(v)
         return res
+
+    @validator("log_level")
+    def force_debug_log_level(cls, v, values):
+        """If `debug` is `True`, then force `log_level` to be `DEBUG` as well"""
+        from optimade.server.logger import CONSOLE_HANDLER
+
+        if values.get("debug", False):
+            v = LogLevel.DEBUG
+        CONSOLE_HANDLER.setLevel(v.value.upper())
+        return v
 
     @root_validator(pre=True)
     def load_default_settings(cls, values):  # pylint: disable=no-self-argument
@@ -132,16 +153,18 @@ class ServerConfig(BaseSettings):
         Loads settings from a root file if available and uses that as defaults in
         place of built in defaults
         """
+        from optimade.server.logger import LOGGER
+
         config_file_path = Path(values.get("config_file", DEFAULT_CONFIG_FILE_PATH))
 
         new_values = {}
 
         if config_file_path.exists() and config_file_path.is_file():
-            logger.debug("Found config file at: %s", config_file_path)
+            LOGGER.debug("Found config file at: %s", config_file_path)
             with open(config_file_path) as f:
                 new_values = json.load(f)
         else:
-            logger.debug(  # pragma: no cover
+            LOGGER.debug(  # pragma: no cover
                 "Did not find config file at: %s", config_file_path
             )
 

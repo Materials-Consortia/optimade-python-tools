@@ -11,8 +11,9 @@ from fastapi.responses import JSONResponse
 
 from optimade.models import OptimadeError, ErrorResponse, ErrorSource
 
-from .config import CONFIG
-from .routers.utils import meta_values
+from optimade.server.config import CONFIG
+from optimade.server.logger import LOGGER
+from optimade.server.routers.utils import meta_values
 
 
 def general_exception(
@@ -26,7 +27,7 @@ def general_exception(
         tb = "".join(
             traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
         )
-        print(tb)
+        LOGGER.error("Traceback:\n%s", tb)
         debug_info[f"_{CONFIG.provider.prefix}_traceback"] = tb
 
     try:

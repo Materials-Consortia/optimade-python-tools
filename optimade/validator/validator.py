@@ -387,7 +387,7 @@ class ImplementationValidator:
 
     def _setup_log(self):
         """ Define stdout log based on given verbosity. """
-        self._log = logging.getLogger(__name__)
+        self._log = logging.getLogger("optimade").getChild("validator")
         self._log.handlers = []
         stdout_handler = logging.StreamHandler(sys.stdout)
         stdout_handler.setFormatter(

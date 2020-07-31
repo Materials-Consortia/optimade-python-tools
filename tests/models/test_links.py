@@ -32,6 +32,7 @@ def test_bad_links(starting_links, mapper):
     ]
 
     for index, links in enumerate(bad_links):
+        # This is for helping devs finding any errors that may occur
         print(f"Now testing number {index}")
         bad_link = starting_links.copy()
         bad_link.update(links)

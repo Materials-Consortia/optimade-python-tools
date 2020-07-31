@@ -1,3 +1,10 @@
+"""The OPTIMADE Index Meta-Database server
+
+The server is based on MongoDB, using either `pymongo` or `mongomock`.
+
+This is an example implementation with example data.
+To implement your own index meta-database server see the documentation at https://optimade.org/optimade-python-tools.
+"""
 # pylint: disable=line-too-long
 import json
 
@@ -12,6 +19,7 @@ from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
 
 from optimade.server.config import CONFIG
+from optimade.server.logger import LOGGER
 from optimade.server.middleware import (
     AddWarnings,
     CheckWronglyVersionedBaseUrls,
@@ -22,7 +30,7 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES
 
 
 if CONFIG.debug:  # pragma: no cover
-    print("DEBUG MODE")
+    LOGGER.info("DEBUG MODE")
 
 
 app = FastAPI(
@@ -45,7 +53,7 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     from .routers.links import links_coll
     from .routers.utils import mongo_id_for_database
 
-    print("loading index links...")
+    LOGGER.debug("Loading index links...")
     with open(CONFIG.index_links_path) as f:
         data = json.load(f)
 
@@ -55,11 +63,11 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
             db["_id"] = {"$oid": mongo_id_for_database(db["id"], db["type"])}
             processed.append(db)
 
-        print("inserting index links into collection...")
+        LOGGER.debug("Inserting index links into collection...")
         links_coll.collection.insert_many(
             bson.json_util.loads(bson.json_util.dumps(processed))
         )
-        print("done inserting index links...")
+        LOGGER.debug("Done inserting index links...")
 
 
 # Add various middleware

@@ -5,6 +5,8 @@ from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 from optimade.models import EntryResource
 
+from optimade.adapters.logger import LOGGER
+
 
 class EntryAdapter:
     """Base class for lazy resource entry adapters
@@ -34,12 +36,12 @@ class EntryAdapter:
     @entry.setter
     def entry(self, value: dict):
         """Set OPTIMADE entry
-        If already set, print that this can _only_ be set once.
+        If already set, report that this can _only_ be set once.
         """
         if self._entry is None:
             self._entry = self.ENTRY_RESOURCE(**value)
         else:
-            print("entry can only be set once and is already set.")
+            LOGGER.warning("entry can only be set once and is already set.")
 
     def convert(self, format: str) -> Any:
         """Convert OPTIMADE entry to desired format"""
