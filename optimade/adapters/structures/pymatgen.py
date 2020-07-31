@@ -18,8 +18,8 @@ try:
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
 
-    Structure = None
-    Molecule = None
+    Structure = type("Structure", (), {})
+    Molecule = type("Molecule", (), {})
     PYMATGEN_NOT_FOUND = "Pymatgen not found, cannot convert structure to a pymatgen Structure or Molecule"
 
 
@@ -46,7 +46,7 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
         OPTIMADE structure.
 
     """
-    if globals().get("Structure", None) is None:
+    if "optimade.adapters" in repr(globals().get("Structure")):
         warn(PYMATGEN_NOT_FOUND)
         return None
 

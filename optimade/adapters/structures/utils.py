@@ -12,7 +12,7 @@ try:
 except ImportError:
     from warnings import warn
 
-    np = None
+    np = type("np", (), {})
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 
@@ -32,7 +32,8 @@ def scaled_cell(
         A scaled 3x3 cell.
 
     """
-    if globals().get("np", None) is None:
+    if "optimade.adapters" in repr(globals().get("np")):
+        print(repr(globals().get("np")))
         warn(NUMPY_NOT_FOUND)
         return None
 
@@ -65,7 +66,7 @@ def fractional_coordinates(
         A list of fractional coordinates for the atomic positions.
 
     """
-    if globals().get("np", None) is None:
+    if "optimade.adapters" in repr(globals().get("np")):
         warn(NUMPY_NOT_FOUND)
         return None
 
@@ -104,7 +105,7 @@ def cell_to_cellpar(
         The unit cell parameters as a `list` of `float` values.
 
     """
-    if globals().get("np", None) is None:
+    if "optimade.adapters" in repr(globals().get("np")):
         warn(NUMPY_NOT_FOUND)
         return None
 
@@ -137,7 +138,7 @@ def unit_vector(x: Vector3D) -> Vector3D:
         A unit vector in the same direction as `x`.
 
     """
-    if globals().get("np", None) is None:
+    if "optimade.adapters" in repr(globals().get("np")):
         warn(NUMPY_NOT_FOUND)
         return None
 
@@ -191,7 +192,7 @@ def cellpar_to_cell(
         [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors] attribute.
 
     """
-    if globals().get("np", None) is None:
+    if "optimade.adapters" in repr(globals().get("np")):
         warn(NUMPY_NOT_FOUND)
         return None
 

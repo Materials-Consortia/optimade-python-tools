@@ -19,7 +19,7 @@ from optimade.adapters.exceptions import ConversionError
 try:
     from ase import Atoms, Atom
 except (ImportError, ModuleNotFoundError):
-    Atoms = None
+    Atoms = type("Atoms", (), {})
     ASE_NOT_FOUND = "ASE not found, cannot convert structure to an ASE Atoms"
 
 
@@ -39,7 +39,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         ASE `Atoms` object.
 
     """
-    if globals().get("Atoms", None) is None:
+    if "optimade.adapters" in repr(globals().get("Atoms")):
         warn(ASE_NOT_FOUND)
         return None
 

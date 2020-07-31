@@ -18,7 +18,7 @@ from optimade.adapters.exceptions import ConversionError
 try:
     from jarvis.core.atoms import Atoms
 except (ImportError, ModuleNotFoundError):
-    Atoms = None
+    Atoms = type("Atoms", (), {})
     JARVIS_NOT_FOUND = "jarvis-tools package not found, cannot convert structure to a JARVIS Atoms. Visit https://github.com/usnistgov/jarvis"
 
 
@@ -38,7 +38,7 @@ def get_jarvis_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         A jarvis `Atoms` object.
 
     """
-    if globals().get("Atoms", None) is None:
+    if "optimade.adapters" in repr(globals().get("Atoms")):
         warn(JARVIS_NOT_FOUND)
         return None
 

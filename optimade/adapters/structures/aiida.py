@@ -16,7 +16,7 @@ try:
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
 
-    StructureData = None
+    StructureData = type("StructureData", (), {})
     AIIDA_NOT_FOUND = (
         "AiiDA not found, cannot convert structure to an AiiDA StructureData"
     )
@@ -35,7 +35,7 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
         AiiDA `StructureData` Node.
 
     """
-    if globals().get("StructureData", None) is None:
+    if "optimade.adapters" in repr(globals().get("StructureData")):
         warn(AIIDA_NOT_FOUND)
         return None
 
