@@ -14,21 +14,18 @@ class EntryListingQueryParams:
         response_format (str): The output format requested (see section Response Format).
             Defaults to the format string 'json', which specifies the standard output format described in this specification.
 
-            !!! example
-                `http://example.com/v1/structures?response_format=xml`
+            **Example**: `http://example.com/v1/structures?response_format=xml`
 
         email_address (EmailStr): An email address of the user making the request.
             The email SHOULD be that of a person and not an automatic system.
 
-            !!! example
-                `http://example.com/v1/structures?email_address=user@example.com`
+            **Example**: `http://example.com/v1/structures?email_address=user@example.com`
 
         response_fields (str): A comma-delimited set of fields to be provided in the output.
             If provided, these fields MUST be returned along with the REQUIRED fields.
             Other OPTIONAL fields MUST NOT be returned when this parameter is present.
 
-            !!! example
-                `http://example.com/v1/structures?response_fields=last_modified,nsites`
+            **Example**: `http://example.com/v1/structures?response_fields=last_modified,nsites`
 
         sort (str): If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified
             by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).
@@ -53,27 +50,23 @@ class EntryListingQueryParams:
             (in which case an error code -- `403 Forbidden` -- MUST be returned).
             The default limit value is up to the API implementation to decide.
 
-            !!! example
-                `http://example.com/optimade/v1/structures?page_limit=100`
+            **Example**: `http://example.com/optimade/v1/structures?page_limit=100`
 
         page_offset (int): RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.
 
-            !!! example
-                Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`.
+            **Example**: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`.
 
         page_number (int): RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.
             It is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.
 
-            !!! example
-                Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.
+            **Example**: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.
 
         page_cursor (int): RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.
 
         page_above (int): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.
 
-            !!! example
-                Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by
-                increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.
+            **Example**: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by
+            increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.
 
         page_below (int): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.
 
@@ -91,8 +84,7 @@ class EntryListingQueryParams:
             Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level
             field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.
 
-            !!! note
-                A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.
+            **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.
 
     """
 
@@ -178,21 +170,18 @@ class SingleEntryQueryParams:
         response_format (str): The output format requested (see section Response Format).
             Defaults to the format string 'json', which specifies the standard output format described in this specification.
 
-            !!! example
-                `http://example.com/v1/structures?response_format=xml`
+            **Example**: `http://example.com/v1/structures?response_format=xml`
 
         email_address (EmailStr): An email address of the user making the request.
             The email SHOULD be that of a person and not an automatic system.
 
-            !!! example
-                `http://example.com/v1/structures?email_address=user@example.com`
+            **Example**: `http://example.com/v1/structures?email_address=user@example.com`
 
         response_fields (str): A comma-delimited set of fields to be provided in the output.
             If provided, these fields MUST be returned along with the REQUIRED fields.
             Other OPTIONAL fields MUST NOT be returned when this parameter is present.
 
-            !!! example
-                `http://example.com/v1/structures?response_fields=last_modified,nsites`
+            **Example**: `http://example.com/v1/structures?response_fields=last_modified,nsites`
 
         include (str): A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents)
             by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).
@@ -208,8 +197,7 @@ class SingleEntryQueryParams:
             Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level
             field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.
 
-            !!! note
-                A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.
+            **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.
 
     """
 
