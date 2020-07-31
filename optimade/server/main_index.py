@@ -71,11 +71,11 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
 
 
 # Add various middleware
-app.add_middleware(AddWarnings)
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 app.add_middleware(EnsureQueryParamIntegrity)
 app.add_middleware(CheckWronglyVersionedBaseUrls)
 app.add_middleware(HandleApiHint)
+app.add_middleware(AddWarnings)
 
 
 # Add various exception handlers

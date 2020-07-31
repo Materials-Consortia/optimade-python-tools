@@ -96,15 +96,20 @@ def test_is_versioned_base_url(both_clients):
             CONFIG.base_url = None
 
 
-def test_handle_api_hint(both_clients):
+def test_handle_api_hint():
     """Check handle_api_hint method"""
     from optimade.server.routers.utils import BASE_URL_PREFIXES
+    from optimade.server.warnings import FieldValueNotRecognized, TooManyValues
 
     api_hint = ["v1", "v2"]
-    assert HandleApiHint.handle_api_hint(api_hint) is None
+    warning_detail = "`api_hint` should only be supplied once, with a single value."
+    with pytest.warns(TooManyValues, match=warning_detail):
+        assert HandleApiHint.handle_api_hint(api_hint) is None
 
     api_hint = BASE_URL_PREFIXES["patch"][1:]
-    assert HandleApiHint.handle_api_hint([api_hint]) is None
+    warning_detail = f"{api_hint!r} is not recognized as a valid `api_hint` value."
+    with pytest.warns(FieldValueNotRecognized, match=warning_detail):
+        assert HandleApiHint.handle_api_hint([api_hint]) is None
 
     for version_part in ("major", "minor"):
         api_hint = BASE_URL_PREFIXES[version_part][1:]
@@ -121,3 +126,27 @@ def test_handle_api_hint(both_clients):
 
     api_hint = f"{BASE_URL_PREFIXES['major'][1:]}.{int(BASE_URL_PREFIXES['minor'].split('.')[-1]) + 1}"
     assert HandleApiHint.handle_api_hint([api_hint]) == BASE_URL_PREFIXES["major"]
+
+
+def test_api_hint_with_versioned_base_url(get_good_response, both_clients):
+    """Make sure a `QueryParamNotUsed` warning is included for requests
+    with `api_hint` to versioned base URLs."""
+    from optimade.server.routers.utils import BASE_URL_PREFIXES
+    from optimade.server.warnings import QueryParamNotUsed
+
+    valid_version = BASE_URL_PREFIXES["major"]
+    request = f"{valid_version}/info?api_hint={valid_version[1:]}"
+    warning_detail = (
+        f"`api_hint` provided with value {valid_version[1:]!r} for a versioned base URL. "
+        "In accordance with the specification, this will not be handled by the implementation."
+    )
+
+    with pytest.warns(QueryParamNotUsed, match=warning_detail):
+        response = get_good_response(request, both_clients)
+
+    assert "warnings" in response.get("meta", {})
+    assert len(response["meta"]["warnings"]) == 1
+    assert response["meta"]["warnings"][0].get("detail", "") == warning_detail
+    assert (
+        response["meta"]["warnings"][0].get("title", "") == QueryParamNotUsed.__name__
+    )

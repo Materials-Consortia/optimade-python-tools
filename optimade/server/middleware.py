@@ -147,7 +147,7 @@ class HandleApiHint(BaseHTTPMiddleware):
                 warnings.warn(
                     QueryParamNotUsed(
                         detail=(
-                            "`api_hint` provided with value{:s} {:r} for a versioned base URL. "
+                            "`api_hint` provided with value{:s} '{:s}' for a versioned base URL. "
                             "In accordance with the specification, this will not be handled by "
                             "the implementation.".format(
                                 "s" if len(parsed_query["api_hint"]) > 1 else "",
@@ -156,7 +156,6 @@ class HandleApiHint(BaseHTTPMiddleware):
                         )
                     )
                 )
-                pass
             else:
                 from optimade.server.routers.utils import get_base_url
 
@@ -325,6 +324,8 @@ class AddWarnings(BaseHTTPMiddleware):
             chunk_size (int): The size of the chunks, i.e. the length of the string-chunks.
 
         """
+        if chunk_size <= 0:
+            chunk_size = 1
         return (content[i : chunk_size + i] for i in range(0, len(content), chunk_size))
 
     async def dispatch(self, request: Request, call_next):
