@@ -150,3 +150,36 @@ def test_api_hint_with_versioned_base_url(get_good_response, both_clients):
     assert (
         response["meta"]["warnings"][0].get("title", "") == QueryParamNotUsed.__name__
     )
+
+
+def test_api_hint_warnings(get_good_response, both_clients):
+    """Make sure warnings are added to the response"""
+    from optimade.server.routers.utils import BASE_URL_PREFIXES
+    from optimade.server.warnings import FieldValueNotRecognized, TooManyValues
+
+    requests = ["/info?api_hint=v1,v2", "/info?api_hint=v1&api_hint=v2"]
+    warning_detail = "`api_hint` should only be supplied once, with a single value."
+    for request in requests:
+        with pytest.warns(TooManyValues, match=warning_detail):
+            response = get_good_response(request, both_clients)
+
+        assert "warnings" in response.get("meta", {})
+        assert len(response["meta"]["warnings"]) == 1
+        assert response["meta"]["warnings"][0].get("detail", "") == warning_detail
+        assert (
+            response["meta"]["warnings"][0].get("title", "") == TooManyValues.__name__
+        )
+
+    api_hint = BASE_URL_PREFIXES["patch"][1:]
+    request = f"/info?api_hint={api_hint}"
+    warning_detail = f"{api_hint!r} is not recognized as a valid `api_hint` value."
+    with pytest.warns(FieldValueNotRecognized, match=warning_detail):
+        response = get_good_response(request, both_clients)
+
+    assert "warnings" in response.get("meta", {})
+    assert len(response["meta"]["warnings"]) == 1
+    assert response["meta"]["warnings"][0].get("detail", "") == warning_detail
+    assert (
+        response["meta"]["warnings"][0].get("title", "")
+        == FieldValueNotRecognized.__name__
+    )

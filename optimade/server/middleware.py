@@ -83,6 +83,13 @@ class HandleApiHint(BaseHTTPMiddleware):
         """Handle `api_hint` parameter"""
         from optimade.server.routers.utils import BASE_URL_PREFIXES
 
+        # Try to split by `,` if value is provided once, but in JSON-type "list" format
+        _api_hint = []
+        for value in api_hint:
+            values = value.split(",")
+            _api_hint.extend(values)
+        api_hint = _api_hint
+
         if len(api_hint) > 1:
             warnings.warn(
                 TooManyValues(
@@ -160,29 +167,33 @@ class HandleApiHint(BaseHTTPMiddleware):
                 from optimade.server.routers.utils import get_base_url
 
                 version_path = self.handle_api_hint(parsed_query["api_hint"])
-                base_url = get_base_url(request.url)
 
-                new_request = (
-                    f"{base_url}{version_path}{str(request.url)[len(base_url):]}"
-                )
-                url = urllib.parse.urlsplit(new_request)
-                parsed_query = urllib.parse.parse_qsl(url.query, keep_blank_values=True)
-                parsed_query = "&".join(
-                    [
-                        f"{key}={value}"
-                        for key, value in parsed_query
-                        if key != "api_hint"
-                    ]
-                )
-                return RedirectResponse(
-                    request.url.replace(path=url.path, query=parsed_query),
-                    headers=request.headers,
-                )
-                # This is the non-URL changing solution:
-                #
-                # scope = request.scope
-                # scope["path"] = path
-                # request = Request(scope=scope, receive=request.receive, send=request._send)
+                if version_path:
+                    base_url = get_base_url(request.url)
+
+                    new_request = (
+                        f"{base_url}{version_path}{str(request.url)[len(base_url):]}"
+                    )
+                    url = urllib.parse.urlsplit(new_request)
+                    parsed_query = urllib.parse.parse_qsl(
+                        url.query, keep_blank_values=True
+                    )
+                    parsed_query = "&".join(
+                        [
+                            f"{key}={value}"
+                            for key, value in parsed_query
+                            if key != "api_hint"
+                        ]
+                    )
+                    return RedirectResponse(
+                        request.url.replace(path=url.path, query=parsed_query),
+                        headers=request.headers,
+                    )
+                    # This is the non-URL changing solution:
+                    #
+                    # scope = request.scope
+                    # scope["path"] = path
+                    # request = Request(scope=scope, receive=request.receive, send=request._send)
 
         response = await call_next(request)
         return response
