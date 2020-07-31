@@ -5,7 +5,6 @@ The server is based on MongoDB, using either `pymongo` or `mongomock`.
 This is an example implementation with example data.
 To implement your own index meta-database server see the documentation at https://optimade.org/optimade-python-tools.
 """
-# pylint: disable=line-too-long
 import json
 
 from lark.exceptions import VisitError
@@ -24,6 +23,7 @@ from optimade.server.middleware import (
     AddWarnings,
     CheckWronglyVersionedBaseUrls,
     EnsureQueryParamIntegrity,
+    HandleApiHint,
 )
 from optimade.server.routers import index_info, links, versions
 from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -71,10 +71,11 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
 
 
 # Add various middleware
-app.add_middleware(AddWarnings)
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 app.add_middleware(EnsureQueryParamIntegrity)
 app.add_middleware(CheckWronglyVersionedBaseUrls)
+app.add_middleware(HandleApiHint)
+app.add_middleware(AddWarnings)
 
 
 # Add various exception handlers

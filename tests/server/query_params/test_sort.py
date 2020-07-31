@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from optimade.server.warnings import FieldNotRecognized
+from optimade.server.warnings import FieldValueNotRecognized
 
 
 @pytest.fixture(scope="module")
@@ -149,12 +149,12 @@ def test_unknown_field_prefixed(get_good_response, structures):
         "Unable to sort on unknown field '_exmpl3_field_that_does_not_exist'"
     )
 
-    with pytest.warns(FieldNotRecognized, match=expected_detail):
+    with pytest.warns(FieldValueNotRecognized, match=expected_detail):
         response = get_good_response(request)
 
     assert len(response["meta"]["warnings"]) == 1
     assert response["meta"]["warnings"][0]["detail"] == expected_detail
-    assert response["meta"]["warnings"][0]["title"] == "FieldNotRecognized"
+    assert response["meta"]["warnings"][0]["title"] == "FieldValueNotRecognized"
 
     nelements_list = [
         struct.get("attributes", {}).get("nelements") for struct in response["data"]
@@ -165,9 +165,9 @@ def test_unknown_field_prefixed(get_good_response, structures):
     request = f"/structures?sort=-_exmpl2_field_that_does_not_exist,_exmpl3_other_field&page_limit={limit}"
     expected_detail = "Unable to sort on unknown fields '_exmpl2_field_that_does_not_exist', '_exmpl3_other_field'"
 
-    with pytest.warns(FieldNotRecognized, match=expected_detail):
+    with pytest.warns(FieldValueNotRecognized, match=expected_detail):
         response = get_good_response(request)
 
     assert len(response["meta"]["warnings"]) == 1
     assert response["meta"]["warnings"][0]["detail"] == expected_detail
-    assert response["meta"]["warnings"][0]["title"] == "FieldNotRecognized"
+    assert response["meta"]["warnings"][0]["title"] == "FieldValueNotRecognized"

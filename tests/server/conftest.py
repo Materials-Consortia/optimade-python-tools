@@ -30,26 +30,55 @@ def both_clients(request):
 @pytest.fixture
 def get_good_response(client, index_client):
     """Get response with some sanity checks, expecting '200 OK'"""
+    try:
+        import simplejson as json
+    except ImportError:
+        import json
 
-    def inner(request: str, server: str = "regular") -> dict:
-        if server == "regular":
-            used_client = client
-        elif server == "index":
-            used_client = index_client
+    from requests import Response
+
+    from .utils import OptimadeTestClient
+
+    def inner(
+        request: str,
+        server: Union[str, OptimadeTestClient] = "regular",
+        return_json: bool = True,
+        **kwargs,
+    ) -> Union[dict, Response]:
+        if isinstance(server, str):
+            if server == "regular":
+                used_client = client
+            elif server == "index":
+                used_client = index_client
+            else:
+                pytest.fail(
+                    f"Wrong value for 'server': {server}. It must be either 'regular' or 'index'."
+                )
+        elif isinstance(server, OptimadeTestClient):
+            used_client = server
         else:
-            pytest.fail(
-                f"Wrong value for 'server': {server}. It must be either 'regular' or 'index'."
-            )
+            pytest.fail("'server' must be either a string or an OptimadeTestClient.")
 
         try:
-            response = used_client.get(request)
-            assert response.status_code == 200, f"Request failed: {response.json()}"
-            response = response.json()
+            response = used_client.get(request, **kwargs)
+            response_json = response.json()
+            assert response.status_code == 200, f"Request failed: {response_json}"
+        except json.JSONDecodeError:
+            print(
+                f"Request attempted:\n{used_client.base_url}{used_client.version}"
+                f"{request}\n"
+                "Could not successfully decode response as JSON."
+            )
+            raise
         except Exception as exc:
-            print("Request attempted:")
-            print(f"{used_client.base_url}{used_client.version}{request}")
+            print(
+                f"Request attempted:\n{used_client.base_url}{used_client.version}"
+                f"{request}"
+            )
             raise exc
         else:
+            if return_json:
+                return response_json
             return response
 
     return inner
@@ -60,6 +89,7 @@ def check_response(get_good_response):
     """Fixture to check "good" response"""
     from typing import List
     from optimade.server.config import CONFIG
+    from .utils import OptimadeTestClient
 
     def inner(
         request: str,
@@ -67,7 +97,7 @@ def check_response(get_good_response):
         page_limit: int = CONFIG.page_limit,
         expected_return: int = None,
         expected_as_is: bool = False,
-        server: str = "regular",
+        server: Union[str, OptimadeTestClient] = "regular",
     ):
         response = get_good_response(request, server)
 
@@ -145,8 +175,10 @@ def check_error_response(client, index_client):
                 assert expected_detail == error["detail"], error
 
         except Exception:
-            print("Request attempted:")
-            print(f"{used_client.base_url}{used_client.version}{request}")
+            print(
+                f"Request attempted:\n{used_client.base_url}{used_client.version}"
+                f"{request}"
+            )
             if response:
                 print(f"\nCaptured response:\n{response}")
             raise

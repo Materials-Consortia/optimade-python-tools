@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Union, List, Dict
 
 from fastapi import HTTPException, Request
+from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
 from optimade.models import (
@@ -169,7 +170,11 @@ def get_included_relationships(
     return [obj for endp in included.values() for obj in endp]
 
 
-def get_base_url(parsed_url_request: urllib.parse.ParseResult) -> str:
+def get_base_url(
+    parsed_url_request: Union[
+        urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL
+    ]
+) -> str:
     """Get base URL for current server
 
     Take the base URL from the config file, if it exists, otherwise use the request.

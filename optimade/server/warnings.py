@@ -27,13 +27,13 @@ class OptimadeWarning(Warning):
         return self.detail if self.detail is not None else ""
 
 
-class FieldNotCreated(OptimadeWarning):
-    """A non-essential field could not be created"""
+class FieldValueNotRecognized(OptimadeWarning):
+    """A field or value used in the request is not recognised by this implementation."""
 
 
-class UnmatchedValues(OptimadeWarning):
-    """Values of the same field or resource differ, where they should be equal"""
+class TooManyValues(OptimadeWarning):
+    """A field or query parameter has too many values to be handled by this implementation."""
 
 
-class FieldNotRecognized(OptimadeWarning):
-    """A field used in the request is not recognised by this implementation."""
+class QueryParamNotUsed(OptimadeWarning):
+    """A query parameter is not used in this request."""
