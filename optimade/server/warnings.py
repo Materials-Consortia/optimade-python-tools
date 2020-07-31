@@ -27,14 +27,6 @@ class OptimadeWarning(Warning):
         return self.detail if self.detail is not None else ""
 
 
-class FieldNotCreated(OptimadeWarning):
-    """A non-essential field could not be created"""
-
-
-class UnmatchedValues(OptimadeWarning):
-    """Values of the same field or resource differ, where they should be equal"""
-
-
 class FieldValueNotRecognized(OptimadeWarning):
     """A field or value used in the request is not recognised by this implementation."""
 
