@@ -3,10 +3,17 @@ from typing import Optional, IO, Type, Generator, List, Union
 import urllib.parse
 import warnings
 
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
-from starlette.responses import RedirectResponse
+from starlette.responses import RedirectResponse, StreamingResponse
 
+from optimade.models import Warnings
+from optimade.server.config import CONFIG
 from optimade.server.exceptions import BadRequest, VersionNotSupported
 from optimade.server.warnings import (
     FieldValueNotRecognized,
@@ -14,6 +21,7 @@ from optimade.server.warnings import (
     QueryParamNotUsed,
     TooManyValues,
 )
+from optimade.server.routers.utils import get_base_url, BASE_URL_PREFIXES
 
 
 class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
@@ -47,8 +55,6 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     @staticmethod
     def check_url(parsed_url: urllib.parse.ParseResult):
         """Check URL path for versioned part"""
-        from optimade.server.routers.utils import get_base_url, BASE_URL_PREFIXES
-
         base_url = get_base_url(parsed_url)
         optimade_path = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"[
             len(base_url) :
@@ -81,8 +87,6 @@ class HandleApiHint(BaseHTTPMiddleware):
     @staticmethod
     def handle_api_hint(api_hint: List[str]) -> Union[None, str]:
         """Handle `api_hint` parameter"""
-        from optimade.server.routers.utils import BASE_URL_PREFIXES
-
         # Try to split by `,` if value is provided once, but in JSON-type "list" format
         _api_hint = []
         for value in api_hint:
@@ -138,8 +142,6 @@ class HandleApiHint(BaseHTTPMiddleware):
         Else, remove unversioned base URL from URL and check again.
         Return bool of final result.
         """
-        from optimade.server.routers.utils import get_base_url
-
         if not re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url):
             return False
 
@@ -268,9 +270,6 @@ class AddWarnings(BaseHTTPMiddleware):
             line (Optional[str]): Source content of the line that issued the warning.
 
         """
-        from optimade.models import Warnings
-        from optimade.server.config import CONFIG
-
         assert isinstance(
             message, Warning
         ), "'message' is expected to be a Warning or subclass thereof."
@@ -340,13 +339,6 @@ class AddWarnings(BaseHTTPMiddleware):
         return (content[i : chunk_size + i] for i in range(0, len(content), chunk_size))
 
     async def dispatch(self, request: Request, call_next):
-        from starlette.responses import StreamingResponse
-
-        try:
-            import simplejson as json
-        except ImportError:
-            import json
-
         self._warnings = []
 
         warnings.simplefilter(action="default", category=OptimadeWarning)
