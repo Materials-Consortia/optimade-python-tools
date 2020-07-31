@@ -1,3 +1,21 @@
+"""
+Convert an OPTIMADE structure, in the format of
+[`StructureResource`][optimade.models.structures.StructureResource]
+to a CIF file (Crystallographic Information File).
+
+For more information on the CIF file format, see
+[the official documentation](https://www.iucr.org/resources/cif/documentation).
+
+Note:
+    This conversion function is inspired heavily by the similar conversion
+    function in the ASE library.
+
+    See [here](https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif) for the original ASE code.
+
+    For more information on the ASE library, see [their documentation](https://wiki.fysik.dtu.dk/ase/).
+
+This conversion function relies on the [NumPy](https://numpy.org/) library.
+"""
 from typing import Dict
 
 from optimade.models import Species as OptimadeStructureSpecies
@@ -23,16 +41,14 @@ __all__ = ("get_cif",)
 def get_cif(  # pylint: disable=too-many-locals,too-many-branches
     optimade_structure: OptimadeStructure,
 ) -> str:
-    """ Get CIF file as string from OPTIMADE structure
+    """ Get CIF file as string from OPTIMADE structure.
 
-    Based on `ase.io.cif:write_cif()`.
+    Parameters:
+        optimade_structure: OPTIMADE structure.
 
-    :param optimade_structure: OPTIMADE structure
-    :param formatting: What formatting to use for the CIF file data keys.
-        Can be either "mp" or "default".
-    :param encoding: Encoding used for the string. CIF files use "latin-1" as standard.
-        If encoding is "str", a Python str object will be returned.
-    :return: str
+    Returns:
+        The CIF file as a single Python `str` object.
+
     """
     # NumPy is needed for calculations
     if globals().get("np", None) is None:

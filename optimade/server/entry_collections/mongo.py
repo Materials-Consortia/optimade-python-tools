@@ -34,7 +34,7 @@ else:
 
 class MongoCollection(EntryCollection):
     """ Class for querying MongoDB collections (implemented by either pymongo or mongomock)
-    containing serialized [`EntryResource`][optimade.models.EntryResource]s objects.
+    containing serialized [`EntryResource`][optimade.models.entries.EntryResource]s objects.
 
     """
 
@@ -65,8 +65,6 @@ class MongoCollection(EntryCollection):
             MongoTransformer(mapper=resource_mapper),
         )
 
-        self.provider_prefix = CONFIG.provider.prefix
-        self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         self.parser = LarkParser(
             version=(0, 10, 1), variant="default"
         )  # The MongoTransformer only supports v0.10.1 as the latest grammar

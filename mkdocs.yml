@@ -1,24 +1,72 @@
-site_name: OPTIMADE-Python-Tools Documentation
-site_description: Documentation for the OPTIMADE-Python-Tools
-copyright: Built by OPTIMADE Development Team
+site_name: OPTIMADE Python tools
+site_description: Documentation for the OPTIMADE Python tools
+site_url: https://www.optimade.org/optimade-python-tools/
+copyright: Built by the Materials-Consortia
 
 theme:
-  name: 'material'
+  name: material
+  palette:
+    scheme: default
+    primary: black
+    accent: red
+  icon:
+    repo: fontawesome/brands/github
+  logo: images/optimade_logo_180x180.svg
+  favicon: images/favicon.png
+  language: en
 
-site_url: https://www.optimade.org/optimade-python-tools/
+repo_name: optimade-python-tools
 repo_url: https://github.com/Materials-Consortia/optimade-python-tools
+edit_uri: ""
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Materials-Consortia
+
+extra_css:
+  - css/reference.css
+
 markdown_extensions:
   - admonition
-  - codehilite
-  - attr_list
   - pymdownx.details
+  - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.inlinehilite
+  - pymdownx.snippets
   - toc:
       permalink: true
 
 plugins:
-  - search
-  - minify
-  - mkdocstrings
+  - search:
+      lang: en
+  - minify:
+      minify_html: true
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_root_heading: false
+            show_root_toc_entry: true
+            show_root_full_path: true
+            show_object_full_path: false
+            show_category_heading: false
+            show_if_no_docstring: false
+            show_source: true
+            group_by_category: true
+            heading_level: 2
+          selection:
+            filters:
+              - "!^_[^_]"
+              - "!__json_encoder__$"
+              - "!__all__$"
+              - "!__config__$"
+            members: true
+            inherited_members: false
+            docstring_style: google
+            docstring_options:
+              replace_admonitions: true
+      watch:
+        - optimade
   - awesome-pages

@@ -1,3 +1,23 @@
+"""
+The base for all adapters.
+
+An entry resource adapter is a tool to wrap OPTIMADE JSON-deserialized Python dictionaries
+in the relevant pydantic model for the particular resource.
+
+This means data resources in an OPTIMADE REST API response can be converted to valid Python
+types written specifically for them.
+One can then use the standard pydantic functionality on the wrapped objects, reasoning about
+the embedded hierarchical types as well as retrieve default values for properties not supplied
+by the raw API response resource.
+
+Furthermore, the entry resource adapter allows conversion between the entry resource and any
+implemented equivalent data structure.
+
+See [`Reference`][optimade.adapters.references.adapter.Reference] and
+[`Structure`][optimade.adapters.structures.adapter.Structure] to find out what the entry
+resources can be converted to for [`ReferenceResource`][optimade.models.references.ReferenceResource]s
+and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
+"""
 import re
 from typing import Union, Dict, Callable, Any, Tuple, List
 
@@ -9,14 +29,24 @@ from optimade.adapters.logger import LOGGER
 
 
 class EntryAdapter:
-    """Base class for lazy resource entry adapters
-    :param entry: JSON OPTIMADE single resource entry.
+    """
+    Base class for lazy resource entry adapters.
+
+    Attributes:
+        ENTRY_RESOURCE (EntryResource): Entry resource to store entry as.
+        _type_converters (Dict[str, Callable]): Dictionary of valid conversion types for entry.
+        as_<_type_converters>: Convert entry to a type listed in `_type_converters`.
+
     """
 
     ENTRY_RESOURCE: EntryResource = EntryResource
     _type_converters: Dict[str, Callable] = {}
 
-    def __init__(self, entry: dict):
+    def __init__(self, entry: dict) -> None:
+        """
+        Parameters:
+            entry (dict): A JSON OPTIMADE single resource entry.
+        """
         self._entry = None
         self._converted = {}
 
@@ -29,14 +59,24 @@ class EntryAdapter:
         }
 
     @property
-    def entry(self):
-        """Get OPTIMADE entry"""
+    def entry(self) -> EntryResource:
+        """Get OPTIMADE entry.
+
+        Returns:
+            The entry resource.
+
+        """
         return self._entry
 
     @entry.setter
-    def entry(self, value: dict):
-        """Set OPTIMADE entry
-        If already set, report that this can _only_ be set once.
+    def entry(self, value: dict) -> None:
+        """Set OPTIMADE entry.
+
+        If already set, print that this can _only_ be set once.
+
+        Parameters:
+            value (dict): Raw entry to wrap in the relevant pydantic model represented by `ENTRY_RESOURCE`.
+
         """
         if self._entry is None:
             self._entry = self.ENTRY_RESOURCE(**value)
@@ -44,7 +84,18 @@ class EntryAdapter:
             LOGGER.warning("entry can only be set once and is already set.")
 
     def convert(self, format: str) -> Any:
-        """Convert OPTIMADE entry to desired format"""
+        """Convert OPTIMADE entry to desired format.
+
+        Parameters:
+            format (str): Type or format to which the entry should be converted.
+
+        Raises:
+            AttributeError: If `format` can not be found in `_type_converters` or `_common_converters`.
+
+        Returns:
+            The converted entry according to the desired format or type.
+
+        """
         if (
             format not in self._type_converters
             and format not in self._common_converters
@@ -80,17 +131,30 @@ class EntryAdapter:
         raise AttributeError
 
     def __getattr__(self, name: str) -> Any:
-        """Get converted entry or attribute from OPTIMADE entry
-        Support any level of "."-nested OPTIMADE ENTRY_RESOURCE attributes, e.g., `attributes.species` for StuctureResource.
-        NOTE: All nested attributes must individually be subclasses of `pydantic.BaseModel`,
-        i.e., one can not access nested attributes in lists by passing a "."-nested `name` to this method,
-        e.g., `attributes.species.name` or `attributes.species[0].name` will not work for variable `name`.
+        """Get converted entry or attribute from OPTIMADE entry.
+
+        Support any level of "."-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,
+        `attributes.species` for [`StuctureResource`][optimade.models.structures.StructureResource].
+
+        Note:
+            All nested attributes must individually be subclasses of `pydantic.BaseModel`,
+            i.e., one can not access nested attributes in lists by passing a "."-nested `name` to this method,
+            e.g., `attributes.species.name` or `attributes.species[0].name` will not work for variable `name`.
 
         Order:
+
         - Try to return converted entry if using `as_<_type_converters key>`.
-        - Try to return OPTIMADE ENTRY_RESOURCE (nested) attribute.
-        - Try to return OPTIMADE ENTRY_RESOURCE.attributes (nested) attribute.
-        - Raise AttributeError
+        - Try to return OPTIMADE `ENTRY_RESOURCE` (nested) attribute.
+        - Try to return OPTIMADE `ENTRY_RESOURCE.attributes` (nested) attribute.
+        - Raise `AttributeError`.
+
+        Parameters:
+            name (str): Requested attribute.
+
+        Raises:
+            AttributeError: If the requested attribute is not recognized.
+                See above for the description of the order in which an attribute is tested for validity.
+
         """
         # as_<entry_type>
         if name.startswith("as_"):

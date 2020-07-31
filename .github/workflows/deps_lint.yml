@@ -222,12 +222,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e .[all]
+        pip install -U setuptools
+        pip install -r requirements.txt
         pip install -r requirements-docs.txt
-
+        pip install -e .
 
     - name: Build
-      run: mkdocs build
+      run: mkdocs build --strict --verbose
 
   test_build:
     runs-on: ubuntu-latest

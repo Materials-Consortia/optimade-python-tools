@@ -1,0 +1,3 @@
+# All models
+
+::: optimade.models

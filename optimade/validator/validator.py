@@ -104,11 +104,14 @@ class Client:  # pragma: no cover
 
         Parameters:
             base_url (str): the base URL of the optimade implementation, including
-            request protocol (e.g. `'http://'`) and API version number if necessary.
-            Examples:
-                - `'http://example.org/optimade/v1'`,
+                request protocol (e.g. `'http://'`) and API version number if necessary.
+
+                Examples:
+
+                - `'http://example.org/optimade/v1'`
                 - `'www.crystallography.net/cod-test/optimade/v0.10.0/'`
-            Note: A maximum of one slash ("/") is allowed as the last character.
+
+                Note: A maximum of one slash ("/") is allowed as the last character.
 
         """
         self.base_url = base_url
@@ -281,14 +284,14 @@ def test_case(test_fn):
 
 
 class ImplementationValidator:
-    """ Class to call test functions on a particular OPTIMADE
-    implementation.
+    """
+    Class to call test functions on a particular OPTIMADE implementation.
 
     Uses the pydantic models in `optimade.models` to validate the
     response from the server and crawl through the available endpoints.
 
-    Drawbacks:
-        - only works for current version of the specification as defined
+    Caution:
+        Only works for current version of the specification as defined
         by `optimade.models`.
 
     """

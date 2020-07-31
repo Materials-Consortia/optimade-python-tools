@@ -1,1 +1,0 @@
-::: optimade.models.index_metadb

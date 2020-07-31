@@ -1,1 +1,1 @@
-# OPTIMADE API for multiple databases
+# Multiple databases

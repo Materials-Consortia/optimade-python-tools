@@ -1,0 +1,3 @@
+# exceptions
+
+::: optimade.adapters.exceptions

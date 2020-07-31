@@ -1,0 +1,3 @@
+# exceptions
+
+::: optimade.server.exceptions

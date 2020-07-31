@@ -1,3 +1,15 @@
+"""
+Convert an OPTIMADE structure, in the format of
+[`StructureResource`][optimade.models.structures.StructureResource]
+to a JARVIS `Atoms` object.
+
+For more information on the NIST-JARVIS repository, see [their website](https://jarvis.nist.gov/).
+
+This conversion function relies on the [jarvis-tools](https://github.com/usnistgov/jarvis) package.
+
+!!! success "Contributing author"
+    This conversion function was contributed by Kamal Choudhary ([@knc6](https://github.com/knc6)).
+"""
 from warnings import warn
 from optimade.models import StructureResource as OptimadeStructure
 from optimade.models import StructureFeatures
@@ -6,7 +18,7 @@ from optimade.adapters.exceptions import ConversionError
 try:
     from jarvis.core.atoms import Atoms
 except (ImportError, ModuleNotFoundError):
-    Atoms = None
+    Atoms = type("Atoms", (), {})
     JARVIS_NOT_FOUND = "jarvis-tools package not found, cannot convert structure to a JARVIS Atoms. Visit https://github.com/usnistgov/jarvis"
 
 
@@ -14,14 +26,19 @@ __all__ = ("get_jarvis_atoms",)
 
 
 def get_jarvis_atoms(optimade_structure: OptimadeStructure) -> Atoms:
-    """ Get jarvis Atoms from OPTIMADE structure
+    """ Get jarvis `Atoms` from OPTIMADE structure.
 
-    NOTE: Cannot handle partial occupancies
+    Caution:
+        Cannot handle partial occupancies.
 
-    :param optimade_structure: OPTIMADE structure
-    :return: jarvis.core.Atoms
+    Parameters:
+        optimade_structure: OPTIMADE structure.
+
+    Returns:
+        A jarvis `Atoms` object.
+
     """
-    if globals().get("Atoms", None) is None:
+    if "optimade.adapters" in repr(globals().get("Atoms")):
         warn(JARVIS_NOT_FOUND)
         return None
 

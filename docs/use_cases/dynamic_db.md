@@ -1,1 +1,1 @@
-# OPTIMADE API for dynamic databases
+# Dynamic databases

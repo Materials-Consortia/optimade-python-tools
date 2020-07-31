@@ -16,7 +16,7 @@ from optimade.server.warnings import FieldNotRecognized
 
 class EntryCollection(ABC):
     """ Backend-agnostic base class for querying collections of
-    [`EntryResource`][optimade.models.EntryResource]s. """
+    [`EntryResource`][optimade.models.entries.EntryResource]s. """
 
     def __init__(
         self,
@@ -44,6 +44,9 @@ class EntryCollection(ABC):
         self.resource_mapper = resource_mapper
         self.transformer = transformer
 
+        self.provider_prefix = CONFIG.provider.prefix
+        self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
+
     @abstractmethod
     def __len__(self) -> int:
         """ Returns the total number of entries in the collection. """
@@ -65,8 +68,9 @@ class EntryCollection(ABC):
         """
         Fetches results and indicates if more data is available.
 
-        Also gives the total number of data available in the absence of
-        [`page_limit`][optimade.server.query_params.EntryListingQueryParams.page_limit].
+        Also gives the total number of data available in the absence of `page_limit`.
+        See [`EntryListingQueryParams`][optimade.server.query_params.EntryListingQueryParams]
+        for more information.
 
         Parameters:
             params (EntryListingQueryParams): entry listing URL query params

@@ -1351,7 +1351,7 @@
             "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
           }
         },
-        "description": "Resource objects appear in a JSON API document to represent resources."
+        "description": "The base model for an entry resource."
       },
       "EntryResourceAttributes": {
         "title": "EntryResourceAttributes",
