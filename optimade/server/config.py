@@ -149,8 +149,11 @@ class ServerConfig(BaseSettings):
         new_values = {}
 
         if config_file_path.is_file():
-            with open(config_file_path) as f:
-                new_values = json.load(f)
+            try:
+                with open(config_file_path) as f:
+                    new_values = json.load(f)
+            except json.JSONDecodeError as exc:
+                raise RuntimeError(f"Error in JSON file {config_file_path}: {exc}")
 
         elif DEFAULT_CONFIG_FILE_PATH != config_file_path:
             raise RuntimeError(
