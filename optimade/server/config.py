@@ -1,6 +1,7 @@
 # pylint: disable=no-self-argument
 from enum import Enum
 import json
+import warnings
 from typing import Optional, Dict, List
 
 try:
@@ -138,26 +139,28 @@ class ServerConfig(BaseSettings):
         return res
 
     @root_validator(pre=True)
-    def load_default_settings(cls, values):  # pylint: disable=no-self-argument
+    def load_settings(cls, values):  # pylint: disable=no-self-argument
         """
-        Loads settings from a root file if available and uses that as defaults in
-        place of built in defaults
+        Loads settings from a JSON config file, if available, and uses them in place
+        of the built-in defaults.
         """
-        import logging
-
-        LOGGER = logging.getLogger("optimade")
-
         config_file_path = Path(values.get("config_file", DEFAULT_CONFIG_FILE_PATH))
 
         new_values = {}
 
-        if config_file_path.exists() and config_file_path.is_file():
-            LOGGER.debug("Found config file at: %s", config_file_path)
+        if config_file_path.is_file():
             with open(config_file_path) as f:
                 new_values = json.load(f)
+
+        elif DEFAULT_CONFIG_FILE_PATH != config_file_path:
+            raise RuntimeError(
+                f"Unable to find requested config file at {config_file_path}"
+            )
+
         else:
-            LOGGER.debug(  # pragma: no cover
-                "Did not find config file at: %s", config_file_path
+            warnings.warn(
+                f"Unable to find config file in default location {DEFAULT_CONFIG_FILE_PATH}, "
+                "using the built-in default settings."
             )
 
         new_values.update(values)
@@ -165,6 +168,14 @@ class ServerConfig(BaseSettings):
         return new_values
 
     class Config:
+        """
+        This is a pydantic model Config object that modifies the behaviour of
+        ServerConfig by adding a prefix to the environment variables that
+        override config file values. It has nothing to do with the OPTIMADE
+        config.
+
+        """
+
         env_prefix = "optimade_"
 
 

@@ -72,3 +72,10 @@ else:
 
     # Add handler to LOGGER
     LOGGER.addHandler(FILE_HANDLER)
+
+try:
+    from optimade.server.config import CONFIG
+
+    LOGGER.info(f"Loaded settings from {CONFIG.config_file}.")
+except ImportError:
+    pass
