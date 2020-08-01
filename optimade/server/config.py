@@ -155,7 +155,7 @@ class ServerConfig(BaseSettings):
             except json.JSONDecodeError as exc:
                 raise RuntimeError(f"Error in JSON file {config_file_path}: {exc}")
 
-        elif DEFAULT_CONFIG_FILE_PATH != config_file_path:
+        elif DEFAULT_CONFIG_FILE_PATH != str(config_file_path):
             raise RuntimeError(
                 f"Unable to find requested config file at {config_file_path}"
             )
