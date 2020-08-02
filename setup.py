@@ -19,23 +19,23 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Server minded
 django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
-mongo_deps = ["pymongo~=3.10", "mongomock~=3.19"]
-server_deps = ["uvicorn~=0.11.7", "Jinja2~=2.11"] + mongo_deps
+mongo_deps = ["pymongo~=3.11", "mongomock~=3.19"]
+server_deps = ["uvicorn~=0.11.8", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
 aiida_deps = ["aiida-core~=1.3"]
 ase_deps = ["ase~=3.19"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2020.7.14"]
-jarvis_deps = ["jarvis-tools==2020.7.14"]
+pymatgen_deps = ["pymatgen==2020.7.18"]
+jarvis_deps = ["jarvis-tools==2020.7.25"]
 client_deps = cif_deps
 
 # General
 docs_deps = [
     "mkdocs~=1.1",
     "mkdocs-awesome-pages-plugin~=2.2",
-    "mkdocs-material~=5.4",
+    "mkdocs-material~=5.5",
     "mkdocs-minify-plugin~=0.3.0",
     "mkdocstrings~=0.12.1",
 ]
@@ -43,7 +43,7 @@ testing_deps = [
     "pytest~=5.4",
     "pytest-cov~=2.10",
     "codecov~=2.1",
-    "openapi-spec-validator~=0.2.8",
+    "openapi-spec-validator~=0.2.9",
     "jsondiff~=1.2",
 ] + server_deps
 dev_deps = (
@@ -89,7 +89,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.9.0",
-        "fastapi~=0.59.0",
+        "fastapi~=0.60.1",
         "pydantic~=1.6",
         "email_validator~=1.1",
         "requests~=2.24",
