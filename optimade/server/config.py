@@ -169,7 +169,6 @@ class ServerConfig(BaseSettings):
                 )
 
         if not new_values:
-            new_values["config_file"] = None
             values["config_file"] = None
 
         new_values.update(values)
