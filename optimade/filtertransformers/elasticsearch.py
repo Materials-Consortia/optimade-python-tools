@@ -1,3 +1,5 @@
+from typing import List
+
 import lark
 from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
 from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
@@ -67,13 +69,14 @@ class Transformer(lark.Transformer):
     """ Transformer that transforms ``v0.10.0`` grammer parse trees into queries.
 
     Uses elasticsearch_dsl and will produce a :class:`Q` instance.
-
-    Arguments:
-        quantities: A list of :class:`Quantity`s that describe how optimade (and other)
-            quantities are mapped to the elasticsearch index.
     """
 
-    def __init__(self, quantities):
+    def __init__(self, quantities: List[Quantity]):
+        """
+        Arguments:
+            quantities: A list of :class:`Quantity`s that describe how optimade (and other)
+                quantities are mapped to the elasticsearch index.
+        """
         self.index_mapping = {quantity.name: quantity for quantity in quantities}
 
     def _field(self, quantity, nested=None):
