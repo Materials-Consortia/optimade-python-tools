@@ -40,5 +40,5 @@ The following configuration file represents the default values for all configura
 
 === "Default values for all configuration options"
     ```json
-    --8<-- "default_config.json"
+    --8<-- "docs/static/default_config.json"
     ```

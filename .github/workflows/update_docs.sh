@@ -34,7 +34,7 @@ echo "\n-o- Overwrite old CHANGELOG.md -o-"
 mv -f CHANGELOG.md docs/
 
 echo "\n-o- Commit updates - Changelog -o-"
-git add optimade/__init__.py default_config.json
+git add optimade/__init__.py docs/static/default_config.json
 git add openapi/index_openapi.json openapi/openapi.json
 git add docs/CHANGELOG.md
 git commit -m "Release ${GITHUB_REF#refs/tags/} - Changelog"

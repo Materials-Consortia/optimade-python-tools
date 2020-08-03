@@ -113,7 +113,7 @@ def setver(_, ver=""):
     )
 
     update_file(
-        TOP_DIR.joinpath("default_config.json"),
+        TOP_DIR.joinpath("docs/static/default_config.json"),
         (r'"version": ".*",', f'"version": "{ver}",'),
     )
 
