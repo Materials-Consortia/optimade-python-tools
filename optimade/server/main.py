@@ -5,6 +5,9 @@ The server is based on MongoDB, using either `pymongo` or `mongomock`.
 This is an example implementation with example data.
 To implement your own server see the documentation at https://optimade.org/optimade-python-tools.
 """
+
+import warnings
+
 from lark.exceptions import VisitError
 
 from pydantic import ValidationError
@@ -12,11 +15,14 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+with warnings.catch_warnings(record=True) as w:
+    from optimade.server.config import CONFIG
+
+    config_warnings = w
+
 from optimade import __api_version__, __version__
 import optimade.server.exception_handlers as exc_handlers
-
 from optimade.server.entry_collections import MongoCollection
-from optimade.server.config import CONFIG
 from optimade.server.logger import LOGGER
 from optimade.server.middleware import (
     AddWarnings,
@@ -35,9 +41,16 @@ from optimade.server.routers import (
 from optimade.server.routers.utils import get_providers, BASE_URL_PREFIXES
 
 
+if CONFIG.config_file is None:
+    LOGGER.warn(
+        f"Invalid config file or no config file provided, running server with default settings. Errors: "
+        f"{[warnings.formatwarning(w.message, w.category, w.filename, w.lineno, '') for w in config_warnings]}"
+    )
+else:
+    LOGGER.info(f"Loaded settings from {CONFIG.config_file}.")
+
 if CONFIG.debug:  # pragma: no cover
     LOGGER.info("DEBUG MODE")
-
 
 app = FastAPI(
     title="OPTIMADE API",

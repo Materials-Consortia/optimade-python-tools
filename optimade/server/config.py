@@ -1,6 +1,6 @@
-# pylint: disable=no-self-argument
 from enum import Enum
 import json
+import warnings
 from typing import Optional, Dict, List
 
 try:
@@ -41,8 +41,8 @@ class ServerConfig(BaseSettings):
 
     """
 
-    config_file: str = Field(
-        DEFAULT_CONFIG_FILE_PATH, description="File to load alternative defaults from",
+    config_file: Optional[str] = Field(
+        None, description="File to load alternative defaults from",
     )
     debug: bool = Field(
         False, description="Turns on Debug Mode for the OPTIMADE Server implementation"
@@ -137,42 +137,53 @@ class ServerConfig(BaseSettings):
         res.update(v)
         return res
 
-    @validator("log_level")
-    def force_debug_log_level(cls, v, values):
-        """If `debug` is `True`, then force `log_level` to be `DEBUG` as well"""
-        from optimade.server.logger import CONSOLE_HANDLER
-
-        if values.get("debug", False):
-            v = LogLevel.DEBUG
-        CONSOLE_HANDLER.setLevel(v.value.upper())
-        return v
-
     @root_validator(pre=True)
-    def load_default_settings(cls, values):  # pylint: disable=no-self-argument
+    def load_settings(cls, values):  # pylint: disable=no-self-argument
         """
-        Loads settings from a root file if available and uses that as defaults in
-        place of built in defaults
+        Loads settings from a JSON config file, if available, and uses them in place
+        of the built-in defaults.
         """
-        from optimade.server.logger import LOGGER
-
         config_file_path = Path(values.get("config_file", DEFAULT_CONFIG_FILE_PATH))
 
         new_values = {}
 
-        if config_file_path.exists() and config_file_path.is_file():
-            LOGGER.debug("Found config file at: %s", config_file_path)
-            with open(config_file_path) as f:
-                new_values = json.load(f)
+        if config_file_path.is_file():
+            try:
+                with open(config_file_path) as f:
+                    new_values = json.load(f)
+            except json.JSONDecodeError as exc:
+                warnings.warn(
+                    f"Unable to parse config file {config_file_path} as JSON. Error: {exc}."
+                )
+
         else:
-            LOGGER.debug(  # pragma: no cover
-                "Did not find config file at: %s", config_file_path
-            )
+            if DEFAULT_CONFIG_FILE_PATH != str(config_file_path):
+                warnings.warn(
+                    f"Unable to find config file in requested location {config_file_path}, "
+                    "using the built-in default settings instead."
+                )
+            else:
+                warnings.warn(
+                    f"Unable to find config file in default location {DEFAULT_CONFIG_FILE_PATH}, "
+                    "using the built-in default settings instead."
+                )
+
+        if not new_values:
+            values["config_file"] = None
 
         new_values.update(values)
 
         return new_values
 
     class Config:
+        """
+        This is a pydantic model Config object that modifies the behaviour of
+        ServerConfig by adding a prefix to the environment variables that
+        override config file values. It has nothing to do with the OPTIMADE
+        config.
+
+        """
+
         env_prefix = "optimade_"
 
 
