@@ -1,4 +1,3 @@
-# pylint: disable=no-self-argument
 from enum import Enum
 import json
 import warnings
@@ -153,7 +152,7 @@ class ServerConfig(BaseSettings):
                 with open(config_file_path) as f:
                     new_values = json.load(f)
             except json.JSONDecodeError as exc:
-                raise RuntimeError(f"Error in JSON file {config_file_path}: {exc}")
+                raise RuntimeError(f"Error in server configuration JSON file {config_file_path}: {exc}")
 
         elif DEFAULT_CONFIG_FILE_PATH != str(config_file_path):
             raise RuntimeError(
