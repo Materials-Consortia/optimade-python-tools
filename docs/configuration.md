@@ -35,3 +35,10 @@ Hence, you can set (or overwrite) any configuration option from the server's def
 ## List of configuration options
 
 See [`config.py`][optimade.server.config.ServerConfig] for a complete list of configuration options.
+
+The following configuration file represents the default values for all configuration options:
+
+=== "Default values for all configuration options"
+    ```json
+    --8<-- "default_config.json"
+    ```

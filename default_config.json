@@ -12,20 +12,22 @@
     "default_db": "test_server",
     "base_url": null,
     "implementation": {
-        "name": "Example implementation",
-        "version": "0.7.0",
+        "name": "OPTIMADE Python Tools",
+        "version": "0.10.0",
         "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
-        "maintainer": null
+        "maintainer": {"email": "dev@optimade.org"}
     },
+    "index_base_url": null,
     "provider": {
         "name": "Example provider",
         "description": "Provider used for examples, not to be assigned to a real database",
         "prefix": "exmpl",
         "homepage": "https://example.com"
     },
-    "index_base_url": "http://localhost:5001",
     "provider_fields": {},
     "aliases": {},
     "length_aliases": {},
-    "index_links_path": "./optimade/server/index_links.json"
+    "index_links_path": "./optimade/server/index_links.json",
+    "log_level": "info",
+    "log_dir": "/var/log/optimade/"
 }
