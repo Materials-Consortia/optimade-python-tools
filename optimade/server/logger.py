@@ -37,7 +37,7 @@ except ImportError:
 
 try:
     LOGS_DIR.mkdir(exist_ok=True)
-except PermissionError:
+except OSError:
     LOGGER.warning(
         """Log files are not saved.
 
