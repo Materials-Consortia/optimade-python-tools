@@ -41,8 +41,8 @@ class ServerConfig(BaseSettings):
 
     """
 
-    config_file: str = Field(
-        DEFAULT_CONFIG_FILE_PATH, description="File to load alternative defaults from",
+    config_file: Optional[str] = Field(
+        None, description="File to load alternative defaults from",
     )
     debug: bool = Field(
         False, description="Turns on Debug Mode for the OPTIMADE Server implementation"
@@ -152,18 +152,25 @@ class ServerConfig(BaseSettings):
                 with open(config_file_path) as f:
                     new_values = json.load(f)
             except json.JSONDecodeError as exc:
-                raise RuntimeError(f"Error in server configuration JSON file {config_file_path}: {exc}")
-
-        elif DEFAULT_CONFIG_FILE_PATH != str(config_file_path):
-            raise RuntimeError(
-                f"Unable to find requested config file at {config_file_path}"
-            )
+                warnings.warn(
+                    f"Unable to parse config file {config_file_path} as JSON. Error: {exc}."
+                )
 
         else:
-            warnings.warn(
-                f"Unable to find config file in default location {DEFAULT_CONFIG_FILE_PATH}, "
-                "using the built-in default settings."
-            )
+            if DEFAULT_CONFIG_FILE_PATH != str(config_file_path):
+                warnings.warn(
+                    f"Unable to find config file in requested location {config_file_path}, "
+                    "using the built-in default settings instead."
+                )
+            else:
+                warnings.warn(
+                    f"Unable to find config file in default location {DEFAULT_CONFIG_FILE_PATH}, "
+                    "using the built-in default settings instead."
+                )
+
+        if not new_values:
+            new_values["config_file"] = None
+            values["config_file"] = None
 
         new_values.update(values)
 
