@@ -38,7 +38,7 @@ from optimade.server.routers import (
     structures,
     versions,
 )
-from optimade.server.routers.utils import get_providers, BASE_URL_PREFIXES
+from optimade.server.routers.utils import BASE_URL_PREFIXES
 
 
 if CONFIG.config_file is None:
@@ -69,20 +69,23 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 if not CONFIG.use_real_mongo:
     import bson.json_util
     import optimade.server.data as data
-    from .routers import ENTRY_COLLECTIONS
+    from optimade.server.routers import ENTRY_COLLECTIONS
+    from optimade.server.routers.utils import get_providers
 
     def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
-        LOGGER.debug(f"Loading test {endpoint_name}...")
+        LOGGER.debug("Loading test %s...", endpoint_name)
 
         endpoint_collection.collection.insert_many(getattr(data, endpoint_name, []))
         if endpoint_name == "links":
             LOGGER.debug(
-                "Adding Materials-Consortia providers to links from optimade.org"
+                "  Adding Materials-Consortia providers to links from optimade.org"
             )
-            endpoint_collection.collection.insert_many(
-                bson.json_util.loads(bson.json_util.dumps(get_providers()))
-            )
-        LOGGER.debug(f"Done inserting test {endpoint_name}...")
+            providers = get_providers()
+            if providers:
+                endpoint_collection.collection.insert_many(
+                    bson.json_util.loads(bson.json_util.dumps(providers))
+                )
+        LOGGER.debug("Done inserting test %s!", endpoint_name)
 
     for name, collection in ENTRY_COLLECTIONS.items():
         load_entries(name, collection)
