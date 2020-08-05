@@ -1,5 +1,53 @@
 # Changelog
 
+## [v0.11.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.11.0) (2020-08-05)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.10.0...v0.11.0)
+
+**Implemented enhancements:**
+
+- Use logging more thoroughly throughout the code base [\#242](https://github.com/Materials-Consortia/optimade-python-tools/issues/242)
+- Implement `warnings` [\#105](https://github.com/Materials-Consortia/optimade-python-tools/issues/105)
+
+**Fixed bugs:**
+
+- Heroku is failing - raising OSError when making LOGS\_DIR [\#448](https://github.com/Materials-Consortia/optimade-python-tools/issues/448)
+- `/versions` endpoint content-type parameter "header=present" is provided in the wrong place [\#418](https://github.com/Materials-Consortia/optimade-python-tools/issues/418)
+- Publish workflow cannot push to protected branch [\#341](https://github.com/Materials-Consortia/optimade-python-tools/issues/341)
+- Fix circular dep and extra permission error in logs [\#436](https://github.com/Materials-Consortia/optimade-python-tools/pull/436) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- log\_dir option in config is unused [\#435](https://github.com/Materials-Consortia/optimade-python-tools/issues/435)
+- Allow all types of JSON API relationships [\#429](https://github.com/Materials-Consortia/optimade-python-tools/issues/429)
+- OPTIMADE version badge was not bumped on 1.0 release [\#415](https://github.com/Materials-Consortia/optimade-python-tools/issues/415)
+- Add `api\_hint` query parameter [\#392](https://github.com/Materials-Consortia/optimade-python-tools/issues/392)
+- Return 553 for wrongly versioned base URLs [\#391](https://github.com/Materials-Consortia/optimade-python-tools/issues/391)
+- Private/dunder methods incorrectly documented in mkdocs [\#365](https://github.com/Materials-Consortia/optimade-python-tools/issues/365)
+- Configuration documentation [\#310](https://github.com/Materials-Consortia/optimade-python-tools/issues/310)
+- Improve handling of sorting in MongoDB backend [\#276](https://github.com/Materials-Consortia/optimade-python-tools/issues/276)
+
+**Merged pull requests:**
+
+- Catch OSError instead of PermissionError when making log dir [\#449](https://github.com/Materials-Consortia/optimade-python-tools/pull/449) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#447](https://github.com/Materials-Consortia/optimade-python-tools/pull/447) ([CasperWA](https://github.com/CasperWA))
+- Bump mkdocstrings from 0.12.1 to 0.12.2 and mkdocs-material from 5.5.0 to 5.5.2 [\#440](https://github.com/Materials-Consortia/optimade-python-tools/pull/440) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump uvicorn from 0.11.5 to 0.11.7 [\#433](https://github.com/Materials-Consortia/optimade-python-tools/pull/433) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Introduce logging [\#432](https://github.com/Materials-Consortia/optimade-python-tools/pull/432) ([CasperWA](https://github.com/CasperWA))
+- New middleware to catch any `OptimadeWarning`s [\#431](https://github.com/Materials-Consortia/optimade-python-tools/pull/431) ([CasperWA](https://github.com/CasperWA))
+- Auto-generate API reference in docs and an overhaul [\#430](https://github.com/Materials-Consortia/optimade-python-tools/pull/430) ([CasperWA](https://github.com/CasperWA))
+- Bump providers from `52027b1` to `9712dd8` [\#428](https://github.com/Materials-Consortia/optimade-python-tools/pull/428) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Cleanup config files [\#426](https://github.com/Materials-Consortia/optimade-python-tools/pull/426) ([CasperWA](https://github.com/CasperWA))
+- Update more unittest tests to pytest [\#425](https://github.com/Materials-Consortia/optimade-python-tools/pull/425) ([CasperWA](https://github.com/CasperWA))
+- Sorting on unknown properties: returning Bad Request when appropriate [\#424](https://github.com/Materials-Consortia/optimade-python-tools/pull/424) ([ml-evs](https://github.com/ml-evs))
+- Minor CI updates [\#422](https://github.com/Materials-Consortia/optimade-python-tools/pull/422) ([CasperWA](https://github.com/CasperWA))
+- Add `api\_hint` query parameter [\#421](https://github.com/Materials-Consortia/optimade-python-tools/pull/421) ([CasperWA](https://github.com/CasperWA))
+- Implement 553 Version Not Supported [\#420](https://github.com/Materials-Consortia/optimade-python-tools/pull/420) ([CasperWA](https://github.com/CasperWA))
+- Fix incorrect placement of header=present in versions endpoint [\#419](https://github.com/Materials-Consortia/optimade-python-tools/pull/419) ([ml-evs](https://github.com/ml-evs))
+- Bump optimade-version.json to 1.0.0 [\#416](https://github.com/Materials-Consortia/optimade-python-tools/pull/416) ([ml-evs](https://github.com/ml-evs))
+- Use optimade-validator-action v2 [\#413](https://github.com/Materials-Consortia/optimade-python-tools/pull/413) ([CasperWA](https://github.com/CasperWA))
+- Bump providers from `a96d424` to `52027b1` [\#389](https://github.com/Materials-Consortia/optimade-python-tools/pull/389) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.10.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.10.0) (2020-07-17)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.9.8...v0.10.0)
@@ -11,7 +59,6 @@
 **Fixed bugs:**
 
 - Fix /vMAJOR/info in index server [\#414](https://github.com/Materials-Consortia/optimade-python-tools/pull/414) ([CasperWA](https://github.com/CasperWA))
-- Fix publish workflow - final\(TM\) fix [\#378](https://github.com/Materials-Consortia/optimade-python-tools/pull/378) ([CasperWA](https://github.com/CasperWA))
 
 **Closed issues:**
 
@@ -49,6 +96,10 @@
 ## [v0.9.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.9.6) (2020-06-28)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.9.5...v0.9.6)
+
+**Fixed bugs:**
+
+- Fix publish workflow - final\(TM\) fix [\#378](https://github.com/Materials-Consortia/optimade-python-tools/pull/378) ([CasperWA](https://github.com/CasperWA))
 
 ## [v0.9.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.9.5) (2020-06-26)
 
@@ -155,6 +206,7 @@
 - Update publish workflow [\#340](https://github.com/Materials-Consortia/optimade-python-tools/pull/340) ([shyamd](https://github.com/shyamd))
 - Remove test publish action [\#338](https://github.com/Materials-Consortia/optimade-python-tools/pull/338) ([shyamd](https://github.com/shyamd))
 - Fix 'publish\_TestPyPI' CI job [\#337](https://github.com/Materials-Consortia/optimade-python-tools/pull/337) ([CasperWA](https://github.com/CasperWA))
+- Specify versions for all setup.py deps [\#336](https://github.com/Materials-Consortia/optimade-python-tools/pull/336) ([CasperWA](https://github.com/CasperWA))
 - Represent the datetime objects as UTC in RFC3339 format [\#333](https://github.com/Materials-Consortia/optimade-python-tools/pull/333) ([fekad](https://github.com/fekad))
 - dependamat: Bump \<package\_name\> v x.y.z to vx.y.\(z+1\) [\#330](https://github.com/Materials-Consortia/optimade-python-tools/pull/330) ([ml-evs](https://github.com/ml-evs))
 - Bump fastapi from 0.53.1 to 0.56.0 [\#324](https://github.com/Materials-Consortia/optimade-python-tools/pull/324) ([dependabot[bot]](https://github.com/apps/dependabot))
@@ -268,6 +320,8 @@
 - Codecov-action supports token-less uploads [\#220](https://github.com/Materials-Consortia/optimade-python-tools/pull/220) ([CasperWA](https://github.com/CasperWA))
 - Update django requirement from \>=2.2.9,~=2.2 to \>=2.2,\<4.0 [\#219](https://github.com/Materials-Consortia/optimade-python-tools/pull/219) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Update elasticsearch-dsl requirement from ~=6.4 to \>=6.4,\<8.0 [\#218](https://github.com/Materials-Consortia/optimade-python-tools/pull/218) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Self load data [\#212](https://github.com/Materials-Consortia/optimade-python-tools/pull/212) ([shyamd](https://github.com/shyamd))
+- Update tests for available\_api\_versions [\#211](https://github.com/Materials-Consortia/optimade-python-tools/pull/211) ([CasperWA](https://github.com/CasperWA))
 
 ## [v0.6.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.6.0) (2020-03-06)
 
@@ -299,8 +353,6 @@
 **Merged pull requests:**
 
 - Removed /optimade/ prefix in info response [\#216](https://github.com/Materials-Consortia/optimade-python-tools/pull/216) ([ml-evs](https://github.com/ml-evs))
-- Self load data [\#212](https://github.com/Materials-Consortia/optimade-python-tools/pull/212) ([shyamd](https://github.com/shyamd))
-- Update tests for available\_api\_versions [\#211](https://github.com/Materials-Consortia/optimade-python-tools/pull/211) ([CasperWA](https://github.com/CasperWA))
 - Up to v0.6.0 [\#210](https://github.com/Materials-Consortia/optimade-python-tools/pull/210) ([CasperWA](https://github.com/CasperWA))
 - Update handling of include parameter \(and other query parameters\) [\#209](https://github.com/Materials-Consortia/optimade-python-tools/pull/209) ([CasperWA](https://github.com/CasperWA))
 - Skip HAS ONLY test if mongomock version \<= 3.19.0 [\#206](https://github.com/Materials-Consortia/optimade-python-tools/pull/206) ([ml-evs](https://github.com/ml-evs))
@@ -312,6 +364,7 @@
 - Add CORSMiddleware [\#194](https://github.com/Materials-Consortia/optimade-python-tools/pull/194) ([CasperWA](https://github.com/CasperWA))
 - Add "debug mode" [\#190](https://github.com/Materials-Consortia/optimade-python-tools/pull/190) ([CasperWA](https://github.com/CasperWA))
 - Use https://provider.optimade.org/providers.json [\#187](https://github.com/Materials-Consortia/optimade-python-tools/pull/187) ([CasperWA](https://github.com/CasperWA))
+- Fix errors parsing IDs that contain slashes [\#183](https://github.com/Materials-Consortia/optimade-python-tools/pull/183) ([ml-evs](https://github.com/ml-evs))
 - Added default mongo implementations for HAS ALL/ANY/ONLY [\#173](https://github.com/Materials-Consortia/optimade-python-tools/pull/173) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.5.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.5.0) (2020-02-13)
@@ -364,7 +417,6 @@
 
 **Merged pull requests:**
 
-- Fix errors parsing IDs that contain slashes [\#183](https://github.com/Materials-Consortia/optimade-python-tools/pull/183) ([ml-evs](https://github.com/ml-evs))
 - Bump to v0.4.0 [\#168](https://github.com/Materials-Consortia/optimade-python-tools/pull/168) ([CasperWA](https://github.com/CasperWA))
 - Describe query parameters in OpenAPI schema [\#166](https://github.com/Materials-Consortia/optimade-python-tools/pull/166) ([CasperWA](https://github.com/CasperWA))
 - Redirect slashed URLs [\#160](https://github.com/Materials-Consortia/optimade-python-tools/pull/160) ([CasperWA](https://github.com/CasperWA))
