@@ -1,6 +1,106 @@
+import inspect
+import warnings
 import re
+from enum import Enum
+from typing import Optional
+
+from pydantic import Field
+
+_PYDANTIC_FIELD_KWARGS = list(inspect.signature(Field).parameters.keys())
 
 __all__ = ("CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS", "SemanticVersion")
+
+
+class SupportLevel(Enum):
+    MUST = "must"
+    SHOULD = "should"
+    OPTIONAL = "optional"
+
+
+def StrictField(
+    *args,
+    description: str = None,
+    **kwargs,
+) -> Field:
+    """A wrapper around `pydantic.Field` that does the following:
+
+    - Forbids any "extra" keys that would be passed to `pydantic.Field`,
+      except those used elsewhere to modify the schema in-place,
+      e.g. "uniqueItems", "pattern" and those added by OptimadeField, e.g.
+      "unit", "queryable" and "sortable".
+    - Emits a warning when no description is provided.
+
+    Raises:
+        RuntimeError: if a Field is created with an unexpected key.
+
+    Returns:
+        the pydantic field
+
+    """
+
+    allowed_keys = [
+        "unit",
+        "pattern",
+        "uniqueItems",
+        "support",
+        "queryable",
+        "sortable",
+    ]
+    _banned = [k for k in kwargs if k not in set(_PYDANTIC_FIELD_KWARGS + allowed_keys)]
+
+    if _banned:
+        raise RuntimeError(
+            f"Not creating StrictField({args}, {kwargs}) with forbidden keywords {_banned}."
+        )
+
+    if description is not None:
+        kwargs["description"] = description
+
+    if description is None:
+        warnings.warn(
+            f"No description provided for StrictField specified by {args}, {kwargs}."
+        )
+
+    return Field(*args, **kwargs)
+
+
+def OptimadeField(
+    *args,
+    support: Optional[SupportLevel] = None,
+    queryable: Optional[SupportLevel] = None,
+    unit: Optional[str] = None,
+    **kwargs,
+) -> Field:
+    """A wrapper around `pydantic.Field` that adds OPTIMADE-specific
+    field paramters `queryable`, `support` and `unit`, indicating
+    the corresponding support level in the specification and the
+    physical unit of the field.
+
+    Keyword arguments:
+        support: the support level of the field itself, i.e. whether the field
+            can be null or omitted by an implementation.
+        queryable: the support level corresponding to the queryablility
+            of this field.
+        unit: a string describing the unit of the field.
+
+    Returns:
+        the pydantic field with extra validation provided by :func:`StrictField`.
+
+    """
+
+    # Collect non-null keyword arguments to add to the Field schema
+    if unit is not None:
+        kwargs["unit"] = unit
+    if queryable is not None:
+        if isinstance(queryable, str):
+            queryable = SupportLevel(queryable.lower())
+        kwargs["queryable"] = queryable
+    if support is not None:
+        if isinstance(support, str):
+            support = SupportLevel(support.lower())
+        kwargs["support"] = support
+
+    return StrictField(*args, **kwargs)
 
 
 class SemanticVersion(str):

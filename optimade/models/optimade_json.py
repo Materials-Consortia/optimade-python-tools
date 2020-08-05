@@ -2,13 +2,13 @@
 # pylint: disable=no-self-argument,no-name-in-module
 from enum import Enum
 
-from pydantic import Field, root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
+from pydantic import root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
 from typing import Optional, Union, List, Dict, Type, Any
 
 from datetime import datetime
 
 from optimade.models import jsonapi
-from optimade.models.utils import SemanticVersion
+from optimade.models.utils import SemanticVersion, StrictField
 
 
 __all__ = (
@@ -126,7 +126,7 @@ class DataType(Enum):
 class OptimadeError(jsonapi.Error):
     """detail MUST be present"""
 
-    detail: str = Field(
+    detail: str = StrictField(
         ...,
         description="A human-readable explanation specific to this occurrence of the problem.",
     )
@@ -144,7 +144,7 @@ class Warnings(OptimadeError):
 
     """
 
-    type: str = Field(
+    type: str = StrictField(
         "warning",
         const="warning",
         description='Warnings must be of type "warning"',
@@ -182,7 +182,7 @@ class Warnings(OptimadeError):
 class ResponseMetaQuery(BaseModel):
     """ Information on the query that was requested. """
 
-    representation: str = Field(
+    representation: str = StrictField(
         ...,
         description="""A string with the part of the URL following the versioned or unversioned base URL that serves the API.
 Query parameters that have not been used in processing the request MAY be omitted.
@@ -194,18 +194,18 @@ Example: `/structures?filter=nelements=2`""",
 class Provider(BaseModel):
     """Information on the database provider of the implementation."""
 
-    name: str = Field(..., description="a short name for the database provider")
+    name: str = StrictField(..., description="a short name for the database provider")
 
-    description: str = Field(
+    description: str = StrictField(
         ..., description="a longer description of the database provider"
     )
 
-    prefix: str = Field(
+    prefix: str = StrictField(
         ...,
         description="database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes.",
     )
 
-    homepage: Optional[Union[AnyHttpUrl, jsonapi.Link]] = Field(
+    homepage: Optional[Union[AnyHttpUrl, jsonapi.Link]] = StrictField(
         None,
         description="a [JSON API links object](http://jsonapi.org/format/1.0#document-links) "
         "pointing to homepage of the database provider, either "
@@ -216,29 +216,29 @@ class Provider(BaseModel):
 class ImplementationMaintainer(BaseModel):
     """Details about the maintainer of the implementation"""
 
-    email: EmailStr = Field(..., description="the maintainer's email address")
+    email: EmailStr = StrictField(..., description="the maintainer's email address")
 
 
 class Implementation(BaseModel):
     """Information on the server implementation"""
 
-    name: Optional[str] = Field(None, description="name of the implementation")
+    name: Optional[str] = StrictField(None, description="name of the implementation")
 
-    version: Optional[str] = Field(
+    version: Optional[str] = StrictField(
         None, description="version string of the current implementation"
     )
 
-    homepage: Optional[Union[AnyHttpUrl, jsonapi.Link]] = Field(
+    homepage: Optional[Union[AnyHttpUrl, jsonapi.Link]] = StrictField(
         None,
         description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the homepage of the implementation.",
     )
 
-    source_url: Optional[Union[AnyUrl, jsonapi.Link]] = Field(
+    source_url: Optional[Union[AnyUrl, jsonapi.Link]] = StrictField(
         None,
         description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation source, either downloadable archive or version control system.",
     )
 
-    maintainer: Optional[ImplementationMaintainer] = Field(
+    maintainer: Optional[ImplementationMaintainer] = StrictField(
         None,
         description="A dictionary providing details about the maintainer of the implementation.",
     )
@@ -255,24 +255,24 @@ class ResponseMeta(jsonapi.Meta):
     database-provider-specific prefix.
     """
 
-    query: ResponseMetaQuery = Field(
+    query: ResponseMetaQuery = StrictField(
         ..., description="Information on the Query that was requested"
     )
 
-    api_version: SemanticVersion = Field(
+    api_version: SemanticVersion = StrictField(
         ...,
         description="""Presently used full version of the OPTIMADE API.
 The version number string MUST NOT be prefixed by, e.g., "v".
 Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
 
-    more_data_available: bool = Field(
+    more_data_available: bool = StrictField(
         ...,
         description="`false` if the response contains all data for the request (e.g., a request issued to a single entry endpoint, or a `filter` query at the last page of a paginated response) and `true` if the response is incomplete in the sense that multiple objects match the request, and not all of them have been included in the response (e.g., a query with multiple pages that is not at the last page).",
     )
 
     # start of "SHOULD" fields for meta response
-    optimade_schema: Optional[Union[AnyHttpUrl, jsonapi.Link]] = Field(
+    optimade_schema: Optional[Union[AnyHttpUrl, jsonapi.Link]] = StrictField(
         None,
         alias="schema",
         description="""A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.
@@ -281,40 +281,40 @@ It is possible that future versions of this specification allows for alternative
 Hence, if the `meta` field of the JSON API links object is provided and contains a field `schema_type` that is not equal to the string `OpenAPI` the client MUST not handle failures to parse the schema or to validate the response against the schema as errors.""",
     )
 
-    time_stamp: Optional[datetime] = Field(
+    time_stamp: Optional[datetime] = StrictField(
         None,
         description="A timestamp containing the date and time at which the query was executed.",
     )
 
-    data_returned: Optional[int] = Field(
+    data_returned: Optional[int] = StrictField(
         None,
         description="An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.",
         ge=0,
     )
 
-    provider: Optional[Provider] = Field(
+    provider: Optional[Provider] = StrictField(
         None, description="information on the database provider of the implementation."
     )
 
     # start of "MAY" fields for meta response
-    data_available: Optional[int] = Field(
+    data_available: Optional[int] = StrictField(
         None,
         description="An integer containing the total number of data resource objects available in the database for the endpoint.",
     )
 
-    last_id: Optional[str] = Field(
+    last_id: Optional[str] = StrictField(
         None, description="a string containing the last ID returned"
     )
 
-    response_message: Optional[str] = Field(
+    response_message: Optional[str] = StrictField(
         None, description="response string from the server"
     )
 
-    implementation: Optional[Implementation] = Field(
+    implementation: Optional[Implementation] = StrictField(
         None, description="a dictionary describing the server implementation"
     )
 
-    warnings: Optional[List[Warnings]] = Field(
+    warnings: Optional[List[Warnings]] = StrictField(
         None,
         description="""A list of warning resource objects representing non-critical errors or warnings.
 A warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `"warning"`.
@@ -328,7 +328,7 @@ This is an exclusive field for error resource objects.""",
 class Success(jsonapi.Response):
     """errors are not allowed"""
 
-    meta: ResponseMeta = Field(
+    meta: ResponseMeta = StrictField(
         ..., description="A meta object containing non-standard information"
     )
 
@@ -351,7 +351,7 @@ class Success(jsonapi.Response):
 class BaseRelationshipMeta(jsonapi.Meta):
     """Specific meta field for base relationship resource"""
 
-    description: str = Field(
+    description: str = StrictField(
         ..., description="OPTIONAL human-readable description of the relationship"
     )
 
@@ -359,7 +359,7 @@ class BaseRelationshipMeta(jsonapi.Meta):
 class BaseRelationshipResource(jsonapi.BaseResource):
     """Minimum requirements to represent a relationship resource"""
 
-    meta: Optional[BaseRelationshipMeta] = Field(
+    meta: Optional[BaseRelationshipMeta] = StrictField(
         None,
         description="Relationship meta field. MUST contain 'description' if supplied.",
     )
@@ -370,4 +370,4 @@ class Relationship(jsonapi.Relationship):
 
     data: Optional[
         Union[BaseRelationshipResource, List[BaseRelationshipResource]]
-    ] = Field(None, description="Resource linkage", uniqueItems=True)
+    ] = StrictField(None, description="Resource linkage", uniqueItems=True)

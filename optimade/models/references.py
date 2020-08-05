@@ -1,6 +1,5 @@
 # pylint: disable=line-too-long,no-self-argument
 from pydantic import (  # pylint: disable=no-name-in-module
-    Field,
     BaseModel,
     AnyUrl,
     validator,
@@ -8,15 +7,34 @@ from pydantic import (  # pylint: disable=no-name-in-module
 from typing import List, Optional
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
+from optimade.models.utils import OptimadeField, SupportLevel
 
 
 __all__ = ("Person", "ReferenceResourceAttributes", "ReferenceResource")
 
 
 class Person(BaseModel):
-    name: str = Field(..., description="""Full name of the person, REQUIRED.""")
-    firstname: Optional[str] = Field(None, description="""First name of the person.""")
-    lastname: Optional[str] = Field(None, description="""Last name of the person.""")
+
+    name: str = OptimadeField(
+        ...,
+        description="""Full name of the person, REQUIRED.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+
+    firstname: Optional[str] = OptimadeField(
+        None,
+        description="""First name of the person.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+
+    lastname: Optional[str] = OptimadeField(
+        None,
+        description="""Last name of the person.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
 
 
 class ReferenceResourceAttributes(EntryResourceAttributes):
@@ -27,87 +45,186 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
 
     """
 
-    authors: Optional[List[Person]] = Field(
+    authors: Optional[List[Person]] = OptimadeField(
         None,
         description="List of person objects containing the authors of the reference.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    editors: Optional[List[Person]] = Field(
+
+    editors: Optional[List[Person]] = OptimadeField(
         None,
         description="List of person objects containing the editors of the reference.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    doi: Optional[str] = Field(
-        None, description="The digital object identifier of the reference."
+    doi: Optional[str] = OptimadeField(
+        None,
+        description="The digital object identifier of the reference.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    url: Optional[AnyUrl] = Field(None, description="The URL of the reference.")
+    url: Optional[AnyUrl] = OptimadeField(
+        None,
+        description="The URL of the reference.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
 
-    address: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+    address: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    annote: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    annote: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    booktitle: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    booktitle: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    chapter: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    chapter: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    crossref: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    crossref: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    edition: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    edition: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    howpublished: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    howpublished: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    institution: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    institution: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    journal: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    journal: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    key: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    key: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    month: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    month: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    note: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    note: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    number: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    number: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    organization: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    organization: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    pages: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    pages: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    publisher: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    publisher: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    school: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    school: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    series: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    series: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    title: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    title: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    bib_type: Optional[str] = Field(
+
+    bib_type: Optional[str] = OptimadeField(
         None,
         description="Type of the reference, corresponding to the **type** property in the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    volume: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    volume: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
-    year: Optional[str] = Field(
-        None, description="Meaning of property matches the BiBTeX specification."
+
+    year: Optional[str] = OptimadeField(
+        None,
+        description="Meaning of property matches the BiBTeX specification.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
 
@@ -130,7 +247,7 @@ class ReferenceResource(EntryResource):
 
     """
 
-    type: str = Field(
+    type: str = OptimadeField(
         "references",
         const="references",
         description="""The name of the type of an entry.
