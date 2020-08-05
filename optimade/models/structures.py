@@ -3,11 +3,16 @@ from enum import IntEnum, Enum
 from sys import float_info
 from typing import List, Optional, Union
 
-from pydantic import Field, BaseModel, validator, root_validator, conlist
+from pydantic import BaseModel, validator, root_validator, conlist
 
 from optimade.models.entries import EntryResourceAttributes, EntryResource
-from optimade.models.utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
-
+from optimade.models.utils import (
+    CHEMICAL_SYMBOLS,
+    EXTRA_SYMBOLS,
+    OptimadeField,
+    StrictField,
+    SupportLevel,
+)
 
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
 
@@ -64,12 +69,12 @@ class Species(BaseModel):
 
     """
 
-    name: str = Field(
+    name: str = StrictField(
         ...,
         description="""Gives the name of the species; the **name** value MUST be unique in the `species` list.""",
     )
 
-    chemical_symbols: List[str] = Field(
+    chemical_symbols: List[str] = StrictField(
         ...,
         description="""MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
 
@@ -80,7 +85,7 @@ class Species(BaseModel):
 If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.""",
     )
 
-    concentration: List[float] = Field(
+    concentration: List[float] = StrictField(
         ...,
         description="""MUST be a list of floats, with same length as `chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species. The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
 
@@ -90,25 +95,25 @@ If any one entry in the `species` list has a `chemical_symbols` list that is lon
 Note that concentrations are uncorrelated between different site (even of the same species).""",
     )
 
-    mass: Optional[float] = Field(
+    mass: Optional[float] = StrictField(
         None,
         description="""If present MUST be a float expressed in a.m.u.""",
         unit="a.m.u.",
     )
 
-    original_name: Optional[str] = Field(
+    original_name: Optional[str] = StrictField(
         None,
         description="""Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
 Note: With regards to "source database", we refer to the immediate source being queried via the OPTIMADE API implementation.""",
     )
 
-    attached: Optional[List[str]] = Field(
+    attached: Optional[List[str]] = StrictField(
         None,
         description="""If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.""",
     )
 
-    nattached: Optional[List[int]] = Field(
+    nattached: Optional[List[int]] = StrictField(
         None,
         description="""If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.""",
     )
@@ -172,7 +177,7 @@ class Assembly(BaseModel):
 
     """
 
-    sites_in_groups: List[List[int]] = Field(
+    sites_in_groups: List[List[int]] = StrictField(
         ...,
         description="""Index of the sites (0-based) that belong to each group for each assembly.
 
@@ -181,7 +186,7 @@ class Assembly(BaseModel):
     - `[[1,2], [3]]`: one group with the second and third site, one with the fourth.""",
     )
 
-    group_probabilities: List[float] = Field(
+    group_probabilities: List[float] = StrictField(
         ...,
         description="""Statistical probability of each group. It MUST have the same length as `sites_in_groups`.
 It SHOULD sum to one.
@@ -212,7 +217,7 @@ The possible reasons for the values not to sum to one are the same as already sp
 class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
-    elements: List[str] = Field(
+    elements: List[str] = OptimadeField(
         ...,
         description="""Names of the different elements present in the structure.
 
@@ -232,9 +237,11 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Query examples**:
     - A filter that matches all records of structures that contain Si, Al **and** O, and possibly other elements: `elements HAS ALL "Si", "Al", "O"`.
     - To match structures with exactly these three elements, use `elements HAS ALL "Si", "Al", "O" AND elements LENGTH 3`.""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.MUST,
     )
 
-    nelements: int = Field(
+    nelements: int = OptimadeField(
         ...,
         description="""Number of different elements in the structure as an integer.
 
@@ -251,9 +258,11 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - Note: queries on this property can equivalently be formulated using `elements LENGTH`.
     - A filter that matches structures that have exactly 4 elements: `nelements=4`.
     - A filter that matches structures that have between 2 and 7 elements: `nelements>=2 AND nelements<=7`.""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.MUST,
     )
 
-    elements_ratios: List[float] = Field(
+    elements_ratios: List[float] = OptimadeField(
         ...,
         description="""Relative proportions of different elements in the structure.
 
@@ -273,9 +282,11 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - Note: Useful filters can be formulated using the set operator syntax for correlated values.
       However, since the values are floating point values, the use of equality comparisons is generally inadvisable.
     - OPTIONAL: a filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: `elements:elements_ratios HAS ALL "Al":>0.3333, "Al":<0.3334`.""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.MUST,
     )
 
-    chemical_formula_descriptive: str = Field(
+    chemical_formula_descriptive: str = OptimadeField(
         ...,
         description="""The chemical formula for a structure as a string in a form chosen by the API implementation.
 
@@ -299,9 +310,11 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - Note: the free-form nature of this property is likely to make queries on it across different databases inconsistent.
     - A filter that matches an exactly given formula: `chemical_formula_descriptive="(H2O)2 Na"`.
     - A filter that does a partial match: `chemical_formula_descriptive CONTAINS "H2O"`.""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.MUST,
     )
 
-    chemical_formula_reduced: str = Field(
+    chemical_formula_reduced: str = OptimadeField(
         ...,
         description="""The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.
 The proportion number MUST be omitted if it is 1.
@@ -326,9 +339,11 @@ The proportion number MUST be omitted if it is 1.
 
 - **Query examples**:
     - A filter that matches an exactly given formula is `chemical_formula_reduced="H2NaO"`.""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.MUST,
     )
 
-    chemical_formula_hill: Optional[str] = Field(
+    chemical_formula_hill: Optional[str] = OptimadeField(
         None,
         description="""The chemical formula for a structure in [Hill form](https://dx.doi.org/10.1021/ja02046a005) with element symbols followed by integer chemical proportion numbers. The proportion number MUST be omitted if it is 1.
 
@@ -354,9 +369,11 @@ The proportion number MUST be omitted if it is 1.
 
 - **Query examples**:
     - A filter that matches an exactly given formula is `chemical_formula_hill="H2O2"`.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    chemical_formula_anonymous: str = Field(
+    chemical_formula_anonymous: str = OptimadeField(
         ...,
         description="""The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
 
@@ -373,9 +390,11 @@ The proportion number MUST be omitted if it is 1.
 
 - **Querying**:
     - A filter that matches an exactly given formula is `chemical_formula_anonymous="A2B"`.""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.MUST,
     )
 
-    dimension_types: conlist(Periodicity, min_items=3, max_items=3) = Field(
+    dimension_types: conlist(Periodicity, min_items=3, max_items=3) = OptimadeField(
         ...,
         description="""List of three integers.
 For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`), this list indicates if the direction is periodic (value `1`) or non-periodic (value `0`).
@@ -394,9 +413,11 @@ Note: the elements in this list each refer to the direction of the corresponding
     - For a wire along the direction specified by the third lattice vector: `[0, 0, 1]`
     - For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: `[1, 0, 1]`
     - For a bulk 3D system: `[1, 1, 1]`""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    nperiodic_dimensions: int = Field(
+    nperiodic_dimensions: int = OptimadeField(
         ...,
         description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.
 
@@ -416,7 +437,9 @@ Note: the elements in this list each refer to the direction of the corresponding
     - Match all structures with 2 or fewer periodic dimensions: `nperiodic_dimensions<=2`""",
     )
 
-    lattice_vectors: conlist(Vector3D_unknown, min_items=3, max_items=3) = Field(
+    lattice_vectors: conlist(
+        Vector3D_unknown, min_items=3, max_items=3
+    ) = OptimadeField(
         ...,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
 
@@ -438,9 +461,11 @@ Note: the elements in this list each refer to the direction of the corresponding
 - **Examples**:
     - `[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is `(4, 0, 0)`, i.e., a vector aligned along the `x` axis of length 4 Å; the second vector is `(0, 4, 0)`; and the third vector is `(0, 1, 4)`.""",
         unit="Å",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    cartesian_site_positions: List[Vector3D] = Field(
+    cartesian_site_positions: List[Vector3D] = OptimadeField(
         ...,
         description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
@@ -457,9 +482,11 @@ A site is usually used to describe positions of atoms; what atoms can be encount
 - **Examples**:
     - `[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 Å away from the origin.""",
         unit="Å",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    nsites: int = Field(
+    nsites: int = OptimadeField(
         ...,
         description="""An integer specifying the length of the `cartesian_site_positions` property.
 
@@ -475,9 +502,11 @@ A site is usually used to describe positions of atoms; what atoms can be encount
 - **Query examples**:
     - Match only structures with exactly 4 sites: `nsites=4`
     - Match structures that have between 2 and 7 sites: `nsites>=2 AND nsites<=7`""",
+        queryable=SupportLevel.MUST,
+        support=SupportLevel.SHOULD,
     )
 
-    species: List[Species] = Field(
+    species: List[Species] = OptimadeField(
         ...,
         description="""A list describing the species of the sites of this structure.
 Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
@@ -539,9 +568,11 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
     - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
     - `[ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    species_at_sites: List[str] = Field(
+    species_at_sites: List[str] = OptimadeField(
         ...,
         description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).
 The properties of the species are found in the property `species`.
@@ -563,7 +594,7 @@ The properties of the species are found in the property `species`.
     - `["Ac", "Ac", "Ag", "Ir"]` indicating the first two sites contains the `"Ac"` species, while the third and fourth sites contain the `"Ag"` and `"Ir"` species, respectively.""",
     )
 
-    assemblies: Optional[List[Assembly]] = Field(
+    assemblies: Optional[List[Assembly]] = OptimadeField(
         None,
         description="""A description of groups of sites that are statistically correlated.
 
@@ -667,9 +698,11 @@ The properties of the species are found in the property `species`.
         Site 0 is present with a probability of 20 % and site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 % and site 3 with a probability of 70 %.
         These two sites are correlated (either site 2 or 3 is present).
         However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability).""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    structure_features: List[StructureFeatures] = Field(
+    structure_features: List[StructureFeatures] = OptimadeField(
         ...,
         description="""A list of strings that flag which special features are used by the structure.
 
@@ -692,6 +725,8 @@ The properties of the species are found in the property `species`.
         - `assemblies`: this flag MUST be present if the property `assemblies` is present.
 
 - **Examples**: A structure having implicit atoms and using assemblies: `["assemblies", "implicit_atoms"]`""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.MUST,
     )
 
     @validator("elements", each_item=True)
@@ -868,7 +903,7 @@ The properties of the species are found in the property `species`.
 class StructureResource(EntryResource):
     """Representing a structure."""
 
-    type: str = Field(
+    type: str = StrictField(
         "structures",
         const="structures",
         description="""The name of the type of an entry.

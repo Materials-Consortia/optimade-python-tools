@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 from pydantic import BaseModel, AnyHttpUrl, Field, validator, root_validator
 
 from optimade.models.jsonapi import Resource
-from optimade.models.utils import SemanticVersion
+from optimade.models.utils import SemanticVersion, StrictField
 
 
 __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
@@ -14,13 +14,13 @@ __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 class AvailableApiVersion(BaseModel):
     """A JSON object containing information about an available API version"""
 
-    url: AnyHttpUrl = Field(
+    url: AnyHttpUrl = StrictField(
         ...,
         description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
         pattern=r".+/v[0-1](\.[0-9]+)*/?$",
     )
 
-    version: SemanticVersion = Field(
+    version: SemanticVersion = StrictField(
         ...,
         description="""A string containing the full version number of the API served at that versioned base URL.
 The version number string MUST NOT be prefixed by, e.g., 'v'.
@@ -59,27 +59,27 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
 class BaseInfoAttributes(BaseModel):
     """Attributes for Base URL Info endpoint"""
 
-    api_version: SemanticVersion = Field(
+    api_version: SemanticVersion = StrictField(
         ...,
         description="""Presently used full version of the OPTIMADE API.
 The version number string MUST NOT be prefixed by, e.g., "v".
 Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
-    available_api_versions: List[AvailableApiVersion] = Field(
+    available_api_versions: List[AvailableApiVersion] = StrictField(
         ...,
         description="A list of dictionaries of available API versions at other base URLs",
     )
-    formats: List[str] = Field(
+    formats: List[str] = StrictField(
         default=["json"], description="List of available output formats."
     )
-    available_endpoints: List[str] = Field(
+    available_endpoints: List[str] = StrictField(
         ...,
         description="List of available endpoints (i.e., the string to be appended to the versioned base URL).",
     )
-    entry_types_by_format: Dict[str, List[str]] = Field(
+    entry_types_by_format: Dict[str, List[str]] = StrictField(
         ..., description="Available entry endpoints as a function of output formats."
     )
-    is_index: Optional[bool] = Field(
+    is_index: Optional[bool] = StrictField(
         default=False,
         description="If true, this is an index meta-database base URL (see section Index Meta-Database). "
         "If this member is not provided, the client MUST assume this is not an index meta-database base URL "
