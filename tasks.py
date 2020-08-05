@@ -112,6 +112,11 @@ def setver(_, ver=""):
         (r'__version__ = ".*"', f'__version__ = "{ver}"'),
     )
 
+    update_file(
+        TOP_DIR.joinpath("docs/static/default_config.json"),
+        (r'"version": ".*",', f'"version": "{ver}",'),
+    )
+
     print("Bumped version to {}".format(ver))
 
 

@@ -131,6 +131,9 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
 
+    env:
+      OPTIMADE_CONFIG_FILE: ${{ github.workspace }}/optimade_config.json
+
     strategy:
       fail-fast: false
       max-parallel: 3

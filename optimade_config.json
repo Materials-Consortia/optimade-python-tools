@@ -1,17 +1,11 @@
 {
     "debug": false,
-    "use_real_mongo": true,
-    "mongo_database": "optimade",
-    "mongo_uri": "mongodb+srv://MongoUser:MongoPassword@FakeMongoServer.com/optimade_database",
-    "links_collection": "optimade_links",
-    "references_collection": "optimade_references",
-    "structures_collection": "optimade_structures",
-    "default_db": "example_server",
-    "base_url": "https://optimade.example.org",
+    "default_db": "test_server",
+    "base_url": "http://localhost:5000",
     "implementation": {
         "name": "Example implementation",
         "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
-        "maintainer": {"email": "maintainer@example.org"}
+        "maintainer": {"email": "dev@optimade.org"}
     },
     "provider": {
         "name": "Example provider",

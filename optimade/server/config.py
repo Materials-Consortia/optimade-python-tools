@@ -1,3 +1,4 @@
+# pylint: disable=no-self-argument
 from enum import Enum
 import json
 import warnings
@@ -78,7 +79,7 @@ class ServerConfig(BaseSettings):
     )
     implementation: Implementation = Field(
         Implementation(
-            name="Optimade Python Tools",
+            name="OPTIMADE Python Tools",
             version=__version__,
             source_url="https://github.com/Materials-Consortia/optimade-python-tools",
             maintainer={"email": "dev@optimade.org"},
@@ -138,7 +139,7 @@ class ServerConfig(BaseSettings):
         return res
 
     @root_validator(pre=True)
-    def load_settings(cls, values):  # pylint: disable=no-self-argument
+    def load_settings(cls, values):
         """
         Loads settings from a JSON config file, if available, and uses them in place
         of the built-in defaults.
