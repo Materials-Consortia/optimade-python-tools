@@ -61,6 +61,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 
 if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     import bson.json_util
+    from bson.objectid import ObjectId
     from optimade.server.routers.links import links_coll
     from optimade.server.routers.utils import mongo_id_for_database, get_providers
 
@@ -82,9 +83,11 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
 
     LOGGER.debug("  Adding Materials-Consortia providers to links from optimade.org...")
     providers = get_providers()
-    if providers:
-        links_coll.collection.insert_many(
-            bson.json_util.loads(bson.json_util.dumps(providers))
+    for doc in providers:
+        links_coll.collection.replace_one(
+            filter={"_id": ObjectId(doc["_id"]["$oid"])},
+            replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
+            upsert=True,
         )
 
     LOGGER.debug("Done inserting index links!")

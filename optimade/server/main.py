@@ -68,6 +68,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 
 if not CONFIG.use_real_mongo:
     import bson.json_util
+    from bson.objectid import ObjectId
     import optimade.server.data as data
     from optimade.server.routers import ENTRY_COLLECTIONS
     from optimade.server.routers.utils import get_providers
@@ -81,9 +82,11 @@ if not CONFIG.use_real_mongo:
                 "  Adding Materials-Consortia providers to links from optimade.org"
             )
             providers = get_providers()
-            if providers:
-                endpoint_collection.collection.insert_many(
-                    bson.json_util.loads(bson.json_util.dumps(providers))
+            for doc in providers:
+                endpoint_collection.collection.replace_one(
+                    filter={"_id": ObjectId(doc["_id"]["$oid"])},
+                    replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
+                    upsert=True,
                 )
         LOGGER.debug("Done inserting test %s!", endpoint_name)
 
