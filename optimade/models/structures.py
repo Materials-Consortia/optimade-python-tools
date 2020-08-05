@@ -396,8 +396,8 @@ Note: the elements in this list each refer to the direction of the corresponding
     - For a bulk 3D system: `[1, 1, 1]`""",
     )
 
-    nperiodic_dimensions: Optional[int] = Field(
-        None,
+    nperiodic_dimensions: int = Field(
+        ...,
         description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.
 
 - **Type**: integer
@@ -416,10 +416,8 @@ Note: the elements in this list each refer to the direction of the corresponding
     - Match all structures with 2 or fewer periodic dimensions: `nperiodic_dimensions<=2`""",
     )
 
-    lattice_vectors: Optional[
-        conlist(Vector3D_unknown, min_items=3, max_items=3)
-    ] = Field(
-        None,
+    lattice_vectors: conlist(Vector3D_unknown, min_items=3, max_items=3) = Field(
+        ...,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
 
 - **Type**: list of list of floats or unknown values.

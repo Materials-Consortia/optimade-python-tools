@@ -2998,6 +2998,8 @@
           "chemical_formula_reduced",
           "chemical_formula_anonymous",
           "dimension_types",
+          "nperiodic_dimensions",
+          "lattice_vectors",
           "cartesian_site_positions",
           "nsites",
           "species",
