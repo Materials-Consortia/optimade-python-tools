@@ -75,27 +75,25 @@ def test_get_providers():
 
 def test_get_providers_warning(caplog, top_dir):
     """Make sure a warning is logged as a last resort."""
+    import copy
     from optimade.server.routers.utils import get_providers
 
-    providers_symlink = top_dir.joinpath("optimade/server/data/providers.json")
     provider_list_urls = [
         "https://providers.optimade.org/v1/links",
         "https://raw.githubusercontent.com/Materials-Consortia/providers"
         "/master/src/links/v1/providers.json",
     ]
 
+    providers_cache = False
     try:
-        if providers_symlink.exists():
-            providers_symlink.rename(
-                top_dir.joinpath("optimade/server/data/providers_test.json")
-            )
+        from optimade.server import data
 
-        list_of_data_files = [_.name for _ in providers_symlink.parent.glob("*")]
-        assert "providers.json" not in list_of_data_files
-        assert "providers_test.json" in list_of_data_files
+        if getattr(data, "providers", None) is not None:
+            providers_cache = copy.deepcopy(data.providers)
 
         caplog.clear()
         with mock.patch("requests.get", side_effect=ConnectionError):
+            del data.providers  # pylint: disable=no-member
             assert get_providers() == []
 
             warning_message = """Could not retrieve a list of providers!
@@ -110,14 +108,12 @@ def test_get_providers_warning(caplog, top_dir):
             assert warning_message in caplog.messages
 
     finally:
-        providers_symlink_test = top_dir.joinpath(
-            "optimade/server/data/providers_test.json"
-        )
-        if providers_symlink_test.exists():
-            providers_symlink_test.rename(
-                top_dir.joinpath("optimade/server/data/providers.json")
-            )
+        if providers_cache:
+            from optimade.server import data
 
-        list_of_data_files = [_.name for _ in providers_symlink_test.parent.glob("*")]
-        assert "providers.json" in list_of_data_files
-        assert "providers_test.json" not in list_of_data_files
+            data.providers = providers_cache
+
+            # Trying to import providers to make sure it's there again now
+            from optimade.server.data import providers
+
+            assert providers == providers_cache
