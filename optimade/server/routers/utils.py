@@ -318,7 +318,8 @@ def get_providers() -> list:
     Fallback order if providers.optimade.org is not available:
 
     1. Try Materials-Consortia/providers on GitHub.
-    2. Log warning that providers list from Materials-Consortia is not included in the
+    2. Try submodule `providers`' list of providers.
+    3. Log warning that providers list from Materials-Consortia is not included in the
        `/links`-endpoint.
 
     Returns:
@@ -350,20 +351,23 @@ def get_providers() -> list:
         else:
             break
     else:
-        from optimade.server.logger import LOGGER
+        try:
+            from optimade.server.data import providers
+        except ImportError:
+            from optimade.server.logger import LOGGER
 
-        LOGGER.warning(
-            """Could not retrieve a list of providers!
+            LOGGER.warning(
+                """Could not retrieve a list of providers!
 
     Tried the following resources:
 
 {}
     The list of providers will not be included in the `/links`-endpoint.
 """.format(
-                "".join([f"    * {_}\n" for _ in provider_list_urls])
+                    "".join([f"    * {_}\n" for _ in provider_list_urls])
+                )
             )
-        )
-        return []
+            return []
 
     providers_list = []
     for provider in providers.get("data", []):
