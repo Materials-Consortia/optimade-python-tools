@@ -375,7 +375,7 @@ def get_providers() -> list:
         if provider["id"] == "exmpl":
             continue
 
-        provider.update(provider.pop("attributes"))
+        provider.update(provider.pop("attributes", {}))
 
         # Add MongoDB ObjectId
         provider["_id"] = {
