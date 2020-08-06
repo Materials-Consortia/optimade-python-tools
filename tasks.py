@@ -25,18 +25,6 @@ def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
         handle.write("\n")
 
 
-def purge_mongomock_db():
-    """Utility function for generating Open API JSON files
-
-    Since the `/links`-endpoint data overlap, there is a need to purge the
-    local in-memory MongoMock database, since similar named collections are used.
-    """
-    from optimade.server.routers import ENTRY_COLLECTIONS
-
-    for collection in ENTRY_COLLECTIONS.values():
-        collection.collection.delete_many({"_id": {"$exists": True}})
-
-
 @task
 def generate_openapi(_):
     """Update OpenAPI schema in file 'local_openapi.json'"""
@@ -47,8 +35,6 @@ def generate_openapi(_):
     with open(TOP_DIR.joinpath("openapi/local_openapi.json"), "w") as f:
         json.dump(app.openapi(), f, indent=2)
         print("", file=f)  # Empty EOL
-
-    purge_mongomock_db()
 
 
 @task
@@ -61,8 +47,6 @@ def generate_index_openapi(_):
     with open(TOP_DIR.joinpath("openapi/local_index_openapi.json"), "w") as f:
         json.dump(app_index.openapi(), f, indent=2)
         print("", file=f)  # Empty EOL
-
-    purge_mongomock_db()
 
 
 @task(pre=[generate_openapi, generate_index_openapi])
