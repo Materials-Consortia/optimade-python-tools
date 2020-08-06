@@ -19,7 +19,7 @@ echo "\n-o- Commit update - API Reference -o-"
 git add docs/api_reference
 git commit -m "Release ${GITHUB_REF#refs/tags/} - API Reference"
 
-echo "-o- Update version -o-"
+echo "\n-o- Update version -o-"
 invoke setver -v ${GITHUB_REF#refs/tags/}
 
 echo "\n-o- Generate changelog -o-"
