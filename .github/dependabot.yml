@@ -3,8 +3,9 @@ updates:
 - package-ecosystem: pip
   directory: "/"
   schedule:
-    interval: monthly
-  open-pull-requests-limit: 10
+    interval: weekly
+  # Needs to be larger than the number of total requirements (currently 31)
+  open-pull-requests-limit: 50
   target-branch: master
   labels:
   - dependency_updates
@@ -12,7 +13,13 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  open-pull-requests-limit: 10
   target-branch: master
   labels:
   - providers_updates
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+  target-branch: master
+  labels:
+  - CI
