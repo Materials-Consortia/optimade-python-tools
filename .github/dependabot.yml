@@ -16,3 +16,10 @@ updates:
   target-branch: master
   labels:
   - providers_updates
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+  target-branch: master
+  labels:
+  - CI
