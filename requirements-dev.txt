@@ -1,5 +1,5 @@
 pytest==6.0.1
-pytest-cov==2.10.0
+pytest-cov==2.10.1
 codecov==2.1.9
 openapi-spec-validator==0.2.9
 jsondiff==1.2.0
