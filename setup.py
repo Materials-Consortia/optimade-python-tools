@@ -19,15 +19,15 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Server minded
 django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
-mongo_deps = ["pymongo~=3.11", "mongomock~=3.19"]
+mongo_deps = ["pymongo~=3.11", "mongomock~=3.20"]
 server_deps = ["uvicorn~=0.11.8", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
 aiida_deps = ["aiida-core~=1.3"]
-ase_deps = ["ase~=3.19"]
+ase_deps = ["ase~=3.20"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2020.7.18"]
+pymatgen_deps = ["pymatgen==2020.8.13"]
 jarvis_deps = ["jarvis-tools==2020.7.25"]
 client_deps = cif_deps
 
@@ -37,17 +37,17 @@ docs_deps = [
     "mkdocs-awesome-pages-plugin~=2.2",
     "mkdocs-material~=5.5",
     "mkdocs-minify-plugin~=0.3.0",
-    "mkdocstrings~=0.12.1",
+    "mkdocstrings~=0.13.0",
 ]
 testing_deps = [
-    "pytest~=5.4",
+    "pytest~=6.0",
     "pytest-cov~=2.10",
     "codecov~=2.1",
     "openapi-spec-validator~=0.2.9",
     "jsondiff~=1.2",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.5", "black~=19.10b0", "pre-commit~=2.6", "invoke~=1.4"]
+    ["pylint~=2.6", "black~=19.10b0", "pre-commit~=2.7", "invoke~=1.4"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -89,7 +89,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.9.0",
-        "fastapi~=0.60.1",
+        "fastapi~=0.61.0",
         "pydantic~=1.6",
         "email_validator~=1.1",
         "requests~=2.24",
