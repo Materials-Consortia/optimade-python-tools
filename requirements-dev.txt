@@ -3,7 +3,7 @@ pytest-cov==2.10.0
 codecov==2.1.8
 openapi-spec-validator==0.2.9
 jsondiff==1.2.0
-pylint==2.5.3
+pylint==2.6.0
 black==19.10b0
 pre-commit==2.6.0
 invoke==1.4.1
