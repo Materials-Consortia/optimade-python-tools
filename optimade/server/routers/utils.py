@@ -312,32 +312,62 @@ def mongo_id_for_database(database_id: str, database_type: str) -> str:
     return str(ObjectId(oid.encode("UTF-8")))
 
 
-def get_providers():
-    """Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links)"""
+def get_providers() -> list:
+    """Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).
+
+    Fallback order if providers.optimade.org is not available:
+
+    1. Try Materials-Consortia/providers on GitHub.
+    2. Try submodule `providers`' list of providers.
+    3. Log warning that providers list from Materials-Consortia is not included in the
+       `/links`-endpoint.
+
+    Returns:
+        List of raw JSON-decoded providers including MongoDB object IDs.
+
+    """
     import requests
 
     try:
-        from optimade.server.data import providers
+        import simplejson as json
     except ImportError:
-        providers = None
+        import json
 
-    if providers is None:
-        try:
-            import simplejson as json
-        except ImportError:
-            import json
+    provider_list_urls = [
+        "https://providers.optimade.org/v1/links",
+        "https://raw.githubusercontent.com/Materials-Consortia/providers"
+        "/master/src/links/v1/providers.json",
+    ]
 
+    for provider_list_url in provider_list_urls:
         try:
-            providers = requests.get("https://providers.optimade.org/v1/links").json()
+            providers = requests.get(provider_list_url).json()
         except (
             requests.exceptions.ConnectionError,
             requests.exceptions.ConnectTimeout,
             json.JSONDecodeError,
         ):
-            raise BadRequest(
-                status_code=500,
-                detail="Could not retrieve providers list from https://providers.optimade.org",
+            pass
+        else:
+            break
+    else:
+        try:
+            from optimade.server.data import providers
+        except ImportError:
+            from optimade.server.logger import LOGGER
+
+            LOGGER.warning(
+                """Could not retrieve a list of providers!
+
+    Tried the following resources:
+
+{}
+    The list of providers will not be included in the `/links`-endpoint.
+""".format(
+                    "".join([f"    * {_}\n" for _ in provider_list_urls])
+                )
             )
+            return []
 
     providers_list = []
     for provider in providers.get("data", []):
@@ -345,7 +375,7 @@ def get_providers():
         if provider["id"] == "exmpl":
             continue
 
-        provider.update(provider.pop("attributes"))
+        provider.update(provider.pop("attributes", {}))
 
         # Add MongoDB ObjectId
         provider["_id"] = {

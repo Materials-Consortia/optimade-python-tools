@@ -61,24 +61,36 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 
 if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
     import bson.json_util
-    from .routers.links import links_coll
-    from .routers.utils import mongo_id_for_database
+    from bson.objectid import ObjectId
+    from optimade.server.routers.links import links_coll
+    from optimade.server.routers.utils import mongo_id_for_database, get_providers
 
     LOGGER.debug("Loading index links...")
     with open(CONFIG.index_links_path) as f:
         data = json.load(f)
 
-        processed = []
+    processed = []
+    for db in data:
+        db["_id"] = {"$oid": mongo_id_for_database(db["id"], db["type"])}
+        processed.append(db)
 
-        for db in data:
-            db["_id"] = {"$oid": mongo_id_for_database(db["id"], db["type"])}
-            processed.append(db)
+    LOGGER.debug(
+        "  Inserting index links into collection from %s...", CONFIG.index_links_path
+    )
+    links_coll.collection.insert_many(
+        bson.json_util.loads(bson.json_util.dumps(processed))
+    )
 
-        LOGGER.debug("Inserting index links into collection...")
-        links_coll.collection.insert_many(
-            bson.json_util.loads(bson.json_util.dumps(processed))
+    LOGGER.debug("  Adding Materials-Consortia providers to links from optimade.org...")
+    providers = get_providers()
+    for doc in providers:
+        links_coll.collection.replace_one(
+            filter={"_id": ObjectId(doc["_id"]["$oid"])},
+            replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
+            upsert=True,
         )
-        LOGGER.debug("Done inserting index links...")
+
+    LOGGER.debug("Done inserting index links!")
 
 
 # Add various middleware
