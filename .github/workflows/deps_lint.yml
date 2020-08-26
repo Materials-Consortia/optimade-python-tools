@@ -187,20 +187,17 @@ jobs:
         OPTIMADE_CI_FORCE_MONGO: 0
 
     - name: Install adapter conversion dependencies
-      if: matrix.python-version != 3.7
       run: |
         pip install -r requirements-client.txt
         # AiiDA-specific
         reentry scan
 
     - name: Setup up environment for AiiDA
-      if: matrix.python-version != 3.7
       env:
         AIIDA_TEST_BACKEND: django
       run: .github/aiida/setup_aiida.sh
 
     - name: Run previously skipped tests for adapter conversion
-      if: matrix.python-version != 3.7
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
     - name: Upload coverage to Codecov
