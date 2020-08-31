@@ -297,9 +297,9 @@ def create_api_reference_docs(_, pre_clean=False):
             )
 
 
-@task(help={"url": "URL of the file to validate"})
-def run_swagger_validator_on_url(_, url=None):
-    """ This task can be used in the CI to test the generated OpenAPI schemas
+@task(help={"filename": "The JSON file containing the OpenAPI schema to validate"})
+def run_swagger_validator(_, fname):
+    """This task can be used in the CI to test the generated OpenAPI schemas
     with the online swagger validator.
 
     Returns:
@@ -310,7 +310,10 @@ def run_swagger_validator_on_url(_, url=None):
     import requests
 
     swagger_url = "https://validator.swagger.io/validator/debug"
-    response = requests.get(f"{swagger_url}/?url={url}")
+    with open(fname, "r") as f:
+        schema = json.load(f)
+    response = requests.post(swagger_url, json=schema)
+
     if response.status_code != 200:
         raise RuntimeError(f"Server returned status code {response.status_code}.")
 
