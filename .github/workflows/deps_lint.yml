@@ -200,6 +200,11 @@ jobs:
     - name: Run previously skipped tests for adapter conversion
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
+    - name: Pass generated OpenAPI schemas through validator.swagger.io
+      run: |
+        invoke run-swagger-validator-on-url --url raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/openapi/openapi.json
+        invoke run-swagger-validator-on-url --url raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/openapi/index_openapi.json
+
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v1
