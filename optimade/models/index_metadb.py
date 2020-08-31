@@ -26,7 +26,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
     """Attributes for Base URL Info endpoint for an Index Meta-Database"""
 
     is_index: bool = Field(
-        default=True,
+        True,
         const=True,
         description="This must be `true` since this is an index meta-database (see section Index Meta-Database).",
     )
@@ -35,7 +35,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
 class RelatedLinksResource(BaseResource):
     """A related Links resource object"""
 
-    type: str = Field("links", const=True)
+    type: str = Field("links", const="links", pattern="^links$")
 
 
 class IndexRelationship(BaseModel):
