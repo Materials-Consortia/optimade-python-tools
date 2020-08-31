@@ -328,7 +328,7 @@ def swagger_validator(_, fname):
         print_error(f"Unable to parse validator response as JSON: {response}")
         sys.exit(1)
 
-    if len(json_response) > 0:
+    if json_response:
         print_error(f"Schema file {fname} did not pass validation.\n")
         print_error(json.dumps(response.json(), indent=2))
         sys.exit(1)
