@@ -232,7 +232,7 @@ class MongoTransformer(Transformer):
 
     def _recursive_expression_phrase(self, arg):
         """Helper function for parsing `expression_phrase`. Recursively sorts out
-        the correct precedence for $and, $or and $nor.
+        the correct precedence for `$and`, `$or` and `$nor`.
 
         """
         if len(arg) == 1:
@@ -258,7 +258,7 @@ class MongoTransformer(Transformer):
         return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
     def _apply_length_aliases(self, filter_: dict) -> dict:
-        """Recursively search query for any $size calls, and check
+        """Recursively search query for any `$size` operations, and check
         if the property can be replaced with its corresponding length
         alias.
 

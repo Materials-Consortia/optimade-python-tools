@@ -18,7 +18,7 @@ _length_quantities = {
 class Quantity:
     """Class to provide information about available quantities to the transformer.
 
-    The elasticsearch transformer will :class:`Quantity`s to (a) do some semantic checks,
+    The elasticsearch transformer will use `Quantity`s to (a) do some semantic checks,
     (b) map quantities to the underlying elastic index.
 
     Attributes:
@@ -68,7 +68,7 @@ class Quantity:
 class Transformer(lark.Transformer):
     """Transformer that transforms ``v0.10.0`` grammer parse trees into queries.
 
-    Uses elasticsearch_dsl and will produce a :class:`Q` instance.
+    Uses elasticsearch_dsl and will produce a `Q` instance.
     """
 
     def __init__(self, quantities: List[Quantity]):

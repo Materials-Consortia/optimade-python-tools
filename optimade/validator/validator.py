@@ -99,7 +99,7 @@ class InternalError(Exception):
 
 class Client:  # pragma: no cover
     def __init__(self, base_url: str, max_retries=5):
-        """Initialises the Client with the given `base_url` without testing
+        """Initialises the `Client` with the given `base_url` without testing
         if it is valid.
 
         Parameters:
