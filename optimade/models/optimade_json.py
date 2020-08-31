@@ -3,7 +3,7 @@
 from enum import Enum
 
 from pydantic import Field, root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
-from typing import Optional, Union, List
+from typing import Optional, Union, List, Dict, Type, Any
 
 from datetime import datetime
 
@@ -144,7 +144,10 @@ Note: Must be named "Warnings", since "Warning" is a built-in Python class.
 """
 
     type: str = Field(
-        "warning", const=True, description='Warnings must be of type "warning"'
+        "warning",
+        const="warning",
+        description='Warnings must be of type "warning"',
+        pattern="^warning$",
     )
 
     @root_validator(pre=True)
@@ -152,6 +155,27 @@ Note: Must be named "Warnings", since "Warning" is a built-in Python class.
         if values.get("status", None) is not None:
             raise ValueError("status MUST NOT be specified for warnings")
         return values
+
+    class Config:
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any], model: Type["Warnings"]) -> None:
+            """Update OpenAPI JSON schema model for `Warning`.
+
+            * Ensure `type` is in the list required properties and in the correct place.
+            * Remove `status` property.
+              This property is not allowed for `Warning`, nor is it a part of the OPTIMADE
+              definition of the `Warning` object.
+
+            Note:
+                Since `type` is the _last_ model field defined, it will simply be appended.
+
+            """
+            if "required" in schema:
+                if "type" not in schema["required"]:
+                    schema["required"].append("type")
+                else:
+                    schema["required"] = ["type"]
+            schema.get("properties", {}).pop("status", None)
 
 
 class ResponseMetaQuery(BaseModel):

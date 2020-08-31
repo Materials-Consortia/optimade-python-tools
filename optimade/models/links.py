@@ -89,8 +89,9 @@ class LinksResource(EntryResource):
 
     type: str = Field(
         "links",
-        const=True,
+        const="links",
         description="These objects are described in detail in the section Links Endpoint",
+        pattern="^links$",
     )
 
     attributes: LinksResourceAttributes = Field(

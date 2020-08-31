@@ -778,6 +778,8 @@
       "IndexInfoResource": {
         "title": "IndexInfoResource",
         "required": [
+          "id",
+          "type",
           "attributes",
           "relationships"
         ],
@@ -785,10 +787,12 @@
         "properties": {
           "id": {
             "title": "Id",
+            "pattern": "^/$",
             "type": "string"
           },
           "type": {
             "title": "Type",
+            "pattern": "^info$",
             "type": "string"
           },
           "links": {
@@ -970,6 +974,7 @@
         "title": "LinksResource",
         "required": [
           "id",
+          "type",
           "attributes"
         ],
         "type": "object",
@@ -981,6 +986,7 @@
           },
           "type": {
             "title": "Type",
+            "pattern": "^links$",
             "type": "string",
             "description": "These objects are described in detail in the section Links Endpoint"
           },
@@ -1326,7 +1332,8 @@
       "RelatedLinksResource": {
         "title": "RelatedLinksResource",
         "required": [
-          "id"
+          "id",
+          "type"
         ],
         "type": "object",
         "properties": {
@@ -1337,6 +1344,7 @@
           },
           "type": {
             "title": "Type",
+            "pattern": "^links$",
             "type": "string"
           }
         },
@@ -1719,7 +1727,8 @@
       "Warnings": {
         "title": "Warnings",
         "required": [
-          "detail"
+          "detail",
+          "type"
         ],
         "type": "object",
         "properties": {
@@ -1736,11 +1745,6 @@
               }
             ],
             "description": "A links object storing about"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string",
-            "description": "the HTTP status code applicable to this problem, expressed as a string value."
           },
           "code": {
             "title": "Code",
@@ -1777,6 +1781,7 @@
           },
           "type": {
             "title": "Type",
+            "pattern": "^warning$",
             "type": "string",
             "description": "Warnings must be of type \"warning\""
           }

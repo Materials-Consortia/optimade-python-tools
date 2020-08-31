@@ -129,8 +129,8 @@ The following properties are used to provide the bibliographic details:
     """
 
     type: str = Field(
-        default="references",
-        const=True,
+        "references",
+        const="references",
         description="""The name of the type of an entry.
 - **Type**: string.
 - **Requirements/Conventions**:
@@ -140,6 +140,7 @@ The following properties are used to provide the bibliographic details:
     - MUST be an existing entry type.
     - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
 - **Example**: `"structures"`""",
+        pattern="^references$",
     )
     attributes: ReferenceResourceAttributes
 
