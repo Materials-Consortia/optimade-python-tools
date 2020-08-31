@@ -414,7 +414,8 @@ class MongoTransformer(Transformer):
             )
 
         def replace_known_filter_with_or(subdict, prop, expr):
-            """Replace #known and $not->#known parsed filters with the appropriate
+            """Replace magic key `"#known"` (added by this transformer) with the appropriate
+            combination of `$exists` and/or test for nullity.
             combination of $exists and/or $eq/$ne null.
 
             """
