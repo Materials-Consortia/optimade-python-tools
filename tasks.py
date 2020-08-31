@@ -295,3 +295,40 @@ def create_api_reference_docs(_, pre_clean=False):
                 full_path=docs_sub_dir.joinpath(md_filename),
                 content=template.format(name=basename, py_path=py_path),
             )
+
+
+@task(help={"fname": "The JSON file containing the OpenAPI schema to validate"})
+def swagger_validator(_, fname):
+    """This task can be used in the CI to test the generated OpenAPI schemas
+    with the online swagger validator.
+
+    Returns:
+        Non-zero exit code if validation fails, otherwise returns `0`.
+
+    """
+
+    import requests
+
+    def print_error(string):
+        for line in string.split("\n"):
+            print(f"\033[31m{line}\033[0m")
+
+    swagger_url = "https://validator.swagger.io/validator/debug"
+    with open(fname, "r") as f:
+        schema = json.load(f)
+    response = requests.post(swagger_url, json=schema)
+
+    if response.status_code != 200:
+        print_error(f"Server returned status code {response.status_code}.")
+        sys.exit(1)
+
+    try:
+        json_response = response.json()
+    except json.JSONDecodeError:
+        print_error(f"Unable to parse validator response as JSON: {response}")
+        sys.exit(1)
+
+    if json_response:
+        print_error(f"Schema file {fname} did not pass validation.\n")
+        print_error(json.dumps(response.json(), indent=2))
+        sys.exit(1)

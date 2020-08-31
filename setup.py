@@ -43,7 +43,6 @@ testing_deps = [
     "pytest~=6.0",
     "pytest-cov~=2.10",
     "codecov~=2.1",
-    "openapi-spec-validator~=0.2.9",
     "jsondiff~=1.2",
 ] + server_deps
 dev_deps = (

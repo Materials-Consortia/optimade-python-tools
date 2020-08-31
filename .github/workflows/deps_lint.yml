@@ -78,12 +78,11 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
         pip install -e .
-        docker pull quen2404/openapi-diff
 
-    - name: Validate OpenAPI specifications
+    - name: Pass generated OpenAPI schemas through validator.swagger.io
       run: |
-        openapi-spec-validator openapi/openapi.json
-        openapi-spec-validator openapi/index_openapi.json
+        invoke swagger-validator openapi/openapi.json
+        invoke swagger-validator openapi/index_openapi.json
 
     - name: Check OpenAPI Schemas have not changed
       run: invoke check-openapi-diff
