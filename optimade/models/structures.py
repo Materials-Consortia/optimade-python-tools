@@ -1,9 +1,9 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 from enum import IntEnum, Enum
 from sys import float_info
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Union
 
-from pydantic import Field, BaseModel, validator, root_validator
+from pydantic import Field, BaseModel, validator, root_validator, conlist
 
 from .entries import EntryResourceAttributes, EntryResource
 from .utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
@@ -26,8 +26,8 @@ __all__ = (
 EPS = float_info.epsilon
 
 
-Vector3D = Tuple[float, float, float]
-Vector3D_unknown = Tuple[Union[float, None], Union[float, None], Union[float, None]]
+Vector3D = conlist(float, min_items=3, max_items=3)
+Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
 
 
 class Periodicity(IntEnum):
@@ -375,7 +375,7 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_anonymous="A2B"`.""",
     )
 
-    dimension_types: Tuple[Periodicity, Periodicity, Periodicity] = Field(
+    dimension_types: conlist(Periodicity, min_items=3, max_items=3) = Field(
         ...,
         description="""List of three integers.
 For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`), this list indicates if the direction is periodic (value `1`) or non-periodic (value `0`).
@@ -417,7 +417,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     lattice_vectors: Optional[
-        Tuple[Vector3D_unknown, Vector3D_unknown, Vector3D_unknown]
+        conlist(Vector3D_unknown, min_items=3, max_items=3)
     ] = Field(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
@@ -872,7 +872,7 @@ class StructureResource(EntryResource):
 
     type: str = Field(
         "structures",
-        const=True,
+        const="structures",
         description="""The name of the type of an entry.
 
 - **Type**: string.
@@ -886,6 +886,7 @@ class StructureResource(EntryResource):
 
 - **Examples**:
     - `"structures"`""",
+        pattern="^structures$",
     )
 
     attributes: StructureResourceAttributes

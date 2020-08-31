@@ -1,6 +1,6 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-self-argument
-from typing import Optional, Union, List
+from typing import Optional, Union, List, Dict, Any, Type
 from datetime import datetime, timezone
 from pydantic import (  # pylint: disable=no-name-in-module
     BaseModel,
@@ -134,6 +134,28 @@ class BaseResource(BaseModel):
 
     id: str = Field(..., description="Resource ID")
     type: str = Field(..., description="Resource type")
+
+    class Config:
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any], model: Type["BaseResource"]) -> None:
+            """Ensure `id` and `type` are the first two entries in the list required properties.
+
+            Note:
+                This _requires_ that `id` and `type` are the _first_ model fields defined
+                for all sub-models of `BaseResource`.
+
+            """
+            if "id" not in schema.get("required", []):
+                schema["required"] = ["id"] + schema.get("required", [])
+            if "type" not in schema.get("required", []):
+                required = []
+                for field in schema.get("required", []):
+                    required.append(field)
+                    if field == "id":
+                        # To make sure the property order match the listed properties,
+                        # this ensures "type" is added immediately after "id".
+                        required.append("type")
+                schema["required"] = required
 
 
 class RelationshipLinks(BaseModel):
