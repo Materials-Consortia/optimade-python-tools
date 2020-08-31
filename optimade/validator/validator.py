@@ -91,7 +91,7 @@ class ResponseError(Exception):
 
 
 class InternalError(Exception):
-    """ This exception should be raised when validation throws an unexpected error.
+    """This exception should be raised when validation throws an unexpected error.
     These should be counted separately from `ResponseError`'s and `ValidationError`'s.
 
     """
@@ -99,7 +99,7 @@ class InternalError(Exception):
 
 class Client:  # pragma: no cover
     def __init__(self, base_url: str, max_retries=5):
-        """ Initialises the Client with the given `base_url` without testing
+        """Initialises the `Client` with the given `base_url` without testing
         if it is valid.
 
         Parameters:
@@ -120,7 +120,7 @@ class Client:  # pragma: no cover
         self.max_retries = max_retries
 
     def get(self, request: str):
-        """ Makes the given request, with a number of retries if being rate limited. The
+        """Makes the given request, with a number of retries if being rate limited. The
         request will be prepended with the `base_url` unless the request appears to be an
         absolute URL (i.e. starts with `http://` or `https://`).
 
@@ -170,7 +170,7 @@ class Client:  # pragma: no cover
 
 
 def test_case(test_fn):
-    """ Wrapper for test case functions, which pretty_prints any errors
+    """Wrapper for test case functions, which pretty_prints any errors
     depending on verbosity level and returns only the response to the caller.
 
     Parameters:
@@ -308,7 +308,7 @@ class ImplementationValidator:
         as_type: str = None,
         index: bool = False,
     ):
-        """ Set up the tests to run, based on constants in this module
+        """Set up the tests to run, based on constants in this module
         for required endpoints.
 
         """
@@ -553,8 +553,8 @@ class ImplementationValidator:
             self.deserialize_response(response, self.as_type_cls)
 
     @test_case
-    def test_page_limit(self, response, check_next_link: int = 5):
-        """ Test that a multi-entry endpoint obeys the page limit.
+    def test_page_limit(self, response, check_next_link: int = 5) -> (bool, str):
+        """Test that a multi-entry endpoint obeys the page limit.
 
         Parameters:
             response (requests.Response): the response to test for page limit
@@ -568,8 +568,7 @@ class ImplementationValidator:
             ResponseError: if test fails in a predictable way.
 
         Returns:
-            bool, str: True if the test was successful, with a string describing
-                the success.
+            True if the test was successful, with a string describing the success.
 
         """
         try:
@@ -620,7 +619,7 @@ class ImplementationValidator:
 
     @test_case
     def get_single_id_from_multi_endpoint(self, deserialized):
-        """ Scrape an ID from the multi-entry endpoint to use as query
+        """Scrape an ID from the multi-entry endpoint to use as query
         for single entry endpoint.
 
         """
@@ -667,8 +666,8 @@ class ImplementationValidator:
         for _ in [0]:
             available_json_entry_endpoints = []
             try:
-                available_json_entry_endpoints = base_info.data.attributes.entry_types_by_format.get(
-                    "json"
+                available_json_entry_endpoints = (
+                    base_info.data.attributes.entry_types_by_format.get("json")
                 )
                 break
             except Exception:
@@ -733,7 +732,7 @@ class ImplementationValidator:
         return response, "request successful."
 
     def test_query_syntax(self, endpoint, endpoint_queries, optional=False):
-        """ Execute a list of valid queries agains the endpoint and assert
+        """Execute a list of valid queries agains the endpoint and assert
         that no errors are raised.
 
         Parameters:

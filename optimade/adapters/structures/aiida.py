@@ -26,7 +26,7 @@ __all__ = ("get_aiida_structure_data",)
 
 
 def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> StructureData:
-    """ Get AiiDA `StructureData` from OPTIMADE structure.
+    """Get AiiDA `StructureData` from OPTIMADE structure.
 
     Parameters:
         optimade_structure: OPTIMADE structure.

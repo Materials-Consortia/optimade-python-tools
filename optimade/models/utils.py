@@ -4,7 +4,7 @@ __all__ = ("CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS", "SemanticVersi
 
 
 class SemanticVersion(str):
-    """ A custom type for a semantic version, using the recommended
+    """A custom type for a semantic version, using the recommended
     semver regexp from
     https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string.
 

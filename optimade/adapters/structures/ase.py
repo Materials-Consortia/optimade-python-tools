@@ -27,7 +27,7 @@ __all__ = ("get_ase_atoms",)
 
 
 def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
-    """ Get ASE `Atoms` from OPTIMADE structure.
+    """Get ASE `Atoms` from OPTIMADE structure.
 
     Caution:
         Cannot handle partial occupancies (this includes vacancies).

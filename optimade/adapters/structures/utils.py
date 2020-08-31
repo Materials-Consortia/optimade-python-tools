@@ -309,5 +309,8 @@ def pad_cell(
 
     """
     return _pad_iter_of_iters(
-        iterable=lattice_vectors, padding=padding, outer=tuple, inner=tuple,
+        iterable=lattice_vectors,
+        padding=padding,
+        outer=tuple,
+        inner=tuple,
     )
