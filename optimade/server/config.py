@@ -37,13 +37,13 @@ class LogLevel(Enum):
 
 
 class ServerConfig(BaseSettings):
-    """ This class stores server config parameters in a way that
+    """This class stores server config parameters in a way that
     can be easily extended for new config file types.
 
     """
 
     config_file: Optional[str] = Field(
-        None, description="File to load alternative defaults from",
+        None, description="File to load alternative defaults from"
     )
     debug: bool = Field(
         False, description="Turns on Debug Mode for the OPTIMADE Server implementation"

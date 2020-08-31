@@ -16,7 +16,7 @@ _length_quantities = {
 
 
 class Quantity:
-    """ Class to provide information about available quantities to the transformer.
+    """Class to provide information about available quantities to the transformer.
 
     The elasticsearch transformer will :class:`Quantity`s to (a) do some semantic checks,
     (b) map quantities to the underlying elastic index.
@@ -66,7 +66,7 @@ class Quantity:
 
 
 class Transformer(lark.Transformer):
-    """ Transformer that transforms ``v0.10.0`` grammer parse trees into queries.
+    """Transformer that transforms ``v0.10.0`` grammer parse trees into queries.
 
     Uses elasticsearch_dsl and will produce a :class:`Q` instance.
     """

@@ -10,7 +10,8 @@ def test_with_validator(both_clients):
     from optimade.server.main_index import app
 
     validator = ImplementationValidator(
-        client=both_clients, index=both_clients.app == app,
+        client=both_clients,
+        index=both_clients.app == app,
     )
     try:
         validator.main()

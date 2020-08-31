@@ -48,7 +48,7 @@ __all__ = ("get_pdb", "get_pdbx_mmcif")
 def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     optimade_structure: OptimadeStructure,
 ) -> str:
-    """ Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure.
+    """Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure.
 
     Warning:
         The result of this function can currently not be parsed as a complete PDBx/mmCIF file.
@@ -199,7 +199,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
 def get_pdb(  # pylint: disable=too-many-locals
     optimade_structure: OptimadeStructure,
 ) -> str:
-    """ Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure.
+    """Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure.
 
     Parameters:
         optimade_structure: OPTIMADE structure.

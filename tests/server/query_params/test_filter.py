@@ -226,7 +226,7 @@ def test_list_has_and(check_response):
 
 
 def test_awkward_not_queries(check_response, client):
-    """ Test an awkward query from the spec examples. It should return all but 2 structures
+    """Test an awkward query from the spec examples. It should return all but 2 structures
     in the test data. The test is done in three parts:
 
         - first query the individual expressions that make up the OR,

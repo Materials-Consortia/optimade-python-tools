@@ -11,7 +11,9 @@ class CsvResponse(Response):
 
 
 @router.get(
-    "/versions", tags=["Versions"], response_class=CsvResponse,
+    "/versions",
+    tags=["Versions"],
+    response_class=CsvResponse,
 )
 def get_versions(request: Request):
     """Respond with the text/csv representation for the served versions."""

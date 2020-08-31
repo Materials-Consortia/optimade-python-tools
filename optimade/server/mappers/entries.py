@@ -38,8 +38,8 @@ class BaseResourceMapper:
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
-        """ Returns all of the associated aliases for this class, including
-        those defined by the server config.
+        """Returns all of the associated aliases for this class,
+        including those defined by the server config.
 
         Returns:
             A tuple of alias tuples.
@@ -60,8 +60,8 @@ class BaseResourceMapper:
 
     @classmethod
     def all_length_aliases(cls) -> Tuple[Tuple[str, str]]:
-        """ Returns all of the associated length aliases for this class, including
-        those defined by the server config.
+        """Returns all of the associated length aliases for this class,
+        including those defined by the server config.
 
         Returns:
             A tuple of length alias tuples.
@@ -73,8 +73,8 @@ class BaseResourceMapper:
 
     @classmethod
     def length_alias_for(cls, field: str) -> Optional[str]:
-        """ Returns the length alias for the particular field, or `None` if no
-        such alias is found.
+        """Returns the length alias for the particular field,
+        or `None` if no such alias is found.
 
         Parameters:
             field: OPTIMADE field name.
@@ -104,7 +104,7 @@ class BaseResourceMapper:
 
     @classmethod
     def alias_of(cls, field: str) -> str:
-        """ Return de-aliased field name, if it exists,
+        """Return de-aliased field name, if it exists,
         otherwise return the input field name.
 
         Args:
