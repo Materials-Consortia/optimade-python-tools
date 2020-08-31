@@ -46,20 +46,21 @@ class StructureFeatures(Enum):
 
 class Species(BaseModel):
     """A list describing the species of the sites of this structure.
-Species can represent pure chemical elements, virtual-crystal atoms representing a
-statistical occupation of a given site by multiple chemical elements, and/or a
-location to which there are attached atoms, i.e., atoms whose precise location are
-unknown beyond that they are attached to that position (frequently used to indicate
-hydrogen atoms attached to another element, e.g., a carbon with three attached
-hydrogens might represent a methyl group, -CH3).
 
-- **Examples**:
-    - `[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]`: any site with this species is occupied by a Ti atom.
-    - `[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
-    - `[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
-    - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
-    - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
-    - `[ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.
+    Species can represent pure chemical elements, virtual-crystal atoms representing a
+    statistical occupation of a given site by multiple chemical elements, and/or a
+    location to which there are attached atoms, i.e., atoms whose precise location are
+    unknown beyond that they are attached to that position (frequently used to indicate
+    hydrogen atoms attached to another element, e.g., a carbon with three attached
+    hydrogens might represent a methyl group, -CH3).
+
+    - **Examples**:
+        - `[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]`: any site with this species is occupied by a Ti atom.
+        - `[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
+        - `[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
+        - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
+        - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
+        - `[ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.
 
     """
 
@@ -162,12 +163,12 @@ Note: With regards to "source database", we refer to the immediate source being 
 class Assembly(BaseModel):
     """A description of groups of sites that are statistically correlated.
 
-- **Examples** (for each entry of the assemblies list):
-    - `{"sites_in_groups": [[0], [1]], "group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.
-      Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.
-    - `{"sites_in_groups": [[1,2], [3]], "group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.
-      The second group is formed by the fourth site. Sites of the first group (the second and the third) are never present at the same time as the fourth site.
-      30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).
+    - **Examples** (for each entry of the assemblies list):
+        - `{"sites_in_groups": [[0], [1]], "group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.
+          Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.
+        - `{"sites_in_groups": [[1,2], [3]], "group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.
+          The second group is formed by the fourth site. Sites of the first group (the second and the third) are never present at the same time as the fourth site.
+          30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).
 
     """
 

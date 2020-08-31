@@ -33,7 +33,7 @@ else:
 
 
 class MongoCollection(EntryCollection):
-    """ Class for querying MongoDB collections (implemented by either pymongo or mongomock)
+    """Class for querying MongoDB collections (implemented by either pymongo or mongomock)
     containing serialized [`EntryResource`][optimade.models.entries.EntryResource]s objects.
 
     """
@@ -46,7 +46,7 @@ class MongoCollection(EntryCollection):
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
     ):
-        """ Initialize the MongoCollection for the given parameters.
+        """Initialize the MongoCollection for the given parameters.
 
         Parameters:
             collection (Union[pymongo.collection.Collection, mongomock.collection.Collection]):
@@ -77,7 +77,7 @@ class MongoCollection(EntryCollection):
         return self.collection.estimated_document_count()
 
     def count(self, **kwargs) -> int:
-        """ Returns the number of entries matching the query specified
+        """Returns the number of entries matching the query specified
         by the keyword arguments.
 
         Parameters:
@@ -96,7 +96,7 @@ class MongoCollection(EntryCollection):
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> Tuple[List[EntryResource], int, bool, set]:
-        """ Perform the query on the underlying MongoCollection, handling projection
+        """Perform the query on the underlying MongoCollection, handling projection
         and pagination of the output.
 
         Returns:

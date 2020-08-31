@@ -14,7 +14,9 @@ def test_correct_api_hint(both_clients, check_response):
     query_url = f"/links?api_hint={major_version}&filter=id={links_id}"
 
     check_response(
-        request=query_url, expected_ids=[links_id], server=both_clients,
+        request=query_url,
+        expected_ids=[links_id],
+        server=both_clients,
     )
 
 

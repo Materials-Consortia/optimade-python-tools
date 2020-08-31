@@ -15,8 +15,8 @@ from optimade.server.warnings import FieldValueNotRecognized
 
 
 class EntryCollection(ABC):
-    """ Backend-agnostic base class for querying collections of
-    [`EntryResource`][optimade.models.entries.EntryResource]s. """
+    """Backend-agnostic base class for querying collections of
+    [`EntryResource`][optimade.models.entries.EntryResource]s."""
 
     def __init__(
         self,
@@ -25,7 +25,7 @@ class EntryCollection(ABC):
         resource_mapper: BaseResourceMapper,
         transformer: Transformer,
     ):
-        """ Initialize the collection for the given parameters.
+        """Initialize the collection for the given parameters.
 
         Parameters:
             collection: The backend-specific collection.
@@ -53,7 +53,7 @@ class EntryCollection(ABC):
 
     @abstractmethod
     def count(self, **kwargs) -> int:
-        """ Returns the number of entries matching the query specified
+        """Returns the number of entries matching the query specified
         by the keyword arguments.
 
         Parameters:
@@ -82,12 +82,11 @@ class EntryCollection(ABC):
 
     @property
     def all_fields(self) -> set:
-        """ Get the set of all fields handled in this collection, from
-        attribute fields in the schema, provider fields and top-level
-        OPTIMADE fields.
+        """Get the set of all fields handled in this collection,
+        from attribute fields in the schema, provider fields and top-level OPTIMADE fields.
 
-    Returns:
-        set: All fields handled in this collection.
+        Returns:
+            All fields handled in this collection.
 
         """
         # All OPTIMADE fields
@@ -102,11 +101,11 @@ class EntryCollection(ABC):
         return fields
 
     def get_attribute_fields(self) -> set:
-        """ Get the set of attribute fields from the schema of the
+        """Get the set of attribute fields from the schema of the
         resource class, resolving references along the way.
 
         Returns:
-            set: Property names.
+            Property names.
 
         """
         schema = self.resource_cls.schema()
@@ -126,7 +125,7 @@ class EntryCollection(ABC):
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> dict:
-        """ Parse and interpret the backend-agnostic query parameter models into a dictionary
+        """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
         Note:
@@ -142,8 +141,7 @@ class EntryCollection(ABC):
                 or response format.
 
         Returns:
-            dict: A dictionary representation of the query parameters, ready to be used
-                by pymongo.
+            A dictionary representation of the query parameters, ready to be used by pymongo.
 
         """
         cursor_kwargs = {}
@@ -186,7 +184,7 @@ class EntryCollection(ABC):
         return cursor_kwargs
 
     def parse_sort_params(self, sort_params) -> List[Tuple[str, int]]:
-        """ Handles any sort parameters passed to the collection,
+        """Handles any sort parameters passed to the collection,
         resolving aliases and dealing with any invalid fields.
 
         Raises:
@@ -214,7 +212,8 @@ class EntryCollection(ABC):
 
         if unknown_fields:
             error_detail = "Unable to sort on unknown field{} '{}'".format(
-                "s" if len(unknown_fields) > 1 else "", "', '".join(unknown_fields),
+                "s" if len(unknown_fields) > 1 else "",
+                "', '".join(unknown_fields),
             )
 
             # If all unknown fields are "other" provider-specific, then only provide a warning

@@ -56,7 +56,9 @@ def test_str_asc(check_response, structures):
     data = structures.collection.find(sort=[("task_id", 1)])
     expected_ids = [_["task_id"] for _ in data]
     check_response(
-        request, expected_ids=expected_ids, page_limit=limit,
+        request,
+        expected_ids=expected_ids,
+        page_limit=limit,
     )
 
 
@@ -68,7 +70,10 @@ def test_str_desc(check_response, structures):
     data = structures.collection.find(sort=[("task_id", -1)])
     expected_ids = [_["task_id"] for _ in data]
     check_response(
-        request, expected_ids=expected_ids, expected_as_is=True, page_limit=limit,
+        request,
+        expected_ids=expected_ids,
+        expected_as_is=True,
+        page_limit=limit,
     )
 
 

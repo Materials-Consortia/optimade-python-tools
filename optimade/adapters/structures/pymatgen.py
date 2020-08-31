@@ -27,7 +27,7 @@ __all__ = ("get_pymatgen",)
 
 
 def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Molecule]:
-    """ Get pymatgen Structure or Molecule from OPTIMADE structure.
+    """Get pymatgen `Structure` or `Molecule` from OPTIMADE structure.
 
     This function will return either a pymatgen `Structure` or `Molecule` based
     on the periodicity or periodic dimensionality of OPTIMADE structure.

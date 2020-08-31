@@ -18,7 +18,7 @@ ALIASES = {"values": '"1", "2", "3"', "value": "1", "inverse": "1"}
 
 
 def _load_filters_and_apply_aliases(path):
-    """ Load a text file containing example filters with one
+    """Load a text file containing example filters with one
     filter per line, and apply aliases to swap out dummy values
     with more concrete examples.
 

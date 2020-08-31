@@ -41,7 +41,7 @@ __all__ = ("get_cif",)
 def get_cif(  # pylint: disable=too-many-locals,too-many-branches
     optimade_structure: OptimadeStructure,
 ) -> str:
-    """ Get CIF file as string from OPTIMADE structure.
+    """Get CIF file as string from OPTIMADE structure.
 
     Parameters:
         optimade_structure: OPTIMADE structure.

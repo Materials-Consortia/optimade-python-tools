@@ -24,7 +24,7 @@ class MongoTransformer(Transformer):
     }
 
     def __init__(self, mapper: BaseResourceMapper = None):
-        """ Initialise the object, optionally loading in a
+        """Initialise the object, optionally loading in a
         resource mapper for use when post-processing.
 
         """
@@ -71,7 +71,7 @@ class MongoTransformer(Transformer):
 
     @v_args(inline=True)
     def not_implemented_string(self, value):
-        """ not_implemented_string: value
+        """not_implemented_string: value
 
         Raise NotImplementedError.
         For further information, see Materials-Consortia/OPTIMADE issue 157:
@@ -231,8 +231,8 @@ class MongoTransformer(Transformer):
         )
 
     def _recursive_expression_phrase(self, arg):
-        """ Helper function for parsing `expression_phrase`. Recursively sorts out
-        the correct precedence for $and, $or and $nor.
+        """Helper function for parsing `expression_phrase`. Recursively sorts out
+        the correct precedence for `$and`, `$or` and `$nor`.
 
         """
         if len(arg) == 1:
@@ -258,7 +258,7 @@ class MongoTransformer(Transformer):
         return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
     def _apply_length_aliases(self, filter_: dict) -> dict:
-        """ Recursively search query for any $size calls, and check
+        """Recursively search query for any `$size` operations, and check
         if the property can be replaced with its corresponding length
         alias.
 
@@ -283,7 +283,7 @@ class MongoTransformer(Transformer):
         )
 
     def _apply_aliases(self, filter_: dict) -> dict:
-        """ Check whether any fields in the filter have aliases so
+        """Check whether any fields in the filter have aliases so
         that they can be renamed for the Mongo query.
 
         """
@@ -307,7 +307,7 @@ class MongoTransformer(Transformer):
         return recursive_postprocessing(filter_, check_for_alias, apply_alias)
 
     def _apply_length_operators(self, filter_: dict) -> dict:
-        """ Check for any invalid pymongo queries that involve
+        """Check for any invalid pymongo queries that involve
         applying an operator to the length of a field, and transform
         them into a test for existence of the relevant entry, e.g.
         "list LENGTH > 3" becomes "does the 4th list entry exist?".
@@ -348,11 +348,13 @@ class MongoTransformer(Transformer):
             return subdict
 
         return recursive_postprocessing(
-            filter_, check_for_length_op_filter, apply_length_op,
+            filter_,
+            check_for_length_op_filter,
+            apply_length_op,
         )
 
     def _apply_relationship_filtering(self, filter_: dict) -> dict:
-        """ Check query for property names that match the entry
+        """Check query for property names that match the entry
         types, and transform them as relationship filters rather than
         property filters.
 
@@ -394,14 +396,14 @@ class MongoTransformer(Transformer):
         )
 
     def _apply_unknown_or_null_filter(self, filter_: dict) -> dict:
-        """ This method loops through the query and replaces the check for
+        """This method loops through the query and replaces the check for
         KNOWN with a check for existence and a check for not null, and the
         inverse for UNKNOWN.
 
         """
 
         def check_for_known_filter(_, expr):
-            """ Find cases where the query dict looks like
+            """Find cases where the query dict looks like
             `{"field": {"#known": T/F}}` or
             `{"field": "$not": {"#known": T/F}}`, which is a magic word
             for KNOWN/UNKNOWN filters in this transformer.
@@ -412,7 +414,8 @@ class MongoTransformer(Transformer):
             )
 
         def replace_known_filter_with_or(subdict, prop, expr):
-            """ Replace #known and $not->#known parsed filters with the appropriate
+            """Replace magic key `"#known"` (added by this transformer) with the appropriate
+            combination of `$exists` and/or test for nullity.
             combination of $exists and/or $eq/$ne null.
 
             """
@@ -444,7 +447,7 @@ class MongoTransformer(Transformer):
 
 
 def recursive_postprocessing(filter_, condition, replacement):
-    """ Recursively descend into the query, checking each dictionary
+    """Recursively descend into the query, checking each dictionary
     (contained in a list, or as an entry in another dictionary) for
     the condition passed. If the condition is true, apply the
     replacement to the dictionary.

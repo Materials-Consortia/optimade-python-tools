@@ -30,7 +30,7 @@ __all__ = (
 class DataType(Enum):
     """Optimade Data Types
 
-See the section "Data types" in the OPTIMADE API specification for more information.
+    See the section "Data types" in the OPTIMADE API specification for more information.
     """
 
     STRING = "string"
@@ -135,13 +135,14 @@ class OptimadeError(jsonapi.Error):
 class Warnings(OptimadeError):
     """OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.
 
-From the specification:
+    From the specification:
 
-A warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value "warning".
-The field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.
+    A warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value "warning".
+    The field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.
 
-Note: Must be named "Warnings", since "Warning" is a built-in Python class.
-"""
+    Note: Must be named "Warnings", since "Warning" is a built-in Python class.
+
+    """
 
     type: str = Field(
         "warning",

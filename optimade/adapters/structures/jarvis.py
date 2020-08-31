@@ -26,7 +26,7 @@ __all__ = ("get_jarvis_atoms",)
 
 
 def get_jarvis_atoms(optimade_structure: OptimadeStructure) -> Atoms:
-    """ Get jarvis `Atoms` from OPTIMADE structure.
+    """Get jarvis `Atoms` from OPTIMADE structure.
 
     Caution:
         Cannot handle partial occupancies.
