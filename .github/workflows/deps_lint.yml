@@ -81,8 +81,8 @@ jobs:
 
     - name: Pass generated OpenAPI schemas through validator.swagger.io
       run: |
-        invoke run-swagger-validator openapi/openapi.json
-        invoke run-swagger-validator openapi/index_openapi.json
+        invoke swagger-validator openapi/openapi.json
+        invoke swagger-validator openapi/index_openapi.json
 
     - name: Check OpenAPI Schemas have not changed
       run: invoke check-openapi-diff
