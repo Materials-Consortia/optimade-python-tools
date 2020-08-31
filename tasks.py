@@ -310,7 +310,8 @@ def swagger_validator(_, fname):
     import requests
 
     def print_error(string):
-        print(f"\033[31m{string}\033[0m")
+        for line in string.split("\n"):
+            print(f"\033[31m{line}\033[0m")
 
     swagger_url = "https://validator.swagger.io/validator/debug"
     with open(fname, "r") as f:
