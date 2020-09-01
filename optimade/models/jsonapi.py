@@ -61,10 +61,18 @@ class ToplevelLinks(BaseModel):
     )
 
     # Pagination
-    first: Optional[AnyUrl] = Field(None, description="The first page of data")
-    last: Optional[AnyUrl] = Field(None, description="The last page of data")
-    prev: Optional[AnyUrl] = Field(None, description="The previous page of data")
-    next: Optional[AnyUrl] = Field(None, description="The next page of data")
+    first: Optional[Union[AnyUrl, Link]] = Field(
+        None, description="The first page of data"
+    )
+    last: Optional[Union[AnyUrl, Link]] = Field(
+        None, description="The last page of data"
+    )
+    prev: Optional[Union[AnyUrl, Link]] = Field(
+        None, description="The previous page of data"
+    )
+    next: Optional[Union[AnyUrl, Link]] = Field(
+        None, description="The next page of data"
+    )
 
 
 class ErrorLinks(BaseModel):
