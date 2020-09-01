@@ -3,14 +3,14 @@ from typing import Union, List, Optional, Dict, Any
 
 from pydantic import Field, root_validator
 
-from .jsonapi import Response
-from .baseinfo import BaseInfoResource
-from .entries import EntryInfoResource, EntryResource
-from .index_metadb import IndexInfoResource
-from .links import LinksResource
-from .optimade_json import Success, ResponseMeta, OptimadeError
-from .references import ReferenceResource
-from .structures import StructureResource
+from optimade.models.jsonapi import Response
+from optimade.models.baseinfo import BaseInfoResource
+from optimade.models.entries import EntryInfoResource, EntryResource
+from optimade.models.index_metadb import IndexInfoResource
+from optimade.models.links import LinksResource
+from optimade.models.optimade_json import Success, ResponseMeta, OptimadeError
+from optimade.models.references import ReferenceResource
+from optimade.models.structures import StructureResource
 
 
 __all__ = (

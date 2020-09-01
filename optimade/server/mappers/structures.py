@@ -1,4 +1,4 @@
-from .entries import BaseResourceMapper
+from optimade.server.mappers.entries import BaseResourceMapper
 
 __all__ = ("StructureMapper",)
 

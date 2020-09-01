@@ -4,8 +4,8 @@ import re
 from typing import Dict, List, Optional
 from pydantic import BaseModel, AnyHttpUrl, Field, validator, root_validator
 
-from .jsonapi import Resource
-from .utils import SemanticVersion
+from optimade.models.jsonapi import Resource
+from optimade.models.utils import SemanticVersion
 
 
 __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")

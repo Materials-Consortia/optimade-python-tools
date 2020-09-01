@@ -8,8 +8,8 @@ from pydantic import (  # pylint: disable=no-name-in-module
 )
 from typing import Union, Optional
 
-from .jsonapi import Link, Attributes
-from .entries import EntryResource
+from optimade.models.jsonapi import Link, Attributes
+from optimade.models.entries import EntryResource
 
 
 __all__ = (

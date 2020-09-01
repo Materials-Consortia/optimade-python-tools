@@ -24,8 +24,8 @@ from fastapi.testclient import TestClient
 
 from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse
 
-from .data import MANDATORY_FILTER_EXAMPLES, OPTIONAL_FILTER_EXAMPLES
-from .validator_model_patches import (
+from optimade.validator.data import MANDATORY_FILTER_EXAMPLES, OPTIONAL_FILTER_EXAMPLES
+from optimade.validator.validator_model_patches import (
     ValidatorLinksResponse,
     ValidatorEntryResponseOne,
     ValidatorEntryResponseMany,
