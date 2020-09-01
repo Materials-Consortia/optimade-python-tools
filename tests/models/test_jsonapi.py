@@ -44,7 +44,8 @@ def test_toplevel_links():
             "base_url5": {
                 "href": "https://example.org/structures",
                 "meta": {"description": "the base URL"},
-            }
+            },
+            "none_url": None,
         }
     )
 

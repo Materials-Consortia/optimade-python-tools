@@ -86,7 +86,7 @@ class ToplevelLinks(BaseModel):
         """
         for key, value in values.items():
             if key not in cls.schema()["properties"]:
-                values[key] = parse_obj_as(Union[AnyUrl, Link], value)
+                values[key] = parse_obj_as(Optional[Union[AnyUrl, Link]], value)
 
         return values
 
