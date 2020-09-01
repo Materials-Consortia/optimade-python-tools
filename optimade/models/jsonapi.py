@@ -6,6 +6,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
     BaseModel,
     AnyUrl,
     Field,
+    parse_obj_as,
     root_validator,
 )
 
@@ -55,6 +56,9 @@ class JsonApi(BaseModel):
 class ToplevelLinks(BaseModel):
     """A set of Links objects, possibly including pagination"""
 
+    class Config:
+        extra = "allow"
+
     self: Optional[Union[AnyUrl, Link]] = Field(None, description="A link to itself")
     related: Optional[Union[AnyUrl, Link]] = Field(
         None, description="A related resource link"
@@ -73,6 +77,18 @@ class ToplevelLinks(BaseModel):
     next: Optional[Union[AnyUrl, Link]] = Field(
         None, description="The next page of data"
     )
+
+    @root_validator(pre=False)
+    def check_additional_keys_are_links(cls, values):
+        """The `ToplevelLinks` class allows any additional keys, as long as
+        they are also Links or Urls themselves.
+
+        """
+        for key, value in values.items():
+            if key not in cls.schema()["properties"]:
+                values[key] = parse_obj_as(Union[AnyUrl, Link], value)
+
+        return values
 
 
 class ErrorLinks(BaseModel):
