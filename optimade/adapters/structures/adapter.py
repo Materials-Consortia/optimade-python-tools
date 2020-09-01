@@ -1,12 +1,12 @@
 from optimade.models import StructureResource
 from optimade.adapters.base import EntryAdapter
 
-from .aiida import get_aiida_structure_data
-from .ase import get_ase_atoms
-from .cif import get_cif
-from .proteindatabank import get_pdb, get_pdbx_mmcif
-from .pymatgen import get_pymatgen
-from .jarvis import get_jarvis_atoms
+from optimade.adapters.structures.aiida import get_aiida_structure_data
+from optimade.adapters.structures.ase import get_ase_atoms
+from optimade.adapters.structures.cif import get_cif
+from optimade.adapters.structures.proteindatabank import get_pdb, get_pdbx_mmcif
+from optimade.adapters.structures.pymatgen import get_pymatgen
+from optimade.adapters.structures.jarvis import get_jarvis_atoms
 
 
 class Structure(EntryAdapter):

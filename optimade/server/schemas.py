@@ -4,7 +4,7 @@ from optimade.models import (
     EntryResource,
     DataType,
 )
-from .config import CONFIG
+from optimade.server.config import CONFIG
 from typing import Dict, Union
 
 
