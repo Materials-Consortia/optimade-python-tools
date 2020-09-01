@@ -34,6 +34,9 @@ def retrieve_queryable_properties(
                 if key in value:
                     condOf = value.pop(key)
                     if isinstance(condOf, list):
+                        # ml-evs: A bit of late-night hack; we need to think more about how to
+                        # unwrap the case where multiple types are allowed for a given field.
+                        # Here I just grab the first, for the sake of testing.
                         value.update(condOf[0])
 
             if "$ref" in value:
