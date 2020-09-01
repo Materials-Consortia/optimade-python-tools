@@ -1,7 +1,7 @@
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
-from .config import CONFIG
+from optimade.server.config import CONFIG
 
 
 class EntryListingQueryParams:

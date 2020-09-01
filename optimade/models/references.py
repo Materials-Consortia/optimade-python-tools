@@ -7,7 +7,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
 )
 from typing import List, Optional
 
-from .entries import EntryResource, EntryResourceAttributes
+from optimade.models.entries import EntryResource, EntryResourceAttributes
 
 
 __all__ = ("Person", "ReferenceResourceAttributes", "ReferenceResource")

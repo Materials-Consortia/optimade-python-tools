@@ -4,8 +4,8 @@ from enum import Enum
 from pydantic import Field, BaseModel  # pylint: disable=no-name-in-module
 from typing import Union, Dict
 
-from .jsonapi import BaseResource
-from .baseinfo import BaseInfoAttributes, BaseInfoResource
+from optimade.models.jsonapi import BaseResource
+from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource
 
 
 __all__ = (

@@ -5,8 +5,8 @@ from typing import List, Optional, Union
 
 from pydantic import Field, BaseModel, validator, root_validator, conlist
 
-from .entries import EntryResourceAttributes, EntryResource
-from .utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
+from optimade.models.entries import EntryResourceAttributes, EntryResource
+from optimade.models.utils import CHEMICAL_SYMBOLS, EXTRA_SYMBOLS
 
 
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS

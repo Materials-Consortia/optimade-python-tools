@@ -7,8 +7,8 @@ from typing import Optional, Union, List, Dict, Type, Any
 
 from datetime import datetime
 
-from . import jsonapi
-from .utils import SemanticVersion
+from optimade.models import jsonapi
+from optimade.models.utils import SemanticVersion
 
 
 __all__ = (

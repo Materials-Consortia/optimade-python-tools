@@ -1,7 +1,7 @@
 from fastapi import Request, APIRouter
 from fastapi.responses import Response
 
-from .utils import BASE_URL_PREFIXES
+from optimade.server.routers.utils import BASE_URL_PREFIXES
 
 router = APIRouter(redirect_slashes=True)
 
