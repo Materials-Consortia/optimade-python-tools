@@ -56,9 +56,6 @@ class JsonApi(BaseModel):
 class ToplevelLinks(BaseModel):
     """A set of Links objects, possibly including pagination"""
 
-    class Config:
-        extra = "allow"
-
     self: Optional[Union[AnyUrl, Link]] = Field(None, description="A link to itself")
     related: Optional[Union[AnyUrl, Link]] = Field(
         None, description="A related resource link"
@@ -89,6 +86,9 @@ class ToplevelLinks(BaseModel):
                 values[key] = parse_obj_as(Optional[Union[AnyUrl, Link]], value)
 
         return values
+
+    class Config:
+        extra = "allow"
 
 
 class ErrorLinks(BaseModel):
