@@ -9,7 +9,10 @@ from typing import Dict, Union
 
 
 def retrieve_queryable_properties(
-    schema: dict, queryable_properties: list, entry_provider_fields: list = None
+    schema: dict,
+    queryable_properties: list,
+    entry_provider_fields: list = None,
+    base_schema: dict = None,
 ) -> dict:
     """For a given schema dictionary and a list of desired properties,
     recursively descend into the schema and set the appropriate values
@@ -21,18 +24,31 @@ def retrieve_queryable_properties(
     if entry_provider_fields is None:
         entry_provider_fields = []
 
+    if base_schema is None:
+        base_schema = schema.copy()
+
     for name, value in schema["properties"].items():
         if name in queryable_properties:
+            _keys = ("allOf", "anyOf", "oneOf")
+            for key in _keys:
+                if key in value:
+                    condOf = value.pop(key)
+                    if isinstance(condOf, list):
+                        value.update(condOf[0])
+
             if "$ref" in value:
                 path = value["$ref"].split("/")[1:]
-                sub_schema = schema.copy()
+                sub_schema = base_schema.copy()
                 while path:
                     next_key = path.pop(0)
                     sub_schema = sub_schema[next_key]
                 sub_queryable_properties = sub_schema["properties"].keys()
                 properties.update(
                     retrieve_queryable_properties(
-                        sub_schema, sub_queryable_properties, entry_provider_fields
+                        sub_schema,
+                        sub_queryable_properties,
+                        entry_provider_fields,
+                        base_schema=base_schema,
                     )
                 )
             else:
@@ -44,7 +60,7 @@ def retrieve_queryable_properties(
                 properties[name]["sortable"] = True
                 # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
                 properties[name]["type"] = DataType.from_json_type(
-                    value.get("format", value.get("type", "object"))
+                    value.get("format", value["type"])
                 )
 
             if name in entry_provider_fields:
