@@ -14,7 +14,7 @@ __all__ = ("Person", "ReferenceResourceAttributes", "ReferenceResource")
 
 
 class Person(BaseModel):
-    name: str = Field(..., decsription="""Full name of the person, REQUIRED.""")
+    name: str = Field(..., description="""Full name of the person, REQUIRED.""")
     firstname: Optional[str] = Field(None, description="""First name of the person.""")
     lastname: Optional[str] = Field(None, description="""Last name of the person.""")
 
