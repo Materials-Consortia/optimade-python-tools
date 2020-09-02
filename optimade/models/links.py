@@ -47,12 +47,12 @@ class LinksResourceAttributes(Attributes):
         ...,
         description="Human-readable description for the OPTIMADE API implementation, e.g., for use in clients to show a description to the end-user.",
     )
-    base_url: Union[AnyUrl, Link, None] = Field(
+    base_url: Optional[Union[AnyUrl, Link]] = Field(
         ...,
         description="JSON API links object, pointing to the base URL for this implementation",
     )
 
-    homepage: Union[AnyUrl, Link, None] = Field(
+    homepage: Optional[Union[AnyUrl, Link]] = Field(
         ...,
         description="JSON API links object, pointing to a homepage URL for this implementation",
     )

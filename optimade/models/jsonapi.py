@@ -6,6 +6,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
     BaseModel,
     AnyUrl,
     Field,
+    parse_obj_as,
     root_validator,
 )
 
@@ -61,10 +62,33 @@ class ToplevelLinks(BaseModel):
     )
 
     # Pagination
-    first: Optional[AnyUrl] = Field(None, description="The first page of data")
-    last: Optional[AnyUrl] = Field(None, description="The last page of data")
-    prev: Optional[AnyUrl] = Field(None, description="The previous page of data")
-    next: Optional[AnyUrl] = Field(None, description="The next page of data")
+    first: Optional[Union[AnyUrl, Link]] = Field(
+        None, description="The first page of data"
+    )
+    last: Optional[Union[AnyUrl, Link]] = Field(
+        None, description="The last page of data"
+    )
+    prev: Optional[Union[AnyUrl, Link]] = Field(
+        None, description="The previous page of data"
+    )
+    next: Optional[Union[AnyUrl, Link]] = Field(
+        None, description="The next page of data"
+    )
+
+    @root_validator(pre=False)
+    def check_additional_keys_are_links(cls, values):
+        """The `ToplevelLinks` class allows any additional keys, as long as
+        they are also Links or Urls themselves.
+
+        """
+        for key, value in values.items():
+            if key not in cls.schema()["properties"]:
+                values[key] = parse_obj_as(Optional[Union[AnyUrl, Link]], value)
+
+        return values
+
+    class Config:
+        extra = "allow"
 
 
 class ErrorLinks(BaseModel):
