@@ -28,7 +28,7 @@ ase_deps = ["ase~=3.20"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2020.8.13"]
-jarvis_deps = ["jarvis-tools==2020.8.12"]
+jarvis_deps = ["jarvis-tools==2020.9.3"]
 client_deps = cif_deps
 
 # General
@@ -37,7 +37,7 @@ docs_deps = [
     "mkdocs-awesome-pages-plugin~=2.2",
     "mkdocs-material~=5.5",
     "mkdocs-minify-plugin~=0.3.0",
-    "mkdocstrings~=0.13.0",
+    "mkdocstrings~=0.13.1",
 ]
 testing_deps = [
     "pytest~=6.0",
