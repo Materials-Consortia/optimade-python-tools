@@ -66,7 +66,7 @@ class Species(BaseModel):
 
     name: str = Field(
         ...,
-        decsription="""Gives the name of the species; the **name** value MUST be unique in the `species` list.""",
+        description="""Gives the name of the species; the **name** value MUST be unique in the `species` list.""",
     )
 
     chemical_symbols: List[str] = Field(
