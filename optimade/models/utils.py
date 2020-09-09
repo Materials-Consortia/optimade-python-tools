@@ -30,11 +30,19 @@ def StrictField(
       "unit", "queryable" and "sortable".
     - Emits a warning when no description is provided.
 
+    Arguments:
+        *args: Positional arguments passed through to `Field`.
+        description: The description of the `Field`; if this is not
+            specified then a `UserWarning` will be emitted.
+        **kwargs: Extra keyword arguments to be passed to `Field`.
+
     Raises:
-        RuntimeError: if a Field is created with an unexpected key.
+        RuntimeError: If `**kwargs` contains a key not found in the
+            function signature of `Field`, or in the extensions used
+            by models in this package (see above).
 
     Returns:
-        the pydantic field
+        The pydantic `Field`.
 
     """
 
@@ -76,15 +84,15 @@ def OptimadeField(
     the corresponding support level in the specification and the
     physical unit of the field.
 
-    Keyword arguments:
-        support: the support level of the field itself, i.e. whether the field
+    Arguments:
+        support: The support level of the field itself, i.e. whether the field
             can be null or omitted by an implementation.
-        queryable: the support level corresponding to the queryablility
+        queryable: The support level corresponding to the queryablility
             of this field.
-        unit: a string describing the unit of the field.
+        unit: A string describing the unit of the field.
 
     Returns:
-        the pydantic field with extra validation provided by :func:`StrictField`.
+        The pydantic field with extra validation provided by [`StrictField`][optimade.models.utils.StrictField].
 
     """
 
