@@ -2129,7 +2129,8 @@
             "type": "string",
             "description": "Last name of the person."
           }
-        }
+        },
+        "description": "A person, i.e., an author, editor or other."
       },
       "Provider": {
         "title": "Provider",

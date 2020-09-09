@@ -14,11 +14,12 @@ __all__ = ("Person", "ReferenceResourceAttributes", "ReferenceResource")
 
 
 class Person(BaseModel):
+    """A person, i.e., an author, editor or other."""
 
     name: str = OptimadeField(
         ...,
         description="""Full name of the person, REQUIRED.""",
-        support=SupportLevel.OPTIONAL,
+        support=SupportLevel.MUST,
         queryable=SupportLevel.OPTIONAL,
     )
 
@@ -260,6 +261,8 @@ class ReferenceResource(EntryResource):
     - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
 - **Example**: `"structures"`""",
         pattern="^references$",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.MUST,
     )
     attributes: ReferenceResourceAttributes
 

@@ -69,12 +69,14 @@ class Species(BaseModel):
 
     """
 
-    name: str = StrictField(
+    name: str = OptimadeField(
         ...,
         description="""Gives the name of the species; the **name** value MUST be unique in the `species` list.""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    chemical_symbols: List[str] = StrictField(
+    chemical_symbols: List[str] = OptimadeField(
         ...,
         description="""MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
 
@@ -83,9 +85,11 @@ class Species(BaseModel):
 - the special value `"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).
 
 If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    concentration: List[float] = StrictField(
+    concentration: List[float] = OptimadeField(
         ...,
         description="""MUST be a list of floats, with same length as `chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species. The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
 
@@ -93,29 +97,39 @@ If any one entry in the `species` list has a `chemical_symbols` list that is lon
 - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.
 
 Note that concentrations are uncorrelated between different site (even of the same species).""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    mass: Optional[float] = StrictField(
+    mass: Optional[float] = OptimadeField(
         None,
         description="""If present MUST be a float expressed in a.m.u.""",
         unit="a.m.u.",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    original_name: Optional[str] = StrictField(
+    original_name: Optional[str] = OptimadeField(
         None,
         description="""Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
 Note: With regards to "source database", we refer to the immediate source being queried via the OPTIMADE API implementation.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    attached: Optional[List[str]] = StrictField(
+    attached: Optional[List[str]] = OptimadeField(
         None,
         description="""If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    nattached: Optional[List[int]] = StrictField(
+    nattached: Optional[List[int]] = OptimadeField(
         None,
         description="""If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
     )
 
     @validator("chemical_symbols", each_item=True)
@@ -177,21 +191,25 @@ class Assembly(BaseModel):
 
     """
 
-    sites_in_groups: List[List[int]] = StrictField(
+    sites_in_groups: List[List[int]] = OptimadeField(
         ...,
         description="""Index of the sites (0-based) that belong to each group for each assembly.
 
 - **Examples**:
     - `[[1], [2]]`: two groups, one with the second site, one with the third.
     - `[[1,2], [3]]`: one group with the second and third site, one with the fourth.""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL,
     )
 
-    group_probabilities: List[float] = StrictField(
+    group_probabilities: List[float] = OptimadeField(
         ...,
         description="""Statistical probability of each group. It MUST have the same length as `sites_in_groups`.
 It SHOULD sum to one.
 See below for examples of how to specify the probability of the occurrence of a vacancy.
 The possible reasons for the values not to sum to one are the same as already specified above for the `concentration` of each `species`.""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL,
     )
 
     @validator("sites_in_groups")
@@ -435,6 +453,8 @@ Note: the elements in this list each refer to the direction of the corresponding
 - **Query examples**:
     - Match only structures with exactly 3 periodic dimensions: `nperiodic_dimensions=3`
     - Match all structures with 2 or fewer periodic dimensions: `nperiodic_dimensions<=2`""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.MUST,
     )
 
     lattice_vectors: conlist(
@@ -592,6 +612,8 @@ The properties of the species are found in the property `species`.
 - **Examples**:
     - `["Ti","O2"]` indicates that the first site is hosting a species labeled `"Ti"` and the second a species labeled `"O2"`.
     - `["Ac", "Ac", "Ag", "Ir"]` indicating the first two sites contains the `"Ac"` species, while the third and fourth sites contain the `"Ag"` and `"Ir"` species, respectively.""",
+        support=SupportLevel.SHOULD,
+        queryable=SupportLevel.OPTIONAL,
     )
 
     assemblies: Optional[List[Assembly]] = OptimadeField(
@@ -920,6 +942,8 @@ class StructureResource(EntryResource):
 - **Examples**:
     - `"structures"`""",
         pattern="^structures$",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.MUST,
     )
 
     attributes: StructureResourceAttributes
