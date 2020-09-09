@@ -1,7 +1,14 @@
-""" This class contains patched versions of the OPTIMADE models as
-a workaround for the response field workaround of allowing responses
-to contain bare dictionaries. These allow the validator to print detailed
-validation responses.
+""" This submodule contains utility methods and models
+used by the validator. The two main features being:
+
+1. The `@test_case` decorator can be used to decorate validation
+   methods and performs error handling, output and logging of test
+   successes and failures.
+2. The patched `Validator` versions allow for stricter validation
+   of server responses. The standard response classes allow entries
+   to be provided as bare dictionaries, whilst these patched classes
+   force them to be validated with the corresponding entry models
+   themselves.
 
 """
 
@@ -9,7 +16,7 @@ import time
 import sys
 import urllib.parse
 import traceback as tb
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Callable, Tuple
 
 try:
     import simplejson as json
@@ -113,8 +120,10 @@ class Client:  # pragma: no cover
             retries += 1
             try:
                 self.response = requests.get(self.last_request)
-            except requests.exceptions.ConnectionError:
-                sys.exit(f"No response from server at {self.last_request}")
+            except requests.exceptions.ConnectionError as exc:
+                sys.exit(
+                    f"{exc.__class__.__name__}: No response from server at {self.last_request}, please check the URL."
+                )
             except requests.exceptions.MissingSchema:
                 sys.exit(
                     f"Unable to make request on {self.last_request}, did you mean http://{self.last_request}?"
@@ -132,52 +141,66 @@ class Client:  # pragma: no cover
         return self.response
 
 
-def test_case(test_fn):
-    """Wrapper for test case functions, which pretty_prints any errors
-    depending on verbosity level and returns only the response to the caller.
+def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
+    """Wrapper for test case functions, which pretty-prints any errors
+    depending on verbosity level, collates the number and severity of
+    test failures, returns the response and summary string to the caller.
+    Any additional positional or keyword arguments are passed directly
+    to `test_fn`. The wrapper will intercept the named arguments
+    `optional`, `multistage` and `request` and interpret them according
+    to the docstring for `wrapper(...)` below.
 
     Parameters:
-        test_fn (callable): function that returns a response to pass to caller,
-            and a message to print upon success. Should raise `ResponseError`,
-            `ValidationError` or `ManualValidationError` if the test case has failed.
-            The function can return `None` to indicate that the test was
-            not appropriate and should be ignored.
-
-    Keyword arguments:
-        request (str): the request made by the wrapped function.
-        optional (bool): whether or not to treat the test as optional.
-        multistage (bool): if True, no output will be printed for this test,
-            and it will not increment the success counter. Errors will be
-            handled in the normal way. This can be used to avoid flooding
-            the output for mutli-stage tests.
+        test_fn: Any function that returns an object and a message to
+            print upon success. The function should raise a `ResponseError`,
+            `ValidationError` or a `ManualValidationError` if the test
+            case has failed. The function can return `None` to indicate
+            that the test was not appropriate and should be ignored.
 
     """
     from functools import wraps
 
     @wraps(test_fn)
     def wrapper(
-        validator, *args, request=None, optional=False, multistage=False, **kwargs
+        validator,
+        *args,
+        request: str = None,
+        optional: bool = False,
+        multistage: bool = False,
+        **kwargs,
     ):
+        """Wraps a function or validator method and handles
+        success, failure and output depending on the keyword
+        arguments passed.
+
+        Arguments:
+            validator: The validator object to accumulate errors/counters.
+            *args: Positional arguments passed to the test function.
+            request: Description of the request made by the wrapped
+                function (e.g. a URL or a summary).
+            optional: Whether or not to treat the test as optional.
+            multistage: If `True`, no output will be printed for this test,
+                and it will not increment the success counter. Errors will be
+                handled in the normal way. This can be used to avoid flooding
+                the output for mutli-stage tests.
+                request: The request that has been performed
+                optional: Whether to count this test as optional
+                multistage
+            **kwargs: Extra named arguments passed to the test function.
+
+        """
         try:
             try:
                 if optional and not validator.run_optional_tests:
                     result = None
                     msg = "skipping optional"
-                    return result
-
-                out = test_fn(validator, *args, **kwargs)
-                if out is not None:
-                    result, msg = out
                 else:
-                    result = None
-                    msg = ""
-                    # if the test returned None, then we just ignore it
-                    return result
+                    result, msg = test_fn(validator, *args, **kwargs)
 
             except json.JSONDecodeError as exc:
                 msg = (
                     "Critical: unable to parse server response as JSON. "
-                    f"Error: {exc.__class__.__name__}: {exc}"
+                    f"{exc.__class__.__name__}: {exc}"
                 )
                 raise exc
             except (ResponseError, ValidationError) as exc:
@@ -187,11 +210,19 @@ def test_case(test_fn):
                 msg = f"{exc.__class__.__name__}: {exc}"
                 raise InternalError(msg)
 
-        except Exception as exc:
+        # Catch SystemExit here so that we can pass it through to the finally block,
+        # but prepare to immediately throw it
+        except (Exception, SystemExit) as exc:
             result = exc
             traceback = tb.format_exc()
 
         finally:
+            # This catches the case of the Client throwing a SystemExit if the server
+            # did not respond, and the case of the validator "fail-fast"'ing and throwing
+            # a SystemExit below
+            if isinstance(result, SystemExit):
+                raise SystemExit(result)
+
             display_request = None
             try:
                 display_request = validator.client.last_request
@@ -203,6 +234,10 @@ def test_case(test_fn):
                     display_request += "/" + request
 
             request = display_request
+
+            # If the result was None, return it here and ignore statuses
+            if result is None:
+                return result, msg
 
             if not isinstance(result, Exception):
                 if not multistage:
@@ -276,7 +311,7 @@ def test_case(test_fn):
             # displayed if the next request fails
             validator.client.last_request = None
 
-            return result
+            return result, msg
 
     return wrapper
 

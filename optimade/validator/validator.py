@@ -1,6 +1,7 @@
-""" This module contains a validator class that can be pointed
-at an OPTIMADE implementation and validated against the pydantic
-models in this package.
+"""This module contains the
+[`ImplementationValidator`][optimade.validator.validator.ImplementationValidator]
+class that can be pointed at an OPTIMADE implementation and validated
+against the specification via the pydantic models implemented in this package.
 
 """
 # pylint: disable=import-outside-toplevel
@@ -10,7 +11,7 @@ import sys
 import logging
 import random
 import urllib.parse
-from typing import Union, Tuple, Any
+from typing import Union, Tuple, Any, List, Dict, Optional
 
 try:
     import simplejson as json
@@ -18,7 +19,6 @@ except ImportError:
     import json
 
 import requests
-from fastapi.testclient import TestClient
 
 from optimade.models import DataType, EntryInfoResponse
 from optimade.validator.utils import (
@@ -39,21 +39,28 @@ VERSIONS_REGEXP = r"/v[0-9]+(\.[0-9]+){,2}"
 
 
 class ImplementationValidator:
-    """
-    Class to call test functions on a particular OPTIMADE implementation.
+    """Class used to make a series of checks against a particular
+    OPTIMADE implementation over HTTP.
 
-    Uses the pydantic models in `optimade.models` to validate the
-    response from the server and crawl through the available endpoints.
+    Uses the pydantic models in [`optimade.models`][optimade.models] to
+    validate the response from the server and crawl through the
+    available endpoints.
+
+    Attributes:
+        valid: whether or not the implementation was deemed valid, with
+            `None` signifying that tests did not run.
 
     Caution:
         Only works for current version of the specification as defined
-        by `optimade.models`.
+        by [`optimade.models`][optimade.models].
 
     """
 
+    valid: Optional[bool]
+
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        client: Union[Client, TestClient] = None,
+        client: Any = None,
         base_url: str = None,
         verbosity: int = 0,
         page_limit: int = 5,
@@ -66,8 +73,28 @@ class ImplementationValidator:
         """Set up the tests to run, based on constants in this module
         for required endpoints.
 
-        """
+        Arguments:
+            client: A client that has a `.get()` method to obtain the
+                response from the implementation. If `None`, then
+                [`Client`][optimade.validator.utils.Client] will be used.
+            base_url: The URL of the implementation to validate. Unless
+                performing "as_type" validation, this should point to the
+                base of the OPTIMADE implementation.
+            verbosity: The verbosity of the output and logging as an integer
+                (`0`: critical, `1`: warning, `2`: info, `3`: debug).
+            page_limit: The default page limit to apply to filters.
+            max_retries: Argument is passed to the client for how many
+                attempts to make for a request before failing.
+            run_optional_tests: Whether to run the tests on optional
+                OPTIMADE features.
+            fail_fast: Whether to exit validation after the first failure
+                of a mandatory test.
+            as_type: An OPTIMADE entry or endpoint type to coerce the response
+                from implementation into, e.g. "structures". Requires `base_url`
+                to be pointed to the corresponding endpoint.
+            index: Whether to validate the implementation as an index meta-database.
 
+        """
         self.verbosity = verbosity
         self.max_retries = max_retries
         self.page_limit = page_limit
@@ -78,7 +105,7 @@ class ImplementationValidator:
         if as_type is None:
             self.as_type_cls = None
         elif self.index:
-            if as_type not in CONF.response_classes_index.keys():
+            if as_type not in CONF.response_classes_index:
                 raise RuntimeError(
                     f"Provided as_type='{as_type}' not allowed for an Index meta-database."
                 )
@@ -105,7 +132,7 @@ class ImplementationValidator:
 
         self._setup_log()
 
-        self.response_classes = (
+        self._response_classes = (
             CONF.response_classes_index if self.index else CONF.response_classes
         )
 
@@ -115,9 +142,6 @@ class ImplementationValidator:
         if self.as_type_cls is None and self.base_url_parsed.query:
             raise SystemExit("Base URL not appropriate: should not contain a filter.")
 
-        # if valid is True on exit, script returns 0 to shell
-        # if valid is False on exit, script returns 1 to shell
-        # if valid is None on exit, script returns 2 to shell, indicating an internal failure
         self.valid = None
 
         self._test_id_by_type = {}
@@ -142,368 +166,16 @@ class ImplementationValidator:
         )
         self._log.addHandler(stdout_handler)
         if self.verbosity == 0:
-            self._log.setLevel(logging.WARNING)
+            self._log.setLevel(logging.CRITICAL)
         elif self.verbosity == 1:
+            self._log.setLevel(logging.WARNING)
+        elif self.verbosity == 2:
             self._log.setLevel(logging.INFO)
         else:
             self._log.setLevel(logging.DEBUG)
 
-    def validate_implementation(self):
-        """ Run all the test cases of the implementation, or the single type test. """
-
-        # If a single "as type" has been set, only run that test
-        if self.as_type_cls is not None:
-            self._log.debug(
-                "Validating response of %s with model %s",
-                self.base_url,
-                self.as_type_cls,
-            )
-            self.test_as_type()
-            self.valid = not bool(self.failure_count)
-            return
-
-        # Test entire implementation
-        print(f"Testing entire implementation at {self.base_url}...")
-        self._log.debug("Testing base info endpoint of %s", "info")
-
-        # Save base info to construct new queries
-        info_endp = CONF.info_endpoint
-        base_info = self.test_info_or_links_endpoints(info_endp)
-        if not base_info:
-            raise RuntimeError("Unable to understand base info, cannot continue.")
-
-        self.base_info = base_info.dict()
-        self.provider_prefix = self.base_info["meta"].get("provider", {}).get("prefix")
-
-        # Run some tests on the versions endpoint
-        versions_endp = CONF.versions_endpoint
-        self.test_versions_endpoint(versions_endp)
-        self.test_bad_version_returns_553()
-
-        self.available_json_endpoints = self.get_available_endpoints(base_info)
-        # set the response class for all `/info/entry` endpoints
-        for endp in self.available_json_endpoints:
-            self.response_classes[f"{info_endp}/{endp}"] = EntryInfoResponse
-
-        # Test that entry info endpoints deserialize correctly
-        for endp in self.available_json_endpoints:
-            entry_info_endpoint = f"{info_endp}/{endp}"
-            self._log.debug("Testing expected info endpoint %s", entry_info_endpoint)
-            entry_info = self.test_info_or_links_endpoints(entry_info_endpoint)
-            if entry_info:
-                self._entry_info_by_type[endp] = entry_info.dict()
-
-        # Use the _entry_info_by_type to construct filters on the relevant endpoints
-        for endp in self.available_json_endpoints:
-            self.recurse_through_endpoint(endp)
-
-        # Test that the results from multi-entry-endpoints obey e.g. page limits
-        # and that all entries can be deserialized with the patched models
-        #
-        # These methods also set the test_ids for each type of entry, which are validated
-        # in the next loop.
-        for endp in self.available_json_endpoints:
-            self._log.debug("Testing multiple entry endpoint of %s", endp)
-            self.test_multi_entry_endpoint(f"{endp}?page_limit={self.page_limit}")
-
-        # Test that the single IDs scraped earlier work with the single entry endpoint
-        for endp in self.available_json_endpoints:
-            self._log.debug("Testing single entry request of type %s", endp)
-            self.test_single_entry_endpoint(endp)
-
-        # Test that the links endpoint can be serialized correctly
-        links_endp = CONF.links_endpoint
-        self._log.debug("Testing %s endpoint", links_endp)
-        self.test_info_or_links_endpoints(links_endp)
-
-        self.valid = not (bool(self.failure_count) or bool(self.internal_failure_count))
-
-        self.print_summary()
-
-    def recurse_through_endpoint(self, endp):
-        """For a given endpoint (`endp`), get the entry type
-        and supported fields, testing that all mandatory fields
-        are supported, then test queries on every property according
-        to the reported type, with optionality decided by the
-        specification-level support level for that field.
-
-        """
-        entry_info = self._entry_info_by_type.get(endp)
-        _impl_properties = self.check_entry_info(entry_info, endp)
-
-        chosen_entry = self.get_archetypical_entry(endp)
-
-        if not entry_info:
-            raise ResponseError(
-                f"Unable to generate filters for endpoint {endp}: entry info not found."
-            )
-
-        for prop in _impl_properties:
-            # check support level of property
-            prop_type = _impl_properties[prop]["type"]
-            sortable = _impl_properties[prop]["sortable"]
-            optional = prop not in CONF.entry_properties[endp]["MUST"]
-
-            if optional and not self.run_optional_tests:
-                continue
-
-            self.construct_queries_for_property(
-                prop,
-                prop_type,
-                sortable,
-                endp,
-                chosen_entry,
-                request=f"; testing queries for {endp}->{prop}",
-                optional=optional,
-            )
-
-    def check_entry_info(self, entry_info, endp):
-        """Checks that `entry_info` contains all the required properties,
-        and returns the property list for the endpoint.
-
-        """
-        properties = entry_info["data"]["properties"]
-        self.test_must_properties(
-            properties, endp, request="; checking entry info for required properties"
-        )
-
-        return properties
-
-    @test_case
-    def test_must_properties(self, properties, endp):
-        """Check that the entry info lists all properties with the "MUST"
-        support level for this endpoint.
-
-        """
-        must_props = CONF.entry_properties[endp]["MUST"]
-        must_props_supported = set(prop for prop in properties if prop in must_props)
-        missing = must_props - must_props_supported
-        if len(missing) != 0:
-            raise ResponseError(
-                f"Some 'MUST' properties were missing from info/{endp}: {missing}"
-            )
-
-        return True, "Found all required properties in entry info for endpoint {endp}"
-
-    @test_case
-    def get_archetypical_entry(self, endp):
-        """Get a random entry from the first page of results for this
-        endpoint.
-
-        """
-        response = self.get_endpoint(endp)
-        data_returned = response.json()["meta"]["data_returned"]
-        if data_returned < 1:
-            raise ResponseError(f"No data returned from endpoint {endp}.")
-        response = self.get_endpoint(
-            f"{endp}?page_offset={random.randint(0, data_returned-1)}"
-        )
-        archetypical_entry = response.json()["data"][0]
-        return (
-            archetypical_entry,
-            f"set archetypical entry for {endp} with ID {archetypical_entry['id']}.",
-        )
-
-    @test_case
-    def construct_queries_for_property(
-        self,
-        prop,
-        prop_type,
-        sortable,
-        endp,
-        chosen_entry,
-        provider=False,
-    ):
-
-        # Explicitly handle top level keys that do not have types in info
-        if prop == "type":
-            if chosen_entry["type"] == endp:
-                return True, f"Successfully validatated {prop}"
-            else:
-                raise ResponseError(
-                    f"Chosen entry of endpoint '/{endp}' had unexpected type '{chosen_entry['type']}'."
-                )
-
-        if prop == "id":
-            prop_type = DataType.STRING
-
-        if prop_type is None:
-            raise ResponseError(
-                f"Cannot validate queries on {prop} as field type was not reported in /info/{endp}"
-            )
-
-        # this is the case of a provider field
-        if prop not in (
-            CONF.entry_properties[endp]["MUST"]
-            | CONF.entry_properties[endp]["SHOULD"]
-            | CONF.entry_properties[endp]["OPTIONAL"]
-        ):
-            if self.provider_prefix is None:
-                raise ResponseError(
-                    f"Found unknown field {prop} and no provider prefix was provided in `/info`"
-                )
-            elif not prop.startswith(f"_{self.provider_prefix}"):
-                raise ResponseError(
-                    f'Found unknown field {prop} that did not start with provider prefix "_{self.provider_prefix}"'
-                )
-            else:
-                return True, f"Found provider field {prop}, will not test queries."
-
-        return self._construct_single_property_filters(
-            prop, prop_type, sortable, endp, chosen_entry
-        )
-
-    @staticmethod
-    def _format_test_value(test_value, prop_type, operator):
-        """ Format the test value according to the type of the property. """
-
-        if prop_type == DataType.LIST:
-            if operator in ("HAS ALL", "HAS ANY"):
-                _vals = sorted(set(test_value))
-                if isinstance(test_value[0], str):
-                    _vals = [f'"{val}"' for val in _vals]
-                else:
-                    _vals = [f"{val}" for val in _vals]
-                _test_value = ",".join(_vals)
-            else:
-                if isinstance(test_value[0], str):
-                    _test_value = f'"{test_value[0]}"'
-                else:
-                    _test_value = test_value[0]
-
-        elif prop_type == DataType.STRING:
-            _test_value = f'"{test_value}"'
-
-        else:
-            _test_value = test_value
-
-        return _test_value
-
-    def _construct_single_property_filters(
-        self, prop, prop_type, sortable, endp, chosen_entry
-    ):
-        """This method constructs appropriate queries using all operators
-        for a certain field and applies some tests:
-
-        - inclusive operators return compatible entries, e.g. `>=` always returns
-        at least the results of `=`.
-        - exclusive operators never return contradictory entries, e.g.
-        `nsites=1` never returns the same entries as `nsites!=1`), modulo
-        pagination.
-
-        """
-        if prop == "id":
-            test_value = chosen_entry["id"]
-        else:
-            test_value = chosen_entry["attributes"].get(prop, "missing")
-
-        if test_value in ("missing", None):
-            if prop in CONF.entry_properties[endp]["OPTIONAL"]:
-                return None
-            else:
-                raise ResponseError(f"chosen entry had no value for '{prop}'")
-
-        if prop_type == DataType.LIST:
-            if not test_value or (
-                isinstance(test_value[0], dict) or isinstance(test_value[0], list)
-            ):
-                self._log.warning(
-                    f"Not testing queries on field {prop} of type {prop_type} with nested dictionary/list entries.",
-                )
-                return
-
-        if prop_type in (DataType.DICTIONARY, DataType.TIMESTAMP):
-            self._log.warning(
-                f"Not testing queries on field {prop} of type {prop_type}."
-            )
-            return
-
-        num_data_returned = {}
-
-        inclusive_operators = CONF.inclusive_operators[prop_type]
-        exclusive_operators = CONF.exclusive_operators[prop_type]
-
-        for operator in inclusive_operators | exclusive_operators:
-            # Need to pre-format list and string test values for the query
-            _test_value = self._format_test_value(test_value, prop_type, operator)
-
-            query = f"{prop} {operator} {_test_value}"
-            response = self.get_endpoint(
-                f"{endp}?filter={query}", multistage=True
-            ).json()
-            num_data_returned[operator] = response["meta"]["data_returned"]
-
-            # Numeric and string comparisons must work both ways...
-            if prop_type in (
-                DataType.STRING,
-                DataType.INTEGER,
-                DataType.FLOAT,
-                DataType.TIMESTAMP,
-            ) and operator not in (
-                "CONTAINS",
-                "STARTS",
-                "STARTS WITH",
-                "ENDS",
-                "ENDS WITH",
-            ):
-                reversed_operator = operator.replace("<", ">")
-                if "<" in operator:
-                    reversed_operator = operator.replace("<", ">")
-                elif ">" in operator:
-                    reversed_operator = operator.replace(">", "<")
-
-                # Don't try to reverse string comparison as it is ill-defined
-                if prop_type == DataType.STRING and any(
-                    comp in operator for comp in ("<", ">")
-                ):
-                    continue
-
-                reversed_query = f"{_test_value} {reversed_operator} {prop}"
-                reversed_response = self.get_endpoint(
-                    f"{endp}?filter={reversed_query}",
-                    multistage=True,
-                ).json()
-
-                if (
-                    reversed_response["meta"]["data_returned"]
-                    != response["meta"]["data_returned"]
-                ):
-                    raise ResponseError(
-                        f"Query {query} did not work both ways around: {reversed_query}, "
-                        "returning different results each time."
-                    )
-
-            excluded = operator in exclusive_operators
-            # if we have all results on this page, check that the blessed ID is in the response
-            if response["meta"]["data_returned"] <= len(response["data"]):
-                if excluded and (
-                    chosen_entry["id"] in set(entry["id"] for entry in response["data"])
-                ):
-                    raise ResponseError(
-                        f"Objects {excluded} were not necessarily excluded by {query}"
-                    )
-
-            # check that at least the archetypical structure was returned
-            if not excluded:
-                if num_data_returned[operator] < 1:
-                    raise ResponseError(
-                        f"Supposedly inclusive query '{query}' did not include original object ID {chosen_entry['id']} "
-                        f"(with field '{prop} = {test_value}') potentially indicating a problem with filtering on this field."
-                    )
-
-        if prop in CONF.unique_properties:
-            if num_data_returned["="] == 0:
-                raise ResponseError(
-                    f"Unable to filter field 'id' for equality, no data was returned for {query}."
-                )
-            if num_data_returned["="] > 1:
-                raise ResponseError(
-                    f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
-                )
-
-        return True, f"{prop} passed filter tests"
-
     def print_summary(self):
+        """ Print a summary of the results of validation. """
         if self.failure_messages:
             print("\n\nFAILURES")
             print("========\n")
@@ -547,26 +219,481 @@ class ImplementationValidator:
                     f"{self.optional_success_count + self.optional_failure_count} optional tests."
                 )
 
-    def test_info_or_links_endpoints(self, request_str):
-        """ Runs the test cases for the info endpoints. """
-        response = self.get_endpoint(request_str)
+    def validate_implementation(self):
+        """Run all the test cases on the implementation, or the single type test,
+        depending on what options were provided on initialiation.
+
+        Sets the `self.valid` attribute to `True` or `False` depending on the
+        outcome of the tests.
+
+        Raises:
+            RuntimeError: If it was not possible to start the validation process.
+
+        """
+        # If a single "as type" has been set, only run that test
+        if self.as_type_cls is not None:
+            self._log.debug(
+                "Validating response of %s with model %s",
+                self.base_url,
+                self.as_type_cls,
+            )
+            self._test_as_type()
+            self.valid = not bool(self.failure_count)
+            return
+
+        # Test entire implementation
+        print(f"Testing entire implementation at {self.base_url}...")
+        info_endp = CONF.info_endpoint
+        self._log.debug("Testing base info endpoint of %s", info_endp)
+
+        # Get and validate base info to find endpoints
+        base_info = self._test_info_or_links_endpoint(info_endp)
+        if not base_info:
+            raise RuntimeError(
+                "Unable to deserialize base info (see previous errors), so cannot continue."
+            )
+
+        self.provider_prefix = (
+            base_info.dict()["meta"].get("provider", {}).get("prefix")
+        )
+
+        # Set the response class for all `/info/entry` endpoints
+        self.available_json_endpoints, _ = self._get_available_endpoints(base_info)
+        for endp in self.available_json_endpoints:
+            self._response_classes[f"{info_endp}/{endp}"] = EntryInfoResponse
+
+        # Run some tests on the versions endpoint
+        self._log.debug("Testing versions endpoint %s", CONF.versions_endpoint)
+        self._test_versions_endpoint()
+        self._test_bad_version_returns_553()
+
+        # Test that entry info endpoints deserialize correctly
+        for endp in self.available_json_endpoints:
+            entry_info_endpoint = f"{info_endp}/{endp}"
+            self._log.debug("Testing expected info endpoint %s", entry_info_endpoint)
+            entry_info = self._test_info_or_links_endpoint(entry_info_endpoint)
+            if entry_info:
+                self._entry_info_by_type[endp] = entry_info.dict()
+
+        # Use the _entry_info_by_type to construct filters on the relevant endpoints
+        for endp in self.available_json_endpoints:
+            self._log.debug("Testing queries on JSON entry endpoint of %s", endp)
+            self._recurse_through_endpoint(endp)
+
+        # Test that the results from multi-entry-endpoints obey, e.g. page limits,
+        # and that all entries can be deserialized with the patched models.
+        # These methods also set the test_ids for each type of entry, which are validated
+        # in the next loop.
+        for endp in self.available_json_endpoints:
+            self._log.debug("Testing multiple entry endpoint of %s", endp)
+            self._test_multi_entry_endpoint(f"{endp}?page_limit={self.page_limit}")
+
+        # Test that the single IDs scraped earlier work with the single entry endpoint
+        for endp in self.available_json_endpoints:
+            self._log.debug("Testing single entry request of type %s", endp)
+            self._test_single_entry_endpoint(endp)
+
+        # Test that the links endpoint can be serialized correctly
+        self._log.debug("Testing %s endpoint", CONF.links_endpoint)
+        self._test_info_or_links_endpoint(CONF.links_endpoint)
+
+        self.valid = not (self.failure_count or self.internal_failure_count)
+
+        self.print_summary()
+
+    @test_case
+    def _recurse_through_endpoint(self, endp: str) -> Tuple[bool, str]:
+        """For a given endpoint (`endp`), get the entry type
+        and supported fields, testing that all mandatory fields
+        are supported, then test queries on every property according
+        to the reported type, with optionality decided by the
+        specification-level support level for that field.
+
+        Parameters:
+            endp: Endpoint to be tested.
+
+        Returns:
+            `True` if endpoint passed the tests, and a string summary.
+
+        """
+        entry_info = self._entry_info_by_type.get(endp)
+        _impl_properties = self._check_entry_info(entry_info, endp)
+
+        chosen_entry, _ = self._get_archetypal_entry(endp)
+
+        if not entry_info:
+            raise ResponseError(
+                f"Unable to generate filters for endpoint {endp}: entry info not found."
+            )
+
+        for prop in _impl_properties:
+            # check support level of property
+            prop_type = _impl_properties[prop]["type"]
+            sortable = _impl_properties[prop]["sortable"]
+            optional = prop not in CONF.entry_properties[endp]["MUST"]
+
+            if optional and not self.run_optional_tests:
+                continue
+
+            self._construct_queries_for_property(
+                prop,
+                prop_type,
+                sortable,
+                endp,
+                chosen_entry,
+                request=f"; testing queries for {endp}->{prop}",
+                optional=optional,
+            )
+
+        return True, f"successfully recursed through endpoint {endp}."
+
+    def _check_entry_info(self, entry_info: Dict[str, Any], endp: str) -> List[str]:
+        """Checks that `entry_info` contains all the required properties,
+        and returns the property list for the endpoint.
+
+        Parameters:
+            entry_info: JSON representation of the response from the
+                entry info endpoint.
+            endp: The name of the entry endpoint.
+
+        Returns:
+            The list of property names supported by this implementation.
+
+        """
+        properties = entry_info["data"]["properties"]
+        self._test_must_properties(
+            properties, endp, request="; checking entry info for required properties"
+        )
+
+        return properties
+
+    @test_case
+    def _test_must_properties(
+        self, properties: List[str], endp: str
+    ) -> Tuple[bool, str]:
+        """Check that the entry info lists all properties with the "MUST"
+        support level for this endpoint.
+
+        Parameters:
+            properties: The list of property names supported by the endpoint.
+            endp: The endpoint.
+
+        Returns:
+            `True` if the properties were found, and a string summary.
+
+        """
+        must_props = CONF.entry_properties[endp]["MUST"]
+        must_props_supported = set(prop for prop in properties if prop in must_props)
+        missing = must_props - must_props_supported
+        if len(missing) != 0:
+            raise ResponseError(
+                f"Some 'MUST' properties were missing from info/{endp}: {missing}"
+            )
+
+        return True, "Found all required properties in entry info for endpoint {endp}"
+
+    @test_case
+    def _get_archetypal_entry(self, endp: str) -> Tuple[Dict[str, Any], str]:
+        """Get a random entry from the first page of results for this
+        endpoint.
+
+        Parameters:
+            endp: The endpoint to query.
+
+        Returns:
+            The JSON representation of the chosen entry and the summary message.
+
+
+        """
+        response, _ = self._get_endpoint(endp)
+        data_returned = response.json()["meta"]["data_returned"]
+        if data_returned < 1:
+            raise ResponseError(f"No data returned from endpoint {endp}.")
+        response, _ = self._get_endpoint(
+            f"{endp}?page_offset={random.randint(0, data_returned-1)}"
+        )
+        archetypal_entry = response.json()["data"][0]
+        return (
+            archetypal_entry,
+            f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
+        )
+
+    @test_case
+    def _construct_queries_for_property(
+        self,
+        prop: str,
+        prop_type: DataType,
+        sortable: bool,
+        endp: str,
+        chosen_entry: Dict[str, Any],
+        provider: bool = False,
+    ) -> Tuple[Optional[bool], str]:
+        """For the given property, property type and chose entry, this method
+        runs a series of queries for each field in the entry, testing that the
+        initial document is returned where expected.
+
+
+        Parameters:
+            prop: The property name.
+            prop_type: The property type.
+            sortable: Whether the implementation has indicated that the field is sortable.
+            endp: The corresponding entry endpoint.
+            chosen_entry: A JSON respresentation of the chosen entry that will be used to
+                construct the filters.
+            provider: Whether the property is a provider-specific field.
+
+        Returns:
+            Boolean indicating success (`True`) or failure/irrelevance
+            (`None`) and the string summary of the test case.
+
+        """
+        # Explicitly handle top level keys that do not have types in info
+        if prop == "type":
+            if chosen_entry["type"] == endp:
+                return True, f"Successfully validatated {prop}"
+            raise ResponseError(
+                f"Chosen entry of endpoint '/{endp}' had unexpected type '{chosen_entry['type']}'."
+            )
+
+        if prop == "id":
+            prop_type = DataType.STRING
+
+        if prop_type is None:
+            raise ResponseError(
+                f"Cannot validate queries on {prop} as field type was not reported in /info/{endp}"
+            )
+
+        # this is the case of a provider field
+        if prop not in (
+            CONF.entry_properties[endp]["MUST"]
+            | CONF.entry_properties[endp]["SHOULD"]
+            | CONF.entry_properties[endp]["OPTIONAL"]
+        ):
+            if self.provider_prefix is None:
+                raise ResponseError(
+                    f"Found unknown field {prop} and no provider prefix was provided in `/info`"
+                )
+            elif not prop.startswith(f"_{self.provider_prefix}"):
+                raise ResponseError(
+                    f'Found unknown field {prop} that did not start with provider prefix "_{self.provider_prefix}"'
+                )
+            return True, f"Found provider field {prop}, will not test queries."
+
+        return self._construct_single_property_filters(
+            prop, prop_type, sortable, endp, chosen_entry
+        )
+
+    @staticmethod
+    def _format_test_value(test_value: Any, prop_type: DataType, operator: str) -> str:
+        """Formats the test value as a string according to the type of the property.
+
+        Parameters:
+            test_value: The value to format.
+            prop_type: The OPTIMADE data type of the field.
+            operator: The operator that will be applied to it.
+
+        Returns:
+            The value formatted as a string to use in an OPTIMADE filter.
+
+        """
+        if prop_type == DataType.LIST:
+            if operator in ("HAS ALL", "HAS ANY"):
+                _vals = sorted(set(test_value))
+                if isinstance(test_value[0], str):
+                    _vals = [f'"{val}"' for val in _vals]
+                else:
+                    _vals = [f"{val}" for val in _vals]
+                _test_value = ",".join(_vals)
+            else:
+                if isinstance(test_value[0], str):
+                    _test_value = f'"{test_value[0]}"'
+                else:
+                    _test_value = test_value[0]
+
+        elif prop_type == DataType.STRING:
+            _test_value = f'"{test_value}"'
+
+        else:
+            _test_value = test_value
+
+        return _test_value
+
+    def _construct_single_property_filters(
+        self,
+        prop: str,
+        prop_type: DataType,
+        sortable: bool,
+        endp: str,
+        chosen_entry: Dict[str, Any],
+    ) -> Tuple[Optional[bool], str]:
+        """This method constructs appropriate queries using all operators
+        for a certain field and applies some tests:
+
+        - inclusive operators return compatible entries, e.g. `>=` always returns
+          at least the results of `=`.
+        - exclusive operators never return contradictory entries, e.g.
+          `nsites=1` never returns the same entries as `nsites!=1`, modulo
+          pagination.
+
+        Parameters:
+            prop: The property name.
+            prop_type: The property type.
+            sortable: Whether the implementation has indicated that the field is sortable.
+            endp: The corresponding entry endpoint.
+            chosen_entry: A JSON respresentation of the chosen entry that will be used to
+                construct the filters>
+
+        Returns:
+            Boolean indicating success (`True`) or failure/irrelevance
+            (`None`) and the string summary of the test case.
+
+        """
+        if prop == "id":
+            test_value = chosen_entry["id"]
+        else:
+            test_value = chosen_entry["attributes"].get(prop, "missing")
+
+        if test_value in ("missing", None):
+            msg = f"Chosen entry had no value for '{prop!r}'"
+            if prop in CONF.entry_properties[endp]["OPTIONAL"]:
+                return None, msg
+            raise ResponseError(msg)
+
+        if prop_type == DataType.LIST:
+            if not test_value or (
+                isinstance(test_value[0], dict) or isinstance(test_value[0], list)
+            ):
+                msg = f"Not testing queries on field {prop} of type {prop_type} with nested dictionary/list entries."
+                self._log.warning(msg)
+                return None, msg
+
+        if prop_type in (DataType.DICTIONARY, DataType.TIMESTAMP):
+            msg = f"Not testing queries on field {prop} of type {prop_type}."
+            self._log.warning(msg)
+            return None, msg
+
+        num_data_returned = {}
+
+        inclusive_operators = CONF.inclusive_operators[prop_type]
+        exclusive_operators = CONF.exclusive_operators[prop_type]
+
+        for operator in inclusive_operators | exclusive_operators:
+            # Need to pre-format list and string test values for the query
+            _test_value = self._format_test_value(test_value, prop_type, operator)
+
+            query = f"{prop} {operator} {_test_value}"
+            response, _ = self._get_endpoint(f"{endp}?filter={query}", multistage=True)
+            response = response.json()
+            num_data_returned[operator] = response["meta"]["data_returned"]
+
+            # Numeric and string comparisons must work both ways...
+            if prop_type in (
+                DataType.STRING,
+                DataType.INTEGER,
+                DataType.FLOAT,
+                DataType.TIMESTAMP,
+            ) and operator not in (
+                "CONTAINS",
+                "STARTS",
+                "STARTS WITH",
+                "ENDS",
+                "ENDS WITH",
+            ):
+                reversed_operator = operator.replace("<", ">")
+                if "<" in operator:
+                    reversed_operator = operator.replace("<", ">")
+                elif ">" in operator:
+                    reversed_operator = operator.replace(">", "<")
+
+                # Don't try to reverse string comparison as it is ill-defined
+                if prop_type == DataType.STRING and any(
+                    comp in operator for comp in ("<", ">")
+                ):
+                    continue
+
+                reversed_query = f"{_test_value} {reversed_operator} {prop}"
+                reversed_response, _ = self._get_endpoint(
+                    f"{endp}?filter={reversed_query}",
+                    multistage=True,
+                )
+                reversed_response = reversed_response.json()
+
+                if (
+                    reversed_response["meta"]["data_returned"]
+                    != response["meta"]["data_returned"]
+                ):
+                    raise ResponseError(
+                        f"Query {query} did not work both ways around: {reversed_query}, "
+                        "returning different results each time."
+                    )
+
+            excluded = operator in exclusive_operators
+            # if we have all results on this page, check that the blessed ID is in the response
+            if response["meta"]["data_returned"] <= len(response["data"]):
+                if excluded and (
+                    chosen_entry["id"] in set(entry["id"] for entry in response["data"])
+                ):
+                    raise ResponseError(
+                        f"Objects {excluded} were not necessarily excluded by {query}"
+                    )
+
+            # check that at least the archetypal structure was returned
+            if not excluded:
+                if num_data_returned[operator] < 1:
+                    raise ResponseError(
+                        f"Supposedly inclusive query '{query}' did not include original object ID {chosen_entry['id']} "
+                        f"(with field '{prop} = {test_value}') potentially indicating a problem with filtering on this field."
+                    )
+
+        if prop in CONF.unique_properties:
+            if num_data_returned["="] == 0:
+                raise ResponseError(
+                    f"Unable to filter field 'id' for equality, no data was returned for {query}."
+                )
+            if num_data_returned["="] > 1:
+                raise ResponseError(
+                    f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
+                )
+
+        return True, f"{prop} passed filter tests"
+
+    def _test_info_or_links_endpoint(self, request_str: str) -> Union[bool, Any]:
+        """Requests an info or links endpoint and attempts to deserialize
+        the response.
+
+        Parameters:
+            request_str: The request to make, e.g. "links".
+
+        Returns:
+            `False` if the info response failed deserialization,
+            otherwise returns the deserialized object.
+
+        """
+        response, _ = self._get_endpoint(request_str)
         if response:
-            deserialized = self.deserialize_response(
+            deserialized, _ = self._deserialize_response(
                 response,
-                self.response_classes[request_str],
+                self._response_classes[request_str],
                 request=request_str,
             )
             if not deserialized:
                 return response
             return deserialized
+
         return False
 
-    def test_single_entry_endpoint(self, request_str):
-        """ Runs the test cases for the single entry endpoints. """
+    def _test_single_entry_endpoint(self, request_str: str) -> None:
+        """Requests and deserializes a single entry endpoint with the
+        appropriate model.
+
+        Parameters:
+            request_str: The single entry request to make, e.g. "structures/id_1".
+
+        """
         _type = request_str.split("?")[0]
         response_cls_name = _type + "/"
-        if response_cls_name in self.response_classes:
-            response_cls = self.response_classes[response_cls_name]
+        if response_cls_name in self._response_classes:
+            response_cls = self._response_classes[response_cls_name]
         else:
             self._log.warning(
                 "Deserializing single entry response %s with generic response rather than defined endpoint.",
@@ -575,21 +702,26 @@ class ImplementationValidator:
             response_cls = ValidatorEntryResponseOne
         if _type in self._test_id_by_type:
             test_id = self._test_id_by_type[_type]
-            response = self.get_endpoint(f"{_type}/{test_id}")
+            response, _ = self._get_endpoint(f"{_type}/{test_id}")
             if response:
-                self.deserialize_response(response, response_cls, request=request_str)
+                self._deserialize_response(response, response_cls, request=request_str)
 
-    def test_multi_entry_endpoint(self, request_str):
-        """Runs the test cases for the multi entry endpoints.
+    def _test_multi_entry_endpoint(self, request_str: str) -> None:
+        """Requests and deserializes a multi-entry endpoint with the
+        appropriate model.
 
         TODO: deserialization is currently classed as an optional
         test until our models are robust to support levels.
 
+        Parameters:
+            request_str: The multi-entry request to make, e.g.,
+                "structures?filter=nsites<10"
+
         """
-        response = self.get_endpoint(request_str)
+        response, _ = self._get_endpoint(request_str)
         _type = request_str.split("?")[0]
-        if _type in self.response_classes:
-            response_cls = self.response_classes[_type]
+        if _type in self._response_classes:
+            response_cls = self._response_classes[_type]
         else:
             self._log.warning(
                 "Deserializing multi entry response from %s with generic response rather than defined endpoint.",
@@ -597,25 +729,37 @@ class ImplementationValidator:
             )
             response_cls = ValidatorEntryResponseMany
 
-        self.test_page_limit(response)
+        self._test_page_limit(response)
 
-        deserialized = self.deserialize_response(
+        deserialized, _ = self._deserialize_response(
             response, response_cls, request=request_str, optional=True
         )
 
         if deserialized:
-            self.get_single_id_from_multi_endpoint(deserialized, request=request_str)
-            self.test_data_available_matches_data_returned(deserialized)
+            self._get_single_id_from_mutli_entry_endpoint(
+                deserialized, request=request_str
+            )
+            self._test_data_available_matches_data_returned(deserialized)
 
     @test_case
-    def test_data_available_matches_data_returned(self, deserialized):
+    def _test_data_available_matches_data_returned(
+        self, deserialized: Any
+    ) -> Tuple[bool, str]:
         """In the case where no query is requested, `data_available`
-        must equal `data_returned` in the meta response.
+        must equal `data_returned` in the meta response, which is tested
+        here.
+
+        Parameters:
+            deserialized: The deserialized response to a multi-entry
+                endpoint.
+
+        Returns:
+            `True` if successful, with a string summary.
 
         """
         if deserialized.meta.data_available != deserialized.meta.data_returned:
             raise ResponseError(
-                "No query was performed yet data_returned != data_available."
+                "No query was performed, but `data_returned` != `data_available`."
             )
 
         return (
@@ -623,36 +767,50 @@ class ImplementationValidator:
             "Meta response contained correct values for data_available and data_returned.",
         )
 
-    def test_versions_endpoint(self, request_str):
-        """Runs the test cases for the versions endpoint, which MUST exist for unversioned
-        base URLs and MUST NOT exist for versioned base URLs.
+    def _test_versions_endpoint(self):
+        """Requests and validate responses for the versions endpoint,
+        which MUST exist for unversioned base URLs and MUST NOT exist
+        for versioned base URLs.
 
         """
         expected_status_code = 200
         if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
             expected_status_code = 404
 
-        response = self.get_endpoint(
-            request_str, expected_status_code=expected_status_code
+        response, _ = self._get_endpoint(
+            CONF.versions_endpoint, expected_status_code=expected_status_code
         )
+
         if expected_status_code == 200:
-            self.test_versions_endpoint_content(response, request=request_str)
+            self._test_versions_endpoint_content(
+                response, request=CONF.versions_endpoint
+            )
 
     @test_case
-    def test_versions_endpoint_content(self, response):
-        """ Check the content of the versions endpoint complies with the specification. """
+    def _test_versions_endpoint_content(
+        self, response: requests.Response
+    ) -> Tuple[Optional[requests.Response], str]:
+        """Checks that the response from the versions endpoint complies
+        with the specification.
 
+        Parameters:
+            response: The HTTP response from the versions endpoint.
+
+        Returns:
+            The successful HTTP response or `None`, and a summary string.
+
+        """
         text_content = response.text.strip().split("\n")
         headers = response.headers
 
         if text_content[0] != "version":
             raise ResponseError(
-                f"First line of `/versions` response must be 'version', not {text_content[0]}"
+                f"First line of `/{CONF.versions_endpoint}` response must be 'version', not {text_content[0]}"
             )
 
         if len(text_content) <= 1:
             raise ResponseError(
-                f"No version numbers found in `/versions` response, only {text_content}"
+                f"No version numbers found in `/{CONF.versions_endpoint}` response, only {text_content}"
             )
 
         for version in text_content[1:]:
@@ -660,7 +818,7 @@ class ImplementationValidator:
                 int(version)
             except ValueError:
                 raise ResponseError(
-                    f"Version numbers reported by `/versions` must be integers specifying the major version, not {text_content}."
+                    f"Version numbers reported by `/{CONF.versions_endpoint}` must be integers specifying the major version, not {text_content}."
                 )
 
         content_type = headers.get("content-type")
@@ -681,38 +839,43 @@ class ImplementationValidator:
 
         return response, "`/versions` endpoint responded correctly."
 
-    def test_as_type(self):
-        response = self.get_endpoint("")
+    def _test_as_type(self) -> None:
+        """Tests that the base URL of the validator (i.e. with no
+        additional path added) validates with the model selected.
+
+        """
+        response, _ = self._get_endpoint("")
         if response:
             self._log.debug("Deserialzing response as type %s", self.as_type_cls)
-            self.deserialize_response(response, self.as_type_cls)
+            self._deserialize_response(response, self.as_type_cls)
 
-    def test_bad_version_returns_553(self):
-        """ Test some garbage version number responds with a 553 error code. """
+    def _test_bad_version_returns_553(self) -> None:
+        """Tests that a garbage version number responds with a 553
+        error code.
+
+        """
         expected_status_code = 553
         if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
             expected_status_code = 404
 
-        self.get_endpoint("v123123", expected_status_code=expected_status_code)
+        self._get_endpoint("v123123", expected_status_code=expected_status_code)
 
     @test_case
-    def test_page_limit(self, response, check_next_link: int = 5) -> (bool, str):
+    def _test_page_limit(
+        self, response: requests.models.Response, check_next_link: int = 5
+    ) -> Tuple[Optional[bool], str]:
         """Test that a multi-entry endpoint obeys the page limit by
         following pagination links up to a depth of `check_next_link`.
 
         Parameters:
-            response (requests.Response): the response to test for page limit
+            response: The response to test for page limit
                 compliance.
-
-        Keyword arguments:
-            check_next_link (int): maximum recursion depth for following
+            check_next_link: Maximum recursion depth for following
                 pagination links.
 
-        Raises:
-            ResponseError: if test fails in a predictable way.
-
         Returns:
-            True if the test was successful, with a string describing the success.
+            `True` if the test was successful and `None` if not, with a
+            string summary.
 
         """
         try:
@@ -753,9 +916,9 @@ class ImplementationValidator:
                 )
 
             self._log.debug("Following pagination link to %r.", next_link)
-            next_response = self.get_endpoint(next_link)
+            next_response, _ = self._get_endpoint(next_link)
             check_next_link = bool(check_next_link - 1)
-            self.test_page_limit(
+            self._test_page_limit(
                 next_response,
                 check_next_link=check_next_link,
                 multistage=check_next_link,
@@ -767,7 +930,7 @@ class ImplementationValidator:
         )
 
     @test_case
-    def get_single_id_from_multi_endpoint(self, deserialized):
+    def _get_single_id_from_mutli_entry_endpoint(self, deserialized):
         """Scrape an ID from the multi-entry endpoint to use as query
         for single entry endpoint.
 
@@ -790,25 +953,20 @@ class ImplementationValidator:
         )
 
     @test_case
-    def deserialize_response(
+    def _deserialize_response(
         self, response: requests.models.Response, response_cls: Any, request: str = None
     ) -> Tuple[Any, str]:
         """Try to create the appropriate pydantic model from the response.
 
         Parameters:
-            response: the response to try to deserialize.
-            response_cls: the class to use for deserialization.
-
-        Keyword arguments:
-            request: optional string that will be displayed as the attempted
+            response: The response to try to deserialize.
+            response_cls: The class to use for deserialization.
+            request: Optional string that will be displayed as the attempted
                 request in the validator output.
 
-        Raises:
-            ResponseError: if the object fails deserialization, or if the
-                request failed altogether.
-
         Returns:
-            the deserialized object and a human-readable summary
+            The deserialized object (or `None` if unsuccessful) and a
+                human-readable summary
 
         """
         if not response:
@@ -830,8 +988,21 @@ class ImplementationValidator:
         )
 
     @test_case
-    def get_available_endpoints(self, base_info):
-        """ Try to get `entry_types_by_format` even if base info response could not be validated. """
+    def _get_available_endpoints(
+        self, base_info: Union[Any, Dict[str, Any]]
+    ) -> Tuple[Optional[List[str]], str]:
+        """Tries to get `entry_types_by_format` from base info response
+        even if it could not be deserialized.
+
+        Parameters:
+            base_info: Either the unvalidated JSON representation of the
+                base info, or the deserialized object.
+
+        Returns:
+            The list of JSON entry endpoints (or `None` if unavailable)
+            and a string summary.
+
+        """
         for _ in [0]:
             available_json_entry_endpoints = []
             try:
@@ -882,26 +1053,22 @@ class ImplementationValidator:
         )
 
     @test_case
-    def get_endpoint(
-        self, request_str: str, expected_status_code: int = 200, optional: bool = False
-    ) -> Tuple[requests.Response, str]:
+    def _get_endpoint(
+        self, request_str: str, expected_status_code: int = 200
+    ) -> Tuple[Optional[requests.Response], str]:
         """Gets the response from the endpoint specified by `request_str`.
         function is wrapped by the `test_case` decorator
 
         Parameters:
-            request_str (str): the request to make to the client.
-
-        Keyword arguments:
-            expected_status_code (int): if the request responds with a different
+            request_str: The request to make to the client.
+            expected_status_code: If the request responds with a different
                 status code to this one, raise a ResponseError.
-            optional (bool): whether the success of this test is optional.
 
         Returns:
-            requests.Response: the response to the request (the `test_case` decorator
-                swallows the success message returned in this function directly).
+            The response to the request (if successful) or `None`, plus
+            a string summary.
 
         """
-
         request_str = request_str.replace("\n", "")
         response = self.client.get(request_str)
 
