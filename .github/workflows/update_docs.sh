@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 echo "\n-o- Checkout fresh branch -o-"
 git checkout -b update_changelog
