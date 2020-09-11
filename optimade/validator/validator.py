@@ -1073,9 +1073,7 @@ class ImplementationValidator:
         response = self.client.get(request_str)
 
         if response.status_code != expected_status_code:
-            message = (
-                f"Request to '{request_str}' returned HTTP code {response.status_code}."
-            )
+            message = f"Request to '{request_str}' returned HTTP code {response.status_code} and not expected {expected_status_code}."
             message += "\nError(s):"
             for error in response.json().get("errors", []):
                 message += f'\n  {error.get("title", "N/A")}: {error.get("detail", "N/A")} ({error.get("source", {}).get("pointer", "N/A")})'
