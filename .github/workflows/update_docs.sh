@@ -17,7 +17,10 @@ invoke create-api-reference-docs --pre-clean
 
 echo "\n-o- Commit update - API Reference -o-"
 git add docs/api_reference
-git commit -m "Release ${GITHUB_REF#refs/tags/} - API Reference"
+if [ -n "$(git status --porcelain)" ]; then
+    # Only commit if there's something to commit (git will return non-zero otherwise)
+    git commit -m "Release ${GITHUB_REF#refs/tags/} - API Reference"
+fi
 
 echo "\n-o- Update version -o-"
 invoke setver -v ${GITHUB_REF#refs/tags/}
