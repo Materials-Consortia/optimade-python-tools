@@ -5,6 +5,7 @@ models in this package.
 """
 # pylint: disable=import-outside-toplevel
 
+import re
 import sys
 import logging
 import random
@@ -604,12 +605,95 @@ class ImplementationValidator:
 
         if deserialized:
             self.get_single_id_from_multi_endpoint(deserialized, request=request_str)
+            self.test_data_available_matches_data_returned(deserialized)
+
+    @test_case
+    def test_data_available_matches_data_returned(self, deserialized):
+        """In the case where no query is requested, `data_available`
+        must equal `data_returned` in the meta response.
+
+        """
+        if deserialized.meta.data_available != deserialized.meta.data_returned:
+            raise ResponseError(
+                "No query was performed yet data_returned != data_available."
+            )
+
+        return (
+            True,
+            "Meta response contained correct values for data_available and data_returned.",
+        )
+
+    def test_versions_endpoint(self, request_str):
+        """Runs the test cases for the versions endpoint, which MUST exist for unversioned
+        base URLs and MUST NOT exist for versioned base URLs.
+
+        """
+        expected_status_code = 200
+        if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
+            expected_status_code = 404
+
+        response = self.get_endpoint(
+            request_str, expected_status_code=expected_status_code
+        )
+        if expected_status_code == 200:
+            self.test_versions_endpoint_content(response, request=request_str)
+
+    @test_case
+    def test_versions_endpoint_content(self, response):
+        """ Check the content of the versions endpoint complies with the specification. """
+
+        text_content = response.text.strip().split("\n")
+        headers = response.headers
+
+        if text_content[0] != "version":
+            raise ResponseError(
+                f"First line of `/versions` response must be 'version', not {text_content[0]}"
+            )
+
+        if len(text_content) <= 1:
+            raise ResponseError(
+                f"No version numbers found in `/versions` response, only {text_content}"
+            )
+
+        for version in text_content[1:]:
+            try:
+                int(version)
+            except ValueError:
+                raise ResponseError(
+                    f"Version numbers reported by `/versions` must be integers specifying the major version, not {text_content}."
+                )
+
+        content_type = headers.get("content-type")
+        if content_type is not None:
+            content_type = [_.replace(" ", "") for _ in content_type.split(";")]
+        if not content_type or content_type[0].strip() != "text/csv":
+            raise ResponseError(
+                f"Incorrect content-type header {content_type} instead of 'text/csv'"
+            )
+
+        for type_parameter in content_type:
+            if type_parameter == "header=present":
+                break
+        else:
+            raise ResponseError(
+                f"Missing 'header=present' parameter in content-type {content_type}"
+            )
+
+        return response, "`/versions` endpoint responded correctly."
 
     def test_as_type(self):
         response = self.get_endpoint("")
         if response:
             self._log.debug("Deserialzing response as type %s", self.as_type_cls)
             self.deserialize_response(response, self.as_type_cls)
+
+    def test_bad_version_returns_553(self):
+        """ Test some garbage version number responds with a 553 error code. """
+        expected_status_code = 553
+        if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
+            expected_status_code = 404
+
+        self.get_endpoint("v123123", expected_status_code=expected_status_code)
 
     @test_case
     def test_page_limit(self, response, check_next_link: int = 5) -> (bool, str):
