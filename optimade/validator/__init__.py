@@ -104,7 +104,7 @@ def validate():
     )
 
     try:
-        validator.main()
+        validator.validate_implementation()
     # catch and print internal exceptions, exiting with non-zero error code
     except Exception:
         traceback.print_exc()

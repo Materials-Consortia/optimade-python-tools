@@ -190,7 +190,11 @@ class IndexEndpointTests(BaseEndpointTests):
 def client_factory():
     """Return TestClient for OPTIMADE server"""
 
-    def inner(version: str = None, server: str = "regular") -> OptimadeTestClient:
+    def inner(
+        version: str = None,
+        server: str = "regular",
+        raise_server_exceptions: bool = True,
+    ) -> OptimadeTestClient:
         if server == "regular":
             from optimade.server.main import (
                 app,
@@ -213,9 +217,16 @@ def client_factory():
 
         if version:
             return OptimadeTestClient(
-                app, base_url="http://example.org", version=version
+                app,
+                base_url="http://example.org",
+                version=version,
+                raise_server_exceptions=raise_server_exceptions,
             )
-        return OptimadeTestClient(app, base_url="http://example.org")
+        return OptimadeTestClient(
+            app,
+            base_url="http://example.org",
+            raise_server_exceptions=raise_server_exceptions,
+        )
 
     return inner
 

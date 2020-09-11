@@ -199,12 +199,25 @@ jobs:
     - name: Run previously skipped tests for adapter conversion
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
+    - name: Run tests for validator only to assess coverage
+      if: matrix.python-version == 3.8
+      run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml tests/server/test_server_validation.py
+
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v1
       with:
+        name: project
         file: ./coverage.xml
-        flags: unittests
+        flags: project
+
+    - name: Upload validator coverage to Codecov
+      if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
+      uses: codecov/codecov-action@v1
+      with:
+        name: validator
+        file: ./validator_cov.xml
+        flags: validator
 
   docs:
     runs-on: ubuntu-latest
