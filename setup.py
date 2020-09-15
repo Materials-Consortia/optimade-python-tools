@@ -37,7 +37,7 @@ docs_deps = [
     "mkdocs-awesome-pages-plugin~=2.2",
     "mkdocs-material~=5.5",
     "mkdocs-minify-plugin~=0.3.0",
-    "mkdocstrings~=0.13.1",
+    "mkdocstrings~=0.13.2",
 ]
 testing_deps = [
     "pytest~=6.0",
@@ -75,8 +75,8 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Programming Language :: Python :: 3",
+        "Development Status :: 4 - Beta",
+        "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
