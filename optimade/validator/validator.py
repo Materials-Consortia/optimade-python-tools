@@ -21,7 +21,7 @@ except ImportError:
 
 import requests
 
-from optimade.models import DataType, EntryInfoResponse
+from optimade.models import DataType, EntryInfoResponse, SupportLevel
 from optimade.validator.utils import (
     Client,
     test_case,
@@ -358,7 +358,11 @@ class ImplementationValidator:
             # check support level of property
             prop_type = _impl_properties[prop]["type"]
             sortable = _impl_properties[prop]["sortable"]
-            optional = prop not in CONF.entry_properties[endp]["MUST"]
+            optional = True
+            if prop in CONF.field_info[endp]:
+                optional = (
+                    CONF.field_info[endp].get(prop).queryable == SupportLevel.OPTIONAL
+                )
 
             if optional and not self.run_optional_tests:
                 continue
@@ -410,7 +414,11 @@ class ImplementationValidator:
             `True` if the properties were found, and a string summary.
 
         """
-        must_props = CONF.entry_properties[endp]["MUST"]
+        must_props = set(
+            field
+            for field in CONF.field_info[endp]
+            if CONF.field_info[endp][field].support == SupportLevel.MUST
+        )
         must_props_supported = set(prop for prop in properties if prop in must_props)
         missing = must_props - must_props_supported
         if len(missing) != 0:
@@ -454,7 +462,6 @@ class ImplementationValidator:
         sortable: bool,
         endp: str,
         chosen_entry: Dict[str, Any],
-        provider: bool = False,
     ) -> Tuple[Optional[bool], str]:
         """For the given property, property type and chose entry, this method
         runs a series of queries for each field in the entry, testing that the
@@ -468,7 +475,6 @@ class ImplementationValidator:
             endp: The corresponding entry endpoint.
             chosen_entry: A JSON respresentation of the chosen entry that will be used to
                 construct the filters.
-            provider: Whether the property is a provider-specific field.
 
         Returns:
             Boolean indicating success (`True`) or failure/irrelevance
@@ -483,8 +489,9 @@ class ImplementationValidator:
                 f"Chosen entry of endpoint '/{endp}' had unexpected type '{chosen_entry['type']}'."
             )
 
-        if prop == "id":
-            prop_type = DataType.STRING
+        if prop_type is None:
+            if prop in CONF.field_info[endp]:
+                prop_type = CONF.field_info[endp][prop].type
 
         if prop_type is None:
             raise ResponseError(
@@ -492,11 +499,7 @@ class ImplementationValidator:
             )
 
         # this is the case of a provider field
-        if prop not in (
-            CONF.entry_properties[endp]["MUST"]
-            | CONF.entry_properties[endp]["SHOULD"]
-            | CONF.entry_properties[endp]["OPTIONAL"]
-        ):
+        if prop not in CONF.field_info[endp]:
             if self.provider_prefix is None:
                 raise ResponseError(
                     f"Found unknown field {prop} and no provider prefix was provided in `/info`"
@@ -507,8 +510,14 @@ class ImplementationValidator:
                 )
             return True, f"Found provider field {prop}, will not test queries."
 
+        query_optional = False
+        if prop in CONF.field_info[endp]:
+            query_optional = (
+                CONF.field_info[endp][prop].queryable == SupportLevel.OPTIONAL
+            )
+
         return self._construct_single_property_filters(
-            prop, prop_type, sortable, endp, chosen_entry
+            prop, prop_type, sortable, endp, chosen_entry, query_optional=query_optional
         )
 
     @staticmethod
@@ -553,6 +562,7 @@ class ImplementationValidator:
         sortable: bool,
         endp: str,
         chosen_entry: Dict[str, Any],
+        query_optional: bool,
     ) -> Tuple[Optional[bool], str]:
         """This method constructs appropriate queries using all operators
         for a certain field and applies some tests:
@@ -569,7 +579,8 @@ class ImplementationValidator:
             sortable: Whether the implementation has indicated that the field is sortable.
             endp: The corresponding entry endpoint.
             chosen_entry: A JSON respresentation of the chosen entry that will be used to
-                construct the filters>
+                construct the filters.
+            query_optional: Whether to treat query success as optional.
 
         Returns:
             Boolean indicating success (`True`) or failure/irrelevance
@@ -582,8 +593,13 @@ class ImplementationValidator:
             test_value = chosen_entry["attributes"].get(prop, "missing")
 
         if test_value in ("missing", None):
-            msg = f"Chosen entry had no value for '{prop!r}'"
-            if prop in CONF.entry_properties[endp]["OPTIONAL"]:
+            support = CONF.field_info[endp][prop].support
+            queryable = CONF.field_info[endp][prop].queryable
+            msg = (
+                f"Chosen entry had no value for {prop!r} with support level {support} and queryability {queryable}, "
+                "so validator is unable to construct test queries. This field should potentially be removed from the info response."
+            )
+            if support == SupportLevel.OPTIONAL:
                 return None, msg
             raise ResponseError(msg)
 
@@ -610,7 +626,12 @@ class ImplementationValidator:
             _test_value = self._format_test_value(test_value, prop_type, operator)
 
             query = f"{prop} {operator} {_test_value}"
-            response, _ = self._get_endpoint(f"{endp}?filter={query}", multistage=True)
+            response, _ = self._get_endpoint(
+                f"{endp}?filter={query}", multistage=True, optional=query_optional
+            )
+            if not response:
+                return None, ""
+
             response = response.json()
             num_data_returned[operator] = response["meta"]["data_returned"]
 
@@ -643,7 +664,11 @@ class ImplementationValidator:
                 reversed_response, _ = self._get_endpoint(
                     f"{endp}?filter={reversed_query}",
                     multistage=True,
+                    optional=query_optional,
                 )
+                if not reversed_response:
+                    return None, ""
+
                 reversed_response = reversed_response.json()
 
                 if (
