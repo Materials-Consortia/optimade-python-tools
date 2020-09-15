@@ -1,4 +1,5 @@
 import os
+import json
 from traceback import print_exc
 
 import pytest
@@ -18,6 +19,29 @@ def test_with_validator(both_fake_remote_clients):
         validator.validate_implementation()
     except Exception:
         print_exc()
+    assert validator.valid
+
+
+def test_with_validator_json_response(both_fake_remote_clients, capsys):
+    """ Test that the validator writes compliant JSON when requested. """
+    from optimade.server.main_index import app
+
+    validator = ImplementationValidator(
+        client=both_fake_remote_clients,
+        index=both_fake_remote_clients.app == app,
+        respond_json=True,
+    )
+    try:
+        validator.validate_implementation()
+    except Exception:
+        print_exc()
+
+    captured = capsys.readouterr()
+    json_response = json.loads(captured.out)
+    assert json_response["failure_count"] == 0
+    assert json_response["internal_failure_count"] == 0
+    assert json_response["optional_failure_count"] == 0
+
     assert validator.valid
 
 

@@ -132,7 +132,6 @@ class Client:  # pragma: no cover
             if status_code != 429:
                 break
 
-            print("Hit rate limit, sleeping for 1 s...")
             time.sleep(1)
 
         else:
@@ -242,19 +241,20 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
             if not isinstance(result, Exception):
                 if not multistage:
                     if not optional:
-                        validator.success_count += 1
+                        validator.results["success_count"] += 1
                     else:
-                        validator.optional_success_count += 1
+                        validator.results["optional_success_count"] += 1
                     message = f"✔: {request} - {msg}"
                     if validator.verbosity > 0:
                         if optional:
                             print(message)
                         else:
                             print_success(message)
-                    elif optional:
-                        print(".", end="", flush=True)
-                    else:
-                        print_success(".", end="", flush=True)
+                    elif validator.verbosity == 0:
+                        if optional:
+                            print(".", end="", flush=True)
+                        else:
+                            print_success(".", end="", flush=True)
             else:
                 internal_error = False
                 request = request.replace("\n", "")
@@ -267,17 +267,21 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
 
                 if isinstance(result, InternalError):
                     internal_error = True
-                    validator.internal_failure_count += 1
+                    validator.results["internal_failure_count"] += 1
                     summary = f"!: {request} - {test_fn.__name__} - failed with internal error"
-                    validator.internal_failure_messages.append((summary, message))
+                    validator.results["internal_failure_messages"].append(
+                        (summary, message)
+                    )
                 else:
                     summary = f"✖: {request} - {test_fn.__name__} - failed with error"
                     if not optional:
-                        validator.failure_count += 1
-                        validator.failure_messages.append((summary, message))
+                        validator.results["failure_count"] += 1
+                        validator.results["failure_messages"].append((summary, message))
                     else:
-                        validator.optional_failure_count += 1
-                        validator.optional_failure_messages.append((summary, message))
+                        validator.results["optional_failure_count"] += 1
+                        validator.results["optional_failure_messages"].append(
+                            (summary, message)
+                        )
 
                 if validator.verbosity > 0:
                     if internal_error:
@@ -292,7 +296,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                         print_failure(summary)
                         for line in message:
                             print_warning(f"\t{line}")
-                else:
+                elif validator.verbosity == 0:
                     if internal_error:
                         print_notify("!", end="", flush=True)
                     elif optional:

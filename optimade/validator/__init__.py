@@ -46,6 +46,12 @@ def validate():
         help="""Increase the verbosity of the output.""",
     )
     parser.add_argument(
+        "-j",
+        "--json",
+        action="store_true",
+        help="""Only a JSON summary of the validator results will be printed to stdout.""",
+    )
+    parser.add_argument(
         "-t",
         "--as-type",
         type=str,
@@ -97,6 +103,7 @@ def validate():
     validator = ImplementationValidator(
         base_url=args["base_url"],
         verbosity=args["verbosity"],
+        respond_json=args["json"],
         as_type=args["as_type"],
         index=args["index"],
         run_optional_tests=not args["skip_optional"],
