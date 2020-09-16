@@ -241,9 +241,9 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
             if not isinstance(result, Exception):
                 if not multistage:
                     if not optional:
-                        validator.results["success_count"] += 1
+                        validator.results.success_count += 1
                     else:
-                        validator.results["optional_success_count"] += 1
+                        validator.results.optional_success_count += 1
                     message = f"✔: {request} - {msg}"
                     if validator.verbosity > 0:
                         if optional:
@@ -267,19 +267,19 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
 
                 if isinstance(result, InternalError):
                     internal_error = True
-                    validator.results["internal_failure_count"] += 1
+                    validator.results.internal_failure_count += 1
                     summary = f"!: {request} - {test_fn.__name__} - failed with internal error"
-                    validator.results["internal_failure_messages"].append(
+                    validator.results.internal_failure_messages.append(
                         (summary, message)
                     )
                 else:
                     summary = f"✖: {request} - {test_fn.__name__} - failed with error"
                     if not optional:
-                        validator.results["failure_count"] += 1
-                        validator.results["failure_messages"].append((summary, message))
+                        validator.results.failure_count += 1
+                        validator.results.failure_messages.append((summary, message))
                     else:
-                        validator.results["optional_failure_count"] += 1
-                        validator.results["optional_failure_messages"].append(
+                        validator.results.optional_failure_count += 1
+                        validator.results.optional_failure_messages.append(
                             (summary, message)
                         )
 

@@ -1,5 +1,6 @@
 import os
 import json
+import dataclasses
 from traceback import print_exc
 
 import pytest
@@ -15,10 +16,8 @@ def test_with_validator(both_fake_remote_clients):
         index=both_fake_remote_clients.app == app,
         verbosity=5,
     )
-    try:
-        validator.validate_implementation()
-    except Exception:
-        print_exc()
+
+    validator.validate_implementation()
     assert validator.valid
 
 
@@ -31,16 +30,17 @@ def test_with_validator_json_response(both_fake_remote_clients, capsys):
         index=both_fake_remote_clients.app == app,
         respond_json=True,
     )
-    try:
-        validator.validate_implementation()
-    except Exception:
-        print_exc()
+    validator.validate_implementation()
 
     captured = capsys.readouterr()
     json_response = json.loads(captured.out)
     assert json_response["failure_count"] == 0
     assert json_response["internal_failure_count"] == 0
     assert json_response["optional_failure_count"] == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.internal_failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert dataclasses.asdict(validator.results) == json_response
 
     assert validator.valid
 
