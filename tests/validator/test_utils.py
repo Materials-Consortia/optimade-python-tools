@@ -26,11 +26,11 @@ def test_normal_test_case():
     validator = ImplementationValidator(base_url="http://example.org", verbosity=0)
 
     output = dummy_test_case(validator, ([1, 2, 3], "message"), request="test_request")
-    assert validator.success_count == 1
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 1
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0
     assert output[0] == [1, 2, 3]
     assert output[1] == "message"
 
@@ -42,11 +42,11 @@ def test_optional_test_case():
     output = dummy_test_case(
         validator, ("string response", "message"), request="test_request", optional=True
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 1
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 1
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0
     assert output[0] == "string response"
     assert output[1] == "message"
 
@@ -57,11 +57,11 @@ def test_ignored_test_case():
 
     # Test returns None, so should not increment success/failure
     output = dummy_test_case(validator, (None, "message"), request="test_request")
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0
     assert output[0] is None
     assert output[1] == "message"
 
@@ -77,11 +77,11 @@ def test_skip_optional_test_case():
     output = dummy_test_case(
         validator, ({"test": "dict"}, "message"), request="test_request", optional=True
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0
     assert output[0] is None
     assert output[1] == "skipping optional"
 
@@ -89,11 +89,11 @@ def test_skip_optional_test_case():
     output = dummy_test_case(
         validator, ({"test": "dict"}, "message"), request="test_request", optional=False
     )
-    assert validator.success_count == 1
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 1
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0
     assert output[0] == {"test": "dict"}
     assert output[1] == "message"
 
@@ -110,20 +110,20 @@ def test_expected_failure_test_case():
         request="test_request",
         raise_exception=ResponseError("Dummy error"),
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 1
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 1
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0
 
     assert output[0] is None
     assert output[1] == "ResponseError: Dummy error"
 
     assert (
-        validator.failure_messages[-1][0]
+        validator.results.failure_messages[-1][0]
         == "✖: http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.failure_messages[-1][1] == ["ResponseError: Dummy error"]
+    assert validator.results.failure_messages[-1][1] == ["ResponseError: Dummy error"]
 
     output = dummy_test_case(
         validator,
@@ -132,20 +132,22 @@ def test_expected_failure_test_case():
         raise_exception=ResponseError("Dummy error"),
         optional=True,
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 1
-    assert validator.optional_failure_count == 1
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 1
+    assert validator.results.optional_failure_count == 1
+    assert validator.results.internal_failure_count == 0
 
     assert output[0] is None
     assert output[1] == "ResponseError: Dummy error"
 
     assert (
-        validator.optional_failure_messages[-1][0]
+        validator.results.optional_failure_messages[-1][0]
         == "✖: http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.optional_failure_messages[-1][1] == ["ResponseError: Dummy error"]
+    assert validator.results.optional_failure_messages[-1][1] == [
+        "ResponseError: Dummy error"
+    ]
 
     output = dummy_test_case(
         validator,
@@ -154,11 +156,11 @@ def test_expected_failure_test_case():
         raise_exception=json.JSONDecodeError("Dummy JSON error", "{}", 0),
         optional=True,
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 1
-    assert validator.optional_failure_count == 2
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 1
+    assert validator.results.optional_failure_count == 2
+    assert validator.results.internal_failure_count == 0
 
     assert output[0] is None
     assert (
@@ -166,10 +168,10 @@ def test_expected_failure_test_case():
         == "Critical: unable to parse server response as JSON. JSONDecodeError: Dummy JSON error: line 1 column 1 (char 0)"
     )
     assert (
-        validator.optional_failure_messages[-1][0]
+        validator.results.optional_failure_messages[-1][0]
         == "✖: http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.optional_failure_messages[-1][1] == [
+    assert validator.results.optional_failure_messages[-1][1] == [
         "Critical: unable to parse server response as JSON. JSONDecodeError: Dummy JSON error: line 1 column 1 (char 0)"
     ]
 
@@ -185,19 +187,19 @@ def test_unexpected_failure_test_case():
         request="test_request",
         raise_exception=FileNotFoundError("Unexpected error"),
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 1
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 1
 
     assert output[0] is None
     assert output[1] == "FileNotFoundError: Unexpected error"
     assert (
-        validator.internal_failure_messages[-1][0]
+        validator.results.internal_failure_messages[-1][0]
         == "!: http://example.org/test_request - dummy_test_case - failed with internal error"
     )
-    assert validator.internal_failure_messages[-1][1] == [
+    assert validator.results.internal_failure_messages[-1][1] == [
         "FileNotFoundError: Unexpected error"
     ]
 
@@ -208,19 +210,19 @@ def test_unexpected_failure_test_case():
         raise_exception=FileNotFoundError("Unexpected error"),
         optional=True,
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 2
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 2
 
     assert output[0] is None
     assert output[1] == "FileNotFoundError: Unexpected error"
     assert (
-        validator.internal_failure_messages[-1][0]
+        validator.results.internal_failure_messages[-1][0]
         == "!: http://example.org/test_request - dummy_test_case - failed with internal error"
     )
-    assert validator.internal_failure_messages[-1][1] == [
+    assert validator.results.internal_failure_messages[-1][1] == [
         "FileNotFoundError: Unexpected error"
     ]
 
@@ -236,11 +238,11 @@ def test_multistage_test_case():
         request="test_request",
         multistage=True,
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0
 
     assert output[0] == {"test": "dict"}
     assert output[1] == "message"
@@ -252,19 +254,21 @@ def test_multistage_test_case():
         raise_exception=ResponseError("Stage of test failed"),
         multistage=True,
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 1
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 1
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0
 
     assert output[0] is None
     assert output[1] == "ResponseError: Stage of test failed"
     assert (
-        validator.failure_messages[-1][0]
+        validator.results.failure_messages[-1][0]
         == "✖: http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.failure_messages[-1][1] == ["ResponseError: Stage of test failed"]
+    assert validator.results.failure_messages[-1][1] == [
+        "ResponseError: Stage of test failed"
+    ]
 
 
 def test_fail_fast_test_case():
@@ -281,18 +285,18 @@ def test_fail_fast_test_case():
         raise_exception=ResponseError("Optional test failed"),
         optional=True,
     )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 1
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 1
+    assert validator.results.internal_failure_count == 0
 
     assert output[0] is None
     assert output[1] == "ResponseError: Optional test failed"
-    assert validator.optional_failure_messages[-1][0] == (
+    assert validator.results.optional_failure_messages[-1][0] == (
         "✖: http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.optional_failure_messages[-1][1] == [
+    assert validator.results.optional_failure_messages[-1][1] == [
         "ResponseError: Optional test failed"
     ]
 
@@ -305,15 +309,15 @@ def test_fail_fast_test_case():
             raise_exception=ResponseError("Non-optional test failed"),
             optional=False,
         )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 1
-    assert validator.optional_failure_count == 1
-    assert validator.internal_failure_count == 0
-    assert validator.failure_messages[-1][0] == (
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 1
+    assert validator.results.optional_failure_count == 1
+    assert validator.results.internal_failure_count == 0
+    assert validator.results.failure_messages[-1][0] == (
         "✖: http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.failure_messages[-1][1] == [
+    assert validator.results.failure_messages[-1][1] == [
         "ResponseError: Non-optional test failed"
     ]
 
@@ -325,15 +329,15 @@ def test_fail_fast_test_case():
             request="test_request",
             raise_exception=FileNotFoundError("Internal error"),
         )
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 1
-    assert validator.optional_failure_count == 1
-    assert validator.internal_failure_count == 1
-    assert validator.internal_failure_messages[-1][0] == (
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 1
+    assert validator.results.optional_failure_count == 1
+    assert validator.results.internal_failure_count == 1
+    assert validator.results.internal_failure_messages[-1][0] == (
         "!: http://example.org/test_request - dummy_test_case - failed with internal error"
     )
-    assert validator.internal_failure_messages[-1][1] == [
+    assert validator.results.internal_failure_messages[-1][1] == [
         "FileNotFoundError: Internal error"
     ]
 
@@ -353,8 +357,8 @@ def test_that_system_exit_is_fatal_in_test_case():
             optional=True,
         )
 
-    assert validator.success_count == 0
-    assert validator.optional_success_count == 0
-    assert validator.failure_count == 0
-    assert validator.optional_failure_count == 0
-    assert validator.internal_failure_count == 0
+    assert validator.results.success_count == 0
+    assert validator.results.optional_success_count == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert validator.results.internal_failure_count == 0

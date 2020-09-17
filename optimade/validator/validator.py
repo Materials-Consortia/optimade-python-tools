@@ -11,6 +11,7 @@ import sys
 import logging
 import random
 import urllib.parse
+import dataclasses
 from typing import Union, Tuple, Any, List, Dict, Optional
 
 try:
@@ -36,6 +37,24 @@ from optimade.validator.utils import (
 from optimade.validator.config import VALIDATOR_CONFIG as CONF
 
 VERSIONS_REGEXP = r"/v[0-9]+(\.[0-9]+){,2}"
+
+__all__ = ("ImplementationValidator",)
+
+
+@dataclasses.dataclass
+class ValidatorResults:
+    success_count: int = 0
+    failure_count: int = 0
+    internal_failure_count: int = 0
+    optional_success_count: int = 0
+    optional_failure_count: int = 0
+    failure_messages: List[Tuple[str, str]] = dataclasses.field(default_factory=list)
+    internal_failure_messages: List[Tuple[str, str]] = dataclasses.field(
+        default_factory=list
+    )
+    optional_failure_messages: List[Tuple[str, str]] = dataclasses.field(
+        default_factory=list
+    )
 
 
 class ImplementationValidator:
@@ -63,6 +82,7 @@ class ImplementationValidator:
         client: Any = None,
         base_url: str = None,
         verbosity: int = 0,
+        respond_json: bool = False,
         page_limit: int = 5,
         max_retries: int = 5,
         run_optional_tests: bool = True,
@@ -82,6 +102,8 @@ class ImplementationValidator:
                 base of the OPTIMADE implementation.
             verbosity: The verbosity of the output and logging as an integer
                 (`0`: critical, `1`: warning, `2`: info, `3`: debug).
+            respond_json: If `True`, print only a JSON representation of the
+                results of validation to stdout.
             page_limit: The default page limit to apply to filters.
             max_retries: Argument is passed to the client for how many
                 attempts to make for a request before failing.
@@ -101,6 +123,7 @@ class ImplementationValidator:
         self.index = index
         self.run_optional_tests = run_optional_tests
         self.fail_fast = fail_fast
+        self.respond_json = respond_json
 
         if as_type is None:
             self.as_type_cls = None
@@ -147,14 +170,7 @@ class ImplementationValidator:
         self._test_id_by_type = {}
         self._entry_info_by_type = {}
 
-        self.success_count = 0
-        self.failure_count = 0
-        self.internal_failure_count = 0
-        self.optional_success_count = 0
-        self.optional_failure_count = 0
-        self.failure_messages = []
-        self.internal_failure_messages = []
-        self.optional_failure_messages = []
+        self.results = ValidatorResults()
 
     def _setup_log(self):
         """ Define stdout log based on given verbosity. """
@@ -164,7 +180,12 @@ class ImplementationValidator:
         stdout_handler.setFormatter(
             logging.Formatter("%(asctime)s - %(name)s | %(levelname)8s: %(message)s")
         )
-        self._log.addHandler(stdout_handler)
+
+        if not self.respond_json:
+            self._log.addHandler(stdout_handler)
+        else:
+            self.verbosity = -1
+
         if self.verbosity == 0:
             self._log.setLevel(logging.CRITICAL)
         elif self.verbosity == 1:
@@ -176,23 +197,27 @@ class ImplementationValidator:
 
     def print_summary(self):
         """ Print a summary of the results of validation. """
-        if self.failure_messages:
+        if self.respond_json:
+            print(json.dumps(dataclasses.asdict(self.results), indent=2))
+            return
+
+        if self.results.failure_messages:
             print("\n\nFAILURES")
             print("========\n")
-            for message in self.failure_messages:
+            for message in self.results.failure_messages:
                 print_failure(message[0])
                 for line in message[1]:
                     print_warning("\t" + line)
 
-        if self.optional_failure_messages:
+        if self.results.optional_failure_messages:
             print("\n\nOPTIONAL TEST FAILURES")
             print("======================\n")
-            for message in self.optional_failure_messages:
+            for message in self.results.optional_failure_messages:
                 print_notify(message[0])
                 for line in message[1]:
                     print_warning("\t" + line)
 
-        if self.internal_failure_messages:
+        if self.results.internal_failure_messages:
             print("\n\nINTERNAL FAILURES")
             print("=================\n")
             print(
@@ -201,13 +226,13 @@ class ImplementationValidator:
                 "https://github.com/Materials-Consortia/optimade-python-tools/issues/new.\n"
             )
 
-            for message in self.internal_failure_messages:
+            for message in self.results.internal_failure_messages:
                 print_warning(message[0])
                 for line in message[1]:
                     print_warning("\t" + line)
 
         if self.valid or (not self.valid and not self.fail_fast):
-            final_message = f"\n\nPassed {self.success_count} out of {self.success_count + self.failure_count + self.internal_failure_count} tests."
+            final_message = f"\n\nPassed {self.results.success_count} out of {self.results.success_count + self.results.failure_count + self.results.internal_failure_count} tests."
             if not self.valid:
                 print_failure(final_message)
             else:
@@ -215,8 +240,8 @@ class ImplementationValidator:
 
             if self.run_optional_tests and not self.fail_fast:
                 print(
-                    f"Additionally passed {self.optional_success_count} out of "
-                    f"{self.optional_success_count + self.optional_failure_count} optional tests."
+                    f"Additionally passed {self.results.optional_success_count} out of "
+                    f"{self.results.optional_success_count + self.results.optional_failure_count} optional tests."
                 )
 
     def validate_implementation(self):
@@ -238,11 +263,12 @@ class ImplementationValidator:
                 self.as_type_cls,
             )
             self._test_as_type()
-            self.valid = not bool(self.failure_count)
+            self.valid = not bool(self.results.failure_count)
             return
 
         # Test entire implementation
-        print(f"Testing entire implementation at {self.base_url}...")
+        if self.verbosity >= 0:
+            print(f"Testing entire implementation at {self.base_url}")
         info_endp = CONF.info_endpoint
         self._log.debug("Testing base info endpoint of %s", info_endp)
 
@@ -297,7 +323,9 @@ class ImplementationValidator:
         self._log.debug("Testing %s endpoint", CONF.links_endpoint)
         self._test_info_or_links_endpoint(CONF.links_endpoint)
 
-        self.valid = not (self.failure_count or self.internal_failure_count)
+        self.valid = not (
+            self.results.failure_count or self.results.internal_failure_count
+        )
 
         self.print_summary()
 
@@ -390,7 +418,7 @@ class ImplementationValidator:
                 f"Some 'MUST' properties were missing from info/{endp}: {missing}"
             )
 
-        return True, "Found all required properties in entry info for endpoint {endp}"
+        return True, f"Found all required properties in entry info for endpoint {endp}"
 
     @test_case
     def _get_archetypal_entry(self, endp: str) -> Tuple[Dict[str, Any], str]:
