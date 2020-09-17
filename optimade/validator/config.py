@@ -7,10 +7,10 @@ the hardcoded values.
 
 """
 
-from typing import Dict, Any, Set, NamedTuple
+from typing import Dict, Any, Set
 from pydantic import BaseSettings, Field
 
-from optimade.models import InfoResponse, IndexInfoResponse, DataType, SupportLevel
+from optimade.models import InfoResponse, IndexInfoResponse, DataType
 from optimade.validator.utils import (
     ValidatorLinksResponse,
     ValidatorReferenceResponseOne,
@@ -18,15 +18,19 @@ from optimade.validator.utils import (
     ValidatorStructureResponseOne,
     ValidatorStructureResponseMany,
 )
+from optimade.server.routers.utils import (
+    ENTRY_INFO_SCHEMAS,
+    retrieve_queryable_properties,
+)
 
 __all__ = ("ValidatorConfig", "VALIDATOR_CONFIG")
 
-
-class FieldInfo(NamedTuple):
-    support: SupportLevel
-    queryable: SupportLevel
-    type: DataType
-
+_ENTRY_SCHEMAS = {
+    endp: retrieve_queryable_properties(
+        ENTRY_INFO_SCHEMAS[endp](), ("id", "type", "attributes")
+    )
+    for endp in ENTRY_INFO_SCHEMAS
+}
 
 _NON_ENTRY_ENDPOINTS = ("info", "links", "versions")
 
@@ -45,249 +49,6 @@ _RESPONSE_CLASSES_INDEX = {
     "links": ValidatorLinksResponse,
 }
 
-# This dictionary will eventually be set by getting the fields from response_classes directly
-_FIELD_INFO = {
-    "structures": {
-        "id": FieldInfo(
-            support=SupportLevel.MUST, queryable=SupportLevel.MUST, type=DataType.STRING
-        ),
-        "type": FieldInfo(
-            support=SupportLevel.MUST, queryable=SupportLevel.MUST, type=DataType.STRING
-        ),
-        "structure_features": FieldInfo(
-            support=SupportLevel.MUST, queryable=SupportLevel.MUST, type=DataType.LIST
-        ),
-        "last_modified": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.MUST,
-            type=DataType.TIMESTAMP,
-        ),
-        "elements": FieldInfo(
-            support=SupportLevel.SHOULD, queryable=SupportLevel.MUST, type=DataType.LIST
-        ),
-        "nelements": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.MUST,
-            type=DataType.INTEGER,
-        ),
-        "elements_ratios": FieldInfo(
-            support=SupportLevel.SHOULD, queryable=SupportLevel.MUST, type=DataType.LIST
-        ),
-        "chemical_formula_descriptive": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.MUST,
-            type=DataType.STRING,
-        ),
-        "chemical_formula_reduced": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.MUST,
-            type=DataType.STRING,
-        ),
-        "chemical_formula_anonymous": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.MUST,
-            type=DataType.STRING,
-        ),
-        "dimension_types": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-        "nperiodic_dimensions": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.MUST,
-            type=DataType.INTEGER,
-        ),
-        "lattice_vectors": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-        "cartesian_site_positions": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-        "nsites": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-        "species_at_sites": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-        "species": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-        "immutable_id": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.MUST,
-            type=DataType.STRING,
-        ),
-        "chemical_formula_hill": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "assemblies": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-    },
-    "references": {
-        "id": FieldInfo(
-            support=SupportLevel.MUST, queryable=SupportLevel.MUST, type=DataType.STRING
-        ),
-        "type": FieldInfo(
-            support=SupportLevel.MUST, queryable=SupportLevel.MUST, type=DataType.STRING
-        ),
-        "last_modified": FieldInfo(
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.MUST,
-            type=DataType.TIMESTAMP,
-        ),
-        "immutable_id": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "address": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "annote": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "booktitle": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "chapter": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "crossref": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "edition": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "howpublished": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "institution": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "journal": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "key": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "month": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "note": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "number": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "organization": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "pages": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "publisher": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "school": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "series": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "title": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "volume": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "year": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "bib_type": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "authors": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-        "editors": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.LIST,
-        ),
-        "doi": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-        "url": FieldInfo(
-            support=SupportLevel.OPTIONAL,
-            queryable=SupportLevel.OPTIONAL,
-            type=DataType.STRING,
-        ),
-    },
-}
 
 _UNIQUE_PROPERTIES = ("id", "immutable_id")
 
@@ -354,12 +115,8 @@ class ValidatorConfig(BaseSettings):
         description="Dictionary containing the mapping between endpoints and response classes for the index meta-database",
     )
 
-    field_info: Dict[str, Dict[str, FieldInfo]] = Field(
-        _FIELD_INFO,
-        description=(
-            "Nested dictionary of endpoints -> field names -> FieldInfo containing support level, queryability and type. "
-            "This field will be deprecated once the machinery to read the support levels of fields from their models directly is implemented."
-        ),
+    entry_schemas: Dict[str, Any] = Field(
+        _ENTRY_SCHEMAS, description="The entry schemas"
     )
 
     unique_properties: Set[str] = Field(

@@ -359,9 +359,10 @@ class ImplementationValidator:
             prop_type = _impl_properties[prop]["type"]
             sortable = _impl_properties[prop]["sortable"]
             optional = True
-            if prop in CONF.field_info[endp]:
+            if prop in CONF.entry_schemas[endp]:
                 optional = (
-                    CONF.field_info[endp].get(prop).queryable == SupportLevel.OPTIONAL
+                    CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+                    == SupportLevel.OPTIONAL
                 )
 
             if optional and not self.run_optional_tests:
@@ -416,8 +417,9 @@ class ImplementationValidator:
         """
         must_props = set(
             field
-            for field in CONF.field_info[endp]
-            if CONF.field_info[endp][field].support == SupportLevel.MUST
+            for field in CONF.entry_schemas[endp]
+            if CONF.entry_schemas[endp].get(field, {}).get("support")
+            == SupportLevel.MUST
         )
         must_props_supported = set(prop for prop in properties if prop in must_props)
         missing = must_props - must_props_supported
@@ -490,8 +492,8 @@ class ImplementationValidator:
             )
 
         if prop_type is None:
-            if prop in CONF.field_info[endp]:
-                prop_type = CONF.field_info[endp][prop].type
+            if prop in CONF.entry_schemas[endp]:
+                prop_type = CONF.entry_schemas[endp].get(prop, {}).get("type")
 
         if prop_type is None:
             raise ResponseError(
@@ -499,7 +501,7 @@ class ImplementationValidator:
             )
 
         # this is the case of a provider field
-        if prop not in CONF.field_info[endp]:
+        if prop not in CONF.entry_schemas[endp]:
             if self.provider_prefix is None:
                 raise ResponseError(
                     f"Found unknown field {prop} and no provider prefix was provided in `/info`"
@@ -511,9 +513,10 @@ class ImplementationValidator:
             return True, f"Found provider field {prop}, will not test queries."
 
         query_optional = False
-        if prop in CONF.field_info[endp]:
+        if prop in CONF.entry_schemas[endp]:
             query_optional = (
-                CONF.field_info[endp][prop].queryable == SupportLevel.OPTIONAL
+                CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+                == SupportLevel.OPTIONAL
             )
 
         return self._construct_single_property_filters(
@@ -593,8 +596,8 @@ class ImplementationValidator:
             test_value = chosen_entry["attributes"].get(prop, "missing")
 
         if test_value in ("missing", None):
-            support = CONF.field_info[endp][prop].support
-            queryable = CONF.field_info[endp][prop].queryable
+            support = CONF.entry_schemas[endp].get(prop, {}).get("support")
+            queryable = CONF.entry_schemas[endp].get(prop, {}).get("queryable")
             msg = (
                 f"Chosen entry had no value for {prop!r} with support level {support} and queryability {queryable}, "
                 "so validator is unable to construct test queries. This field should potentially be removed from the info response."
