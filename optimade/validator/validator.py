@@ -221,7 +221,7 @@ class ImplementationValidator:
             print("\n\nINTERNAL FAILURES")
             print("=================\n")
             print(
-                "There were internal valiator failures associated with this run.\n"
+                "There were internal validator failures associated with this run.\n"
                 "If this problem persists, please report it at:\n"
                 "https://github.com/Materials-Consortia/optimade-python-tools/issues/new.\n"
             )
@@ -478,7 +478,7 @@ class ImplementationValidator:
         # Explicitly handle top level keys that do not have types in info
         if prop == "type":
             if chosen_entry["type"] == endp:
-                return True, f"Successfully validatated {prop}"
+                return True, f"Successfully validated {prop}"
             raise ResponseError(
                 f"Chosen entry of endpoint '/{endp}' had unexpected type '{chosen_entry['type']}'."
             )
