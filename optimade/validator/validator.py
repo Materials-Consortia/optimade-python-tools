@@ -358,12 +358,11 @@ class ImplementationValidator:
             # check support level of property
             prop_type = _impl_properties[prop]["type"]
             sortable = _impl_properties[prop]["sortable"]
-            optional = True
-            if prop in CONF.entry_schemas[endp]:
-                optional = (
-                    CONF.entry_schemas[endp].get(prop, {}).get("queryable")
-                    == SupportLevel.OPTIONAL
-                )
+            optional = (
+                prop in CONF.entry_schemas
+                and CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+                == SupportLevel.OPTIONAL
+            )
 
             if optional and not self.run_optional_tests:
                 continue
@@ -497,20 +496,23 @@ class ImplementationValidator:
 
         if prop_type is None:
             raise ResponseError(
-                f"Cannot validate queries on {prop} as field type was not reported in /info/{endp}"
+                f"Cannot validate queries on {prop} as field type was not reported in `/info/{endp}`"
             )
 
         # this is the case of a provider field
         if prop not in CONF.entry_schemas[endp]:
             if self.provider_prefix is None:
                 raise ResponseError(
-                    f"Found unknown field {prop} and no provider prefix was provided in `/info`"
+                    f"Found unknown field '{prop}' in `/info/{endp}` and no provider prefix was provided in `/info`"
                 )
             elif not prop.startswith(f"_{self.provider_prefix}"):
                 raise ResponseError(
-                    f'Found unknown field {prop} that did not start with provider prefix "_{self.provider_prefix}"'
+                    f"Found unknown field '{prop}' that did not start with provider prefix '_{self.provider_prefix}'"
                 )
-            return True, f"Found provider field {prop}, will not test queries."
+            return (
+                True,
+                f"Found provider field '{prop}', will not test queries as they are strictly optional.",
+            )
 
         query_optional = False
         if prop in CONF.entry_schemas[endp]:
