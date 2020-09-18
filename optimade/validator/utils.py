@@ -209,17 +209,17 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                 msg = f"{exc.__class__.__name__}: {exc}"
                 raise InternalError(msg)
 
-        # Catch SystemExit here so that we can pass it through to the finally block,
-        # but prepare to immediately throw it
+        # Catch SystemExit and KeyboardInterrupt explicitly so that we can pass
+        # them to the finally block, where they are immediately raised
         except (Exception, SystemExit, KeyboardInterrupt) as exc:
             result = exc
             traceback = tb.format_exc()
 
         finally:
             # This catches the case of the Client throwing a SystemExit if the server
-            # did not respond, and the case of the validator "fail-fast"'ing and throwing
-            # a SystemExit below
-            if isinstance(result, SystemExit) or isinstance(result, KeyboardInterrupt):
+            # did not respond, the case of the validator "fail-fast"'ing and throwing
+            # a SystemExit below, and the case of the user interrupting the process manually
+            if isinstance(result, (SystemExit, KeyboardInterrupt)):
                 raise result
 
             display_request = None
