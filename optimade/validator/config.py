@@ -2,7 +2,7 @@
 from the OPTIMADE specification for use by the validator.
 
 The `VALIDATOR_CONFIG` object can be imported and modified
-before calling the valiator inside a Python script to customise
+before calling the validator inside a Python script to customise
 the hardcoded values.
 
 """
