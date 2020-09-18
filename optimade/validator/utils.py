@@ -211,7 +211,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
 
         # Catch SystemExit here so that we can pass it through to the finally block,
         # but prepare to immediately throw it
-        except (Exception, SystemExit) as exc:
+        except (Exception, SystemExit, KeyboardInterrupt) as exc:
             result = exc
             traceback = tb.format_exc()
 
@@ -219,8 +219,8 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
             # This catches the case of the Client throwing a SystemExit if the server
             # did not respond, and the case of the validator "fail-fast"'ing and throwing
             # a SystemExit below
-            if isinstance(result, SystemExit):
-                raise SystemExit(result)
+            if isinstance(result, SystemExit) or isinstance(result, KeyboardInterrupt):
+                raise result
 
             display_request = None
             try:
