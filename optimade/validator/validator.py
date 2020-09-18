@@ -221,7 +221,7 @@ class ImplementationValidator:
             print("\n\nINTERNAL FAILURES")
             print("=================\n")
             print(
-                "There were internal valiator failures associated with this run.\n"
+                "There were internal validator failures associated with this run.\n"
                 "If this problem persists, please report it at:\n"
                 "https://github.com/Materials-Consortia/optimade-python-tools/issues/new.\n"
             )
