@@ -478,7 +478,7 @@ class ImplementationValidator:
         # Explicitly handle top level keys that do not have types in info
         if prop == "type":
             if chosen_entry["type"] == endp:
-                return True, f"Successfully validatated {prop}"
+                return True, f"Successfully validated {prop}"
             raise ResponseError(
                 f"Chosen entry of endpoint '/{endp}' had unexpected type '{chosen_entry['type']}'."
             )
