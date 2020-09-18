@@ -390,8 +390,12 @@ class TestMongoTransformer:
             )
             PROVIDER_FIELDS = ("chemsys",)
 
-        transformer = MongoTransformer(mapper=MyMapper())
+        transformer = MongoTransformer(
+            mapper=MyMapper(), all_fields=("id", "type", "lattice_vectors")
+        )
         parser = LarkParser(version=self.version, variant=self.variant)
+
+        assert transformer.transform(parser.parse("_asdfa_asdf LENGTH <= 3")) == {}
 
         assert transformer.transform(
             parser.parse("cartesian_site_positions LENGTH <= 3")
@@ -439,7 +443,9 @@ class TestMongoTransformer:
             )
 
         mapper = MyStructureMapper()
-        t = MongoTransformer(mapper=mapper)
+        t = MongoTransformer(
+            mapper=mapper, all_fields=["unknown_field", "_exmpl_nested_field"]
+        )
 
         assert mapper.alias_for("elements") == "my_elements"
 

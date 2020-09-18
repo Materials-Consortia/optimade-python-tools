@@ -69,6 +69,8 @@ class MongoCollection(EntryCollection):
             version=(0, 10, 1), variant="default"
         )  # The MongoTransformer only supports v0.10.1 as the latest grammar
 
+        self.transformer.all_fields = self.all_fields
+
         # check aliases do not clash with mongo operators
         self._check_aliases(self.resource_mapper.all_aliases())
         self._check_aliases(self.resource_mapper.all_length_aliases())

@@ -1,6 +1,7 @@
 import copy
 from lark import Transformer, v_args, Token
 from optimade.server.mappers import BaseResourceMapper
+from optimade.server.exceptions import BadRequest
 
 
 class MongoTransformer(Transformer):
@@ -23,17 +24,21 @@ class MongoTransformer(Transformer):
         "$eq": "$eq",
     }
 
-    def __init__(self, mapper: BaseResourceMapper = None):
+    def __init__(self, mapper: BaseResourceMapper = None, all_fields=None):
         """Initialise the object, optionally loading in a
         resource mapper for use when post-processing.
 
         """
         self.mapper = mapper
+        self.all_fields = all_fields
+        if self.all_fields is None:
+            self.all_fields = []
         super().__init__()
 
     def postprocess(self, query):
         """ Used to post-process the final parsed query. """
         if self.mapper:
+            query = self._check_unknown_fields(query)
             # important to apply length alias before normal aliases
             query = self._apply_length_aliases(query)
             query = self._apply_aliases(query)
@@ -281,6 +286,36 @@ class MongoTransformer(Transformer):
         return recursive_postprocessing(
             filter_, check_for_size, replace_with_length_alias
         )
+
+    def _check_unknown_fields(self, filter_: dict) -> dict:
+        """Check for any "unknown" fields in the query, e.g.
+        fields without a provider prefix that are not in the
+        specification.
+
+        """
+
+        def check_for_unknown(prop, expr):
+            print(prop, expr)
+            if "." in prop:
+                prop = prop.split(".")[0]
+            if prop.startswith("$"):
+                return False
+            return prop not in self.all_fields
+
+        def ignore_unknown(subdict, prop, expr):
+            print(subdict, prop, expr)
+            if prop.startswith("_") and prop.count("_") >= 2:
+                if isinstance(subdict, dict):
+                    # Drop any reference to unknown field
+                    subdict.pop(prop)
+            else:
+                raise BadRequest(
+                    detail=f"Filter requested on unknown field '{prop}': did you mean one of {self.all_fields}?"
+                )
+
+            return subdict
+
+        return recursive_postprocessing(filter_, check_for_unknown, ignore_unknown)
 
     def _apply_aliases(self, filter_: dict) -> dict:
         """Check whether any fields in the filter have aliases so
