@@ -18,7 +18,7 @@ from optimade.validator.utils import (
     ValidatorStructureResponseOne,
     ValidatorStructureResponseMany,
 )
-from optimade.server.routers.utils import (
+from optimade.server.schemas import (
     ENTRY_INFO_SCHEMAS,
     retrieve_queryable_properties,
 )
