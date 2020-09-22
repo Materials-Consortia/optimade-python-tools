@@ -11,23 +11,16 @@ from optimade.models import (
     ErrorResponse,
     InfoResponse,
     EntryInfoResponse,
-    ReferenceResource,
-    StructureResource,
 )
+from optimade.server.schemas import ENTRY_INFO_SCHEMAS, retrieve_queryable_properties
 
 from optimade.server.routers.utils import (
     meta_values,
-    retrieve_queryable_properties,
     get_base_url,
 )
 
 
 router = APIRouter(redirect_slashes=True)
-
-ENTRY_INFO_SCHEMAS = {
-    "structures": StructureResource.schema,
-    "references": ReferenceResource.schema,
-}
 
 
 @router.get(
