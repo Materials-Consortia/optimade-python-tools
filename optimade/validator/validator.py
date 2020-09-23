@@ -32,6 +32,7 @@ from optimade.validator.utils import (
     ResponseError,
     ValidatorEntryResponseOne,
     ValidatorEntryResponseMany,
+    ValidatorResults,
 )
 
 from optimade.validator.config import VALIDATOR_CONFIG as CONF
@@ -39,22 +40,6 @@ from optimade.validator.config import VALIDATOR_CONFIG as CONF
 VERSIONS_REGEXP = r"/v[0-9]+(\.[0-9]+){,2}"
 
 __all__ = ("ImplementationValidator",)
-
-
-@dataclasses.dataclass
-class ValidatorResults:
-    success_count: int = 0
-    failure_count: int = 0
-    internal_failure_count: int = 0
-    optional_success_count: int = 0
-    optional_failure_count: int = 0
-    failure_messages: List[Tuple[str, str]] = dataclasses.field(default_factory=list)
-    internal_failure_messages: List[Tuple[str, str]] = dataclasses.field(
-        default_factory=list
-    )
-    optional_failure_messages: List[Tuple[str, str]] = dataclasses.field(
-        default_factory=list
-    )
 
 
 class ImplementationValidator:
@@ -170,7 +155,7 @@ class ImplementationValidator:
         self._test_id_by_type = {}
         self._entry_info_by_type = {}
 
-        self.results = ValidatorResults()
+        self.results = ValidatorResults(verbosity=self.verbosity)
 
     def _setup_log(self):
         """ Define stdout log based on given verbosity. """
@@ -192,7 +177,7 @@ class ImplementationValidator:
             self._log.setLevel(logging.WARNING)
         elif self.verbosity == 2:
             self._log.setLevel(logging.INFO)
-        else:
+        elif self.verbosity > 0:
             self._log.setLevel(logging.DEBUG)
 
     def print_summary(self):
@@ -206,7 +191,7 @@ class ImplementationValidator:
             print("========\n")
             for message in self.results.failure_messages:
                 print_failure(message[0])
-                for line in message[1]:
+                for line in message[1].split("\n"):
                     print_warning("\t" + line)
 
         if self.results.optional_failure_messages:
@@ -214,7 +199,7 @@ class ImplementationValidator:
             print("======================\n")
             for message in self.results.optional_failure_messages:
                 print_notify(message[0])
-                for line in message[1]:
+                for line in message[1].split("\n"):
                     print_warning("\t" + line)
 
         if self.results.internal_failure_messages:
@@ -228,7 +213,7 @@ class ImplementationValidator:
 
             for message in self.results.internal_failure_messages:
                 print_warning(message[0])
-                for line in message[1]:
+                for line in message[1].split("\n"):
                     print_warning("\t" + line)
 
         if self.valid or (not self.valid and not self.fail_fast):

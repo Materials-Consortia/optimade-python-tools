@@ -121,9 +121,9 @@ def test_expected_failure_test_case():
 
     assert (
         validator.results.failure_messages[-1][0]
-        == "✖: http://example.org/test_request - dummy_test_case - failed with error"
+        == "http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.results.failure_messages[-1][1] == ["ResponseError: Dummy error"]
+    assert validator.results.failure_messages[-1][1] == "ResponseError: Dummy error"
 
     output = dummy_test_case(
         validator,
@@ -143,11 +143,12 @@ def test_expected_failure_test_case():
 
     assert (
         validator.results.optional_failure_messages[-1][0]
-        == "✖: http://example.org/test_request - dummy_test_case - failed with error"
+        == "http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.results.optional_failure_messages[-1][1] == [
-        "ResponseError: Dummy error"
-    ]
+    assert (
+        validator.results.optional_failure_messages[-1][1]
+        == "ResponseError: Dummy error"
+    )
 
     output = dummy_test_case(
         validator,
@@ -169,11 +170,12 @@ def test_expected_failure_test_case():
     )
     assert (
         validator.results.optional_failure_messages[-1][0]
-        == "✖: http://example.org/test_request - dummy_test_case - failed with error"
+        == "http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.results.optional_failure_messages[-1][1] == [
-        "Critical: unable to parse server response as JSON. JSONDecodeError: Dummy JSON error: line 1 column 1 (char 0)"
-    ]
+    assert (
+        validator.results.optional_failure_messages[-1][1]
+        == "Critical: unable to parse server response as JSON. JSONDecodeError: Dummy JSON error: line 1 column 1 (char 0)"
+    )
 
 
 def test_unexpected_failure_test_case():
@@ -197,11 +199,12 @@ def test_unexpected_failure_test_case():
     assert output[1] == "FileNotFoundError: Unexpected error"
     assert (
         validator.results.internal_failure_messages[-1][0]
-        == "!: http://example.org/test_request - dummy_test_case - failed with internal error"
+        == "http://example.org/test_request - dummy_test_case - failed with internal error"
     )
-    assert validator.results.internal_failure_messages[-1][1] == [
-        "FileNotFoundError: Unexpected error"
-    ]
+    assert (
+        validator.results.internal_failure_messages[-1][1]
+        == "FileNotFoundError: Unexpected error"
+    )
 
     output = dummy_test_case(
         validator,
@@ -220,11 +223,12 @@ def test_unexpected_failure_test_case():
     assert output[1] == "FileNotFoundError: Unexpected error"
     assert (
         validator.results.internal_failure_messages[-1][0]
-        == "!: http://example.org/test_request - dummy_test_case - failed with internal error"
+        == "http://example.org/test_request - dummy_test_case - failed with internal error"
     )
-    assert validator.results.internal_failure_messages[-1][1] == [
-        "FileNotFoundError: Unexpected error"
-    ]
+    assert (
+        validator.results.internal_failure_messages[-1][1]
+        == "FileNotFoundError: Unexpected error"
+    )
 
 
 def test_multistage_test_case():
@@ -264,11 +268,12 @@ def test_multistage_test_case():
     assert output[1] == "ResponseError: Stage of test failed"
     assert (
         validator.results.failure_messages[-1][0]
-        == "✖: http://example.org/test_request - dummy_test_case - failed with error"
+        == "http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.results.failure_messages[-1][1] == [
-        "ResponseError: Stage of test failed"
-    ]
+    assert (
+        validator.results.failure_messages[-1][1]
+        == "ResponseError: Stage of test failed"
+    )
 
 
 def test_fail_fast_test_case():
@@ -294,11 +299,12 @@ def test_fail_fast_test_case():
     assert output[0] is None
     assert output[1] == "ResponseError: Optional test failed"
     assert validator.results.optional_failure_messages[-1][0] == (
-        "✖: http://example.org/test_request - dummy_test_case - failed with error"
+        "http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.results.optional_failure_messages[-1][1] == [
-        "ResponseError: Optional test failed"
-    ]
+    assert (
+        validator.results.optional_failure_messages[-1][1]
+        == "ResponseError: Optional test failed"
+    )
 
     # Check that the same non-optional failures do trigger fail fast
     with pytest.raises(SystemExit):
@@ -315,11 +321,12 @@ def test_fail_fast_test_case():
     assert validator.results.optional_failure_count == 1
     assert validator.results.internal_failure_count == 0
     assert validator.results.failure_messages[-1][0] == (
-        "✖: http://example.org/test_request - dummy_test_case - failed with error"
+        "http://example.org/test_request - dummy_test_case - failed with error"
     )
-    assert validator.results.failure_messages[-1][1] == [
-        "ResponseError: Non-optional test failed"
-    ]
+    assert (
+        validator.results.failure_messages[-1][1]
+        == "ResponseError: Non-optional test failed"
+    )
 
     # Check that an internal error also triggers fast
     with pytest.raises(SystemExit):
@@ -335,11 +342,12 @@ def test_fail_fast_test_case():
     assert validator.results.optional_failure_count == 1
     assert validator.results.internal_failure_count == 1
     assert validator.results.internal_failure_messages[-1][0] == (
-        "!: http://example.org/test_request - dummy_test_case - failed with internal error"
+        "http://example.org/test_request - dummy_test_case - failed with internal error"
     )
-    assert validator.results.internal_failure_messages[-1][1] == [
-        "FileNotFoundError: Internal error"
-    ]
+    assert (
+        validator.results.internal_failure_messages[-1][1]
+        == "FileNotFoundError: Internal error"
+    )
 
 
 def test_that_system_exit_is_fatal_in_test_case():

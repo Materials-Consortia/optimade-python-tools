@@ -15,6 +15,7 @@ used by the validator. The two main features being:
 import time
 import sys
 import urllib.parse
+import dataclasses
 import traceback as tb
 from typing import List, Optional, Dict, Any, Callable, Tuple
 
@@ -65,6 +66,98 @@ def print_failure(string, **kwargs):
 def print_success(string, **kwargs):
     """ Print but happy. """
     print(f"\033[92m\033[1m{string}\033[0m", **kwargs)
+
+
+@dataclasses.dataclass
+class ValidatorResults:
+    """ A dataclass to store and print the validation results. """
+
+    success_count: int = 0
+    failure_count: int = 0
+    internal_failure_count: int = 0
+    optional_success_count: int = 0
+    optional_failure_count: int = 0
+    failure_messages: List[Tuple[str, str]] = dataclasses.field(default_factory=list)
+    internal_failure_messages: List[Tuple[str, str]] = dataclasses.field(
+        default_factory=list
+    )
+    optional_failure_messages: List[Tuple[str, str]] = dataclasses.field(
+        default_factory=list
+    )
+    verbosity: int = 0
+
+    def add_success(self, summary: str, success_type: Optional[str] = None):
+        """Register a validation success to the results class.
+
+        Parameters:
+            summary: a summary of the success to be printed
+            success_type: either `None`, `"optional"` depending on the
+                type of the check.
+
+        """
+        success_types = (None, "optional")
+        if success_type not in success_types:
+            raise RuntimeError(
+                f"`success_type` must be one of {success_types}, not {success_type}."
+            )
+
+        if success_type is None:
+            self.success_count += 1
+        elif success_type == "optional":
+            self.optional_success_count += 1
+
+        message = f"✔: {summary}"
+        pretty_print = print if success_type == "optional" else print_success
+
+        if self.verbosity > 0:
+            pretty_print(message)
+        elif self.verbosity == 0:
+            pretty_print(".", end="", flush=True)
+
+    def add_failure(
+        self, summary: str, message: str, failure_type: Optional[str] = None
+    ):
+        """Register a validation failure to the results class with
+        corresponding summary, message and type.
+
+        Parameters:
+            summary: Short error message
+            message: Full error message, potentially containing a traceback
+            failure_type: either `None`, `"internal"` or `"optional"`
+                depending on the type of check that was failed.
+
+        """
+        failure_types = (None, "internal", "optional")
+        if failure_type not in failure_types:
+            raise RuntimeError(
+                f"`failure_type` must be one of {failure_types}, not {failure_type}."
+            )
+
+        if failure_type is None:
+            self.failure_count += 1
+            self.failure_messages.append((summary, message))
+        elif failure_type == "internal":
+            self.internal_failure_count += 1
+            self.internal_failure_messages.append((summary, message))
+        elif failure_type == "optional":
+            self.optional_failure_count += 1
+            self.optional_failure_messages.append((summary, message))
+
+        pprint_types = {
+            "internal": (print_notify, print_warning),
+            "optional": (print, print),
+        }
+        pprint, warning_pprint = pprint_types.get(
+            "failure_type", (print_failure, print_warning)
+        )
+
+        symbol = "!" if failure_type == "internal" else "✖"
+        if self.verbosity == 0:
+            pprint(symbol, end="", flush=True)
+        elif self.verbosity > 0:
+            pprint(f"{symbol}: {summary}")
+            for line in message.split("\n"):
+                warning_pprint(f"\t{line}")
 
 
 class Client:  # pragma: no cover
@@ -240,23 +333,9 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
 
             if not isinstance(result, Exception):
                 if not multistage:
-                    if not optional:
-                        validator.results.success_count += 1
-                    else:
-                        validator.results.optional_success_count += 1
-                    message = f"✔: {request} - {msg}"
-                    if validator.verbosity > 0:
-                        if optional:
-                            print(message)
-                        else:
-                            print_success(message)
-                    elif validator.verbosity == 0:
-                        if optional:
-                            print(".", end="", flush=True)
-                        else:
-                            print_success(".", end="", flush=True)
+                    success_type = "optional" if optional else None
+                    validator.results.add_success(f"{request} - {msg}", success_type)
             else:
-                internal_error = False
                 request = request.replace("\n", "")
                 message = msg.split("\n")
                 if validator.verbosity > 1:
@@ -265,44 +344,20 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                     if not isinstance(result, ValidationError):
                         message += traceback.split("\n")
 
-                if isinstance(result, InternalError):
-                    internal_error = True
-                    validator.results.internal_failure_count += 1
-                    summary = f"!: {request} - {test_fn.__name__} - failed with internal error"
-                    validator.results.internal_failure_messages.append(
-                        (summary, message)
-                    )
-                else:
-                    summary = f"✖: {request} - {test_fn.__name__} - failed with error"
-                    if not optional:
-                        validator.results.failure_count += 1
-                        validator.results.failure_messages.append((summary, message))
-                    else:
-                        validator.results.optional_failure_count += 1
-                        validator.results.optional_failure_messages.append(
-                            (summary, message)
-                        )
+                message = "\n".join(message)
 
-                if validator.verbosity > 0:
-                    if internal_error:
-                        print_notify(summary)
-                        for line in message:
-                            print_warning(f"\t{line}")
-                    elif optional:
-                        print(summary)
-                        for line in message:
-                            print(f"\t{line}")
-                    else:
-                        print_failure(summary)
-                        for line in message:
-                            print_warning(f"\t{line}")
-                elif validator.verbosity == 0:
-                    if internal_error:
-                        print_notify("!", end="", flush=True)
-                    elif optional:
-                        print("✖", end="", flush=True)
-                    else:
-                        print_failure("✖", end="", flush=True)
+                if isinstance(result, InternalError):
+                    summary = (
+                        f"{request} - {test_fn.__name__} - failed with internal error"
+                    )
+                    failure_type = "internal"
+                else:
+                    summary = f"{request} - {test_fn.__name__} - failed with error"
+                    failure_type = "optional" if optional else None
+
+                validator.results.add_failure(
+                    summary, message, failure_type=failure_type
+                )
 
                 # set failure result to None as this is expected by other functions
                 result = None
