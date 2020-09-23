@@ -582,7 +582,8 @@ class ImplementationValidator:
             test_value = chosen_entry["attributes"].get(prop, "missing")
 
         if test_value in ("missing", None):
-            msg = f"Chosen entry had no value for '{prop!r}'"
+            id = chosen_entry["id"]
+            msg = f"Chosen entry '{id!r}' had no value for '{prop!r}'"
             if prop in CONF.entry_properties[endp]["OPTIONAL"]:
                 return None, msg
             raise ResponseError(msg)
