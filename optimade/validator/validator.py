@@ -591,17 +591,24 @@ class ImplementationValidator:
         if prop == "id":
             test_value = chosen_entry["id"]
         else:
-            test_value = chosen_entry["attributes"].get(prop, "missing")
+            test_value = chosen_entry["attributes"].get(prop, "_missing")
 
-        if test_value in ("missing", None):
+        if test_value in ("_missing", None):
             support = CONF.entry_schemas[endp].get(prop, {}).get("support")
             queryable = CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+            submsg = "had no value" if test_value == "missing" else "had `None` value"
             msg = (
-                f"Chosen entry had no value for {prop!r} with support level {support} and queryability {queryable}, "
-                "so cannot construct test queries. This field should potentially be removed from the `/info/{endp}` endpoint response."
+                f"Chosen entry {submsg} for {prop!r} with support level {support} and queryability {queryable}, "
+                "but cannot construct test queries. This field should potentially be removed from the `/info/{endp}` endpoint response."
             )
-            if support == SupportLevel.OPTIONAL:
+            # None values are allowed for OPTIONAL and SHOULD, so we can just skip
+            if test_value is None and support in (
+                SupportLevel.OPTIONAL,
+                SupportLevel.SHOULD,
+            ):
                 return None, msg
+
+            # Otherwise, None values are not allowed for MUST's, and entire missing fields are not allowed
             raise ResponseError(msg)
 
         if prop_type == DataType.LIST:
