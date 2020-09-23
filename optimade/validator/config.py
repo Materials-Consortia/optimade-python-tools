@@ -116,7 +116,7 @@ class ValidatorConfig(BaseSettings):
     )
 
     entry_schemas: Dict[str, Any] = Field(
-        _ENTRY_SCHEMAS, description="The entry schemas"
+        _ENTRY_SCHEMAS, description="The entry listing endpoint schemas"
     )
 
     unique_properties: Set[str] = Field(

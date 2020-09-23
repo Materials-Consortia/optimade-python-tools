@@ -359,8 +359,7 @@ class ImplementationValidator:
             prop_type = _impl_properties[prop]["type"]
             sortable = _impl_properties[prop]["sortable"]
             optional = (
-                prop in CONF.entry_schemas
-                and CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+                CONF.entry_schemas[endp].get(prop, {}).get("queryable")
                 == SupportLevel.OPTIONAL
             )
 
@@ -415,9 +414,9 @@ class ImplementationValidator:
 
         """
         must_props = set(
-            field
-            for field in CONF.entry_schemas[endp]
-            if CONF.entry_schemas[endp].get(field, {}).get("support")
+            prop
+            for prop in CONF.entry_schemas[endp]
+            if CONF.entry_schemas[endp].get(prop, {}).get("support")
             == SupportLevel.MUST
         )
         must_props_supported = set(prop for prop in properties if prop in must_props)
@@ -491,38 +490,35 @@ class ImplementationValidator:
             )
 
         if prop_type is None:
-            if prop in CONF.entry_schemas[endp]:
-                prop_type = CONF.entry_schemas[endp].get(prop, {}).get("type")
+            prop_type = CONF.entry_schemas[endp].get(prop, {}).get("type")
 
         if prop_type is None:
             raise ResponseError(
-                f"Cannot validate queries on {prop} as field type was not reported in `/info/{endp}`"
+                f"Cannot validate queries on {prop!r} as field type was not reported in `/info/{endp}`"
             )
 
         # this is the case of a provider field
         if prop not in CONF.entry_schemas[endp]:
             if self.provider_prefix is None:
                 raise ResponseError(
-                    f"Found unknown field '{prop}' in `/info/{endp}` and no provider prefix was provided in `/info`"
+                    f"Found unknown field {prop!r} in `/info/{endp}` and no provider prefix was provided in `/info`"
                 )
             elif not prop.startswith(f"_{self.provider_prefix}"):
                 raise ResponseError(
-                    f"Found unknown field '{prop}' that did not start with provider prefix '_{self.provider_prefix}'"
+                    f"Found unknown field {prop!r} that did not start with provider prefix '_{self.provider_prefix}_'"
                 )
             return (
                 True,
-                f"Found provider field '{prop}', will not test queries as they are strictly optional.",
+                f"Found provider field {prop!r}, will not test queries as they are strictly optional.",
             )
 
-        query_optional = False
-        if prop in CONF.entry_schemas[endp]:
-            query_optional = (
-                CONF.entry_schemas[endp].get(prop, {}).get("queryable")
-                == SupportLevel.OPTIONAL
-            )
+        query_optional = (
+            CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+            == SupportLevel.OPTIONAL
+        )
 
         return self._construct_single_property_filters(
-            prop, prop_type, sortable, endp, chosen_entry, query_optional=query_optional
+            prop, prop_type, sortable, endp, chosen_entry, query_optional
         )
 
     @staticmethod
@@ -602,7 +598,7 @@ class ImplementationValidator:
             queryable = CONF.entry_schemas[endp].get(prop, {}).get("queryable")
             msg = (
                 f"Chosen entry had no value for {prop!r} with support level {support} and queryability {queryable}, "
-                "so validator is unable to construct test queries. This field should potentially be removed from the info response."
+                "so cannot construct test queries. This field should potentially be removed from the `/info/{endp}` endpoint response."
             )
             if support == SupportLevel.OPTIONAL:
                 return None, msg
