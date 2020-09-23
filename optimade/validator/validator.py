@@ -616,10 +616,22 @@ class ImplementationValidator:
 
             query = f"{prop} {operator} {_test_value}"
             response, _ = self._get_endpoint(
-                f"{endp}?filter={query}", multistage=True, optional=query_optional
+                f"{endp}?filter={query}",
+                multistage=True,
+                optional=query_optional,
+                expected_status_code=(200, 501),
             )
             if not response:
                 return None, ""
+
+            if response.status_code == 501:
+                self._log.warning(
+                    f"Implementation returned {response.content} for {query}"
+                )
+                return (
+                    True,
+                    "Implementation safely reported that filter {query} was not implemented.",
+                )
 
             response = response.json()
             num_data_returned[operator] = response["meta"]["data_returned"]
@@ -1096,7 +1108,7 @@ class ImplementationValidator:
 
     @test_case
     def _get_endpoint(
-        self, request_str: str, expected_status_code: int = 200
+        self, request_str: str, expected_status_code: Union[List[int], int] = 200
     ) -> Tuple[Optional[requests.Response], str]:
         """Gets the response from the endpoint specified by `request_str`.
         function is wrapped by the `test_case` decorator
@@ -1114,7 +1126,10 @@ class ImplementationValidator:
         request_str = request_str.replace("\n", "")
         response = self.client.get(request_str)
 
-        if response.status_code != expected_status_code:
+        if isinstance(expected_status_code, int):
+            expected_status_code = [expected_status_code]
+
+        if response.status_code not in expected_status_code:
             message = f"Request to '{request_str}' returned HTTP code {response.status_code} and not expected {expected_status_code}."
             message += "\nError(s):"
             for error in response.json().get("errors", []):
