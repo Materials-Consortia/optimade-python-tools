@@ -18,6 +18,19 @@ from optimade.validator.utils import (
     ValidatorStructureResponseOne,
     ValidatorStructureResponseMany,
 )
+from optimade.server.schemas import (
+    ENTRY_INFO_SCHEMAS,
+    retrieve_queryable_properties,
+)
+
+__all__ = ("ValidatorConfig", "VALIDATOR_CONFIG")
+
+_ENTRY_SCHEMAS = {
+    endp: retrieve_queryable_properties(
+        ENTRY_INFO_SCHEMAS[endp](), ("id", "type", "attributes")
+    )
+    for endp in ENTRY_INFO_SCHEMAS
+}
 
 _NON_ENTRY_ENDPOINTS = ("info", "links", "versions")
 
@@ -36,71 +49,6 @@ _RESPONSE_CLASSES_INDEX = {
     "links": ValidatorLinksResponse,
 }
 
-# This dictionary will eventually be set by getting the fields from response_classes directly
-_PROPERTIES = {
-    "structures": {
-        "MUST": (
-            "id",
-            "type",
-            "structure_features",
-        ),
-        "SHOULD": (
-            "last_modified",
-            "elements",
-            "nelements",
-            "elements_ratios",
-            "chemical_formula_descriptive",
-            "chemical_formula_reduced",
-            "chemical_formula_anonymous",
-            "dimension_types",
-            "nperiodic_dimensions",
-            "lattice_vectors",
-            "cartesian_site_positions",
-            "nsites",
-            "species_at_sites",
-            "species",
-        ),
-        "OPTIONAL": (
-            "immutable_id",
-            "chemical_formula_hill",
-            "assemblies",
-        ),
-    },
-    "references": {
-        "MUST": ("id", "type"),
-        "SHOULD": (),
-        "OPTIONAL": (
-            "last_modified",
-            "immutable_id",
-            "address",
-            "annote",
-            "booktitle",
-            "chapter",
-            "crossref",
-            "edition",
-            "howpublished",
-            "institution",
-            "journal",
-            "key",
-            "month",
-            "note",
-            "number",
-            "organization",
-            "pages",
-            "publisher",
-            "school",
-            "series",
-            "title",
-            "volume",
-            "year",
-            "bib_type",
-            "authors",
-            "editors",
-            "doi",
-            "url",
-        ),
-    },
-}
 
 _UNIQUE_PROPERTIES = ("id", "immutable_id")
 
@@ -167,12 +115,8 @@ class ValidatorConfig(BaseSettings):
         description="Dictionary containing the mapping between endpoints and response classes for the index meta-database",
     )
 
-    entry_properties: Dict[str, Dict[str, Set[str]]] = Field(
-        _PROPERTIES,
-        description=(
-            "Nested dictionary of endpoints -> support level -> list of field names. "
-            "This field will be deprecated once the machinery to read the support levels of fields from their models directly is implemented."
-        ),
+    entry_schemas: Dict[str, Any] = Field(
+        _ENTRY_SCHEMAS, description="The entry listing endpoint schemas"
     )
 
     unique_properties: Set[str] = Field(
