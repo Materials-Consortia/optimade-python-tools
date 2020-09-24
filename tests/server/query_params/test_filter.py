@@ -73,7 +73,7 @@ def test_value_list_operator(check_error_response):
         request,
         expected_status=501,
         expected_title="NotImplementedError",
-        expected_detail="set_op_rhs not implemented for use with OPERATOR. Given: [Token(HAS, 'HAS'), Token(OPERATOR, '<'), 1]",
+        expected_detail="set_op_rhs not implemented for use with OPERATOR. Given: [Token('HAS', 'HAS'), Token('OPERATOR', '<'), 1]",
     )
 
 
@@ -83,7 +83,7 @@ def test_has_any_operator(check_error_response):
         request,
         expected_status=501,
         expected_title="NotImplementedError",
-        expected_detail="OPERATOR > inside value_list [Token(OPERATOR, '>'), 1] not implemented.",
+        expected_detail="OPERATOR > inside value_list [Token('OPERATOR', '>'), 1] not implemented.",
     )
 
 
