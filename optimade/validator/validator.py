@@ -489,8 +489,11 @@ class ImplementationValidator:
                 f"Chosen entry of endpoint '/{endp}' had unexpected type '{chosen_entry['type']}'."
             )
 
-        if prop_type is None:
-            prop_type = CONF.entry_schemas[endp].get(prop, {}).get("type")
+        prop_type = (
+            CONF.entry_schemas[endp].get(prop, {}).get("type")
+            if prop_type is None
+            else prop_type
+        )
 
         if prop_type is None:
             raise ResponseError(
@@ -503,7 +506,7 @@ class ImplementationValidator:
                 raise ResponseError(
                     f"Found unknown field {prop!r} in `/info/{endp}` and no provider prefix was provided in `/info`"
                 )
-            elif not prop.startswith(f"_{self.provider_prefix}"):
+            elif not prop.startswith(f"_{self.provider_prefix}_"):
                 raise ResponseError(
                     f"Found unknown field {prop!r} that did not start with provider prefix '_{self.provider_prefix}_'"
                 )
