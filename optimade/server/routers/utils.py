@@ -172,8 +172,11 @@ def get_base_url(
 
     Take the base URL from the config file, if it exists, otherwise use the request.
     """
-    if isinstance(parsed_url_request, str):
-        parsed_url_request = urllib.parse.urlparse(parsed_url_request)
+    parsed_url_request = (
+        urllib.parse.urlparse(parsed_url_request)
+        if isinstance(parsed_url_request, str)
+        else parsed_url_request
+    )
     return (
         CONFIG.base_url.rstrip("/")
         if CONFIG.base_url
