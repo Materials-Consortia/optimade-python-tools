@@ -8,7 +8,13 @@ from pydantic import Field
 
 _PYDANTIC_FIELD_KWARGS = list(inspect.signature(Field).parameters.keys())
 
-__all__ = ("CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS", "SemanticVersion")
+__all__ = (
+    "CHEMICAL_SYMBOLS",
+    "EXTRA_SYMBOLS",
+    "ATOMIC_NUMBERS",
+    "SemanticVersion",
+    "SupportLevel",
+)
 
 
 class SupportLevel(Enum):
