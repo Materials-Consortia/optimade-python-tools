@@ -50,7 +50,7 @@ def general_exception(
 
     response = ErrorResponse(
         meta=meta_values(
-            url=str(request.url),
+            url=request.url,
             data_returned=0,
             data_available=0,
             more_data_available=False,

@@ -15,6 +15,7 @@ try:
 except ImportError:
     import json
 
+from starlette.datastructures import URL as StarletteURL
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, StreamingResponse
@@ -78,21 +79,19 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     """If a non-supported versioned base URL is supplied return `553 Version Not Supported`."""
 
     @staticmethod
-    def check_url(parsed_url: urllib.parse.ParseResult):
+    def check_url(url: StarletteURL):
         """Check URL path for versioned part.
 
         Parameters:
-            parsed_url: A complete urllib-parsed raw URL.
+            url: A complete urllib-parsed raw URL.
 
         Raises:
             VersionNotSupported: If the URL represents an OPTIMADE versioned base URL
                 and the version part is not supported by the implementation.
 
         """
-        base_url = get_base_url(parsed_url)
-        optimade_path = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"[
-            len(base_url) :
-        ]
+        base_url = get_base_url(url)
+        optimade_path = f"{url.scheme}://{url.netloc}{url.path}"[len(base_url) :]
         if re.match(r"^/v[0-9]+", optimade_path):
             for version_prefix in BASE_URL_PREFIXES.values():
                 if optimade_path.startswith(f"{version_prefix}/"):
@@ -102,15 +101,14 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
                 raise VersionNotSupported(
                     detail=(
                         f"The parsed versioned base URL {version_prefix[0][0]!r} from "
-                        f"{urllib.parse.urlunparse(parsed_url)!r} is not supported by this implementation. "
+                        f"{url} is not supported by this implementation. "
                         f"Supported versioned base URLs are: {', '.join(BASE_URL_PREFIXES.values())}"
                     )
                 )
 
     async def dispatch(self, request: Request, call_next):
-        parsed_url = urllib.parse.urlparse(str(request.url))
-        if parsed_url.path:
-            self.check_url(parsed_url)
+        if request.url.path:
+            self.check_url(request.url)
         response = await call_next(request)
         return response
 
@@ -220,7 +218,7 @@ class HandleApiHint(BaseHTTPMiddleware):
         if not re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url):
             return False
 
-        base_url = get_base_url(urllib.parse.urlparse(url))
+        base_url = get_base_url(url)
         return bool(re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url[len(base_url) :]))
 
     async def dispatch(self, request: Request, call_next):
