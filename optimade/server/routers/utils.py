@@ -172,7 +172,7 @@ def get_base_url(
     Take the base URL from the config file, if it exists, otherwise use the request.
     """
     return (
-        CONFIG.base_url
+        CONFIG.base_url.rstrip("/")
         if CONFIG.base_url
         else f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
     )
