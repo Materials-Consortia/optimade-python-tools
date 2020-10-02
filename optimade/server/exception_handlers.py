@@ -131,6 +131,8 @@ OPTIMADE specification.
 To use these in FastAPI app code:
 
 ```python
+from fastapi import FastAPI
+app = FastAPI()
 for exception, handler in OPTIMADE_EXCEPTIONS:
     app.add_exception_handler(exception, handler)
 ```
