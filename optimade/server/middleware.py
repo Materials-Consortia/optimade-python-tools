@@ -6,7 +6,7 @@ See the specific Starlette [documentation page](https://www.starlette.io/middlew
 information on it's middleware implementation.
 """
 import re
-from typing import Optional, IO, Type, Generator, List, Union
+from typing import Optional, IO, Type, Generator, List, Union, Tuple
 import urllib.parse
 import warnings
 
@@ -283,7 +283,7 @@ class AddWarnings(BaseHTTPMiddleware):
     [`meta.warnings`][optimade.models.optimade_json.ResponseMeta.warnings] list.
 
     By overriding the `warnings.showwarning()` function with the
-    [showwarning method][optimade.server.middleware.AddWarnings.showwarning],
+    [`showwarning` method][optimade.server.middleware.AddWarnings.showwarning],
     all usages of `warnings.warn()` will result in the regular printing of the
     warning message to `stderr`, but also its addition to an in-memory list of
     warnings.
@@ -297,9 +297,21 @@ class AddWarnings(BaseHTTPMiddleware):
     the response's body content is actually streamable, by breaking it down into
     chunks of the original response's chunk size.
 
+    !!! warning "Important"
+        It is **recommended** to add this middleware as the _last one_ to your application.
+
+        This is to ensure it is invoked _first_, updating `warnings.showwarning()` and
+        catching all warnings that should be added to the response.
+
+        This can be achieved by applying `AddWarnings` _after_ all
+        other middleware with the `.add_middleware()` method, or by
+        initialising the app with a middleware list in which `AddWarnings`
+        appears _first_. More information can be found in the docstring of
+        [`OPTIMADE_MIDDLEWARE`][optimade.server.middleware.OPTIMADE_MIDDLEWARE].
+
     Attributes:
-        _warnings (List[Warnings]): List of [Warnings][optimade.models.optimade_json.Warnings]
-            added through usages of `warnings.warn()` via [showwarning][optimade.server.middleware.AddWarnings.showwarning].
+        _warnings (List[Warnings]): List of [`Warnings`][optimade.models.optimade_json.Warnings]
+            added through usages of `warnings.warn()` via [`showwarning`][optimade.server.middleware.AddWarnings.showwarning].
 
     """
 
@@ -456,3 +468,50 @@ class AddWarnings(BaseHTTPMiddleware):
         )
 
         return response
+
+
+OPTIMADE_MIDDLEWARE: Tuple[BaseHTTPMiddleware] = (
+    EnsureQueryParamIntegrity,
+    CheckWronglyVersionedBaseUrls,
+    HandleApiHint,
+    AddWarnings,
+)
+"""A tuple of all the middleware classes that implement certain required
+features of the OPTIMADE specification, e.g. warnings and URL
+versioning.
+
+!!! note
+    The order in which middleware is added to an application matters.
+
+    As discussed in the docstring of
+    [`AddWarnings`][optimade.server.middleware.AddWarnings], this
+    middleware is the final entry to this list so that it is the first
+    to be applied by the server.
+    Any other middleware should therefore be added _before_ iterating
+    through this variable.
+    This is the opposite way around to the example in the
+    [Starlette documentation](https://www.starlette.io/middleware/)
+    which initialises the application with a pre-built middleware list
+    in the _reverse_ order to `OPTIMADE_MIDDLEWARE`.
+
+To use this variable in FastAPI app code after initialisation:
+
+```python
+from fastapi import FastAPI
+app = FastAPI()
+for middleware in OPTIMADE_MIDDLEWARE:
+    app.add_middleware(middleware)
+```
+
+Alternatively, to use this variable on initialisation:
+
+```python
+from fastapi import FastAPI
+from starlette.middleware import Middleware
+app = FastAPI(
+    ...,
+    middleware=[Middleware(m) for m in reversed(OPTIMADE_MIDDLEWARE)]
+)
+```
+
+"""
