@@ -1,5 +1,5 @@
 import traceback
-from typing import List
+from typing import List, Tuple, Callable
 
 from lark.exceptions import VisitError
 
@@ -114,3 +114,25 @@ def not_implemented_handler(request: Request, exc: NotImplementedError):
 
 def general_exception_handler(request: Request, exc: Exception):
     return general_exception(request, exc)
+
+
+OPTIMADE_EXCEPTIONS: Tuple[Exception, Callable[[Request, Exception], JSONResponse]] = (
+    (StarletteHTTPException, http_exception_handler),
+    (RequestValidationError, request_validation_exception_handler),
+    (ValidationError, validation_exception_handler),
+    (VisitError, grammar_not_implemented_handler),
+    (NotImplementedError, not_implemented_handler),
+    (Exception, general_exception_handler),
+)
+"""A tuple of all pairs of exceptions and handler functions that allow for
+appropriate responses to be returned in certain scenarios according to the
+OPTIMADE specification.
+
+To use these in FastAPI app code:
+
+```python
+for exception, handler in OPTIMADE_EXCEPTIONS:
+    app.add_exception_handler(exception, handler)
+```
+
+"""
