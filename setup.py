@@ -46,7 +46,7 @@ testing_deps = [
     "jsondiff~=1.2",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.6", "black~=20.8b1", "pre-commit~=2.7", "invoke~=1.4"]
+    ["pylint~=2.6", "pre-commit~=2.7", "invoke~=1.4"]
     + docs_deps
     + testing_deps
     + client_deps
