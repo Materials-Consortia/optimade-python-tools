@@ -20,21 +20,21 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
 mongo_deps = ["pymongo~=3.11", "mongomock~=3.20"]
-server_deps = ["uvicorn~=0.12.0", "Jinja2~=2.11"] + mongo_deps
+server_deps = ["uvicorn~=0.12.1", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
-aiida_deps = ["aiida-core~=1.4.1"]
+aiida_deps = ["aiida-core~=1.4.2"]
 ase_deps = ["ase~=3.20"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2020.9.14"]
-jarvis_deps = ["jarvis-tools==2020.9.22"]
+jarvis_deps = ["jarvis-tools==2020.10.3"]
 client_deps = cif_deps
 
 # General
 docs_deps = [
     "mkdocs~=1.1",
-    "mkdocs-awesome-pages-plugin~=2.2",
+    "mkdocs-awesome-pages-plugin~=2.3",
     "mkdocs-material~=6.0",
     "mkdocs-minify-plugin~=0.3.0",
     "mkdocstrings~=0.13.6",
