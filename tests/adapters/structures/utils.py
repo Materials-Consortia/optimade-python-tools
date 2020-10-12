@@ -7,7 +7,7 @@ def get_min_ver(dependency: str) -> str:
     setup_py = Path(__file__).parent.joinpath("../../../setup.py")
     with open(setup_py, "r") as setup_file:
         for line in setup_file.readlines():
-            min_ver = re.findall(fr'"{dependency}((=|!|<|>|~)=|>|<)(+.))"', line)
+            min_ver = re.findall(fr'"{dependency}((=|!|<|>|~)=|>|<)(.+))"', line)
             if min_ver:
                 return min_ver[0][2]
         else:
