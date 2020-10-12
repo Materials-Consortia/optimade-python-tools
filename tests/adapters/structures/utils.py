@@ -8,7 +8,7 @@ def get_min_ver(dependency: str) -> str:
     with open(setup_py, "r") as setup_file:
         for line in setup_file.readlines():
             min_ver = re.findall(
-                fr'"{dependency}((=|!|<|>|~)=|>|<)([0-9]+(\.[0-9]+){{,2}})"', line
+                fr'"{dependency}((=|!|<|>|~)=|>|<)([0-9]+(\.[0-9]+){{,3}})"', line
             )
             if min_ver:
                 return min_ver[0][2]

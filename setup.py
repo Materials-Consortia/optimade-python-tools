@@ -27,7 +27,7 @@ aiida_deps = ["aiida-core~=1.4.2"]
 ase_deps = ["ase~=3.20"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2020.10.9"]
+pymatgen_deps = ["pymatgen==2020.10.9.1"]
 jarvis_deps = ["jarvis-tools==2020.10.10"]
 client_deps = cif_deps
 
