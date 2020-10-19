@@ -90,8 +90,8 @@ class ValidatorResults:
         """Register a validation success to the results class.
 
         Parameters:
-            summary: a summary of the success to be printed
-            success_type: either `None`, `"optional"` depending on the
+            summary: A summary of the success to be printed.
+            success_type: Either `None` or `"optional"` depending on the
                 type of the check.
 
         """
@@ -121,9 +121,9 @@ class ValidatorResults:
         corresponding summary, message and type.
 
         Parameters:
-            summary: Short error message
-            message: Full error message, potentially containing a traceback
-            failure_type: either `None`, `"internal"` or `"optional"`
+            summary: Short error message.
+            message: Full error message, potentially containing a traceback.
+            failure_type: Either `None`, `"internal"` or `"optional"`
                 depending on the type of check that was failed.
 
         """

@@ -78,7 +78,15 @@ def handle_response_fields(
     new_results = []
     while results:
         entry = results.pop(0)
-        new_entry = entry.dict(exclude_unset=True)
+
+        # TODO: re-enable exclude_unset when proper handling of known/unknown fields
+        # has been implemented (relevant issue: https://github.com/Materials-Consortia/optimade-python-tools/issues/263)
+        # Have to handle top level fields explicitly here for now
+        new_entry = entry.dict(exclude_unset=False)
+        for field in ("relationships", "links", "meta", "type", "id"):
+            if field in new_entry and new_entry[field] is None:
+                del new_entry[field]
+
         for field in exclude_fields:
             if field in new_entry["attributes"]:
                 del new_entry["attributes"][field]
