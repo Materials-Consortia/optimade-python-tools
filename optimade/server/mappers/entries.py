@@ -146,9 +146,6 @@ class BaseResourceMapper:
             A resource object in OPTIMADE format.
 
         """
-        if "_id" in doc:
-            del doc["_id"]
-
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}
         reals = {real for alias, real in cls.all_aliases()}

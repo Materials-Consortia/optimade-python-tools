@@ -116,6 +116,8 @@ class MongoCollection(EntryCollection):
 
         results = []
         for doc in self.collection.find(**criteria):
+            if "_id" in doc:
+                doc["_id"] = str(doc["_id"])
             results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
 
         nresults_now = len(results)
