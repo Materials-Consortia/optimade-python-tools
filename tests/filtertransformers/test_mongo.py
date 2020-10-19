@@ -385,17 +385,7 @@ class TestMongoTransformer:
         from bson import ObjectId
 
         class MyMapper(mapper("StructureMapper")):
-            ALIASES = (
-                ("elements", "my_elements"),
-                ("nelements", "nelem"),
-                ("immutable_id", "_id"),
-            )
-            LENGTH_ALIASES = (
-                ("chemsys", "nelements"),
-                ("cartesian_site_positions", "nsites"),
-                ("elements", "nelements"),
-            )
-            PROVIDER_FIELDS = ("chemsys",)
+            ALIASES = (("immutable_id", "_id"),)
 
         transformer = MongoTransformer(mapper=MyMapper())
         parser = LarkParser(version=self.version, variant=self.variant)
