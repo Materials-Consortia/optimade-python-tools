@@ -297,7 +297,7 @@ class ImplementationValidator:
         # in the next loop.
         for endp in self.available_json_endpoints:
             self._log.debug("Testing multiple entry endpoint of %s", endp)
-            self._test_multi_entry_endpoint(f"{endp}?page_limit={self.page_limit}")
+            self._test_multi_entry_endpoint(endp)
 
         # Test that the single IDs scraped earlier work with the single entry endpoint
         for endp in self.available_json_endpoints:
@@ -331,12 +331,19 @@ class ImplementationValidator:
         """
         entry_info = self._entry_info_by_type.get(endp)
         _impl_properties = self._check_entry_info(entry_info, endp)
+        prop_list = list(_impl_properties.keys())
 
-        chosen_entry, _ = self._get_archetypal_entry(endp)
+        self._check_response_fields(endp, prop_list)
+        chosen_entry, _ = self._get_archetypal_entry(endp, prop_list)
 
         if not entry_info:
             raise ResponseError(
                 f"Unable to generate filters for endpoint {endp}: entry info not found."
+            )
+
+        if not chosen_entry:
+            raise ResponseError(
+                f"Unable to generate filters for endpoint {endp}: no valid entries found."
             )
 
         for prop in _impl_properties:
@@ -414,7 +421,9 @@ class ImplementationValidator:
         return True, f"Found all required properties in entry info for endpoint {endp}"
 
     @test_case
-    def _get_archetypal_entry(self, endp: str) -> Tuple[Dict[str, Any], str]:
+    def _get_archetypal_entry(
+        self, endp: str, properties: List[str]
+    ) -> Tuple[Dict[str, Any], str]:
         """Get a random entry from the first page of results for this
         endpoint.
 
@@ -429,15 +438,56 @@ class ImplementationValidator:
         response, _ = self._get_endpoint(endp)
         data_returned = response.json()["meta"]["data_returned"]
         if data_returned < 1:
-            raise ResponseError(f"No data returned from endpoint {endp}.")
+            return (
+                None,
+                "Endpoint {endp!r} has no entries, cannot get archetypal entry.",
+            )
+
         response, _ = self._get_endpoint(
-            f"{endp}?page_offset={random.randint(0, data_returned-1)}"
+            f"{endp}?page_offset={random.randint(0, data_returned-1)}&response_fields={','.join(properties)}"
         )
         archetypal_entry = response.json()["data"][0]
         return (
             archetypal_entry,
             f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
         )
+
+    @test_case
+    def _check_response_fields(self, endp: str, fields: List[str]) -> Tuple[bool, str]:
+        """Check that the response field query parameter is obeyed.
+
+        Parameters:
+            endp: The endpoint to query.
+            fields: The known fields for this endpoint to test.
+
+        Returns:
+            Bool indicating success and a summary message.
+
+        """
+
+        subset_fields = random.sample(fields, min(len(fields) - 1, 3))
+        test_query = f"{endp}?response_fields={','.join(subset_fields)}&page_limit=1"
+        response, _ = self._get_endpoint(test_query)
+
+        if response and len(response.json()["data"]) == 1:
+            doc = response.json()["data"][0]
+            expected_fields = set(subset_fields)
+            expected_fields -= CONF.top_level_non_attribute_fields
+            returned_fields = set(sorted(list(doc["attributes"].keys())))
+            returned_fields -= CONF.top_level_non_attribute_fields
+
+            if expected_fields != returned_fields:
+                raise RuntimeError(
+                    f"Response fields not obeyed by {endp!r}:\n{expected_fields}\n{returned_fields}"
+                )
+
+            return True, "Successfully limited response fields"
+
+        else:
+            return (
+                None,
+                f"Unable to test adherence to response fields as no entries were returned for endpoint {endp!r}.",
+            )
 
     @test_case
     def _construct_queries_for_property(
@@ -467,11 +517,16 @@ class ImplementationValidator:
 
         """
         # Explicitly handle top level keys that do not have types in info
+        if not chosen_entry:
+            raise ResponseError(
+                f"Chosen entry of endpoint '/{endp}' failed validation."
+            )
+
         if prop == "type":
             if chosen_entry["type"] == endp:
                 return True, f"Successfully validated {prop}"
             raise ResponseError(
-                f"Chosen entry of endpoint '/{endp}' had unexpected type '{chosen_entry['type']}'."
+                f"Chosen entry of endpoint '{endp}' had unexpected type {chosen_entry['type']!r}."
             )
 
         prop_type = (
@@ -496,7 +551,7 @@ class ImplementationValidator:
                     f"Found unknown field {prop!r} that did not start with provider prefix '_{self.provider_prefix}_'"
                 )
             return (
-                True,
+                None,
                 f"Found provider field {prop!r}, will not test queries as they are strictly optional.",
             )
 
@@ -579,17 +634,25 @@ class ImplementationValidator:
         if prop == "id":
             test_value = chosen_entry["id"]
         else:
-            test_value = chosen_entry["attributes"].get(prop, "missing")
+            test_value = chosen_entry["attributes"].get(prop, "_missing")
 
-        if test_value in ("missing", None):
+        if test_value in ("_missing", None):
             support = CONF.entry_schemas[endp].get(prop, {}).get("support")
             queryable = CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+            submsg = "had no value" if test_value == "_missing" else "had `None` value"
             msg = (
-                f"Chosen entry had no value for {prop!r} with support level {support} and queryability {queryable}, "
-                "so cannot construct test queries. This field should potentially be removed from the `/info/{endp}` endpoint response."
+                f"Chosen entry {submsg} for {prop!r} with support level {support} and queryability {queryable}, "
+                f"so cannot construct test queries. This field should potentially be removed from the `/info/{endp}` endpoint response."
             )
-            if support == SupportLevel.OPTIONAL:
+            # None values are allowed for OPTIONAL and SHOULD, so we can just skip
+            if support in (
+                SupportLevel.OPTIONAL,
+                SupportLevel.SHOULD,
+            ):
+                self._log.info(msg)
                 return None, msg
+
+            # Otherwise, None values are not allowed for MUST's, and entire missing fields are not allowed
             raise ResponseError(msg)
 
         if prop_type == DataType.LIST:
@@ -736,7 +799,7 @@ class ImplementationValidator:
 
         return False
 
-    def _test_single_entry_endpoint(self, request_str: str) -> None:
+    def _test_single_entry_endpoint(self, endp: str) -> None:
         """Requests and deserializes a single entry endpoint with the
         appropriate model.
 
@@ -744,23 +807,32 @@ class ImplementationValidator:
             request_str: The single entry request to make, e.g. "structures/id_1".
 
         """
-        _type = request_str.split("?")[0]
-        response_cls_name = _type + "/"
+        response_cls_name = endp + "/"
         if response_cls_name in self._response_classes:
             response_cls = self._response_classes[response_cls_name]
         else:
             self._log.warning(
                 "Deserializing single entry response %s with generic response rather than defined endpoint.",
-                _type,
+                endp,
             )
             response_cls = ValidatorEntryResponseOne
-        if _type in self._test_id_by_type:
-            test_id = self._test_id_by_type[_type]
-            response, _ = self._get_endpoint(f"{_type}/{test_id}")
+
+        if endp in CONF.entry_schemas:
+            response_fields = (
+                set(CONF.entry_schemas[endp].keys())
+                - CONF.top_level_non_attribute_fields
+            )
+
+        if endp in self._test_id_by_type:
+            test_id = self._test_id_by_type[endp]
+            request_str = f"{endp}/{test_id}"
+            if response_fields:
+                request_str += f"?response_fields={','.join(response_fields)}"
+            response, _ = self._get_endpoint(request_str)
             if response:
                 self._deserialize_response(response, response_cls, request=request_str)
 
-    def _test_multi_entry_endpoint(self, request_str: str) -> None:
+    def _test_multi_entry_endpoint(self, endp: str) -> None:
         """Requests and deserializes a multi-entry endpoint with the
         appropriate model.
 
@@ -772,16 +844,27 @@ class ImplementationValidator:
                 "structures?filter=nsites<10"
 
         """
-        response, _ = self._get_endpoint(request_str)
-        _type = request_str.split("?")[0]
-        if _type in self._response_classes:
-            response_cls = self._response_classes[_type]
+        if endp in self._response_classes:
+            response_cls = self._response_classes[endp]
         else:
             self._log.warning(
                 "Deserializing multi entry response from %s with generic response rather than defined endpoint.",
-                _type,
+                endp,
             )
             response_cls = ValidatorEntryResponseMany
+
+        if endp in CONF.entry_schemas:
+            response_fields = (
+                set(CONF.entry_schemas[endp].keys())
+                - CONF.top_level_non_attribute_fields
+            )
+
+        request_str = f"{endp}?page_limit={self.page_limit}"
+
+        if response_fields:
+            request_str += f'&response_fields={",".join(response_fields)}'
+
+        response, _ = self._get_endpoint(request_str)
 
         self._test_page_limit(response)
 

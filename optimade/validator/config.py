@@ -18,6 +18,7 @@ from optimade.validator.utils import (
     ValidatorStructureResponseOne,
     ValidatorStructureResponseMany,
 )
+from optimade.server.mappers import BaseResourceMapper
 from optimade.server.schemas import (
     ENTRY_INFO_SCHEMAS,
     retrieve_queryable_properties,
@@ -152,6 +153,10 @@ class ValidatorConfig(BaseSettings):
     non_entry_endpoints: Set[str] = Field(
         _NON_ENTRY_ENDPOINTS,
         description="The list specification-mandated endpoint names that do not contain entries",
+    )
+    top_level_non_attribute_fields: Set[str] = Field(
+        BaseResourceMapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS,
+        description="Field names to treat as top-level",
     )
 
 
