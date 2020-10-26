@@ -1,7 +1,23 @@
 from fastapi import HTTPException
 
+__all__ = (
+    "BadRequest",
+    "VersionNotSupported",
+    "Forbidden",
+)
 
-class BadRequest(HTTPException):
+
+class StrReprMixin(HTTPException):
+    """This mixin can be useful when testing requires a string
+    representation of an exception that contains the HTTPException
+    detail string, rather than the standard Python exception message.
+    """
+
+    def __str__(self):
+        return self.__repr__()
+
+
+class BadRequest(StrReprMixin, HTTPException):
     """400 Bad Request"""
 
     def __init__(
@@ -15,7 +31,7 @@ class BadRequest(HTTPException):
         self.title = title
 
 
-class VersionNotSupported(HTTPException):
+class VersionNotSupported(StrReprMixin, HTTPException):
     """553 Version Not Supported"""
 
     def __init__(
@@ -29,7 +45,7 @@ class VersionNotSupported(HTTPException):
         self.title = title
 
 
-class Forbidden(HTTPException):
+class Forbidden(StrReprMixin, HTTPException):
     """403 Forbidden"""
 
     def __init__(

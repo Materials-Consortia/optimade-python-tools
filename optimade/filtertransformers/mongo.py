@@ -466,7 +466,7 @@ class MongoTransformer(Transformer):
                     if self.mapper is not None:
                         prop = self.mapper.alias_of(prop)
                     raise BadRequest(
-                        detail=f"Operator not supported for query on field {prop}, can only test for equality"
+                        detail=f"Operator not supported for query on field {prop!r}, can only test for equality"
                     )
                 if isinstance(val, str):
                     subdict[prop][operator] = ObjectId(val)

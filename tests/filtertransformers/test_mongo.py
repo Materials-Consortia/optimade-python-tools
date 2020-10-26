@@ -399,7 +399,10 @@ class TestMongoTransformer:
         ) == {"_id": {"$ne": ObjectId("5cfb441f053b174410700d02")}}
 
         for op in ("CONTAINS", "STARTS WITH", "ENDS WITH", "HAS"):
-            with pytest.raises(BadRequest):
+            with pytest.raises(
+                BadRequest,
+                match=r".*not supported for query on field 'immutable_id', can only test for equality.*",
+            ):
                 transformer.transform(parser.parse(f'immutable_id {op} "abcdef"'))
 
     def test_aliased_length_operator(self, mapper):
