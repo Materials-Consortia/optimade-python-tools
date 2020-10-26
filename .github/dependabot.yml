@@ -3,7 +3,7 @@ updates:
 - package-ecosystem: pip
   directory: "/"
   schedule:
-    interval: weekly
+    interval: monthly
   # Needs to be larger than the number of total requirements (currently 31)
   open-pull-requests-limit: 50
   target-branch: master
