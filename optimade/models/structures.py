@@ -140,11 +140,17 @@ Note: With regards to "source database", we refer to the immediate source being 
 
     @validator("concentration")
     def validate_concentration(cls, v, values):
-        if len(v) != len(values.get("chemical_symbols", [])):
-            raise ValueError(
-                f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols ({len(values.get('chemical_symbols', 'Not specified'))})"
-            )
-        return v
+        if "chemical_symbols" in values:
+            if len(v) != len(values["chemical_symbols"]):
+                raise ValueError(
+                    f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols "
+                    f"({len(values.get('chemical_symbols', []))})"
+                )
+            return v
+
+        raise ValueError(
+            "Could not validate concentration as 'chemical_symbols' is missing/invalid."
+        )
 
     @validator("attached", "nattached")
     def validate_minimum_list_length(cls, v):
@@ -227,7 +233,8 @@ The possible reasons for the values not to sum to one are the same as already sp
     def check_self_consistency(cls, v, values):
         if len(v) != len(values.get("sites_in_groups", [])):
             raise ValueError(
-                f"sites_in_groups and group_probabilities MUST be of same length, but are {len(values.get('sites_in_groups', 'Not specified'))} and {len(v)}, respectively"
+                f"sites_in_groups and group_probabilities MUST be of same length, "
+                f"but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
             )
         return v
 
@@ -825,7 +832,8 @@ The properties of the species are found in the property `species`.
     def validate_nsites(cls, v, values):
         if v != len(values.get("cartesian_site_positions", [])):
             raise ValueError(
-                f"nsites (value: {v}) MUST equal length of cartesian_site_positions (value: {len(values.get('cartesian_site_positions', []))})"
+                f"nsites (value: {v}) MUST equal length of cartesian_site_positions "
+                f"(value: {len(values.get('cartesian_site_positions', []))})"
             )
         return v
 
@@ -837,7 +845,8 @@ The properties of the species are found in the property `species`.
             )
         if len(v) != values.get("nsites", 0):
             raise ValueError(
-                f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites (value: {values.get('nsites', 'Not specified')})"
+                f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites "
+                f"(value: {values.get('nsites', 'Not specified')})"
             )
         all_species_names = {
             getattr(_, "name", None) for _ in values.get("species", [{}])
@@ -846,7 +855,8 @@ The properties of the species are found in the property `species`.
         for value in v:
             if value not in all_species_names:
                 raise ValueError(
-                    f"species_at_sites MUST be represented by a species' name, but {value} was not found in the list of species names: {all_species_names}"
+                    "species_at_sites MUST be represented by a species' name, "
+                    f"but {value} was not found in the list of species names: {all_species_names}"
                 )
         return v
 
@@ -871,13 +881,15 @@ The properties of the species are found in the property `species`.
             if len(species.chemical_symbols) > 1:
                 if StructureFeatures.DISORDER not in v:
                     raise ValueError(
-                        f"{StructureFeatures.DISORDER.value} MUST be present when any one entry in species has a chemical_symbols list greater than one element"
+                        f"{StructureFeatures.DISORDER.value} MUST be present when any one entry in species "
+                        "has a chemical_symbols list greater than one element"
                     )
                 break
         else:
             if StructureFeatures.DISORDER in v:
                 raise ValueError(
-                    f"{StructureFeatures.DISORDER.value} MUST NOT be present, since all species' chemical_symbols lists are equal to or less than one element"
+                    f"{StructureFeatures.DISORDER.value} MUST NOT be present, since all species' chemical_symbols "
+                    "lists are equal to or less than one element"
                 )
         # assemblies
         if values.get("assemblies", None) is not None:
@@ -888,7 +900,8 @@ The properties of the species are found in the property `species`.
         else:
             if StructureFeatures.ASSEMBLIES in v:
                 raise ValueError(
-                    f"{StructureFeatures.ASSEMBLIES.value} MUST NOT be present, since the property of the same name is not present"
+                    f"{StructureFeatures.ASSEMBLIES.value} MUST NOT be present, "
+                    "since the property of the same name is not present"
                 )
         # site_attachments
         for species in values.get("species", []):
@@ -897,13 +910,15 @@ The properties of the species are found in the property `species`.
             if getattr(species, "attached", None) is not None:
                 if StructureFeatures.SITE_ATTACHMENTS not in v:
                     raise ValueError(
-                        f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST be present when any one entry in species includes attached and nattached"
+                        f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST be present when any one entry "
+                        "in species includes attached and nattached"
                     )
                 break
         else:
             if StructureFeatures.SITE_ATTACHMENTS in v:
                 raise ValueError(
-                    f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST NOT be present, since no species includes the attached and nattached fields"
+                    f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST NOT be present, since no species includes "
+                    "the attached and nattached fields"
                 )
         # implicit_atoms
         species_names = [_.name for _ in values.get("species", [])]
@@ -911,13 +926,15 @@ The properties of the species are found in the property `species`.
             if name not in values.get("species_at_sites", []):
                 if StructureFeatures.IMPLICIT_ATOMS not in v:
                     raise ValueError(
-                        f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST be present when any one entry in species is not represented in species_at_sites"
+                        f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST be present when any one entry in species "
+                        "is not represented in species_at_sites"
                     )
                 break
         else:
             if StructureFeatures.IMPLICIT_ATOMS in v:
                 raise ValueError(
-                    f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST NOT be present, since all species are represented in species_at_sites"
+                    f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST NOT be present, since all species are "
+                    "represented in species_at_sites"
                 )
         return v
 
