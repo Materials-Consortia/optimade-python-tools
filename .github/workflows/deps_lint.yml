@@ -175,8 +175,8 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
 
-    - name: Run all tests (using a real MongoDB)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/
+    - name: Run server tests (using a real MongoDB)
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/server
       env:
         OPTIMADE_CI_FORCE_MONGO: 1
 
