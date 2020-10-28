@@ -768,21 +768,27 @@ The properties of the species are found in the property `species`.
 
     class Config:
         def schema_extra(schema, model):
-            """Constrained types in pydantic do not currently play nicely with
-            "Required Optional" fields, i.e. fields must be specified but can be null.
+            """Two things need to be added to the schema:
 
+            1. Constrained types in pydantic do not currently play nicely with
+            "Required Optional" fields, i.e. fields must be specified but can be null.
             The two contrained list fields, `dimension_types` and `lattice_vectors`,
             are OPTIMADE 'SHOULD' fields, which means that they are allowed to be null.
 
-            Other 'SHOULD' fields make use of `Optional[Type] = Field(...)` (i.e. no
-            default value) so that they can allow `None`, but remain in the OpenAPI
-            `required` properties. This pydantic construction does not play well with
-            `conlist` so the schema must be manually patched to promote them as `required`
-            fields once more.
+            2. All OPTIMADE 'SHOULD' fields are allowed to be null, so we manually set them
+            to be `nullable` according to the OpenAPI definition.
 
             """
             schema["required"].insert(7, "dimension_types")
             schema["required"].insert(9, "lattice_vectors")
+
+            nullable_props = (
+                prop
+                for prop in schema["required"]
+                if schema["properties"][prop].get("support") == SupportLevel.SHOULD
+            )
+            for prop in nullable_props:
+                schema["properties"][prop]["nullable"] = True
 
     @validator("chemical_formula_reduced", "chemical_formula_hill")
     def check_ordered_formula(cls, v, field):
