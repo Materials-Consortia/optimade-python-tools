@@ -74,6 +74,7 @@ class ImplementationValidator:
         fail_fast: bool = False,
         as_type: str = None,
         index: bool = False,
+        minimal: bool = False,
     ):
         """Set up the tests to run, based on constants in this module
         for required endpoints.
@@ -100,6 +101,7 @@ class ImplementationValidator:
                 from implementation into, e.g. "structures". Requires `base_url`
                 to be pointed to the corresponding endpoint.
             index: Whether to validate the implementation as an index meta-database.
+            minimal: Whether or not to run only a minimal test set.
 
         """
         self.verbosity = verbosity
@@ -109,6 +111,7 @@ class ImplementationValidator:
         self.run_optional_tests = run_optional_tests
         self.fail_fast = fail_fast
         self.respond_json = respond_json
+        self.minimal = minimal
 
         if as_type is None:
             self.as_type_cls = None
@@ -287,9 +290,10 @@ class ImplementationValidator:
                 self._entry_info_by_type[endp] = entry_info.dict()
 
         # Use the _entry_info_by_type to construct filters on the relevant endpoints
-        for endp in self.available_json_endpoints:
-            self._log.debug("Testing queries on JSON entry endpoint of %s", endp)
-            self._recurse_through_endpoint(endp)
+        if not self.minimal:
+            for endp in self.available_json_endpoints:
+                self._log.debug("Testing queries on JSON entry endpoint of %s", endp)
+                self._recurse_through_endpoint(endp)
 
         # Test that the results from multi-entry-endpoints obey, e.g. page limits,
         # and that all entries can be deserialized with the patched models.
