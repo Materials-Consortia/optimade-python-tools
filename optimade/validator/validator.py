@@ -876,10 +876,8 @@ class ImplementationValidator:
             response, response_cls, request=request_str, optional=True
         )
 
+        self._get_single_id_from_mutli_entry_endpoint(deserialized, request=request_str)
         if deserialized:
-            self._get_single_id_from_mutli_entry_endpoint(
-                deserialized, request=request_str
-            )
             self._test_data_available_matches_data_returned(deserialized)
 
     @test_case
