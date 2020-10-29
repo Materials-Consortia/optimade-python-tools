@@ -772,7 +772,7 @@
     ],
     "nelements": 4,
     "nsites": 16,
-    "pretty_formula": "Ag10Te4BrCl",
+    "pretty_formula": "Ag10BrClTe4",
     "species": [
       {
         "chemical_symbols": [
@@ -934,7 +934,7 @@
     ],
     "nelements": 6,
     "nsites": 10,
-    "pretty_formula": "Ag2CSNClO4",
+    "pretty_formula": "Ag2CClNO4S",
     "species": [
       {
         "chemical_symbols": [
@@ -1176,7 +1176,7 @@
     ],
     "nelements": 5,
     "nsites": 24,
-    "pretty_formula": "Ag2H12C6N3Cl",
+    "pretty_formula": "Ag2C6ClH12N3",
     "species": [
       {
         "chemical_symbols": [
@@ -1428,7 +1428,7 @@
     ],
     "nelements": 5,
     "nsites": 25,
-    "pretty_formula": "Ag2H2C2N6O13",
+    "pretty_formula": "Ag2C2H2N6O13",
     "species": [
       {
         "chemical_symbols": [
