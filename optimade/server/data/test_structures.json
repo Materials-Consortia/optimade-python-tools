@@ -64,11 +64,14 @@
     "structure_features": [],
     "task_id": "mpf_1",
     "relationships": {
-        "references": {
-            "data": [
-                {"type": "references", "id": "dijkstra1968"}
-            ]
-        }
+      "references": {
+        "data": [
+          {
+            "type": "references",
+            "id": "dijkstra1968"
+          }
+        ]
+      }
     }
   },
   {
@@ -176,11 +179,14 @@
     "structure_features": [],
     "task_id": "mpf_2",
     "relationships": {
-        "references": {
-            "data": [
-                {"type": "references", "id": "dijkstra1968"}
-            ]
-        }
+      "references": {
+        "data": [
+          {
+            "type": "references",
+            "id": "dijkstra1968"
+          }
+        ]
+      }
     }
   },
   {
@@ -288,11 +294,14 @@
     "structure_features": [],
     "task_id": "mpf_3",
     "relationships": {
-        "references": {
-            "data": [
-                {"type": "references", "id": "maddox1988"}
-            ]
-        }
+      "references": {
+        "data": [
+          {
+            "type": "references",
+            "id": "maddox1988"
+          }
+        ]
+      }
     }
   },
   {
@@ -556,7 +565,7 @@
     ],
     "nelements": 4,
     "nsites": 5,
-    "pretty_formula": "AcCuO2F",
+    "pretty_formula": "AcCuFO2",
     "species": [
       {
         "chemical_symbols": [
@@ -798,7 +807,7 @@
     ],
     "nelements": 4,
     "nsites": 16,
-    "pretty_formula": "Ag10Te4BrCl",
+    "pretty_formula": "Ag10BrClTe4",
     "species": [
       {
         "chemical_symbols": [
@@ -960,7 +969,7 @@
     ],
     "nelements": 6,
     "nsites": 10,
-    "pretty_formula": "Ag2CSNClO4",
+    "pretty_formula": "Ag2CClNO4S",
     "species": [
       {
         "chemical_symbols": [
@@ -1202,7 +1211,7 @@
     ],
     "nelements": 5,
     "nsites": 24,
-    "pretty_formula": "Ag2H12C6N3Cl",
+    "pretty_formula": "Ag2C6ClH12N3",
     "species": [
       {
         "chemical_symbols": [
@@ -1454,7 +1463,7 @@
     ],
     "nelements": 5,
     "nsites": 25,
-    "pretty_formula": "Ag2H2C2N6O13",
+    "pretty_formula": "Ag2C2H2N6O13",
     "species": [
       {
         "chemical_symbols": [
@@ -1701,7 +1710,7 @@
     ],
     "nelements": 7,
     "nsites": 23,
-    "pretty_formula": "Ag2H8C2S2N5ClO3",
+    "pretty_formula": "Ag2C2ClH8N5O3S2",
     "species": [
       {
         "chemical_symbols": [
@@ -1937,7 +1946,7 @@
     ],
     "nelements": 6,
     "nsites": 18,
-    "pretty_formula": "Ag4Hg5S5IBrCl2",
+    "pretty_formula": "Ag4BrCl2Hg5IS5",
     "species": [
       {
         "chemical_symbols": [
@@ -2443,7 +2452,7 @@
     ],
     "nelements": 8,
     "nsites": 74,
-    "pretty_formula": "AgB10P2H40C15NCl2O3",
+    "pretty_formula": "AgB10C15Cl2H40NO3P2",
     "species": [
       {
         "chemical_symbols": [
@@ -2796,7 +2805,7 @@
     ],
     "nelements": 7,
     "nsites": 29,
-    "pretty_formula": "AgH14C3S3N6ClO",
+    "pretty_formula": "AgC3ClH14N6OS3",
     "species": [
       {
         "chemical_symbols": [
@@ -3172,7 +3181,7 @@
     ],
     "nelements": 8,
     "nsites": 44,
-    "pretty_formula": "Ba2NaCe2Ti2FeSi8HO27",
+    "pretty_formula": "Ba2Ce2FeHNaO27Si8Ti2",
     "species": [
       {
         "chemical_symbols": [
@@ -3574,7 +3583,7 @@
     ],
     "nelements": 9,
     "nsites": 44,
-    "pretty_formula": "Ba2NaTi2MnRe2Si8HO26F",
+    "pretty_formula": "Ba2FHMnNaO26Re2Si8Ti2",
     "species": [
       {
         "chemical_symbols": [
@@ -3708,9 +3717,12 @@
     "task_id": "mpf_3819",
     "relationships": {
       "references": {
-          "data": [
-              {"type": "references", "id": "dummy/2019"}
-          ]
+        "data": [
+          {
+            "type": "references",
+            "id": "dummy/2019"
+          }
+        ]
       }
     }
   }
