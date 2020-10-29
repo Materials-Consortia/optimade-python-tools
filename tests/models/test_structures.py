@@ -39,3 +39,44 @@ def test_bad_structures(bad_structures, mapper):
         print(f"Trying structure number {index} from 'test_bad_structures.json'")
         with pytest.raises(ValidationError):
             StructureResource(**mapper(MAPPER).map_back(structure))
+
+
+deformities = (
+    None,
+    {"chemical_formula_anonymous": "AaBC"},
+    {"chemical_formula_anonymous": "BC"},
+    {"chemical_formula_anonymous": "A1B1"},
+    {"chemical_formula_anonymous": "BC1"},
+    {"chemical_formula_anonymous": "A9C"},
+    {"chemical_formula_anonymous": "A9.2B"},
+    {"chemical_formula_anonymous": "A2B90"},
+    {"chemical_formula_anonymous": "A2B10"},
+    {"chemical_formula_hill": "SiGe"},
+    {"chemical_formula_hill": "GeHSi"},
+    {"chemical_formula_hill": "CGeHSi"},
+    {"chemical_formula_reduced": "Ge1.0Si1.0"},
+    {"chemical_formula_reduced": "GeSi2.0"},
+    {"chemical_formula_reduced": "GeSi.2"},
+    {"chemical_formula_reduced": "Ge1Si"},
+    {"chemical_formula_reduced": "GeSi1"},
+    {"chemical_formula_reduced": "SiGe2"},
+    {"chemical_formula_reduced": "FaKeElEmENtS"},
+    {"chemical_formula_reduced": "abcd"},
+    {"chemical_formula_reduced": "a2BeH"},
+    {"chemical_formula_reduced": "............"},
+    {"chemical_formula_reduced": "Ag6 Cl2"},
+)
+
+
+@pytest.mark.parametrize("deformity", deformities)
+def test_structure_deformities(good_structure, deformity):
+    """Make specific checks upon performing single invalidating deformations
+    of the data of a good structure.
+
+    """
+    if deformity is None:
+        StructureResource(**good_structure)
+    else:
+        good_structure["attributes"].update(deformity)
+        with pytest.raises(ValidationError, match=fr".*{list(deformity.keys())[0]}.*"):
+            StructureResource(**good_structure)
