@@ -30,7 +30,12 @@ jobs:
         pip install -U setuptools
         pip install -U -e .[all]
 
-    - name: Update version and generate changelog
+    - name: Update changelog
+      uses: CharMixer/auto-changelog-action@v1.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/workflows/update_docs.sh
 
     - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'

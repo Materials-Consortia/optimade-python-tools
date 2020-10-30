@@ -18,13 +18,6 @@ fi
 echo -e "\n-o- Update version -o-"
 invoke setver --ver="${GITHUB_REF#refs/tags/}"
 
-echo -e "\n-o- Generate changelog -o-"
-sudo apt-get update && sudo apt-get -y install ruby-full
-export GEM_HOME="${HOME}/gems"
-export PATH="${GEM_HOME}/bin:${PATH}"
-gem install github_changelog_generator
-github_changelog_generator --user "Materials-Consortia" --project "optimade-python-tools" --token ${INPUT_TOKEN}
-
 echo -e "\n-o- Overwrite old CHANGELOG.md -o-"
 mv -f CHANGELOG.md docs/
 
