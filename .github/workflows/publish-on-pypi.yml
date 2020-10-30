@@ -30,30 +30,18 @@ jobs:
         pip install -U setuptools
         pip install -U -e .[all]
 
-    - name: Update version, generate changelog, and update '${{ env.PUBLISH_UPDATE_BRANCH }}'
-      uses: CasperWA/push-protected@v2.1.0
+    - name: Update version and generate changelog
+      run: .github/workflows/update_docs.sh
+
+    - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
+      uses: CasperWA/push-protected@v2
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
-        repository: ${{ github.repository }}
         branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-        changes: .github/workflows/update_docs.sh
         unprotect_reviews: true
         sleep: 15
-
-    - name: Update tag to latest commit (getting the newest version locally)
-      run: |
-        git config --local user.email "dev@optimade.org"
-        git config --local user.name "OPTIMADE Developers"
-
-        git fetch origin
-        git branch ${{ env.PUBLISH_UPDATE_BRANCH }} origin/${{ env.PUBLISH_UPDATE_BRANCH }}
-        git checkout ${{ env.PUBLISH_UPDATE_BRANCH }}
-
-        TAG_MSG=.github/workflows/release_tag_msg.txt
-        sed -i "s|TAG_NAME|${GITHUB_REF#refs/tags/}|" "${TAG_MSG}"
-
-        git tag -af -F "${TAG_MSG}" ${GITHUB_REF#refs/tags/}
-        git push -f --tags
+        force: true
+        tags: true
 
     - name: Build source distribution
       run: python ./setup.py sdist
