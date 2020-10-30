@@ -31,7 +31,7 @@ jobs:
         pip install -U -e .[all]
 
     - name: Update version, generate changelog, and update '${{ env.PUBLISH_UPDATE_BRANCH }}'
-      uses: CasperWA/push-protected@v1
+      uses: CasperWA/push-protected@v2.1.0
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         repository: ${{ github.repository }}
