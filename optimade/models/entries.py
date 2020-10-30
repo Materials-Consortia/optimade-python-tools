@@ -165,14 +165,7 @@ It is RECOMMENDED that non-standard (non-SI) units are described in the descript
 If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.""",
     )
 
-    type: Optional[DataType] = StrictField(
-        None,
-        description="""The type of the property's value.
-This MUST be any of the types defined in the Data types section.
-For the purpose of compatibility with future versions of this specification, a client MUST accept values that are not `string` values specifying any of the OPTIMADE Data types, but MUST then also disregard the `type` field.
-Note, if the value is a nested type, only the outermost type should be reported.
-E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`.""",
-    )
+    type: Optional[DataType] = StrictField(None)
 
 
 class EntryInfoResource(BaseModel):

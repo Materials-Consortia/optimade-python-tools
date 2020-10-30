@@ -19,7 +19,8 @@ __all__ = (
 
 
 class LinkType(Enum):
-    """Enumeration of link_type values"""
+    """The type of the linked relation.
+    MUST be one of these values: 'child', 'root', 'external', 'providers'."""
 
     CHILD = "child"
     ROOT = "root"
@@ -28,7 +29,16 @@ class LinkType(Enum):
 
 
 class Aggregate(Enum):
-    """Enumeration of aggregate values"""
+    """A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.
+    This flag SHOULD NOT be indicated for links where `link_type` is not `child`.
+
+    If not specified, clients MAY assume that the value is `ok`.
+    If specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).
+
+    Specific values indicate the reason why the server is providing the suggestion.
+    A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).
+
+    If specified, it MUST be one of the values listed in section Link Aggregate Options."""
 
     OK = "ok"
     TEST = "test"
@@ -57,25 +67,9 @@ class LinksResourceAttributes(Attributes):
         description="JSON API links object, pointing to a homepage URL for this implementation",
     )
 
-    link_type: LinkType = StrictField(
-        ...,
-        description="""The type of the linked relation.
-MUST be one of these values: 'child', 'root', 'external', 'providers'.""",
-    )
+    link_type: LinkType = StrictField(...)
 
-    aggregate: Optional[Aggregate] = StrictField(
-        "ok",
-        description="""A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.
-This flag SHOULD NOT be indicated for links where `link_type` is not `child`.
-
-If not specified, clients MAY assume that the value is `ok`.
-If specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).
-
-Specific values indicate the reason why the server is providing the suggestion.
-A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).
-
-If specified, it MUST be one of the values listed in section Link Aggregate Options.""",
-    )
+    aggregate: Optional[Aggregate] = StrictField("ok")
 
     no_aggregate_reason: Optional[str] = StrictField(
         None,

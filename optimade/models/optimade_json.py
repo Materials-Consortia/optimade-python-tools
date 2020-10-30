@@ -28,10 +28,11 @@ __all__ = (
 
 
 class DataType(Enum):
-    """Optimade Data Types
-
-    See the section "Data types" in the OPTIMADE API specification for more information.
-    """
+    """The type of the property's value.
+    This MUST be any of the types defined in the Data types section.
+    For the purpose of compatibility with future versions of this specification, a client MUST accept values that are not `string` values specifying any of the OPTIMADE Data types, but MUST then also disregard the `type` field.
+    Note, if the value is a nested type, only the outermost type should be reported.
+    E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`."""
 
     STRING = "string"
     INTEGER = "integer"
