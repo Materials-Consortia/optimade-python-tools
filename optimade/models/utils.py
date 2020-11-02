@@ -1,6 +1,7 @@
 import inspect
 import warnings
 import re
+import itertools
 from enum import Enum
 from typing import Optional
 
@@ -181,6 +182,22 @@ class SemanticVersion(str):
         """ The base version string without patch and metadata info. """
         return f"{self.major}.{self.minor}.{self.patch}"
 
+
+def anonymous_element_generator():
+    """ Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme. """
+    from string import ascii_lowercase
+
+    for size in itertools.count(1):
+        for s in itertools.product(ascii_lowercase, repeat=size):
+            s = list(s)
+            s[0] = s[0].upper()
+            yield "".join(s)
+
+
+ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
+""" Returns the first 150 values of the anonymous element generator. """
+
+CHEMICAL_FORMULA_REGEXP = r"^([A-Z][a-z]?\d*)*$"
 
 EXTRA_SYMBOLS = ["X", "vacancy"]
 

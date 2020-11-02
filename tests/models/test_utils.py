@@ -1,5 +1,5 @@
 import pytest
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError, Field
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 from typing import List, Callable
 
@@ -74,3 +74,40 @@ def test_compatible_strict_optimade_field():
     strict_schema = CorrectModelWithStrictField.schema()
     strict_schema["title"] = optimade_schema["title"]
     assert strict_schema == optimade_schema
+
+
+def test_formula_regexp():
+    """This test checks some simple chemical formulae with the
+    `CHEMICAL_FORMULA_REGEXP`.
+
+    """
+    import re
+    from optimade.models.utils import CHEMICAL_FORMULA_REGEXP
+
+    class DummyModel(BaseModel):
+        formula: str = Field(regex=CHEMICAL_FORMULA_REGEXP)
+
+    good_formulae = (
+        "AgCl",
+        "H5F",
+        "LiP5",
+        "Jn7Qb4",  # Regexp does not care about the actual existence of elements
+        "A5B213CeD3E65F12G",
+        "A1Be2",
+    )
+
+    bad_formulae = (
+        "Ag...Cl",
+        "123123",
+        "Ag   Cl",
+        "abcd",
+        "6F7G",
+    )
+
+    for formula in good_formulae:
+        assert re.match(CHEMICAL_FORMULA_REGEXP, formula)
+        assert DummyModel(formula=formula)
+
+    for formula in bad_formulae:
+        with pytest.raises(ValidationError):
+            assert DummyModel(formula=formula)
