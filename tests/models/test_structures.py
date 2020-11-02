@@ -54,6 +54,7 @@ deformities = (
     {"chemical_formula_hill": "SiGe"},
     {"chemical_formula_hill": "GeHSi"},
     {"chemical_formula_hill": "CGeHSi"},
+    {"chemical_formula_hill": "HCGeSi"},
     {"chemical_formula_reduced": "Ge1.0Si1.0"},
     {"chemical_formula_reduced": "GeSi2.0"},
     {"chemical_formula_reduced": "GeSi.2"},
