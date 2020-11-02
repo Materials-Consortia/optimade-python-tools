@@ -87,7 +87,7 @@ def validate():
         "--page_limit",
         type=int,
         default=5,
-        help="Alter the requested page limit for some tests",
+        help="Alter the requested page limit for some tests.",
     )
 
     args = vars(parser.parse_args())
