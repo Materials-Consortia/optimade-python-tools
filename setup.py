@@ -46,7 +46,7 @@ testing_deps = [
     "jsondiff~=1.2",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.6", "pre-commit~=2.7", "invoke~=1.4"]
+    ["pylint~=2.6", "pre-commit~=2.8", "invoke~=1.4"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -89,7 +89,7 @@ setup(
     install_requires=[
         "lark-parser~=0.10.1",
         "fastapi~=0.61.1",
-        "pydantic~=1.6",
+        "pydantic~=1.6.1",
         "email_validator~=1.1",
         "requests~=2.24",
         'typing-extensions~=3.7;python_version<"3.8"',

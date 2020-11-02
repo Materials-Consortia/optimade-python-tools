@@ -506,7 +506,7 @@
         0.4
       ],
       "chemical_formula_descriptive": "AcCuO2F",
-      "chemical_formula_reduced": "AcCuO2F",
+      "chemical_formula_reduced": "AcCuFO2",
       "chemical_formula_anonymous": "A2BCD",
       "dimension_types": [
         1,
@@ -691,7 +691,7 @@
         0.25
       ],
       "chemical_formula_descriptive": "Ag10Te4BrCl",
-      "chemical_formula_reduced": "Ag10Te4BrCl",
+      "chemical_formula_reduced": "Ag10BrClTe4",
       "chemical_formula_anonymous": "A10B4CD",
       "dimension_types": [
         1,
@@ -882,7 +882,7 @@
         0.1
       ],
       "chemical_formula_descriptive": "Ag2CSNClO4",
-      "chemical_formula_reduced": "Ag2CSNClO4",
+      "chemical_formula_reduced": "Ag2CClNO4S",
       "chemical_formula_anonymous": "A4B2CDEF",
       "dimension_types": [
         1,
@@ -1053,7 +1053,7 @@
         0.125
       ],
       "chemical_formula_descriptive": "Ag2H12C6N3Cl",
-      "chemical_formula_reduced": "Ag2H12C6N3Cl",
+      "chemical_formula_reduced": "Ag2C6ClH12N3",
       "chemical_formula_anonymous": "A12B6C3D2E",
       "dimension_types": [
         1,
@@ -1299,7 +1299,7 @@
         0.52
       ],
       "chemical_formula_descriptive": "Ag2H2C2N6O13",
-      "chemical_formula_reduced": "Ag2H2C2N6O13",
+      "chemical_formula_reduced": "Ag2C2H2N6O13",
       "chemical_formula_anonymous": "A13B6C2D2E2",
       "dimension_types": [
         1,
@@ -1555,7 +1555,7 @@
         0.08695652173913043
       ],
       "chemical_formula_descriptive": "Ag2H8C2S2N5ClO3",
-      "chemical_formula_reduced": "Ag2H8C2S2N5ClO3",
+      "chemical_formula_reduced": "Ag2C2ClH8N5O3S2",
       "chemical_formula_anonymous": "A8B5C3D2E2F2G",
       "dimension_types": [
         1,
@@ -1815,7 +1815,7 @@
         0.2777777777777778
       ],
       "chemical_formula_descriptive": "Ag4Hg5S5IBrCl2",
-      "chemical_formula_reduced": "Ag4Hg5S5IBrCl2",
+      "chemical_formula_reduced": "Ag4BrCl2Hg5IS5",
       "chemical_formula_anonymous": "A5B5C4D2EF",
       "dimension_types": [
         1,
@@ -2040,7 +2040,7 @@
         0.02702702702702703
       ],
       "chemical_formula_descriptive": "AgB10P2H40C15NCl2O3",
-      "chemical_formula_reduced": "AgB10P2H40C15NCl2O3",
+      "chemical_formula_reduced": "AgB10C15Cl2H40NO3P2",
       "chemical_formula_anonymous": "A40B15C10D3E2F2GH",
       "dimension_types": [
         1,
@@ -2617,7 +2617,7 @@
         0.10344827586206896
       ],
       "chemical_formula_descriptive": "AgH14C3S3N6ClO",
-      "chemical_formula_reduced": "AgH14C3S3N6ClO",
+      "chemical_formula_reduced": "AgC3ClH14N6OS3",
       "chemical_formula_anonymous": "A14B6C3D3EFG",
       "dimension_types": [
         1,
@@ -2917,7 +2917,7 @@
         0.045454545454545456
       ],
       "chemical_formula_descriptive": "Ba2NaCe2Ti2FeSi8HO27",
-      "chemical_formula_reduced": "Ba2NaCe2Ti2FeSi8HO27",
+      "chemical_formula_reduced": "Ba2Ce2FeHNaO27Si8Ti2",
       "chemical_formula_anonymous": "A27B8C2D2E2FGH",
       "dimension_types": [
         1,
@@ -3318,7 +3318,7 @@
         0.045454545454545456
       ],
       "chemical_formula_descriptive": "Ba2NaTi2MnRe2Si8HO26F",
-      "chemical_formula_reduced": "Ba2NaTi2MnRe2Si8HO26F",
+      "chemical_formula_reduced": "Ba2FHMnNaO26Re2Si8Ti2",
       "chemical_formula_anonymous": "A26B8C2D2E2FGHI",
       "dimension_types": [
         1,

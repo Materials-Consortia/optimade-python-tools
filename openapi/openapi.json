@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "OPTIMADE API",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.1) v0.12.1.",
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.2) v0.12.2.",
     "version": "1.0.0"
   },
   "paths": {
@@ -3050,16 +3050,19 @@
           },
           "chemical_formula_reduced": {
             "title": "Chemical Formula Reduced",
+            "pattern": "^([A-Z][a-z]?\\d*)*$",
             "type": "string",
             "description": "The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.\nThe proportion number MUST be omitted if it is 1.\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property.\n      However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).\n      Intricate queries on formula components are instead suggested to be formulated using set-type filter operators on the multi valued `elements` and `elements_ratios` properties.\n    - Element names MUST have proper capitalization (e.g., `\"Si\"`, not `\"SI\"` for \"silicon\").\n    - Elements MUST be placed in alphabetical order, followed by their integer chemical proportion number.\n    - For structures with no partial occupation, the chemical proportion numbers are the smallest integers for which the chemical proportion is exactly correct.\n    - For structures with partial occupation, the chemical proportion numbers are integers that within reasonable approximation indicate the correct chemical proportions. The precise details of how to perform the rounding is chosen by the API implementation.\n    - No spaces or separators are allowed.\n\n- **Examples**:\n    - `\"H2NaO\"`\n    - `\"ClNa\"`\n    - `\"CCaO3\"`\n\n- **Query examples**:\n    - A filter that matches an exactly given formula is `chemical_formula_reduced=\"H2NaO\"`."
           },
           "chemical_formula_hill": {
             "title": "Chemical Formula Hill",
+            "pattern": "^([A-Z][a-z]?\\d*)*$",
             "type": "string",
             "description": "The chemical formula for a structure in [Hill form](https://dx.doi.org/10.1021/ja02046a005) with element symbols followed by integer chemical proportion numbers. The proportion number MUST be omitted if it is 1.\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, only a subset of the filter features MAY be supported.\n    - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.\n      For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, `chemical_formula_hill` is `\"H2O2\"` (i.e., not `\"HO\"`, nor `\"H4O4\"`).\n    - If the chemical insight needed to ascribe a Hill formula to the system is not present, the property MUST be handled as unset.\n    - Element names MUST have proper capitalization (e.g., `\"Si\"`, not `\"SI\"` for \"silicon\").\n    - Elements MUST be placed in [Hill order](https://dx.doi.org/10.1021/ja02046a005), followed by their integer chemical proportion number.\n      Hill order means: if carbon is present, it is placed first, and if also present, hydrogen is placed second.\n      After that, all other elements are ordered alphabetically.\n      If carbon is not present, all elements are ordered alphabetically.\n    - If the system has sites with partial occupation and the total occupations of each element do not all sum up to integers, then the Hill formula SHOULD be handled as unset.\n    - No spaces or separators are allowed.\n\n- **Examples**:\n    - `\"H2O2\"`\n\n- **Query examples**:\n    - A filter that matches an exactly given formula is `chemical_formula_hill=\"H2O2\"`."
           },
           "chemical_formula_anonymous": {
             "title": "Chemical Formula Anonymous",
+            "pattern": "^([A-Z][a-z]?\\d*)*$",
             "type": "string",
             "description": "The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property.\n      However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).\n\n- **Examples**:\n    - `\"A2B\"`\n    - `\"A42B42C16D12E10F9G5\"`\n\n- **Querying**:\n    - A filter that matches an exactly given formula is `chemical_formula_anonymous=\"A2B\"`."
           },

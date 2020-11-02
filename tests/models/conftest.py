@@ -63,3 +63,49 @@ def starting_links() -> dict:
         "aggregate": "test",
         "no_aggregate_reason": "This is a test database",
     }
+
+
+@pytest.fixture(scope="function")
+def good_structure() -> dict:
+    """Returns a 'good' structure that does not need to be mapped, which can be
+    deformed to test different validators.
+
+    """
+    import datetime
+
+    return {
+        "id": "db/1234567",
+        "type": "structures",
+        "attributes": {
+            "last_modified": datetime.datetime.now(),
+            "elements": ["Ge", "Si"],
+            "nsites": 3,
+            "nelements": 2,
+            "elements_ratios": [0.5, 0.5],
+            "chemical_formula_reduced": "GeSi",
+            "chemical_formula_hill": "GeSi",
+            "chemical_formula_descriptive": "GeSi",
+            "chemical_formula_anonymous": "AB",
+            "dimension_types": [1, 1, 1],
+            "nperiodic_dimensions": 3,
+            "lattice_vectors": [[4.0, 0.0, 0.0], [0.0, 4.0, 0.0], [0.0, 1.0, 4.0]],
+            "cartesian_site_positions": [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            "species": [
+                {"name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0]},
+                {"name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0]},
+                {
+                    "name": "vac",
+                    "chemical_symbols": ["vacancy"],
+                    "concentration": [1.0],
+                },
+            ],
+            "species_at_sites": ["Si", "Ge", "vac"],
+            "assemblies": [
+                {
+                    "sites_in_groups": [[0], [1], [2]],
+                    "group_probabilities": [0.3, 0.5, 0.2],
+                }
+            ],
+            "structure_features": ["assemblies"],
+        },
+    }

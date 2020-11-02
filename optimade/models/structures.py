@@ -1,4 +1,5 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
+import re
 from enum import IntEnum, Enum
 from sys import float_info
 from typing import List, Optional, Union
@@ -12,6 +13,8 @@ from optimade.models.utils import (
     OptimadeField,
     StrictField,
     SupportLevel,
+    ANONYMOUS_ELEMENTS,
+    CHEMICAL_FORMULA_REGEXP,
 )
 
 EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
@@ -366,6 +369,7 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_reduced="H2NaO"`.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
+        regex=CHEMICAL_FORMULA_REGEXP,
     )
 
     chemical_formula_hill: Optional[str] = OptimadeField(
@@ -396,6 +400,7 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_hill="H2O2"`.""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
+        regex=CHEMICAL_FORMULA_REGEXP,
     )
 
     chemical_formula_anonymous: str = OptimadeField(
@@ -417,6 +422,7 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_anonymous="A2B"`.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
+        regex=CHEMICAL_FORMULA_REGEXP,
     )
 
     dimension_types: conlist(Periodicity, min_items=3, max_items=3) = OptimadeField(
@@ -758,6 +764,62 @@ The properties of the species are found in the property `species`.
         queryable=SupportLevel.MUST,
     )
 
+    @validator("chemical_formula_reduced", "chemical_formula_hill")
+    def check_ordered_formula(cls, v, field):
+        if v is None:
+            return v
+
+        numbers = re.findall(r"(\d+\.?)+", v)
+        elements = re.findall(r"[A-Z][a-z]?", v)
+        expected_elements = sorted(elements)
+
+        if field.name == "chemical_formula_hill":
+            for elem in ("C", "H"):
+                if elem in expected_elements:
+                    expected_elements.pop(expected_elements.index(elem))
+                    expected_elements.insert(0, elem)
+
+        if any(elem not in CHEMICAL_SYMBOLS for elem in elements):
+            raise ValueError(
+                f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {field.name!r}"
+            )
+
+        if "1" in numbers:
+            raise ValueError(
+                "Must omit proportion '1' from formula {v} in {field.name!r}"
+            )
+        if expected_elements != elements:
+            order = "Hill" if field == "chemical_formula_hill" else "alphabetical"
+            raise ValueError(
+                f"Elements in {field.name!r} must appear in {order} order: {expected_elements} not {elements}."
+            )
+
+        return v
+
+    @validator("chemical_formula_anonymous")
+    def check_anonymous_formula(cls, v):
+        elements = tuple(re.findall(r"[A-Z][a-z]*", v))
+        numbers = [int(n.strip()) for n in re.split(r"[A-Z][a-z]*", v) if n.strip()]
+
+        if any(n == 1 for n in numbers):
+            raise ValueError(
+                "'chemical_formula_anonymous' {v} must omit proportion '1'"
+            )
+
+        expected_labels = ANONYMOUS_ELEMENTS[: len(elements)]
+        expected_numbers = sorted(numbers, reverse=True)
+
+        if expected_numbers != numbers:
+            raise ValueError(
+                f"'chemical_formula_anonymous' {v} has wrong order: elements with highest proportion should appear first: {numbers} vs expected {expected_numbers}"
+            )
+        if elements != expected_labels:
+            raise ValueError(
+                f"'chemical_formula_anonymous' {v} has wrong labels: {elements} vs expected {expected_labels}."
+            )
+
+        return v
+
     @validator("elements", each_item=True)
     def element_must_be_chemical_symbol(cls, v):
         if v not in CHEMICAL_SYMBOLS:
@@ -776,12 +838,6 @@ The properties of the species are found in the property `species`.
             raise ValueError(
                 f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
             )
-        return v
-
-    @validator("chemical_formula_reduced", "chemical_formula_hill")
-    def no_spaces_in_reduced(cls, v):
-        if v and " " in v:
-            raise ValueError(f"Spaces are not allowed, you passed: {v}")
         return v
 
     @validator("nperiodic_dimensions")
