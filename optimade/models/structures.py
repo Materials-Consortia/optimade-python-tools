@@ -774,11 +774,12 @@ The properties of the species are found in the property `species`.
         expected_elements = sorted(elements)
 
         if field.name == "chemical_formula_hill":
-            # Make sure C is first and H is second.
-            for elem in ("H", "C"):
-                if elem in expected_elements:
-                    expected_elements.pop(expected_elements.index(elem))
-                    expected_elements.insert(0, elem)
+            # Make sure C is first (and H is second, if present along with C).
+            if "C" in expected_elements:
+                expected_elements = sorted(
+                    expected_elements,
+                    key=lambda elem: {"C": "0", "H": "1"}.get(elem, elem),
+                )
 
         if any(elem not in CHEMICAL_SYMBOLS for elem in elements):
             raise ValueError(
