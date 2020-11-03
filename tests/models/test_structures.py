@@ -43,29 +43,98 @@ def test_bad_structures(bad_structures, mapper):
 
 deformities = (
     None,
-    {"chemical_formula_anonymous": "AaBC"},
-    {"chemical_formula_anonymous": "BC"},
-    {"chemical_formula_anonymous": "A1B1"},
-    {"chemical_formula_anonymous": "BC1"},
-    {"chemical_formula_anonymous": "A9C"},
-    {"chemical_formula_anonymous": "A9.2B"},
-    {"chemical_formula_anonymous": "A2B90"},
-    {"chemical_formula_anonymous": "A2B10"},
-    {"chemical_formula_hill": "SiGe"},
-    {"chemical_formula_hill": "GeHSi"},
-    {"chemical_formula_hill": "CGeHSi"},
-    {"chemical_formula_hill": "HCGeSi"},
-    {"chemical_formula_reduced": "Ge1.0Si1.0"},
-    {"chemical_formula_reduced": "GeSi2.0"},
-    {"chemical_formula_reduced": "GeSi.2"},
-    {"chemical_formula_reduced": "Ge1Si"},
-    {"chemical_formula_reduced": "GeSi1"},
-    {"chemical_formula_reduced": "SiGe2"},
-    {"chemical_formula_reduced": "FaKeElEmENtS"},
-    {"chemical_formula_reduced": "abcd"},
-    {"chemical_formula_reduced": "a2BeH"},
-    {"chemical_formula_reduced": "............"},
-    {"chemical_formula_reduced": "Ag6 Cl2"},
+    (
+        {"chemical_formula_anonymous": "AaBC"},
+        "'chemical_formula_anonymous' AaBC has wrong labels: ('Aa', 'B', 'C') vs expected ('A', 'B', 'C')",
+    ),
+    (
+        {"chemical_formula_anonymous": "BC"},
+        "'chemical_formula_anonymous' BC has wrong labels: ('B', 'C') vs expected ('A', 'B')",
+    ),
+    (
+        {"chemical_formula_anonymous": "A1B1"},
+        "'chemical_formula_anonymous' A1B1 must omit proportion '1'",
+    ),
+    (
+        {"chemical_formula_anonymous": "BC1"},
+        "'chemical_formula_anonymous' BC1 must omit proportion '1'",
+    ),
+    (
+        {"chemical_formula_anonymous": "A9C"},
+        "'chemical_formula_anonymous' A9C has wrong labels: ('A', 'C') vs expected ('A', 'B')",
+    ),
+    (
+        {"chemical_formula_anonymous": "A9.2B"},
+        "chemical_formula_anonymous\n  string does not match regex",
+    ),
+    (
+        {"chemical_formula_anonymous": "A2B90"},
+        "'chemical_formula_anonymous' A2B90 has wrong order: elements with highest proportion should appear first: [2, 90] vs expected [90, 2]",
+    ),
+    (
+        {"chemical_formula_anonymous": "A2B10"},
+        "'chemical_formula_anonymous' A2B10 has wrong order: elements with highest proportion should appear first: [2, 10] vs expected [10, 2]",
+    ),
+    (
+        {"chemical_formula_hill": "SiGe"},
+        "Elements in 'chemical_formula_hill' must appear in Hill order: ['Ge', 'Si'] not ['Si', 'Ge']",
+    ),
+    (
+        {"chemical_formula_hill": "GeHSi"},
+        "Elements in 'chemical_formula_hill' must appear in Hill order: ['H', 'Ge', 'Si'] not ['Ge', 'H', 'Si']",
+    ),
+    (
+        {"chemical_formula_hill": "CGeHSi"},
+        "Elements in 'chemical_formula_hill' must appear in Hill order: ['C', 'H', 'Ge', 'Si'] not ['C', 'Ge', 'H', 'Si']",
+    ),
+    (
+        {"chemical_formula_hill": "HCGeSi"},
+        "Elements in 'chemical_formula_hill' must appear in Hill order: ['C', 'H', 'Ge', 'Si'] not ['H', 'C', 'Ge', 'Si']",
+    ),
+    (
+        {"chemical_formula_reduced": "Ge1.0Si1.0"},
+        "chemical_formula_reduced\n  string does not match regex",
+    ),
+    (
+        {"chemical_formula_reduced": "GeSi2.0"},
+        "chemical_formula_reduced\n  string does not match regex",
+    ),
+    (
+        {"chemical_formula_reduced": "GeSi.2"},
+        "chemical_formula_reduced\n  string does not match regex",
+    ),
+    (
+        {"chemical_formula_reduced": "Ge1Si"},
+        "Must omit proportion '1' from formula Ge1Si in 'chemical_formula_reduced'",
+    ),
+    (
+        {"chemical_formula_reduced": "GeSi1"},
+        "Must omit proportion '1' from formula GeSi1 in 'chemical_formula_reduced'",
+    ),
+    (
+        {"chemical_formula_reduced": "SiGe2"},
+        "Elements in 'chemical_formula_reduced' must appear in alphabetical order: ['Ge', 'Si'] not ['Si', 'Ge']",
+    ),
+    (
+        {"chemical_formula_reduced": "FaKeElEmENtS"},
+        "Cannot use unknown chemical symbols ['Fa', 'Ke', 'El', 'Em', 'E', 'Nt'] in 'chemical_formula_reduced'",
+    ),
+    (
+        {"chemical_formula_reduced": "abcd"},
+        "chemical_formula_reduced\n  string does not match regex",
+    ),
+    (
+        {"chemical_formula_reduced": "a2BeH"},
+        "chemical_formula_reduced\n  string does not match regex",
+    ),
+    (
+        {"chemical_formula_reduced": "............"},
+        "chemical_formula_reduced\n  string does not match regex",
+    ),
+    (
+        {"chemical_formula_reduced": "Ag6 Cl2"},
+        "chemical_formula_reduced\n  string does not match regex",
+    ),
 )
 
 
@@ -75,9 +144,12 @@ def test_structure_deformities(good_structure, deformity):
     of the data of a good structure.
 
     """
+    import re
+
     if deformity is None:
+        return StructureResource(**good_structure)
+
+    deformity, message = deformity
+    good_structure["attributes"].update(deformity)
+    with pytest.raises(ValidationError, match=fr".*{re.escape(message)}.*"):
         StructureResource(**good_structure)
-    else:
-        good_structure["attributes"].update(deformity)
-        with pytest.raises(ValidationError, match=fr".*{list(deformity.keys())[0]}.*"):
-            StructureResource(**good_structure)
