@@ -80,8 +80,8 @@ deformities = (
         "Elements in 'chemical_formula_hill' must appear in Hill order: ['Ge', 'Si'] not ['Si', 'Ge']",
     ),
     (
-        {"chemical_formula_hill": "GeHSi"},
-        "Elements in 'chemical_formula_hill' must appear in Hill order: ['H', 'Ge', 'Si'] not ['Ge', 'H', 'Si']",
+        {"chemical_formula_hill": "HGeSi"},
+        "Elements in 'chemical_formula_hill' must appear in Hill order: ['Ge', 'H', 'Si'] not ['H', 'Ge', 'Si']",
     ),
     (
         {"chemical_formula_hill": "CGeHSi"},
