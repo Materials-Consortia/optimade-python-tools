@@ -1084,7 +1084,12 @@
             "$ref": "#/components/schemas/LinkType"
           },
           "aggregate": {
-            "$ref": "#/components/schemas/Aggregate"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Aggregate"
+              }
+            ],
+            "default": "ok"
           },
           "no_aggregate_reason": {
             "title": "No Aggregate Reason",
