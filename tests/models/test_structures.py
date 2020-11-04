@@ -4,7 +4,8 @@ import itertools
 
 from pydantic import ValidationError
 
-from optimade.models.structures import StructureResource
+from optimade.models.structures import StructureResource, CORRELATED_STRUCTURE_FIELDS
+from optimade.server.warnings import MissingExpectedField
 
 
 MAPPER = "StructureMapper"
@@ -20,6 +21,7 @@ def test_good_structures(mapper):
         StructureResource(**mapper(MAPPER).map_back(structure))
 
 
+@pytest.mark.filterwarnings("ignore", category=MissingExpectedField)
 def test_good_structure_with_missing_data(mapper, good_structure):
     """Check deserialization of well-formed structure used
     as example data with all combinations of null values
@@ -168,7 +170,7 @@ deformities = (
 
 
 @pytest.mark.parametrize("deformity", deformities)
-def test_structure_deformities(good_structure, deformity):
+def test_structure_fatal_deformities(good_structure, deformity):
     """Make specific checks upon performing single invalidating deformations
     of the data of a good structure.
 
@@ -182,3 +184,21 @@ def test_structure_deformities(good_structure, deformity):
     good_structure["attributes"].update(deformity)
     with pytest.raises(ValidationError, match=fr".*{re.escape(message)}.*"):
         StructureResource(**good_structure)
+
+
+minor_deformities = (
+    {f: None} for f in set(f for _ in CORRELATED_STRUCTURE_FIELDS for f in _)
+)
+
+
+@pytest.mark.parametrize("deformity", minor_deformities)
+def test_structure_minor_deformities(good_structure, deformity):
+    """Make specific checks upon performing single minor invalidations
+    of the data of a good structure that should emit warnings.
+    """
+    if deformity is None:
+        StructureResource(**good_structure)
+    else:
+        good_structure["attributes"].update(deformity)
+        with pytest.warns(MissingExpectedField):
+            StructureResource(**good_structure)
