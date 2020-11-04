@@ -876,7 +876,7 @@ class ImplementationValidator:
             response, response_cls, request=request_str, optional=True
         )
 
-        self._get_single_id_from_mutli_entry_endpoint(deserialized, request=request_str)
+        self._get_single_id_from_multi_entry_endpoint(deserialized, request=request_str)
         if deserialized:
             self._test_data_available_matches_data_returned(deserialized)
 
@@ -1069,7 +1069,7 @@ class ImplementationValidator:
         )
 
     @test_case
-    def _get_single_id_from_mutli_entry_endpoint(self, deserialized):
+    def _get_single_id_from_multi_entry_endpoint(self, deserialized):
         """Scrape an ID from the multi-entry endpoint to use as query
         for single entry endpoint.
 
