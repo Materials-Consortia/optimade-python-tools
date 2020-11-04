@@ -33,7 +33,7 @@ jobs:
     - name: Update changelog
       uses: CharMixer/auto-changelog-action@v1.1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
 
     - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/workflows/update_docs.sh

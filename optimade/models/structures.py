@@ -774,10 +774,12 @@ The properties of the species are found in the property `species`.
         expected_elements = sorted(elements)
 
         if field.name == "chemical_formula_hill":
-            for elem in ("C", "H"):
-                if elem in expected_elements:
-                    expected_elements.pop(expected_elements.index(elem))
-                    expected_elements.insert(0, elem)
+            # Make sure C is first (and H is second, if present along with C).
+            if "C" in expected_elements:
+                expected_elements = sorted(
+                    expected_elements,
+                    key=lambda elem: {"C": "0", "H": "1"}.get(elem, elem),
+                )
 
         if any(elem not in CHEMICAL_SYMBOLS for elem in elements):
             raise ValueError(
@@ -786,10 +788,10 @@ The properties of the species are found in the property `species`.
 
         if "1" in numbers:
             raise ValueError(
-                "Must omit proportion '1' from formula {v} in {field.name!r}"
+                f"Must omit proportion '1' from formula {v} in {field.name!r}"
             )
         if expected_elements != elements:
-            order = "Hill" if field == "chemical_formula_hill" else "alphabetical"
+            order = "Hill" if field.name == "chemical_formula_hill" else "alphabetical"
             raise ValueError(
                 f"Elements in {field.name!r} must appear in {order} order: {expected_elements} not {elements}."
             )
@@ -803,7 +805,7 @@ The properties of the species are found in the property `species`.
 
         if any(n == 1 for n in numbers):
             raise ValueError(
-                "'chemical_formula_anonymous' {v} must omit proportion '1'"
+                f"'chemical_formula_anonymous' {v} must omit proportion '1'"
             )
 
         expected_labels = ANONYMOUS_ELEMENTS[: len(elements)]
