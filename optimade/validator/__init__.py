@@ -79,6 +79,17 @@ def validate():
         help="Whether to exit on first test failure.",
     )
 
+    parser.add_argument(
+        "-m", "--minimal", action="store_true", help="Run only a minimal test set."
+    )
+
+    parser.add_argument(
+        "--page_limit",
+        type=int,
+        default=5,
+        help="Alter the requested page limit for some tests.",
+    )
+
     args = vars(parser.parse_args())
 
     if os.environ.get("OPTIMADE_VERBOSITY") is not None:
@@ -108,6 +119,8 @@ def validate():
         index=args["index"],
         run_optional_tests=not args["skip_optional"],
         fail_fast=args["fail_fast"],
+        minimal=args["minimal"],
+        page_limit=args["page_limit"],
     )
 
     try:
