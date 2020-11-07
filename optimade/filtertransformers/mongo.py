@@ -42,6 +42,7 @@ class MongoTransformer(BaseTransformer):
         query = self._apply_length_operators(query)
         query = self._apply_unknown_or_null_filter(query)
         query = self._apply_mongo_id_filter(query)
+        query = self._apply_mongo_date_filter(query)
 
         return query
 
@@ -404,6 +405,33 @@ class MongoTransformer(BaseTransformer):
 
         return recursive_postprocessing(
             filter_, check_for_id_key, replace_str_id_with_objectid
+        )
+
+    def _apply_mongo_date_filter(self, filter_: dict) -> dict:
+        """This method loops through the query and replaces any operations
+        on suspected timestamp properties with the corresponding operation
+        on a BSON `DateTime` type.
+        """
+
+        def check_for_timestamp_field(prop, _):
+            """ Find cases where the query dict is operating on a timestamp field. """
+            if self.mapper is not None:
+                prop = self.mapper.alias_of(prop)
+            return prop == "last_modified"
+
+        def replace_str_date_with_datetime(subdict, prop, expr):
+            """Encode suspected dates in with BSON. """
+            import bson.json_util
+
+            for operator in subdict[prop]:
+                subdict[prop][operator] = bson.json_util.loads(
+                    bson.json_util.dumps({"$date": subdict[prop][operator]})
+                )
+
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_timestamp_field, replace_str_date_with_datetime
         )
 
 
