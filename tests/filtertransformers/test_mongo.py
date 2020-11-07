@@ -361,6 +361,82 @@ class TestMongoTransformer:
             parser.parse("cartesian_site_positions LENGTH >= 3")
         ) == {"nsites": {"$gte": 3}}
 
+    def test_suspected_timestamp_fields(self, mapper):
+        import datetime
+        import bson.tz_util
+        from optimade.filtertransformers.mongo import MongoTransformer
+
+        example_RFC3339_date = "2019-06-08T04:13:37Z"
+        example_RFC3339_date_2 = "2019-06-08T04:13:37"
+
+        assert self.transform(f'last_modified > "{example_RFC3339_date}"') == {
+            "last_modified": {
+                "$gt": datetime.datetime(
+                    year=2019,
+                    month=6,
+                    day=8,
+                    hour=4,
+                    minute=13,
+                    second=37,
+                    microsecond=0,
+                    tzinfo=bson.tz_util.FixedOffset(0, "none"),
+                )
+            }
+        }
+        assert self.transform(f'last_modified > "{example_RFC3339_date_2}"') == {
+            "last_modified": {
+                "$gt": datetime.datetime(
+                    year=2019,
+                    month=6,
+                    day=8,
+                    hour=4,
+                    minute=13,
+                    second=37,
+                    microsecond=0,
+                    tzinfo=bson.tz_util.FixedOffset(0, "none"),
+                )
+            }
+        }
+
+        class MyMapper(mapper("StructureMapper")):
+            ALIASES = (("last_modified", "ctime"),)
+
+        transformer = MongoTransformer(mapper=MyMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
+
+        assert transformer.transform(
+            parser.parse(f'last_modified > "{example_RFC3339_date}"')
+        ) == {
+            "ctime": {
+                "$gt": datetime.datetime(
+                    year=2019,
+                    month=6,
+                    day=8,
+                    hour=4,
+                    minute=13,
+                    second=37,
+                    microsecond=0,
+                    tzinfo=bson.tz_util.FixedOffset(0, "none"),
+                )
+            }
+        }
+        assert transformer.transform(
+            parser.parse(f'last_modified > "{example_RFC3339_date_2}"')
+        ) == {
+            "ctime": {
+                "$gt": datetime.datetime(
+                    year=2019,
+                    month=6,
+                    day=8,
+                    hour=4,
+                    minute=13,
+                    second=37,
+                    microsecond=0,
+                    tzinfo=bson.tz_util.FixedOffset(0, "none"),
+                )
+            }
+        }
+
     def test_unaliased_length_operator(self):
         assert self.transform("cartesian_site_positions LENGTH <= 3") == {
             "cartesian_site_positions.4": {"$exists": False}
