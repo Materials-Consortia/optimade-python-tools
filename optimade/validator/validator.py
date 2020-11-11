@@ -37,7 +37,7 @@ from optimade.validator.utils import (
 
 from optimade.validator.config import VALIDATOR_CONFIG as CONF
 
-VERSIONS_REGEXP = r"/v[0-9]+(\.[0-9]+){,2}"
+VERSIONS_REGEXP = r".*/v[0-9]+(\.[0-9]+){,2}$"
 
 __all__ = ("ImplementationValidator",)
 
@@ -995,7 +995,7 @@ class ImplementationValidator:
         """
         expected_status_code = 553
         if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
-            expected_status_code = 404
+            expected_status_code = [404, 400]
 
         self._get_endpoint("v123123", expected_status_code=expected_status_code)
 
