@@ -1,13 +1,19 @@
+import warnings
+
+warnings.warn(
+    "Django functionality is deprecated and will be removed in later versions (unless support is requested).",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
 import operator
 from optimade.filterparser import LarkParser
 from lark import Tree
 from lark.lexer import Token
 from django.db.models import Q
 
-__all__ = (
-    "DjangoTransformer",
-    "Lark2Django",
-)
+
+__all__ = ("DjangoTransformer",)
 
 
 class DjangoQueryError(Exception):
@@ -25,6 +31,15 @@ django_db_keys = {
 
 
 class DjangoTransformer:
+    """Filter transformer for implementations using Django.
+
+    !!! warning "Warning"
+        This transformer is deprecated as it only supports
+        the 0.9.7 grammar version, and works different to other
+        filter transformers in this package.
+
+    """
+
     def __init__(self):
         self.opers = {
             "=": self.eq,
@@ -104,7 +119,3 @@ class DjangoTransformer:
                 return self.opers[parse_Tree.value]
         else:
             raise DjangoQueryError("Not a Lark Tree or Token")
-
-
-# alias for backwards compatibility
-Lark2Django = DjangoTransformer

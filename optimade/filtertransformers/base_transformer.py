@@ -6,7 +6,11 @@ from optimade.server.mappers import BaseResourceMapper
 __all__ = ("BaseTransformer",)
 
 
-class BaseTransformer(Transformer):
+class BaseTransformer(abc.ABC, Transformer):
+    """Generic filter transformer that handles various
+    parts of the grammar in a backend non-specific way.
+
+    """
 
     # map from standard comparison operators to the backend-specific version
     operator_map: Dict[str, str] = {
@@ -29,10 +33,9 @@ class BaseTransformer(Transformer):
         """
         self.mapper = mapper
 
-    @abc.abstractmethod
     def postprocess(self, query):
-        """Post-process the query according to the rules defined
-        for the backend.
+        """Post-process the query according to the rules defined for
+        the backend.
 
         """
         return query
@@ -46,7 +49,6 @@ class BaseTransformer(Transformer):
             f"Calling __default__, i.e., unknown grammar concept. data: {data}, children: {children}, meta: {meta}"
         )
 
-    @abc.abstractmethod
     def filter(self, arg):
         """ filter: expression* """
         return arg[0] if arg else None
@@ -143,8 +145,8 @@ class BaseTransformer(Transformer):
     def constant_first_comparison(self, arg):
         """ constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string ) """
 
-    @abc.abstractmethod
     @v_args(inline=True)
+    @abc.abstractmethod
     def value_op_rhs(self, operator, value):
         """ value_op_rhs: OPERATOR value """
 
