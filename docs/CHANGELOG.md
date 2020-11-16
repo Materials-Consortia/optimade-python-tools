@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.12.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.4) (2020-11-16)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.12.3...v0.12.4)
+
+**Merged pull requests:**
+
+- Minor fixes for versions endpoint validation [\#591](https://github.com/Materials-Consortia/optimade-python-tools/pull/591) ([ml-evs](https://github.com/ml-evs))
+- Add --minimal/--page\_limit validator options and remove old code [\#571](https://github.com/Materials-Consortia/optimade-python-tools/pull/571) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.12.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.3) (2020-11-04)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.12.2...v0.12.3)
@@ -248,6 +257,7 @@
 
 - Fix version issues in the publish workflow [\#376](https://github.com/Materials-Consortia/optimade-python-tools/pull/376) ([shyamd](https://github.com/shyamd))
 - Bump providers from `732593a` to `a96d424` [\#368](https://github.com/Materials-Consortia/optimade-python-tools/pull/368) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump spec version to 1.0.0-rc.2 [\#367](https://github.com/Materials-Consortia/optimade-python-tools/pull/367) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.9.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.9.2) (2020-06-25)
 
@@ -272,7 +282,6 @@
 
 - Retrieve providers list if no submodule is found [\#374](https://github.com/Materials-Consortia/optimade-python-tools/pull/374) ([CasperWA](https://github.com/CasperWA))
 - Update default implementation information [\#372](https://github.com/Materials-Consortia/optimade-python-tools/pull/372) ([shyamd](https://github.com/shyamd))
-- Bump spec version to 1.0.0-rc.2 [\#367](https://github.com/Materials-Consortia/optimade-python-tools/pull/367) ([ml-evs](https://github.com/ml-evs))
 - Dependabot updates: numpy, mkdocs-material, mkdocstrings, requests [\#364](https://github.com/Materials-Consortia/optimade-python-tools/pull/364) ([ml-evs](https://github.com/ml-evs))
 - Merge all Dependabot updates [\#353](https://github.com/Materials-Consortia/optimade-python-tools/pull/353) ([shyamd](https://github.com/shyamd))
 - Update model descriptions and openapi.json for 1.0.0-rc2 [\#351](https://github.com/Materials-Consortia/optimade-python-tools/pull/351) ([ml-evs](https://github.com/ml-evs))
