@@ -1678,6 +1678,21 @@
               }
             ],
             "description": "A dictionary providing details about the maintainer of the implementation."
+          },
+          "issue_tracker": {
+            "title": "Issue Tracker",
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 65536,
+                "format": "uri"
+              },
+              {
+                "$ref": "#/components/schemas/Link"
+              }
+            ],
+            "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation's issue tracker."
           }
         },
         "description": "Information on the server implementation"

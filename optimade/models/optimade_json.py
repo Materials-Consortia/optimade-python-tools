@@ -243,6 +243,11 @@ class Implementation(BaseModel):
         description="A dictionary providing details about the maintainer of the implementation.",
     )
 
+    issue_tracker: Optional[Union[AnyUrl, jsonapi.Link]] = StrictField(
+        None,
+        description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation's issue tracker.",
+    )
+
 
 class ResponseMeta(jsonapi.Meta):
     """
