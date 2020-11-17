@@ -560,6 +560,8 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     - `name`: string (REQUIRED)
     - `chemical_symbols`: list of strings (REQUIRED)
     - `concentration`: list of float (REQUIRED)
+    - `attached`: list of strings (REQUIRED)
+    - `nattached`: list of integers (OPTIONAL)
     - `mass`: float (OPTIONAL)
     - `original_name`: string (OPTIONAL).
 
