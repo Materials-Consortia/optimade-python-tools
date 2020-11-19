@@ -1,7 +1,6 @@
 import copy
 from lark import v_args, Token
 from optimade.filtertransformers.base_transformer import BaseTransformer
-from optimade.server.exceptions import BadRequest
 
 __all__ = ("MongoTransformer",)
 
@@ -396,8 +395,8 @@ class MongoTransformer(BaseTransformer):
                 if operator not in ("$eq", "$ne"):
                     if self.mapper is not None:
                         prop = self.mapper.alias_of(prop)
-                    raise BadRequest(
-                        detail=f"Operator not supported for query on field {prop!r}, can only test for equality"
+                    raise NotImplementedError(
+                        f"Operator {operator} not supported for query on field {prop!r}, can only test for equality"
                     )
                 if isinstance(val, str):
                     subdict[prop][operator] = ObjectId(val)

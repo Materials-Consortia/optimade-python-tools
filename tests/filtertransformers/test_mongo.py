@@ -3,7 +3,6 @@ import pytest
 from lark.exceptions import VisitError
 
 from optimade.filterparser import LarkParser, ParserError
-from optimade.server.exceptions import BadRequest
 
 
 class TestMongoTransformer:
@@ -476,7 +475,7 @@ class TestMongoTransformer:
 
         for op in ("CONTAINS", "STARTS WITH", "ENDS WITH", "HAS"):
             with pytest.raises(
-                BadRequest,
+                NotImplementedError,
                 match=r".*not supported for query on field 'immutable_id', can only test for equality.*",
             ):
                 transformer.transform(parser.parse(f'immutable_id {op} "abcdef"'))
