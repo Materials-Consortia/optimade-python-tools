@@ -426,7 +426,7 @@ class MongoTransformer(BaseTransformer):
             for operator in subdict[prop]:
                 subdict[prop][operator] = bson.json_util.loads(
                     bson.json_util.dumps({"$date": subdict[prop][operator]})
-                )
+                ).replace(tzinfo=None)
 
             return subdict
 
