@@ -378,7 +378,7 @@ class TestMongoTransformer:
                     minute=13,
                     second=37,
                     microsecond=0,
-                    tzinfo=bson.tz_util.FixedOffset(0, "none"),
+                    tzinfo=bson.tz_util.utc,
                 )
             }
         }
@@ -392,7 +392,7 @@ class TestMongoTransformer:
                     minute=13,
                     second=37,
                     microsecond=0,
-                    tzinfo=bson.tz_util.FixedOffset(0, "none"),
+                    tzinfo=bson.tz_util.utc,
                 )
             }
         }
@@ -415,7 +415,7 @@ class TestMongoTransformer:
                     minute=13,
                     second=37,
                     microsecond=0,
-                    tzinfo=bson.tz_util.FixedOffset(0, "none"),
+                    tzinfo=bson.tz_util.utc,
                 )
             }
         }
@@ -431,7 +431,7 @@ class TestMongoTransformer:
                     minute=13,
                     second=37,
                     microsecond=0,
-                    tzinfo=bson.tz_util.FixedOffset(0, "none"),
+                    tzinfo=bson.tz_util.utc,
                 )
             }
         }
