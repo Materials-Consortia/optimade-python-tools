@@ -621,7 +621,7 @@ class ImplementationValidator:
                 else:
                     _test_value = test_value[0]
 
-        elif prop_type == DataType.STRING:
+        elif prop_type in (DataType.STRING, DataType.TIMESTAMP):
             _test_value = f'"{test_value}"'
 
         else:
@@ -700,7 +700,7 @@ class ImplementationValidator:
                 self._log.warning(msg)
                 return None, msg
 
-        if prop_type in (DataType.DICTIONARY, DataType.TIMESTAMP):
+        if prop_type in (DataType.DICTIONARY,):
             msg = f"Not testing queries on field {prop} of type {prop_type}."
             self._log.warning(msg)
             return None, msg
@@ -823,7 +823,7 @@ class ImplementationValidator:
                     chosen_entry["id"] in set(entry["id"] for entry in response["data"])
                 ):
                     raise ResponseError(
-                        f"Objects {excluded} were not necessarily excluded by {query}"
+                        f"Object {chosen_entry['id']} with value {test_value} was not excluded by {query}"
                     )
 
             # check that at least the archetypal structure was returned, unless we are using a fallback value
