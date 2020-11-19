@@ -167,6 +167,24 @@ def test_list_correlated(check_error_response):
     # check_response(request, expected_ids)
 
 
+def test_timestamp_query(check_response):
+    request = '/structures?filter=last_modified="2019-06-08T05:13:37.331Z"&page_limit=5'
+    expected_ids = ["mpf_1", "mpf_2", "mpf_3"]
+    check_response(request, expected_ids, expected_as_is=True)
+
+    request = '/structures?filter=last_modified<"2019-06-08T05:13:37.331Z"&page_limit=5'
+    expected_ids = ["mpf_3819"]
+    check_response(request, expected_ids, expected_as_is=True)
+
+    request = '/structures?filter=last_modified="2018-06-08T05:13:37.945Z"&page_limit=5'
+    expected_ids = ["mpf_3819"]
+    check_response(request, expected_ids, expected_as_is=True)
+
+    request = '/structures?filter=last_modified>"2018-06-08T05:13:37.945Z" AND last_modified<="2019-06-08T05:13:37.331Z"&page_limit=5'
+    expected_ids = ["mpf_1", "mpf_2", "mpf_3"]
+    check_response(request, expected_ids, expected_as_is=True)
+
+
 def test_is_known(check_response):
     request = "/structures?filter=nsites IS KNOWN AND nsites>=44"
     expected_ids = ["mpf_551", "mpf_3803", "mpf_3819"]
