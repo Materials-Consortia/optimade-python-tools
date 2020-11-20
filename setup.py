@@ -23,12 +23,12 @@ mongo_deps = ["pymongo~=3.11", "mongomock~=3.21"]
 server_deps = ["uvicorn~=0.12.2", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
-aiida_deps = ["aiida-core~=1.4.2"]
+aiida_deps = ["aiida-core~=1.5.0"]
 ase_deps = ["ase~=3.20"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2020.10.20"]
-jarvis_deps = ["jarvis-tools==2020.10.20"]
+pymatgen_deps = ["pymatgen==2020.11.11"]
+jarvis_deps = ["jarvis-tools==2020.11.9"]
 client_deps = cif_deps
 
 # General
@@ -87,11 +87,11 @@ setup(
     ],
     python_requires=">=3.6",
     install_requires=[
-        "lark-parser~=0.10.1",
-        "fastapi~=0.61.1",
+        "lark-parser~=0.11.1",
+        "fastapi~=0.61.2",
         "pydantic~=1.6.1",
         "email_validator~=1.1",
-        "requests~=2.24",
+        "requests~=2.25",
         'typing-extensions~=3.7;python_version<"3.8"',
     ],
     extras_require={
