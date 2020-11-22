@@ -997,7 +997,9 @@ class ImplementationValidator:
         if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
             expected_status_code = [404, 400]
 
-        self._get_endpoint("v123123", expected_status_code=expected_status_code)
+        self._get_endpoint(
+            "v123123", expected_status_code=expected_status_code, optional=True
+        )
 
     @test_case
     def _test_page_limit(
