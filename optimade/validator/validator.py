@@ -211,7 +211,7 @@ class ImplementationValidator:
             print(
                 "There were internal validator failures associated with this run.\n"
                 "If this problem persists, please report it at:\n"
-                "https://github.com/Materials-Consortia/optimade-python-tools/issues/new.\n"
+                "https://github.com/Materials-Consortia/optimade-python-tools/issues/new\n"
             )
 
             for message in self.results.internal_failure_messages:
@@ -481,17 +481,16 @@ class ImplementationValidator:
             returned_fields -= CONF.top_level_non_attribute_fields
 
             if expected_fields != returned_fields:
-                raise RuntimeError(
-                    f"Response fields not obeyed by {endp!r}:\n{expected_fields}\n{returned_fields}"
+                raise ResponseError(
+                    f"Response fields not obeyed by {endp!r}:\nExpected: {expected_fields}\nReturned: {returned_fields}"
                 )
 
             return True, "Successfully limited response fields"
 
-        else:
-            return (
-                None,
-                f"Unable to test adherence to response fields as no entries were returned for endpoint {endp!r}.",
-            )
+        return (
+            None,
+            f"Unable to test adherence to response fields as no entries were returned for endpoint {endp!r}.",
+        )
 
     @test_case
     def _construct_queries_for_property(
