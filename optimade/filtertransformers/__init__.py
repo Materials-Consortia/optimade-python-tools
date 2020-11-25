@@ -3,3 +3,7 @@ classes typically parse the filter with Lark and produce an appropriate query fo
 given backend.
 
 """
+
+from optimade.filtertransformers.base_transformer import BaseTransformer
+
+__all__ = ("BaseTransformer",)

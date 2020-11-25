@@ -1,9 +1,9 @@
 from typing import List
 
-import lark
 from lark import v_args
 from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
 from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
+from optimade.filtertransformers import BaseTransformer
 
 __all__ = ("ElasticTransformer",)
 
@@ -68,12 +68,8 @@ class Quantity:
         return self.name
 
 
-class ElasticTransformer(lark.Transformer):
-<<<<<<< HEAD
-    """Transformer that transforms ``v0.10.1`` grammer parse trees into queries.
-=======
-    """ Transformer that transforms ``v0.10.1`` grammar parse trees into queries.
->>>>>>> ec7deea (Renamed elastic transformer class. Minor fixes and typos.)
+class ElasticTransformer(BaseTransformer):
+    """Transformer that transforms ``v0.10.1`` grammar parse trees into queries.
 
     Uses elasticsearch_dsl and will produce a `Q` instance.
     """
@@ -85,6 +81,7 @@ class ElasticTransformer(lark.Transformer):
                 quantities are mapped to the elasticsearch index.
         """
         self.index_mapping = {quantity.name: quantity for quantity in quantities}
+        super().__init__()
 
     def _field(self, quantity, nested=None):
         if nested is not None:
