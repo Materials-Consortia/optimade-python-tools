@@ -772,7 +772,7 @@
     ],
     "nelements": 4,
     "nsites": 16,
-    "pretty_formula": "Ag10Te4BrCl",
+    "pretty_formula": "Ag10BrClTe4",
     "species": [
       {
         "chemical_symbols": [
@@ -934,7 +934,7 @@
     ],
     "nelements": 6,
     "nsites": 10,
-    "pretty_formula": "Ag2CSNClO4",
+    "pretty_formula": "Ag2CClNO4S",
     "species": [
       {
         "chemical_symbols": [
@@ -1176,7 +1176,7 @@
     ],
     "nelements": 5,
     "nsites": 24,
-    "pretty_formula": "Ag2H12C6N3Cl",
+    "pretty_formula": "Ag2C6ClH12N3",
     "species": [
       {
         "chemical_symbols": [
@@ -1428,7 +1428,7 @@
     ],
     "nelements": 5,
     "nsites": 25,
-    "pretty_formula": "Ag2H2C2N6O13",
+    "pretty_formula": "Ag2C2H2N6O13",
     "species": [
       {
         "chemical_symbols": [
@@ -1503,7 +1503,13 @@
       "O",
       "O"
     ],
-    "structure_features": ["assemblies"],
+    "assemblies": [
+      {
+        "sites_in_groups": [ [0], [1], [2] ],
+        "group_probabilities": [0.3, 0.5, 0.2]
+      }
+    ],
+    "structure_features": [],
     "task_id": "mpf_276"
   },
   {
@@ -2402,6 +2408,38 @@
         "group_probabilities": [0.3, 0.5, 0.2]
       }
     ],
-    "structure_features": ["assemblies"]
+    "structure_features": []
+  },
+  {
+    "task_id": "db/1234567",
+    "type": "structure",
+    "last_modified": {
+      "$date": "2019-06-08T05:13:37.331Z"
+    },
+    "band_gap": 1.23456,
+    "chemsys": "C-H-Cl-N-Na-O-Os-P",
+    "elements": ["C", "Cl", "H", "N", "Na", "O", "Os", "P"],
+    "nelements": 8,
+    "nsites": 7,
+    "elements_ratios": [0.09090909091, 0.36363636363, 0.09090909091, 0.09090909091, 0.09090909091, 0.09090909091, 0.09090909091, 0.09090909091],
+    "chemical_formula_reduced": "CClH4NNaOOsP",
+    "chemical_formula_hill": "H4CClNNaOOsP",
+    "chemical_formula_descriptive": "Methyl-ClNNaOOsP",
+    "formula_anonymous": "A4BCDEFGH",
+    "dimension_types": [1, 1, 1],
+    "nperiodic_dimensions": 3,
+    "lattice_vectors": [[4.0,0.0,0.0],[0.0, 4.0, 0.0],[0.0,1.0,4.0]],
+    "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0] ],
+    "species_at_sites": ["Cl", "O", "N", "met", "Os", "Na", "P"],
+    "species": [
+      {"name": "Cl", "chemical_symbols": ["Cl"], "concentration": [1.0] },
+      {"name": "O", "chemical_symbols": ["O"], "concentration": [1.0] },
+      {"name": "N", "chemical_symbols": ["N"], "concentration": [1.0] },
+      {"name": "met", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [4] },
+      {"name": "Os", "chemical_symbols": ["Os"], "concentration": [1.0] },
+      {"name": "Na", "chemical_symbols": ["Na"], "concentration": [1.0] },
+      {"name": "P", "chemical_symbols": ["P"], "concentration": [1.0] }
+    ],
+    "structure_features": ["site_attachments"]
   }
 ]

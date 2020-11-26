@@ -11,6 +11,7 @@ from optimade.models.links import LinksResource
 from optimade.models.optimade_json import Success, ResponseMeta, OptimadeError
 from optimade.models.references import ReferenceResource
 from optimade.models.structures import StructureResource
+from optimade.models.utils import StrictField
 
 
 __all__ = (
@@ -31,10 +32,10 @@ __all__ = (
 class ErrorResponse(Response):
     """errors MUST be present and data MUST be skipped"""
 
-    meta: ResponseMeta = Field(
+    meta: ResponseMeta = StrictField(
         ..., description="A meta object containing non-standard information"
     )
-    errors: List[OptimadeError] = Field(
+    errors: List[OptimadeError] = StrictField(
         ...,
         description="A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.",
         uniqueItems=True,
@@ -48,17 +49,21 @@ class ErrorResponse(Response):
 
 
 class IndexInfoResponse(Success):
-    data: IndexInfoResource = Field(..., description="Index meta-database /info data")
+    data: IndexInfoResource = StrictField(
+        ..., description="Index meta-database /info data"
+    )
 
 
 class EntryInfoResponse(Success):
-    data: EntryInfoResource = Field(
+    data: EntryInfoResource = StrictField(
         ..., description="OPTIMADE information for an entry endpoint"
     )
 
 
 class InfoResponse(Success):
-    data: BaseInfoResource = Field(..., description="The implementations /info data")
+    data: BaseInfoResource = StrictField(
+        ..., description="The implementations /info data"
+    )
 
 
 class EntryResponseOne(Success):
@@ -78,7 +83,7 @@ class EntryResponseMany(Success):
 
 
 class LinksResponse(EntryResponseMany):
-    data: Union[List[LinksResource], List[Dict[str, Any]]] = Field(
+    data: Union[List[LinksResource], List[Dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE links resource objects",
         uniqueItems=True,
@@ -86,13 +91,13 @@ class LinksResponse(EntryResponseMany):
 
 
 class StructureResponseOne(EntryResponseOne):
-    data: Union[StructureResource, Dict[str, Any], None] = Field(
+    data: Union[StructureResource, Dict[str, Any], None] = StrictField(
         ..., description="A single structures entry resource"
     )
 
 
 class StructureResponseMany(EntryResponseMany):
-    data: Union[List[StructureResource], List[Dict[str, Any]]] = Field(
+    data: Union[List[StructureResource], List[Dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE structures entry resource objects",
         uniqueItems=True,
@@ -100,13 +105,13 @@ class StructureResponseMany(EntryResponseMany):
 
 
 class ReferenceResponseOne(EntryResponseOne):
-    data: Union[ReferenceResource, Dict[str, Any], None] = Field(
+    data: Union[ReferenceResource, Dict[str, Any], None] = StrictField(
         ..., description="A single references entry resource"
     )
 
 
 class ReferenceResponseMany(EntryResponseMany):
-    data: Union[List[ReferenceResource], List[Dict[str, Any]]] = Field(
+    data: Union[List[ReferenceResource], List[Dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE references entry resource objects",
         uniqueItems=True,

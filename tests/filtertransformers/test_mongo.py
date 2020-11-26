@@ -3,6 +3,7 @@ import pytest
 from lark.exceptions import VisitError
 
 from optimade.filterparser import LarkParser, ParserError
+from optimade.server.exceptions import BadRequest
 
 
 class TestMongoTransformer:
@@ -377,6 +378,32 @@ class TestMongoTransformer:
         assert self.transform("cartesian_site_positions LENGTH > 10") == {
             "cartesian_site_positions.11": {"$exists": True}
         }
+
+    def test_mongo_special_id(self, mapper):
+
+        from optimade.filtertransformers.mongo import MongoTransformer
+        from bson import ObjectId
+
+        class MyMapper(mapper("StructureMapper")):
+            ALIASES = (("immutable_id", "_id"),)
+
+        transformer = MongoTransformer(mapper=MyMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
+
+        assert transformer.transform(
+            parser.parse('immutable_id = "5cfb441f053b174410700d02"')
+        ) == {"_id": {"$eq": ObjectId("5cfb441f053b174410700d02")}}
+
+        assert transformer.transform(
+            parser.parse('immutable_id != "5cfb441f053b174410700d02"')
+        ) == {"_id": {"$ne": ObjectId("5cfb441f053b174410700d02")}}
+
+        for op in ("CONTAINS", "STARTS WITH", "ENDS WITH", "HAS"):
+            with pytest.raises(
+                BadRequest,
+                match=r".*not supported for query on field 'immutable_id', can only test for equality.*",
+            ):
+                transformer.transform(parser.parse(f'immutable_id {op} "abcdef"'))
 
     def test_aliased_length_operator(self, mapper):
         from optimade.filtertransformers.mongo import MongoTransformer

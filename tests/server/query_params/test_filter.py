@@ -73,7 +73,7 @@ def test_value_list_operator(check_error_response):
         request,
         expected_status=501,
         expected_title="NotImplementedError",
-        expected_detail="set_op_rhs not implemented for use with OPERATOR. Given: [Token(HAS, 'HAS'), Token(OPERATOR, '<'), 1]",
+        expected_detail="set_op_rhs not implemented for use with OPERATOR. Given: [Token('HAS', 'HAS'), Token('OPERATOR', '<'), 1]",
     )
 
 
@@ -83,7 +83,7 @@ def test_has_any_operator(check_error_response):
         request,
         expected_status=501,
         expected_title="NotImplementedError",
-        expected_detail="OPERATOR > inside value_list [Token(OPERATOR, '>'), 1] not implemented.",
+        expected_detail="OPERATOR > inside value_list [Token('OPERATOR', '>'), 1] not implemented.",
     )
 
 
@@ -208,13 +208,13 @@ def test_string_contains(check_response):
 
 
 def test_string_start(check_response):
-    request = '/structures?filter=chemical_formula_descriptive STARTS WITH "Ag2CSNCl"'
+    request = '/structures?filter=chemical_formula_descriptive STARTS WITH "Ag2CClN"'
     expected_ids = ["mpf_259"]
     check_response(request, expected_ids)
 
 
 def test_string_end(check_response):
-    request = '/structures?filter=chemical_formula_descriptive ENDS WITH "NClO4"'
+    request = '/structures?filter=chemical_formula_descriptive ENDS WITH "ClNO4S"'
     expected_ids = ["mpf_259"]
     check_response(request, expected_ids)
 
@@ -237,7 +237,7 @@ def test_awkward_not_queries(check_response, client):
     """
     expected_ids = ["mpf_3819"]
     request = (
-        '/structures?filter=chemical_formula_descriptive="Ba2NaTi2MnRe2Si8HO26F" AND '
+        '/structures?filter=chemical_formula_descriptive="Ba2FHMnNaO26Re2Si8Ti2" AND '
         'chemical_formula_anonymous = "A26B8C2D2E2FGHI" '
     )
     check_response(request, expected_ids)
@@ -260,7 +260,7 @@ def test_awkward_not_queries(check_response, client):
     request = (
         "/structures?filter="
         "NOT ( "
-        'chemical_formula_descriptive = "Ba2NaTi2MnRe2Si8HO26F" AND '
+        'chemical_formula_descriptive = "Ba2FHMnNaO26Re2Si8Ti2" AND '
         'chemical_formula_anonymous = "A26B8C2D2E2FGHI" OR '
         'chemical_formula_anonymous = "A2BC" AND '
         'NOT chemical_formula_descriptive = "Ac2AgPb" '

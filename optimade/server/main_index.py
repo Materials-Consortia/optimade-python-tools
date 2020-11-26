@@ -8,11 +8,7 @@ To implement your own index meta-database server see the documentation at https:
 import json
 import warnings
 
-from lark.exceptions import VisitError
-
-from pydantic import ValidationError
 from fastapi import FastAPI
-from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 with warnings.catch_warnings(record=True) as w:
@@ -21,14 +17,9 @@ with warnings.catch_warnings(record=True) as w:
     config_warnings = w
 
 from optimade import __api_version__, __version__
-import optimade.server.exception_handlers as exc_handlers
 from optimade.server.logger import LOGGER
-from optimade.server.middleware import (
-    AddWarnings,
-    CheckWronglyVersionedBaseUrls,
-    EnsureQueryParamIntegrity,
-    HandleApiHint,
-)
+from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
+from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers import index_info, links, versions
 from optimade.server.routers.utils import BASE_URL_PREFIXES
 
@@ -92,24 +83,16 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
 
     LOGGER.debug("Done inserting index links!")
 
-
-# Add various middleware
+# Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
-app.add_middleware(EnsureQueryParamIntegrity)
-app.add_middleware(CheckWronglyVersionedBaseUrls)
-app.add_middleware(HandleApiHint)
-app.add_middleware(AddWarnings)
 
+# Then add required OPTIMADE middleware
+for middleware in OPTIMADE_MIDDLEWARE:
+    app.add_middleware(middleware)
 
-# Add various exception handlers
-app.add_exception_handler(StarletteHTTPException, exc_handlers.http_exception_handler)
-app.add_exception_handler(
-    RequestValidationError, exc_handlers.request_validation_exception_handler
-)
-app.add_exception_handler(ValidationError, exc_handlers.validation_exception_handler)
-app.add_exception_handler(VisitError, exc_handlers.grammar_not_implemented_handler)
-app.add_exception_handler(Exception, exc_handlers.general_exception_handler)
-
+# Add exception handlers
+for exception, handler in OPTIMADE_EXCEPTIONS:
+    app.add_exception_handler(exception, handler)
 
 # Add all endpoints to unversioned URL
 for endpoint in (index_info, links, versions):

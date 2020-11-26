@@ -1,4 +1,6 @@
 import os
+import json
+import dataclasses
 from traceback import print_exc
 
 import pytest
@@ -6,17 +8,40 @@ import pytest
 from optimade.validator import ImplementationValidator
 
 
-def test_with_validator(both_clients):
+def test_with_validator(both_fake_remote_clients):
     from optimade.server.main_index import app
 
     validator = ImplementationValidator(
-        client=both_clients,
-        index=both_clients.app == app,
+        client=both_fake_remote_clients,
+        index=both_fake_remote_clients.app == app,
+        verbosity=5,
     )
-    try:
-        validator.main()
-    except Exception:
-        print_exc()
+
+    validator.validate_implementation()
+    assert validator.valid
+
+
+def test_with_validator_json_response(both_fake_remote_clients, capsys):
+    """ Test that the validator writes compliant JSON when requested. """
+    from optimade.server.main_index import app
+
+    validator = ImplementationValidator(
+        client=both_fake_remote_clients,
+        index=both_fake_remote_clients.app == app,
+        respond_json=True,
+    )
+    validator.validate_implementation()
+
+    captured = capsys.readouterr()
+    json_response = json.loads(captured.out)
+    assert json_response["failure_count"] == 0
+    assert json_response["internal_failure_count"] == 0
+    assert json_response["optional_failure_count"] == 0
+    assert validator.results.failure_count == 0
+    assert validator.results.internal_failure_count == 0
+    assert validator.results.optional_failure_count == 0
+    assert dataclasses.asdict(validator.results) == json_response
+
     assert validator.valid
 
 
@@ -58,10 +83,25 @@ def test_as_type_with_validator(client):
                 base_url=url, as_type=as_type, verbosity=5
             )
             try:
-                validator.main()
+                validator.validate_implementation()
             except Exception:
                 print_exc()
             assert validator.valid
+
+
+def test_query_value_formatting(client):
+    from optimade.models.optimade_json import DataType
+
+    format_value_fn = ImplementationValidator._format_test_value
+
+    assert format_value_fn(["Ag", "Ba", "Ca"], DataType.LIST, "HAS") == '"Ag"'
+    assert (
+        format_value_fn(["Ag", "Ba", "Ca"], DataType.LIST, "HAS ANY")
+        == '"Ag","Ba","Ca"'
+    )
+    assert format_value_fn([6, 1, 4], DataType.LIST, "HAS ALL") == "1,4,6"
+    assert format_value_fn("test value", DataType.STRING, "CONTAINS") == '"test value"'
+    assert format_value_fn(5, DataType.INTEGER, "=") == 5
 
 
 @pytest.mark.parametrize("server", ["regular", "index"])

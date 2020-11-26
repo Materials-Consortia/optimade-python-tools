@@ -12,3 +12,9 @@ db_name: PLACEHOLDER_DATABASE_NAME
 db_username: postgres
 db_password: test
 repository: PLACEHOLDER_REPOSITORY
+broker_protocol: amqp
+broker_username: guest
+broker_password: guest
+broker_host: 127.0.0.1
+broker_port: 5672
+broker_virtual_host: ''

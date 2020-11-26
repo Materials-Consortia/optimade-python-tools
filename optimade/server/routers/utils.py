@@ -14,20 +14,12 @@ from optimade.models import (
     EntryResponseMany,
     EntryResponseOne,
     ToplevelLinks,
-    ReferenceResource,
-    StructureResource,
-    DataType,
 )
 
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-
-ENTRY_INFO_SCHEMAS = {
-    "structures": StructureResource.schema,
-    "references": ReferenceResource.schema,
-}
 
 # we need to get rid of any release tags (e.g. -rc.2) and any build metadata (e.g. +py36)
 # from the api_version before allowing the URL
@@ -39,7 +31,7 @@ BASE_URL_PREFIXES = {
 
 
 def meta_values(
-    url: str,
+    url: Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str],
     data_returned: int,
     data_available: int,
     more_data_available: bool,
@@ -48,16 +40,17 @@ def meta_values(
     """Helper to initialize the meta values"""
     from optimade.models import ResponseMetaQuery
 
-    parse_result = urllib.parse.urlparse(url)
+    if isinstance(url, str):
+        url = urllib.parse.urlparse(url)
 
     # To catch all (valid) variations of the version part of the URL, a regex is used
-    if re.match(r"/v[0-9]+(\.[0-9]+){,2}/.*", parse_result.path) is not None:
-        url_path = re.sub(r"/v[0-9]+(\.[0-9]+){,2}/", "/", parse_result.path)
+    if re.match(r"/v[0-9]+(\.[0-9]+){,2}/.*", url.path) is not None:
+        url_path = re.sub(r"/v[0-9]+(\.[0-9]+){,2}/", "/", url.path)
     else:
-        url_path = parse_result.path
+        url_path = url.path
 
     return ResponseMeta(
-        query=ResponseMetaQuery(representation=f"{url_path}?{parse_result.query}"),
+        query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
         api_version=__api_version__,
         time_stamp=datetime.now(),
         data_returned=data_returned,
@@ -85,7 +78,15 @@ def handle_response_fields(
     new_results = []
     while results:
         entry = results.pop(0)
-        new_entry = entry.dict(exclude_unset=True)
+
+        # TODO: re-enable exclude_unset when proper handling of known/unknown fields
+        # has been implemented (relevant issue: https://github.com/Materials-Consortia/optimade-python-tools/issues/263)
+        # Have to handle top level fields explicitly here for now
+        new_entry = entry.dict(exclude_unset=False)
+        for field in ("relationships", "links", "meta", "type", "id"):
+            if field in new_entry and new_entry[field] is None:
+                del new_entry[field]
+
         for field in exclude_fields:
             if field in new_entry["attributes"]:
                 del new_entry["attributes"][field]
@@ -172,15 +173,20 @@ def get_included_relationships(
 
 def get_base_url(
     parsed_url_request: Union[
-        urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL
+        urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str
     ]
 ) -> str:
     """Get base URL for current server
 
     Take the base URL from the config file, if it exists, otherwise use the request.
     """
+    parsed_url_request = (
+        urllib.parse.urlparse(parsed_url_request)
+        if isinstance(parsed_url_request, str)
+        else parsed_url_request
+    )
     return (
-        CONFIG.base_url
+        CONFIG.base_url.rstrip("/")
         if CONFIG.base_url
         else f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
     )
@@ -204,13 +210,12 @@ def get_entries(
 
     if more_data_available:
         # Deduce the `next` link from the current request
-        parse_result = urllib.parse.urlparse(str(request.url))
-        query = urllib.parse.parse_qs(parse_result.query)
+        query = urllib.parse.parse_qs(request.url.query)
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
         urlencoded = urllib.parse.urlencode(query, doseq=True)
-        base_url = get_base_url(parse_result)
+        base_url = get_base_url(request.url)
 
-        links = ToplevelLinks(next=f"{base_url}{parse_result.path}?{urlencoded}")
+        links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
     else:
         links = ToplevelLinks(next=None)
 
@@ -221,7 +226,7 @@ def get_entries(
         links=links,
         data=results,
         meta=meta_values(
-            url=str(request.url),
+            url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
@@ -262,41 +267,13 @@ def get_single_entry(
         links=links,
         data=results,
         meta=meta_values(
-            url=str(request.url),
+            url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
         ),
         included=included,
     )
-
-
-def retrieve_queryable_properties(schema: dict, queryable_properties: list) -> dict:
-    properties = {}
-    for name, value in schema["properties"].items():
-        if name in queryable_properties:
-            if "$ref" in value:
-                path = value["$ref"].split("/")[1:]
-                sub_schema = schema.copy()
-                while path:
-                    next_key = path.pop(0)
-                    sub_schema = sub_schema[next_key]
-                sub_queryable_properties = sub_schema["properties"].keys()
-                properties.update(
-                    retrieve_queryable_properties(sub_schema, sub_queryable_properties)
-                )
-            else:
-                properties[name] = {"description": value.get("description", "")}
-                if "unit" in value:
-                    properties[name]["unit"] = value["unit"]
-                # All properties are sortable with the MongoDB backend.
-                # While the result for sorting lists may not be as expected, they are still sorted.
-                properties[name]["sortable"] = True
-                # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
-                properties[name]["type"] = DataType.from_json_type(
-                    value.get("format", value["type"])
-                )
-    return properties
 
 
 def mongo_id_for_database(database_id: str, database_type: str) -> str:

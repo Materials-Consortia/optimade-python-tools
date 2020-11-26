@@ -1,4 +1,3 @@
-import urllib
 from typing import Union
 
 from fastapi import APIRouter, Request
@@ -29,12 +28,8 @@ router = APIRouter(redirect_slashes=True)
     tags=["Info"],
 )
 def get_info(request: Request):
-
-    parse_result = urllib.parse.urlparse(str(request.url))
-    base_url = get_base_url(parse_result)
-
     return IndexInfoResponse(
-        meta=meta_values(str(request.url), 1, 1, more_data_available=False),
+        meta=meta_values(request.url, 1, 1, more_data_available=False),
         data=IndexInfoResource(
             id=IndexInfoResource.schema()["properties"]["id"]["const"],
             type=IndexInfoResource.schema()["properties"]["type"]["const"],
@@ -42,7 +37,7 @@ def get_info(request: Request):
                 api_version=f"{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"{base_url}/v{__api_version__.split('.')[0]}/",
+                        "url": f"{get_base_url(request.url)}/v{__api_version__.split('.')[0]}/",
                         "version": f"{__api_version__}",
                     }
                 ],

@@ -171,9 +171,12 @@ class EntryCollection(ABC):
             cursor_kwargs["limit"] = CONFIG.page_limit
 
         cursor_kwargs["fields"] = self.all_fields
-        cursor_kwargs["projection"] = [
-            self.resource_mapper.alias_for(f) for f in self.all_fields
-        ]
+        cursor_kwargs["projection"] = {
+            f"{self.resource_mapper.alias_for(f)}": True for f in self.all_fields
+        }
+
+        if "_id" not in cursor_kwargs["projection"]:
+            cursor_kwargs["projection"]["_id"] = False
 
         if getattr(params, "sort", False):
             cursor_kwargs["sort"] = self.parse_sort_params(params.sort)

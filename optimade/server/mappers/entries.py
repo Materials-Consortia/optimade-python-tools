@@ -1,5 +1,4 @@
 from typing import Tuple, Optional
-from optimade.server.config import CONFIG
 
 __all__ = ("BaseResourceMapper",)
 
@@ -45,6 +44,8 @@ class BaseResourceMapper:
             A tuple of alias tuples.
 
         """
+        from optimade.server.config import CONFIG
+
         return (
             tuple(
                 (f"_{CONFIG.provider.prefix}_{field}", field)
@@ -67,6 +68,8 @@ class BaseResourceMapper:
             A tuple of length alias tuples.
 
         """
+        from optimade.server.config import CONFIG
+
         return cls.LENGTH_ALIASES + tuple(
             CONFIG.length_aliases.get(cls.ENDPOINT, {}).items()
         )
@@ -146,9 +149,6 @@ class BaseResourceMapper:
             A resource object in OPTIMADE format.
 
         """
-        if "_id" in doc:
-            del doc["_id"]
-
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}
         reals = {real for alias, real in cls.all_aliases()}

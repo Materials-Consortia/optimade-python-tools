@@ -27,6 +27,18 @@ def both_clients(request):
     return client_factory()(server=request.param)
 
 
+@pytest.fixture(scope="session", params=["regular", "index"])
+def both_fake_remote_clients(request):
+    """Return TestClient for both the regular and index OPTIMADE server, with
+    the additional option `raise_server_exceptions` set to `False`, to mimic a
+    remote webserver.
+
+    """
+    from .utils import client_factory
+
+    return client_factory()(server=request.param, raise_server_exceptions=False)
+
+
 @pytest.fixture
 def get_good_response(client, index_client):
     """Get response with some sanity checks, expecting '200 OK'"""

@@ -1,5 +1,3 @@
-import urllib
-
 from typing import Union
 
 from fastapi import APIRouter, Request
@@ -11,23 +9,16 @@ from optimade.models import (
     ErrorResponse,
     InfoResponse,
     EntryInfoResponse,
-    ReferenceResource,
-    StructureResource,
 )
+from optimade.server.schemas import ENTRY_INFO_SCHEMAS, retrieve_queryable_properties
 
 from optimade.server.routers.utils import (
     meta_values,
-    retrieve_queryable_properties,
     get_base_url,
 )
 
 
 router = APIRouter(redirect_slashes=True)
-
-ENTRY_INFO_SCHEMAS = {
-    "structures": StructureResource.schema,
-    "references": ReferenceResource.schema,
-}
 
 
 @router.get(
@@ -39,11 +30,8 @@ ENTRY_INFO_SCHEMAS = {
 def get_info(request: Request):
     from optimade.models import BaseInfoResource, BaseInfoAttributes
 
-    parse_result = urllib.parse.urlparse(str(request.url))
-    base_url = get_base_url(parse_result)
-
     return InfoResponse(
-        meta=meta_values(str(request.url), 1, 1, more_data_available=False),
+        meta=meta_values(request.url, 1, 1, more_data_available=False),
         data=BaseInfoResource(
             id=BaseInfoResource.schema()["properties"]["id"]["const"],
             type=BaseInfoResource.schema()["properties"]["type"]["const"],
@@ -51,7 +39,7 @@ def get_info(request: Request):
                 api_version=__api_version__,
                 available_api_versions=[
                     {
-                        "url": f"{base_url}/v{__api_version__.split('.')[0]}",
+                        "url": f"{get_base_url(request.url)}/v{__api_version__.split('.')[0]}",
                         "version": __api_version__,
                     }
                 ],
@@ -87,7 +75,7 @@ def get_entry_info(request: Request, entry: str):
     output_fields_by_format = {"json": list(properties.keys())}
 
     return EntryInfoResponse(
-        meta=meta_values(str(request.url), 1, 1, more_data_available=False),
+        meta=meta_values(request.url, 1, 1, more_data_available=False),
         data=EntryInfoResource(
             formats=list(output_fields_by_format.keys()),
             description=schema.get("description", "Entry Resources"),

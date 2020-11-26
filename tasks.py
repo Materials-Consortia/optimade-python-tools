@@ -165,45 +165,6 @@ def set_optimade_ver(_, ver=""):
 
 
 @task
-def parse_spec_for_filters(_):
-    """Parses specification to generate validator filters"""
-    import requests
-
-    filter_path = TOP_DIR.joinpath("optimade/validator/data/filters.txt")
-    optional_filter_path = TOP_DIR.joinpath(
-        "optimade/validator/data/optional_filters.txt"
-    )
-
-    specification_flines = (
-        requests.get(
-            "https://raw.githubusercontent.com/Materials-Consortia/OPTIMADE/develop/optimade.rst"
-        )
-        .content.decode("utf-8")
-        .split("\n")
-    )
-
-    filters = []
-    optional_filters = []
-    optional_triggers = ("OPTIONAL",)
-    for line in specification_flines:
-        if ":filter:" in line:
-            for _split in line.replace("filter=", "").split(":filter:")[1:]:
-                _filter = _split.split("`")[1].strip()
-                if any(trigger in line for trigger in optional_triggers):
-                    optional_filters.append(_filter)
-                else:
-                    filters.append(_filter)
-
-    with open(filter_path, "w") as handle:
-        for _filter in filters:
-            handle.write(_filter + "\n")
-
-    with open(optional_filter_path, "w") as handle:
-        for _filter in optional_filters:
-            handle.write(_filter + "\n")
-
-
-@task
 def get_markdown_spec(ctx):
     """Convert the develop OPTIMADE specification from `rst` to `md`."""
     print("Attempting to run pandoc...")

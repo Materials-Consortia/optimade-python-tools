@@ -63,6 +63,7 @@ plugins:
               - "!__json_encoder__$"
               - "!__all__$"
               - "!__config__$"
+              - "!ValidatorResults$"
             members: true
             inherited_members: false
             docstring_style: google

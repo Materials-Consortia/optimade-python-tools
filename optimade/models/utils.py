@@ -1,6 +1,121 @@
+import inspect
+import warnings
 import re
+import itertools
+from enum import Enum
+from typing import Optional
 
-__all__ = ("CHEMICAL_SYMBOLS", "EXTRA_SYMBOLS", "ATOMIC_NUMBERS", "SemanticVersion")
+from pydantic import Field
+
+_PYDANTIC_FIELD_KWARGS = list(inspect.signature(Field).parameters.keys())
+
+__all__ = (
+    "CHEMICAL_SYMBOLS",
+    "EXTRA_SYMBOLS",
+    "ATOMIC_NUMBERS",
+    "SemanticVersion",
+    "SupportLevel",
+)
+
+
+class SupportLevel(Enum):
+    MUST = "must"
+    SHOULD = "should"
+    OPTIONAL = "optional"
+
+
+def StrictField(
+    *args,
+    description: str = None,
+    **kwargs,
+) -> Field:
+    """A wrapper around `pydantic.Field` that does the following:
+
+    - Forbids any "extra" keys that would be passed to `pydantic.Field`,
+      except those used elsewhere to modify the schema in-place,
+      e.g. "uniqueItems", "pattern" and those added by OptimadeField, e.g.
+      "unit", "queryable" and "sortable".
+    - Emits a warning when no description is provided.
+
+    Arguments:
+        *args: Positional arguments passed through to `Field`.
+        description: The description of the `Field`; if this is not
+            specified then a `UserWarning` will be emitted.
+        **kwargs: Extra keyword arguments to be passed to `Field`.
+
+    Raises:
+        RuntimeError: If `**kwargs` contains a key not found in the
+            function signature of `Field`, or in the extensions used
+            by models in this package (see above).
+
+    Returns:
+        The pydantic `Field`.
+
+    """
+
+    allowed_keys = [
+        "unit",
+        "pattern",
+        "uniqueItems",
+        "support",
+        "queryable",
+        "sortable",
+    ]
+    _banned = [k for k in kwargs if k not in set(_PYDANTIC_FIELD_KWARGS + allowed_keys)]
+
+    if _banned:
+        raise RuntimeError(
+            f"Not creating StrictField({args}, {kwargs}) with forbidden keywords {_banned}."
+        )
+
+    if description is not None:
+        kwargs["description"] = description
+
+    if description is None:
+        warnings.warn(
+            f"No description provided for StrictField specified by {args}, {kwargs}."
+        )
+
+    return Field(*args, **kwargs)
+
+
+def OptimadeField(
+    *args,
+    support: Optional[SupportLevel] = None,
+    queryable: Optional[SupportLevel] = None,
+    unit: Optional[str] = None,
+    **kwargs,
+) -> Field:
+    """A wrapper around `pydantic.Field` that adds OPTIMADE-specific
+    field paramters `queryable`, `support` and `unit`, indicating
+    the corresponding support level in the specification and the
+    physical unit of the field.
+
+    Arguments:
+        support: The support level of the field itself, i.e. whether the field
+            can be null or omitted by an implementation.
+        queryable: The support level corresponding to the queryablility
+            of this field.
+        unit: A string describing the unit of the field.
+
+    Returns:
+        The pydantic field with extra validation provided by [`StrictField`][optimade.models.utils.StrictField].
+
+    """
+
+    # Collect non-null keyword arguments to add to the Field schema
+    if unit is not None:
+        kwargs["unit"] = unit
+    if queryable is not None:
+        if isinstance(queryable, str):
+            queryable = SupportLevel(queryable.lower())
+        kwargs["queryable"] = queryable
+    if support is not None:
+        if isinstance(support, str):
+            support = SupportLevel(support.lower())
+        kwargs["support"] = support
+
+    return StrictField(*args, **kwargs)
 
 
 class SemanticVersion(str):
@@ -67,6 +182,22 @@ class SemanticVersion(str):
         """ The base version string without patch and metadata info. """
         return f"{self.major}.{self.minor}.{self.patch}"
 
+
+def anonymous_element_generator():
+    """ Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme. """
+    from string import ascii_lowercase
+
+    for size in itertools.count(1):
+        for s in itertools.product(ascii_lowercase, repeat=size):
+            s = list(s)
+            s[0] = s[0].upper()
+            yield "".join(s)
+
+
+ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
+""" Returns the first 150 values of the anonymous element generator. """
+
+CHEMICAL_FORMULA_REGEXP = r"^([A-Z][a-z]?\d*)*$"
 
 EXTRA_SYMBOLS = ["X", "vacancy"]
 

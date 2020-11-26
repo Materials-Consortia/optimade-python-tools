@@ -1,0 +1,3 @@
+# schemas
+
+::: optimade.server.schemas

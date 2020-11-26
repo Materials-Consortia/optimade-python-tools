@@ -12,8 +12,6 @@ package_data = [
     "test_references.json",
     "test_links.json",
     "landing_page.html",
-    "filters.txt",
-    "optional_filters.txt",
     "providers.json",
 ]
 

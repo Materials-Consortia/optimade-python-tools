@@ -46,6 +46,12 @@ def validate():
         help="""Increase the verbosity of the output.""",
     )
     parser.add_argument(
+        "-j",
+        "--json",
+        action="store_true",
+        help="""Only a JSON summary of the validator results will be printed to stdout.""",
+    )
+    parser.add_argument(
         "-t",
         "--as-type",
         type=str,
@@ -73,6 +79,17 @@ def validate():
         help="Whether to exit on first test failure.",
     )
 
+    parser.add_argument(
+        "-m", "--minimal", action="store_true", help="Run only a minimal test set."
+    )
+
+    parser.add_argument(
+        "--page_limit",
+        type=int,
+        default=5,
+        help="Alter the requested page limit for some tests.",
+    )
+
     args = vars(parser.parse_args())
 
     if os.environ.get("OPTIMADE_VERBOSITY") is not None:
@@ -97,14 +114,17 @@ def validate():
     validator = ImplementationValidator(
         base_url=args["base_url"],
         verbosity=args["verbosity"],
+        respond_json=args["json"],
         as_type=args["as_type"],
         index=args["index"],
         run_optional_tests=not args["skip_optional"],
         fail_fast=args["fail_fast"],
+        minimal=args["minimal"],
+        page_limit=args["page_limit"],
     )
 
     try:
-        validator.main()
+        validator.validate_implementation()
     # catch and print internal exceptions, exiting with non-zero error code
     except Exception:
         traceback.print_exc()

@@ -6,7 +6,7 @@ See the specific Starlette [documentation page](https://www.starlette.io/middlew
 information on it's middleware implementation.
 """
 import re
-from typing import Optional, IO, Type, Generator, List, Union
+from typing import Optional, IO, Type, Generator, List, Union, Tuple
 import urllib.parse
 import warnings
 
@@ -15,6 +15,7 @@ try:
 except ImportError:
     import json
 
+from starlette.datastructures import URL as StarletteURL
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, StreamingResponse
@@ -78,21 +79,19 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     """If a non-supported versioned base URL is supplied return `553 Version Not Supported`."""
 
     @staticmethod
-    def check_url(parsed_url: urllib.parse.ParseResult):
+    def check_url(url: StarletteURL):
         """Check URL path for versioned part.
 
         Parameters:
-            parsed_url: A complete urllib-parsed raw URL.
+            url: A complete urllib-parsed raw URL.
 
         Raises:
             VersionNotSupported: If the URL represents an OPTIMADE versioned base URL
                 and the version part is not supported by the implementation.
 
         """
-        base_url = get_base_url(parsed_url)
-        optimade_path = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}"[
-            len(base_url) :
-        ]
+        base_url = get_base_url(url)
+        optimade_path = f"{url.scheme}://{url.netloc}{url.path}"[len(base_url) :]
         if re.match(r"^/v[0-9]+", optimade_path):
             for version_prefix in BASE_URL_PREFIXES.values():
                 if optimade_path.startswith(f"{version_prefix}/"):
@@ -102,15 +101,14 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
                 raise VersionNotSupported(
                     detail=(
                         f"The parsed versioned base URL {version_prefix[0][0]!r} from "
-                        f"{urllib.parse.urlunparse(parsed_url)!r} is not supported by this implementation. "
+                        f"{url} is not supported by this implementation. "
                         f"Supported versioned base URLs are: {', '.join(BASE_URL_PREFIXES.values())}"
                     )
                 )
 
     async def dispatch(self, request: Request, call_next):
-        parsed_url = urllib.parse.urlparse(str(request.url))
-        if parsed_url.path:
-            self.check_url(parsed_url)
+        if request.url.path:
+            self.check_url(request.url)
         response = await call_next(request)
         return response
 
@@ -220,7 +218,7 @@ class HandleApiHint(BaseHTTPMiddleware):
         if not re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url):
             return False
 
-        base_url = get_base_url(urllib.parse.urlparse(url))
+        base_url = get_base_url(url)
         return bool(re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url[len(base_url) :]))
 
     async def dispatch(self, request: Request, call_next):
@@ -285,7 +283,7 @@ class AddWarnings(BaseHTTPMiddleware):
     [`meta.warnings`][optimade.models.optimade_json.ResponseMeta.warnings] list.
 
     By overriding the `warnings.showwarning()` function with the
-    [showwarning method][optimade.server.middleware.AddWarnings.showwarning],
+    [`showwarning` method][optimade.server.middleware.AddWarnings.showwarning],
     all usages of `warnings.warn()` will result in the regular printing of the
     warning message to `stderr`, but also its addition to an in-memory list of
     warnings.
@@ -299,9 +297,21 @@ class AddWarnings(BaseHTTPMiddleware):
     the response's body content is actually streamable, by breaking it down into
     chunks of the original response's chunk size.
 
+    !!! warning "Important"
+        It is **recommended** to add this middleware as the _last one_ to your application.
+
+        This is to ensure it is invoked _first_, updating `warnings.showwarning()` and
+        catching all warnings that should be added to the response.
+
+        This can be achieved by applying `AddWarnings` _after_ all
+        other middleware with the `.add_middleware()` method, or by
+        initialising the app with a middleware list in which `AddWarnings`
+        appears _first_. More information can be found in the docstring of
+        [`OPTIMADE_MIDDLEWARE`][optimade.server.middleware.OPTIMADE_MIDDLEWARE].
+
     Attributes:
-        _warnings (List[Warnings]): List of [Warnings][optimade.models.optimade_json.Warnings]
-            added through usages of `warnings.warn()` via [showwarning][optimade.server.middleware.AddWarnings.showwarning].
+        _warnings (List[Warnings]): List of [`Warnings`][optimade.models.optimade_json.Warnings]
+            added through usages of `warnings.warn()` via [`showwarning`][optimade.server.middleware.AddWarnings.showwarning].
 
     """
 
@@ -458,3 +468,50 @@ class AddWarnings(BaseHTTPMiddleware):
         )
 
         return response
+
+
+OPTIMADE_MIDDLEWARE: Tuple[BaseHTTPMiddleware] = (
+    EnsureQueryParamIntegrity,
+    CheckWronglyVersionedBaseUrls,
+    HandleApiHint,
+    AddWarnings,
+)
+"""A tuple of all the middleware classes that implement certain required
+features of the OPTIMADE specification, e.g. warnings and URL
+versioning.
+
+!!! note
+    The order in which middleware is added to an application matters.
+
+    As discussed in the docstring of
+    [`AddWarnings`][optimade.server.middleware.AddWarnings], this
+    middleware is the final entry to this list so that it is the first
+    to be applied by the server.
+    Any other middleware should therefore be added _before_ iterating
+    through this variable.
+    This is the opposite way around to the example in the
+    [Starlette documentation](https://www.starlette.io/middleware/)
+    which initialises the application with a pre-built middleware list
+    in the _reverse_ order to `OPTIMADE_MIDDLEWARE`.
+
+To use this variable in FastAPI app code after initialisation:
+
+```python
+from fastapi import FastAPI
+app = FastAPI()
+for middleware in OPTIMADE_MIDDLEWARE:
+    app.add_middleware(middleware)
+```
+
+Alternatively, to use this variable on initialisation:
+
+```python
+from fastapi import FastAPI
+from starlette.middleware import Middleware
+app = FastAPI(
+    ...,
+    middleware=[Middleware(m) for m in reversed(OPTIMADE_MIDDLEWARE)]
+)
+```
+
+"""
