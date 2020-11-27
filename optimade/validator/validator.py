@@ -346,8 +346,9 @@ class ImplementationValidator:
             )
 
         if not chosen_entry:
-            raise ResponseError(
-                f"Unable to generate filters for endpoint {endp}: no valid entries found."
+            return (
+                None,
+                f"Unable to generate filters for endpoint {endp}: no valid entries found.",
             )
 
         for prop in _impl_properties:
@@ -444,7 +445,7 @@ class ImplementationValidator:
         if data_returned < 1:
             return (
                 None,
-                "Endpoint {endp!r} has no entries, cannot get archetypal entry.",
+                f"Endpoint {endp!r} has no entries, cannot get archetypal entry.",
             )
 
         response, _ = self._get_endpoint(
@@ -663,12 +664,10 @@ class ImplementationValidator:
                 isinstance(test_value[0], dict) or isinstance(test_value[0], list)
             ):
                 msg = f"Not testing queries on field {prop} of type {prop_type} with nested dictionary/list entries."
-                self._log.warning(msg)
                 return None, msg
 
         if prop_type in (DataType.DICTIONARY, DataType.TIMESTAMP):
             msg = f"Not testing queries on field {prop} of type {prop_type}."
-            self._log.warning(msg)
             return None, msg
 
         num_data_returned = {}
@@ -691,9 +690,6 @@ class ImplementationValidator:
                 return None, ""
 
             if response.status_code == 501:
-                self._log.warning(
-                    f"Implementation returned {response.content} for {query}"
-                )
                 return (
                     True,
                     "Implementation safely reported that filter {query} was not implemented.",
@@ -1083,9 +1079,10 @@ class ImplementationValidator:
                 deserialized.data[0].id,
             )
         else:
-            raise ResponseError(
+            return (
+                None,
                 "No entries found under endpoint to scrape ID from. "
-                "This may be caused by previous errors, if e.g. the endpoint failed deserialization."
+                "This may be caused by previous errors, if e.g. the endpoint failed deserialization.",
             )
         return (
             self._test_id_by_type[deserialized.data[0].type],
