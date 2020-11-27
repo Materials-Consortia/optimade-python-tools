@@ -11,7 +11,6 @@ import sys
 import logging
 import random
 import urllib.parse
-import dataclasses
 from typing import Union, Tuple, Any, List, Dict, Optional
 
 try:
@@ -26,9 +25,7 @@ from optimade.validator.utils import (
     Client,
     test_case,
     print_failure,
-    print_notify,
     print_success,
-    print_warning,
     ResponseError,
     ValidatorEntryResponseOne,
     ValidatorEntryResponseMany,
@@ -183,55 +180,6 @@ class ImplementationValidator:
         elif self.verbosity > 0:
             self._log.setLevel(logging.DEBUG)
 
-    def print_summary(self):
-        """ Print a summary of the results of validation. """
-        if self.respond_json:
-            print(json.dumps(dataclasses.asdict(self.results), indent=2))
-            return
-
-        if self.results.failure_messages:
-            print("\n\nFAILURES")
-            print("========\n")
-            for message in self.results.failure_messages:
-                print_failure(message[0])
-                for line in message[1].split("\n"):
-                    print_warning("\t" + line)
-
-        if self.results.optional_failure_messages:
-            print("\n\nOPTIONAL TEST FAILURES")
-            print("======================\n")
-            for message in self.results.optional_failure_messages:
-                print_notify(message[0])
-                for line in message[1].split("\n"):
-                    print_warning("\t" + line)
-
-        if self.results.internal_failure_messages:
-            print("\n\nINTERNAL FAILURES")
-            print("=================\n")
-            print(
-                "There were internal validator failures associated with this run.\n"
-                "If this problem persists, please report it at:\n"
-                "https://github.com/Materials-Consortia/optimade-python-tools/issues/new\n"
-            )
-
-            for message in self.results.internal_failure_messages:
-                print_warning(message[0])
-                for line in message[1].split("\n"):
-                    print_warning("\t" + line)
-
-        if self.valid or (not self.valid and not self.fail_fast):
-            final_message = f"\n\nPassed {self.results.success_count} out of {self.results.success_count + self.results.failure_count + self.results.internal_failure_count} tests."
-            if not self.valid:
-                print_failure(final_message)
-            else:
-                print_success(final_message)
-
-            if self.run_optional_tests and not self.fail_fast:
-                print(
-                    f"Additionally passed {self.results.optional_success_count} out of "
-                    f"{self.results.optional_success_count + self.results.optional_failure_count} optional tests."
-                )
-
     def validate_implementation(self):
         """Run all the test cases on the implementation, or the single type test,
         depending on what options were provided on initialiation.
@@ -317,6 +265,35 @@ class ImplementationValidator:
         )
 
         self.print_summary()
+
+    def print_summary(self):
+        """Print the summary of the validation results, plus additional lines
+        about total number of tests. If `self.respond_json` is `True`, only
+        prints the JSON summary to stdout.
+
+        """
+        self.results.print_summary(respond_json=self.respond_json)
+
+        if self.respond_json:
+            return
+
+        if self.valid or (not self.valid and not self.fail_fast):
+            final_message = f"\n\nPassed {self.results.success_count} out of {self.results.success_count + self.results.failure_count + self.results.internal_failure_count} tests."
+            if not self.valid:
+                print_failure(final_message)
+            else:
+                print_success(final_message)
+
+            if self.run_optional_tests and not self.fail_fast:
+                print(
+                    f"Additionally passed {self.results.optional_success_count} out of "
+                    f"{self.results.optional_success_count + self.results.optional_failure_count} optional tests."
+                )
+
+            if self.results.warning_messages:
+                print(
+                    f"There were also {self.results.warning_count} validation warnings emitted."
+                )
 
     @test_case
     def _recurse_through_endpoint(self, endp: str) -> Tuple[bool, str]:
@@ -653,8 +630,7 @@ class ImplementationValidator:
                 SupportLevel.OPTIONAL,
                 SupportLevel.SHOULD,
             ):
-                self._log.info(msg)
-                return None, msg
+                return None, None
 
             # Otherwise, None values are not allowed for MUST's, and entire missing fields are not allowed
             raise ResponseError(msg)
@@ -663,12 +639,10 @@ class ImplementationValidator:
             if not test_value or (
                 isinstance(test_value[0], dict) or isinstance(test_value[0], list)
             ):
-                msg = f"Not testing queries on field {prop} of type {prop_type} with nested dictionary/list entries."
-                return None, msg
+                return None, None
 
         if prop_type in (DataType.DICTIONARY, DataType.TIMESTAMP):
-            msg = f"Not testing queries on field {prop} of type {prop_type}."
-            return None, msg
+            return None, None
 
         num_data_returned = {}
 
@@ -687,7 +661,7 @@ class ImplementationValidator:
                 expected_status_code=(200, 501),
             )
             if not response:
-                return None, ""
+                return None, None
 
             if response.status_code == 501:
                 return (
@@ -730,7 +704,7 @@ class ImplementationValidator:
                     optional=query_optional,
                 )
                 if not reversed_response:
-                    return None, ""
+                    return None, None
 
                 reversed_response = reversed_response.json()
 
