@@ -148,7 +148,7 @@ class ValidatorResults:
             "optional": (print, print),
         }
         pprint, warning_pprint = pprint_types.get(
-            "failure_type", (print_failure, print_warning)
+            failure_type, (print_failure, print_warning)
         )
 
         symbol = "!" if failure_type == "internal" else "✖"

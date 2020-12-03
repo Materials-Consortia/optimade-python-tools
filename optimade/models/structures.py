@@ -560,6 +560,8 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     - `name`: string (REQUIRED)
     - `chemical_symbols`: list of strings (REQUIRED)
     - `concentration`: list of float (REQUIRED)
+    - `attached`: list of strings (REQUIRED)
+    - `nattached`: list of integers (OPTIONAL)
     - `mass`: float (OPTIONAL)
     - `original_name`: string (OPTIONAL).
 
@@ -707,10 +709,10 @@ The properties of the species are found in the property `species`.
             {
               "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
               "species_at_sites": ["Si", "Ge", "vac"],
-              "species": {
-                "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
-                "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
-                "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+              "species": [
+                { "name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0] },
+                { "name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0] },
+                { "name": "vac", "chemical_symbols": ["vacancy"], "concentration": [1.0] }
               },
               "assemblies": [
                 {
