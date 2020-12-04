@@ -56,28 +56,29 @@ class BaseTransformer(abc.ABC, Transformer):
     @v_args(inline=True)
     def constant(self, value):
         """ constant: string | number """
-        # Note: Do nothing!
+        # Note: Return as is.
         return value
 
     @v_args(inline=True)
     def value(self, value):
         """ value: string | number | property """
-        # Note: Do nothing!
+        # Note: Return as is.
         return value
 
     @v_args(inline=True)
     def non_string_value(self, value):
         """ non_string_value: number | property """
-        # Note: Do nothing!
+        # Note: Return as is.
         return value
 
     @v_args(inline=True)
     def not_implemented_string(self, value):
         """not_implemented_string: value
 
-        Raise NotImplementedError.
-        For further information, see Materials-Consortia/OPTIMADE issue 157:
-        https://github.com/Materials-Consortia/OPTIMADE/issues/157
+        Raises:
+            NotImplementedError: For further information, see Materials-Consortia/OPTIMADE issue 157:
+                https://github.com/Materials-Consortia/OPTIMADE/issues/157
+
         """
         raise NotImplementedError("Comparing strings is not yet implemented.")
 
@@ -107,7 +108,7 @@ class BaseTransformer(abc.ABC, Transformer):
     @v_args(inline=True)
     def comparison(self, value):
         """ comparison: constant_first_comparison | property_first_comparison """
-        # Note: Do nothing!
+        # Note: Return as is.
         return value
 
     @abc.abstractmethod

@@ -85,9 +85,9 @@ print(query)
 
 ```json
 {
-    '$and': [
-        {'_mp_bandgap': {'$gt': 5.0}},
-        {'_cod_molecular_weight': {'$lt': 350.0}}
+    "$and": [
+        {"_mp_bandgap": {"$gt": 5.0}},
+        {"_cod_molecular_weight": {"$lt": 350.0}}
     ]
 }
 ```
@@ -95,7 +95,8 @@ print(query)
 
 ### Developing New Filter Transformers
 
-If you would like to add a new transformer, please raise an issue to signal your intent (in case someone else is already working on this). Adding a transformer requires the following:
+If you would like to add a new transformer, please raise an issue to signal your intent (in case someone else is already working on this).
+Adding a transformer requires the following:
 
 1. A new submodule (`.py` file) in the `optimade/filtertransformers` folder containing an implementation of the transformer object, preferably one that extends `optimade.filtertransformers.base_transformer.BaseTransformer`.
 2. Any additional Python requirements must be optional and provided as a separate "`extra_requires`" entry in `setup.py` and in the `requirements.txt` file.
