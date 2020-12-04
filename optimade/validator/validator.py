@@ -346,8 +346,9 @@ class ImplementationValidator:
             )
 
         if not chosen_entry:
-            raise ResponseError(
-                f"Unable to generate filters for endpoint {endp}: no valid entries found."
+            return (
+                None,
+                f"Unable to generate filters for endpoint {endp}: no valid entries found.",
             )
 
         for prop in _impl_properties:
@@ -1083,9 +1084,10 @@ class ImplementationValidator:
                 deserialized.data[0].id,
             )
         else:
-            raise ResponseError(
+            return (
+                None,
                 "No entries found under endpoint to scrape ID from. "
-                "This may be caused by previous errors, if e.g. the endpoint failed deserialization."
+                "This may be caused by previous errors, if e.g. the endpoint failed deserialization.",
             )
         return (
             self._test_id_by_type[deserialized.data[0].type],
