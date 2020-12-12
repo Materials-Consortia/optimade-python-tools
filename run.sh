@@ -1,6 +1,10 @@
 #!/bin/bash
 
-export OPTIMADE_CONFIG_FILE="optimade_config.json"
+if [ ! -v OPTIMADE_CONFIG_FILE ] || [ -z "$OPTIMADE_CONFIG_FILE" ]; then
+    export OPTIMADE_CONFIG_FILE="./optimade_config.json"
+    echo "Using the demo config file at ${OPTIMADE_CONFIG_FILE}."
+    echo "Set the environment variable OPTIMADE_CONFIG_FILE to override this behaviour."
+fi
 
 export OPTIMADE_LOG_LEVEL=info
 if [ "$1" == "debug" ]; then
