@@ -69,9 +69,12 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
 
         current_species = species[species_name]
 
-        atoms.append(
-            Atom(symbol=species_name, position=site, mass=current_species.mass)
-        )
+        # Argument above about chemical symbols also holds here
+        mass = None
+        if current_species.mass:
+            mass = current_species.mass[0]
+
+        atoms.append(Atom(symbol=species_name, position=site, mass=mass))
 
     return Atoms(
         symbols=atoms, cell=attributes.lattice_vectors, pbc=attributes.dimension_types
