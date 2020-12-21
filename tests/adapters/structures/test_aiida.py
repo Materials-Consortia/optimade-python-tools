@@ -44,6 +44,7 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
 
         assert isinstance(aiida_structure, StructureData)
 
+        # Test species.chemical_symbols
         if "vacancy" in structure.attributes.species[0].chemical_symbols:
             assert aiida_structure.has_vacancies
             assert not aiida_structure.is_alloy
@@ -53,3 +54,23 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
         else:
             assert not aiida_structure.has_vacancies
             assert not aiida_structure.is_alloy
+
+        # Test species.mass
+        if structure.attributes.species[0].mass:
+            if len(structure.attributes.species[0].mass) > 1:
+                assert aiida_structure.kinds[0].mass == sum(
+                    [
+                        conc * mass
+                        for conc, mass in zip(
+                            structure.attributes.species[0].concentration,
+                            structure.attributes.species[0].mass,
+                        )
+                    ]
+                )
+            else:
+                assert (
+                    aiida_structure.kinds[0].mass
+                    == structure.attributes.species[0].mass[0]
+                )
+        else:
+            assert aiida_structure.kinds[0].mass == 1.0

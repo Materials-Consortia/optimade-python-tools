@@ -49,8 +49,7 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
     for kind in attributes.species:
         symbols = []
         concentration = []
-        masses = []
-        mass = 1.0
+        mass = 0.0
         for index, chemical_symbol in enumerate(kind.chemical_symbols):
             # NOTE: The non-chemical element identifier "X" is identical to how AiiDA handles this,
             # so it will be treated the same as any other true chemical identifier.
@@ -64,11 +63,13 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
 
                 # AiiDA needs a definition for the mass, and for it to be > 0
                 # mass is OPTIONAL for OPTIMADE structures
-                masses.append(kind.mass[index] if kind.mass else mass)
-        mass = sum(masses) if masses else mass
+                if kind.mass:
+                    mass += kind.concentration[index] * kind.mass[index]
 
         structure.append_kind(
-            Kind(symbols=symbols, weights=concentration, mass=mass, name=kind.name)
+            Kind(
+                symbols=symbols, weights=concentration, mass=mass or 1.0, name=kind.name
+            )
         )
 
     # Add Sites
