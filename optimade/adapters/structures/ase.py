@@ -8,7 +8,6 @@ This conversion function relies on the ASE code.
 For more information on the ASE code see [their documentation](https://wiki.fysik.dtu.dk/ase/).
 """
 from typing import Dict
-from warnings import warn
 
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
@@ -19,6 +18,9 @@ from optimade.adapters.exceptions import ConversionError
 try:
     from ase import Atoms, Atom
 except (ImportError, ModuleNotFoundError):
+    from warnings import warn
+    from optimade.adapters.warnings import AdapterPackageNotFound
+
     Atoms = type("Atoms", (), {})
     ASE_NOT_FOUND = "ASE not found, cannot convert structure to an ASE Atoms"
 
@@ -40,7 +42,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
 
     """
     if "optimade.adapters" in repr(globals().get("Atoms")):
-        warn(ASE_NOT_FOUND)
+        warn(ASE_NOT_FOUND, AdapterPackageNotFound)
         return None
 
     attributes = optimade_structure.attributes

@@ -11,6 +11,7 @@ from warnings import warn
 
 from optimade.models import StructureResource as OptimadeStructure
 
+from optimade.adapters.warnings import AdapterPackageNotFound, ConversionWarning
 from optimade.adapters.structures.utils import pad_cell
 
 try:
@@ -36,7 +37,7 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
 
     """
     if "optimade.adapters" in repr(globals().get("StructureData")):
-        warn(AIIDA_NOT_FOUND)
+        warn(AIIDA_NOT_FOUND, AdapterPackageNotFound)
         return None
 
     attributes = optimade_structure.attributes
@@ -68,7 +69,8 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
 
         if not mass:
             warn(
-                f"No mass defined for <species(name={kind.name})>, will default to setting mass to 1.0."
+                f"No mass defined for <species(name={kind.name!r})>, will default to setting mass to 1.0.",
+                ConversionWarning,
             )
 
         structure.append_kind(
