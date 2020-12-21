@@ -7,6 +7,8 @@ For more information on the AiiDA code see [their website](http://www.aiida.net)
 
 This conversion function relies on the [`aiida-core`](https://github.com/aiidateam/aiida-core) package.
 """
+from warnings import warn
+
 from optimade.models import StructureResource as OptimadeStructure
 
 from optimade.adapters.structures.utils import pad_cell
@@ -14,8 +16,6 @@ from optimade.adapters.structures.utils import pad_cell
 try:
     from aiida.orm.nodes.data.structure import StructureData, Kind, Site
 except (ImportError, ModuleNotFoundError):
-    from warnings import warn
-
     StructureData = type("StructureData", (), {})
     AIIDA_NOT_FOUND = (
         "AiiDA not found, cannot convert structure to an AiiDA StructureData"
@@ -65,6 +65,11 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
                 # mass is OPTIONAL for OPTIMADE structures
                 if kind.mass:
                     mass += kind.concentration[index] * kind.mass[index]
+
+        if not mass:
+            warn(
+                f"No mass defined for <species(name={kind.name})>, will default to setting mass to 1.0."
+            )
 
         structure.append_kind(
             Kind(
