@@ -20,27 +20,27 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
 mongo_deps = ["pymongo~=3.11", "mongomock~=3.21"]
-server_deps = ["uvicorn~=0.12.3", "Jinja2~=2.11"] + mongo_deps
+server_deps = ["uvicorn~=0.13.2", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
-aiida_deps = ["aiida-core~=1.5.0"]
+aiida_deps = ["aiida-core~=1.5.2"]
 ase_deps = ["ase~=3.20"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2020.11.11"]
+pymatgen_deps = ["pymatgen==2020.12.18"]
 jarvis_deps = ["jarvis-tools==2020.11.27"]
 client_deps = cif_deps
 
 # General
 docs_deps = [
     "mkdocs~=1.1",
-    "mkdocs-awesome-pages-plugin~=2.4",
-    "mkdocs-material~=6.1",
+    "mkdocs-awesome-pages-plugin~=2.5",
+    "mkdocs-material~=6.2",
     "mkdocs-minify-plugin~=0.3.0",
     "mkdocstrings~=0.13.6",
 ]
 testing_deps = [
-    "pytest~=6.1",
+    "pytest~=6.2",
     "pytest-cov~=2.10",
     "codecov~=2.1",
     "jsondiff~=1.2",
@@ -89,7 +89,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "lark-parser~=0.11.1",
-        "fastapi~=0.62.0",
+        "fastapi~=0.63.0",
         "pydantic~=1.6.1",
         "email_validator~=1.1",
         "requests~=2.25",
