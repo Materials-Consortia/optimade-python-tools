@@ -9,7 +9,7 @@ __all__ = ("ElasticTransformer",)
 
 
 _cmp_operators = {">": "gt", ">=": "gte", "<": "lt", "<=": "lte"}
-_rev_cmp_operators = {">": "<", ">=": "<=", "<": ">", "<=": "=>"}
+_rev_cmp_operators = {">": "<", ">=": "<=", "<": ">", "<=": ">=", "=": "=", "!=": "!="}
 _has_operators = {"ALL": "must", "ANY": "should"}
 _length_quantities = {
     "elements": "nelements",
