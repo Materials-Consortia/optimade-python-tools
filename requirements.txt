@@ -1,6 +1,6 @@
 fastapi==0.61.1
 lark-parser==0.10.1
-pydantic==1.7.2
+pydantic==1.7.3
 email_validator==1.1.1
 requests==2.24.0
 uvicorn==0.12.2
