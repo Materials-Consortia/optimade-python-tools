@@ -1,4 +1,5 @@
 """Make sure response_fields is handled correctly"""
+import pytest
 
 
 def test_custom_field(check_response):
@@ -168,21 +169,27 @@ def test_list_correlated(check_error_response):
 
 
 def test_timestamp_query(check_response):
+    from optimade.server.warnings import TimestampNotRFCCompliant
+
     request = '/structures?filter=last_modified="2019-06-08T05:13:37.331Z"&page_limit=5'
     expected_ids = ["mpf_1", "mpf_2", "mpf_3"]
-    check_response(request, expected_ids, expected_as_is=True)
+    with pytest.warns(TimestampNotRFCCompliant):
+        check_response(request, expected_ids, expected_as_is=True)
 
     request = '/structures?filter=last_modified<"2019-06-08T05:13:37.331Z"&page_limit=5'
     expected_ids = ["mpf_3819"]
-    check_response(request, expected_ids, expected_as_is=True)
+    with pytest.warns(TimestampNotRFCCompliant):
+        check_response(request, expected_ids, expected_as_is=True)
 
     request = '/structures?filter=last_modified="2018-06-08T05:13:37.945Z"&page_limit=5'
     expected_ids = ["mpf_3819"]
-    check_response(request, expected_ids, expected_as_is=True)
+    with pytest.warns(TimestampNotRFCCompliant):
+        check_response(request, expected_ids, expected_as_is=True)
 
     request = '/structures?filter=last_modified>"2018-06-08T05:13:37.945Z" AND last_modified<="2019-06-08T05:13:37.331Z"&page_limit=5'
     expected_ids = ["mpf_1", "mpf_2", "mpf_3"]
-    check_response(request, expected_ids, expected_as_is=True)
+    with pytest.warns(TimestampNotRFCCompliant):
+        check_response(request, expected_ids, expected_as_is=True)
 
 
 def test_is_known(check_response):

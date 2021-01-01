@@ -364,38 +364,36 @@ class TestMongoTransformer:
         import datetime
         import bson.tz_util
         from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.warnings import TimestampNotRFCCompliant
 
         example_RFC3339_date = "2019-06-08T04:13:37Z"
         example_RFC3339_date_2 = "2019-06-08T04:13:37"
+        example_non_RFC3339_date = "2019-06-08T04:13:37.123Z"
+
+        expected_datetime = datetime.datetime(
+            year=2019,
+            month=6,
+            day=8,
+            hour=4,
+            minute=13,
+            second=37,
+            microsecond=0,
+            tzinfo=bson.tz_util.utc,
+        )
 
         assert self.transform(f'last_modified > "{example_RFC3339_date}"') == {
-            "last_modified": {
-                "$gt": datetime.datetime(
-                    year=2019,
-                    month=6,
-                    day=8,
-                    hour=4,
-                    minute=13,
-                    second=37,
-                    microsecond=0,
-                    tzinfo=bson.tz_util.utc,
-                )
-            }
+            "last_modified": {"$gt": expected_datetime}
         }
         assert self.transform(f'last_modified > "{example_RFC3339_date_2}"') == {
-            "last_modified": {
-                "$gt": datetime.datetime(
-                    year=2019,
-                    month=6,
-                    day=8,
-                    hour=4,
-                    minute=13,
-                    second=37,
-                    microsecond=0,
-                    tzinfo=bson.tz_util.utc,
-                )
-            }
+            "last_modified": {"$gt": expected_datetime}
         }
+
+        non_rfc_datetime = expected_datetime.replace(microsecond=123000)
+
+        with pytest.warns(TimestampNotRFCCompliant):
+            assert self.transform(f'last_modified > "{example_non_RFC3339_date}"') == {
+                "last_modified": {"$gt": non_rfc_datetime}
+            }
 
         class MyMapper(mapper("StructureMapper")):
             ALIASES = (("last_modified", "ctime"),)
@@ -405,36 +403,10 @@ class TestMongoTransformer:
 
         assert transformer.transform(
             parser.parse(f'last_modified > "{example_RFC3339_date}"')
-        ) == {
-            "ctime": {
-                "$gt": datetime.datetime(
-                    year=2019,
-                    month=6,
-                    day=8,
-                    hour=4,
-                    minute=13,
-                    second=37,
-                    microsecond=0,
-                    tzinfo=bson.tz_util.utc,
-                )
-            }
-        }
+        ) == {"ctime": {"$gt": expected_datetime}}
         assert transformer.transform(
             parser.parse(f'last_modified > "{example_RFC3339_date_2}"')
-        ) == {
-            "ctime": {
-                "$gt": datetime.datetime(
-                    year=2019,
-                    month=6,
-                    day=8,
-                    hour=4,
-                    minute=13,
-                    second=37,
-                    microsecond=0,
-                    tzinfo=bson.tz_util.utc,
-                )
-            }
-        }
+        ) == {"ctime": {"$gt": expected_datetime}}
 
     def test_unaliased_length_operator(self):
         assert self.transform("cartesian_site_positions LENGTH <= 3") == {

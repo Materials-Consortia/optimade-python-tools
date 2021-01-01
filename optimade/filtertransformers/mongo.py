@@ -1,6 +1,8 @@
 import copy
+import warnings
 from lark import v_args, Token
 from optimade.filtertransformers.base_transformer import BaseTransformer
+from optimade.server.warnings import TimestampNotRFCCompliant
 
 __all__ = ("MongoTransformer",)
 
@@ -423,12 +425,20 @@ class MongoTransformer(BaseTransformer):
             import bson.json_util
 
             for operator in subdict[prop]:
-                subdict[prop][operator] = bson.json_util.loads(
+                query_datetime = bson.json_util.loads(
                     bson.json_util.dumps({"$date": subdict[prop][operator]}),
                     json_options=bson.json_util.DEFAULT_JSON_OPTIONS.with_options(
                         tz_aware=True, tzinfo=bson.tz_util.utc
                     ),
                 )
+                if query_datetime.microsecond != 0:
+                    warnings.warn(
+                        f"Query for timestamp {subdict[prop][operator]!r} for field {prop!r} contained microseconds, which is not RFC3339 compliant. "
+                        "This may cause undefined behaviour for the underlying database.",
+                        TimestampNotRFCCompliant,
+                    )
+
+                subdict[prop][operator] = query_datetime
 
             return subdict
 
