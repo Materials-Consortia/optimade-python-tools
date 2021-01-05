@@ -48,7 +48,7 @@ def test_with_validator_json_response(both_fake_remote_clients, capsys):
 def test_mongo_backend_package_used():
     import pymongo
     import mongomock
-    from optimade.server.entry_collections import client
+    from optimade.server.entry_collections.mongo import client
 
     force_mongo_env_var = os.environ.get("OPTIMADE_CI_FORCE_MONGO", None)
     if force_mongo_env_var is None:

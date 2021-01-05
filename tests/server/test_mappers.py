@@ -8,7 +8,7 @@ MAPPER = "BaseResourceMapper"
 
 def test_disallowed_aliases(mapper):
     import mongomock
-    from optimade.server.entry_collections import MongoCollection
+    from optimade.server.entry_collections.mongo import MongoCollection
 
     class MyMapper(mapper(MAPPER)):
         ALIASES = (("$and", "my_special_and"), ("not", "$not"))

@@ -7,11 +7,49 @@ from lark import Transformer
 
 from optimade.filterparser import LarkParser
 from optimade.models import EntryResource
-from optimade.server.config import CONFIG
+from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.exceptions import BadRequest, Forbidden
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import FieldValueNotRecognized
+
+
+def create_collection(
+    name: str, resource_cls: EntryResource, resource_mapper: BaseResourceMapper
+) -> "EntryCollection":
+    """Create an `EntryCollection` of the configured type, depending on the value of
+    `CONFIG.database_backend`.
+
+    Arguments:
+        name: The collection name.
+        resource_cls: The type of entry resource to be stored within the collection.
+        resource_mapper: The associated resource mapper for that entry resource type.
+
+    Returns:
+        The created `EntryCollection`.
+
+    """
+    if CONFIG.database_backend is SupportedBackend.MONGODB:
+        from .mongo import MongoCollection
+
+        return MongoCollection(
+            name=name,
+            resource_cls=resource_cls,
+            resource_mapper=resource_mapper,
+        )
+
+    if CONFIG.database_backend is SupportedBackend.ELASTIC:
+        from .elasticsearch import ElasticCollection
+
+        return ElasticCollection(
+            index=name,
+            resource_cls=resource_cls,
+            resource_mapper=resource_mapper,
+        )
+
+    raise NotImplementedError(
+        f"The database backend {CONFIG.database_backend!r} is not implemented"
+    )
 
 
 class EntryCollection(ABC):
@@ -20,7 +58,6 @@ class EntryCollection(ABC):
 
     def __init__(
         self,
-        collection,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
         transformer: Transformer,
@@ -28,7 +65,6 @@ class EntryCollection(ABC):
         """Initialize the collection for the given parameters.
 
         Parameters:
-            collection: The backend-specific collection.
             resource_cls (EntryResource): The `EntryResource` model
                 that is stored by the collection.
             resource_mapper (BaseResourceMapper): A resource mapper
@@ -38,7 +74,6 @@ class EntryCollection(ABC):
                 interpret the filter.
 
         """
-        self.collection = collection
         self.parser = LarkParser()
         self.resource_cls = resource_cls
         self.resource_mapper = resource_mapper
@@ -49,7 +84,29 @@ class EntryCollection(ABC):
 
     @abstractmethod
     def __len__(self) -> int:
-        """ Returns the total number of entries in the collection. """
+        """Returns the total number of entries in the collection."""
+
+    @abstractmethod
+    def __iter__(self):
+        """Iterate through the underlying collection."""
+
+    @abstractmethod
+    def __contains__(self, entry: EntryResource):
+        """Check whether an entry is contained within the collection.
+
+        Arguments:
+            entry: The EntryResource object to search for.
+
+        """
+
+    @abstractmethod
+    def insert(self, data: List[EntryResource]) -> None:
+        """Add the given entries to the underlying database.
+
+        Arguments:
+            data: The entry resource objects to add to the database.
+
+        """
 
     @abstractmethod
     def count(self, **kwargs) -> int:

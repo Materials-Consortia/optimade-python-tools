@@ -40,39 +40,43 @@ class MongoCollection(EntryCollection):
 
     def __init__(
         self,
-        collection: Union[
-            pymongo.collection.Collection, mongomock.collection.Collection
-        ],
+        name: str,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
+        database: str = CONFIG.mongo_database,
     ):
         """Initialize the MongoCollection for the given parameters.
 
         Parameters:
-            collection (Union[pymongo.collection.Collection, mongomock.collection.Collection]):
-                The backend-specific collection.
-            resource_cls (EntryResource): The `EntryResource` model
-                that is stored by the collection.
-            resource_mapper (BaseResourceMapper): A resource mapper
-                object that handles aliases and format changes between
-                deserialization and response.
+            name: The name of the collection.
+            resource_cls: The type of entry resource that is stored by the collection.
+            resource_mapper: A resource mapper object that handles aliases and
+                format changes between deserialization and response.
+            database: The name of the underlying MongoDB database to connect to.
 
         """
         super().__init__(
-            collection,
             resource_cls,
             resource_mapper,
             MongoTransformer(mapper=resource_mapper),
         )
 
         self.parser = LarkParser(version=(1, 0, 0), variant="default")
+        self.collection = client[database][name]
 
         # check aliases do not clash with mongo operators
         self._check_aliases(self.resource_mapper.all_aliases())
         self._check_aliases(self.resource_mapper.all_length_aliases())
 
+
     def __len__(self) -> int:
         return self.collection.estimated_document_count()
+
+    def __iter__(self):
+        return self.collection.find()
+
+    def __contains__(self):
+        pass
 
     def count(self, **kwargs) -> int:
         """Returns the number of entries matching the query specified
@@ -90,6 +94,10 @@ class MongoCollection(EntryCollection):
         if "filter" not in kwargs:  # "filter" is needed for count_documents()
             kwargs["filter"] = {}
         return self.collection.count_documents(**kwargs)
+
+
+    def insert(self, data: List[EntryResource]):
+        self.collection.insert_many(data)
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
