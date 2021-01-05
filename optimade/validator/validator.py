@@ -267,9 +267,10 @@ class ImplementationValidator:
                 "Unable to deserialize base info (see previous errors), so cannot continue."
             )
 
-        self.provider_prefix = (
-            base_info.dict()["meta"].get("provider", {}).get("prefix")
-        )
+        self.provider_prefix = None
+        meta = base_info.dict().get("meta", {})
+        if meta.get("provider") is not None:
+            self.provider_prefix = meta["provider"].get("prefix")
 
         # Set the response class for all `/info/entry` endpoints
         self.available_json_endpoints, _ = self._get_available_endpoints(base_info)
@@ -285,9 +286,9 @@ class ImplementationValidator:
         for endp in self.available_json_endpoints:
             entry_info_endpoint = f"{info_endp}/{endp}"
             self._log.debug("Testing expected info endpoint %s", entry_info_endpoint)
-            entry_info = self._test_info_or_links_endpoint(entry_info_endpoint)
-            if entry_info:
-                self._entry_info_by_type[endp] = entry_info.dict()
+            self._entry_info_by_type[endp] = self._test_info_or_links_endpoint(
+                entry_info_endpoint
+            )
 
         # Use the _entry_info_by_type to construct filters on the relevant endpoints
         if not self.minimal:
@@ -334,16 +335,17 @@ class ImplementationValidator:
 
         """
         entry_info = self._entry_info_by_type.get(endp)
+
+        if not entry_info:
+            raise ResponseError(
+                f"Unable to generate filters for endpoint {endp}: 'info/{endp}' response was malformed."
+            )
+
         _impl_properties = self._check_entry_info(entry_info, endp)
         prop_list = list(_impl_properties.keys())
 
         self._check_response_fields(endp, prop_list)
         chosen_entry, _ = self._get_archetypal_entry(endp, prop_list)
-
-        if not entry_info:
-            raise ResponseError(
-                f"Unable to generate filters for endpoint {endp}: entry info not found."
-            )
 
         if not chosen_entry:
             return (
@@ -388,7 +390,7 @@ class ImplementationValidator:
             The list of property names supported by this implementation.
 
         """
-        properties = entry_info["data"]["properties"]
+        properties = entry_info.get("data", {}).get("properties", [])
         self._test_must_properties(
             properties, endp, request="; checking entry info for required properties"
         )
@@ -636,9 +638,9 @@ class ImplementationValidator:
 
         """
         if prop == "id":
-            test_value = chosen_entry["id"]
+            test_value = chosen_entry.get("id")
         else:
-            test_value = chosen_entry["attributes"].get(prop, "_missing")
+            test_value = chosen_entry.get("attributes", {}).get(prop, "_missing")
 
         if test_value in ("_missing", None):
             support = CONF.entry_schemas[endp].get(prop, {}).get("support")
@@ -797,9 +799,8 @@ class ImplementationValidator:
                 self._response_classes[request_str],
                 request=request_str,
             )
-            if not deserialized:
-                return response
-            return deserialized
+            if deserialized:
+                return deserialized.dict()
 
         return False
 
