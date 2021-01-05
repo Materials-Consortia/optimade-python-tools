@@ -17,7 +17,7 @@ with warnings.catch_warnings(record=True) as w:
     config_warnings = w
 
 from optimade import __api_version__, __version__
-from optimade.server.entry_collections import MongoCollection
+from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
@@ -66,10 +66,10 @@ if not CONFIG.use_real_mongo:
     from optimade.server.routers import ENTRY_COLLECTIONS
     from optimade.server.routers.utils import get_providers
 
-    def load_entries(endpoint_name: str, endpoint_collection: MongoCollection):
+    def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
         LOGGER.debug("Loading test %s...", endpoint_name)
 
-        endpoint_collection.collection.insert_many(getattr(data, endpoint_name, []))
+        endpoint_collection.insert(getattr(data, endpoint_name, []))
         if endpoint_name == "links":
             LOGGER.debug(
                 "  Adding Materials-Consortia providers to links from optimade.org"
@@ -86,7 +86,7 @@ if not CONFIG.use_real_mongo:
     for name, collection in ENTRY_COLLECTIONS.items():
         load_entries(name, collection)
 
-# Add CORS middleware first
+# # Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
 # Then add required OPTIMADE middleware
