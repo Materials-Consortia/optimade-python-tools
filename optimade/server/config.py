@@ -36,6 +36,12 @@ class LogLevel(Enum):
     CRITICAL = "critical"
 
 
+class SupportedBackend(Enum):
+
+    ELASTIC = "elastic"
+    MONGODB = "mongodb"
+
+
 class ServerConfig(BaseSettings):
     """This class stores server config parameters in a way that
     can be easily extended for new config file types.
@@ -51,6 +57,12 @@ class ServerConfig(BaseSettings):
     use_real_mongo: bool = Field(
         False, description="Use a real Mongo server rather than MongoMock"
     )
+
+    database_backend: SupportedBackend = Field(
+        "mongodb",
+        description="Which database backend to use out of the supported backends.",
+    )
+
     mongo_database: str = Field(
         "optimade", description="Mongo database for collection data"
     )
