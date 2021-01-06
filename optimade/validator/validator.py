@@ -269,6 +269,8 @@ class ImplementationValidator:
                 "This is required for all further validation, so the validator will now exit."
             )
             self.print_summary()
+            # Set valid to False to ensure error code 1 is raised at CLI
+            self.valid = False
             return
 
         # Grab the provider prefix from base info and use it when looking for provider fields
