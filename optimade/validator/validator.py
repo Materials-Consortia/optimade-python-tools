@@ -261,7 +261,7 @@ class ImplementationValidator:
         self._log.debug("Testing base info endpoint of %s", info_endp)
 
         # Get and validate base info to find endpoints
-        # If this is not possible, the exit at this stage
+        # If this is not possible, then exit at this stage
         base_info = self._test_info_or_links_endpoint(info_endp)
         if not base_info:
             self._log.critical(
@@ -291,7 +291,7 @@ class ImplementationValidator:
 
         # Test that entry info endpoints deserialize correctly
         # If they do not, the corresponding entry in _entry_info_by_type
-        # is set to False, which must be checked for in further validation
+        # is set to False, which must be checked for further validation
         for endp in self.available_json_endpoints:
             entry_info_endpoint = f"{info_endp}/{endp}"
             self._log.debug("Testing expected info endpoint %s", entry_info_endpoint)
