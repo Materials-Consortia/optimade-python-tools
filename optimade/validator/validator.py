@@ -271,12 +271,13 @@ class ImplementationValidator:
             self.print_summary()
             return
 
+        # Grab the provider prefix from base info and use it when looking for provider fields
         self.provider_prefix = None
         meta = base_info.get("meta", {})
         if meta.get("provider") is not None:
             self.provider_prefix = meta["provider"].get("prefix")
 
-        # Set the response class for all `/info/entry` endpoints
+        # Set the response class for all `/info/entry` endpoints based on `/info` response
         self.available_json_endpoints, _ = self._get_available_endpoints(base_info)
         for endp in self.available_json_endpoints:
             self._response_classes[f"{info_endp}/{endp}"] = EntryInfoResponse
@@ -287,6 +288,8 @@ class ImplementationValidator:
         self._test_bad_version_returns_553()
 
         # Test that entry info endpoints deserialize correctly
+        # If they do not, the corresponding entry in _entry_info_by_type
+        # is set to False, which must be checked for in further validation
         for endp in self.available_json_endpoints:
             entry_info_endpoint = f"{info_endp}/{endp}"
             self._log.debug("Testing expected info endpoint %s", entry_info_endpoint)
