@@ -261,14 +261,18 @@ class ImplementationValidator:
         self._log.debug("Testing base info endpoint of %s", info_endp)
 
         # Get and validate base info to find endpoints
+        # If this is not possible, the exit at this stage
         base_info = self._test_info_or_links_endpoint(info_endp)
         if not base_info:
-            raise RuntimeError(
-                "Unable to deserialize base info (see previous errors), so cannot continue."
+            self._log.critical(
+                f"Unable to deserialize response from introspective {info_endp!r} endpoint. "
+                "This is required for all further validation, so the validator will now exit."
             )
+            self.print_summary()
+            return
 
         self.provider_prefix = None
-        meta = base_info.dict().get("meta", {})
+        meta = base_info.get("meta", {})
         if meta.get("provider") is not None:
             self.provider_prefix = meta["provider"].get("prefix")
 
@@ -780,7 +784,7 @@ class ImplementationValidator:
 
         return True, f"{prop} passed filter tests"
 
-    def _test_info_or_links_endpoint(self, request_str: str) -> Union[bool, Any]:
+    def _test_info_or_links_endpoint(self, request_str: str) -> Union[bool, dict]:
         """Requests an info or links endpoint and attempts to deserialize
         the response.
 
@@ -1147,25 +1151,8 @@ class ImplementationValidator:
 
         """
         for _ in [0]:
-            available_json_entry_endpoints = []
             try:
-                available_json_entry_endpoints = (
-                    base_info.data.attributes.entry_types_by_format.get("json")
-                )
-                break
-            except Exception:
-                self._log.warning(
-                    "Info endpoint failed serialization, trying to manually extract entry_types_by_format."
-                )
-
-            if not base_info.json():
-                raise ResponseError(
-                    "Unable to get entry types from base info endpoint. "
-                    "This may most likely be attributed to a wrong request to the info endpoint."
-                )
-
-            try:
-                available_json_entry_endpoints = base_info.json()["data"]["attributes"][
+                available_json_entry_endpoints = base_info["data"]["attributes"][
                     "entry_types_by_format"
                 ]["json"]
                 break
