@@ -1,5 +1,37 @@
 # Changelog
 
+## [v0.12.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.6) (2021-01-08)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.12.5...v0.12.6)
+
+**Implemented enhancements:**
+
+- Create base transformer [\#286](https://github.com/Materials-Consortia/optimade-python-tools/issues/286)
+
+**Fixed bugs:**
+
+- Our models and validator are too strict [\#399](https://github.com/Materials-Consortia/optimade-python-tools/issues/399)
+- Validator changes: always check unversioned '/versions' and handle rich HTML pages [\#665](https://github.com/Materials-Consortia/optimade-python-tools/pull/665) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Add more prominent link to rendered docs [\#628](https://github.com/Materials-Consortia/optimade-python-tools/issues/628)
+- Review the required properties of StructureResourceAttributes in openapi.json [\#198](https://github.com/Materials-Consortia/optimade-python-tools/issues/198)
+
+**Merged pull requests:**
+
+- Added GitHub CODEOWNERS [\#664](https://github.com/Materials-Consortia/optimade-python-tools/pull/664) ([ml-evs](https://github.com/ml-evs))
+- Robustness improvements to validator [\#659](https://github.com/Materials-Consortia/optimade-python-tools/pull/659) ([ml-evs](https://github.com/ml-evs))
+- Update dependencies [\#655](https://github.com/Materials-Consortia/optimade-python-tools/pull/655) ([CasperWA](https://github.com/CasperWA))
+- Bugfixes for elasticsearch filtertransformer comparision operators. [\#648](https://github.com/Materials-Consortia/optimade-python-tools/pull/648) ([markus1978](https://github.com/markus1978))
+- Update dependencies [\#647](https://github.com/Materials-Consortia/optimade-python-tools/pull/647) ([ml-evs](https://github.com/ml-evs))
+- Added "root\_path" config parameter for FastAPI apps [\#634](https://github.com/Materials-Consortia/optimade-python-tools/pull/634) ([markus1978](https://github.com/markus1978))
+- Bump providers from `2673be6` to `fe5048b` [\#633](https://github.com/Materials-Consortia/optimade-python-tools/pull/633) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Updated README and moved some files to top-level [\#629](https://github.com/Materials-Consortia/optimade-python-tools/pull/629) ([ml-evs](https://github.com/ml-evs))
+- insert reading of default optimade\_config.json in example run script run.sh [\#627](https://github.com/Materials-Consortia/optimade-python-tools/pull/627) ([rartino](https://github.com/rartino))
+- Create template filtertransformer BaseTransformer [\#287](https://github.com/Materials-Consortia/optimade-python-tools/pull/287) ([ml-evs](https://github.com/ml-evs))
+- Fix filters on nested provider/aliased fields [\#285](https://github.com/Materials-Consortia/optimade-python-tools/pull/285) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.12.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.5) (2020-12-05)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.12.4...v0.12.5)
@@ -20,6 +52,7 @@
 - Dependency updates [\#607](https://github.com/Materials-Consortia/optimade-python-tools/pull/607) ([ml-evs](https://github.com/ml-evs))
 - include LICENSE in pip Package [\#594](https://github.com/Materials-Consortia/optimade-python-tools/pull/594) ([jan-janssen](https://github.com/jan-janssen))
 - Relax models to allow for all SHOULD fields to be None [\#560](https://github.com/Materials-Consortia/optimade-python-tools/pull/560) ([ml-evs](https://github.com/ml-evs))
+- Python 3.9 support [\#558](https://github.com/Materials-Consortia/optimade-python-tools/pull/558) ([ml-evs](https://github.com/ml-evs))
 - ReadTheDocs configuration file \(v2\) [\#485](https://github.com/Materials-Consortia/optimade-python-tools/pull/485) ([CasperWA](https://github.com/CasperWA))
 
 ## [v0.12.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.4) (2020-11-16)
@@ -82,7 +115,6 @@
 - Update dependencies [\#578](https://github.com/Materials-Consortia/optimade-python-tools/pull/578) ([CasperWA](https://github.com/CasperWA))
 - Bump CasperWA/push-protected from v1 to v2.1.0 [\#573](https://github.com/Materials-Consortia/optimade-python-tools/pull/573) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Update deps [\#566](https://github.com/Materials-Consortia/optimade-python-tools/pull/566) ([ml-evs](https://github.com/ml-evs))
-- Python 3.9 support [\#558](https://github.com/Materials-Consortia/optimade-python-tools/pull/558) ([ml-evs](https://github.com/ml-evs))
 - Improve handling of MongoDB ObjectID [\#557](https://github.com/Materials-Consortia/optimade-python-tools/pull/557) ([ml-evs](https://github.com/ml-evs))
 - Update deps [\#556](https://github.com/Materials-Consortia/optimade-python-tools/pull/556) ([ml-evs](https://github.com/ml-evs))
 - Updated dependencies [\#551](https://github.com/Materials-Consortia/optimade-python-tools/pull/551) ([ml-evs](https://github.com/ml-evs))
@@ -377,7 +409,6 @@
 - Adding jarvis-tools structures [\#297](https://github.com/Materials-Consortia/optimade-python-tools/pull/297) ([knc6](https://github.com/knc6))
 - Update Docs [\#295](https://github.com/Materials-Consortia/optimade-python-tools/pull/295) ([shyamd](https://github.com/shyamd))
 - Setup MKDocs for Documentation [\#294](https://github.com/Materials-Consortia/optimade-python-tools/pull/294) ([shyamd](https://github.com/shyamd))
-- Fix filters on nested provider/aliased fields [\#285](https://github.com/Materials-Consortia/optimade-python-tools/pull/285) ([ml-evs](https://github.com/ml-evs))
 - Use heroku-shields instead of heroku-badge [\#284](https://github.com/Materials-Consortia/optimade-python-tools/pull/284) ([CasperWA](https://github.com/CasperWA))
 - Add OPTIMADE logo to badge by extending JSON [\#283](https://github.com/Materials-Consortia/optimade-python-tools/pull/283) ([CasperWA](https://github.com/CasperWA))
 - Add null check to mongo filtertransformer for KNOWN/UNKNOWN filters [\#279](https://github.com/Materials-Consortia/optimade-python-tools/pull/279) ([ml-evs](https://github.com/ml-evs))
@@ -725,7 +756,6 @@
 - Remove inappropriate lint messages [\#90](https://github.com/Materials-Consortia/optimade-python-tools/pull/90) ([CasperWA](https://github.com/CasperWA))
 - Fix dependencies [\#88](https://github.com/Materials-Consortia/optimade-python-tools/pull/88) ([CasperWA](https://github.com/CasperWA))
 - Add sortable field to EntryInfoProperty model [\#85](https://github.com/Materials-Consortia/optimade-python-tools/pull/85) ([CasperWA](https://github.com/CasperWA))
-- Validate illegal fields are not present under attributes and relationships [\#83](https://github.com/Materials-Consortia/optimade-python-tools/pull/83) ([CasperWA](https://github.com/CasperWA))
 - Add references endpoint [\#78](https://github.com/Materials-Consortia/optimade-python-tools/pull/78) ([CasperWA](https://github.com/CasperWA))
 - fix travis build [\#77](https://github.com/Materials-Consortia/optimade-python-tools/pull/77) ([ltalirz](https://github.com/ltalirz))
 - Fix manual verification of elements\_ratios [\#76](https://github.com/Materials-Consortia/optimade-python-tools/pull/76) ([CasperWA](https://github.com/CasperWA))
