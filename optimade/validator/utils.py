@@ -289,13 +289,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                 else:
                     result, msg = test_fn(validator, *args, **kwargs)
 
-            except json.JSONDecodeError as exc:
-                msg = (
-                    "Critical: unable to parse server response as JSON. "
-                    f"{exc.__class__.__name__}: {exc}"
-                )
-                raise exc
-            except (ResponseError, ValidationError) as exc:
+            except (json.JSONDecodeError, ResponseError, ValidationError) as exc:
                 msg = f"{exc.__class__.__name__}: {exc}"
                 raise exc
             except Exception as exc:

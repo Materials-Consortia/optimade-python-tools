@@ -922,18 +922,24 @@ class ImplementationValidator:
         for versioned base URLs.
 
         """
-        expected_status_code = 200
+
+        # First, check that there is a versions endpoint in the appropriate place:
+        # If passed a versioned URL, then strip that version from
+        # the URL before looking for `/versions`.
         if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
-            expected_status_code = 404
+            self.client.base_url = "/".join(self.client.base_url.split("/")[:-1])
 
         response, _ = self._get_endpoint(
-            CONF.versions_endpoint, expected_status_code=expected_status_code
+            CONF.versions_endpoint, expected_status_code=200
         )
 
-        if expected_status_code == 200:
-            self._test_versions_endpoint_content(
-                response, request=CONF.versions_endpoint
-            )
+        self._test_versions_endpoint_content(response, request=CONF.versions_endpoint)
+
+        # If passed a versioned URL, first reset the URL of the client to the
+        # versioned one, then that this versioned URL does NOT host a versions endpoint
+        if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
+            self.client.base_url = self.base_url
+            self._get_endpoint(CONF.versions_endpoint, expected_status_code=404)
 
     @test_case
     def _test_versions_endpoint_content(
@@ -1212,9 +1218,12 @@ class ImplementationValidator:
 
         if response.status_code not in expected_status_code:
             message = f"Request to '{request_str}' returned HTTP code {response.status_code} and not expected {expected_status_code}."
-            message += "\nError(s):"
-            for error in response.json().get("errors", []):
-                message += f'\n  {error.get("title", "N/A")}: {error.get("detail", "N/A")} ({error.get("source", {}).get("pointer", "N/A")})'
+            message += "\nAdditional details:"
+            try:
+                for error in response.json().get("errors", []):
+                    message += f'\n  {error.get("title", "N/A")}: {error.get("detail", "N/A")} ({error.get("source", {}).get("pointer", "N/A")})'
+            except json.JSONDecodeError:
+                message += f"\n  Could not parse response as JSON. Content type was {response.headers.get('content-type')!r}."
             raise ResponseError(message)
 
         return response, f"received expected response: {response}."
