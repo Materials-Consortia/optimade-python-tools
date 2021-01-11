@@ -69,7 +69,7 @@ if not CONFIG.use_production_backend:
     def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
         LOGGER.debug("Loading test %s...", endpoint_name)
 
-        endpoint_collection.insert(getattr(data, endpoint_name, [])[:1])
+        endpoint_collection.insert(getattr(data, endpoint_name, []))
         if CONFIG.database_backend.value == "mongodb" and endpoint_name == "links":
             LOGGER.debug(
                 "  Adding Materials-Consortia providers to links from optimade.org"

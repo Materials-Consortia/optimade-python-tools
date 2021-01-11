@@ -7,16 +7,14 @@ MAPPER = "BaseResourceMapper"
 
 
 def test_disallowed_aliases(mapper):
-    import mongomock
     from optimade.server.entry_collections.mongo import MongoCollection
 
     class MyMapper(mapper(MAPPER)):
         ALIASES = (("$and", "my_special_and"), ("not", "$not"))
 
     mapper = MyMapper()
-    toy_collection = mongomock.MongoClient()["fake"]["fake"]
     with pytest.raises(RuntimeError):
-        MongoCollection(toy_collection, StructureResource, mapper)
+        MongoCollection("fake", StructureResource, mapper, database="fake")
 
 
 def test_property_aliases(mapper):

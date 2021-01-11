@@ -156,6 +156,11 @@ jobs:
           --health-retries 5
         ports:
         - 5432:5432
+      elasticsearch:
+        image: elasticsearch:7.10.1
+        ports:
+          - 9200:9200
+          - 9300:9300
 
     steps:
     - uses: actions/checkout@v2
@@ -179,12 +184,20 @@ jobs:
     - name: Run server tests (using a real MongoDB)
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/server
       env:
-        OPTIMADE_CI_FORCE_MONGO: 1
+        OPTIMADE_DATABASE_BACKEND: 'mongodb'
+        OPTIMADE_USE_PRODUCTION_BACKEND: 1
+
+    - name: Run server tests (using Elasticsearch)
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append --log-cli-level=debug tests/server
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'elastic'
+        OPTIMADE_USE_PRODUCTION_BACKEND: 1
 
     - name: Run all tests (using `mongomock`)
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/
       env:
-        OPTIMADE_CI_FORCE_MONGO: 0
+        OPTIMADE_DATABASE_BACKEND: 'mongodb'
+        OPTIMADE_USE_PRODUCTION_BACKEND: 0
 
     - name: Install adapter conversion dependencies
       run: |
