@@ -1,4 +1,3 @@
-import os
 import json
 import dataclasses
 
@@ -40,25 +39,6 @@ def test_with_validator_json_response(both_fake_remote_clients, capsys):
     assert validator.results.optional_failure_count == 0, json_response
     assert dataclasses.asdict(validator.results) == json_response, json_response
     assert validator.valid
-
-
-def test_mongo_backend_package_used():
-    import pymongo
-    import mongomock
-    from optimade.server.entry_collections.mongo import client
-
-    force_mongo_env_var = os.environ.get("OPTIMADE_CI_FORCE_MONGO", None)
-    if force_mongo_env_var is None:
-        return
-
-    if int(force_mongo_env_var) == 1:
-        assert issubclass(client.__class__, pymongo.MongoClient)
-    elif int(force_mongo_env_var) == 0:
-        assert issubclass(client.__class__, mongomock.MongoClient)
-    else:
-        raise pytest.fail(
-            "The environment variable OPTIMADE_CI_FORCE_MONGO cannot be parsed as an int."
-        )
 
 
 def test_as_type_with_validator(client, capsys):

@@ -40,6 +40,7 @@ class SupportedBackend(Enum):
 
     ELASTIC = "elastic"
     MONGODB = "mongodb"
+    MONGOMOCK = "mongomock"
 
 
 class ServerConfig(BaseSettings):
@@ -61,8 +62,12 @@ class ServerConfig(BaseSettings):
         description="Use a production backend that is not editable. If false, the configured backend will be populated with test data on server start.",
     )
 
+    use_real_mongo: Optional[bool] = Field(
+        None, description="DEPRECATED: force usage of MongoDB over any other backend."
+    )
+
     database_backend: SupportedBackend = Field(
-        "mongodb",
+        SupportedBackend.MONGOMOCK,
         description="Which database backend to use out of the supported backends.",
     )
 
@@ -164,6 +169,24 @@ class ServerConfig(BaseSettings):
         res = {"version": __version__}
         res.update(v)
         return res
+
+    @root_validator(pre=True)
+    def use_real_mongo_override(cls, values):
+        """Overrides the `database_backend` setting with MongoDB and
+        raises a deprecation warning.
+
+        """
+        use_real_mongo = values.pop("use_real_mongo", None)
+        if use_real_mongo is not None:
+            warnings.warn(
+                "'use_real_mongo' is deprecated, please set the appropriate 'database_backend' instead. Defaulting to 'mongodb'...",
+                DeprecationWarning,
+            )
+
+            if use_real_mongo:
+                values["database_backend"] = SupportedBackend.MONGODB
+
+        return values
 
     @root_validator(pre=True)
     def load_settings(cls, values):

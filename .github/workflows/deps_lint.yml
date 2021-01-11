@@ -141,7 +141,7 @@ jobs:
 
     services:
       mongo:
-        image: mongo:4.2
+        image: mongo:4
         ports:
         - 27017:27017
       postgres:
@@ -156,6 +156,14 @@ jobs:
           --health-retries 5
         ports:
         - 5432:5432
+      elasticsearch:
+        image: elasticsearch:6.8.13
+        ports:
+          - 9200:9200
+          - 9300:9300
+        env:
+          discovery.type: single-node
+
 
     steps:
     - uses: actions/checkout@v2
@@ -176,15 +184,21 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
 
-    - name: Run server tests (using a real MongoDB)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/server
-      env:
-        OPTIMADE_CI_FORCE_MONGO: 1
-
     - name: Run all tests (using `mongomock`)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/
       env:
-        OPTIMADE_CI_FORCE_MONGO: 0
+        OPTIMADE_DATABASE_BACKEND: 'mongomock'
+
+
+    - name: Run server tests (using a real MongoDB)
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'mongodb'
+
+    - name: Run server tests (using Elasticsearch)
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'elastic'
 
     - name: Install adapter conversion dependencies
       run: |

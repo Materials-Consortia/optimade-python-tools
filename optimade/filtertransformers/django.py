@@ -1,7 +1,7 @@
 import warnings
 
 warnings.warn(
-    "Django functionality is deprecated and will be removed in later versions (unless support is requested).",
+    "Django functionality is deprecated and will be removed in version 0.13.0 (unless support is requested).",
     DeprecationWarning,
     stacklevel=2,
 )

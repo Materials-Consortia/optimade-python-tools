@@ -1,5 +1,3 @@
-import os
-
 from typing import Dict, Tuple, List, Any
 from fastapi import HTTPException
 
@@ -11,23 +9,21 @@ from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
 
-try:
-    CI_FORCE_MONGO = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
-except (TypeError, ValueError):  # pragma: no cover
-    CI_FORCE_MONGO = False
 
-
-if CONFIG.use_production_backend or CI_FORCE_MONGO:
+if CONFIG.database_backend.value == "mongodb":
     from pymongo import MongoClient
 
     client = MongoClient(CONFIG.mongo_uri)
     LOGGER.info("Using: Real MongoDB (pymongo)")
-else:
-    from mongomock.collection import Collection
+
+elif CONFIG.database_backend.value == "mongomock":
     from mongomock import MongoClient
 
     client = MongoClient()
     LOGGER.info("Using: Mock MongoDB (mongomock)")
+
+if CONFIG.database_backend.value in ("mongomock", "mongodb"):
+    CLIENT = MongoClient(CONFIG.mongo_uri)
 
 
 class MongoCollection(EntryCollection):
@@ -72,8 +68,8 @@ class MongoCollection(EntryCollection):
     def __iter__(self):
         return self.collection.find()
 
-    def __contains__(self):
-        pass
+    def __contains__(self, entry: EntryResource) -> bool:
+        raise NotImplementedError
 
     def count(self, **kwargs) -> int:
         """Returns the number of entries matching the query specified

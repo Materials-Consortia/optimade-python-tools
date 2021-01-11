@@ -29,8 +29,11 @@ def create_collection(
         The created `EntryCollection`.
 
     """
-    if CONFIG.database_backend is SupportedBackend.MONGODB:
-        from .mongo import MongoCollection
+    if CONFIG.database_backend in (
+        SupportedBackend.MONGODB,
+        SupportedBackend.MONGOMOCK,
+    ):
+        from optimade.server.entry_collections.mongo import MongoCollection
 
         return MongoCollection(
             name=name,

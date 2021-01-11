@@ -67,15 +67,15 @@ if not CONFIG.use_production_backend and CONFIG.index_links_path.exists():
         processed.append(db)
 
     LOGGER.debug(
-        "  Inserting index links into collection from %s...", CONFIG.index_links_path
+        "Inserting index links into collection from %s...", CONFIG.index_links_path
     )
     links_coll.collection.insert_many(
         bson.json_util.loads(bson.json_util.dumps(processed))
     )
 
-    if CONFIG.database_backend.value == "mongodb":
+    if CONFIG.database_backend.value in ("mongodb", "mongomock"):
         LOGGER.debug(
-            "  Adding Materials-Consortia providers to links from optimade.org..."
+            "Adding Materials-Consortia providers to links from optimade.org..."
         )
         providers = get_providers()
         for doc in providers:
@@ -86,6 +86,12 @@ if not CONFIG.use_production_backend and CONFIG.index_links_path.exists():
             )
 
         LOGGER.debug("Done inserting index links!")
+
+    else:
+        LOGGER.warning(
+            "Not inserting test data for index meta-database for backend %s",
+            CONFIG.database_backend.value,
+        )
 
 # Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
