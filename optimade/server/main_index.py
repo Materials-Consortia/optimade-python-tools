@@ -51,7 +51,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 )
 
 
-if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
+if not CONFIG.use_production_backend and CONFIG.index_links_path.exists():
     import bson.json_util
     from bson.objectid import ObjectId
     from optimade.server.routers.links import links_coll
@@ -73,16 +73,19 @@ if not CONFIG.use_real_mongo and CONFIG.index_links_path.exists():
         bson.json_util.loads(bson.json_util.dumps(processed))
     )
 
-    LOGGER.debug("  Adding Materials-Consortia providers to links from optimade.org...")
-    providers = get_providers()
-    for doc in providers:
-        links_coll.collection.replace_one(
-            filter={"_id": ObjectId(doc["_id"]["$oid"])},
-            replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
-            upsert=True,
+    if CONFIG.database_backend.value == "mongodb":
+        LOGGER.debug(
+            "  Adding Materials-Consortia providers to links from optimade.org..."
         )
+        providers = get_providers()
+        for doc in providers:
+            links_coll.collection.replace_one(
+                filter={"_id": ObjectId(doc["_id"]["$oid"])},
+                replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
+                upsert=True,
+            )
 
-    LOGGER.debug("Done inserting index links!")
+        LOGGER.debug("Done inserting index links!")
 
 # Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])

@@ -42,7 +42,7 @@ def create_collection(
         from .elasticsearch import ElasticCollection
 
         return ElasticCollection(
-            index=name,
+            name=name,
             resource_cls=resource_cls,
             resource_mapper=resource_mapper,
         )

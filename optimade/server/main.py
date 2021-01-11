@@ -59,7 +59,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 )
 
 
-if not CONFIG.use_real_mongo:
+if not CONFIG.use_production_backend:
     import bson.json_util
     from bson.objectid import ObjectId
     import optimade.server.data as data
@@ -69,8 +69,8 @@ if not CONFIG.use_real_mongo:
     def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
         LOGGER.debug("Loading test %s...", endpoint_name)
 
-        endpoint_collection.insert(getattr(data, endpoint_name, []))
-        if endpoint_name == "links":
+        endpoint_collection.insert(getattr(data, endpoint_name, [])[:1])
+        if CONFIG.database_backend.value == "mongodb" and endpoint_name == "links":
             LOGGER.debug(
                 "  Adding Materials-Consortia providers to links from optimade.org"
             )

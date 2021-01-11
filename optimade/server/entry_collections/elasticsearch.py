@@ -1,6 +1,8 @@
 import os
 
-from typing import Tuple, List, Union
+from pathlib import Path
+
+from typing import Tuple, List, Union, Optional, Dict, Any
 from fastapi import HTTPException
 from elasticsearch_dsl import Search
 from elasticsearch.helpers import bulk
@@ -10,6 +12,7 @@ import os.path
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.elasticsearch import ElasticTransformer, Quantity
 from optimade.server.config import CONFIG
+from optimade.server.logger import LOGGER
 from optimade.models import EntryResource
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -20,37 +23,55 @@ try:
 except (TypeError, ValueError):  # pragma: no cover
     CI_FORCE_ELASTIC = False
 
-if CONFIG.database_backend == "elastic" or CI_FORCE_ELASTIC:
+if CONFIG.database_backend.value == "elastic" or CI_FORCE_ELASTIC:
     from elasticsearch import Elasticsearch
 
-    client = Elasticsearch()
+    CLIENT = Elasticsearch(hosts=CONFIG.elastic_hosts)
     print("Using: Real Elastic (elasticsearch)")
 
 
-with open(os.path.join(os.path.dirname(__file__), "elastic_indexes.json")) as f:
-    index_definitions = json.load(f)
+with open(Path(__file__).parent.joinpath("elastic_indexes.json")) as f:
+    INDEX_DEFINITIONS = json.load(f)
 
 
 class ElasticCollection(EntryCollection):
     def __init__(
         self,
-        index: str,
+        name: str,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
+        client: Optional[Elasticsearch] = None,
     ):
-        super().__init__(resource_cls, resource_mapper)
+        """Initialize the ElasticCollection for the given parameters.
+
+        Parameters:
+            name: The name of the collection.
+            resource_cls: The type of entry resource that is stored by the collection.
+            resource_mapper: A resource mapper object that handles aliases and
+                format changes between deserialization and response.
+            client: A preconfigured Elasticsearch client.
+
+        """
+        self.client = CLIENT
+        if client:
+            self.client = client
+
+        self.resource_cls = resource_cls
+        self.resource_mapper = resource_mapper
         self.provider_prefix = CONFIG.provider.prefix
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
+        self.parser = LarkParser()
 
         fields = list(self.get_attribute_fields())
         fields.extend(resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS)
         fields.extend(
             [f"_{self.provider_prefix}_{field}" for field in self.provider_fields]
         )
+
         quantities = {}
         for field in fields:
-            alias = resource_mapper.alias_for(field)
-            length_alias = resource_mapper.length_alias_for(field)
+            alias = self.resource_mapper.alias_for(field)
+            length_alias = self.resource_mapper.length_alias_for(field)
 
             quantities[field] = Quantity(name=field, es_field=alias)
             if length_alias is not None:
@@ -68,28 +89,42 @@ class ElasticCollection(EntryCollection):
 
         self.transformer = ElasticTransformer(quantities=quantities.values())
 
-        self.parser = LarkParser(
-            version=(0, 10, 1), variant="default"
-        )  # The ElasticTransformer only supports v0.10.1 as the latest grammar
-
-        self.index = index
-        body = index_definitions.get(index, None)
+        self.name = name
+        body = INDEX_DEFINITIONS.get(name)
         if body is None:
-            body = {
-                "mappings": {
-                    "doc": {
-                        "properties": {
-                            resource_mapper.alias_for(field): {"type": "keyword"}
-                            for field in fields
-                        }
+            body = self.create_elastic_index_from_mapper(resource_mapper, fields)
+
+        self.client.indices.create(index=self.name, ignore=400)
+
+        LOGGER.info(f"Created index for {self.name} with body {body}")
+
+    @staticmethod
+    def create_elastic_index_from_mapper(
+        resource_mapper: BaseResourceMapper, fields: List[str]
+    ) -> Dict[str, Any]:
+        """Create a fallback elastic index based on a resource mapper.
+
+        Arguments:
+            resource_mapper: The resource mapper to create the index for.
+            fields: The list of fields to use in the index.
+
+        Returns:
+            The `body` parameter to pass to `client.indices.create(..., body=...)`.
+
+        """
+        return {
+            "mappings": {
+                "doc": {
+                    "properties": {
+                        resource_mapper.alias_for(field): {"type": "keyword"}
+                        for field in fields
                     }
                 }
             }
-
-        client.indices.create(index=self.index, ignore=400, body=body)
+        }
 
     def __len__(self):
-        return Search(using=client, index=self.index).execute().hits.total
+        return Search(using=self.client, index=self.name).execute().hits.total.value
 
     def __iter__(self):
         raise NotImplementedError
@@ -102,31 +137,30 @@ class ElasticCollection(EntryCollection):
 
     def insert(self, data: List[EntryResource]) -> None:
         def get_id(item):
-            if self.index == "links":
-                id = "%s-%s" % (item["id"], item["type"])
+            if self.name == "links":
+                id_ = "%s-%s" % (item["id"], item["type"])
             elif "id" in item:
-                id = item["id"]
+                id_ = item["id"]
             elif "_id" in item:
                 # use the existing MongoDB ids in the test data
-                id = str(item["_id"])
+                id_ = str(item["_id"])
             else:
                 # ES will generate ids
-                id = None
+                id_ = None
             item.pop("_id", None)
-            return id
+            return id_
 
         bulk(
-            client,
-            [
-                dict(_index=self.index, _id=get_id(item), _type="doc", _source=item)
-                for item in data
-            ],
+            self.client,
+            [dict(_index=self.name, _id=get_id(item), _source=item) for item in data],
         )
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> Tuple[List[EntryResource], int, bool, set]:
-        search = Search(using=client, index=self.index)
+        """Execute the query on the Elasticsearch backend."""
+
+        search = Search(using=self.client, index=self.name)
 
         if getattr(params, "filter", False):
             tree = self.parser.parse(params.filter)
@@ -166,7 +200,7 @@ class ElasticCollection(EntryCollection):
             fields |= self.resource_mapper.get_required_fields()
 
         search = search.source(
-            includes=[self.resource_mapper.alias_for(field) for field in fields]
+            includes=[self.resource_mapper.alias_of(field) for field in fields]
         )
 
         if getattr(params, "sort", False):
@@ -194,7 +228,7 @@ class ElasticCollection(EntryCollection):
 
         nresults_now = len(results)
         if isinstance(params, EntryListingQueryParams):
-            data_returned = response.hits.total
+            data_returned = response.hits.total.value
             more_data_available = nresults_now < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}

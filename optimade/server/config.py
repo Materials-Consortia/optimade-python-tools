@@ -52,15 +52,22 @@ class ServerConfig(BaseSettings):
         None, description="File to load alternative defaults from"
     )
     debug: bool = Field(
-        False, description="Turns on Debug Mode for the OPTIMADE Server implementation"
+        False,
+        description="Turns on Debug Mode for the OPTIMADE Server implementation",
     )
-    use_real_mongo: bool = Field(
-        False, description="Use a real Mongo server rather than MongoMock"
+
+    use_production_backend: bool = Field(
+        False,
+        description="Use a production backend that is not editable. If false, the configured backend will be populated with test data on server start.",
     )
 
     database_backend: SupportedBackend = Field(
         "mongodb",
         description="Which database backend to use out of the supported backends.",
+    )
+
+    elastic_hosts: Optional[List[Dict]] = Field(
+        None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
     mongo_database: str = Field(

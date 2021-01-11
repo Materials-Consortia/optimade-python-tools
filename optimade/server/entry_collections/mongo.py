@@ -1,8 +1,6 @@
 import os
 
 from typing import Tuple, List, Union
-import mongomock
-import pymongo.collection
 from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
@@ -20,7 +18,7 @@ except (TypeError, ValueError):  # pragma: no cover
     CI_FORCE_MONGO = False
 
 
-if CONFIG.use_real_mongo or CI_FORCE_MONGO:
+if CONFIG.use_production_backend or CI_FORCE_MONGO:
     from pymongo import MongoClient
 
     client = MongoClient(CONFIG.mongo_uri)
@@ -68,7 +66,6 @@ class MongoCollection(EntryCollection):
         self._check_aliases(self.resource_mapper.all_aliases())
         self._check_aliases(self.resource_mapper.all_length_aliases())
 
-
     def __len__(self) -> int:
         return self.collection.estimated_document_count()
 
@@ -94,7 +91,6 @@ class MongoCollection(EntryCollection):
         if "filter" not in kwargs:  # "filter" is needed for count_documents()
             kwargs["filter"] = {}
         return self.collection.count_documents(**kwargs)
-
 
     def insert(self, data: List[EntryResource]):
         self.collection.insert_many(data)
