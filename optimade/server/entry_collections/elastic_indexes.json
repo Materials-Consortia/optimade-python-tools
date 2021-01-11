@@ -136,7 +136,7 @@
                    "type":"keyword"
                 },
                 "elements_ratios":{
-                   "type":"float"
+                   "type":"long"
                 },
                 "nelements":{
                    "type":"integer"
