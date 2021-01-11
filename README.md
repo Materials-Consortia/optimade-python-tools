@@ -11,10 +11,8 @@ The aim of OPTIMADE is to develop a common API, compliant with the [JSON API 1.0
 This is to enable interoperability among databases that contain calculated properties of existing and hypothetical materials.
 
 This repository contains a library of tools for implementing and consuming [OPTIMADE](https://www.optimade.org) APIs using Python.
-It also contains a server validator tool, which may be called from the shell or used as a GitHub Action from [optimade-validator-action](https://github.com/Materials-Consortia/optimade-validator-action).
-
-_Disclaimer_: While the package supports `elasticsearch-dsl` v6 & v7 and `django` v2 & v3, all tests are performed with the latest supported version.
-If you experience any issues with the older versions, you are most welcome to contribute to the repository (see below under [Contributing](#contributing)).
+Server implementations can make use of the supported MongoDB (v4) and Elasticsearch (v6) database backends, or plug in a custom backend implementation.
+The package also contains a server validator tool, which may be called from the shell or used as a GitHub Action from [optimade-validator-action](https://github.com/Materials-Consortia/optimade-validator-action).
 
 ## Status
 

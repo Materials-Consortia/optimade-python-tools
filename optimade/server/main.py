@@ -69,10 +69,13 @@ if not CONFIG.use_production_backend:
     def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
         LOGGER.debug("Loading test %s...", endpoint_name)
 
-        endpoint_collection.insert(getattr(data, endpoint_name, [])[:1])
-        if CONFIG.database_backend.value == "mongodb" and endpoint_name == "links":
+        endpoint_collection.insert(getattr(data, endpoint_name, []))
+        if (
+            CONFIG.database_backend.value in ("mongomock", "mongodb")
+            and endpoint_name == "links"
+        ):
             LOGGER.debug(
-                "  Adding Materials-Consortia providers to links from optimade.org"
+                "Adding Materials-Consortia providers to links from optimade.org"
             )
             providers = get_providers()
             for doc in providers:
@@ -81,7 +84,7 @@ if not CONFIG.use_production_backend:
                     replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
                     upsert=True,
                 )
-        LOGGER.debug("Done inserting test %s!", endpoint_name)
+            LOGGER.debug("Done inserting test %s!", endpoint_name)
 
     for name, collection in ENTRY_COLLECTIONS.items():
         load_entries(name, collection)
