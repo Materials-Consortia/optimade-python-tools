@@ -182,22 +182,21 @@ jobs:
         pip install -r requirements-dev.txt
 
     - name: Run server tests (using a real MongoDB)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/server
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append --log-cli-level=debug tests/server
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
-        OPTIMADE_USE_PRODUCTION_BACKEND: 1
+        OPTIMADE_CI_FORCE_MONGO: 1
 
     - name: Run server tests (using Elasticsearch)
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append --log-cli-level=debug tests/server
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
-        OPTIMADE_USE_PRODUCTION_BACKEND: 1
+        OPTIMADE_CI_FORCE_ELASTIC: 1
 
     - name: Run all tests (using `mongomock`)
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
-        OPTIMADE_USE_PRODUCTION_BACKEND: 0
 
     - name: Install adapter conversion dependencies
       run: |
