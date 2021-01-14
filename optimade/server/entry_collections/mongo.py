@@ -1,6 +1,6 @@
 import os
 
-from typing import Tuple, List, Union
+from typing import Dict, Tuple, List, Any
 from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
@@ -10,7 +10,6 @@ from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 try:
     CI_FORCE_MONGO = bool(int(os.environ.get("OPTIMADE_CI_FORCE_MONGO", 0)))
@@ -95,35 +94,18 @@ class MongoCollection(EntryCollection):
     def insert(self, data: List[EntryResource]):
         self.collection.insert_many(data)
 
-    def find(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[List[EntryResource], int, bool, set]:
-        """Perform the query on the underlying MongoCollection, handling projection
-        and pagination of the output.
-
-        Returns:
-            Tuple[List[EntryResource], int, bool, set]: A list of entry resource objects, the number of returned entries,
-            whether more are available with pagination, fields.
-
-        """
-
-        criteria = self.handle_query_params(params)
-
-        all_fields = criteria.pop("fields")
-        if getattr(params, "response_fields", False):
-            fields = set(params.response_fields.split(","))
-            fields |= self.resource_mapper.get_required_fields()
-        else:
-            fields = all_fields.copy()
+    def _run_db_query(
+        self, criteria: Dict[str, Any], single_entry: bool = False
+    ) -> Tuple[List[Dict[str, Any]], int, bool]:
 
         results = []
         for doc in self.collection.find(**criteria):
             if criteria.get("projection", {}).get("_id"):
                 doc["_id"] = str(doc["_id"])
-            results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
+            results.append(doc)
 
         nresults_now = len(results)
-        if isinstance(params, EntryListingQueryParams):
+        if not single_entry:
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
             data_returned = self.count(**criteria_nolimit)
@@ -139,7 +121,7 @@ class MongoCollection(EntryCollection):
                 )
             results = results[0] if results else None
 
-        return results, data_returned, more_data_available, all_fields - fields
+        return results, data_returned, more_data_available
 
     def _check_aliases(self, aliases):
         """ Check that aliases do not clash with mongo keywords. """

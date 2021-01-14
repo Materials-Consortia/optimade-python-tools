@@ -2,7 +2,7 @@ import os
 
 from pathlib import Path
 
-from typing import Tuple, List, Union, Optional, Dict, Any
+from typing import Tuple, List, Optional, Dict, Any, Iterable, Union
 from fastapi import HTTPException
 from elasticsearch_dsl import Search
 from elasticsearch.helpers import bulk
@@ -15,7 +15,6 @@ from optimade.server.config import CONFIG
 from optimade.server.logger import LOGGER
 from optimade.models import EntryResource
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from .entry_collections import EntryCollection
 
 try:
@@ -62,14 +61,8 @@ class ElasticCollection(EntryCollection):
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         self.parser = LarkParser()
 
-        fields = list(self.get_attribute_fields())
-        fields.extend(resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS)
-        fields.extend(
-            [f"_{self.provider_prefix}_{field}" for field in self.provider_fields]
-        )
-
         quantities = {}
-        for field in fields:
+        for field in self.all_fields:
             alias = self.resource_mapper.alias_for(field)
             length_alias = self.resource_mapper.length_alias_for(field)
 
@@ -92,15 +85,17 @@ class ElasticCollection(EntryCollection):
         self.name = name
         body = INDEX_DEFINITIONS.get(name)
         if body is None:
-            body = self.create_elastic_index_from_mapper(resource_mapper, fields)
+            body = self.create_elastic_index_from_mapper(
+                resource_mapper, self.all_fields
+            )
 
         self.client.indices.create(index=self.name, ignore=400)
 
-        LOGGER.info(f"Created index for {self.name} with body {body}")
+        LOGGER.info(f"Created index for {self.name!r} with body {body}")
 
     @staticmethod
     def create_elastic_index_from_mapper(
-        resource_mapper: BaseResourceMapper, fields: List[str]
+        resource_mapper: BaseResourceMapper, fields: Iterable[str]
     ) -> Dict[str, Any]:
         """Create a fallback elastic index based on a resource mapper.
 
@@ -155,79 +150,30 @@ class ElasticCollection(EntryCollection):
             [dict(_index=self.name, _id=get_id(item), _source=item) for item in data],
         )
 
-    def find(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[List[EntryResource], int, bool, set]:
+    def _run_db_query(
+        self, criteria: Dict[str, Any], single_entry=False
+    ) -> Tuple[Union[List[Dict[str, Any]], Dict[str, Any]], int, bool]:
         """Execute the query on the Elasticsearch backend."""
 
         search = Search(using=self.client, index=self.name)
 
-        if getattr(params, "filter", False):
-            tree = self.parser.parse(params.filter)
-            filter_query = self.transformer.transform(tree)
-            search = search.query(filter_query)
+        page_offset = criteria.get("skip", 0)
+        limit = criteria.get("limit", CONFIG.page_limit)
 
-        if (
-            getattr(params, "response_format", False)
-            and params.response_format != "json"
-        ):
-            raise HTTPException(
-                status_code=400, detail="Only 'json' response_format supported"
-            )
+        search = search.source(includes=self.all_fields)
 
-        if getattr(params, "page_limit", False):
-            limit = params.page_limit
-            if limit > CONFIG.page_limit_max:
-                raise HTTPException(
-                    status_code=403,  # Forbidden
-                    detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
-                )
-            per_page = limit
-        else:
-            per_page = CONFIG.page_limit
+        sort_spec = criteria.get("sort", [])
+        if sort_spec:
+            sort_spec = [{field: sort_dir} for field, sort_dir in sort_spec]
+            search = search.sort(sort_spec)
 
-        # All OPTIMADE fields
-        fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
-        fields |= self.get_attribute_fields()
-        # All provider-specific fields
-        fields |= {
-            f"_{self.provider_prefix}_{field_name}"
-            for field_name in self.provider_fields
-        }
-        # The requested fields
-        if getattr(params, "response_fields", False):
-            fields = set(params.response_fields.split(","))
-            fields |= self.resource_mapper.get_required_fields()
-
-        search = search.source(
-            includes=[self.resource_mapper.alias_of(field) for field in fields]
-        )
-
-        if getattr(params, "sort", False):
-            sort = []
-            for elt in params.sort.split(","):
-                field = elt
-                sort_dir = "asc"
-                if elt.startswith("-"):
-                    field = field[1:]
-                    sort_dir = "desc"
-                sort.append({field: sort_dir})
-            search = search.sort(sort)
-
-        if getattr(params, "page_offset", False):
-            page_offset = params.page_offset
-        else:
-            page_offset = 0
-
-        search = search[page_offset : page_offset + per_page]
+        search = search[page_offset : page_offset + limit]
         response = search.execute()
-        results = [
-            self.resource_cls(**self.resource_mapper.map_back(hit.to_dict()))
-            for hit in response.hits
-        ]
+
+        results = [hit.to_dict() for hit in response.hits]
 
         nresults_now = len(results)
-        if isinstance(params, EntryListingQueryParams):
+        if not single_entry:
             data_returned = response.hits.total.value
             more_data_available = nresults_now < data_returned
         else:
@@ -241,4 +187,4 @@ class ElasticCollection(EntryCollection):
                 )
             results = results[0] if results else None
 
-        return results, data_returned, more_data_available, fields
+        return results, data_returned, more_data_available

@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Tuple, List, Union
+from typing import Tuple, List, Union, Dict, Set, Any
 import warnings
 import re
 
@@ -118,7 +118,6 @@ class EntryCollection(ABC):
 
         """
 
-    @abstractmethod
     def find(
         self, params: EntryListingQueryParams
     ) -> Tuple[List[EntryResource], int, bool, set]:
@@ -134,6 +133,45 @@ class EntryCollection(ABC):
 
         Returns:
             (`results`, `data_returned`, `more_data_available`, `fields`).
+
+        """
+        criteria, response_fields = self.handle_query_params(params)
+
+        results, data_returned, more_data_available = self._run_db_query(
+            criteria, single_entry=isinstance(params, SingleEntryQueryParams)
+        )
+
+        exclude_fields = self.all_fields - response_fields
+
+        if results:
+            if isinstance(results, dict):
+                results = self.resource_cls(**self.resource_mapper.map_back(results))
+            else:
+                results = [
+                    self.resource_cls(**self.resource_mapper.map_back(doc))
+                    for doc in results
+                ]
+
+        return (
+            results,
+            data_returned,
+            more_data_available,
+            exclude_fields,
+        )
+
+    @abstractmethod
+    def _run_db_query(
+        self, criteria: Dict[str, Any], single_entry: bool = False
+    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        """Run the query on the backend and collect the results.
+
+        Arguments:
+            criteria: A dictionary representation of the query parameters.
+            single_entry: Whether or not the caller is expecting a single entry response.
+
+        Returns:
+            The list of entries from the database (without any re-mapping), the total number of
+            entries matching the query and a boolean for whether or not there is more data available.
 
         """
 
@@ -165,6 +203,7 @@ class EntryCollection(ABC):
             Property names.
 
         """
+
         schema = self.resource_cls.schema()
         attributes = schema["properties"]["attributes"]
         if "allOf" in attributes:
@@ -181,7 +220,7 @@ class EntryCollection(ABC):
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> dict:
+    ) -> Tuple[Dict[str, Any], Set[str]]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
@@ -198,7 +237,8 @@ class EntryCollection(ABC):
                 or response format.
 
         Returns:
-            A dictionary representation of the query parameters, ready to be used by pymongo.
+            A dictionary representation of the query parameters (ready to be used directly by pymongo)
+            and the set of fields expected in the response.
 
         """
         cursor_kwargs = {}
@@ -227,7 +267,6 @@ class EntryCollection(ABC):
         else:
             cursor_kwargs["limit"] = CONFIG.page_limit
 
-        cursor_kwargs["fields"] = self.all_fields
         cursor_kwargs["projection"] = {
             f"{self.resource_mapper.alias_for(f)}": True for f in self.all_fields
         }
@@ -241,7 +280,13 @@ class EntryCollection(ABC):
         if getattr(params, "page_offset", False):
             cursor_kwargs["skip"] = params.page_offset
 
-        return cursor_kwargs
+        if getattr(params, "response_fields", False):
+            response_fields = set(params.response_fields.split(","))
+            response_fields |= self.resource_mapper.get_required_fields()
+        else:
+            response_fields = self.all_fields.copy()
+
+        return cursor_kwargs, response_fields
 
     def parse_sort_params(self, sort_params) -> List[Tuple[str, int]]:
         """Handles any sort parameters passed to the collection,
