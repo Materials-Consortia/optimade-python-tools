@@ -214,9 +214,25 @@ jobs:
     - name: Run previously skipped tests for adapter conversion
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
-    - name: Run tests for validator only to assess coverage
+    - name: Run tests for validator only to assess coverage (mongomock)
       if: matrix.python-version == 3.8
-      run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml tests/server/test_server_validation.py
+      run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'mongomock'
+
+    - name: Run tests for validator only to assess coverage (Elasticsearch)
+      if: matrix.python-version == 3.8
+      run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'elastic'
+        OPTIMADE_USE_PRODUCTION_BACKEND: true # Required as previous steps will have already inserted the test data
+
+    - name: Run tests for validator only to assess coverage (MongoDB)
+      if: matrix.python-version == 3.8
+      run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'mongodb'
+        OPTIMADE_USE_PRODUCTION_BACKEND: true # Required as previous steps will have already inserted the test data
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'

@@ -42,7 +42,7 @@ def test_with_validator_json_response(both_fake_remote_clients, capsys):
 
 
 def test_as_type_with_validator(client, capsys):
-    import unittest
+    from unittest.mock import patch, Mock
 
     test_urls = {
         f"{client.base_url}/structures": "structures",
@@ -52,9 +52,7 @@ def test_as_type_with_validator(client, capsys):
         f"{client.base_url}/info": "info",
         f"{client.base_url}/links": "links",
     }
-    with unittest.mock.patch(
-        "requests.get", unittest.mock.Mock(side_effect=client.get)
-    ):
+    with patch("requests.get", Mock(side_effect=client.get)):
         for url, as_type in test_urls.items():
             validator = ImplementationValidator(
                 base_url=url, as_type=as_type, respond_json=True

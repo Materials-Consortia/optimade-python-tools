@@ -1,11 +1,16 @@
 import pytest
 
+from optimade.server.config import CONFIG
 from optimade.models import StructureResource
 
 
 MAPPER = "BaseResourceMapper"
 
 
+@pytest.mark.skipif(
+    CONFIG.database_backend.value not in ("mongomock", "mongodb"),
+    reason="Skipping mongo-related test when testing the elasticsearch backend.",
+)
 def test_disallowed_aliases(mapper):
     from optimade.server.entry_collections.mongo import MongoCollection
 

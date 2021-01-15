@@ -13,7 +13,7 @@ _rev_cmp_operators = {">": "<", ">=": "<=", "<": ">", "<=": ">=", "=": "=", "!="
 _has_operators = {"ALL": "must", "ANY": "should"}
 _length_quantities = {
     "elements": "nelements",
-    "elements_rations": "nelements",
+    "elements_ratios": "nelements",
     "dimension_types": "dimension_types",
 }
 
@@ -172,7 +172,7 @@ class ElasticTransformer(BaseTransformer):
 
             # return Q("term", **{quantity.has_only_quantity.name: value})
         else:
-            raise NotImplementedError
+            raise NotImplementedError(f"Unrecognised operation {op}.")
 
         queries = [
             self._has_query(quantities, predicates) for predicates in predicate_zip_list
@@ -327,12 +327,15 @@ class ElasticTransformer(BaseTransformer):
         return lambda quantity: self._has_query_op([quantity] + add_on, op, values)
 
     def property_zip_addon(self, args):
+        raise NotImplementedError("Correlated list queries are not supported.")
         return args
 
     def value_zip(self, args):
+        raise NotImplementedError("Correlated list queries are not supported.")
         return self.value_list(args)
 
     def value_zip_list(self, args):
+        raise NotImplementedError("Correlated list queries are not supported.")
         return args
 
     def value_list(self, args):
