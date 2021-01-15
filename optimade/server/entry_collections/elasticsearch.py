@@ -119,7 +119,7 @@ class ElasticCollection(EntryCollection):
         }
 
     def __len__(self):
-        return Search(using=self.client, index=self.name).execute().hits.total.value
+        return Search(using=self.client, index=self.name).execute().hits.total
 
     def __iter__(self):
         raise NotImplementedError
@@ -147,7 +147,10 @@ class ElasticCollection(EntryCollection):
 
         bulk(
             self.client,
-            [dict(_index=self.name, _id=get_id(item), _source=item) for item in data],
+            [
+                dict(_index=self.name, _id=get_id(item), _type="doc", _source=item)
+                for item in data
+            ],
         )
 
     def _run_db_query(
@@ -160,7 +163,7 @@ class ElasticCollection(EntryCollection):
         page_offset = criteria.get("skip", 0)
         limit = criteria.get("limit", CONFIG.page_limit)
 
-        search = search.source(includes=self.all_fields)
+        search = search.source(includes=list(self.all_fields))
 
         sort_spec = criteria.get("sort", [])
         if sort_spec:
@@ -174,7 +177,7 @@ class ElasticCollection(EntryCollection):
 
         nresults_now = len(results)
         if not single_entry:
-            data_returned = response.hits.total.value
+            data_returned = response.hits.total
             more_data_available = nresults_now < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}

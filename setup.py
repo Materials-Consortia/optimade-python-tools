@@ -18,7 +18,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Dependencies
 # Server minded
 django_deps = ["django>=2.2.9,<4.0"]
-elastic_deps = ["elasticsearch-dsl>=6.4,<8.0"]
+elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
 mongo_deps = ["pymongo~=3.11", "mongomock~=3.22"]
 server_deps = ["uvicorn~=0.13.3", "Jinja2~=2.11"] + mongo_deps
 
