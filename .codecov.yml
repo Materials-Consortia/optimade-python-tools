@@ -12,6 +12,10 @@ coverage:
     project:
       default:
         threshold: 0.5 %
+      validator:
+        threshold: 0.5 %
+        flags:
+          - validator
     patch:
       default:
         threshold: 0.5 %
