@@ -11,11 +11,16 @@ coverage:
   status:
     project:
       default:
-        threshold: 0.5 %
+        threshold: 1%
+      project:
+        threshold: 1%
+        flags:
+          - project
       validator:
-        threshold: 0.5 %
-        paths: "optimade/validator/"
+        threshold: 1%
+        flags:
+          - validator
     patch:
       default:
-        threshold: 0.5 %
+        threshold: 5%
     changes: off
