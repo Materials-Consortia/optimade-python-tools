@@ -10,9 +10,8 @@ coverage:
 
   status:
     project:
-      default:
-        threshold: 1%
-      project:
+      default: off
+      optimade:
         threshold: 1%
         flags:
           - project
