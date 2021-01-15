@@ -69,9 +69,8 @@ if not CONFIG.use_production_backend and CONFIG.index_links_path.exists():
     LOGGER.debug(
         "  Inserting index links into collection from %s...", CONFIG.index_links_path
     )
-    links_coll.collection.insert_many(
-        bson.json_util.loads(bson.json_util.dumps(processed))
-    )
+
+    links_coll.insert(bson.json_util.loads(bson.json_util.dumps(processed)))
 
     if CONFIG.database_backend.value == "mongodb":
         LOGGER.debug(
