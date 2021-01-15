@@ -82,7 +82,14 @@ class ElasticCollection(EntryCollection):
                 resource_mapper, self.all_fields
             )
 
-        self.client.indices.create(index=self.name, ignore=400)
+        properties = {}
+
+        for field in list(body["mappings"]["doc"]["properties"].keys()):
+            properties[self.resource_mapper.alias_for(field)] = body["mappings"]["doc"][
+                "properties"
+            ].pop(field)
+        body["mappings"]["doc"]["properties"] = properties
+        self.client.indices.create(index=self.name, body=body, ignore=400)
 
         LOGGER.info(f"Created index for {self.name!r} with body {body}")
 
@@ -104,7 +111,7 @@ class ElasticCollection(EntryCollection):
             "mappings": {
                 "doc": {
                     "properties": {
-                        resource_mapper.alias_for(field): {"type": "keyword"}
+                        resource_mapper.alias_of(field): {"type": "keyword"}
                         for field in fields
                     }
                 }
@@ -153,15 +160,26 @@ class ElasticCollection(EntryCollection):
 
         search = Search(using=self.client, index=self.name)
 
+        if criteria.get("filter", False):
+            search = search.query(criteria["filter"])
+
         page_offset = criteria.get("skip", 0)
         limit = criteria.get("limit", CONFIG.page_limit)
 
-        search = search.source(includes=list(self.all_fields))
+        all_aliased_fields = [
+            self.resource_mapper.alias_for(field) for field in self.all_fields
+        ]
+        search = search.source(includes=all_aliased_fields)
 
-        sort_spec = criteria.get("sort", [])
-        if sort_spec:
-            sort_spec = [{field: sort_dir} for field, sort_dir in sort_spec]
-            search = search.sort(sort_spec)
+        sort_spec = criteria.get("sort", {})
+        elastic_sort = [
+            {field: {"order": "desc" if sort_dir == -1 else "asc"}}
+            for field, sort_dir in sort_spec
+        ]
+        if not elastic_sort:
+            elastic_sort = {self.resource_mapper.alias_for("id"): {"order": "asc"}}
+
+        search = search.sort(*elastic_sort)
 
         search = search[page_offset : page_offset + limit]
         response = search.execute()
@@ -171,7 +189,7 @@ class ElasticCollection(EntryCollection):
         nresults_now = len(results)
         if not single_entry:
             data_returned = response.hits.total
-            more_data_available = nresults_now < data_returned
+            more_data_available = page_offset + limit < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = nresults_now

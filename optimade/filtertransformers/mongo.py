@@ -61,11 +61,11 @@ class MongoTransformer(BaseTransformer):
 
     def value_zip(self, arg):
         # value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def value_zip_list(self, arg):
         # value_zip_list: value_zip ( "," value_zip )*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def expression(self, arg):
         # expression: expression_clause ( OR expression_clause )
@@ -158,11 +158,11 @@ class MongoTransformer(BaseTransformer):
     def set_zip_op_rhs(self, arg):
         # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
         # ANY value_zip_list )
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def _recursive_expression_phrase(self, arg):
         """Helper function for parsing `expression_phrase`. Recursively sorts out

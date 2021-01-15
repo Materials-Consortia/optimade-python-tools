@@ -111,7 +111,7 @@ class TestSingleStructureWithRelationships(RegularEndpointTests):
 class TestMultiStructureWithSharedRelationships(RegularEndpointTests):
     """Tests for /structures for entries with shared relationships"""
 
-    request_str = "/structures?filter=id=mpf_1 OR id=mpf_2"
+    request_str = '/structures?filter=id="mpf_1" OR id="mpf_2"'
     response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):
@@ -126,7 +126,7 @@ class TestMultiStructureWithSharedRelationships(RegularEndpointTests):
 class TestMultiStructureWithRelationships(RegularEndpointTests):
     """Tests for /structures for mixed entries with and without relationships"""
 
-    request_str = "/structures?filter=id=mpf_1 OR id=mpf_23"
+    request_str = '/structures?filter=id="mpf_1" OR id="mpf_23"'
     response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):
@@ -145,7 +145,7 @@ class TestMultiStructureWithOverlappingRelationships(RegularEndpointTests):
     some of these relationships overlap between the entries, others don't.
     """
 
-    request_str = "/structures?filter=id=mpf_1 OR id=mpf_3"
+    request_str = '/structures?filter=id="mpf_1" OR id="mpf_3"'
     response_cls = StructureResponseMany
 
     def test_structures_endpoint_data(self):
