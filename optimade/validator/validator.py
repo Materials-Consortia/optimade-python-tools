@@ -926,8 +926,10 @@ class ImplementationValidator:
         # First, check that there is a versions endpoint in the appropriate place:
         # If passed a versioned URL, then strip that version from
         # the URL before looking for `/versions`.
+        _old_base_url = self.base_url
         if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
             self.client.base_url = "/".join(self.client.base_url.split("/")[:-1])
+            self.base_url = self.client.base_url
 
         response, _ = self._get_endpoint(
             CONF.versions_endpoint, expected_status_code=200
@@ -936,28 +938,31 @@ class ImplementationValidator:
         self._test_versions_endpoint_content(response, request=CONF.versions_endpoint)
 
         # If passed a versioned URL, first reset the URL of the client to the
-        # versioned one, then that this versioned URL does NOT host a versions endpoint
+        # versioned one, then test that this versioned URL does NOT host a versions endpoint
         if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
-            self.client.base_url = self.base_url
+            self.client.base_url = _old_base_url
+            self.base_url = _old_base_url
             self._get_endpoint(CONF.versions_endpoint, expected_status_code=404)
 
     @test_case
     def _test_versions_endpoint_content(
         self, response: requests.Response
-    ) -> Tuple[Optional[requests.Response], str]:
+    ) -> Tuple[requests.Response, str]:
         """Checks that the response from the versions endpoint complies
-        with the specification.
+        with the specification and that its 'Content-Type' header complies with
+        [RFC 4180](https://tools.ietf.org/html/rfc4180.html).
 
         Parameters:
             response: The HTTP response from the versions endpoint.
+
+        Raises:
+            ResponseError: If any content checks fail.
 
         Returns:
             The successful HTTP response or `None`, and a summary string.
 
         """
         text_content = response.text.strip().split("\n")
-        headers = response.headers
-
         if text_content[0] != "version":
             raise ResponseError(
                 f"First line of `/{CONF.versions_endpoint}` response must be 'version', not {text_content[0]}"
@@ -976,23 +981,57 @@ class ImplementationValidator:
                     f"Version numbers reported by `/{CONF.versions_endpoint}` must be integers specifying the major version, not {text_content}."
                 )
 
-        content_type = headers.get("content-type")
-        if content_type is not None:
-            content_type = [_.replace(" ", "") for _ in content_type.split(";")]
-        if not content_type or content_type[0].strip() != "text/csv":
+        content_type = response.headers.get("content-type")
+        if not content_type:
             raise ResponseError(
-                f"Incorrect content-type header {content_type} instead of 'text/csv'"
+                "Missing 'Content-Type' in response header from `/versions`."
             )
 
-        for type_parameter in content_type:
-            if type_parameter == "header=present":
-                break
-        else:
-            raise ResponseError(
-                f"Missing 'header=present' parameter in content-type {content_type}"
-            )
+        content_type = [_.replace(" ", "") for _ in content_type.split(";")]
+
+        self._test_versions_headers(
+            content_type, ("text/csv", "text/plain"), optional=True
+        )
+        self._test_versions_headers(content_type, "header=present", optional=True)
 
         return response, "`/versions` endpoint responded correctly."
+
+    @test_case
+    def _test_versions_headers(
+        self,
+        content_type: Dict[str, Any],
+        expected_parameter: Union[str, List[str]],
+    ) -> Tuple[Dict[str, Any], str]:
+        """Tests that the `Content-Type` field of the `/versions` header contains
+        the passed parameter.
+
+        Arguments:
+            content_type: The 'Content-Type' field from the response of the `/versions` endpoint.
+            expected_paramter: A substring or list of substrings that are expected in
+                the Content-Type of the response. If multiple strings are passed, they will
+                be treated as possible alternatives to one another.
+
+        Raises:
+            ResponseError: If the expected 'Content-Type' parameter is missing.
+
+        Returns:
+            The HTTP response headers and a summary string.
+
+        """
+
+        if isinstance(expected_parameter, str):
+            expected_parameter = [expected_parameter]
+
+        if not any(param in content_type for param in expected_parameter):
+            raise ResponseError(
+                f"Incorrect 'Content-Type' header {';'.join(content_type)!r}.\n"
+                f"Missing at least one expected parameter(s): {expected_parameter!r}"
+            )
+
+        return (
+            content_type,
+            f"`/versions` response had one of the expected Content-Type parameters {expected_parameter}.",
+        )
 
     def _test_as_type(self) -> None:
         """Tests that the base URL of the validator (i.e. with no
