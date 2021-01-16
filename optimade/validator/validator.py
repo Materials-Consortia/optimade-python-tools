@@ -452,11 +452,12 @@ class ImplementationValidator:
 
         """
         response, _ = self._get_endpoint(endp)
-        data_returned = response.json()["meta"]["data_returned"]
+        data = response.json().get("data", [])
+        data_returned = len(data)
         if data_returned < 1:
             return (
                 None,
-                "Endpoint {endp!r} has no entries, cannot get archetypal entry.",
+                "Endpoint {endp!r} returned no entries, cannot get archetypal entry.",
             )
 
         response, _ = self._get_endpoint(
@@ -693,14 +694,12 @@ class ImplementationValidator:
             _test_value = self._format_test_value(test_value, prop_type, operator)
 
             query = f"{prop} {operator} {_test_value}"
-            response, _ = self._get_endpoint(
-                f"{endp}?filter={query}",
+            request = f"{endp}?filter={query}"
+            response, message = self._get_endpoint(
+                request,
                 multistage=True,
                 optional=query_optional,
-                expected_status_code=(200, 501),
             )
-            if not response:
-                return None, ""
 
             if response.status_code == 501:
                 self._log.warning(
@@ -711,8 +710,26 @@ class ImplementationValidator:
                     "Implementation safely reported that filter {query} was not implemented.",
                 )
 
+            if not response:
+                if query_optional:
+                    return None, ""
+                raise ResponseError(
+                    f"Unable to perform {request}: failed with error {message}."
+                )
+
             response = response.json()
-            num_data_returned[operator] = response["meta"]["data_returned"]
+
+            if "meta" not in response or "more_data_available" not in response["meta"]:
+                raise ResponseError(
+                    f"Required field `meta->more_data_available` missing from response for {request}."
+                )
+
+            if not response["meta"]["more_data_available"]:
+                num_data_returned[operator] = len(response["data"])
+            else:
+                num_data_returned[operator] = response["meta"].get("data_returned")
+
+            num_response = num_data_returned[operator]
 
             # Numeric and string comparisons must work both ways...
             if prop_type in (
@@ -740,28 +757,57 @@ class ImplementationValidator:
                     continue
 
                 reversed_query = f"{_test_value} {reversed_operator} {prop}"
-                reversed_response, _ = self._get_endpoint(
-                    f"{endp}?filter={reversed_query}",
+                reversed_request = f"{endp}?filter={reversed_query}"
+                reversed_response, message = self._get_endpoint(
+                    reversed_request,
                     multistage=True,
                     optional=query_optional,
                 )
+
+                if reversed_response.status_code == 501:
+                    self._log.warning(
+                        f"Implementation returned {reversed_response.content} for {reversed_query}"
+                    )
+                    return (
+                        True,
+                        "Implementation safely reported that filter {reversed_query} was not implemented.",
+                    )
+
                 if not reversed_response:
-                    return None, ""
+                    if query_optional:
+                        return None, ""
+                    raise ResponseError(
+                        f"Unable to perform {reversed_request}: failed with error {message}."
+                    )
 
                 reversed_response = reversed_response.json()
-
                 if (
-                    reversed_response["meta"]["data_returned"]
-                    != response["meta"]["data_returned"]
+                    "meta" not in reversed_response
+                    or "more_data_available" not in reversed_response["meta"]
                 ):
                     raise ResponseError(
-                        f"Query {query} did not work both ways around: {reversed_query}, "
-                        "returning different results each time."
+                        f"Required field `meta->more_data_available` missing from response for {request}."
                     )
+
+                if not reversed_response["meta"]["more_data_available"]:
+                    num_reversed_response = len(reversed_response["data"])
+                else:
+                    num_reversed_response = reversed_response["meta"].get(
+                        "data_returned"
+                    )
+
+                if num_response is not None and num_reversed_response is not None:
+                    if reversed_response["meta"].get("data_returned") != response[
+                        "meta"
+                    ].get("data_returned"):
+                        raise ResponseError(
+                            f"Query {query} did not work both ways around: {reversed_query}, "
+                            "returning different results each time."
+                        )
 
             excluded = operator in exclusive_operators
             # if we have all results on this page, check that the blessed ID is in the response
-            if response["meta"]["data_returned"] <= len(response["data"]):
+            if not response["meta"]["more_data_available"]:
                 if excluded and (
                     chosen_entry["id"] in set(entry["id"] for entry in response["data"])
                 ):
@@ -771,18 +817,21 @@ class ImplementationValidator:
 
             # check that at least the archetypal structure was returned
             if not excluded:
-                if num_data_returned[operator] < 1:
+                if (
+                    num_data_returned[operator] is not None
+                    and num_data_returned[operator] < 1
+                ):
                     raise ResponseError(
                         f"Supposedly inclusive query '{query}' did not include original object ID {chosen_entry['id']} "
                         f"(with field '{prop} = {test_value}') potentially indicating a problem with filtering on this field."
                     )
 
         if prop in CONF.unique_properties:
-            if num_data_returned["="] == 0:
+            if num_data_returned["="] is not None and num_data_returned["="] == 0:
                 raise ResponseError(
                     f"Unable to filter field 'id' for equality, no data was returned for {query}."
                 )
-            if num_data_returned["="] > 1:
+            if num_data_returned["="] is not None and num_data_returned["="] > 1:
                 raise ResponseError(
                     f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
                 )
@@ -1077,7 +1126,7 @@ class ImplementationValidator:
         try:
             response = response.json()
         except (AttributeError, json.JSONDecodeError):
-            raise ResponseError("Unable to test endpoint page limit.")
+            raise ResponseError("Unable to test endpoint `page_limit` parameter.")
 
         try:
             num_entries = len(response["data"])
@@ -1256,7 +1305,7 @@ class ImplementationValidator:
             expected_status_code = [expected_status_code]
 
         if response.status_code not in expected_status_code:
-            message = f"Request to '{request_str}' returned HTTP code {response.status_code} and not expected {expected_status_code}."
+            message = f"Request to '{request_str}' returned HTTP code {response.status_code} and not the allowed {expected_status_code}."
             message += "\nAdditional details:"
             try:
                 for error in response.json().get("errors", []):
