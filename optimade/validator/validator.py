@@ -685,11 +685,18 @@ class ImplementationValidator:
             # Otherwise, None values are not allowed for MUST's, and entire missing fields are not allowed
             raise ResponseError(msg)
 
+        using_fallback = False
         if prop_type == DataType.LIST:
-            if not test_value or (
-                isinstance(test_value[0], dict) or isinstance(test_value[0], list)
-            ):
-                msg = f"Not testing queries on field {prop} of type {prop_type} with nested dictionary/list entries."
+            if not test_value:
+                test_value = CONF.enum_fallback_values.get(endp, {}).get(prop)
+                using_fallback = True
+
+            if not test_value:
+                msg = f"Not testing filters on field {prop} of type {prop_type} as no test value was found to use in filter."
+                self._log.warning(msg)
+                return None, msg
+            if isinstance(test_value[0], dict) or isinstance(test_value[0], list):
+                msg = f"Not testing filters on field {prop} of type {prop_type} with nested dictionary/list test value."
                 self._log.warning(msg)
                 return None, msg
 
@@ -713,22 +720,17 @@ class ImplementationValidator:
                 request,
                 multistage=True,
                 optional=query_optional,
+                expected_status_code=(200, 501),
             )
 
             if not response:
                 if query_optional:
-                    return None, ""
+                    return (
+                        None,
+                        "Optional query {query!r} returned {reversed_response.status_code}.",
+                    )
                 raise ResponseError(
-                    f"Unable to perform {request}: failed with error {message}."
-                )
-
-            if response.status_code == 501:
-                self._log.warning(
-                    f"Implementation returned {response.content} for {query}"
-                )
-                return (
-                    True,
-                    "Implementation safely reported that filter {query} was not implemented.",
+                    f"Unable to perform mandatory query {query!r}: responded with status code {response.status_code}"
                 )
 
             response = response.json()
@@ -776,22 +778,17 @@ class ImplementationValidator:
                     reversed_request,
                     multistage=True,
                     optional=query_optional,
+                    expected_status_code=(200, 501),
                 )
 
                 if not reversed_response:
                     if query_optional:
-                        return None, ""
+                        return (
+                            None,
+                            "Optional query {query!r} returned {reversed_response.status_code}.",
+                        )
                     raise ResponseError(
-                        f"Unable to perform {reversed_request}: failed with error {message}."
-                    )
-
-                if reversed_response.status_code == 501:
-                    self._log.warning(
-                        f"Implementation returned {reversed_response.content} for {reversed_query}"
-                    )
-                    return (
-                        True,
-                        "Implementation safely reported that filter {reversed_query} was not implemented.",
+                        f"Unable to perform mandatory query {query!r}: responded with status code {reversed_response.status_code}"
                     )
 
                 reversed_response = reversed_response.json()
@@ -829,8 +826,8 @@ class ImplementationValidator:
                         f"Objects {excluded} were not necessarily excluded by {query}"
                     )
 
-            # check that at least the archetypal structure was returned
-            if not excluded:
+            # check that at least the archetypal structure was returned, unless we are using a fallback value
+            if not excluded and not using_fallback:
                 if (
                     num_data_returned[operator] is not None
                     and num_data_returned[operator] < 1
