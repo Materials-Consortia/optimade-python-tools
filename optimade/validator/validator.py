@@ -280,7 +280,9 @@ class ImplementationValidator:
             self.provider_prefix = meta["provider"].get("prefix")
 
         # Set the response class for all `/info/entry` endpoints based on `/info` response
-        self.available_json_endpoints, _ = self._get_available_endpoints(base_info)
+        self.available_json_endpoints, _ = self._get_available_endpoints(
+            base_info, request=info_endp
+        )
         for endp in self.available_json_endpoints:
             self._response_classes[f"{info_endp}/{endp}"] = EntryInfoResponse
 
@@ -401,7 +403,7 @@ class ImplementationValidator:
         """
         properties = entry_info.get("data", {}).get("properties", [])
         self._test_must_properties(
-            properties, endp, request="; checking entry info for required properties"
+            properties, endp, request=f"{CONF.info_endpoint}/{endp}"
         )
 
         return properties
@@ -423,7 +425,7 @@ class ImplementationValidator:
         """
         must_props = set(
             prop
-            for prop in CONF.entry_schemas[endp]
+            for prop in CONF.entry_schemas.get(endp, {})
             if CONF.entry_schemas[endp].get(prop, {}).get("support")
             == SupportLevel.MUST
         )
@@ -451,23 +453,29 @@ class ImplementationValidator:
 
 
         """
-        response, _ = self._get_endpoint(endp)
-        data = response.json().get("data", [])
-        data_returned = len(data)
-        if data_returned < 1:
-            return (
-                None,
-                "Endpoint {endp!r} returned no entries, cannot get archetypal entry.",
-            )
+        response, message = self._get_endpoint(endp, multistage=True)
 
-        response, _ = self._get_endpoint(
-            f"{endp}?page_offset={random.randint(0, data_returned-1)}&response_fields={','.join(properties)}"
-        )
-        archetypal_entry = response.json()["data"][0]
-        return (
-            archetypal_entry,
-            f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
-        )
+        if response:
+            data = response.json().get("data", [])
+            data_returned = len(data)
+            if data_returned < 1:
+                return (
+                    None,
+                    "Endpoint {endp!r} returned no entries, cannot get archetypal entry.",
+                )
+
+            response, message = self._get_endpoint(
+                f"{endp}?page_offset={random.randint(0, data_returned-1)}&response_fields={','.join(properties)}",
+                multistage=True,
+            )
+            if response:
+                archetypal_entry = response.json()["data"][0]
+                return (
+                    archetypal_entry,
+                    f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
+                )
+
+        raise ResponseError(f"Failed to get archetypal entry. Details: {message}")
 
     @test_case
     def _check_response_fields(self, endp: str, fields: List[str]) -> Tuple[bool, str]:
@@ -484,13 +492,19 @@ class ImplementationValidator:
 
         subset_fields = random.sample(fields, min(len(fields) - 1, 3))
         test_query = f"{endp}?response_fields={','.join(subset_fields)}&page_limit=1"
-        response, _ = self._get_endpoint(test_query)
+        response, _ = self._get_endpoint(test_query, multistage=True)
 
         if response and len(response.json()["data"]) == 1:
             doc = response.json()["data"][0]
             expected_fields = set(subset_fields)
             expected_fields -= CONF.top_level_non_attribute_fields
-            returned_fields = set(sorted(list(doc["attributes"].keys())))
+
+            if "attributes" not in doc:
+                raise ResponseError(
+                    f"Entries are missing `attributes` key.\nReceived: {doc}"
+                )
+
+            returned_fields = set(sorted(list(doc.get("attributes", {}).keys())))
             returned_fields -= CONF.top_level_non_attribute_fields
 
             if expected_fields != returned_fields:
@@ -701,6 +715,13 @@ class ImplementationValidator:
                 optional=query_optional,
             )
 
+            if not response:
+                if query_optional:
+                    return None, ""
+                raise ResponseError(
+                    f"Unable to perform {request}: failed with error {message}."
+                )
+
             if response.status_code == 501:
                 self._log.warning(
                     f"Implementation returned {response.content} for {query}"
@@ -708,13 +729,6 @@ class ImplementationValidator:
                 return (
                     True,
                     "Implementation safely reported that filter {query} was not implemented.",
-                )
-
-            if not response:
-                if query_optional:
-                    return None, ""
-                raise ResponseError(
-                    f"Unable to perform {request}: failed with error {message}."
                 )
 
             response = response.json()
@@ -764,6 +778,13 @@ class ImplementationValidator:
                     optional=query_optional,
                 )
 
+                if not reversed_response:
+                    if query_optional:
+                        return None, ""
+                    raise ResponseError(
+                        f"Unable to perform {reversed_request}: failed with error {message}."
+                    )
+
                 if reversed_response.status_code == 501:
                     self._log.warning(
                         f"Implementation returned {reversed_response.content} for {reversed_query}"
@@ -771,13 +792,6 @@ class ImplementationValidator:
                     return (
                         True,
                         "Implementation safely reported that filter {reversed_query} was not implemented.",
-                    )
-
-                if not reversed_response:
-                    if query_optional:
-                        return None, ""
-                    raise ResponseError(
-                        f"Unable to perform {reversed_request}: failed with error {message}."
                     )
 
                 reversed_response = reversed_response.json()
@@ -880,6 +894,7 @@ class ImplementationValidator:
             )
             response_cls = ValidatorEntryResponseOne
 
+        response_fields = set()
         if endp in CONF.entry_schemas:
             response_fields = (
                 set(CONF.entry_schemas[endp].keys())
@@ -916,6 +931,7 @@ class ImplementationValidator:
             )
             response_cls = ValidatorEntryResponseMany
 
+        response_fields = set()
         if endp in CONF.entry_schemas:
             response_fields = (
                 set(CONF.entry_schemas[endp].keys())
@@ -932,12 +948,14 @@ class ImplementationValidator:
         self._test_page_limit(response)
 
         deserialized, _ = self._deserialize_response(
-            response, response_cls, request=request_str, optional=True
+            response, response_cls, request=request_str
         )
 
         self._get_single_id_from_multi_entry_endpoint(deserialized, request=request_str)
         if deserialized:
-            self._test_data_available_matches_data_returned(deserialized)
+            self._test_data_available_matches_data_returned(
+                deserialized, request=request_str
+            )
 
     @test_case
     def _test_data_available_matches_data_returned(
@@ -993,7 +1011,10 @@ class ImplementationValidator:
             CONF.versions_endpoint, expected_status_code=200
         )
 
-        self._test_versions_endpoint_content(response, request=CONF.versions_endpoint)
+        if response:
+            self._test_versions_endpoint_content(
+                response, request=CONF.versions_endpoint
+            )
 
         # If passed a versioned URL, first reset the URL of the client to the
         # versioned one, then test that this versioned URL does NOT host a versions endpoint
@@ -1023,7 +1044,7 @@ class ImplementationValidator:
         text_content = response.text.strip().split("\n")
         if text_content[0] != "version":
             raise ResponseError(
-                f"First line of `/{CONF.versions_endpoint}` response must be 'version', not {text_content[0]}"
+                f"First line of `/{CONF.versions_endpoint}` response must be 'version', not {text_content[0]!r}"
             )
 
         if len(text_content) <= 1:
@@ -1048,9 +1069,17 @@ class ImplementationValidator:
         content_type = [_.replace(" ", "") for _ in content_type.split(";")]
 
         self._test_versions_headers(
-            content_type, ("text/csv", "text/plain"), optional=True
+            content_type,
+            ("text/csv", "text/plain"),
+            optional=True,
+            request=CONF.versions_endpoint,
         )
-        self._test_versions_headers(content_type, "header=present", optional=True)
+        self._test_versions_headers(
+            content_type,
+            "header=present",
+            optional=True,
+            request=CONF.versions_endpoint,
+        )
 
         return response, "`/versions` endpoint responded correctly."
 
@@ -1171,6 +1200,11 @@ class ImplementationValidator:
 
             self._log.debug("Following pagination link to %r.", next_link)
             next_response, _ = self._get_endpoint(next_link)
+            if not next_response:
+                raise ResponseError(
+                    f"Error when testing pagination: the response from `links->next` {next_link!r} failed the previous test."
+                )
+
             check_next_link = bool(check_next_link - 1)
             self._test_page_limit(
                 next_response,
