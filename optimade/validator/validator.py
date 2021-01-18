@@ -955,6 +955,15 @@ class ImplementationValidator:
             `True` if successful, with a string summary.
 
         """
+        if (
+            deserialized.meta.data_available is None
+            or deserialized.meta.data_returned is None
+        ):
+            return (
+                None,
+                "`meta->data_available` and/or `meta->data_returned` were not provided.",
+            )
+
         if deserialized.meta.data_available != deserialized.meta.data_returned:
             raise ResponseError(
                 "No query was performed, but `data_returned` != `data_available`."
