@@ -163,12 +163,19 @@ class ElasticCollection(EntryCollection):
         page_offset = criteria.get("skip", 0)
         limit = criteria.get("limit", CONFIG.page_limit)
 
-        search = search.source(includes=list(self.all_fields))
+        all_aliased_fields = [
+            self.resource_mapper.alias_for(field) for field in self.all_fields
+        ]
+        search = search.source(includes=all_aliased_fields)
 
         sort_spec = criteria.get("sort", [])
         if sort_spec:
-            sort_spec = [{field: sort_dir} for field, sort_dir in sort_spec]
-            search = search.sort(sort_spec)
+            search = search.sort(
+                [
+                    {field: {"order": "asc" if sort_dir else "desc"}}
+                    for field, sort_dir in sort_spec
+                ][0]
+            )
 
         search = search[page_offset : page_offset + limit]
         response = search.execute()
