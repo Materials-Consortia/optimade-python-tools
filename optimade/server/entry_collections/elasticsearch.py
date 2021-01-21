@@ -89,7 +89,14 @@ class ElasticCollection(EntryCollection):
                 resource_mapper, self.all_fields
             )
 
-        self.client.indices.create(index=self.name, ignore=400)
+        properties = {}
+
+        for field in list(body["mappings"]["doc"]["properties"].keys()):
+            properties[self.resource_mapper.alias_for(field)] = body["mappings"]["doc"][
+                "properties"
+            ].pop(field)
+        body["mappings"]["doc"]["properties"] = properties
+        self.client.indices.create(index=self.name, body=body, ignore=400)
 
         LOGGER.info(f"Created index for {self.name!r} with body {body}")
 
@@ -111,7 +118,7 @@ class ElasticCollection(EntryCollection):
             "mappings": {
                 "doc": {
                     "properties": {
-                        resource_mapper.alias_for(field): {"type": "keyword"}
+                        resource_mapper.alias_of(field): {"type": "keyword"}
                         for field in fields
                     }
                 }
@@ -171,14 +178,13 @@ class ElasticCollection(EntryCollection):
         ]
         search = search.source(includes=all_aliased_fields)
 
-        sort_spec = criteria.get("sort", [])
-        if sort_spec:
-            search = search.sort(
-                [
-                    {field: {"order": "asc" if sort_dir else "desc"}}
-                    for field, sort_dir in sort_spec
-                ][0]
-            )
+        sort_spec = criteria.get("sort", [(self.resource_mapper.alias_for("id"), 1)])
+        search = search.sort(
+            [
+                {field: {"order": "asc" if sort_dir else "desc"}}
+                for field, sort_dir in sort_spec
+            ][0]
+        )
 
         search = search[page_offset : page_offset + limit]
         response = search.execute()
