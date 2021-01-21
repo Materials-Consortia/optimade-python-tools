@@ -13,7 +13,7 @@ _rev_cmp_operators = {">": "<", ">=": "<=", "<": ">", "<=": ">=", "=": "=", "!="
 _has_operators = {"ALL": "must", "ANY": "should"}
 _length_quantities = {
     "elements": "nelements",
-    "elements_rations": "nelements",
+    "elements_ratios": "nelements",
     "dimension_types": "dimension_types",
 }
 
