@@ -138,6 +138,9 @@
                 "elements_ratios":{
                    "type":"long"
                 },
+                "id":{
+                   "type":"keyword"
+                },
                 "nelements":{
                    "type":"integer"
                 },
