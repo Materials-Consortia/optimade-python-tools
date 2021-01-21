@@ -160,6 +160,9 @@ class ElasticCollection(EntryCollection):
 
         search = Search(using=self.client, index=self.name)
 
+        if criteria.get("filter", False):
+            search = search.query(criteria["filter"])
+
         page_offset = criteria.get("skip", 0)
         limit = criteria.get("limit", CONFIG.page_limit)
 
@@ -185,7 +188,7 @@ class ElasticCollection(EntryCollection):
         nresults_now = len(results)
         if not single_entry:
             data_returned = response.hits.total
-            more_data_available = nresults_now < data_returned
+            more_data_available = page_offset + limit < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = nresults_now
