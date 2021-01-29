@@ -1,8 +1,6 @@
 import os
 
 from typing import Tuple, List, Union
-import mongomock
-import pymongo.collection
 from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
@@ -21,11 +19,13 @@ except (TypeError, ValueError):  # pragma: no cover
 
 
 if CONFIG.use_real_mongo or CI_FORCE_MONGO:
+    from pymongo.collection import Collection
     from pymongo import MongoClient
 
     client = MongoClient(CONFIG.mongo_uri)
     LOGGER.info("Using: Real MongoDB (pymongo)")
 else:
+    from mongomock.collection import Collection
     from mongomock import MongoClient
 
     client = MongoClient()
@@ -40,9 +40,7 @@ class MongoCollection(EntryCollection):
 
     def __init__(
         self,
-        collection: Union[
-            pymongo.collection.Collection, mongomock.collection.Collection
-        ],
+        collection: Collection,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
     ):
