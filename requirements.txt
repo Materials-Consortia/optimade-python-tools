@@ -8,5 +8,5 @@ pymongo==3.11.2
 mongomock==3.22.0
 django==3.1.4
 elasticsearch-dsl==7.3.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 typing-extensions==3.7.4.3
