@@ -31,7 +31,7 @@ jobs:
         pip install -U -e .[all] --use-deprecated=legacy-resolver
 
     - name: Update changelog
-      uses: CharMixer/auto-changelog-action@v1.1
+      uses: CharMixer/auto-changelog-action@v1.2
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
 
