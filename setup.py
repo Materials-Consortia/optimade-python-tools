@@ -24,7 +24,7 @@ server_deps = ["uvicorn~=0.13.3", "Jinja2~=2.11"] + mongo_deps
 
 # Client minded
 aiida_deps = ["aiida-core~=1.5.2"]
-ase_deps = ["ase~=3.20"]
+ase_deps = ["ase~=3.21"]
 cif_deps = ["numpy~=1.19"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2020.12.31"]
@@ -36,17 +36,17 @@ docs_deps = [
     "mkdocs~=1.1",
     "mkdocs-awesome-pages-plugin~=2.5",
     "mkdocs-material~=6.2",
-    "mkdocs-minify-plugin~=0.3.0",
-    "mkdocstrings~=0.13.6",
+    "mkdocs-minify-plugin~=0.4.0",
+    "mkdocstrings~=0.14.0",
 ]
 testing_deps = [
     "pytest~=6.2",
-    "pytest-cov~=2.10",
+    "pytest-cov~=2.11",
     "codecov~=2.1",
     "jsondiff~=1.2",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.6", "pre-commit~=2.9", "invoke~=1.5"]
+    ["pylint~=2.6", "pre-commit~=2.10", "invoke~=1.5"]
     + docs_deps
     + testing_deps
     + client_deps
