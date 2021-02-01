@@ -1,5 +1,5 @@
 pytest==6.2.1
-pytest-cov==2.10.1
+pytest-cov==2.11.1
 codecov==2.1.11
 jsondiff==1.2.0
 pylint==2.6.0
