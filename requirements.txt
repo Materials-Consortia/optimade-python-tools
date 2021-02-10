@@ -4,7 +4,7 @@ pydantic==1.6.1
 email_validator==1.1.2
 requests==2.25.1
 uvicorn==0.13.3
-pymongo==3.11.2
+pymongo==3.11.3
 mongomock==3.22.1
 django==3.1.6
 elasticsearch-dsl==7.3.0

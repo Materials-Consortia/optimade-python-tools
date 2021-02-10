@@ -25,9 +25,9 @@ server_deps = ["uvicorn~=0.13.3", "Jinja2~=2.11"] + mongo_deps
 # Client minded
 aiida_deps = ["aiida-core~=1.5.2"]
 ase_deps = ["ase~=3.21"]
-cif_deps = ["numpy~=1.19"]
+cif_deps = ["numpy~=1.19"]  # Keep at 1.19 for Python 3.6 support
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2020.12.31"]
+pymatgen_deps = ["pymatgen==2021.2.8.1"]
 jarvis_deps = ["jarvis-tools==2020.11.27"]
 client_deps = cif_deps
 
