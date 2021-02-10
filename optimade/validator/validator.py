@@ -252,6 +252,7 @@ class ImplementationValidator:
             )
             self._test_as_type()
             self.valid = not bool(self.results.failure_count)
+            self.print_summary()
             return
 
         # Test entire implementation
@@ -268,9 +269,9 @@ class ImplementationValidator:
                 f"Unable to deserialize response from introspective {info_endp!r} endpoint. "
                 "This is required for all further validation, so the validator will now exit."
             )
-            self.print_summary()
             # Set valid to False to ensure error code 1 is raised at CLI
             self.valid = False
+            self.print_summary()
             return
 
         # Grab the provider prefix from base info and use it when looking for provider fields
