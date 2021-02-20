@@ -701,6 +701,16 @@ class ImplementationValidator:
                 self._log.warning(msg)
                 return None, msg
 
+            # Try to infer if the test value is a float from its string representation
+            # and decide whether to do inclusive/exclusive query tests
+            try:
+                float(test_value[0])
+                msg = f"Not testing filters on field {prop} of type {prop_type} containing float values."
+                self._log.warning(msg)
+                return None, msg
+            except ValueError:
+                pass
+
         if prop_type in (DataType.DICTIONARY,):
             msg = f"Not testing queries on field {prop} of type {prop_type}."
             self._log.warning(msg)

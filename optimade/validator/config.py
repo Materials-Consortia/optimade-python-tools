@@ -71,7 +71,7 @@ _INCLUSIVE_OPERATORS = {
         "ENDS",
     ),
     DataType.TIMESTAMP: (
-        # "=" and "<=" are disabled due to issue with microseconds stored in database vs API response (see Materials-Consortia/optimade-python-tools/#606)
+        # N.B. "=" and "<=" are disabled due to issue with microseconds stored in database vs API response (see Materials-Consortia/optimade-python-tools/#606)
         # ">=" is fine as all microsecond trimming will round times down
         # "=",
         # "<=",
@@ -82,11 +82,7 @@ _INCLUSIVE_OPERATORS = {
         "<=",
         ">=",
     ),
-    DataType.FLOAT: (
-        "=",
-        "<=",
-        ">=",
-    ),
+    DataType.FLOAT: (),
     DataType.LIST: ("HAS", "HAS ALL", "HAS ANY"),
 }
 
@@ -95,7 +91,7 @@ exclusive_ops = ("!=", "<", ">")
 _EXCLUSIVE_OPERATORS = {
     DataType.STRING: exclusive_ops,
     DataType.TIMESTAMP: (),
-    DataType.FLOAT: exclusive_ops,
+    DataType.FLOAT: (),
     DataType.INTEGER: exclusive_ops,
     DataType.LIST: (),
 }

@@ -13,7 +13,6 @@ def test_with_validator(both_fake_remote_clients):
     validator = ImplementationValidator(
         client=both_fake_remote_clients,
         index=both_fake_remote_clients.app == app,
-        verbosity=5,
     )
 
     validator.validate_implementation()
@@ -33,14 +32,13 @@ def test_with_validator_json_response(both_fake_remote_clients, capsys):
 
     captured = capsys.readouterr()
     json_response = json.loads(captured.out)
-    assert json_response["failure_count"] == 0
-    assert json_response["internal_failure_count"] == 0
-    assert json_response["optional_failure_count"] == 0
-    assert validator.results.failure_count == 0
-    assert validator.results.internal_failure_count == 0
-    assert validator.results.optional_failure_count == 0
-    assert dataclasses.asdict(validator.results) == json_response
-
+    assert json_response["failure_count"] == 0, json_response
+    assert json_response["internal_failure_count"] == 0, json_response
+    assert json_response["optional_failure_count"] == 0, json_response
+    assert validator.results.failure_count == 0, json_response
+    assert validator.results.internal_failure_count == 0, json_response
+    assert validator.results.optional_failure_count == 0, json_response
+    assert dataclasses.asdict(validator.results) == json_response, json_response
     assert validator.valid
 
 
