@@ -40,9 +40,10 @@ Each release of optimade-python-tools only targets one version of the OPTIMADE s
 | OPTIMADE API version | optimade-python-tools version |
 |:--------------------:|:------------------------------:|
 | v1.0.0 | v0.12.9 |
-| v1.0.1<sup>†</sup> | v0.13.1 |
+| v1.0.1 [<sup>†</sup>](#version_footnote) | v0.13.1 |
 
-<sup>†</sup> Whilst both the specification and this package follow semantic versioning, a [potentially backwards incompatible change](https://github.com/Materials-Consortia/OPTIMADE/pull/344) was introduced in v1.0.1 of the specification.
+<span id="#version_footnote"><sup>†</sup></span>
+Whilst both the specification and this package follow semantic versioning, a [potentially backwards incompatible change](https://github.com/Materials-Consortia/OPTIMADE/pull/344) was introduced in v1.0.1 of the specification.
 
 
 ## Contributing
