@@ -35,10 +35,10 @@ The latest development version of this package can be installed from the master 
 
 ## Supported OPTIMADE versions
 
-Each release of optimade-python-tools only targets one version of the OPTIMADE specification, summarised in the table below.
+Each release of the `optimade` package from this repository only targets one version of the OPTIMADE specification, summarised in the table below.
 
-| OPTIMADE API version | optimade-python-tools version |
-|:--------------------:|:------------------------------:|
+| OPTIMADE API version | `optimade` version |
+|:--------------------:|:------------------:|
 | v1.0.0 | v0.12.9 |
 | v1.0.1 [<sup>†</sup>](#version_footnote) | v0.13.1 |
 
