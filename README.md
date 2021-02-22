@@ -33,6 +33,18 @@ Detailed instructions for installing and running the index meta-database and the
 The latest stable version of this package can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade`.
 The latest development version of this package can be installed from the master branch of this repository `git clone https://github.com/Materials-Consortia/optimade-python-tools`.
 
+## Supported OPTIMADE versions
+
+Each release of optimade-python-tools only targets one version of the OPTIMADE specification, summarised in the table below.
+
+| OPTIMADE API version | optimade-python-tools version |
+|:--------------------:|:------------------------------:|
+| v1.0.0 | v0.12.9 |
+| v1.0.1<sup>†</sup> | v0.13.1 |
+
+<sup>†</sup> Whilst both the specification and this package follow semantic versioning, a [potentially backwards incompatible change](https://github.com/Materials-Consortia/OPTIMADE/pull/344) was introduced in v1.0.1 of the specification.
+
+
 ## Contributing
 
 Contribution tips and guidelines can be found in [the contributing guidelines](CONTRIBUTING.md).
