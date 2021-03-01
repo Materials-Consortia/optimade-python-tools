@@ -2,10 +2,10 @@
 # pylint: disable=no-self-argument,no-name-in-module
 from enum import Enum
 
-from pydantic import root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
 from typing import Optional, Union, List, Dict, Type, Any
-
 from datetime import datetime
+
+from pydantic import root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
 
 from optimade.models import jsonapi
 from optimade.models.utils import SemanticVersion, StrictField
@@ -202,6 +202,7 @@ class Provider(BaseModel):
 
     prefix: str = StrictField(
         ...,
+        regex=r"^[a-z]([a-z]|[0-9]|\_)*$",
         description="database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes.",
     )
 
