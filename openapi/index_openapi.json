@@ -1267,6 +1267,7 @@
           },
           "prefix": {
             "title": "Prefix",
+            "pattern": "^[a-z]([a-z]|[0-9]|_)*$",
             "type": "string",
             "description": "database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes."
           },
