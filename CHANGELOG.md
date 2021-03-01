@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.13.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.13.2) (2021-03-01)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.13.1...v0.13.2)
+
+**Implemented enhancements:**
+
+- Improve validation of providers [\#723](https://github.com/Materials-Consortia/optimade-python-tools/issues/723)
+
+**Merged pull requests:**
+
+- Update dependencies [\#725](https://github.com/Materials-Consortia/optimade-python-tools/pull/725) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.13.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.13.1) (2021-02-23)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.13.0...v0.13.1)
