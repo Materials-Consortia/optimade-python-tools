@@ -202,7 +202,7 @@ class Provider(BaseModel):
 
     prefix: str = StrictField(
         ...,
-        regex=r"^[a-z]([a-z]|[0-9]|\_)*$",
+        regex=r"^[a-z]([a-z]|[0-9]|_)*$",
         description="database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes.",
     )
 
