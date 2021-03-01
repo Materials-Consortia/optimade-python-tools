@@ -28,8 +28,8 @@ ase_deps = ["ase~=3.21"]
 cif_deps = ["numpy~=1.19"]  # Keep at 1.19 for Python 3.6 support
 pdb_deps = cif_deps
 pymatgen_deps = [
-    'pymatgen==2021.2.8.1;python_version<"3.7"',
-    'pymatgen==2021.2.16;python_version>"3.6"',
+    "pymatgen==2021.2.8.1;python_version<'3.7'",
+    "pymatgen==2021.2.16;python_version>'3.6'",
 ]
 jarvis_deps = ["jarvis-tools==2021.2.22"]
 client_deps = cif_deps
@@ -96,7 +96,7 @@ setup(
         "pydantic~=1.6.1",
         "email_validator~=1.1",
         "requests~=2.25",
-        'typing-extensions~=3.7;python_version<"3.8"',
+        "typing-extensions~=3.7;python_version<'3.8'",
     ],
     extras_require={
         "all": all_deps,
