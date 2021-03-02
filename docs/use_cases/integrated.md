@@ -1,4 +1,4 @@
-# Customize OPTIMADE Python tools and integrate with an existing web application
+# Integrate with an existing web application
 
 OPTIMADE Python tools (OPT) can be run as a standalone web application that serves the OPTIMADE API based on a pre-configured MongoDB backend.
 In this document, we are going to use OPT differently and use it to add an OPTIMADE API implementation to an existing application with an existing Elasticsearch-based database.
@@ -12,19 +12,24 @@ It uses the `OPTIMADE_CONFIG_FILE` environment variable (or a default path) to f
 If you run OPT from another application, you might want to provide this config file as part of the source code and not via environment variables.
 Let's say you have a file `optimade_config.json` as part of the Python module that you use to create your OPT.
 
+!!! tip
+    You can find more detailed information about configuring OPT in the [Configuration](../configuration.md) section.
+
 Before importing any OPT packages, you can set the `OPTIMADE_CONFIG_FILE` environment variable to link OPT to your config file:
 
 ```python
 import os
 import sys
 
-os.environ['OPTIMADE_CONFIG_FILE'] = os.path.join(os.path.dirname(__file__), 'optimade_config.json')
+os.environ['OPTIMADE_CONFIG_FILE'] = os.path.join(
+    os.path.dirname(__file__), 'optimade_config.json'
+)
 ```
 
-## Customize the *EntryCollection* implementation
+## Customize the [`EntryCollection`][optimade.server.entry_collections.entry_collections.EntryCollection] implementation
 
 Let's assume that your Elasticsearch backend stores structure data different enough that you need to provide your own custom implementation.
-The following code customizes the used `EntryCollection` class for structures, while keeping the default *mongomock* implementation for all other entry types.
+The following code customizes the used [`EntryCollection`][optimade.server.entry_collections.entry_collections.EntryCollection] class for structures, while keeping the default *mongomock* implementation (using [`MongoCollection`][optimade.server.entry_collections.mongo.MongoCollection]) for all other entry types.
 
 ```python
 from optimade.server.routers import structures
