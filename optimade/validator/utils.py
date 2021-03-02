@@ -275,9 +275,6 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                 and it will not increment the success counter. Errors will be
                 handled in the normal way. This can be used to avoid flooding
                 the output for mutli-stage tests.
-                request: The request that has been performed
-                optional: Whether to count this test as optional
-                multistage
             **kwargs: Extra named arguments passed to the test function.
 
         """
@@ -289,13 +286,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                 else:
                     result, msg = test_fn(validator, *args, **kwargs)
 
-            except json.JSONDecodeError as exc:
-                msg = (
-                    "Critical: unable to parse server response as JSON. "
-                    f"{exc.__class__.__name__}: {exc}"
-                )
-                raise exc
-            except (ResponseError, ValidationError) as exc:
+            except (json.JSONDecodeError, ResponseError, ValidationError) as exc:
                 msg = f"{exc.__class__.__name__}: {exc}"
                 raise exc
             except Exception as exc:
@@ -368,7 +359,8 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
 
             # Reset the client request so that it can be properly
             # displayed if the next request fails
-            validator.client.last_request = None
+            if not multistage:
+                validator.client.last_request = None
 
             return result, msg
 

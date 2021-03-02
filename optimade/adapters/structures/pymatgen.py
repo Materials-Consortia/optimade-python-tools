@@ -17,6 +17,7 @@ try:
 
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
+    from optimade.adapters.warnings import AdapterPackageNotFound
 
     Structure = type("Structure", (), {})
     Molecule = type("Molecule", (), {})
@@ -47,7 +48,7 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
 
     """
     if "optimade.adapters" in repr(globals().get("Structure")):
-        warn(PYMATGEN_NOT_FOUND)
+        warn(PYMATGEN_NOT_FOUND, AdapterPackageNotFound)
         return None
 
     if all(optimade_structure.attributes.dimension_types):

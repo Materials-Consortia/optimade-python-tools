@@ -7,10 +7,10 @@ the hardcoded values.
 
 """
 
-from typing import Dict, Any, Set
+from typing import Dict, Any, Set, List
 from pydantic import BaseSettings, Field
 
-from optimade.models import InfoResponse, IndexInfoResponse, DataType
+from optimade.models import InfoResponse, IndexInfoResponse, DataType, StructureFeatures
 from optimade.validator.utils import (
     ValidatorLinksResponse,
     ValidatorReferenceResponseOne,
@@ -50,6 +50,12 @@ _RESPONSE_CLASSES_INDEX = {
     "links": ValidatorLinksResponse,
 }
 
+_ENUM_DUMMY_VALUES = {
+    "structures": {
+        "structure_features": [allowed.value for allowed in StructureFeatures]
+    }
+}
+
 
 _UNIQUE_PROPERTIES = ("id", "immutable_id")
 
@@ -65,14 +71,11 @@ _INCLUSIVE_OPERATORS = {
         "ENDS",
     ),
     DataType.TIMESTAMP: (
-        "=",
-        "<=",
+        # "=" and "<=" are disabled due to issue with microseconds stored in database vs API response (see Materials-Consortia/optimade-python-tools/#606)
+        # ">=" is fine as all microsecond trimming will round times down
+        # "=",
+        # "<=",
         ">=",
-        "CONTAINS",
-        "STARTS WITH",
-        "STARTS",
-        "ENDS WITH",
-        "ENDS",
     ),
     DataType.INTEGER: (
         "=",
@@ -91,7 +94,7 @@ exclusive_ops = ("!=", "<", ">")
 
 _EXCLUSIVE_OPERATORS = {
     DataType.STRING: exclusive_ops,
-    DataType.TIMESTAMP: exclusive_ops,
+    DataType.TIMESTAMP: (),
     DataType.FLOAT: exclusive_ops,
     DataType.INTEGER: exclusive_ops,
     DataType.LIST: (),
@@ -157,6 +160,11 @@ class ValidatorConfig(BaseSettings):
     top_level_non_attribute_fields: Set[str] = Field(
         BaseResourceMapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS,
         description="Field names to treat as top-level",
+    )
+
+    enum_fallback_values: Dict[str, Dict[str, List[str]]] = Field(
+        _ENUM_DUMMY_VALUES,
+        description="Provide fallback values for enum fields to use when validating filters.",
     )
 
 

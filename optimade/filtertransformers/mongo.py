@@ -1,7 +1,8 @@
 import copy
+import warnings
 from lark import v_args, Token
 from optimade.filtertransformers.base_transformer import BaseTransformer
-from optimade.server.exceptions import BadRequest
+from optimade.server.warnings import TimestampNotRFCCompliant
 
 __all__ = ("MongoTransformer",)
 
@@ -42,6 +43,7 @@ class MongoTransformer(BaseTransformer):
         query = self._apply_length_operators(query)
         query = self._apply_unknown_or_null_filter(query)
         query = self._apply_mongo_id_filter(query)
+        query = self._apply_mongo_date_filter(query)
 
         return query
 
@@ -395,8 +397,8 @@ class MongoTransformer(BaseTransformer):
                 if operator not in ("$eq", "$ne"):
                     if self.mapper is not None:
                         prop = self.mapper.alias_of(prop)
-                    raise BadRequest(
-                        detail=f"Operator not supported for query on field {prop!r}, can only test for equality"
+                    raise NotImplementedError(
+                        f"Operator {operator} not supported for query on field {prop!r}, can only test for equality"
                     )
                 if isinstance(val, str):
                     subdict[prop][operator] = ObjectId(val)
@@ -404,6 +406,44 @@ class MongoTransformer(BaseTransformer):
 
         return recursive_postprocessing(
             filter_, check_for_id_key, replace_str_id_with_objectid
+        )
+
+    def _apply_mongo_date_filter(self, filter_: dict) -> dict:
+        """This method loops through the query and replaces any operations
+        on suspected timestamp properties with the corresponding operation
+        on a BSON `DateTime` type.
+        """
+
+        def check_for_timestamp_field(prop, _):
+            """ Find cases where the query dict is operating on a timestamp field. """
+            if self.mapper is not None:
+                prop = self.mapper.alias_of(prop)
+            return prop == "last_modified"
+
+        def replace_str_date_with_datetime(subdict, prop, expr):
+            """Encode suspected dates in with BSON. """
+            import bson.json_util
+
+            for operator in subdict[prop]:
+                query_datetime = bson.json_util.loads(
+                    bson.json_util.dumps({"$date": subdict[prop][operator]}),
+                    json_options=bson.json_util.DEFAULT_JSON_OPTIONS.with_options(
+                        tz_aware=True, tzinfo=bson.tz_util.utc
+                    ),
+                )
+                if query_datetime.microsecond != 0:
+                    warnings.warn(
+                        f"Query for timestamp {subdict[prop][operator]!r} for field {prop!r} contained microseconds, which is not RFC3339 compliant. "
+                        "This may cause undefined behaviour for the underlying database.",
+                        TimestampNotRFCCompliant,
+                    )
+
+                subdict[prop][operator] = query_datetime
+
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_timestamp_field, replace_str_date_with_datetime
         )
 
 
