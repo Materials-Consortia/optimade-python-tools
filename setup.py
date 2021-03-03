@@ -93,7 +93,7 @@ setup(
     install_requires=[
         "lark-parser~=0.11.2",
         "fastapi~=0.63.0",
-        "pydantic~=1.6.1",
+        "pydantic~=1.8",
         "email_validator~=1.1",
         "requests~=2.25",
         "typing-extensions~=3.7;python_version<'3.8'",
