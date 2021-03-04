@@ -41,7 +41,7 @@ Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
 
 
 class Periodicity(IntEnum):
-    """Integer enumeration defining peridocity for dimension_types values"""
+    """Integer enumeration of dimension_types values"""
 
     APERIODIC = 0
     PERIODIC = 1

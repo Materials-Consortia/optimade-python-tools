@@ -2124,7 +2124,7 @@
           1
         ],
         "type": "integer",
-        "description": "Integer enumeration defining peridocity for dimension_types values"
+        "description": "Integer enumeration of dimension_types values"
       },
       "Person": {
         "title": "Person",
