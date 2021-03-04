@@ -41,6 +41,8 @@ Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
 
 
 class Periodicity(IntEnum):
+    """Integer enumeration defining peridocity for dimension_types values"""
+
     APERIODIC = 0
     PERIODIC = 1
 
@@ -442,6 +444,7 @@ The proportion number MUST be omitted if it is 1.
         conlist(Periodicity, min_items=3, max_items=3)
     ] = OptimadeField(
         None,
+        title="Dimension Types",
         description="""List of three integers.
 For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`), this list indicates if the direction is periodic (value `1`) or non-periodic (value `0`).
 Note: the elements in this list each refer to the direction of the corresponding entry in `lattice_vectors` and *not* the Cartesian x, y, z directions.
@@ -757,6 +760,7 @@ The properties of the species are found in the property `species`.
 
     structure_features: List[StructureFeatures] = OptimadeField(
         ...,
+        title="Structure Features",
         description="""A list of strings that flag which special features are used by the structure.
 
 - **Type**: list of strings

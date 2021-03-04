@@ -1081,6 +1081,7 @@
             "description": "JSON API links object, pointing to a homepage URL for this implementation"
           },
           "link_type": {
+            "title": "Link Type",
             "allOf": [
               {
                 "$ref": "#/components/schemas/LinkType"
@@ -1089,6 +1090,7 @@
             "description": "The type of the linked relation.\nMUST be one of these values: 'child', 'root', 'external', 'providers'."
           },
           "aggregate": {
+            "title": "Aggregate",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Aggregate"
