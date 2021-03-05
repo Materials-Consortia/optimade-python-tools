@@ -13,7 +13,7 @@ from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
 
 try:
-    from pymatgen import Structure, Molecule
+    from pymatgen.core import Structure, Molecule
 
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
