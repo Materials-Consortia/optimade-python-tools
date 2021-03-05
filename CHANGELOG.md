@@ -1,5 +1,20 @@
 # Changelog
 
+## [v0.13.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.13.3) (2021-03-05)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.13.2...v0.13.3)
+
+**Fixed bugs:**
+
+- Support `anyOf`, `allOf`, etc. standard OpenAPI fields [\#730](https://github.com/Materials-Consortia/optimade-python-tools/issues/730)
+- Python 3.9 support invalid [\#728](https://github.com/Materials-Consortia/optimade-python-tools/issues/728)
+
+**Merged pull requests:**
+
+- Update dependencies [\#734](https://github.com/Materials-Consortia/optimade-python-tools/pull/734) ([CasperWA](https://github.com/CasperWA))
+- Update pydantic to ~=1.8 [\#731](https://github.com/Materials-Consortia/optimade-python-tools/pull/731) ([CasperWA](https://github.com/CasperWA))
+- Bump providers from `da74513` to `e2074e8` [\#727](https://github.com/Materials-Consortia/optimade-python-tools/pull/727) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.13.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.13.2) (2021-03-01)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.13.1...v0.13.2)
@@ -58,7 +73,6 @@
 - Update dependencies [\#707](https://github.com/Materials-Consortia/optimade-python-tools/pull/707) ([CasperWA](https://github.com/CasperWA))
 - Always print summary as last thing in validation [\#700](https://github.com/Materials-Consortia/optimade-python-tools/pull/700) ([CasperWA](https://github.com/CasperWA))
 - Bump django from 3.1.5 to 3.1.6 [\#698](https://github.com/Materials-Consortia/optimade-python-tools/pull/698) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Update dependencies [\#697](https://github.com/Materials-Consortia/optimade-python-tools/pull/697) ([CasperWA](https://github.com/CasperWA))
 - Fixes for new gateway implementation [\#684](https://github.com/Materials-Consortia/optimade-python-tools/pull/684) ([CasperWA](https://github.com/CasperWA))
 
 ## [v0.12.8](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.8) (2021-01-18)
@@ -77,6 +91,7 @@
 
 **Merged pull requests:**
 
+- Update dependencies [\#697](https://github.com/Materials-Consortia/optimade-python-tools/pull/697) ([CasperWA](https://github.com/CasperWA))
 - Bump providers from `542ac0a` to `da74513` [\#679](https://github.com/Materials-Consortia/optimade-python-tools/pull/679) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.12.7](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.7) (2021-01-15)
@@ -499,7 +514,6 @@
 - Represent the datetime objects as UTC in RFC3339 format [\#333](https://github.com/Materials-Consortia/optimade-python-tools/pull/333) ([fekad](https://github.com/fekad))
 - dependamat: Bump \<package\_name\> v x.y.z to vx.y.\(z+1\) [\#330](https://github.com/Materials-Consortia/optimade-python-tools/pull/330) ([ml-evs](https://github.com/ml-evs))
 - Bump fastapi from 0.53.1 to 0.56.0 [\#324](https://github.com/Materials-Consortia/optimade-python-tools/pull/324) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump pydantic from 1.4 to 1.5.1 [\#320](https://github.com/Materials-Consortia/optimade-python-tools/pull/320) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Update links resources [\#306](https://github.com/Materials-Consortia/optimade-python-tools/pull/306) ([CasperWA](https://github.com/CasperWA))
 - Add special species for adapters testing [\#305](https://github.com/Materials-Consortia/optimade-python-tools/pull/305) ([CasperWA](https://github.com/CasperWA))
 - Clean Up Build Environment [\#301](https://github.com/Materials-Consortia/optimade-python-tools/pull/301) ([shyamd](https://github.com/shyamd))
