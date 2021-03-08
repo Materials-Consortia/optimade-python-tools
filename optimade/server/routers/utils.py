@@ -215,11 +215,9 @@ def get_entries(
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         root_path = CONFIG.root_path.rstrip("/") if CONFIG.root_path else ""
-        base_url = (
-            f"{get_base_url(request.url)}{request.url.path.replace(root_path, '')}"
-        )
+        url = f"{get_base_url(request.url)}{request.url.path.replace(root_path, '')}"
 
-        links = ToplevelLinks(next=f"{base_url}?{urlencoded}")
+        links = ToplevelLinks(next=f"{url}?{urlencoded}")
     else:
         links = ToplevelLinks(next=None)
 
