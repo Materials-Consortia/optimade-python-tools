@@ -57,9 +57,9 @@ class ServerConfig(BaseSettings):
         description="Turns on Debug Mode for the OPTIMADE Server implementation",
     )
 
-    use_production_backend: bool = Field(
-        False,
-        description="Use a production backend that is not editable. If false, the configured backend will be populated with test data on server start.",
+    insert_test_data: bool = Field(
+        True,
+        description="Insert test data into each collection on server initialisation. If true, the configured backend will be populated with test data on server start. Should be disabled for production usage.",
     )
 
     use_real_mongo: Optional[bool] = Field(
@@ -179,7 +179,7 @@ class ServerConfig(BaseSettings):
         use_real_mongo = values.pop("use_real_mongo", None)
         if use_real_mongo is not None:
             warnings.warn(
-                "'use_real_mongo' is deprecated, please set the appropriate 'database_backend' instead. Defaulting to 'mongodb'...",
+                "'use_real_mongo' is deprecated, please set the appropriate 'database_backend' instead.",
                 DeprecationWarning,
             )
 

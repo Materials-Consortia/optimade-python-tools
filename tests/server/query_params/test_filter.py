@@ -378,8 +378,8 @@ def test_filter_on_relationships(check_response, check_error_response):
     if CONFIG.database_backend == SupportedBackend.ELASTIC:
         check_error_response(
             request,
-            expected_status=501,
-            expected_title="NotImplementedError",
+            expected_status=400,
+            expected_title="Bad Request",
             expected_detail="references is not a searchable quantity",
         )
         pytest.xfail("Elasticsearch backend does not support relationship filtering.")

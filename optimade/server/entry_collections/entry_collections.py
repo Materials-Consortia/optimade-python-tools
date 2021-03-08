@@ -1,9 +1,10 @@
 from abc import abstractmethod, ABC
-from typing import Tuple, List, Union, Dict, Set, Any
+from typing import Tuple, List, Union, Dict, Any
 import warnings
 import re
 
 from lark import Transformer
+from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
 from optimade.models import EntryResource
@@ -42,7 +43,7 @@ def create_collection(
         )
 
     if CONFIG.database_backend is SupportedBackend.ELASTIC:
-        from .elasticsearch import ElasticCollection
+        from optimade.server.entry_collections.elasticsearch import ElasticCollection
 
         return ElasticCollection(
             name=name,
@@ -90,19 +91,6 @@ class EntryCollection(ABC):
         """Returns the total number of entries in the collection."""
 
     @abstractmethod
-    def __iter__(self):
-        """Iterate through the underlying collection."""
-
-    @abstractmethod
-    def __contains__(self, entry: EntryResource):
-        """Check whether an entry is contained within the collection.
-
-        Arguments:
-            entry: The EntryResource object to search for.
-
-        """
-
-    @abstractmethod
     def insert(self, data: List[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
@@ -138,11 +126,22 @@ class EntryCollection(ABC):
             (`results`, `data_returned`, `more_data_available`, `fields`).
 
         """
-        criteria, response_fields = self.handle_query_params(params)
+        criteria = self.handle_query_params(params)
+        single_entry = isinstance(params, SingleEntryQueryParams)
+        response_fields = criteria.pop("fields")
 
         results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry=isinstance(params, SingleEntryQueryParams)
         )
+
+        if single_entry:
+            results = results[0] if results else None
+
+            if data_returned > 1:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Instead of a single entry, {data_returned} entries were found",
+                )
 
         exclude_fields = self.all_fields - response_fields
 
@@ -230,7 +229,7 @@ class EntryCollection(ABC):
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[Dict[str, Any], Set[str]]:
+    ) -> Tuple[Dict[str, Any]]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
@@ -247,8 +246,7 @@ class EntryCollection(ABC):
                 or response format.
 
         Returns:
-            A dictionary representation of the query parameters (ready to be used directly by pymongo)
-            and the set of fields expected in the response.
+            A dictionary representation of the query parameters.
 
         """
         cursor_kwargs = {}
@@ -296,7 +294,9 @@ class EntryCollection(ABC):
         else:
             response_fields = self.all_fields.copy()
 
-        return cursor_kwargs, response_fields
+        cursor_kwargs["fields"] = response_fields
+
+        return cursor_kwargs
 
     def parse_sort_params(self, sort_params) -> List[Tuple[str, int]]:
         """Handles any sort parameters passed to the collection,

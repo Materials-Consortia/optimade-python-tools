@@ -59,7 +59,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 )
 
 
-if not CONFIG.use_production_backend:
+if CONFIG.insert_test_data:
     import bson.json_util
     from bson.objectid import ObjectId
     import optimade.server.data as data
@@ -84,12 +84,12 @@ if not CONFIG.use_production_backend:
                     replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
                     upsert=True,
                 )
-            LOGGER.debug("Done inserting test %s!", endpoint_name)
+        LOGGER.debug("Done inserting test %s!", endpoint_name)
 
     for name, collection in ENTRY_COLLECTIONS.items():
         load_entries(name, collection)
 
-# # Add CORS middleware first
+# Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
 # Then add required OPTIMADE middleware
