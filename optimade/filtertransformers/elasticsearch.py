@@ -4,6 +4,7 @@ from lark import v_args
 from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
 from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
 from optimade.filtertransformers import BaseTransformer
+from optimade.server.exceptions import BadRequest
 
 __all__ = ("ElasticTransformer",)
 
@@ -352,7 +353,7 @@ class ElasticTransformer(BaseTransformer):
         quantity_name = args[0]
 
         if quantity_name not in self.index_mapping:
-            raise Exception("%s is not a searchable quantity" % quantity_name)
+            raise BadRequest(detail=f"{quantity_name} is not a searchable quantity")
 
         quantity = self.index_mapping.get(quantity_name, None)
         if quantity is None:
