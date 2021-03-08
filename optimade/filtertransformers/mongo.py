@@ -1,11 +1,19 @@
 import copy
-from lark import Transformer, v_args, Token
-from optimade.server.mappers import BaseResourceMapper
-from optimade.server.exceptions import BadRequest
+import warnings
+from lark import v_args, Token
+from optimade.filtertransformers.base_transformer import BaseTransformer
+from optimade.server.warnings import TimestampNotRFCCompliant
+
+__all__ = ("MongoTransformer",)
 
 
-class MongoTransformer(Transformer):
-    """Support for grammar v0.10.1"""
+class MongoTransformer(BaseTransformer):
+    """Transformer for MongoDB backend. Parses lark tree into
+    a dictionary to be passed to pymongo/mongomock. Uses
+    post-processing functions to handle aliasing and some
+    specific edge-cases for MongoDB.
+
+    """
 
     operator_map = {
         "<": "$lt",
@@ -24,14 +32,6 @@ class MongoTransformer(Transformer):
         "$eq": "$eq",
     }
 
-    def __init__(self, mapper: BaseResourceMapper = None):
-        """Initialise the object, optionally loading in a
-        resource mapper for use when post-processing.
-
-        """
-        self.mapper = mapper
-        super().__init__()
-
     def postprocess(self, query):
         """ Used to post-process the final parsed query. """
         if self.mapper:
@@ -43,43 +43,9 @@ class MongoTransformer(Transformer):
         query = self._apply_length_operators(query)
         query = self._apply_unknown_or_null_filter(query)
         query = self._apply_mongo_id_filter(query)
+        query = self._apply_mongo_date_filter(query)
 
         return query
-
-    def transform(self, tree):
-        return self.postprocess(super().transform(tree))
-
-    def filter(self, arg):
-        # filter: expression*
-        return arg[0] if arg else None
-
-    @v_args(inline=True)
-    def constant(self, value):
-        # constant: string | number
-        # Note: Do nothing!
-        return value
-
-    @v_args(inline=True)
-    def value(self, value):
-        # value: string | number | property
-        # Note: Do nothing!
-        return value
-
-    @v_args(inline=True)
-    def non_string_value(self, value):
-        """ non_string_value: number | property """
-        # Note: Do nothing!
-        return value
-
-    @v_args(inline=True)
-    def not_implemented_string(self, value):
-        """not_implemented_string: value
-
-        Raise NotImplementedError.
-        For further information, see Materials-Consortia/OPTIMADE issue 157:
-        https://github.com/Materials-Consortia/OPTIMADE/issues/157
-        """
-        raise NotImplementedError("Comparing strings is not yet implemented.")
 
     def value_list(self, arg):
         # value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*
@@ -114,12 +80,6 @@ class MongoTransformer(Transformer):
     def expression_phrase(self, arg):
         # expression_phrase: [ NOT ] ( comparison | "(" expression ")" )
         return self._recursive_expression_phrase(arg)
-
-    @v_args(inline=True)
-    def comparison(self, value):
-        # comparison: constant_first_comparison | property_first_comparison
-        # Note: Do nothing!
-        return value
 
     def property_first_comparison(self, arg):
         # property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs |
@@ -203,34 +163,6 @@ class MongoTransformer(Transformer):
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*
         raise NotImplementedError
-
-    def property(self, arg):
-        # property: IDENTIFIER ( "." IDENTIFIER )*
-        return ".".join(arg)
-
-    @v_args(inline=True)
-    def string(self, string):
-        # string: ESCAPED_STRING
-        return string.strip('"')
-
-    @v_args(inline=True)
-    def signed_int(self, number):
-        # signed_int : SIGNED_INT
-        return int(number)
-
-    @v_args(inline=True)
-    def number(self, number):
-        # number: SIGNED_INT | SIGNED_FLOAT
-        if number.type == "SIGNED_INT":
-            type_ = int
-        elif number.type == "SIGNED_FLOAT":
-            type_ = float
-        return type_(number)
-
-    def __default__(self, data, children, meta):
-        raise NotImplementedError(
-            f"Calling __default__, i.e., unknown grammar concept. data: {data}, children: {children}, meta: {meta}"
-        )
 
     def _recursive_expression_phrase(self, arg):
         """Helper function for parsing `expression_phrase`. Recursively sorts out
@@ -465,8 +397,8 @@ class MongoTransformer(Transformer):
                 if operator not in ("$eq", "$ne"):
                     if self.mapper is not None:
                         prop = self.mapper.alias_of(prop)
-                    raise BadRequest(
-                        detail=f"Operator not supported for query on field {prop!r}, can only test for equality"
+                    raise NotImplementedError(
+                        f"Operator {operator} not supported for query on field {prop!r}, can only test for equality"
                     )
                 if isinstance(val, str):
                     subdict[prop][operator] = ObjectId(val)
@@ -474,6 +406,44 @@ class MongoTransformer(Transformer):
 
         return recursive_postprocessing(
             filter_, check_for_id_key, replace_str_id_with_objectid
+        )
+
+    def _apply_mongo_date_filter(self, filter_: dict) -> dict:
+        """This method loops through the query and replaces any operations
+        on suspected timestamp properties with the corresponding operation
+        on a BSON `DateTime` type.
+        """
+
+        def check_for_timestamp_field(prop, _):
+            """ Find cases where the query dict is operating on a timestamp field. """
+            if self.mapper is not None:
+                prop = self.mapper.alias_of(prop)
+            return prop == "last_modified"
+
+        def replace_str_date_with_datetime(subdict, prop, expr):
+            """Encode suspected dates in with BSON. """
+            import bson.json_util
+
+            for operator in subdict[prop]:
+                query_datetime = bson.json_util.loads(
+                    bson.json_util.dumps({"$date": subdict[prop][operator]}),
+                    json_options=bson.json_util.DEFAULT_JSON_OPTIONS.with_options(
+                        tz_aware=True, tzinfo=bson.tz_util.utc
+                    ),
+                )
+                if query_datetime.microsecond != 0:
+                    warnings.warn(
+                        f"Query for timestamp {subdict[prop][operator]!r} for field {prop!r} contained microseconds, which is not RFC3339 compliant. "
+                        "This may cause undefined behaviour for the underlying database.",
+                        TimestampNotRFCCompliant,
+                    )
+
+                subdict[prop][operator] = query_datetime
+
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_timestamp_field, replace_str_date_with_datetime
         )
 
 

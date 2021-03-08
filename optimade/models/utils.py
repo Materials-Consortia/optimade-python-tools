@@ -19,6 +19,8 @@ __all__ = (
 
 
 class SupportLevel(Enum):
+    """OPTIMADE property/field support levels"""
+
     MUST = "must"
     SHOULD = "should"
     OPTIONAL = "optional"

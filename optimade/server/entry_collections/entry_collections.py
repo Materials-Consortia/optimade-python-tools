@@ -101,8 +101,15 @@ class EntryCollection(ABC):
         return fields
 
     def get_attribute_fields(self) -> set:
-        """Get the set of attribute fields from the schema of the
-        resource class, resolving references along the way.
+        """Get the set of attribute fields
+
+        Return only the _first-level_ attribute fields from the schema of the resource class,
+        resolving references along the way if needed.
+
+        Note:
+            It is not needed to take care of other special OpenAPI schema keys than `allOf`,
+            since only `allOf` will be found in this context.
+            Other special keys can be found in [the Swagger documentation](https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/).
 
         Returns:
             Property names.

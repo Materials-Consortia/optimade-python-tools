@@ -3,11 +3,10 @@ import pytest
 from lark.exceptions import VisitError
 
 from optimade.filterparser import LarkParser, ParserError
-from optimade.server.exceptions import BadRequest
 
 
 class TestMongoTransformer:
-    version = (0, 10, 1)
+    version = (1, 0, 0)
     variant = "default"
 
     @pytest.fixture(autouse=True)
@@ -361,6 +360,54 @@ class TestMongoTransformer:
             parser.parse("cartesian_site_positions LENGTH >= 3")
         ) == {"nsites": {"$gte": 3}}
 
+    def test_suspected_timestamp_fields(self, mapper):
+        import datetime
+        import bson.tz_util
+        from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.warnings import TimestampNotRFCCompliant
+
+        example_RFC3339_date = "2019-06-08T04:13:37Z"
+        example_RFC3339_date_2 = "2019-06-08T04:13:37"
+        example_non_RFC3339_date = "2019-06-08T04:13:37.123Z"
+
+        expected_datetime = datetime.datetime(
+            year=2019,
+            month=6,
+            day=8,
+            hour=4,
+            minute=13,
+            second=37,
+            microsecond=0,
+            tzinfo=bson.tz_util.utc,
+        )
+
+        assert self.transform(f'last_modified > "{example_RFC3339_date}"') == {
+            "last_modified": {"$gt": expected_datetime}
+        }
+        assert self.transform(f'last_modified > "{example_RFC3339_date_2}"') == {
+            "last_modified": {"$gt": expected_datetime}
+        }
+
+        non_rfc_datetime = expected_datetime.replace(microsecond=123000)
+
+        with pytest.warns(TimestampNotRFCCompliant):
+            assert self.transform(f'last_modified > "{example_non_RFC3339_date}"') == {
+                "last_modified": {"$gt": non_rfc_datetime}
+            }
+
+        class MyMapper(mapper("StructureMapper")):
+            ALIASES = (("last_modified", "ctime"),)
+
+        transformer = MongoTransformer(mapper=MyMapper())
+        parser = LarkParser(version=self.version, variant=self.variant)
+
+        assert transformer.transform(
+            parser.parse(f'last_modified > "{example_RFC3339_date}"')
+        ) == {"ctime": {"$gt": expected_datetime}}
+        assert transformer.transform(
+            parser.parse(f'last_modified > "{example_RFC3339_date_2}"')
+        ) == {"ctime": {"$gt": expected_datetime}}
+
     def test_unaliased_length_operator(self):
         assert self.transform("cartesian_site_positions LENGTH <= 3") == {
             "cartesian_site_positions.4": {"$exists": False}
@@ -400,7 +447,7 @@ class TestMongoTransformer:
 
         for op in ("CONTAINS", "STARTS WITH", "ENDS WITH", "HAS"):
             with pytest.raises(
-                BadRequest,
+                NotImplementedError,
                 match=r".*not supported for query on field 'immutable_id', can only test for equality.*",
             ):
                 transformer.transform(parser.parse(f'immutable_id {op} "abcdef"'))

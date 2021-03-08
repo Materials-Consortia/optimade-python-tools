@@ -1,8 +1,11 @@
+<img width="10%" align="left" src="images/optimade_logo_180x180.svg">
+
 # OPTIMADE Python tools
 
 | Latest release | Build status | Activity |
 |:--------------:|:------------:|:--------:|
-| [![PyPI Version](https://img.shields.io/pypi/v/optimade?logo=pypi)](https://pypi.org/project/optimade/)<br>[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/optimade?logo=python)](https://pypi.org/project/optimade/)<br>[![OPTIMADE](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/optimade-version.json)](https://github.com/Materials-Consortia/OPTIMADE/) | [![Build Status](https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/CI%20tests?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+)<br>[![codecov](https://codecov.io/gh/Materials-Consortia/optimade-python-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/Materials-Consortia/optimade-python-tools)<br>[![Heroku App Status](https://heroku-shields.herokuapp.com/optimade??logo=heroku)](https://optimade.herokuapp.com) | [![Commit Activity](https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/pulse)<br>[![Last Commit](https://img.shields.io/github/last-commit/Materials-Consortia/optimade-python-tools/master?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/commits/master)<br>[![Dependabot](https://badgen.net/dependabot/Materials-Consortia/optimade-python-tools/?icon=dependabot)](https://dependabot.com) |
+| [![PyPI Version](https://img.shields.io/pypi/v/optimade?logo=pypi)](https://pypi.org/project/optimade/)<br>[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/optimade?logo=python)](https://pypi.org/project/optimade/)<br>[![OPTIMADE](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/optimade-version.json)](https://github.com/Materials-Consortia/OPTIMADE/) | [![Build Status](https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/CI%20tests?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+)<br>[![codecov](https://codecov.io/gh/Materials-Consortia/optimade-python-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/Materials-Consortia/optimade-python-tools)<br>[![Heroku App Status](https://heroku-shields.herokuapp.com/optimade??logo=heroku)](https://optimade.herokuapp.com) | [![Commit Activity](https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/pulse)<br>[![Last Commit](https://img.shields.io/github/last-commit/Materials-Consortia/optimade-python-tools/master?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/commits/master)<br>[![Contributors](https://badgen.net/github/contributors/Materials-Consortia/optimade-python-tools?icon=github)](https://github.com/Materials-Consortia/optimade-python-tools/graphs/contributors) |
+
 
 The aim of OPTIMADE is to develop a common API, compliant with the [JSON API 1.0](http://jsonapi.org/format/1.0/) specification.
 This is to enable interoperability among databases that contain calculated properties of existing and hypothetical materials.
@@ -15,17 +18,37 @@ If you experience any issues with the older versions, you are most welcome to co
 
 ## Status
 
-Both the OPTIMADE specification and this repository are **under development**.
+Whilst v1.0 of the OPTIMADE specification has been released, this repository is **under development**.
+Outstanding features required for compliance with OPTIMADE v1.0 can be tracked with the OPTIMADE v1.0 label on [GitHub](https://github.com/Materials-Consortia/optimade-python-tools/issues?q=is%3Aopen+is%3Aissue+label%3A%22OPTIMADE+v1.0%22), which can be further filtered by backend.
+The release history and changelog can be found in [the changelog](CHANGELOG.md).
 
-The latest stable version can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade` or by cloning the master branch of this repository `git clone git@github.com:Materials-Consortia/optimade-python-tools`.
+## Documentation
+
+This document, guides, and the full module API documentation can be found online at [https://optimade.org/optimade-python-tools](https://optimade.org/optimade-python-tools).
 
 ## Installation
 
-Installation instructions, for both the index meta-database, and for the main API can be found in [the documentation](https://www.optimade.org/optimade-python-tools/install/).
+Detailed instructions for installing and running the index meta-database and the main API can be found in [the installation documentation](INSTALL.md).
+
+The latest stable version of this package can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade`.
+The latest development version of this package can be installed from the master branch of this repository `git clone https://github.com/Materials-Consortia/optimade-python-tools`.
+
+## Supported OPTIMADE versions
+
+Each release of the `optimade` package from this repository only targets one version of the OPTIMADE specification, summarised in the table below.
+
+| OPTIMADE API version | `optimade` version |
+|:--------------------:|:------------------:|
+| [v1.0.0](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst) | [v0.12.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.9) |
+| [v1.0.1](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.1/optimade.rst) [<sup>†</sup>](#version_footnote) | [v0.13.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.13.1) |
+
+<span id="#version_footnote"><sup>†</sup></span>
+Whilst both the specification and this package follow semantic versioning, a [potentially backwards incompatible change](https://github.com/Materials-Consortia/OPTIMADE/pull/344) was introduced in v1.0.1 of the specification.
+
 
 ## Contributing
 
-Contribution guidelines and tips can be found in [CONTRIBUTING.md](CONTRIBUTING.md).
+Contribution tips and guidelines can be found in [the contributing guidelines](CONTRIBUTING.md).
 
 ## Links
 
