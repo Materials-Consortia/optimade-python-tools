@@ -4,6 +4,7 @@ from lark import v_args
 from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
 from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
 from optimade.filtertransformers import BaseTransformer
+from optimade.server.exceptions import BadRequest
 
 __all__ = ("ElasticTransformer",)
 
@@ -130,21 +131,25 @@ class ElasticTransformer(BaseTransformer):
             # an anonymous "formula" based on elements sorted by order number and
             # can do a = comparision to check if all elements are contained
             if len(quantities) > 1:
-                raise Exception("HAS ONLY is not supported with zip")
+                raise NotImplementedError("HAS ONLY is not supported with zip")
             quantity = quantities[0]
 
             if quantity.has_only_quantity is None:
-                raise Exception("HAS ONLY is not supported by %s" % quantity.name)
+                raise NotImplementedError(
+                    "HAS ONLY is not supported by %s" % quantity.name
+                )
 
             def values():
                 for predicates in predicate_zip_list:
                     if len(predicates) != 1:
-                        raise Exception("Tuples not supported in HAS ONLY")
+                        raise NotImplementedError("Tuples not supported in HAS ONLY")
                     op, value = predicates[0]
                     if op != "=":
-                        raise Exception("Predicated not supported in HAS ONLY")
+                        raise NotImplementedError(
+                            "Predicated not supported in HAS ONLY"
+                        )
                     if not isinstance(value, str):
-                        raise Exception("Only strings supported in HAS ONLY")
+                        raise NotImplementedError("Only strings supported in HAS ONLY")
                     yield value
 
             try:
@@ -154,7 +159,9 @@ class ElasticTransformer(BaseTransformer):
                     [CHEMICAL_SYMBOLS[number - 1] for number in order_numbers]
                 )
             except KeyError:
-                raise Exception("HAS ONLY is only supported for chemical symbols")
+                raise NotImplementedError(
+                    "HAS ONLY is only supported for chemical symbols"
+                )
 
             return Q("term", **{quantity.has_only_quantity.name: value})
         else:
@@ -171,7 +178,7 @@ class ElasticTransformer(BaseTransformer):
         for quantity pericate combination.
         """
         if len(quantities) != len(predicates):
-            raise Exception(
+            raise ValueError(
                 "Tuple length does not match: %s <o> %s "
                 % (":".join(quantities), ":".join(predicates))
             )
@@ -185,7 +192,7 @@ class ElasticTransformer(BaseTransformer):
             q.nested_quantity != nested_quantity for q in quantities
         )
         if nested_quantity is None or same_nested_quantity:
-            raise Exception(
+            raise NotImplementedError(
                 "Expression with tuples are only supported for %s"
                 % ", ".join(quantities)
             )
@@ -240,7 +247,7 @@ class ElasticTransformer(BaseTransformer):
     def constant_first_comparison(self, value, op, quantity):
         # constant_first_comparison: constant OPERATOR ( non_string_value | ...not_implemented_string )
         if not isinstance(quantity, Quantity):
-            raise Exception("Only quantities can be compared to constant values.")
+            raise TypeError("Only quantities can be compared to constant values.")
 
         return self._query_op(quantity, _rev_cmp_operators[op], value)
 
@@ -259,7 +266,9 @@ class ElasticTransformer(BaseTransformer):
 
         def query(quantity):
             if quantity.length_quantity is None:
-                raise Exception("LENGTH is not supported for %s" % quantity.name)
+                raise NotImplementedError(
+                    "LENGTH is not supported for %s" % quantity.name
+                )
             quantity = quantity.length_quantity
             return self._query_op(quantity, op, value)
 
@@ -352,7 +361,7 @@ class ElasticTransformer(BaseTransformer):
         quantity_name = args[0]
 
         if quantity_name not in self.index_mapping:
-            raise Exception("%s is not a searchable quantity" % quantity_name)
+            raise BadRequest(detail=f"{quantity_name} is not a searchable quantity")
 
         quantity = self.index_mapping.get(quantity_name, None)
         if quantity is None:
