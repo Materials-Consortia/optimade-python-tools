@@ -1,5 +1,4 @@
 from typing import Dict, Tuple, List, Any
-from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
@@ -13,13 +12,11 @@ from optimade.server.mappers import BaseResourceMapper
 if CONFIG.database_backend.value == "mongodb":
     from pymongo import MongoClient
 
-    client = MongoClient(CONFIG.mongo_uri)
     LOGGER.info("Using: Real MongoDB (pymongo)")
 
 elif CONFIG.database_backend.value == "mongomock":
     from mongomock import MongoClient
 
-    client = MongoClient()
     LOGGER.info("Using: Mock MongoDB (mongomock)")
 
 if CONFIG.database_backend.value in ("mongomock", "mongodb"):
@@ -56,20 +53,15 @@ class MongoCollection(EntryCollection):
         )
 
         self.parser = LarkParser(version=(1, 0, 0), variant="default")
-        self.collection = client[database][name]
+        self.collection = CLIENT[database][name]
 
         # check aliases do not clash with mongo operators
         self._check_aliases(self.resource_mapper.all_aliases())
         self._check_aliases(self.resource_mapper.all_length_aliases())
 
     def __len__(self) -> int:
+        """Returns the total number of entries in the collection."""
         return self.collection.estimated_document_count()
-
-    def __iter__(self):
-        return self.collection.find()
-
-    def __contains__(self, entry: EntryResource) -> bool:
-        raise NotImplementedError
 
     def count(self, **kwargs) -> int:
         """Returns the number of entries matching the query specified
@@ -88,12 +80,32 @@ class MongoCollection(EntryCollection):
             kwargs["filter"] = {}
         return self.collection.count_documents(**kwargs)
 
-    def insert(self, data: List[EntryResource]):
+    def insert(self, data: List[EntryResource]) -> None:
+        """Add the given entries to the underlying database.
+
+        Warning:
+            No validation is performed on the incoming data.
+
+        Arguments:
+            data: The entry resource objects to add to the database.
+
+        """
         self.collection.insert_many(data)
 
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry: bool = False
     ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        """Run the query on the backend and collect the results.
+
+        Arguments:
+            criteria: A dictionary representation of the query parameters.
+            single_entry: Whether or not the caller is expecting a single entry response.
+
+        Returns:
+            The list of entries from the database (without any re-mapping), the total number of
+            entries matching the query and a boolean for whether or not there is more data available.
+
+        """
 
         results = []
         for doc in self.collection.find(**criteria):
@@ -111,12 +123,6 @@ class MongoCollection(EntryCollection):
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = nresults_now
             more_data_available = False
-            if nresults_now > 1:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"Instead of a single entry, {nresults_now} entries were found",
-                )
-            results = results[0] if results else None
 
         return results, data_returned, more_data_available
 

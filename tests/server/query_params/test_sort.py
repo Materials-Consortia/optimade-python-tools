@@ -1,10 +1,7 @@
 import pytest
 
-from optimade.server.warnings import FieldValueNotRecognized
-from optimade.server.data import structures
 
-
-def test_int_asc(get_good_response):
+def test_int_asc(get_good_response, structures):
     """Ascending sort (integer)"""
     limit = 5
 
@@ -18,7 +15,7 @@ def test_int_asc(get_good_response):
     assert nelements_list == expected_nelements
 
 
-def test_int_desc(get_good_response):
+def test_int_desc(get_good_response, structures):
     """Descending sort (integer)"""
     limit = 5
 
@@ -34,7 +31,7 @@ def test_int_desc(get_good_response):
     assert nelements_list == expected_nelements
 
 
-def test_str_asc(check_response):
+def test_str_asc(check_response, structures):
     """Ascending sort (string)"""
     limit = 5
 
@@ -47,7 +44,7 @@ def test_str_asc(check_response):
     )
 
 
-def test_str_desc(check_response):
+def test_str_desc(check_response, structures):
     """Descending sort (string)"""
     limit = 5
 
@@ -61,7 +58,7 @@ def test_str_desc(check_response):
     )
 
 
-def test_datetime_asc(get_good_response):
+def test_datetime_asc(get_good_response, structures):
     """Ascending sort (datetime)"""
     limit = 5
     offset = 10
@@ -78,7 +75,7 @@ def test_datetime_asc(get_good_response):
     assert last_modified_list == expected_last_modified_ids
 
 
-def test_datetime_desc(get_good_response):
+def test_datetime_desc(get_good_response, structures):
     """Descending sort (datetime)"""
     limit = 5
 
@@ -130,8 +127,10 @@ def test_unknown_field_errors(check_error_response):
     )
 
 
-def test_unknown_field_prefixed(get_good_response):
+def test_unknown_field_prefixed(get_good_response, structures):
     """ If any other-provider-specific fields are requested, return a warning but still sort. """
+    from optimade.server.warnings import FieldValueNotRecognized
+
     limit = 5
     request = f"/structures?sort=_exmpl3_field_that_does_not_exist,nelements&page_limit={limit}"
     expected_nelements = sorted([doc["nelements"] for doc in structures])[:limit]

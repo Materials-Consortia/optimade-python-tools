@@ -7,6 +7,6 @@ uvicorn==0.13.4
 pymongo==3.11.3
 mongomock==3.22.1
 django==3.1.7
-Jinja2==2.11.3
 elasticsearch-dsl==6.4.0
+Jinja2==2.11.3
 typing-extensions==3.7.4.3

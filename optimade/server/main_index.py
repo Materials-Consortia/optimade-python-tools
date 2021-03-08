@@ -51,7 +51,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 )
 
 
-if not CONFIG.use_production_backend and CONFIG.index_links_path.exists():
+if CONFIG.insert_test_data and CONFIG.index_links_path.exists():
     import bson.json_util
     from bson.objectid import ObjectId
     from optimade.server.routers.links import links_coll
