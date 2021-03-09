@@ -6,6 +6,7 @@ This is an example implementation with example data.
 To implement your own index meta-database server see the documentation at https://optimade.org/optimade-python-tools.
 """
 import json
+import os
 import warnings
 
 from fastapi import FastAPI
@@ -23,13 +24,13 @@ from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers import index_info, links, versions
 from optimade.server.routers.utils import BASE_URL_PREFIXES
 
-if CONFIG.config_file is None:
+if os.getenv("OPTIMADE_CONFIG_FILE") is None:
     LOGGER.warn(
         f"Invalid config file or no config file provided, running server with default settings. Errors: "
         f"{[warnings.formatwarning(w.message, w.category, w.filename, w.lineno, '') for w in config_warnings]}"
     )
 else:
-    LOGGER.info(f"Loaded settings from {CONFIG.config_file}.")
+    LOGGER.info(f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE')}.")
 
 if CONFIG.debug:  # pragma: no cover
     LOGGER.info("DEBUG MODE")
