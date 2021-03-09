@@ -152,6 +152,9 @@ class ServerConfig(BaseSettings):
         if isinstance(value, str):
             while value.endswith("/"):
                 value = value[:-1]
+            while value.startswith("/"):
+                value = value[1:]
+            value = f"/{value}"
         return value
 
     @root_validator(pre=True)
