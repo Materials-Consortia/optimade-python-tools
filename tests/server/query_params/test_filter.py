@@ -9,7 +9,7 @@ def test_custom_field(check_response):
 
 
 def test_id(check_response):
-    request = "/structures?filter=id=mpf_2"
+    request = '/structures?filter=id="mpf_2"'
     expected_ids = ["mpf_2"]
     check_response(request, expected_ids)
 
