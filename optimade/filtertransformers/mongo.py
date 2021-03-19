@@ -226,15 +226,15 @@ class MongoTransformer(BaseTransformer):
             return filter_
 
         def check_for_alias(prop, expr):
-            return self.mapper.alias_for(prop) != prop
+            return self.mapper.get_backend_field(prop) != prop
 
         def apply_alias(subdict, prop, expr):
             if isinstance(subdict, dict):
-                subdict[self.mapper.alias_for(prop)] = self._apply_aliases(
+                subdict[self.mapper.get_backend_field(prop)] = self._apply_aliases(
                     subdict.pop(prop)
                 )
             elif isinstance(subdict, str):
-                subdict = self.mapper.alias_for(subdict)
+                subdict = self.mapper.get_backend_field(subdict)
 
             return subdict
 
@@ -396,7 +396,7 @@ class MongoTransformer(BaseTransformer):
                 val = subdict[prop][operator]
                 if operator not in ("$eq", "$ne"):
                     if self.mapper is not None:
-                        prop = self.mapper.alias_of(prop)
+                        prop = self.mapper.get_optimade_field(prop)
                     raise NotImplementedError(
                         f"Operator {operator} not supported for query on field {prop!r}, can only test for equality"
                     )
@@ -417,7 +417,7 @@ class MongoTransformer(BaseTransformer):
         def check_for_timestamp_field(prop, _):
             """ Find cases where the query dict is operating on a timestamp field. """
             if self.mapper is not None:
-                prop = self.mapper.alias_of(prop)
+                prop = self.mapper.get_optimade_field(prop)
             return prop == "last_modified"
 
         def replace_str_date_with_datetime(subdict, prop, expr):
