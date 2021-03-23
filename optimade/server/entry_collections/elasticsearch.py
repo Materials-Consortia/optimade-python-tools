@@ -26,7 +26,7 @@ class ElasticCollection(EntryCollection):
         name: str,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
-        client: Optional[Elasticsearch] = None,
+        client: Optional["Elasticsearch"] = None,
     ):
         """Initialize the ElasticCollection for the given parameters.
 
