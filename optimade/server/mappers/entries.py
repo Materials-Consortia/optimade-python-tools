@@ -100,6 +100,10 @@ class BaseResourceMapper:
         Aliases are read from
         [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].
 
+        If a dot-separated OPTIMADE field is provided, e.g., `species.mass`, only the first part will be mapped.
+        This means for an (OPTIMADE, DB) alias of (`species`, `kinds`), `get_backend_fields("species.mass")`
+        will return `kinds.mass`.
+
         Arguments:
             optimade_field: The OPTIMADE field to attempt to map to the backend-specific field.
 
@@ -153,11 +157,11 @@ class BaseResourceMapper:
             backend_field: The backend field to attempt to map to an OPTIMADE field.
 
         Examples:
-            >>> get_backend_field("chemical_formula_anonymous")
+            >>> get_optimade_field("chemical_formula_anonymous")
             'chemical_formula_anonymous'
-            >>> get_backend_field("formula_anon")
+            >>> get_optimade_field("formula_anon")
             'chemical_formula_anonymous'
-            >>> get_backend_field("custom_provider_field")
+            >>> get_optimade_field("custom_provider_field")
             '_exmpl_custom_provider_field'
 
         Returns:
@@ -173,8 +177,9 @@ class BaseResourceMapper:
         """Return de-aliased field name, if it exists,
         otherwise return the input field name.
 
-        !! warning: This method is deprecated could be removed without further warning. Please
-        use [`get_optimade_field()`](optimade.server.mappers.entries.BaseResourceMapper.get_optimade_field].
+        !!! warning "Deprecated"
+            This method is deprecated could be removed without further warning. Please use
+            [`get_optimade_field()`][optimade.server.mappers.entries.BaseResourceMapper.get_optimade_field].
 
         Parameters:
             field: Field name to be de-aliased.
