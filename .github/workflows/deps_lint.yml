@@ -271,10 +271,13 @@ jobs:
         pip install -U setuptools
         pip install -e .
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
         pip install -r requirements-docs.txt
 
     - name: Build
-      run: mkdocs build --strict --verbose
+      run: |
+        invoke create-api-reference-docs
+        mkdocs build --strict --verbose
 
   test_build:
     runs-on: ubuntu-latest
