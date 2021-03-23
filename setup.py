@@ -27,14 +27,11 @@ server_deps = [
 ] + mongo_deps
 
 # Client minded
-aiida_deps = ["aiida-core~=1.5"]  # Keep at 1.5 for Python 3.6 support
+aiida_deps = ["aiida-core~=1.6"]
 ase_deps = ["ase~=3.21"]
-cif_deps = ["numpy~=1.19"]  # Keep at 1.19 for Python 3.6 support
+cif_deps = ["numpy~=1.20"]
 pdb_deps = cif_deps
-pymatgen_deps = [
-    "pymatgen==2021.2.8.1;python_version<'3.7'",
-    "pymatgen==2021.3.9;python_version>'3.6'",
-]
+pymatgen_deps = ["pymatgen==2021.3.9"]
 jarvis_deps = ["jarvis-tools==2021.3.13"]
 client_deps = cif_deps
 
@@ -84,7 +81,6 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -93,14 +89,13 @@ setup(
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     install_requires=[
         "lark-parser~=0.11.2",
         "fastapi~=0.63.0",
         "pydantic~=1.8",
         "email_validator~=1.1",
         "requests~=2.25",
-        "typing-extensions~=3.7;python_version<'3.8'",
     ],
     extras_require={
         "all": all_deps,
