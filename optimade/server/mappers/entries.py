@@ -129,8 +129,9 @@ class BaseResourceMapper:
     def alias_for(cls, field: str) -> str:
         """Return aliased field name.
 
-        !! warning: This method is deprecated could be removed without further warning. Please
-        use [`get_backend_field()`](optimade.server.mappers.entries.BaseResourceMapper.get_backend_field].
+        !!! warning "Deprecated"
+            This method is deprecated could be removed without further warning. Please use
+            [`get_backend_field()`][optimade.server.mappers.entries.BaseResourceMapper.get_backend_field].
 
         Parameters:
             field: OPTIMADE field name.
