@@ -276,7 +276,8 @@ class EntryCollection(ABC):
             cursor_kwargs["limit"] = CONFIG.page_limit
 
         cursor_kwargs["projection"] = {
-            f"{self.resource_mapper.alias_for(f)}": True for f in self.all_fields
+            f"{self.resource_mapper.get_backend_field(f)}": True
+            for f in self.all_fields
         }
 
         if "_id" not in cursor_kwargs["projection"]:
@@ -316,13 +317,13 @@ class EntryCollection(ABC):
             if field.startswith("-"):
                 field = field[1:]
                 sort_dir = -1
-            aliased_field = self.resource_mapper.alias_for(field)
+            aliased_field = self.resource_mapper.get_backend_field(field)
             sort_spec.append((aliased_field, sort_dir))
 
         unknown_fields = [
             field
             for field, _ in sort_spec
-            if self.resource_mapper.alias_of(field) not in self.all_fields
+            if self.resource_mapper.get_optimade_field(field) not in self.all_fields
         ]
 
         if unknown_fields:

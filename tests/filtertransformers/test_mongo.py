@@ -515,7 +515,7 @@ class TestMongoTransformer:
         mapper = MyStructureMapper()
         t = MongoTransformer(mapper=mapper)
 
-        assert mapper.alias_for("elements") == "my_elements"
+        assert mapper.get_backend_field("elements") == "my_elements"
 
         test_filter = {"elements": {"$in": ["A", "B", "C"]}}
         assert t.postprocess(test_filter) == {"my_elements": {"$in": ["A", "B", "C"]}}

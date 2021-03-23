@@ -48,7 +48,7 @@ class ElasticCollection(EntryCollection):
 
         quantities = {}
         for field in self.all_fields:
-            alias = self.resource_mapper.alias_for(field)
+            alias = self.resource_mapper.get_backend_field(field)
             length_alias = self.resource_mapper.length_alias_for(field)
 
             quantities[field] = Quantity(name=field, es_field=alias)
@@ -90,9 +90,9 @@ class ElasticCollection(EntryCollection):
 
         properties = {}
         for field in list(body["mappings"]["doc"]["properties"].keys()):
-            properties[self.resource_mapper.alias_for(field)] = body["mappings"]["doc"][
-                "properties"
-            ].pop(field)
+            properties[self.resource_mapper.get_backend_field(field)] = body[
+                "mappings"
+            ]["doc"]["properties"].pop(field)
         body["mappings"]["doc"]["properties"] = properties
         self.client.indices.create(index=self.name, body=body, ignore=400)
 
@@ -123,7 +123,7 @@ class ElasticCollection(EntryCollection):
             "mappings": {
                 "doc": {
                     "properties": {
-                        resource_mapper.alias_of(field): {"type": "keyword"}
+                        resource_mapper.get_optimade_field(field): {"type": "keyword"}
                         for field in fields
                     }
                 }
@@ -196,7 +196,7 @@ class ElasticCollection(EntryCollection):
         limit = criteria.get("limit", CONFIG.page_limit)
 
         all_aliased_fields = [
-            self.resource_mapper.alias_for(field) for field in self.all_fields
+            self.resource_mapper.get_backend_field(field) for field in self.all_fields
         ]
         search = search.source(includes=all_aliased_fields)
 
@@ -205,7 +205,9 @@ class ElasticCollection(EntryCollection):
             for field, sort_dir in criteria.get("sort", {})
         ]
         if not elastic_sort:
-            elastic_sort = {self.resource_mapper.alias_for("id"): {"order": "asc"}}
+            elastic_sort = {
+                self.resource_mapper.get_backend_field("id"): {"order": "asc"}
+            }
 
         search = search.sort(*elastic_sort)
 
