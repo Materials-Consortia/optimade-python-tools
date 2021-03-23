@@ -137,7 +137,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9]
 
     services:
       mongo:
@@ -204,8 +204,6 @@ jobs:
       run: |
         pip install -r requirements-client.txt
         # AiiDA-specific
-        # sqlalchemy install is temporary and has not been fixed for Python 3.6 versions
-        if [ "${{ matrix.python-version }}" == "3.6" ]; then pip install sqlalchemy==1.3.23; fi
         reentry scan
 
     - name: Setup up environment for AiiDA
