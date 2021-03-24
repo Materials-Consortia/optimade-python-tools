@@ -7,12 +7,14 @@ if sys.version_info.minor == 6:
     # Python 3.6
     import warnings
 
-    warnings.warn(
-        DeprecationWarning(
-            "v0.14 of the `optimade` package will be the last to support Python 3.6. "
-            "Please upgrade to Python 3.7+ to get v0.15 an later versions of `optimade`."
+    with warnings.catch_warnings():
+        warnings.simplefilter("always")
+        warnings.warn(
+            DeprecationWarning(
+                "v0.14 of the `optimade` package will be the last to support Python 3.6. "
+                "Please upgrade to Python 3.7+ to get v0.15 an later versions of `optimade`."
+            )
         )
-    )
 
 module_dir = Path(__file__).resolve().parent
 
