@@ -1,15 +1,6 @@
 from pathlib import Path
 import re
 from setuptools import setup, find_packages
-import sys
-
-if sys.version_info.minor == 6:
-    # Python 3.6
-    print(
-        "`optimade` is deprecating support for Python 3.6 !\n"
-        "  v0.14 of the `optimade` package will be the last to support Python 3.6. "
-        "  Please upgrade to Python 3.7+ to use v0.15 and later versions of `optimade`."
-    )
 
 module_dir = Path(__file__).resolve().parent
 
