@@ -12,7 +12,7 @@ if sys.version_info.minor == 6:
         warnings.warn(
             DeprecationWarning(
                 "v0.14 of the `optimade` package will be the last to support Python 3.6. "
-                "Please upgrade to Python 3.7+ to get v0.15 an later versions of `optimade`."
+                "Please upgrade to Python 3.7+ to use v0.15 and later versions of `optimade`."
             )
         )
 
