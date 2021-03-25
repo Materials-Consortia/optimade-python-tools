@@ -94,10 +94,7 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
         optimade_path = f"{url.scheme}://{url.netloc}{url.path}"[len(base_url) :]
         match = re.match(r"^(?P<version>/v[0-9]+(\.[0-9]+){0,2}).*", optimade_path)
         if match is not None:
-            for version_prefix in BASE_URL_PREFIXES.values():
-                if match.group("version") == version_prefix:
-                    break
-            else:
+            if match.group("version") not in BASE_URL_PREFIXES.values():
                 raise VersionNotSupported(
                     detail=(
                         f"The parsed versioned base URL {match.group('version')!r} from "
