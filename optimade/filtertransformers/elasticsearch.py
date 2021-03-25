@@ -2,7 +2,6 @@ from typing import List
 
 from lark import v_args
 from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
-from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
 from optimade.filtertransformers import BaseTransformer
 from optimade.server.exceptions import BadRequest
 
@@ -14,7 +13,7 @@ _rev_cmp_operators = {">": "<", ">=": "<=", "<": ">", "<=": ">=", "=": "=", "!="
 _has_operators = {"ALL": "must", "ANY": "should"}
 _length_quantities = {
     "elements": "nelements",
-    "elements_rations": "nelements",
+    "elements_ratios": "nelements",
     "dimension_types": "dimension_types",
 }
 
@@ -130,42 +129,50 @@ class ElasticTransformer(BaseTransformer):
             # in elastic search. Only supported for elements, where we can construct
             # an anonymous "formula" based on elements sorted by order number and
             # can do a = comparision to check if all elements are contained
-            if len(quantities) > 1:
-                raise NotImplementedError("HAS ONLY is not supported with zip")
-            quantity = quantities[0]
 
-            if quantity.has_only_quantity is None:
-                raise NotImplementedError(
-                    "HAS ONLY is not supported by %s" % quantity.name
-                )
+            # @ml-evs: Disabling this HAS ONLY workaround as tests are not passing
+            raise NotImplementedError(
+                "HAS ONLY queries are not currently supported by the Elasticsearch backend."
+            )
 
-            def values():
-                for predicates in predicate_zip_list:
-                    if len(predicates) != 1:
-                        raise NotImplementedError("Tuples not supported in HAS ONLY")
-                    op, value = predicates[0]
-                    if op != "=":
-                        raise NotImplementedError(
-                            "Predicated not supported in HAS ONLY"
-                        )
-                    if not isinstance(value, str):
-                        raise NotImplementedError("Only strings supported in HAS ONLY")
-                    yield value
+            # from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS
 
-            try:
-                order_numbers = list([ATOMIC_NUMBERS[element] for element in values()])
-                order_numbers.sort()
-                value = "".join(
-                    [CHEMICAL_SYMBOLS[number - 1] for number in order_numbers]
-                )
-            except KeyError:
-                raise NotImplementedError(
-                    "HAS ONLY is only supported for chemical symbols"
-                )
+            # if len(quantities) > 1:
+            #     raise NotImplementedError("HAS ONLY is not supported with zip")
+            # quantity = quantities[0]
 
-            return Q("term", **{quantity.has_only_quantity.name: value})
+            # if quantity.has_only_quantity is None:
+            #     raise NotImplementedError(
+            #         "HAS ONLY is not supported by %s" % quantity.name
+            #     )
+
+            # def values():
+            #     for predicates in predicate_zip_list:
+            #         if len(predicates) != 1:
+            #             raise NotImplementedError("Tuples not supported in HAS ONLY")
+            #         op, value = predicates[0]
+            #         if op != "=":
+            #             raise NotImplementedError(
+            #                 "Predicated not supported in HAS ONLY"
+            #             )
+            #         if not isinstance(value, str):
+            #             raise NotImplementedError("Only strings supported in HAS ONLY")
+            #         yield value
+
+            # try:
+            #     order_numbers = list([ATOMIC_NUMBERS[element] for element in values()])
+            #     order_numbers.sort()
+            #     value = "".join(
+            #         [CHEMICAL_SYMBOLS[number - 1] for number in order_numbers]
+            #     )
+            # except KeyError:
+            #     raise NotImplementedError(
+            #         "HAS ONLY is only supported for chemical symbols"
+            #     )
+
+            # return Q("term", **{quantity.has_only_quantity.name: value})
         else:
-            raise NotImplementedError
+            raise NotImplementedError(f"Unrecognised operation {op}.")
 
         queries = [
             self._has_query(quantities, predicates) for predicates in predicate_zip_list
@@ -320,12 +327,15 @@ class ElasticTransformer(BaseTransformer):
         return lambda quantity: self._has_query_op([quantity] + add_on, op, values)
 
     def property_zip_addon(self, args):
+        raise NotImplementedError("Correlated list queries are not supported.")
         return args
 
     def value_zip(self, args):
+        raise NotImplementedError("Correlated list queries are not supported.")
         return self.value_list(args)
 
     def value_zip_list(self, args):
+        raise NotImplementedError("Correlated list queries are not supported.")
         return args
 
     def value_list(self, args):

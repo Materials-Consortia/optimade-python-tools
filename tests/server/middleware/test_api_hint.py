@@ -1,5 +1,6 @@
 """Test HandleApiHint middleware and the `api_hint` query parameter"""
 import pytest
+from urllib.parse import unquote
 
 from optimade.server.exceptions import VersionNotSupported
 from optimade.server.middleware import HandleApiHint
@@ -57,7 +58,7 @@ def test_url_changes(both_clients, get_good_response):
     response = get_good_response(query_url, server=both_clients, return_json=False)
 
     assert (
-        response.url
+        unquote(response.url)
         == f"{both_clients.base_url}{BASE_URL_PREFIXES['major']}{query_url.split('&')[0]}"
     )
 
@@ -66,7 +67,7 @@ def test_url_changes(both_clients, get_good_response):
 
     response = get_good_response(query_url, server=both_clients, return_json=False)
 
-    assert response.url == f"{both_clients.base_url}{query_url}"
+    assert unquote(response.url) == f"{both_clients.base_url}{query_url}"
 
 
 def test_is_versioned_base_url(both_clients):

@@ -61,11 +61,11 @@ class MongoTransformer(BaseTransformer):
 
     def value_zip(self, arg):
         # value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def value_zip_list(self, arg):
         # value_zip_list: value_zip ( "," value_zip )*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def expression(self, arg):
         # expression: expression_clause ( OR expression_clause )
@@ -158,11 +158,11 @@ class MongoTransformer(BaseTransformer):
     def set_zip_op_rhs(self, arg):
         # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
         # ANY value_zip_list )
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def _recursive_expression_phrase(self, arg):
         """Helper function for parsing `expression_phrase`. Recursively sorts out
@@ -226,15 +226,15 @@ class MongoTransformer(BaseTransformer):
             return filter_
 
         def check_for_alias(prop, expr):
-            return self.mapper.alias_for(prop) != prop
+            return self.mapper.get_backend_field(prop) != prop
 
         def apply_alias(subdict, prop, expr):
             if isinstance(subdict, dict):
-                subdict[self.mapper.alias_for(prop)] = self._apply_aliases(
+                subdict[self.mapper.get_backend_field(prop)] = self._apply_aliases(
                     subdict.pop(prop)
                 )
             elif isinstance(subdict, str):
-                subdict = self.mapper.alias_for(subdict)
+                subdict = self.mapper.get_backend_field(subdict)
 
             return subdict
 
@@ -396,7 +396,7 @@ class MongoTransformer(BaseTransformer):
                 val = subdict[prop][operator]
                 if operator not in ("$eq", "$ne"):
                     if self.mapper is not None:
-                        prop = self.mapper.alias_of(prop)
+                        prop = self.mapper.get_optimade_field(prop)
                     raise NotImplementedError(
                         f"Operator {operator} not supported for query on field {prop!r}, can only test for equality"
                     )
@@ -417,7 +417,7 @@ class MongoTransformer(BaseTransformer):
         def check_for_timestamp_field(prop, _):
             """ Find cases where the query dict is operating on a timestamp field. """
             if self.mapper is not None:
-                prop = self.mapper.alias_of(prop)
+                prop = self.mapper.get_optimade_field(prop)
             return prop == "last_modified"
 
         def replace_str_date_with_datetime(subdict, prop, expr):
