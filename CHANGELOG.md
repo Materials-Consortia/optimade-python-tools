@@ -1,5 +1,38 @@
 # Changelog
 
+## [v0.14.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.14.0) (2021-03-26)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.13.3...v0.14.0)
+
+**Implemented enhancements:**
+
+- Rename config variable use\_real\_mongo to something more general [\#742](https://github.com/Materials-Consortia/optimade-python-tools/issues/742)
+- Custom configuration extensions & use standard pydantic way of loading config file [\#739](https://github.com/Materials-Consortia/optimade-python-tools/issues/739)
+- Generalising collections and adding ElasticsearchCollection [\#660](https://github.com/Materials-Consortia/optimade-python-tools/pull/660) ([ml-evs](https://github.com/ml-evs))
+
+**Fixed bugs:**
+
+- Over-aggressive middleware to check versioned base URL [\#737](https://github.com/Materials-Consortia/optimade-python-tools/issues/737)
+- Floating point comparisons should not be tested with the validator [\#735](https://github.com/Materials-Consortia/optimade-python-tools/issues/735)
+- Mapper method `alias\_of` extracts alias wrongly [\#667](https://github.com/Materials-Consortia/optimade-python-tools/issues/667)
+
+**Closed issues:**
+
+- Docs builds are not properly tested for each PR [\#747](https://github.com/Materials-Consortia/optimade-python-tools/issues/747)
+- Remove SQLAlchemy version fix in CI with new AiiDA version [\#745](https://github.com/Materials-Consortia/optimade-python-tools/issues/745)
+
+**Merged pull requests:**
+
+- Update dependencies [\#760](https://github.com/Materials-Consortia/optimade-python-tools/pull/760) ([CasperWA](https://github.com/CasperWA))
+- Fix CheckWronglyVersionedBaseUrls middleware \(for landing pages\) [\#752](https://github.com/Materials-Consortia/optimade-python-tools/pull/752) ([CasperWA](https://github.com/CasperWA))
+- Deprecate Python 3.6 support, v0.14 last supported version [\#751](https://github.com/Materials-Consortia/optimade-python-tools/pull/751) ([CasperWA](https://github.com/CasperWA))
+- Run full API docs invoke task for every PR [\#748](https://github.com/Materials-Consortia/optimade-python-tools/pull/748) ([ml-evs](https://github.com/ml-evs))
+- Change aliasing method names in mapper and deprecate the old [\#746](https://github.com/Materials-Consortia/optimade-python-tools/pull/746) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `e2074e8` to `7a54843` [\#741](https://github.com/Materials-Consortia/optimade-python-tools/pull/741) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Config updates [\#740](https://github.com/Materials-Consortia/optimade-python-tools/pull/740) ([CasperWA](https://github.com/CasperWA))
+- Disable all floating-point comparisons during validation [\#736](https://github.com/Materials-Consortia/optimade-python-tools/pull/736) ([ml-evs](https://github.com/ml-evs))
+- Report user errors in filter as HTTP 400 Bad Request and not 501 Not Implemented [\#658](https://github.com/Materials-Consortia/optimade-python-tools/pull/658) ([markus1978](https://github.com/markus1978))
+
 ## [v0.13.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.13.3) (2021-03-05)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.13.2...v0.13.3)
@@ -73,6 +106,7 @@
 - Update dependencies [\#707](https://github.com/Materials-Consortia/optimade-python-tools/pull/707) ([CasperWA](https://github.com/CasperWA))
 - Always print summary as last thing in validation [\#700](https://github.com/Materials-Consortia/optimade-python-tools/pull/700) ([CasperWA](https://github.com/CasperWA))
 - Bump django from 3.1.5 to 3.1.6 [\#698](https://github.com/Materials-Consortia/optimade-python-tools/pull/698) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update dependencies [\#697](https://github.com/Materials-Consortia/optimade-python-tools/pull/697) ([CasperWA](https://github.com/CasperWA))
 - Fixes for new gateway implementation [\#684](https://github.com/Materials-Consortia/optimade-python-tools/pull/684) ([CasperWA](https://github.com/CasperWA))
 
 ## [v0.12.8](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.8) (2021-01-18)
@@ -91,7 +125,6 @@
 
 **Merged pull requests:**
 
-- Update dependencies [\#697](https://github.com/Materials-Consortia/optimade-python-tools/pull/697) ([CasperWA](https://github.com/CasperWA))
 - Bump providers from `542ac0a` to `da74513` [\#679](https://github.com/Materials-Consortia/optimade-python-tools/pull/679) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.12.7](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.7) (2021-01-15)
@@ -513,7 +546,9 @@
 - Specify versions for all setup.py deps [\#336](https://github.com/Materials-Consortia/optimade-python-tools/pull/336) ([CasperWA](https://github.com/CasperWA))
 - Represent the datetime objects as UTC in RFC3339 format [\#333](https://github.com/Materials-Consortia/optimade-python-tools/pull/333) ([fekad](https://github.com/fekad))
 - dependamat: Bump \<package\_name\> v x.y.z to vx.y.\(z+1\) [\#330](https://github.com/Materials-Consortia/optimade-python-tools/pull/330) ([ml-evs](https://github.com/ml-evs))
+- Bump pytest from 5.4.2 to 5.4.3 [\#328](https://github.com/Materials-Consortia/optimade-python-tools/pull/328) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump fastapi from 0.53.1 to 0.56.0 [\#324](https://github.com/Materials-Consortia/optimade-python-tools/pull/324) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump pydantic from 1.4 to 1.5.1 [\#320](https://github.com/Materials-Consortia/optimade-python-tools/pull/320) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Update links resources [\#306](https://github.com/Materials-Consortia/optimade-python-tools/pull/306) ([CasperWA](https://github.com/CasperWA))
 - Add special species for adapters testing [\#305](https://github.com/Materials-Consortia/optimade-python-tools/pull/305) ([CasperWA](https://github.com/CasperWA))
 - Clean Up Build Environment [\#301](https://github.com/Materials-Consortia/optimade-python-tools/pull/301) ([shyamd](https://github.com/shyamd))
