@@ -4,4 +4,4 @@ numpy==1.20.1 ; python_version > '3.6'
 numpy==1.19.5 ; python_version < '3.7'
 pymatgen==2021.3.4; python_version > '3.6'
 pymatgen==2021.2.8.1; python_version < '3.7'
-jarvis-tools==2021.2.22
+jarvis-tools==2021.3.13
