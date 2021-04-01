@@ -33,7 +33,7 @@ cif_deps = ["numpy~=1.19"]  # Keep at 1.19 for Python 3.6 support
 pdb_deps = cif_deps
 pymatgen_deps = [
     "pymatgen==2021.2.8.1;python_version<'3.7'",
-    "pymatgen==2021.3.5;python_version>'3.6'",
+    "pymatgen==2021.3.9;python_version>'3.6'",
 ]
 jarvis_deps = ["jarvis-tools==2021.3.13"]
 client_deps = cif_deps
@@ -42,7 +42,7 @@ client_deps = cif_deps
 docs_deps = [
     "mkdocs~=1.1",
     "mkdocs-awesome-pages-plugin~=2.5",
-    "mkdocs-material~=7.0",
+    "mkdocs-material~=7.1",
     "mkdocs-minify-plugin~=0.4.0",
     "mkdocstrings~=0.15.0",
 ]
