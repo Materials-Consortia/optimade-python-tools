@@ -3,5 +3,5 @@ pytest-cov==2.11.1
 codecov==2.1.11
 jsondiff==1.2.0
 pylint==2.7.4
-pre-commit==2.11.1
+pre-commit==2.12.1
 invoke==1.5.0
