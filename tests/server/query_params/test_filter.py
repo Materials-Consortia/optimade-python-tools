@@ -183,7 +183,7 @@ def test_list_length_comparisons_unaliased(check_response, check_error_response)
     reason="Elasticsearch does not support HAS ONLY queries.",
 )
 def test_list_has_only(check_response):
-    """ Test HAS ONLY query on elements. """
+    """Test HAS ONLY query on elements."""
     request = '/structures?filter=elements HAS ONLY "Ac", "Mg"'
     expected_ids = ["mpf_23"]
     check_response(request, expected_ids)

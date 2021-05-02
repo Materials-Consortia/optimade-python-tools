@@ -161,7 +161,7 @@ class ImplementationValidator:
         self.results = ValidatorResults(verbosity=self.verbosity)
 
     def _setup_log(self):
-        """ Define stdout log based on given verbosity. """
+        """Define stdout log based on given verbosity."""
         self._log = logging.getLogger("optimade").getChild("validator")
         self._log.handlers = []
         stdout_handler = logging.StreamHandler(sys.stdout)
@@ -184,7 +184,7 @@ class ImplementationValidator:
             self._log.setLevel(logging.DEBUG)
 
     def print_summary(self):
-        """ Print a summary of the results of validation. """
+        """Print a summary of the results of validation."""
         if self.respond_json:
             print(json.dumps(dataclasses.asdict(self.results), indent=2))
             return

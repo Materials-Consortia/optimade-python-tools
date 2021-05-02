@@ -33,7 +33,7 @@ class MongoTransformer(BaseTransformer):
     }
 
     def postprocess(self, query):
-        """ Used to post-process the final parsed query. """
+        """Used to post-process the final parsed query."""
         if self.mapper:
             # important to apply length alias before normal aliases
             query = self._apply_length_aliases(query)
@@ -386,7 +386,7 @@ class MongoTransformer(BaseTransformer):
         """
 
         def check_for_id_key(prop, _):
-            """ Find cases where the query dict is operating on the `_id` field. """
+            """Find cases where the query dict is operating on the `_id` field."""
             return prop == "_id"
 
         def replace_str_id_with_objectid(subdict, prop, expr):
@@ -415,13 +415,13 @@ class MongoTransformer(BaseTransformer):
         """
 
         def check_for_timestamp_field(prop, _):
-            """ Find cases where the query dict is operating on a timestamp field. """
+            """Find cases where the query dict is operating on a timestamp field."""
             if self.mapper is not None:
                 prop = self.mapper.get_optimade_field(prop)
             return prop == "last_modified"
 
         def replace_str_date_with_datetime(subdict, prop, expr):
-            """Encode suspected dates in with BSON. """
+            """Encode suspected dates in with BSON."""
             import bson.json_util
 
             for operator in subdict[prop]:

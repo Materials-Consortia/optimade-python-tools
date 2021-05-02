@@ -127,7 +127,7 @@ class MongoCollection(EntryCollection):
         return results, data_returned, more_data_available
 
     def _check_aliases(self, aliases):
-        """ Check that aliases do not clash with mongo keywords. """
+        """Check that aliases do not clash with mongo keywords."""
         if any(
             alias[0].startswith("$") or alias[1].startswith("$") for alias in aliases
         ):
