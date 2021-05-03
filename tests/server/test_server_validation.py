@@ -19,7 +19,7 @@ def test_with_validator(both_fake_remote_clients):
 
 
 def test_with_validator_json_response(both_fake_remote_clients, capsys):
-    """ Test that the validator writes compliant JSON when requested. """
+    """Test that the validator writes compliant JSON when requested."""
     from optimade.server.main_index import app
 
     validator = ImplementationValidator(

@@ -38,7 +38,7 @@ from optimade.models import (
 
 
 class ResponseError(Exception):
-    """ This exception should be raised for a manual hardcoded test failure. """
+    """This exception should be raised for a manual hardcoded test failure."""
 
 
 class InternalError(Exception):
@@ -49,28 +49,28 @@ class InternalError(Exception):
 
 
 def print_warning(string, **kwargs):
-    """ Print but angry. """
+    """Print but angry."""
     print(f"\033[93m{string}\033[0m", **kwargs)
 
 
 def print_notify(string, **kwargs):
-    """ Print but louder. """
+    """Print but louder."""
     print(f"\033[94m\033[1m{string}\033[0m", **kwargs)
 
 
 def print_failure(string, **kwargs):
-    """ Print but sad. """
+    """Print but sad."""
     print(f"\033[91m\033[1m{string}\033[0m", **kwargs)
 
 
 def print_success(string, **kwargs):
-    """ Print but happy. """
+    """Print but happy."""
     print(f"\033[92m\033[1m{string}\033[0m", **kwargs)
 
 
 @dataclasses.dataclass
 class ValidatorResults:
-    """ A dataclass to store and print the validation results. """
+    """A dataclass to store and print the validation results."""
 
     success_count: int = 0
     failure_count: int = 0

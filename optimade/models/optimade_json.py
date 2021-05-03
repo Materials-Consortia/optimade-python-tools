@@ -180,7 +180,7 @@ class Warnings(OptimadeError):
 
 
 class ResponseMetaQuery(BaseModel):
-    """ Information on the query that was requested. """
+    """Information on the query that was requested."""
 
     representation: str = StrictField(
         ...,

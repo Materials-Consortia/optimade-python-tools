@@ -91,7 +91,7 @@ def test_datetime_desc(get_good_response, structures):
 
 
 def test_unknown_field_errors(check_error_response):
-    """ If any completely unknown field is provided, check 400: Bad Request is returned. """
+    """If any completely unknown field is provided, check 400: Bad Request is returned."""
     limit = 5
     request = f"/structures?sort=field_that_does_not_exist&page_limit={limit}"
     check_error_response(
@@ -128,7 +128,7 @@ def test_unknown_field_errors(check_error_response):
 
 
 def test_unknown_field_prefixed(get_good_response, structures):
-    """ If any other-provider-specific fields are requested, return a warning but still sort. """
+    """If any other-provider-specific fields are requested, return a warning but still sort."""
     from optimade.server.warnings import FieldValueNotRecognized
 
     limit = 5

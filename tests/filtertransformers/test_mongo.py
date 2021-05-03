@@ -500,7 +500,7 @@ class TestMongoTransformer:
         assert transformer.transform(parser.parse("chemsys LENGTH 3")) == {"nelem": 3}
 
     def test_aliases(self, mapper):
-        """ Test that valid aliases are allowed, but do not affect r-values. """
+        """Test that valid aliases are allowed, but do not affect r-values."""
         from optimade.filtertransformers.mongo import MongoTransformer
 
         class MyStructureMapper(mapper("BaseResourceMapper")):
@@ -542,7 +542,7 @@ class TestMongoTransformer:
         }
 
     def test_list_properties(self):
-        """ Test the HAS ALL, ANY and optional ONLY queries. """
+        """Test the HAS ALL, ANY and optional ONLY queries."""
         assert self.transform('elements HAS ONLY "H","He","Ga","Ta"') == {
             "elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}
         }

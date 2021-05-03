@@ -35,7 +35,7 @@ pymatgen_deps = [
     "pymatgen==2021.2.8.1;python_version<'3.7'",
     "pymatgen==2021.3.9;python_version>'3.6'",
 ]
-jarvis_deps = ["jarvis-tools==2021.3.13"]
+jarvis_deps = ["jarvis-tools==2021.4.29"]
 client_deps = cif_deps
 
 # General
@@ -50,10 +50,10 @@ testing_deps = [
     "pytest~=6.2",
     "pytest-cov~=2.11",
     "codecov~=2.1",
-    "jsondiff~=1.2",
+    "jsondiff~=1.3",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.7", "pre-commit~=2.11", "invoke~=1.5"]
+    ["pylint~=2.8", "pre-commit~=2.11", "invoke~=1.5"]
     + docs_deps
     + testing_deps
     + client_deps

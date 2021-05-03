@@ -234,7 +234,7 @@ def client_factory():
 
 
 class NoJsonEndpointTests:
-    """ A simplified mixin class for tests on non-JSON endpoints. """
+    """A simplified mixin class for tests on non-JSON endpoints."""
 
     request_str: str = None
     response_cls: BaseModel = None

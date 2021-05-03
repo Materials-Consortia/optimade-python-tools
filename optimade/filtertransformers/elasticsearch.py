@@ -216,7 +216,7 @@ class ElasticTransformer(BaseTransformer):
         )
 
     def __default__(self, tree, children, *args, **kwargs):
-        """ Default behavior for rules that only replace one symbol with another """
+        """Default behavior for rules that only replace one symbol with another"""
         return children[0]
 
     def filter(self, args):
