@@ -9,5 +9,5 @@ mongomock==3.22.1
 django==3.2
 elasticsearch-dsl==6.4.0
 Jinja2==2.11.3
-typing-extensions==3.7.4.3
+typing-extensions==3.10.0.0
 pyyaml==5.4.1
