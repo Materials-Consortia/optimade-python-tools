@@ -154,3 +154,32 @@ class TestMultiStructureWithOverlappingRelationships(RegularEndpointTests):
         assert len(self.json_response["data"]) == 2
         assert "included" in self.json_response
         assert len(self.json_response["included"]) == 2
+
+
+class TestStructuresWithNullFieldsDoNotMatchNegatedFilters(RegularEndpointTests):
+    """Tests that structures with e.g., `'assemblies':null` do not get
+    returned for negated queries like `filter=assemblies != 1`, as mandated
+    by the specification.
+
+    """
+
+    request_str = "/structures?filter=assemblies != 1"
+    response_cls = StructureResponseMany
+
+    def test_structures_endpoint_data(self):
+        """Check that no structures are returned."""
+        assert len(self.json_response["data"]) == 0
+
+
+class TestStructuresWithNullFieldsMatchUnknownFilter(RegularEndpointTests):
+    """Tests that structures with e.g., `'assemblies':null` do get
+    returned for queries testing for "UNKNOWN" fields.
+
+    """
+
+    request_str = "/structures?filter=assemblies IS UNKNOWN"
+    response_cls = StructureResponseMany
+
+    def test_structures_endpoint_data(self):
+        """Check that all structures are returned."""
+        assert len(self.json_response["data"]) == 17

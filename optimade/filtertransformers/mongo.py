@@ -84,6 +84,12 @@ class MongoTransformer(BaseTransformer):
     def property_first_comparison(self, arg):
         # property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs |
         # set_zip_op_rhs | length_op_rhs )
+
+        # Awkwardly, MongoDB will match null fields in $ne filters,
+        # so we need to add a check for null equality in evey $ne query.
+        if "$ne" in arg[1]:
+            return {"$and": [{arg[0]: arg[1]}, {arg[0]: {"$ne": None}}]}
+
         return {arg[0]: arg[1]}
 
     def constant_first_comparison(self, arg):

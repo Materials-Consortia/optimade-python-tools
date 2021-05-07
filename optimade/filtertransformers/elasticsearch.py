@@ -109,9 +109,11 @@ class ElasticTransformer(BaseTransformer):
             return Q(query_type, **{field: value})
 
         if op == "!=":
-            return ~Q(  # pylint: disable=invalid-unary-operand-type
-                query_type, **{field: value}
-            )
+            # != queries must also include an existence check
+            # Note that for MongoDB, `$exists` will include null-valued fields,
+            # where as in ES `exists` excludes them.
+            # pylint: disable=invalid-unary-operand-type
+            return ~Q(query_type, **{field: value}) & Q("exists", field=field)
 
     def _has_query_op(self, quantities, op, predicate_zip_list):
         """

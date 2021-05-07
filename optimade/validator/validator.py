@@ -827,6 +827,15 @@ class ImplementationValidator:
                             "returning different results each time."
                         )
 
+                # check that the filter returned no entries that had a null or missing value for the filtered property
+                if any(
+                    entry["attributes"].get(prop, entry.get(prop, None)) is None
+                    for entry in reversed_response.get("data", [])
+                ):
+                    raise ResponseError(
+                        f"Filter {reversed_query!r} on field {prop!r} returned entries that had null or missing values for the field."
+                    )
+
             excluded = operator in exclusive_operators
             # if we have all results on this page, check that the blessed ID is in the response
             if not response["meta"]["more_data_available"]:
@@ -847,6 +856,15 @@ class ImplementationValidator:
                         f"Supposedly inclusive query '{query}' did not include original object ID {chosen_entry['id']} "
                         f"(with field '{prop} = {test_value}') potentially indicating a problem with filtering on this field."
                     )
+
+            # check that the filter returned no entries that had a null or missing value for the filtered property
+            if any(
+                entry["attributes"].get(prop, entry.get(prop, None)) is None
+                for entry in response.get("data", [])
+            ):
+                raise ResponseError(
+                    f"Filter {query!r} on field {prop!r} returned entries that had null or missing values for the field."
+                )
 
         if prop in CONF.unique_properties:
             if num_data_returned["="] is not None and num_data_returned["="] == 0:
