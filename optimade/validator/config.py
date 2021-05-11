@@ -123,7 +123,7 @@ class ValidatorConfig(BaseSettings):
 
     entry_endpoints: Set[str] = Field(
         _ENTRY_ENDPOINTS,
-        description="The entry endpoints to validate, if present in the APIs' `/info` response `entry_types_by_format['json']`",
+        description="The entry endpoints to validate, if present in the API's `/info` response `entry_types_by_format['json']`",
     )
 
     unique_properties: Set[str] = Field(
