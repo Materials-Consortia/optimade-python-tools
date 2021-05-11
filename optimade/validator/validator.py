@@ -1327,6 +1327,14 @@ class ImplementationValidator:
                 raise ResponseError(
                     f'Illegal entry "{non_entry_endpoint}" was found in entry_types_by_format"'
                 )
+
+        # Filter out custom extension endpoints that are not covered in the specification
+        available_json_entry_endpoints = [
+            endp
+            for endp in available_json_entry_endpoints
+            if endp in CONF.entry_endpoints
+        ]
+
         return (
             available_json_entry_endpoints,
             "successfully found available entry types in baseinfo",

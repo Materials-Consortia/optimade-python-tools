@@ -33,6 +33,8 @@ _ENTRY_SCHEMAS = {
     for endp in ENTRY_INFO_SCHEMAS
 }
 
+_ENTRY_ENDPOINTS = ("structures", "references", "calculations")
+
 _NON_ENTRY_ENDPOINTS = ("info", "links", "versions")
 
 
@@ -117,6 +119,11 @@ class ValidatorConfig(BaseSettings):
 
     entry_schemas: Dict[str, Any] = Field(
         _ENTRY_SCHEMAS, description="The entry listing endpoint schemas"
+    )
+
+    entry_endpoints: Set[str] = Field(
+        _ENTRY_ENDPOINTS,
+        description="The entry endpoints to validate, if present in the API's `/info` response `entry_types_by_format['json']`",
     )
 
     unique_properties: Set[str] = Field(
