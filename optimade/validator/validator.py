@@ -1332,7 +1332,7 @@ class ImplementationValidator:
         available_json_entry_endpoints = [
             endp
             for endp in available_json_entry_endpoints
-            if not endp.startswith("extensions/")
+            if endp in CONF.entry_endpoints
         ]
 
         return (
