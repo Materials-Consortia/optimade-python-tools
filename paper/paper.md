@@ -19,6 +19,8 @@ authors:
     affiliation: 4
   - name: Markus Scheidgen
     affiliation: 5
+  - name: Ádám Fekete
+    affiliation: "2, 6"
 affiliations:
  - name: Theory of Condensed Matter Group, Cavendish Laboratory, University of Cambridge, J. J. Thomson Avenue, Cambridge, CB3 0HE, U.K.
    index: 1
@@ -29,7 +31,9 @@ affiliations:
  - name: LLBL
    index: 4
  - name: FHI
-   index 5:
+   index: 5
+ - name: Namur
+   index: 6
 
 date: May 2021
 bibliography: paper.bib
