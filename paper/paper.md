@@ -21,6 +21,8 @@ authors:
     affiliation: 5
   - name: Ádám Fekete
     affiliation: "2, 6"
+  - name: Donald Winston
+    affiliation: "4, 7"
 affiliations:
  - name: Theory of Condensed Matter Group, Cavendish Laboratory, University of Cambridge, J. J. Thomson Avenue, Cambridge, CB3 0HE, U.K.
    index: 1
@@ -34,6 +36,8 @@ affiliations:
    index: 5
  - name: Namur
    index: 6
+ - name: Polyneme LLC
+   index: 7
 
 date: May 2021
 bibliography: paper.bib
