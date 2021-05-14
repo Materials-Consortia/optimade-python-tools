@@ -161,7 +161,9 @@ class ValidatorResults:
 
 
 class Client:  # pragma: no cover
-    def __init__(self, base_url: str, max_retries=5):
+    def __init__(
+        self, base_url: str, max_retries: int = 5, headers: Dict[str, str] = None
+    ):
         """Initialises the Client with the given `base_url` without testing
         if it is valid.
 
@@ -181,6 +183,9 @@ class Client:  # pragma: no cover
         self.last_request = None
         self.response = None
         self.max_retries = max_retries
+        self.headers = headers
+        if self.headers is None:
+            self.headers = {}
 
     def get(self, request: str):
         """Makes the given request, with a number of retries if being rate limited. The
@@ -212,7 +217,7 @@ class Client:  # pragma: no cover
         while retries < self.max_retries:
             retries += 1
             try:
-                self.response = requests.get(self.last_request)
+                self.response = requests.get(self.last_request, headers=self.headers)
             except requests.exceptions.ConnectionError as exc:
                 sys.exit(
                     f"{exc.__class__.__name__}: No response from server at {self.last_request}, please check the URL."
