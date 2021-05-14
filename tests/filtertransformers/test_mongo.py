@@ -91,7 +91,9 @@ class TestMongoTransformer:
         assert self.transform("a>3") == {"a": {"$gt": 3}}
         assert self.transform("a>=3") == {"a": {"$gte": 3}}
         assert self.transform("a=3") == {"a": {"$eq": 3}}
-        assert self.transform("a!=3") == {"a": {"$ne": 3}}
+        assert self.transform("a!=3") == {
+            "$and": [{"a": {"$ne": 3}}, {"a": {"$ne": None}}]
+        }
 
     def test_id(self):
         assert self.transform('id="example/1"') == {"id": {"$eq": "example/1"}}
@@ -135,7 +137,12 @@ class TestMongoTransformer:
         ) == {
             "$and": [
                 {"chemical_formula_hill": {"$eq": "H2O"}},
-                {"chemical_formula_anonymous": {"$ne": "AB"}},
+                {
+                    "$and": [
+                        {"chemical_formula_anonymous": {"$ne": "AB"}},
+                        {"chemical_formula_anonymous": {"$ne": None}},
+                    ]
+                },
             ]
         }
         assert self.transform(
@@ -149,7 +156,12 @@ class TestMongoTransformer:
                         {"nelements": {"$gte": 10}},
                         {
                             "$nor": [
-                                {"_exmpl_x": {"$ne": "Some string"}},
+                                {
+                                    "$and": [
+                                        {"_exmpl_x": {"$ne": "Some string"}},
+                                        {"_exmpl_x": {"$ne": None}},
+                                    ]
+                                },
                                 {"_exmpl_a": {"$not": {"$eq": 7}}},
                             ]
                         },
@@ -443,7 +455,12 @@ class TestMongoTransformer:
 
         assert transformer.transform(
             parser.parse('immutable_id != "5cfb441f053b174410700d02"')
-        ) == {"_id": {"$ne": ObjectId("5cfb441f053b174410700d02")}}
+        ) == {
+            "$and": [
+                {"_id": {"$ne": ObjectId("5cfb441f053b174410700d02")}},
+                {"_id": {"$ne": None}},
+            ]
+        }
 
         for op in ("CONTAINS", "STARTS WITH", "ENDS WITH", "HAS"):
             with pytest.raises(
