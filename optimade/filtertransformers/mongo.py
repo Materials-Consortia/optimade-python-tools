@@ -183,19 +183,39 @@ class MongoTransformer(BaseTransformer):
         if "$or" in arg[1]:
             return {"$nor": self._recursive_expression_phrase([arg[1]["$or"]])}
 
-        # handle the case of {"$not": {"$and": [expr1, expr2]}} using per-expression negation,
-        # e.g. {"$and": [{prop1: {"$not": expr1}}, {prop2: {"$not": ~expr2}}]}.
-        # Note that this is not the same as NOT (expr1 AND expr2)!
+        # handle the case of {"$not": {"$nor": [expr1, expr2]}} using {"$or": [expr1, expr2]}.
+        if "$nor" in arg[1]:
+            return {"$or": self._recursive_expression_phrase([arg[1]["$nor"]])}
+
+        # handle the case of {"$not": {"$and": [expr1, expr2]}}
+        # which is equal to {"or": [{"$not": expr1}, {"$not": expr2}]}}
         if "$and" in arg[1]:
             return {
-                "$and": [
+                "$or": [
                     self._recursive_expression_phrase(["NOT", subdict])
                     for subdict in arg[1]["$and"]
                 ]
             }
 
-        # simple case of negating one expression, from NOT (expr) to ~expr.
-        return {prop: {"$not": expr} for prop, expr in arg[1].items()}
+        # Incase the NOT operator occurs at the lowest nesting level,
+        # the expression can be simplified by using the opposite operator and removing the not.
+        opposite_operator_map = {
+            "$lt": "$gte",
+            "$lte": "$gt",
+            "$gt": "$lte",
+            "$gte": "$lt",
+            "$ne": "$eq",
+            "$eq": "$ne",
+            "$in": "$nin",
+            "$nin": "$in",
+        }
+
+        for prop, expr in arg[1].items():
+            for operator, value in expr.items():
+                if operator in opposite_operator_map:
+                    return {prop: {opposite_operator_map.get(operator): value}}
+                else:
+                    return {prop: {"$not": expr}}
 
     def _apply_length_aliases(self, filter_: dict) -> dict:
         """Recursively search query for any `$size` operations, and check
