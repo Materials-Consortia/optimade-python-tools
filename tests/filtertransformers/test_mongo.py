@@ -104,10 +104,19 @@ class TestMongoTransformer:
 
     def test_operators(self):
         # Basic boolean operations
-        # TODO: {"a": {"$not": {"$lt": 3}}} can be simplified to {"a": {"$gte": 3}}
-        assert self.transform("NOT a<3") == {"a": {"$not": {"$lt": 3}}}
+        assert self.transform("NOT a<3") == {"a": {"$gte": 3}}
 
-        # TODO: {'$not': {'$eq': 'Ti'}} can be simplified to {'$ne': 'Ti'}
+        assert self.transform('NOT ( chemical_formula_hill = "Al")') == {
+            "$and": [
+                {"chemical_formula_hill": {"$ne": "Al"}},
+                {"chemical_formula_hill": {"$ne": None}},
+            ]
+        }
+
+        assert self.transform("NOT( NOT( a=4 OR b= 6))") == {
+            "$or": [{"a": {"$eq": 4}}, {"b": {"$eq": 6}}]
+        }
+
         assert self.transform(
             "NOT ( "
             'chemical_formula_hill = "Al" AND chemical_formula_anonymous = "A" OR '
@@ -124,7 +133,12 @@ class TestMongoTransformer:
                 {
                     "$and": [
                         {"chemical_formula_anonymous": {"$eq": "H2O"}},
-                        {"chemical_formula_hill": {"$not": {"$eq": "Ti"}}},
+                        {
+                            "$and": [
+                                {"chemical_formula_hill": {"$ne": "Ti"}},
+                                {"chemical_formula_hill": {"$ne": None}},
+                            ]
+                        },
                     ]
                 },
             ]
@@ -162,7 +176,12 @@ class TestMongoTransformer:
                                         {"_exmpl_x": {"$ne": None}},
                                     ]
                                 },
-                                {"_exmpl_a": {"$not": {"$eq": 7}}},
+                                {
+                                    "$and": [
+                                        {"_exmpl_a": {"$ne": 7}},
+                                        {"_exmpl_s": {"$ne": None}},
+                                    ]
+                                },
                             ]
                         },
                     ]
@@ -207,11 +226,8 @@ class TestMongoTransformer:
             ]
         }
 
-        # OPTIONAL
-        # assert self.transform("((NOT (_exmpl_a>_exmpl_b)) AND _exmpl_x>0)") == {}
-
         assert self.transform("NOT (a>1 AND b>1)") == {
-            "$and": [{"a": {"$not": {"$gt": 1}}}, {"b": {"$not": {"$gt": 1}}}]
+            "$or": [{"a": {"$lte": 1}}, {"b": {"$lte": 1}}]
         }
 
         assert self.transform("NOT (a>1 AND b>1 OR c>1)") == {
@@ -222,15 +238,15 @@ class TestMongoTransformer:
         }
 
         assert self.transform("NOT (a>1 AND ( b>1 OR c>1 ))") == {
-            "$and": [
-                {"a": {"$not": {"$gt": 1}}},
+            "$or": [
+                {"a": {"$lte": 1}},
                 {"$nor": [{"b": {"$gt": 1}}, {"c": {"$gt": 1}}]},
             ]
         }
 
         assert self.transform("NOT (a>1 AND ( b>1 OR (c>1 AND d>1 ) ))") == {
-            "$and": [
-                {"a": {"$not": {"$gt": 1}}},
+            "$or": [
+                {"a": {"$lte": 1}},
                 {
                     "$nor": [
                         {"b": {"$gt": 1}},
@@ -241,14 +257,25 @@ class TestMongoTransformer:
         }
 
         assert self.transform(
+            # TODO not or nin also include documents where the field elements is missing. Not a problem in this query but may be so in the future
             'elements HAS "Ag" AND NOT ( elements HAS "Ir" AND elements HAS "Ac" )'
         ) == {
             "$and": [
                 {"elements": {"$in": ["Ag"]}},
                 {
-                    "$and": [
-                        {"elements": {"$not": {"$in": ["Ir"]}}},
-                        {"elements": {"$not": {"$in": ["Ac"]}}},
+                    "$or": [
+                        {
+                            "$and": [
+                                {"elements": {"$nin": ["Ir"]}},
+                                {"elements": {"$ne": None}},
+                            ]
+                        },
+                        {
+                            "$and": [
+                                {"elements": {"$nin": ["Ac"]}},
+                                {"elements": {"$ne": None}},
+                            ]
+                        },
                     ]
                 },
             ]
@@ -652,7 +679,7 @@ class TestMongoTransformer:
     def test_precedence(self):
         assert self.transform('NOT a > b OR c = 100 AND f = "C2 H6"') == {
             "$or": [
-                {"a": {"$not": {"$gt": "b"}}},
+                {"a": {"$lte": "b"}},
                 {"$and": [{"c": {"$eq": 100}}, {"f": {"$eq": "C2 H6"}}]},
             ]
         }
@@ -687,7 +714,9 @@ class TestMongoTransformer:
         assert self.transform("key=value") == {"key": {"$eq": "value"}}
         assert self.transform('author=" someone "') == {"author": {"$eq": " someone "}}
         assert self.transform("notice=val") == {"notice": {"$eq": "val"}}
-        assert self.transform("NOTice=val") == {"ice": {"$not": {"$eq": "val"}}}
+        assert self.transform("NOTice=val") == {
+            "$and": [{"ice": {"$ne": "val"}}, {"ice": {"$ne": None}}]
+        }
         assert self.transform(
             "number=0.ANDnumber=.0ANDnumber=0.0ANDnumber=+0AND_n_u_m_b_e_r_=-0AND"
             "number=0e1ANDnumber=0e-1ANDnumber=0e+1"
