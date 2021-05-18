@@ -179,7 +179,7 @@ class TestMongoTransformer:
                                 {
                                     "$and": [
                                         {"_exmpl_a": {"$ne": 7}},
-                                        {"_exmpl_s": {"$ne": None}},
+                                        {"_exmpl_a": {"$ne": None}},
                                     ]
                                 },
                             ]
