@@ -213,7 +213,15 @@ class MongoTransformer(BaseTransformer):
         for prop, expr in arg[1].items():
             for operator, value in expr.items():
                 if operator in opposite_operator_map:
-                    return {prop: {opposite_operator_map.get(operator): value}}
+                    if operator in ("$in", "$eq"):
+                        return {
+                            "$and": [
+                                {prop: {opposite_operator_map.get(operator): value}},
+                                {prop: {"$ne": None}},
+                            ]
+                        }
+                    else:
+                        return {prop: {opposite_operator_map.get(operator): value}}
                 else:
                     return {prop: {"$not": expr}}
 
