@@ -6,7 +6,7 @@ for turning filters parsed by lark into backend-specific queries.
 """
 
 import abc
-from typing import Dict, Any, Type
+from typing import Dict, Any, Type, Optional
 import warnings
 
 from lark import Transformer, v_args, Tree
@@ -26,12 +26,13 @@ class Quantity:
     """Class to provide information about available quantities to the transformer.
 
     The transformer can use [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]'s to
-    (a) do some semantic checks,
-    (b) map quantities to the underlying backend field name.
+
+    * do some semantic checks,
+    * map quantities to the underlying backend field name.
 
     Attributes:
         name: The name of the quantity as used in the filter expressions.
-        backend_field: The name of the field for this quanity in elastic search, will be
+        backend_field: The name of the field for this quantity in the backend database, will be
             `name` by default.
         length_quantity: Another (typically integer) [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]
             that can be queried as the length of this quantity, e.g. `elements` and `nelements`. Backends
@@ -39,12 +40,27 @@ class Quantity:
 
     """
 
+    name: str
+    backend_field: Optional[str]
+    length_quantity: Optional["Quantity"]
+
     def __init__(
         self,
         name: str,
         backend_field: str = None,
         length_quantity: "Quantity" = None,
     ):
+        """Initialise the `quantity` from it's name and aliases.
+
+        Parameters:
+            name: The name of the quantity as used in the filter expressions.
+            backend_field: The name of the field for this quantity in the backend database, will be
+                `name` by default.
+            length_quantity: Another (typically integer) [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]
+                that can be queried as the length of this quantity, e.g. `elements` and `nelements`. Backends
+                can then decide whether to use this for all "LENGTH" queries.
+
+        """
 
         self.name = name
         self.backend_field = backend_field if backend_field is not None else name
@@ -55,9 +71,16 @@ class BaseTransformer(abc.ABC, Transformer):
     """Generic filter transformer that handles various
     parts of the grammar in a backend non-specific way.
 
+    Attributes:
+        operator_map: A map from comparison operators
+            to their backend-specific versions.
+        mapper: A resource mapper object that defines the
+            expected fields and acts as a container for
+            various field-related configuration.
+
     """
 
-    """A map from comparison operators to their backend-specific versions"""  # pylint: disable=pointless-string-statement
+    mapper: Optional[BaseResourceMapper] = None
     operator_map: Dict[str, str] = {
         "<": None,
         "<=": None,
@@ -67,7 +90,7 @@ class BaseTransformer(abc.ABC, Transformer):
         "=": None,
     }
 
-    # map from operators to their syntactic (NOT logical) inverse to handle
+    # map from operators to their syntactic (as opposed to logical) inverse to handle
     # equivalence between cases like "A > 3" and "3 < A".
     _reversed_operator_map = {
         ">": "<",
@@ -78,8 +101,8 @@ class BaseTransformer(abc.ABC, Transformer):
         "!=": "!=",
     }
 
-    __quantity_type: Type[Quantity] = Quantity
-    __quantities = None
+    _quantity_type: Type[Quantity] = Quantity
+    _quantities = None
 
     def __init__(
         self, mapper: BaseResourceMapper = None
@@ -104,16 +127,16 @@ class BaseTransformer(abc.ABC, Transformer):
         """A mapping from the OPTIMADE field name to the corresponding
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects.
         """
-        if self.__quantities is None:
-            self.__quantities = self.__build_quantities()
+        if self._quantities is None:
+            self._quantities = self._build_quantities()
 
-        return self.__quantities
+        return self._quantities
 
     @quantities.setter
-    def __set_quantities(self, quantities: Dict[str, Quantity]) -> None:
-        self.__quantities = quantities
+    def quantities(self, quantities: Dict[str, Quantity]) -> None:
+        self._quantities = quantities
 
-    def __build_quantities(self) -> Dict[str, Quantity]:
+    def _build_quantities(self) -> Dict[str, Quantity]:
         """Creates a dictionary of field names mapped to
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects from the
         fields registered by the mapper.
@@ -132,13 +155,13 @@ class BaseTransformer(abc.ABC, Transformer):
                 ) or self.mapper.length_alias_for(alias)
 
                 if field not in quantities:
-                    quantities[field] = self.__quantity_type(
+                    quantities[field] = self._quantity_type(
                         name=field, backend_field=alias
                     )
 
                 if length_alias:
                     if length_alias not in quantities:
-                        quantities[length_alias] = self.__quantity_type(
+                        quantities[length_alias] = self._quantity_type(
                             name=length_alias,
                             backend_field=self.mapper.get_backend_field(length_alias),
                         )
@@ -199,7 +222,7 @@ class BaseTransformer(abc.ABC, Transformer):
         """
         raise NotImplementedError("Comparing strings is not yet implemented.")
 
-    def property(self, args):
+    def property(self, args: list) -> Any:
         """property: IDENTIFIER ( "." IDENTIFIER )*
 
         If this transformer has an associated mapper, the property
@@ -217,16 +240,16 @@ class BaseTransformer(abc.ABC, Transformer):
 
         # If the quantity name matches an entry type (indicating a relationship filter)
         # then simply return the quantity name; the inherited property
-        # must then handle any futher the nested identifiers
+        # must then handle any further nested identifiers
         if self.mapper:
             if quantity_name in self.mapper.RELATIONSHIP_ENTRY_TYPES:
                 return quantity_name
 
         if self.quantities and quantity_name not in self.quantities:
             # If the quantity is provider-specific, but does not match this provider,
-            # then return the quantity name such that it can be trreated as unknown.
+            # then return the quantity name such that it can be treated as unknown.
             # If the prefix does not match another known provider, also emit a warning
-            # If the prefix does match a known prpovider, do not return a warning.
+            # If the prefix does match a known provider, do not return a warning.
             # Following [Handling unknown property names](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#handling-unknown-property-names)
             if self.mapper and quantity_name.startswith("_"):
                 prefix = quantity_name.split("_")[1]
@@ -248,7 +271,7 @@ class BaseTransformer(abc.ABC, Transformer):
 
         quantity = self.quantities.get(quantity_name, None)
         if quantity is None:
-            quantity = self.__quantity_type(name=str(quantity_name))
+            quantity = self._quantity_type(name=str(quantity_name))
 
         return quantity
 
@@ -281,6 +304,7 @@ class BaseTransformer(abc.ABC, Transformer):
         """value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*"""
 
     def value_zip(self, arg):
+        """value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*"""
         pass
 
     def value_zip_list(self, arg):
@@ -292,7 +316,7 @@ class BaseTransformer(abc.ABC, Transformer):
     def expression_clause(self, arg):
         """expression_clause: expression_phrase ( AND expression_phrase )*"""
 
-    def expression_phrase(self, args):
+    def expression_phrase(self, arg):
         """expression_phrase: [ NOT ] ( comparison | "(" expression ")" )"""
 
     def property_first_comparison(self, arg):

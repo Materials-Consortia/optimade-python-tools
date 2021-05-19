@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Tuple, List, Union, Dict, Any
+from typing import Tuple, List, Union, Dict, Any, Set
 import warnings
 import re
 
@@ -173,13 +173,7 @@ class EntryCollection(ABC):
             )
 
         if results:
-            if isinstance(results, dict):
-                results = self.resource_cls(**self.resource_mapper.map_back(results))
-            else:
-                results = [
-                    self.resource_cls(**self.resource_mapper.map_back(doc))
-                    for doc in results
-                ]
+            results = self.resource_mapper.deserialize(results)
 
         return (
             results,
@@ -225,7 +219,7 @@ class EntryCollection(ABC):
 
         return fields
 
-    def get_attribute_fields(self) -> set:
+    def get_attribute_fields(self) -> Set[str]:
         """Get the set of attribute fields
 
         Return only the _first-level_ attribute fields from the schema of the resource class,
