@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 from typing import Tuple, List, Optional, Dict, Any, Iterable, Union
 
-from optimade.filterparser import LarkParser
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
 from optimade.server.config import CONFIG
 from optimade.server.logger import LOGGER
@@ -38,16 +37,13 @@ class ElasticCollection(EntryCollection):
             client: A preconfigured Elasticsearch client.
 
         """
+        super().__init__(
+            resource_cls=resource_cls,
+            resource_mapper=resource_mapper,
+            transformer=ElasticTransformer(mapper=resource_mapper),
+        )
+
         self.client = client if client else CLIENT
-
-        self.resource_cls = resource_cls
-        self.resource_mapper = resource_mapper
-        self.provider_prefix = CONFIG.provider.prefix
-        self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
-        self.parser = LarkParser()
-
-        self.transformer = ElasticTransformer(mapper=self.resource_mapper)
-
         self.name = name
 
         # If we are creating a new collection from scratch, also create the index,

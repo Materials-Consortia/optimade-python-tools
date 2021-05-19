@@ -1,4 +1,4 @@
-from typing import Tuple, Optional, Type, Set
+from typing import Tuple, Optional, Type, Set, Dict, Any, Union, List, Iterable
 import warnings
 
 from optimade.models.entries import EntryResource
@@ -9,10 +9,20 @@ __all__ = ("BaseResourceMapper",)
 class classproperty(property):
     """A simple extension of the property decorator that binds to types
     rather than instances.
+
+    Modelled on this [StackOverflow answer](https://stackoverflow.com/a/5192374)
+    with some tweaks to allow mkdocstrings to do its thing.
+
     """
 
-    def __get__(self, obj, objtype=None):
-        return super(classproperty, self).__get__(objtype)
+    def __init__(self, func):
+        self.__name__ = func.__name__
+        self.__module__ = func.__module__
+        self.__doc__ = func.__doc__
+        self.__wrapped__ = func
+
+    def __get__(self, _, owner):
+        return self.__wrapped__(owner)
 
 
 class BaseResourceMapper:
@@ -32,10 +42,15 @@ class BaseResourceMapper:
         ENTRY_RESOURCE_CLASS: The entry type that this mapper corresponds to.
         PROVIDER_FIELDS: a tuple of extra field names that this
             mapper should support when querying with the database prefix.
-        REQUIRED_FIELDS: the set of fieldnames to return
-            when mapping to the OPTIMADE format.
         TOP_LEVEL_NON_ATTRIBUTES_FIELDS: the set of top-level
             field names common to all endpoints.
+        SUPPORTED_PREFIXES: The set of prefixes registered by this mapper.
+        ALL_ATTRIBUTES: The set of attributes defined across the entry
+            resource class and the server configuration.
+        ENTRY_RESOURCE_ATTRIBUTES: A dictionary of attributes and their definitions
+            defined by the schema of the entry resource class.
+        ENDPOINT: The expected endpoint name for this resource, as defined by
+            the `type` in the schema of the entry resource class.
 
     """
 
@@ -55,7 +70,10 @@ class BaseResourceMapper:
     ENTRY_RESOURCE_CLASS: Type[EntryResource] = EntryResource
     RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {"id", "type", "relationships", "links"}
-    REQUIRED_FIELDS: set = set()
+    SUPPORTED_PREFIXES: Set[str]
+    ALL_ATTRIBUTES: Set[str]
+    ENTRY_RESOURCE_ATTRIBUTES: Dict[str, Any]
+    ENDPOINT: str
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
@@ -88,10 +106,10 @@ class BaseResourceMapper:
         """A set of prefixes handled by this entry type.
 
         !!! note
-        This implementation only includes the provider prefix,
-        but in the future this property may be extended to include other
-        namespaces (for serving fields from, e.g., other providers or
-        domain-specific terms).
+            This implementation only includes the provider prefix,
+            but in the future this property may be extended to include other
+            namespaces (for serving fields from, e.g., other providers or
+            domain-specific terms).
 
         """
         from optimade.server.config import CONFIG
@@ -113,13 +131,18 @@ class BaseResourceMapper:
         )
 
     @classproperty
-    def ENTRY_RESOURCE_ATTRIBUTES(cls) -> Set[str]:
+    def ENTRY_RESOURCE_ATTRIBUTES(cls) -> Dict[str, Any]:
+        """Returns the dictionary of attributes defined by the underlying entry resource class."""
         from optimade.server.schemas import retrieve_queryable_properties
 
         return retrieve_queryable_properties(cls.ENTRY_RESOURCE_CLASS.schema())
 
     @classproperty
     def ENDPOINT(cls) -> str:
+        """Returns the expected endpoint for this mapper, corresponding
+        to the `type` property of the resource class.
+
+        """
         return (
             cls.ENTRY_RESOURCE_CLASS.schema()
             .get("properties", {})
@@ -268,9 +291,7 @@ class BaseResourceMapper:
             REQUIRED response fields.
 
         """
-        res = cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
-        res.update(cls.REQUIRED_FIELDS)
-        return res
+        return cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
@@ -315,3 +336,12 @@ class BaseResourceMapper:
         newdoc["attributes"] = attributes
 
         return newdoc
+
+    @classmethod
+    def deserialize(
+        cls, results: Union[dict, Iterable[dict]]
+    ) -> Union[List[EntryResource], EntryResource]:
+        if isinstance(results, dict):
+            return cls.ENTRY_RESOURCE_CLASS(**cls.map_back(results))
+
+        return [cls.ENTRY_RESOURCE_CLASS(**cls.map_back(doc)) for doc in results]
