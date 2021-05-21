@@ -172,30 +172,52 @@ class MongoTransformer(BaseTransformer):
 
     def _recursive_expression_phrase(self, arg):
         """Helper function for parsing `expression_phrase`. Recursively sorts out
-        the correct precedence for `$and`, `$or` and `$nor`.
+        the correct precedence for `$not', '$and` and `$or`.
 
         """
+
+        def handle_not_and(arg):
+            # Handle the case of {"$not": {"$and": [expr1, expr2]}}
+            # which is equal to {"or": [{"$not": expr1}, {"$not": expr2}]}}
+            # We have to check for the special case in which the "and" was created by a previous NOT
+            # e.g NOT (NOT ({"a": {"$eq" : 6}})) -> NOT({$and:[{"a": {"$ne" : 6}},{"a": {"$ne": None}}]})
+
+            expr1 = arg["$and"][0]
+            expr2 = arg["$and"][1]
+            key = list(expr1.keys())[0]
+            if expr1.keys() == expr2.keys():
+                if expr1.get(key) == {"$ne": None}:
+                    return self._recursive_expression_phrase(["NOT", expr2])
+                elif expr2.get(key) == {"$ne": None}:
+                    return self._recursive_expression_phrase(["NOT", expr1])
+            return {
+                "$or": [
+                    self._recursive_expression_phrase(["NOT", subdict])
+                    for subdict in arg["$and"]
+                ]
+            }
+
+        def handle_not_or(arg):
+            # Handle the case of {"$not": {"$or": [expr1, expr2]}} using:
+            # {"$not": {"$or": [expr1, expr2]}} == {"$and": [(NOT, expr1), (NOT, expr2)]}}
+            # {"$nor": [expr1, expr2]} is not convenient because nor will also return documents where the field in expr1 or exp2 is missing.
+
+            return {
+                "$and": [
+                    self._recursive_expression_phrase(["NOT", subdict])
+                    for subdict in arg["$or"]
+                ]
+            }
+
         if len(arg) == 1:
             # without NOT
             return arg[0]
 
-        # handle the case of {"$not": {"$or": [expr1, expr2]}} using {"$nor": [expr1, expr2]}.
         if "$or" in arg[1]:
-            return {"$nor": self._recursive_expression_phrase([arg[1]["$or"]])}
+            return handle_not_or(arg[1])
 
-        # handle the case of {"$not": {"$nor": [expr1, expr2]}} using {"$or": [expr1, expr2]}.
-        if "$nor" in arg[1]:
-            return {"$or": self._recursive_expression_phrase([arg[1]["$nor"]])}
-
-        # handle the case of {"$not": {"$and": [expr1, expr2]}}
-        # which is equal to {"or": [{"$not": expr1}, {"$not": expr2}]}}
         if "$and" in arg[1]:
-            return {
-                "$or": [
-                    self._recursive_expression_phrase(["NOT", subdict])
-                    for subdict in arg[1]["$and"]
-                ]
-            }
+            return handle_not_and(arg[1])
 
         # Incase the NOT operator occurs at the lowest nesting level,
         # the expression can be simplified by using the opposite operator and removing the not.
@@ -220,9 +242,11 @@ class MongoTransformer(BaseTransformer):
                                 {prop: {"$ne": None}},
                             ]
                         }
+
                     else:
                         return {prop: {opposite_operator_map.get(operator): value}}
                 else:
+                    # TODO : add support for NOT HAS ALL etc.
                     return {prop: {"$not": expr}}
 
     def _apply_length_aliases(self, filter_: dict) -> dict:

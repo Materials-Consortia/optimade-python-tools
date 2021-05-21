@@ -123,22 +123,32 @@ class TestMongoTransformer:
             'chemical_formula_anonymous = "H2O" AND NOT chemical_formula_hill = "Ti" '
             ")"
         ) == {
-            "$nor": [
+            "$and": [
                 {
-                    "$and": [
-                        {"chemical_formula_hill": {"$eq": "Al"}},
-                        {"chemical_formula_anonymous": {"$eq": "A"}},
-                    ]
-                },
-                {
-                    "$and": [
-                        {"chemical_formula_anonymous": {"$eq": "H2O"}},
+                    "$or": [
                         {
                             "$and": [
-                                {"chemical_formula_hill": {"$ne": "Ti"}},
+                                {"chemical_formula_hill": {"$ne": "Al"}},
                                 {"chemical_formula_hill": {"$ne": None}},
                             ]
                         },
+                        {
+                            "$and": [
+                                {"chemical_formula_anonymous": {"$ne": "A"}},
+                                {"chemical_formula_anonymous": {"$ne": None}},
+                            ]
+                        },
+                    ]
+                },
+                {
+                    "$or": [
+                        {
+                            "$and": [
+                                {"chemical_formula_anonymous": {"$ne": "H2O"}},
+                                {"chemical_formula_anonymous": {"$ne": None}},
+                            ]
+                        },
+                        {"chemical_formula_hill": {"$eq": "Ti"}},
                     ]
                 },
             ]
@@ -169,25 +179,16 @@ class TestMongoTransformer:
                     "$and": [
                         {"nelements": {"$gte": 10}},
                         {
-                            "$nor": [
-                                {
-                                    "$and": [
-                                        {"_exmpl_x": {"$ne": "Some string"}},
-                                        {"_exmpl_x": {"$ne": None}},
-                                    ]
-                                },
-                                {
-                                    "$and": [
-                                        {"_exmpl_a": {"$ne": 7}},
-                                        {"_exmpl_a": {"$ne": None}},
-                                    ]
-                                },
+                            "$and": [
+                                {"_exmpl_x": {"$eq": "Some string"}},
+                                {"_exmpl_a": {"$eq": 7}},
                             ]
                         },
                     ]
                 },
             ]
         }
+
         assert self.transform('_exmpl_spacegroup="P2"') == {
             "_exmpl_spacegroup": {"$eq": "P2"}
         }
@@ -231,16 +232,16 @@ class TestMongoTransformer:
         }
 
         assert self.transform("NOT (a>1 AND b>1 OR c>1)") == {
-            "$nor": [
-                {"$and": [{"a": {"$gt": 1}}, {"b": {"$gt": 1}}]},
-                {"c": {"$gt": 1}},
+            "$and": [
+                {"$or": [{"a": {"$lte": 1}}, {"b": {"$lte": 1}}]},
+                {"c": {"$lte": 1}},
             ]
         }
 
         assert self.transform("NOT (a>1 AND ( b>1 OR c>1 ))") == {
             "$or": [
                 {"a": {"$lte": 1}},
-                {"$nor": [{"b": {"$gt": 1}}, {"c": {"$gt": 1}}]},
+                {"$and": [{"b": {"$lte": 1}}, {"c": {"$lte": 1}}]},
             ]
         }
 
@@ -248,16 +249,15 @@ class TestMongoTransformer:
             "$or": [
                 {"a": {"$lte": 1}},
                 {
-                    "$nor": [
-                        {"b": {"$gt": 1}},
-                        {"$and": [{"c": {"$gt": 1}}, {"d": {"$gt": 1}}]},
+                    "$and": [
+                        {"b": {"$lte": 1}},
+                        {"$or": [{"c": {"$lte": 1}}, {"d": {"$lte": 1}}]},
                     ]
                 },
             ]
         }
 
         assert self.transform(
-            # TODO not or nin also include documents where the field elements is missing. Not a problem in this query but may be so in the future
             'elements HAS "Ag" AND NOT ( elements HAS "Ir" AND elements HAS "Ac" )'
         ) == {
             "$and": [
