@@ -1,10 +1,13 @@
 from pathlib import Path
 from lark import Lark, Tree
 from collections import defaultdict
+from optimade.server.exceptions import BadRequest
 
 
 class ParserError(Exception):
-    pass
+    """Triggered by critical parsing errors that should lead
+    to 500 Server Error HTTP statuses.
+    """
 
 
 def get_versions():
@@ -46,7 +49,9 @@ class LarkParser:
             self.filter = filter_
             return self.tree
         except Exception as e:
-            raise ParserError(e)
+            raise BadRequest(
+                detail=f"Unable to parse filter {filter_}. Lark traceback: \n{e}"
+            )
 
     def __repr__(self):
         if isinstance(self.tree, Tree):
