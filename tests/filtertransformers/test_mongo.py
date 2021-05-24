@@ -2,7 +2,8 @@ import pytest
 
 from lark.exceptions import VisitError
 
-from optimade.filterparser import LarkParser, ParserError
+from optimade.filterparser import LarkParser
+from optimade.server.exceptions import BadRequest
 
 
 class TestMongoTransformer:
@@ -25,13 +26,13 @@ class TestMongoTransformer:
         assert self.transform("cell_length_a = 1") == {"cell_length_a": {"$eq": 1}}
         assert self.transform("cell_volume = 1") == {"cell_volume": {"$eq": 1}}
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("0_kvak IS KNOWN")  # starts with a number
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform('"foo bar" IS KNOWN')  # contains space; contains quotes
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("BadLuck IS KNOWN")  # contains upper-case letters
 
         # database-provider-specific prefixes
@@ -70,19 +71,19 @@ class TestMongoTransformer:
             "m": {"$eq": float("inf")}
         }
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=1.234D12")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=.e1")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number= -.E1")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=+.E2")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=1.23E+++")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=+-123")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=0.0.1")
 
     def test_simple_comparisons(self):
