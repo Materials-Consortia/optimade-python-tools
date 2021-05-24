@@ -71,3 +71,22 @@ uvicorn optimade.server.main_index:app --reload --port 5001
 ```
 
 will run the index meta-database server at <http://localhost:5001/v1>.
+
+## Testing specific backends
+
+In order to run the test suite for a specific backend, the `OPTIMADE_DATABASE_BACKEND` [environment variable (or config option)](https://www.optimade.org/optimade-python-tools/configuration/) can be set to one of `'mongodb'`, `'mongomock'` or `'elastic'` (see [`optimade.server.config.ServerConfig.database_backend`](https://www.optimade.org/optimade-python-tools/api_reference/server/config/#optimade.server.config.ServerConfig.database_backend).
+Tests for the two "real" database backends, MongoDB and Elasticsearch, require a writable, temporary database to be accessible.
+The easiest way to deploy these databases and run the tests is with Docker, as shown below:
+
+```shell
+# Run tests on containerized Elasticsearch v6.8 instance
+docker container stop elasticsearch_test; docker container rm elasticsearch_test; \
+    docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:6.8.13 \
+    && sleep 10
+    && OPTIMADE_DATABASE_BACKEND="elastic" py.test
+
+# Run tests against a real containerized MongoDB
+docker container stop mongo_test; docker container rm mongo_test; \
+    docker run -d --name mongo_test -p 27017:27017 -d mongo:4.4.6 \
+    && OPTIMADE_DATABASE_BACKEND="mongodb" py.test
+```
