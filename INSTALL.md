@@ -74,19 +74,28 @@ will run the index meta-database server at <http://localhost:5001/v1>.
 
 ## Testing specific backends
 
-In order to run the test suite for a specific backend, the `OPTIMADE_DATABASE_BACKEND` [environment variable (or config option)](https://www.optimade.org/optimade-python-tools/configuration/) can be set to one of `'mongodb'`, `'mongomock'` or `'elastic'` (see [`optimade.server.config.ServerConfig.database_backend`](https://www.optimade.org/optimade-python-tools/api_reference/server/config/#optimade.server.config.ServerConfig.database_backend).
+In order to run the test suite for a specific backend, the
+`OPTIMADE_DATABASE_BACKEND` [environment variable (or config
+option)](https://www.optimade.org/optimade-python-tools/configuration/) can be
+set to one of `'mongodb'`, `'mongomock'` or `'elastic'` (see
+[`ServerConfig.database_backend`][optimade.server.config.ServerConfig.database_backend]).
 Tests for the two "real" database backends, MongoDB and Elasticsearch, require a writable, temporary database to be accessible.
-The easiest way to deploy these databases and run the tests is with Docker, as shown below:
 
+The easiest way to deploy these databases and run the tests is with Docker, as shown below.
+[Docker installation instructions](https://docs.docker.com/engine/install/) will depend on your system; on Linux, the `docker` commands below may need to be prepended with `sudo`, depending on your distribution.
+These commands should be run from a local optimade-python-tools directory.
+
+The following command starts a local Elasticsearch v6 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):
 ```shell
-# Run tests on containerized Elasticsearch v6.8 instance
-docker container stop elasticsearch_test; docker container rm elasticsearch_test; \
-    docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:6.8.13 \
-    && sleep 10
-    && OPTIMADE_DATABASE_BACKEND="elastic" py.test
+docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:6.8.13 \
+&& sleep 10 \
+&& OPTIMADE_DATABASE_BACKEND="elastic" py.test; \
+docker container stop elasticsearch_test; docker container rm elasticsearch_test
+```
 
-# Run tests against a real containerized MongoDB
-docker container stop mongo_test; docker container rm mongo_test; \
-    docker run -d --name mongo_test -p 27017:27017 -d mongo:4.4.6 \
-    && OPTIMADE_DATABASE_BACKEND="mongodb" py.test
+The following command starts a local MongoDB instance, runs the test suite, then stops and deletes the containers:
+```shell
+docker run -d --name mongo_test -p 27017:27017 -d mongo:4.4.6 \
+&& OPTIMADE_DATABASE_BACKEND="mongodb" py.test; \
+docker container stop mongo_test; docker container rm mongo_test
 ```
