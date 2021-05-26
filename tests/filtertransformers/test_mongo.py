@@ -291,7 +291,7 @@ class TestMongoTransformer:
 
         assert t.transform(p.parse('structures.id HAS ONLY "dummy/2019"')) == {
             "$and": [
-                {"relationships.structures.data": {"$size": 1, "$exists": True}},
+                {"relationships.structures.data": {"$size": 1}},
                 {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
             ]
         }
@@ -307,7 +307,6 @@ class TestMongoTransformer:
                         {
                             "relationships.structures.data": {
                                 "$size": 1,
-                                "$exists": True,
                             }
                         },
                         {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
@@ -346,9 +345,7 @@ class TestMongoTransformer:
         with pytest.raises(VisitError, match="not implemented"):
             self.transform("list HAS ANY > 3, < 6")
 
-        assert self.transform("list LENGTH 3") == {
-            "list": {"$size": 3, "$exists": True}
-        }
+        assert self.transform("list LENGTH 3") == {"list": {"$size": 3}}
 
         with pytest.raises(VisitError):
             self.transform("list:list HAS >=2:<=5")
@@ -461,7 +458,7 @@ class TestMongoTransformer:
             "cartesian_site_positions.3": {"$exists": False}
         }
         assert self.transform("cartesian_site_positions LENGTH 3") == {
-            "cartesian_site_positions": {"$size": 3, "$exists": True}
+            "cartesian_site_positions": {"$size": 3}
         }
         assert self.transform("cartesian_site_positions LENGTH >= 10") == {
             "cartesian_site_positions.10": {"$exists": True}
@@ -536,7 +533,7 @@ class TestMongoTransformer:
         ) == {"nsites": 3}
 
         assert transformer.transform(parser.parse("elements_ratios LENGTH 3")) == {
-            "ratios": {"$size": 3, "$exists": True}
+            "ratios": {"$size": 3}
         }
 
         assert transformer.transform(
@@ -612,7 +609,7 @@ class TestMongoTransformer:
     def test_list_properties(self):
         """Test the HAS ALL, ANY and optional ONLY queries."""
         assert self.transform('elements HAS ONLY "H","He","Ga","Ta"') == {
-            "elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4, "$exists": True}
+            "elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}
         }
 
         assert self.transform('elements HAS ANY "H","He","Ga","Ta"') == {
@@ -634,7 +631,6 @@ class TestMongoTransformer:
                     "elements": {
                         "$all": ["H", "He", "Ga", "Ta"],
                         "$size": 4,
-                        "$exists": True,
                     }
                 },
                 {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},

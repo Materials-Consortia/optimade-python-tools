@@ -116,12 +116,6 @@ class MongoTransformer(BaseTransformer):
 
                 return final_query
 
-            # Another workaround: in the case that there is no length alias, and the field
-            # itself does not exist in the database, then `{"$size": 1}` matches all documents,
-            # so we must add another existence check
-            if "$exists" not in query:
-                query["$exists"] = True
-
         return {quantity: query}
 
     def constant_first_comparison(self, arg):
@@ -316,7 +310,6 @@ class MongoTransformer(BaseTransformer):
                         {
                             f"relationships.{_prop}.data": {
                                 "$size": expr.pop("$size"),
-                                "$exists": expr.pop("$exists"),
                             }
                         },
                         {f"relationships.{_prop}.data.{_field}": expr},
