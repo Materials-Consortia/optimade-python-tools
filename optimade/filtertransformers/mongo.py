@@ -246,8 +246,10 @@ class MongoTransformer(BaseTransformer):
                     else:
                         return {prop: {opposite_operator_map.get(operator): value}}
                 else:
-                    # TODO : add support for NOT HAS ALL etc.
-                    return {prop: {"$not": expr}}
+                    if "#known" in expr:
+                        return {prop: {"$not": expr}}
+                    else:
+                        return {"$and": [{prop: {"$not": expr}}, {prop: {"$ne": None}}]}
 
     def _apply_length_aliases(self, filter_: dict) -> dict:
         """Recursively search query for any `$size` operations, and check
