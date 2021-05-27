@@ -281,6 +281,19 @@ class TestMongoTransformer:
             ]
         }
 
+        assert self.transform(
+            'NOT(structures.id HAS ALL "dummy/2019", "dijkstra1968")'
+        ) == {
+            "$and": [
+                {
+                    "relationships.structures.data.id": {
+                        "$not": {"$all": ["dummy/2019", "dijkstra1968"]}
+                    }
+                },
+                {"relationships.structures.data.id": {"$ne": None}},
+            ]
+        }
+
         assert self.transform("5 < 7") == {7: {"$gt": 5}}
 
         with pytest.raises(VisitError):
