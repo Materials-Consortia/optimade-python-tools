@@ -129,7 +129,6 @@ def check_response(get_good_response):
         else:
             assert expected_ids == response_ids
 
-        expected_warnings = expected_warnings or []
         if expected_warnings:
             assert "warnings" in response["meta"]
             assert len(expected_warnings) == len(response["meta"]["warnings"])

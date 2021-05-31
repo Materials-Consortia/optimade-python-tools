@@ -253,10 +253,8 @@ class BaseTransformer(abc.ABC, Transformer):
             # Following [Handling unknown property names](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#handling-unknown-property-names)
             if self.mapper and quantity_name.startswith("_"):
                 prefix = quantity_name.split("_")[1]
-                if not any(prefix == p for p in self.mapper.SUPPORTED_PREFIXES):
-                    if not any(
-                        prefix == p for p in self.mapper.KNOWN_PROVIDER_PREFIXES
-                    ):
+                if prefix not in self.mapper.SUPPORTED_PREFIXES:
+                    if prefix not in self.mapper.KNOWN_PROVIDER_PREFIXES:
                         warnings.warn(
                             UnknownProviderProperty(
                                 f"Field {quantity_name!r} has an unrecognised prefix: this property has been treated as UNKNOWN."
