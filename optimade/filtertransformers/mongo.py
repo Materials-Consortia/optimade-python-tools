@@ -109,8 +109,8 @@ class MongoTransformer(BaseTransformer):
                 if query:
                     final_query = {quantity: query}
                 for q in size_query:
-                    if q in query:
-                        query[q].update(size_query[q])
+                    if q in final_query:
+                        final_query[q].update(size_query[q])
                     else:
                         final_query[q] = size_query[q]
 
