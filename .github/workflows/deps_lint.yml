@@ -294,7 +294,7 @@ jobs:
         pip install --upgrade setuptools requests
 
     - name: Install package
-      run: pip install -e .
+      run: pip install -U -e .[all] --use-deprecated=legacy-resolver
 
     - name: Build source distribution
       run: python ./setup.py sdist
