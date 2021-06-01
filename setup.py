@@ -17,7 +17,6 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 
 # Dependencies
 # Server minded
-django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
 mongo_deps = ["pymongo~=3.11", "mongomock~=3.22"]
 server_deps = [
@@ -55,15 +54,7 @@ dev_deps = (
     + testing_deps
     + client_deps
 )
-all_deps = (
-    dev_deps
-    + django_deps
-    + elastic_deps
-    + aiida_deps
-    + ase_deps
-    + pymatgen_deps
-    + jarvis_deps
-)
+all_deps = dev_deps + elastic_deps + aiida_deps + ase_deps + pymatgen_deps + jarvis_deps
 
 setup(
     name="optimade",
@@ -104,7 +95,6 @@ setup(
         "testing": testing_deps,
         "server": server_deps,
         "client": client_deps,
-        "django": django_deps,
         "elastic": elastic_deps,
         "mongo": mongo_deps,
         "aiida": aiida_deps,

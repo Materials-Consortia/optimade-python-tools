@@ -23,7 +23,7 @@ The dependencies of this package can be found in `setup.py` with their latest su
 By default, a minimal set of requirements are installed to work with the filter language and the `pydantic` models.
 The install mode `server` (i.e. `pip install .[server]`) is sufficient to run a `uvicorn` server using the `mongomock` backend (or MongoDB with `pymongo`, if present).
 The suite of development and testing tools are installed with via the install modes `dev` and `testing`.
-There are additionally three backend-specific install modes, `django`, `elastic` and `mongo`, as well as the `all` mode, which installs all dependencies.
+There are additionally two backend-specific install modes, `elastic` and `mongo`, as well as the `all` mode, which installs all dependencies.
 All contributed Python code, must use the [black](https://github.com/ambv/black) code formatter, and must pass the [flake8](http://flake8.pycqa.org/en/latest/) linter that is run automatically on all PRs.
 
 ```sh
