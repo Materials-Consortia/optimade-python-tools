@@ -1,5 +1,37 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.0...HEAD)
+
+**Closed issues:**
+
+- CI triggered by PRs does not test dep versions in setup.py [\#834](https://github.com/Materials-Consortia/optimade-python-tools/issues/834)
+
+## [v0.15.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.0) (2021-06-01)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.14.1...v0.15.0)
+
+**Fixed bugs:**
+
+- Provider fallbacks do not get used [\#829](https://github.com/Materials-Consortia/optimade-python-tools/issues/829)
+- ParserError's should not return 500 HTTP status codes [\#812](https://github.com/Materials-Consortia/optimade-python-tools/issues/812)
+- Fix provider fallback list [\#830](https://github.com/Materials-Consortia/optimade-python-tools/pull/830) ([ml-evs](https://github.com/ml-evs))
+- Return 400 Bad Request \(not 500\) on filter parser errors, plus filterparser module facelift [\#813](https://github.com/Materials-Consortia/optimade-python-tools/pull/813) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Remove Django support for v0.15+ [\#832](https://github.com/Materials-Consortia/optimade-python-tools/issues/832)
+- Move aliasing code to base transformer [\#743](https://github.com/Materials-Consortia/optimade-python-tools/issues/743)
+- Missing optional fields are not returned as null when requested with response\_fields [\#516](https://github.com/Materials-Consortia/optimade-python-tools/issues/516)
+
+**Merged pull requests:**
+
+- Test all setup.py deps versions for every pull request, plus some deps updates [\#835](https://github.com/Materials-Consortia/optimade-python-tools/pull/835) ([ml-evs](https://github.com/ml-evs))
+- Deprecate Python 3.6, remove Django and update dependencies/providers [\#828](https://github.com/Materials-Consortia/optimade-python-tools/pull/828) ([ml-evs](https://github.com/ml-evs))
+- Update INSTALL docs [\#811](https://github.com/Materials-Consortia/optimade-python-tools/pull/811) ([ml-evs](https://github.com/ml-evs))
+- Overhaul of filter transformers, mappers and response fields [\#797](https://github.com/Materials-Consortia/optimade-python-tools/pull/797) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.14.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.14.1) (2021-05-14)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.14.0...v0.14.1)
