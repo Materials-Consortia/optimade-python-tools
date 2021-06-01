@@ -17,25 +17,21 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 
 # Dependencies
 # Server minded
-django_deps = ["django>=2.2.9,<4.0"]
 elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
 mongo_deps = ["pymongo~=3.11", "mongomock~=3.22"]
 server_deps = [
     "uvicorn~=0.13.4",
-    "Jinja2~=2.11",
+    "Jinja2~=3.0.1",
     "pyyaml~=5.1",  # Keep at pyyaml 5.1 for aiida-core support
 ] + mongo_deps
 
 # Client minded
-aiida_deps = ["aiida-core~=1.5"]  # Keep at 1.5 for Python 3.6 support
+aiida_deps = ["aiida-core~=1.6"]
 ase_deps = ["ase~=3.21"]
-cif_deps = ["numpy~=1.19"]  # Keep at 1.19 for Python 3.6 support
+cif_deps = ["numpy~=1.20"]
 pdb_deps = cif_deps
-pymatgen_deps = [
-    "pymatgen==2021.2.8.1;python_version<'3.7'",
-    "pymatgen==2021.3.9;python_version>'3.6'",
-]
-jarvis_deps = ["jarvis-tools==2021.4.29"]
+pymatgen_deps = ["pymatgen==2021.3.9"]
+jarvis_deps = ["jarvis-tools==2021.5.28"]
 client_deps = cif_deps
 
 # General
@@ -44,29 +40,21 @@ docs_deps = [
     "mkdocs-awesome-pages-plugin~=2.5",
     "mkdocs-material~=7.1",
     "mkdocs-minify-plugin~=0.4.0",
-    "mkdocstrings~=0.15.0",
+    "mkdocstrings~=0.15.1",
 ]
 testing_deps = [
     "pytest~=6.2",
-    "pytest-cov~=2.11",
+    "pytest-cov~=2.12",
     "codecov~=2.1",
     "jsondiff~=1.3",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.8", "pre-commit~=2.11", "invoke~=1.5"]
+    ["pylint~=2.8", "pre-commit~=2.31", "invoke~=1.5"]
     + docs_deps
     + testing_deps
     + client_deps
 )
-all_deps = (
-    dev_deps
-    + django_deps
-    + elastic_deps
-    + aiida_deps
-    + ase_deps
-    + pymatgen_deps
-    + jarvis_deps
-)
+all_deps = dev_deps + elastic_deps + aiida_deps + ase_deps + pymatgen_deps + jarvis_deps
 
 setup(
     name="optimade",
@@ -84,7 +72,6 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -93,14 +80,13 @@ setup(
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     install_requires=[
-        "lark-parser~=0.11.2",
-        "fastapi~=0.63.0",
+        "lark-parser~=0.11.3",
+        "fastapi~=0.65.1",
         "pydantic~=1.8,>=1.8.2",
         "email_validator~=1.1",
         "requests~=2.25",
-        "typing-extensions~=3.10;python_version<'3.8'",
     ],
     extras_require={
         "all": all_deps,
@@ -109,7 +95,6 @@ setup(
         "testing": testing_deps,
         "server": server_deps,
         "client": client_deps,
-        "django": django_deps,
         "elastic": elastic_deps,
         "mongo": mongo_deps,
         "aiida": aiida_deps,

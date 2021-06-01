@@ -1,3 +1,0 @@
-# django
-
-::: optimade.filtertransformers.django

@@ -149,7 +149,7 @@ def test_list_length_comparisons_aliased(check_response, check_error_response):
             request,
             expected_status=501,
             expected_title="NotImplementedError",
-            expected_detail="LENGTH is not supported for nsites",
+            expected_detail="LENGTH is not supported for 'nsites'",
         )
     else:
         check_response(request, expected_ids)
@@ -192,6 +192,10 @@ def test_list_has_only(check_response):
     expected_ids = ["mpf_1"]
     check_response(request, expected_ids)
 
+    request = '/structures?filter=elements HAS ONLY "Ac" AND nelements IS KNOWN'
+    expected_ids = ["mpf_1"]
+    check_response(request, expected_ids)
+
 
 def test_list_correlated(check_error_response):
     request = '/structures?filter=elements:elements_ratios HAS "Ag":"0.2"'
@@ -206,39 +210,57 @@ def test_list_correlated(check_error_response):
 
 
 def test_timestamp_query(check_response):
-    from optimade.server.warnings import TimestampNotRFCCompliant
 
     request = '/structures?filter=last_modified="2019-06-08T05:13:37.331Z"&page_limit=5'
     expected_ids = ["mpf_1", "mpf_2", "mpf_3"]
-    if CONFIG.database_backend == SupportedBackend.ELASTIC:
-        check_response(request, expected_ids, expected_as_is=True)
-    else:
-        with pytest.warns(TimestampNotRFCCompliant):
-            check_response(request, expected_ids, expected_as_is=True)
+    expected_warnings = None
+    if CONFIG.database_backend in (
+        SupportedBackend.MONGOMOCK,
+        SupportedBackend.MONGODB,
+    ):
+        expected_warnings = [{"title": "TimestampNotRFCCompliant"}]
+    check_response(
+        request, expected_ids, expected_as_is=True, expected_warnings=expected_warnings
+    )
 
     request = '/structures?filter=last_modified<"2019-06-08T05:13:37.331Z"&page_limit=5'
     expected_ids = ["mpf_3819"]
-    if CONFIG.database_backend == SupportedBackend.ELASTIC:
-        check_response(request, expected_ids, expected_as_is=True)
-    else:
-        with pytest.warns(TimestampNotRFCCompliant):
-            check_response(request, expected_ids, expected_as_is=True)
+    expected_warnings = None
+    if CONFIG.database_backend in (
+        SupportedBackend.MONGOMOCK,
+        SupportedBackend.MONGODB,
+    ):
+        expected_warnings = [{"title": "TimestampNotRFCCompliant"}]
+    check_response(
+        request, expected_ids, expected_as_is=True, expected_warnings=expected_warnings
+    )
 
     request = '/structures?filter=last_modified="2018-06-08T05:13:37.945Z"&page_limit=5'
     expected_ids = ["mpf_3819"]
-    if CONFIG.database_backend == SupportedBackend.ELASTIC:
-        check_response(request, expected_ids, expected_as_is=True)
-    else:
-        with pytest.warns(TimestampNotRFCCompliant):
-            check_response(request, expected_ids, expected_as_is=True)
+    expected_warnings = None
+    if CONFIG.database_backend in (
+        SupportedBackend.MONGOMOCK,
+        SupportedBackend.MONGODB,
+    ):
+        expected_warnings = [{"title": "TimestampNotRFCCompliant"}]
+    check_response(
+        request, expected_ids, expected_as_is=True, expected_warnings=expected_warnings
+    )
 
     request = '/structures?filter=last_modified>"2018-06-08T05:13:37.945Z" AND last_modified<="2019-06-08T05:13:37.331Z"&page_limit=5'
     expected_ids = ["mpf_1", "mpf_2", "mpf_3"]
-    if CONFIG.database_backend == SupportedBackend.ELASTIC:
-        check_response(request, expected_ids, expected_as_is=True)
-    else:
-        with pytest.warns(TimestampNotRFCCompliant):
-            check_response(request, expected_ids, expected_as_is=True)
+    expected_warnings = None
+    if CONFIG.database_backend in (
+        SupportedBackend.MONGOMOCK,
+        SupportedBackend.MONGODB,
+    ):
+        expected_warnings = [
+            {"title": "TimestampNotRFCCompliant"},
+            {"title": "TimestampNotRFCCompliant"},
+        ]
+    check_response(
+        request, expected_ids, expected_as_is=True, expected_warnings=expected_warnings
+    )
 
 
 def test_is_known(check_response):
@@ -378,9 +400,9 @@ def test_filter_on_relationships(check_response, check_error_response):
     if CONFIG.database_backend == SupportedBackend.ELASTIC:
         check_error_response(
             request,
-            expected_status=400,
-            expected_title="Bad Request",
-            expected_detail="references is not a searchable quantity",
+            expected_status=501,
+            expected_title="NotImplementedError",
+            expected_detail="Unable to filter on relationships with type 'references'",
         )
         pytest.xfail("Elasticsearch backend does not support relationship filtering.")
     check_response(request, expected_ids)
@@ -401,3 +423,81 @@ def test_filter_on_relationships(check_response, check_error_response):
         expected_title="NotImplementedError",
         expected_detail=error_detail,
     )
+
+
+@pytest.mark.xfail(
+    CONFIG.database_backend == SupportedBackend.MONGOMOCK,
+    reason=(
+        "mongomock<=3.22.1 has a bug that causes {'$size': 1} queries on missing fields to match all documents: "
+        "(https://github.com/mongomock/mongomock/issues/710). This check can be removed once mongomock 3.22.2 has been released."
+    ),
+)
+def test_filter_on_unknown_fields(check_response, check_error_response):
+
+    request = "/structures?filter=unknown_field = 1"
+    error_detail = "'unknown_field' is not a known or searchable quantity"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail=error_detail,
+    )
+
+    request = "/structures?filter=_exmpl_unknown_field = 1"
+    error_detail = "'_exmpl_unknown_field' is not a known or searchable quantity"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail=error_detail,
+    )
+
+    request = "/structures?filter=_exmpl_unknown_field LENGTH 1"
+    error_detail = "'_exmpl_unknown_field' is not a known or searchable quantity"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail=error_detail,
+    )
+
+    request = "/structures?filter=_exmpl1_unknown_field = 1"
+    expected_ids = []
+    expected_warnings = [
+        {
+            "title": "UnknownProviderProperty",
+            "detail": "Field '_exmpl1_unknown_field' has an unrecognised prefix: this property has been treated as UNKNOWN.",
+        }
+    ]
+    check_response(
+        request, expected_ids=expected_ids, expected_warnings=expected_warnings
+    )
+
+    request = "/structures?filter=_exmpl1_unknown_field LENGTH 1"
+    expected_ids = []
+    expected_warnings = [
+        {
+            "title": "UnknownProviderProperty",
+            "detail": "Field '_exmpl1_unknown_field' has an unrecognised prefix: this property has been treated as UNKNOWN.",
+        }
+    ]
+    check_response(
+        request, expected_ids=expected_ids, expected_warnings=expected_warnings
+    )
+
+    request = '/structures?filter=_exmpl1_unknown_field HAS "Si"'
+    expected_ids = []
+    expected_warnings = [
+        {
+            "title": "UnknownProviderProperty",
+            "detail": "Field '_exmpl1_unknown_field' has an unrecognised prefix: this property has been treated as UNKNOWN.",
+        }
+    ]
+    check_response(
+        request, expected_ids=expected_ids, expected_warnings=expected_warnings
+    )
+
+    # Should not warn as the "_optimade" prefix is registered
+    request = "/structures?filter=_optimade_random_field = 1"
+    expected_ids = []
+    check_response(request, expected_ids=expected_ids)
