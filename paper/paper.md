@@ -1,5 +1,5 @@
 ---
-title: 'optimade-python-tools: a Python library for implementing and consuming materials data via OPTIMADE APIs'
+title: '`optimade-python-tools`: a Python library for implementing and consuming materials data via OPTIMADE APIs'
 tags:
   - Python
   - REST API
@@ -39,36 +39,53 @@ affiliations:
  - name: Polyneme LLC
    index: 7
 
-date: May 2021
+date: June 2021
 bibliography: paper.bib
 ---
 
 # Summary
 
 <!--Follow similar spiel to OPTIMADE paper:-->
-- advent of high-throughput computing, software and theory maturity, availability of compute power have lead to explosion of computational data.
-- can be directly compared to high-quality measurements of crystal structures curated over many years
-- this data is increasingly being made available via public APIs, such as...
-- The OPTIMADE API specification was created to enable interoperability and machine-actionable APIs from multiple data providers
+<!--- advent of high-throughput computing, software and theory maturity, availability of compute power have lead to explosion of computational data.-->
+<!--- can be directly compared to high-quality measurements of crystal structures curated over many years-->
+<!--- this data is increasingly being made available via public APIs, such as...-->
+<!--- The OPTIMADE API specification was created to enable interoperability and machine-actionable APIs from multiple data providers-->
+
+In recent decades, improvements in algorithms, hardware and theory have enabled crystalline materials to be studied at the atomistic level with great accuracy and speed.
+To enable dissemination, reproducibility, and reuse, many digital crystal structure databases have been created and curated, ready for comparison with existing infrastructure storing structural characterizations of real crystals.
+These databases are often made available with bespoke, application programming interfaces (APIs) to allow for automated, and often open, access to the underlying data.
+Such esoteric APIs incur maintenance and usability costs upon both the data providers and consumers, neither of whom may necessarily be software specialists.
+
+The OPTIMADE API specification [@andersen2021optimade; @OPTIMADE_spec], released in July 2020, aimed to reduce these costs by designing a common API for use across a consortium of collaborating materials databases.
+Whilst based on the robust JSON:API standard [@JSONAPI], the OPTIMADE API specification presents several domain-specific features and requirements that can be tricky to implement for non-specialist teams.
+The package presented here, `optimade-python-tools`, provides a modular reference server implementation and a set of associated tools to accelerate the development process for data providers, toolmakers and end-users themselves.
 
 # Statement of need
 
-In order to accommodate existing APIs, the OPTIMADE specification allows for flexibility in the specific data served but enforces its own simple, but domain-specific, filter language.
-This flexibility could be daunting to database implementers and maintainers and could act to only increase the activation barrier to hosting an API.
-`optimade-python-tools` catalyse the creation of APIs from existing and new data sources by providing a configurable and modular reference server implementation for hosting materials data in an OPTIMADE-compliant way.
-The package leverages the modern Python libraries pydantic [@pydantic] and FastAPI [@FastAPI] to specify the data models and API routes defined in the OPTIMADE specification in a machine-readable OpenAPI format and allows for fast integration with databases that employ the popular MongoDB [@MongoDB] and Elasticsearch [@Elasticsearch] backends.
+In order to accommodate existing materials database APIs, the OPTIMADE specification allows for flexibility in the specific data served but enforces a simple, but domain-specific, filter language on well-defined resources.
+This flexibility could be daunting to database implementers and maintainers and could act to increase the activation barrier to hosting an API.
+`optimade-python-tools` aims to catalyse the creation of APIs from existing and new data sources by providing a configurable and modular reference server implementation for hosting materials data in an OPTIMADE-compliant way.
+The package leverages the modern Python libraries pydantic [@pydantic] and FastAPI [@FastAPI] to specify the data models and API routes defined in the OPTIMADE specification, additionally providing a schemas following the OpenAPI format [@OpenAPI].
+Two storage back-ends are supported out of the box, with full filter support for databases that employ the popular MongoDB [@MongoDB] or Elasticsearch [@Elasticsearch] frameworks.
 
 # Functionality
 
-- define lark grammar for filter language
-- abstracts transformations to database queries and provides concrete interfaces to common database backends
-- defines data models for validation and serialization with machine-readable JSON schemas
-- a reference web server using FastAPI and a corresponding OpenAPI specification that defines API endpoints and appropriately serializes responses
-- an implementation validator that performs HTTP queries against remote OPTIMADE APIs, with test queries and expected responses generated dynamically based on the data served at the introspective endpoints `/info/` endpoints of the API.
+The modular functionality of `optimade-python-tools` can be broken down by the different stages of a user query to the reference server.
+Consider the following query URL: `optimade.example.org/v1/structures?filter=chemical_formula_anonymous="ABC"`.
+This query should match any crystal structures in the database with a composition that consists of any three elements in a 1:1:1 ratio.
+
+1. After routing the query to the appropriate `/structures/` endpoint adhering to `v1` of the specification, the filter string `chemical_formula_anonymous="ABC"` is tokenized and parsed into an abstract tree by a `FilterParser` object using the Lark parsing library [@Lark] against the Extended Backus-Naur Form (EBNF) grammar defined by the specification.
+2. The abstract tree is then transformed by a `FilterTransformer` object into a database query specific to the configured back-end for the server.
+This transformation can include aliasing and custom transformations such that the underlying database format can be accommodates.
+3. The results from the database query are then deserialized by `EntryResourceMapper` objects into the OPTIMADE-defined data models and then re-serialized into JSON before being served to the user over HTTP.
+
+Beyond this query functionality, the package also provides:
+- A fuzzy implementation validator that performs HTTP queries against remote OPTIMADE APIs, with test queries and expected responses generated dynamically based on the data served at the introspective `/info/` endpoints of the API implementation.
+- Entry "adapters" that can convert between OPTIMADE-compliant entries and the data models of the popular Python libraries `pymatgen` [@pymatgen] and `ase` (the Atomic Simulation Environment) [@ASE].
 
 # Use cases
 
-OPT is used in production by three major data providers for atomistic modelling:
+The package is currently used in production by three major data providers for atomistic data:
 
 - The Materials Project uses `optimade-python-tools` alongside their existing API [@MAPI] and MongoDB database, providing access to highly-curated density-functional theory calculations across all known inorganic materials. `optimade-python-tools` handles filter parsing, database query generation and response validation by running the reference server implementation with minimal configuration.
 - The NoMaD Repository and Archive integrates the `optimade-python-tools` server in an existing web app and uses the Elasticsearch implementation of the filtering module to allow access to 100M(?) published first-principles calculations submitted by users.
