@@ -71,7 +71,12 @@ Two storage back-ends are supported out of the box, with full filter support for
 # Functionality
 
 The modular functionality of `optimade-python-tools` can be broken down by the different stages of a user query to the reference server.
-Consider the following query URL: `optimade.example.org/v1/structures?filter=chemical_formula_anonymous="ABC"`.
+Consider the following query URL:
+
+```
+optimade.example.org/v1/structures?filter=chemical_formula_anonymous="ABC"
+```
+
 This query should match any crystal structures in the database with a composition that consists of any three elements in a 1:1:1 ratio.
 
 1. After routing the query to the appropriate `/structures/` endpoint adhering to `v1` of the specification, the filter string `chemical_formula_anonymous="ABC"` is tokenized and parsed into an abstract tree by a `FilterParser` object using the Lark parsing library [@Lark] against the Extended Backus-Naur Form (EBNF) grammar defined by the specification.
@@ -80,6 +85,7 @@ This transformation can include aliasing and custom transformations such that th
 3. The results from the database query are then deserialized by `EntryResourceMapper` objects into the OPTIMADE-defined data models and then re-serialized into JSON before being served to the user over HTTP.
 
 Beyond this query functionality, the package also provides:
+
 - A fuzzy implementation validator that performs HTTP queries against remote OPTIMADE APIs, with test queries and expected responses generated dynamically based on the data served at the introspective `/info/` endpoints of the API implementation.
 - Entry "adapters" that can convert between OPTIMADE-compliant entries and the data models of the popular Python libraries `pymatgen` [@pymatgen] and `ase` (the Atomic Simulation Environment) [@ASE].
 
