@@ -5,7 +5,7 @@
          "description" : "Heroku instance tracking 'master' branch of optimade-python-tools"
       },
       {
-         "url" : "https://dev-aiida-dev.materialscloud.org/optimade-sample/optimade",
+         "url" : "https://aiida.materialscloud.org/optimade-sample/optimade",
          "description" : "Database with example structures for OPTIMADE tests."
       }
    ]
