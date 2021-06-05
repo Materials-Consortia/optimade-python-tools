@@ -14,19 +14,24 @@ authors:
     orcid:  0000-0002-1182-9098
     affiliation: "1, 2"
   - name: Casper Andersen
+    orcid: 0000-0002-2547-155X
     affiliation: 3
   - name: Shyam Dwaraknath
+    orcid: 0000-0003-0289-2607
     affiliation: 4
   - name: Markus Scheidgen
+    orcid: 0000-0002-8038-2277
     affiliation: 5
   - name: Ádám Fekete
-    affiliation: "2, 6"
+    orcid: 0000-0002-6263-897X
+    affiliation: "1, 6, 8"
   - name: Donald Winston
+    orcid: 0000-0002-8424-0604
     affiliation: "4, 7"
 affiliations:
- - name: Theory of Condensed Matter Group, Cavendish Laboratory, University of Cambridge, J. J. Thomson Avenue, Cambridge, CB3 0HE, U.K.
-   index: 1
  - name: Institut de la Matière Condensée et des Nanosciences, Université catholique de Louvain, Chemin des Étoiles 8, Louvain-la-Neuve 1348, Belgium
+   index: 1
+ - name: Theory of Condensed Matter Group, Cavendish Laboratory, University of Cambridge, J. J. Thomson Avenue, Cambridge, CB3 0HE, U.K.
    index: 2
  - name: EPFL
    index: 3
@@ -38,6 +43,8 @@ affiliations:
    index: 6
  - name: Polyneme LLC
    index: 7
+ - name: KCL
+   index: 8
 
 date: June 2021
 bibliography: paper.bib
@@ -103,3 +110,5 @@ The package is currently used in production by three major data providers for at
 OPT can also be used in client code; one application that the OPTIMADE specification enables is cross-origin queries. The-->
 
 # Acknowledgements
+
+M.E. would like to acknowledge the EPSRC Centre for Doctoral Training in Computational Methods for Materials Science for funding under grant number EP/L015552/1 and support from the European Union's Horizon 2020 research and innovation program under the European Union's Grant agreement No. 951786 (NOMAD CoE).
