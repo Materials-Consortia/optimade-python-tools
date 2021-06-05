@@ -91,7 +91,7 @@ This query should match any crystal structures in the database with a compositio
 This transformation can include aliasing and custom transformations such that the underlying database format can be accommodates.
 3. The results from the database query are then deserialized by `EntryResourceMapper` objects into the OPTIMADE-defined data models and then re-serialized into JSON before being served to the user over HTTP.
 
-![Anatomy of an OPTIMADE query handled by the library.\label{fig:query}](./query.svg)
+![Anatomy of an OPTIMADE query handled by the library.\label{fig:query}](./query.pdf)
 
 Beyond this query functionality, the package also provides:
 
