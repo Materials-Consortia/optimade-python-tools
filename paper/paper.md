@@ -41,7 +41,7 @@ affiliations:
    index: 5
  - name: Namur
    index: 6
- - name: Polyneme LLC
+ - name: Polyneme LLC, New York, NY, USA
    index: 7
  - name: KCL
    index: 8
@@ -58,21 +58,21 @@ bibliography: paper.bib
 <!--- this data is increasingly being made available via public APIs, such as...-->
 <!--- The OPTIMADE API specification was created to enable interoperability and machine-actionable APIs from multiple data providers-->
 
-In recent decades, improvements in algorithms, hardware, and theory have enabled crystalline materials to be studied at the atomistic level with great accuracy and speed.
+In recent decades, improvements in algorithms, hardware, and theory have enabled crystalline materials to be studied computationally at the atomistic level with great accuracy and speed.
 To enable dissemination, reproducibility, and reuse, many digital crystal structure databases have been created and curated, ready for comparison with existing infrastructure storing structural characterizations of real crystals.
 These databases have been made available with bespoke application programming interfaces (APIs) to allow for automated and often open access to the underlying data.
 Such esoteric APIs incur maintenance and usability costs upon both the data providers and consumers, who may not be software specialists.
 
 The OPTIMADE API specification [@andersen2021optimade; @OPTIMADE_spec], released in July 2020, aimed to reduce these costs by designing a common API for use across a consortium of collaborating materials databases.
 Whilst based on the robust JSON:API standard [@JSONAPI], the OPTIMADE API specification presents several domain-specific features and requirements that can be tricky to implement for non-specialist teams.
-The package presented here, `optimade-python-tools`, provides a modular reference server implementation and a set of associated tools to accelerate the development process for data providers, toolmakers and end-users themselves.
+The package presented here, `optimade-python-tools`, provides a modular reference server implementation and a set of associated tools to accelerate the development process for data providers, toolmakers and end-users.
 
 # Statement of need
 
 In order to accommodate existing materials database APIs, the OPTIMADE specification allows for flexibility in the specific data served but enforces a simple, but domain-specific, filter language on well-defined resources.
 This flexibility could be daunting to database implementers and maintainers and could act to increase the activation barrier to hosting an API.
 `optimade-python-tools` aims to catalyse the creation of APIs from existing and new data sources by providing a configurable and modular reference server implementation for hosting materials data in an OPTIMADE-compliant way.
-The package leverages the modern Python libraries pydantic [@pydantic] and FastAPI [@FastAPI] to specify the data models and API routes defined in the OPTIMADE specification, additionally providing a schemas following the OpenAPI format [@OpenAPI].
+The package leverages the modern Python libraries pydantic [@pydantic] and FastAPI [@FastAPI] to specify the data models and API routes defined in the OPTIMADE specification, additionally providing a schema following the OpenAPI format [@OpenAPI].
 Two storage back-ends are supported out of the box, with full filter support for databases that employ the popular MongoDB [@MongoDB] or Elasticsearch [@Elasticsearch] frameworks.
 
 # Functionality
@@ -81,14 +81,14 @@ The modular functionality of `optimade-python-tools` can be broken down by the d
 Consider the following query URL:
 
 ```
-optimade.example.org/v1/structures?filter=chemical_formula_anonymous="ABC"
+https://optimade.example.org/v1/structures?filter=chemical_formula_anonymous="ABC"
 ```
 
 This query should match any crystal structures in the database with a composition that consists of any three elements in a 1:1:1 ratio. The "anatomy" of this query is displayed in Figure \ref{fig:query}.
 
 1. After routing the query to the appropriate `/structures/` endpoint adhering to `v1` of the specification, the filter string `chemical_formula_anonymous="ABC"` is tokenized and parsed into an abstract tree by a `FilterParser` object using the Lark parsing library [@Lark] against the Extended Backus-Naur Form (EBNF) grammar defined by the specification.
 2. The abstract tree is then transformed by a `FilterTransformer` object into a database query specific to the configured back-end for the server.
-This transformation can include aliasing and custom transformations such that the underlying database format can be accommodates.
+This transformation can include aliasing and custom transformations such that the underlying database format can be accommodated.
 3. The results from the database query are then deserialized by `EntryResourceMapper` objects into the OPTIMADE-defined data models and then re-serialized into JSON before being served to the user over HTTP.
 
 ![Anatomy of an OPTIMADE query handled by the library.\label{fig:query}](./query.pdf)
