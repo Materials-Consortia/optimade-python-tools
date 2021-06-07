@@ -94,7 +94,7 @@ def validate():  # pragma: no cover
     parser.add_argument(
         "--headers",
         type=json.loads,
-        help="Additional HTTP headers to use for each request, specified as a JSON document.",
+        help="Additional HTTP headers to use for each request, specified as a JSON object.",
     )
 
     args = vars(parser.parse_args())

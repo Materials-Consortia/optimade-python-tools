@@ -163,7 +163,7 @@ class ValidatorResults:
 class Client:  # pragma: no cover
     def __init__(
         self, base_url: str, max_retries: int = 5, headers: Dict[str, str] = None
-    ):
+    ) -> None:
         """Initialises the Client with the given `base_url` without testing
         if it is valid.
 
@@ -183,9 +183,7 @@ class Client:  # pragma: no cover
         self.last_request = None
         self.response = None
         self.max_retries = max_retries
-        self.headers = headers
-        if self.headers is None:
-            self.headers = {}
+        self.headers = headers or {}
 
     def get(self, request: str):
         """Makes the given request, with a number of retries if being rate limited. The
