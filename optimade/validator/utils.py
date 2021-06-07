@@ -173,10 +173,13 @@ class Client:  # pragma: no cover
 
                 Examples:
 
-                    - `'http://example.org/optimade/v1'`,
-                    - `'www.crystallography.net/cod-test/optimade/v0.10.0/'`
+                - `'http://example.org/optimade/v1'`,
+                - `'www.crystallography.net/cod-test/optimade/v0.10.0/'`
 
                 Note: A maximum of one slash ("/") is allowed as the last character.
+
+            max_retries: The maximum number of attempts to make for each query.
+            headers: Dictionary of additional headers to add to every request.
 
         """
         self.base_url = base_url
