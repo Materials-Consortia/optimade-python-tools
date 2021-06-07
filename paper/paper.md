@@ -35,7 +35,7 @@ affiliations:
    index: 2
  - name: EPFL
    index: 3
- - name: LLBL
+ - name: Lawrence Berkeley National Laboratory, Berkeley, CA, USA
    index: 4
  - name: FHI
    index: 5
@@ -58,10 +58,10 @@ bibliography: paper.bib
 <!--- this data is increasingly being made available via public APIs, such as...-->
 <!--- The OPTIMADE API specification was created to enable interoperability and machine-actionable APIs from multiple data providers-->
 
-In recent decades, improvements in algorithms, hardware and theory have enabled crystalline materials to be studied at the atomistic level with great accuracy and speed.
+In recent decades, improvements in algorithms, hardware, and theory have enabled crystalline materials to be studied at the atomistic level with great accuracy and speed.
 To enable dissemination, reproducibility, and reuse, many digital crystal structure databases have been created and curated, ready for comparison with existing infrastructure storing structural characterizations of real crystals.
-These databases are often made available with bespoke, application programming interfaces (APIs) to allow for automated, and often open, access to the underlying data.
-Such esoteric APIs incur maintenance and usability costs upon both the data providers and consumers, neither of whom may necessarily be software specialists.
+These databases have been made available with bespoke application programming interfaces (APIs) to allow for automated and often open access to the underlying data.
+Such esoteric APIs incur maintenance and usability costs upon both the data providers and consumers, who may not be software specialists.
 
 The OPTIMADE API specification [@andersen2021optimade; @OPTIMADE_spec], released in July 2020, aimed to reduce these costs by designing a common API for use across a consortium of collaborating materials databases.
 Whilst based on the robust JSON:API standard [@JSONAPI], the OPTIMADE API specification presents several domain-specific features and requirements that can be tricky to implement for non-specialist teams.
