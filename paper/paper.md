@@ -109,7 +109,6 @@ The package is currently used in production by three major data providers for ma
 - Materials Cloud [@MaterialsCloud] uses `optimade-python-tools` as a library to provide an OPTIMADE API entry to archived computational materials studies, created with the AiiDA [@AiiDA] Python framework and published through their archive.
 In this case, each individual study and archive entry has its own database and separate API entry.
 The Python classes within the `optimade` package have been extended to make use of AiiDA and its underlying PostgreSQL [@PostgreSQL] storage engine.
-- ODBX uses `optimade-python-tools` ...
 
 <!-- Could also mention clients/gateway/consortia infrastructure like the dashboard here?
 OPT can also be used in client code; one application that the OPTIMADE specification enables is cross-origin queries. The-->
