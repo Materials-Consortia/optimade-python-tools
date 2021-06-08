@@ -71,7 +71,7 @@ The repository presented here, `optimade-python-tools`, provides a modular refer
 # Statement of need
 
 In order to accommodate existing materials database APIs, the OPTIMADE API specification allows for flexibility in the specific data served, but enforces a simple yet domain-specific filter language on well-defined resources.
-This flexibility could be daunting to database providers and maintainers, likely acting to increase the barrier and willingness for hosting an OPTIMADE REST API.
+However, this flexibility could be daunting to database providers, likely acting to increase the barrier to hosting an OPTIMADE REST API.
 `optimade-python-tools` aims to catalyse the creation of APIs from existing and new data sources by providing a configurable and modular reference server implementation for hosting materials data in an OPTIMADE-compliant way.
 The repository hosts the `optimade` Python package, which leverages the modern Python libraries pydantic [@pydantic] and FastAPI [@FastAPI] to specify the data models and API routes defined in the OPTIMADE API specification, additionally providing a schema following the OpenAPI format [@OpenAPI].
 Two storage back-ends are supported out of the box, with full filter support for databases that employ the popular MongoDB [@MongoDB] or Elasticsearch [@Elasticsearch] frameworks.
