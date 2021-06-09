@@ -108,7 +108,7 @@ The package is currently used in production by three major data providers for ma
 - NOMAD [@nomad] uses the `optimade-python-tools` as a library to extend its existing web app with OPTIMADE API routes.
  It uses the Elasticsearch implementation to filter millions of structures from published first-principles calculations provided by users and other projects.
 NOMAD also uses the filtering module in its own API to expose the Optimade filter language in it's web interface search bar. 
-NOMAD uses a released version of `optimade-python-tools` and all necessary customization could be realized via configuration and sub-classing.
+NOMAD uses a released version of `optimade-python-tools` and all necessary customization can be realized via configuration and sub-classing.
 - Materials Cloud [@MaterialsCloud] uses `optimade-python-tools` as a library to provide an OPTIMADE API entry to archived computational materials studies, created with the AiiDA [@AiiDA] Python framework and published through their archive.
 In this case, each individual study and archive entry has its own database and separate API entry.
 The Python classes within the `optimade` package have been extended to make use of AiiDA and its underlying PostgreSQL [@PostgreSQL] storage engine.
