@@ -146,7 +146,7 @@ class SemanticVersion(str):
     def validate(cls, v: str):
         if not cls.regex.match(v):
             raise ValueError(
-                f"Unable to validate the version string {v!r} as a semantic version (<major.minor.patch>)."
+                f"Unable to validate the version string {v!r} as a semantic version (expected <major>.<minor>.<patch>)."
                 "See https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string for more information."
             )
 

@@ -50,7 +50,7 @@ def test_available_api_versions():
         with pytest.raises(ValueError) as exc:
             AvailableApiVersion(**data)
         assert (
-            f"Unable to validate version string {data['version']!r} as a semantic version (<major>.<minor>.<patch>)"
+            f"Unable to validate the version string {data['version']!r} as a semantic version (expected <major>.<minor>.<patch>)"
             in exc.exconly()
         ), f"SemVer validator not triggered as it should.\nException message: {exc.exconly()}.\nInputs: {data}"
 
