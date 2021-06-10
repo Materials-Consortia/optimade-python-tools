@@ -4,6 +4,7 @@ from optimade.models import (
     StructureResource,
     ReferenceResource,
 )
+from optimade.server.exceptions import POSSIBLE_ERRORS
 
 ENTRY_INFO_SCHEMAS = {
     "structures": StructureResource.schema,
@@ -11,10 +12,9 @@ ENTRY_INFO_SCHEMAS = {
 }
 
 ERROR_RESPONSES = {
-    status_code: {"model": ErrorResponse}
-    for status_code in [400, 403, 404, 422, 500, 501, 553]
+    err.status_code: {"model": ErrorResponse, "description": err.title}
+    for err in POSSIBLE_ERRORS
 }
-ERROR_RESPONSES[553].update({"description": "Version Not Supported"})
 
 
 def retrieve_queryable_properties(
