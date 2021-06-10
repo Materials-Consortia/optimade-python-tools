@@ -1,16 +1,20 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.15.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.3) (2021-06-10)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.2...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.2...v0.15.3)
 
-**Implemented enhancements:**
+**Merged pull requests:**
 
-- Missing HTTP response codes in OpenAPI schema [\#763](https://github.com/Materials-Consortia/optimade-python-tools/issues/763)
+- Update model descriptions following spec updates [\#847](https://github.com/Materials-Consortia/optimade-python-tools/pull/847) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.15.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.2) (2021-06-10)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.1...v0.15.2)
+
+**Implemented enhancements:**
+
+- Missing HTTP response codes in OpenAPI schema [\#763](https://github.com/Materials-Consortia/optimade-python-tools/issues/763)
 
 **Merged pull requests:**
 
