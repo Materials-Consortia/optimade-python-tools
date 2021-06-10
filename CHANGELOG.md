@@ -1,5 +1,23 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.2...HEAD)
+
+**Implemented enhancements:**
+
+- Missing HTTP response codes in OpenAPI schema [\#763](https://github.com/Materials-Consortia/optimade-python-tools/issues/763)
+
+## [v0.15.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.2) (2021-06-10)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.1...v0.15.2)
+
+**Merged pull requests:**
+
+- Update response model information for routes [\#846](https://github.com/Materials-Consortia/optimade-python-tools/pull/846) ([CasperWA](https://github.com/CasperWA))
+- Improve semver validation error messsage [\#845](https://github.com/Materials-Consortia/optimade-python-tools/pull/845) ([ml-evs](https://github.com/ml-evs))
+- Bump codecov/codecov-action from 1.5.0 to 1.5.2 [\#843](https://github.com/Materials-Consortia/optimade-python-tools/pull/843) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.15.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.1) (2021-06-08)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.0...v0.15.1)
