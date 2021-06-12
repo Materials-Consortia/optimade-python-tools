@@ -4,7 +4,7 @@ Since the server implementation is built with [FastAPI](https://fastapi.tiangolo
 This way of handling configuration options supports various different approaches to configure the server.
 We recommend either or a combination of the following:
 
-. Create a custom [`ServerConfig`][optimade.server.config.ServerConfig] object with the desired settings directly.
+1. Create a custom [`ServerConfig`][optimade.server.config.ServerConfig] object with the desired settings directly.
 2. Set environment variables prefixed with `OPTIMADE_` or `optimade_`.
 3. Create a JSON or YAML configuration file with an implementation's complete configuration in the default location [DEFAULT_CONFIG_FILE_PATH][optimade.server.config.DEFAULT_CONFIG_FILE_PATH] or specify its location with the `OPTIMADE_CONFIG_FILE` environment variable.
 4. Load settings from a secret file Settings from secret file (see [pydantic documentation](https://pydantic-docs.helpmanual.io/usage/settings/#secret-support) for more information).
