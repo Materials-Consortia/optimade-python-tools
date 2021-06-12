@@ -1,13 +1,13 @@
 # Integrate with an existing web application
 
-OPTIMADE Python tools (OPT) can be run as a standalone web application that serves the OPTIMADE API based on a pre-configured MongoDB backend.
-In this document, we are going to use OPT differently and use it to add an OPTIMADE API implementation to an existing application with an existing Elasticsearch-based database.
+`optimade-python-tools` (OPT) can be run as a standalone web application that serves the OPTIMADE API based on a pre-configured MongoDB backend.
+In this document, we are going to use OPT differently and use it to add an OPTIMADE API implementation alongside an existing API employing an Elasticsearch storage layer.
 
-Let's assume we already have a *FastAPI* application that runs an unrelated web service, and that we use an Elasticsearch backend that contains all structure data, but not necessarily into a form that OPT expects.
+Let's assume we already have a *FastAPI* application that runs an unrelated web service, and that we use an Elasticsearch backend that contains all structure data, but not necessarily into a form that OPTIMADE expects.
 
-## Providing an OPTIMADE Python tools configuration
+## Providing an `optimade-python-tools` configuration
 
-OPT reads its configuration from a file.
+OPT can read its configuration from a JSON file.
 It uses the `OPTIMADE_CONFIG_FILE` environment variable (or a default path) to find the config file.
 If you run OPT from another application, you might want to provide this config file as part of the source code and not via environment variables.
 Let's say you have a file `optimade_config.json` as part of the Python module that you use to create your OPT.
@@ -42,7 +42,7 @@ You can imagine that `MyElasticsearchStructureCollection` either sub-classes the
 ## Mounting the OPTIMADE Python tools *FastAPI* app into an existing *FastAPI* app
 
 Let's assume you have an existing *FastAPI* app `my_app`.
-It already adds a few routers under certain path prefixes and now you want to add the OPT API implementation under the path prefix `/optimade`.
+It already adds a few routers under certain path prefixes and now you want to add an OPTIMADE implementation under the path prefix `/optimade`.
 First, you have to set the `root_path` in the OPT configuration.
 Now, the OPT app expects all requests being prefixed with `/optimade`.
 Of course, you can also set the value in your OPT config file.
