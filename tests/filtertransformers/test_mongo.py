@@ -2,7 +2,8 @@ import pytest
 
 from lark.exceptions import VisitError
 
-from optimade.filterparser import LarkParser, ParserError
+from optimade.filterparser import LarkParser
+from optimade.server.exceptions import BadRequest
 
 
 class TestMongoTransformer:
@@ -25,21 +26,23 @@ class TestMongoTransformer:
         assert self.transform("cell_length_a = 1") == {"cell_length_a": {"$eq": 1}}
         assert self.transform("cell_volume = 1") == {"cell_volume": {"$eq": 1}}
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("0_kvak IS KNOWN")  # starts with a number
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform('"foo bar" IS KNOWN')  # contains space; contains quotes
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("BadLuck IS KNOWN")  # contains upper-case letters
 
+    def test_provider_property_name(self):
         # database-provider-specific prefixes
         assert self.transform("_exmpl_formula_sum = 1") == {
             "_exmpl_formula_sum": {"$eq": 1}
         }
         assert self.transform("_exmpl_band_gap = 1") == {"_exmpl_band_gap": {"$eq": 1}}
 
+    def test_nested_property_names(self):
         # Nested property names
         assert self.transform("identifier1.identifierd2 = 42") == {
             "identifier1.identifierd2": {"$eq": 42}
@@ -70,19 +73,19 @@ class TestMongoTransformer:
             "m": {"$eq": float("inf")}
         }
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=1.234D12")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=.e1")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number= -.E1")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=+.E2")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=1.23E+++")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=+-123")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.transform("number=0.0.1")
 
     def test_simple_comparisons(self):
@@ -91,7 +94,9 @@ class TestMongoTransformer:
         assert self.transform("a>3") == {"a": {"$gt": 3}}
         assert self.transform("a>=3") == {"a": {"$gte": 3}}
         assert self.transform("a=3") == {"a": {"$eq": 3}}
-        assert self.transform("a!=3") == {"a": {"$ne": 3}}
+        assert self.transform("a!=3") == {
+            "$and": [{"a": {"$ne": 3}}, {"a": {"$ne": None}}]
+        }
 
     def test_id(self):
         assert self.transform('id="example/1"') == {"id": {"$eq": "example/1"}}
@@ -135,7 +140,12 @@ class TestMongoTransformer:
         ) == {
             "$and": [
                 {"chemical_formula_hill": {"$eq": "H2O"}},
-                {"chemical_formula_anonymous": {"$ne": "AB"}},
+                {
+                    "$and": [
+                        {"chemical_formula_anonymous": {"$ne": "AB"}},
+                        {"chemical_formula_anonymous": {"$ne": None}},
+                    ]
+                },
             ]
         }
         assert self.transform(
@@ -149,7 +159,12 @@ class TestMongoTransformer:
                         {"nelements": {"$gte": 10}},
                         {
                             "$nor": [
-                                {"_exmpl_x": {"$ne": "Some string"}},
+                                {
+                                    "$and": [
+                                        {"_exmpl_x": {"$ne": "Some string"}},
+                                        {"_exmpl_x": {"$ne": None}},
+                                    ]
+                                },
                                 {"_exmpl_a": {"$not": {"$eq": 7}}},
                             ]
                         },
@@ -247,44 +262,71 @@ class TestMongoTransformer:
         with pytest.raises(VisitError):
             self.transform('"some string" > "some other string"')
 
-    def test_filtering_on_relationships(self):
+    def test_filtering_on_relationships(self, mapper):
         """Test the nested properties with special names
         like "structures", "references" etc. are applied
         to the relationships field.
 
         """
+        from optimade.filtertransformers.mongo import MongoTransformer
 
-        assert self.transform('references.id HAS "dummy/2019"') == {
+        t = MongoTransformer(mapper=mapper("StructureMapper"))
+        p = LarkParser(version=self.version, variant=self.variant)
+
+        assert t.transform(p.parse('references.id HAS "dummy/2019"')) == {
             "relationships.references.data.id": {"$in": ["dummy/2019"]}
         }
 
-        assert self.transform('structures.id HAS ANY "dummy/2019", "dijkstra1968"') == {
+        assert t.transform(
+            p.parse('structures.id HAS ANY "dummy/2019", "dijkstra1968"')
+        ) == {
             "relationships.structures.data.id": {"$in": ["dummy/2019", "dijkstra1968"]}
         }
 
-        assert self.transform('structures.id HAS ALL "dummy/2019", "dijkstra1968"') == {
+        assert t.transform(
+            p.parse('structures.id HAS ALL "dummy/2019", "dijkstra1968"')
+        ) == {
             "relationships.structures.data.id": {"$all": ["dummy/2019", "dijkstra1968"]}
         }
 
-        assert self.transform('structures.id HAS ONLY "dummy/2019"') == {
+        assert t.transform(p.parse('structures.id HAS ONLY "dummy/2019"')) == {
             "$and": [
                 {"relationships.structures.data": {"$size": 1}},
                 {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
             ]
         }
 
-        assert self.transform(
-            'structures.id HAS ONLY "dummy/2019" AND structures.id HAS "dummy/2019"'
+        assert t.transform(
+            p.parse(
+                'structures.id HAS ONLY "dummy/2019" AND structures.id HAS "dummy/2019"'
+            )
         ) == {
             "$and": [
                 {
                     "$and": [
-                        {"relationships.structures.data": {"$size": 1}},
+                        {
+                            "relationships.structures.data": {
+                                "$size": 1,
+                            }
+                        },
                         {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
                     ]
                 },
                 {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},
             ],
+        }
+
+    def test_other_provider_fields(self, mapper):
+        """Test that fields from other providers generate
+        queries that treat the value of the field as `null`.
+
+        """
+        from optimade.filtertransformers.mongo import MongoTransformer
+
+        t = MongoTransformer(mapper=mapper("StructureMapper"))
+        p = LarkParser(version=self.version, variant=self.variant)
+        assert t.transform(p.parse("_other_provider_field > 1")) == {
+            "_other_provider_field": {"$gt": 1}
         }
 
     def test_not_implemented(self):
@@ -333,7 +375,7 @@ class TestMongoTransformer:
     def test_list_length_aliases(self, mapper):
         from optimade.filtertransformers.mongo import MongoTransformer
 
-        transformer = MongoTransformer(mapper=mapper("StructureMapper")())
+        transformer = MongoTransformer(mapper=mapper("StructureMapper"))
         parser = LarkParser(version=self.version, variant=self.variant)
 
         assert transformer.transform(parser.parse("elements LENGTH 3")) == {
@@ -398,7 +440,7 @@ class TestMongoTransformer:
         class MyMapper(mapper("StructureMapper")):
             ALIASES = (("last_modified", "ctime"),)
 
-        transformer = MongoTransformer(mapper=MyMapper())
+        transformer = MongoTransformer(mapper=MyMapper)
         parser = LarkParser(version=self.version, variant=self.variant)
 
         assert transformer.transform(
@@ -434,7 +476,7 @@ class TestMongoTransformer:
         class MyMapper(mapper("StructureMapper")):
             ALIASES = (("immutable_id", "_id"),)
 
-        transformer = MongoTransformer(mapper=MyMapper())
+        transformer = MongoTransformer(mapper=MyMapper)
         parser = LarkParser(version=self.version, variant=self.variant)
 
         assert transformer.transform(
@@ -443,7 +485,12 @@ class TestMongoTransformer:
 
         assert transformer.transform(
             parser.parse('immutable_id != "5cfb441f053b174410700d02"')
-        ) == {"_id": {"$ne": ObjectId("5cfb441f053b174410700d02")}}
+        ) == {
+            "$and": [
+                {"_id": {"$ne": ObjectId("5cfb441f053b174410700d02")}},
+                {"_id": {"$ne": None}},
+            ]
+        }
 
         for op in ("CONTAINS", "STARTS WITH", "ENDS WITH", "HAS"):
             with pytest.raises(
@@ -456,7 +503,11 @@ class TestMongoTransformer:
         from optimade.filtertransformers.mongo import MongoTransformer
 
         class MyMapper(mapper("StructureMapper")):
-            ALIASES = (("elements", "my_elements"), ("nelements", "nelem"))
+            ALIASES = (
+                ("elements", "my_elements"),
+                ("nelements", "nelem"),
+                ("elements_ratios", "ratios"),
+            )
             LENGTH_ALIASES = (
                 ("chemsys", "nelements"),
                 ("cartesian_site_positions", "nsites"),
@@ -464,7 +515,8 @@ class TestMongoTransformer:
             )
             PROVIDER_FIELDS = ("chemsys",)
 
-        transformer = MongoTransformer(mapper=MyMapper())
+        m = MyMapper
+        transformer = MongoTransformer(mapper=m)
         parser = LarkParser(version=self.version, variant=self.variant)
 
         assert transformer.transform(
@@ -474,11 +526,16 @@ class TestMongoTransformer:
             parser.parse("cartesian_site_positions LENGTH < 3")
         ) == {"nsites": {"$lt": 3}}
         assert transformer.transform(
-            parser.parse("cartesian_site_positions LENGTH 3")
+            parser.parse("cartesian_site_positions LENGTH = 3")
         ) == {"nsites": 3}
         assert transformer.transform(
             parser.parse("cartesian_site_positions LENGTH 3")
         ) == {"nsites": 3}
+
+        assert transformer.transform(parser.parse("elements_ratios LENGTH 3")) == {
+            "ratios": {"$size": 3}
+        }
+
         assert transformer.transform(
             parser.parse("cartesian_site_positions LENGTH >= 10")
         ) == {"nsites": {"$gte": 10}}
@@ -497,52 +554,60 @@ class TestMongoTransformer:
             "my_elements": {"$in": ["Ag"]}
         }
 
-        assert transformer.transform(parser.parse("chemsys LENGTH 3")) == {"nelem": 3}
+        assert transformer.transform(parser.parse("_exmpl_chemsys LENGTH 3")) == {
+            "nelem": 3
+        }
 
     def test_aliases(self, mapper):
-        """ Test that valid aliases are allowed, but do not affect r-values. """
+        """Test that valid aliases are allowed, but do not affect r-values."""
         from optimade.filtertransformers.mongo import MongoTransformer
 
-        class MyStructureMapper(mapper("BaseResourceMapper")):
+        class MyStructureMapper(mapper("StructureMapper")):
             ALIASES = (
                 ("elements", "my_elements"),
                 ("A", "D"),
+                ("property_a", "D"),
                 ("B", "E"),
                 ("C", "F"),
                 ("_exmpl_nested_field", "nested_field"),
             )
 
-        mapper = MyStructureMapper()
+            PROVIDER_FIELDS = ("D", "E", "F", "nested_field")
+
+        mapper = MyStructureMapper
         t = MongoTransformer(mapper=mapper)
+        p = LarkParser(version=self.version, variant=self.variant)
 
-        assert mapper.alias_for("elements") == "my_elements"
-
-        test_filter = {"elements": {"$in": ["A", "B", "C"]}}
-        assert t.postprocess(test_filter) == {"my_elements": {"$in": ["A", "B", "C"]}}
-        test_filter = {"$and": [{"elements": {"$in": ["A", "B", "C"]}}]}
-        assert t.postprocess(test_filter) == {
-            "$and": [{"my_elements": {"$in": ["A", "B", "C"]}}]
+        assert mapper.get_backend_field("elements") == "my_elements"
+        test_filter = 'elements HAS "A"'
+        assert t.transform(p.parse(test_filter)) == {"my_elements": {"$in": ["A"]}}
+        test_filter = 'elements HAS ANY "A","B","C" AND elements HAS "D"'
+        assert t.transform(p.parse(test_filter)) == {
+            "$and": [
+                {"my_elements": {"$in": ["A", "B", "C"]}},
+                {"my_elements": {"$in": ["D"]}},
+            ]
         }
-        test_filter = {"elements": "A"}
-        assert t.postprocess(test_filter) == {"my_elements": "A"}
-        test_filter = ["A", "B", "C"]
-        assert t.postprocess(test_filter) == ["A", "B", "C"]
+        test_filter = 'elements = "A"'
+        assert t.transform(p.parse(test_filter)) == {"my_elements": {"$eq": "A"}}
+        test_filter = 'property_a HAS "B"'
+        assert t.transform(p.parse(test_filter)) == {"D": {"$in": ["B"]}}
 
-        test_filter = ["A", "elements", "C"]
-        assert t.postprocess(test_filter) == ["A", "elements", "C"]
-
-        test_filter = {"_exmpl_nested_field.sub_property": {"$gt": 1234.5}}
-        assert t.postprocess(test_filter) == {
+        test_filter = "_exmpl_nested_field.sub_property > 1234.5"
+        assert t.transform(p.parse(test_filter)) == {
             "nested_field.sub_property": {"$gt": 1234.5}
         }
 
-        test_filter = {"_exmpl_nested_field.sub_property.x": {"$exists": False}}
-        assert t.postprocess(test_filter) == {
-            "nested_field.sub_property.x": {"$exists": False}
+        test_filter = "_exmpl_nested_field.sub_property.x IS UNKNOWN"
+        assert t.transform(p.parse(test_filter)) == {
+            "$or": [
+                {"nested_field.sub_property.x": {"$exists": False}},
+                {"nested_field.sub_property.x": {"$eq": None}},
+            ]
         }
 
     def test_list_properties(self):
-        """ Test the HAS ALL, ANY and optional ONLY queries. """
+        """Test the HAS ALL, ANY and optional ONLY queries."""
         assert self.transform('elements HAS ONLY "H","He","Ga","Ta"') == {
             "elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}
         }
@@ -562,7 +627,12 @@ class TestMongoTransformer:
             "$and": [
                 {"elements": {"$in": ["H"]}},
                 {"elements": {"$all": ["H", "He", "Ga", "Ta"]}},
-                {"elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}},
+                {
+                    "elements": {
+                        "$all": ["H", "He", "Ga", "Ta"],
+                        "$size": 4,
+                    }
+                },
                 {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},
             ]
         }

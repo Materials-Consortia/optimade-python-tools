@@ -1,17 +1,27 @@
+"""This submodule implements the
+[`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer],
+which takes the parsed filter and converts it to a valid pymongo/BSON query.
+"""
+
+
 import copy
 import warnings
+from typing import Dict, Any
 from lark import v_args, Token
-from optimade.filtertransformers.base_transformer import BaseTransformer
+from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
+
+
 from optimade.server.warnings import TimestampNotRFCCompliant
 
 __all__ = ("MongoTransformer",)
 
 
 class MongoTransformer(BaseTransformer):
-    """Transformer for MongoDB backend. Parses lark tree into
-    a dictionary to be passed to pymongo/mongomock. Uses
-    post-processing functions to handle aliasing and some
-    specific edge-cases for MongoDB.
+    """A filter transformer for the MongoDB backend.
+
+    Parses a lark tree into a dictionary representation to be
+    used by pymongo or mongomock. Uses post-processing functions
+    to handle some specific edge-cases for MongoDB.
 
     """
 
@@ -23,28 +33,14 @@ class MongoTransformer(BaseTransformer):
         "!=": "$ne",
         "=": "$eq",
     }
-    reversed_operator_map = {
-        "$lt": "$gt",
-        "$lte": "$gte",
-        "$gt": "$lt",
-        "$gte": "$lte",
-        "$ne": "$ne",
-        "$eq": "$eq",
-    }
 
-    def postprocess(self, query):
-        """ Used to post-process the final parsed query. """
-        if self.mapper:
-            # important to apply length alias before normal aliases
-            query = self._apply_length_aliases(query)
-            query = self._apply_aliases(query)
-
+    def postprocess(self, query: Dict[str, Any]):
+        """Used to post-process the nested dictionary of the parsed query."""
         query = self._apply_relationship_filtering(query)
         query = self._apply_length_operators(query)
         query = self._apply_unknown_or_null_filter(query)
         query = self._apply_mongo_id_filter(query)
         query = self._apply_mongo_date_filter(query)
-
         return query
 
     def value_list(self, arg):
@@ -61,11 +57,11 @@ class MongoTransformer(BaseTransformer):
 
     def value_zip(self, arg):
         # value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def value_zip_list(self, arg):
         # value_zip_list: value_zip ( "," value_zip )*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def expression(self, arg):
         # expression: expression_clause ( OR expression_clause )
@@ -81,14 +77,52 @@ class MongoTransformer(BaseTransformer):
         # expression_phrase: [ NOT ] ( comparison | "(" expression ")" )
         return self._recursive_expression_phrase(arg)
 
-    def property_first_comparison(self, arg):
+    @v_args(inline=True)
+    def property_first_comparison(self, quantity, query):
         # property_first_comparison: property ( value_op_rhs | known_op_rhs | fuzzy_string_op_rhs | set_op_rhs |
         # set_zip_op_rhs | length_op_rhs )
-        return {arg[0]: arg[1]}
+
+        # Awkwardly, MongoDB will match null fields in $ne filters,
+        # so we need to add a check for null equality in evey $ne query.
+        if "$ne" in query:
+            return {"$and": [{quantity: query}, {quantity: {"$ne": None}}]}
+
+        # Check if a $size query is being made (indicating a length_op_rhs filter); if so, check for
+        # a defined length alias to replace the $size call with the corresponding filter on the
+        # length quantity then carefully merge the two queries.
+        #
+        # e.g. `("elements", {"$size": 2, "$all": ["Ag", "Au"]})` should become
+        # `{"elements": {"$all": ["Ag", "Au"]}, "nelements": 2}` if the `elements` -> `nelements`
+        # length alias is defined.
+        if "$size" in query:
+            if (
+                getattr(self.backend_mapping.get(quantity), "length_quantity", None)
+                is not None
+            ):
+                size_query = {
+                    self.backend_mapping[
+                        quantity
+                    ].length_quantity.backend_field: query.pop("$size")
+                }
+
+                final_query = {}
+                if query:
+                    final_query = {quantity: query}
+                for q in size_query:
+                    if q in final_query:
+                        final_query[q].update(size_query[q])
+                    else:
+                        final_query[q] = size_query[q]
+
+                return final_query
+
+        return {quantity: query}
 
     def constant_first_comparison(self, arg):
         # constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )
-        return {arg[2]: {self.reversed_operator_map[self.operator_map[arg[1]]]: arg[0]}}
+        return {
+            arg[2]: {self.operator_map[self._reversed_operator_map[arg[1]]]: arg[0]}
+        }
 
     @v_args(inline=True)
     def value_op_rhs(self, operator, value):
@@ -141,12 +175,20 @@ class MongoTransformer(BaseTransformer):
             f"set_op_rhs not implemented for use with OPERATOR. Given: {arg}"
         )
 
+    def property(self, args):
+        # property: IDENTIFIER ( "." IDENTIFIER )*
+        quantity = super().property(args)
+        if isinstance(quantity, Quantity):
+            quantity = quantity.backend_field
+
+        return ".".join([quantity] + args[1:])
+
     def length_op_rhs(self, arg):
         # length_op_rhs: LENGTH [ OPERATOR ] value
         if len(arg) == 2 or (len(arg) == 3 and arg[1] == "="):
             return {"$size": arg[-1]}
 
-        elif arg[1] in self.operator_map and arg[1] != "!=":
+        if arg[1] in self.operator_map and arg[1] != "!=":
             # create an invalid query that needs to be post-processed
             # e.g. {'$size': {'$gt': 2}}, which is not allowed by Mongo.
             return {"$size": {self.operator_map[arg[1]]: arg[-1]}}
@@ -158,11 +200,11 @@ class MongoTransformer(BaseTransformer):
     def set_zip_op_rhs(self, arg):
         # set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |
         # ANY value_zip_list )
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def property_zip_addon(self, arg):
         # property_zip_addon: ":" property (":" property)*
-        raise NotImplementedError
+        raise NotImplementedError("Correlated list queries are not supported.")
 
     def _recursive_expression_phrase(self, arg):
         """Helper function for parsing `expression_phrase`. Recursively sorts out
@@ -191,64 +233,15 @@ class MongoTransformer(BaseTransformer):
         # simple case of negating one expression, from NOT (expr) to ~expr.
         return {prop: {"$not": expr} for prop, expr in arg[1].items()}
 
-    def _apply_length_aliases(self, filter_: dict) -> dict:
-        """Recursively search query for any `$size` operations, and check
-        if the property can be replaced with its corresponding length
-        alias.
-
-        """
-
-        def check_for_size(prop, expr):
-            return (
-                isinstance(expr, dict)
-                and "$size" in expr
-                and self.mapper.length_alias_for(prop)
-            )
-
-        def replace_with_length_alias(subdict, prop, expr):
-            subdict[self.mapper.length_alias_for(prop)] = expr["$size"]
-            subdict[prop].pop("$size")
-            if not subdict[prop]:
-                subdict.pop(prop)
-            return subdict
-
-        return recursive_postprocessing(
-            filter_, check_for_size, replace_with_length_alias
-        )
-
-    def _apply_aliases(self, filter_: dict) -> dict:
-        """Check whether any fields in the filter have aliases so
-        that they can be renamed for the Mongo query.
-
-        """
-        # if there are no defined aliases, just skip
-        if not self.mapper.all_aliases():
-            return filter_
-
-        def check_for_alias(prop, expr):
-            return self.mapper.alias_for(prop) != prop
-
-        def apply_alias(subdict, prop, expr):
-            if isinstance(subdict, dict):
-                subdict[self.mapper.alias_for(prop)] = self._apply_aliases(
-                    subdict.pop(prop)
-                )
-            elif isinstance(subdict, str):
-                subdict = self.mapper.alias_for(subdict)
-
-            return subdict
-
-        return recursive_postprocessing(filter_, check_for_alias, apply_alias)
-
     def _apply_length_operators(self, filter_: dict) -> dict:
-        """Check for any invalid pymongo queries that involve
-        applying an operator to the length of a field, and transform
+        """Check for any invalid pymongo queries that involve applying a
+        comparison operator to the length of a field, and transform
         them into a test for existence of the relevant entry, e.g.
         "list LENGTH > 3" becomes "does the 4th list entry exist?".
 
         """
 
-        def check_for_length_op_filter(prop, expr):
+        def check_for_length_op_filter(_, expr):
             return (
                 isinstance(expr, dict)
                 and "$size" in expr
@@ -294,7 +287,7 @@ class MongoTransformer(BaseTransformer):
 
         """
 
-        def check_for_entry_type(prop, expr):
+        def check_for_entry_type(prop, _):
             return str(prop).count(".") == 1 and str(prop).split(".")[0] in (
                 "structures",
                 "references",
@@ -314,7 +307,11 @@ class MongoTransformer(BaseTransformer):
                     subdict["$and"] = []
                 subdict["$and"].extend(
                     [
-                        {f"relationships.{_prop}.data": {"$size": expr.pop("$size")}},
+                        {
+                            f"relationships.{_prop}.data": {
+                                "$size": expr.pop("$size"),
+                            }
+                        },
                         {f"relationships.{_prop}.data.{_field}": expr},
                     ]
                 )
@@ -386,7 +383,7 @@ class MongoTransformer(BaseTransformer):
         """
 
         def check_for_id_key(prop, _):
-            """ Find cases where the query dict is operating on the `_id` field. """
+            """Find cases where the query dict is operating on the `_id` field."""
             return prop == "_id"
 
         def replace_str_id_with_objectid(subdict, prop, expr):
@@ -396,7 +393,7 @@ class MongoTransformer(BaseTransformer):
                 val = subdict[prop][operator]
                 if operator not in ("$eq", "$ne"):
                     if self.mapper is not None:
-                        prop = self.mapper.alias_of(prop)
+                        prop = self.mapper.get_optimade_field(prop)
                     raise NotImplementedError(
                         f"Operator {operator} not supported for query on field {prop!r}, can only test for equality"
                     )
@@ -415,13 +412,13 @@ class MongoTransformer(BaseTransformer):
         """
 
         def check_for_timestamp_field(prop, _):
-            """ Find cases where the query dict is operating on a timestamp field. """
+            """Find cases where the query dict is operating on a timestamp field."""
             if self.mapper is not None:
-                prop = self.mapper.alias_of(prop)
+                prop = self.mapper.get_optimade_field(prop)
             return prop == "last_modified"
 
         def replace_str_date_with_datetime(subdict, prop, expr):
-            """Encode suspected dates in with BSON. """
+            """Encode suspected dates in with BSON."""
             import bson.json_util
 
             for operator in subdict[prop]:

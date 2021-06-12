@@ -2,7 +2,7 @@
 import re
 import urllib
 from datetime import datetime
-from typing import Union, List, Dict
+from typing import Union, List, Dict, Set
 
 from fastapi import HTTPException, Request
 from starlette.datastructures import URL as StarletteURL
@@ -63,34 +63,44 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[List[EntryResource], EntryResource], exclude_fields: set
-) -> dict:
-    """Handle query parameter ``response_fields``
+    results: Union[List[EntryResource], EntryResource],
+    exclude_fields: Set[str],
+    include_fields: Set[str],
+) -> List[dict]:
+    """Handle query parameter `response_fields`.
 
-    It is assumed that all fields are under ``attributes``.
+    It is assumed that all fields are under `attributes`.
     This is due to all other top-level fields are REQUIRED in the response.
 
-    :param exclude_fields: Fields under ``attributes`` to be excluded from the response.
+    Parameters:
+        exclude_fields: Fields under `attributes` to be excluded from the response.
+        include_fields: Fields under `attributes` that were requested that should be
+            set to null if missing in the entry.
+
+    Returns:
+        List of resulting resources as dictionaries after pruning according to
+        the `response_fields` OPTIMADE URL query parameter.
+
     """
     if not isinstance(results, list):
         results = [results]
 
     new_results = []
     while results:
-        entry = results.pop(0)
+        new_entry = results.pop(0).dict(exclude_unset=True)
 
-        # TODO: re-enable exclude_unset when proper handling of known/unknown fields
-        # has been implemented (relevant issue: https://github.com/Materials-Consortia/optimade-python-tools/issues/263)
-        # Have to handle top level fields explicitly here for now
-        new_entry = entry.dict(exclude_unset=False)
-        for field in ("relationships", "links", "meta", "type", "id"):
-            if field in new_entry and new_entry[field] is None:
-                del new_entry[field]
-
+        # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
             if field in new_entry["attributes"]:
                 del new_entry["attributes"][field]
+
+        # Include missing fields that were requested in `response_fields`
+        for field in include_fields:
+            if field not in new_entry["attributes"]:
+                new_entry["attributes"][field] = None
+
         new_results.append(new_entry)
+
     return new_results
 
 
@@ -164,7 +174,7 @@ def get_included_relationships(
         )
 
         # still need to handle pagination
-        ref_results, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
+        ref_results, _, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
         included[entry_type] = ref_results
 
     # flatten dict by endpoint to list
@@ -201,7 +211,13 @@ def get_entries(
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
-    results, data_returned, more_data_available, fields = collection.find(params)
+    (
+        results,
+        data_returned,
+        more_data_available,
+        fields,
+        include_fields,
+    ) = collection.find(params)
 
     include = []
     if getattr(params, "include", False):
@@ -219,8 +235,8 @@ def get_entries(
     else:
         links = ToplevelLinks(next=None)
 
-    if fields:
-        results = handle_response_fields(results, fields)
+    if fields or include_fields:
+        results = handle_response_fields(results, fields, include_fields)
 
     return response(
         links=links,
@@ -245,7 +261,13 @@ def get_single_entry(
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.filter = f'id="{entry_id}"'
-    results, data_returned, more_data_available, fields = collection.find(params)
+    (
+        results,
+        data_returned,
+        more_data_available,
+        fields,
+        include_fields,
+    ) = collection.find(params)
 
     include = []
     if getattr(params, "include", False):
@@ -260,8 +282,8 @@ def get_single_entry(
 
     links = ToplevelLinks(next=None)
 
-    if fields and results is not None:
-        results = handle_response_fields(results, fields)[0]
+    if fields or include_fields and results is not None:
+        results = handle_response_fields(results, fields, include_fields)[0]
 
     return response(
         links=links,
@@ -312,7 +334,7 @@ def get_providers() -> list:
 
     provider_list_urls = [
         "https://providers.optimade.org/v1/links",
-        "https://raw.githubusercontent.com/Materials-Consortia/providers"
+        "https://raw.githubusercontent.com/Materials-Consortia/providers",
         "/master/src/links/v1/providers.json",
     ]
 

@@ -41,6 +41,8 @@ Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
 
 
 class Periodicity(IntEnum):
+    """Integer enumeration of dimension_types values"""
+
     APERIODIC = 0
     PERIODIC = 1
 
@@ -269,6 +271,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
     - The strings are the chemical symbols, i.e., either a single uppercase letter or an uppercase letter followed by a number of lowercase letters.
     - The order MUST be alphabetical.
+    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements_ratios`, if the latter is provided.
     - Note: This property SHOULD NOT contain the string "X" to indicate non-chemical elements or "vacancy" to indicate vacancies (in contrast to the field `chemical_symbols` for the `species` property).
 
 - **Examples**:
@@ -277,7 +280,8 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
 - **Query examples**:
     - A filter that matches all records of structures that contain Si, Al **and** O, and possibly other elements: `elements HAS ALL "Si", "Al", "O"`.
-    - To match structures with exactly these three elements, use `elements HAS ALL "Si", "Al", "O" AND elements LENGTH 3`.""",
+    - To match structures with exactly these three elements, use `elements HAS ALL "Si", "Al", "O" AND elements LENGTH 3`.
+    - Note: length queries on this property can be equivalently formulated by filtering on the `nelements`_ property directly.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
     )
@@ -291,6 +295,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Requirements/Conventions**:
     - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - MUST be equal to the lengths of the list properties `elements` and `elements_ratios`, if they are provided.
 
 - **Examples**:
     - `3`
@@ -314,6 +319,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
     - Composed by the proportions of elements in the structure as a list of floating point numbers.
     - The sum of the numbers MUST be 1.0 (within floating point accuracy)
+    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements`, if the latter is provided.
 
 - **Examples**:
     - `[1.0]`
@@ -442,6 +448,7 @@ The proportion number MUST be omitted if it is 1.
         conlist(Periodicity, min_items=3, max_items=3)
     ] = OptimadeField(
         None,
+        title="Dimension Types",
         description="""List of three integers.
 For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`), this list indicates if the direction is periodic (value `1`) or non-periodic (value `0`).
 Note: the elements in this list each refer to the direction of the corresponding entry in `lattice_vectors` and *not* the Cartesian x, y, z directions.
@@ -717,7 +724,7 @@ The properties of the species are found in the property `species`.
                 { "name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0] },
                 { "name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0] },
                 { "name": "vac", "chemical_symbols": ["vacancy"], "concentration": [1.0] }
-              },
+              ],
               "assemblies": [
                 {
               "sites_in_groups": [ [0], [1], [2] ],
@@ -757,6 +764,7 @@ The properties of the species are found in the property `species`.
 
     structure_features: List[StructureFeatures] = OptimadeField(
         ...,
+        title="Structure Features",
         description="""A list of strings that flag which special features are used by the structure.
 
 - **Type**: list of strings

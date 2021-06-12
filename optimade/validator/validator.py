@@ -75,6 +75,7 @@ class ImplementationValidator:
         as_type: str = None,
         index: bool = False,
         minimal: bool = False,
+        http_headers: Dict[str, str] = None,
     ):
         """Set up the tests to run, based on constants in this module
         for required endpoints.
@@ -102,6 +103,7 @@ class ImplementationValidator:
                 to be pointed to the corresponding endpoint.
             index: Whether to validate the implementation as an index meta-database.
             minimal: Whether or not to run only a minimal test set.
+            http_headers: Dictionary of additional headers to add to every request.
 
         """
         self.verbosity = verbosity
@@ -135,11 +137,22 @@ class ImplementationValidator:
         if client:
             self.client = client
             self.base_url = self.client.base_url
+            # If a custom client has been provided, try to set custom headers if they have been specified,
+            # but do not overwrite any existing attributes
+            if http_headers:
+                if not hasattr(self.client, "headers"):
+                    self.client.headers = http_headers
+                else:
+                    print_warning(
+                        f"Not using specified request headers {http_headers} with custom client {self.client}."
+                    )
         else:
             while base_url.endswith("/"):
                 base_url = base_url[:-1]
             self.base_url = base_url
-            self.client = Client(base_url, max_retries=self.max_retries)
+            self.client = Client(
+                base_url, max_retries=self.max_retries, headers=http_headers
+            )
 
         self._setup_log()
 
@@ -161,7 +174,7 @@ class ImplementationValidator:
         self.results = ValidatorResults(verbosity=self.verbosity)
 
     def _setup_log(self):
-        """ Define stdout log based on given verbosity. """
+        """Define stdout log based on given verbosity."""
         self._log = logging.getLogger("optimade").getChild("validator")
         self._log.handlers = []
         stdout_handler = logging.StreamHandler(sys.stdout)
@@ -184,7 +197,7 @@ class ImplementationValidator:
             self._log.setLevel(logging.DEBUG)
 
     def print_summary(self):
-        """ Print a summary of the results of validation. """
+        """Print a summary of the results of validation."""
         if self.respond_json:
             print(json.dumps(dataclasses.asdict(self.results), indent=2))
             return
@@ -387,7 +400,46 @@ class ImplementationValidator:
                 optional=optional,
             )
 
+        self._test_unknown_provider_property(endp)
+        self._test_completely_unknown_property(endp)
+
         return True, f"successfully recursed through endpoint {endp}."
+
+    @test_case
+    def _test_completely_unknown_property(self, endp):
+        request = f"{endp}?filter=crazyfield = 2"
+        response, _ = self._get_endpoint(
+            request,
+            expected_status_code=400,
+        )
+
+        return True, "unknown field returned 400 Bad Request, as expected"
+
+    @test_case
+    def _test_unknown_provider_property(self, endp):
+
+        dummy_provider_field = "_crazyprovider_field"
+
+        request = f"{endp}?filter={dummy_provider_field}=2"
+        response, _ = self._get_endpoint(
+            request,
+            multistage=True,
+            request=request,
+        )
+
+        if response is not None:
+            deserialized, _ = self._deserialize_response(
+                response, CONF.response_classes[endp], request=request, multistage=True
+            )
+
+            return (
+                True,
+                "Unknown provider field was ignored when filtering, as expected",
+            )
+
+        raise ResponseError(
+            "Failed to handle field from unknown provider; should return without affecting filter results"
+        )
 
     def _check_entry_info(self, entry_info: Dict[str, Any], endp: str) -> List[str]:
         """Checks that `entry_info` contains all the required properties,
@@ -701,6 +753,16 @@ class ImplementationValidator:
                 self._log.warning(msg)
                 return None, msg
 
+            # Try to infer if the test value is a float from its string representation
+            # and decide whether to do inclusive/exclusive query tests
+            try:
+                float(test_value[0])
+                msg = f"Not testing filters on field {prop} of type {prop_type} containing float values."
+                self._log.warning(msg)
+                return None, msg
+            except ValueError:
+                pass
+
         if prop_type in (DataType.DICTIONARY,):
             msg = f"Not testing queries on field {prop} of type {prop_type}."
             self._log.warning(msg)
@@ -817,6 +879,15 @@ class ImplementationValidator:
                             "returning different results each time."
                         )
 
+                # check that the filter returned no entries that had a null or missing value for the filtered property
+                if any(
+                    entry["attributes"].get(prop, entry.get(prop, None)) is None
+                    for entry in reversed_response.get("data", [])
+                ):
+                    raise ResponseError(
+                        f"Filter {reversed_query!r} on field {prop!r} returned entries that had null or missing values for the field."
+                    )
+
             excluded = operator in exclusive_operators
             # if we have all results on this page, check that the blessed ID is in the response
             if not response["meta"]["more_data_available"]:
@@ -837,6 +908,15 @@ class ImplementationValidator:
                         f"Supposedly inclusive query '{query}' did not include original object ID {chosen_entry['id']} "
                         f"(with field '{prop} = {test_value}') potentially indicating a problem with filtering on this field."
                     )
+
+            # check that the filter returned no entries that had a null or missing value for the filtered property
+            if any(
+                entry["attributes"].get(prop, entry.get(prop, None)) is None
+                for entry in response.get("data", [])
+            ):
+                raise ResponseError(
+                    f"Filter {query!r} on field {prop!r} returned entries that had null or missing values for the field."
+                )
 
         if prop in CONF.unique_properties:
             if num_data_returned["="] is not None and num_data_returned["="] == 0:
@@ -1317,6 +1397,14 @@ class ImplementationValidator:
                 raise ResponseError(
                     f'Illegal entry "{non_entry_endpoint}" was found in entry_types_by_format"'
                 )
+
+        # Filter out custom extension endpoints that are not covered in the specification
+        available_json_entry_endpoints = [
+            endp
+            for endp in available_json_entry_endpoints
+            if endp in CONF.entry_endpoints
+        ]
+
         return (
             available_json_entry_endpoints,
             "successfully found available entry types in baseinfo",
