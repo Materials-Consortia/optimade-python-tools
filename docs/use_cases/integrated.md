@@ -3,7 +3,7 @@
 `optimade-python-tools` (OPT) can be run as a standalone web application that serves the OPTIMADE API based on a pre-configured MongoDB backend.
 In this document, we are going to use OPT differently and use it to add an OPTIMADE API implementation alongside an existing API employing an Elasticsearch storage layer.
 
-Let's assume we already have a *FastAPI* application that runs an unrelated web service, and that we use an Elasticsearch backend that contains all structure data, but not necessarily into a form that OPTIMADE expects.
+Let's assume we already have a *FastAPI* application that runs an unrelated web service, and that we use an Elasticsearch backend that contains all structure data, but not necessarily in a form that OPTIMADE expects.
 
 ## Providing an `optimade-python-tools` configuration
 
