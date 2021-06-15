@@ -22,7 +22,7 @@ An example of one that works with the example implementation can be found in [`o
 
 ## Environment variables
 
-In order for the implementation to know where your configuration JSON file is located, you can set an environment variable `OPTIMADE_CONFIG_FILE` with the either the value of the _absolute_ path to the configuration file or the _relative_ path to the file from the current working directory of where the server is run.
+In order for the implementation to know where your configuration JSON file is located, you can set an environment variable `OPTIMADE_CONFIG_FILE` with either the value of the _absolute_ path to the configuration file or the _relative_ path to the file from the current working directory of where the server is run.
 
 This variable is actually an extension of the configuration option `config_file`.
 By default, the server will try to load a JSON file called `.optimade.json` located in your home folder (or equivalent).
