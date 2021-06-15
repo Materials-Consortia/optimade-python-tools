@@ -12,7 +12,7 @@ To run the script, simply provide an OPTIMADE URL to the script at the command-l
 You can use the following to validate the Heroku deployment of our reference server:
 
 ```shell
-optimade-validator https://optimade.herokuapp.com/
+$ optimade-validator https://optimade.herokuapp.com/
 ```
 
 Several additional options can be found under the `--help` flag, with the most important being `-v/-vvvv` to set the verbosity, `--index` to validate OPTIMADE index meta-databases and `--json` to receive the validation results as JSON document for programmatic use.
