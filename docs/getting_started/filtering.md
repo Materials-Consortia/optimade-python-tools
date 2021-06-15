@@ -5,6 +5,8 @@ This guide will briefly outline how to parse OPTIMADE filter strings into databa
 
 ## Parsing OPTIMADE filter strings
 
+The `optimade.filterparser.LarkParser` will take an OPTIMADE filter string, supplied by the user, and parse it into a `lark.Tree`.
+
 Example use:
 
 ```python
@@ -66,7 +68,7 @@ filter
 
 ## Flow for parsing a user-supplied filter and converting to a backend query
 
-`optimade.filterparser.LarkParser` will take user input to generate a `lark.Tree` and feed that to a `lark.Transformer`.
+After the `optimade.filterparser.LarkParser` has turned the filter string into a `lark.Tree`, it is fed to a `lark.Transformer` which transforms the 'lark.Tree' into a backend specific representation of the query.
 For example, `optimade.filtertransformers.mongo.MongoTransformer` will turn the tree into something useful for a MongoDB backend:
 
 ```python
@@ -94,7 +96,7 @@ print(query)
 
 In order to support a new backend, you will need to create a new filter transformer that inherits from the [`BaseTransformer`][optimade.filtertransformers.base_transformer.BaseTransformer].
 This transformer will need to override the methods that match the particular grammatical constructs in the Lark grammar in order to construct a query.
-Two examples can be found for MongoDB ([`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer]) and Elasticsearch ([`ElasticTransformer`][optimade.filtertransformers.elasticsearch.ElasticTransformer]).
+Two examples can be found within 'optimade-python-tools', one for MongoDB ([`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer]) and one for Elasticsearch ([`ElasticTransformer`][optimade.filtertransformers.elasticsearch.ElasticTransformer]).
 
 In some cases, you may also need to extend the base [`EntryCollection`][optimade.server.entry_collections.entry_collections.EntryCollection], the class that receives the transformed filter as an argument to its private `._run_db_query()` method.
 This class handles the connections to the underlying database, formatting of the response in an OPTIMADE format, and other API features such as sorting and pagination.
