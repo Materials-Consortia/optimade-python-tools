@@ -97,7 +97,7 @@ This transformer will need to override the methods that match the particular gra
 Two examples can be found for MongoDB ([`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer]) and Elasticsearch ([`ElasticTransformer`][optimade.filtertransformers.elasticsearch.ElasticTransformer]).
 
 In some cases, you may also need to write a new [`EntryCollection`][optimade.server.entry_collections.entry_collections.EntryCollection] that receives the transformed filter as an argument to its private `._run_db_query()` method.
-This class handles the connections to the underlying database, formatting of the response in an OPTIMADE format, and other API features such as sorting and pagination.
+This class handles the connections to the underlying database, formatting of the response, and other API features such as sorting and pagination.
 Again, the examples for MongoDB ([`MongoCollection`][optimade.server.entry_collections.mongo.MongoCollection]) and Elasticsearch ([`ElasticCollection`][optimade.server.entry_collections.elasticsearch.ElasticCollection]) should be helpful.
 
 If you would like to contribute your new filter transformer back to the package, please raise an issue to signal your intent (in case someone else is already working on this).
