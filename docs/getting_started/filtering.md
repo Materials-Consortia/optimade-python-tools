@@ -1,6 +1,6 @@
 # Filter parsing and transforming
 
-One of the aims of this package is to integrate with existing databases and APIs, and as such your particular back-end may not have a supported filter transformer.
+One of the aims of this package is to integrate with existing databases and APIs, and as such your particular backend may not have a supported filter transformer.
 This guide will briefly outline how to parse OPTIMADE filter strings into database or API-specific queries.
 
 ## Parsing OPTIMADE filter strings
@@ -96,8 +96,8 @@ In order to support a new backend, you will need to create a new filter transfor
 This transformer will need to override the methods that match the particular grammatical constructs in the Lark grammar in order to construct a query.
 Two examples can be found for MongoDB ([`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer]) and Elasticsearch ([`ElasticTransformer`][optimade.filtertransformers.elasticsearch.ElasticTransformer]).
 
-In some cases, you may also need to write a new [`EntryCollection`][optimade.server.entry_collections.entry_collections.EntryCollection] that receives the transformed filter as an argument to its private `._run_db_query()` method.
-This class handles the connections to the underlying database, formatting of the response, and other API features such as sorting and pagination.
+In some cases, you may also need to extend the base [`EntryCollection`][optimade.server.entry_collections.entry_collections.EntryCollection], the class that receives the transformed filter as an argument to its private `._run_db_query()` method.
+This class handles the connections to the underlying database, formatting of the response in an OPTIMADE format, and other API features such as sorting and pagination.
 Again, the examples for MongoDB ([`MongoCollection`][optimade.server.entry_collections.mongo.MongoCollection]) and Elasticsearch ([`ElasticCollection`][optimade.server.entry_collections.elasticsearch.ElasticCollection]) should be helpful.
 
 If you would like to contribute your new filter transformer back to the package, please raise an issue to signal your intent (in case someone else is already working on this).
