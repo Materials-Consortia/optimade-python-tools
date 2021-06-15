@@ -42,6 +42,7 @@ class MongoTransformer(BaseTransformer):
         query = self._apply_relationship_filtering(query)
         query = self._apply_length_operators(query)
         query = self._apply_unknown_or_null_filter(query)
+        query = self._apply_only_filter(query)
         query = self._apply_mongo_id_filter(query)
         query = self._apply_mongo_date_filter(query)
 
@@ -140,7 +141,7 @@ class MongoTransformer(BaseTransformer):
             return {"$in": arg[2]}
 
         if arg[1] == "ONLY":
-            return {"$all": arg[2], "$size": len(arg[2])}
+            return {"#only": arg[2]}
 
         # value with OPERATOR
         raise NotImplementedError(
@@ -288,9 +289,7 @@ class MongoTransformer(BaseTransformer):
             return subdict
 
         return recursive_postprocessing(
-            filter_,
-            check_for_length_op_filter,
-            apply_length_op,
+            filter_, check_for_length_op_filter, apply_length_op
         )
 
     def _apply_relationship_filtering(self, filter_: dict) -> dict:
@@ -335,6 +334,36 @@ class MongoTransformer(BaseTransformer):
             filter_, check_for_entry_type, replace_with_relationship
         )
 
+    def _apply_only_filter(self, filter_: dict) -> dict:
+        """This method loops through the query and replaces #Only with the proper query"""
+
+        def check_for_only_filter(_, expr):
+            """Find cases where '#only is in the query."""
+            return isinstance(expr, dict) and ("#only" in expr)
+
+        def replace_only_filter(subdict, prop, expr):
+            """Replace magic key `"#only"` (added by this transformer)
+            the first part of the query first selects all the documents that have a value, in their list, that is not within the alowed values.
+            Subsequently this selection is inversed, to get the documents that only have the alowed values.
+            With this inversion also documents with "weird" values such as null or empty lists are selected.
+            The second part of the query makes sure that only documents with lists that have at least one value are selected.
+
+            """
+
+            if "$and" not in subdict:
+                subdict["$and"] = []
+            subdict["$and"].append(
+                {prop: {"$not": {"$elemMatch": {"$nin": expr["#only"]}}}}
+            )
+            subdict["$and"].append({prop + ".0": {"$exists": True}})
+
+            subdict.pop(prop)
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_only_filter, replace_only_filter
+        )
+
     def _apply_unknown_or_null_filter(self, filter_: dict) -> dict:
         """This method loops through the query and replaces the check for
         KNOWN with a check for existence and a check for not null, and the
@@ -359,6 +388,7 @@ class MongoTransformer(BaseTransformer):
             combination of $exists and/or $eq/$ne null.
 
             """
+
             not_ = set(expr.keys()) == {"$not"}
             if not_:
                 expr = expr["$not"]
