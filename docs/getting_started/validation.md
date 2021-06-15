@@ -44,11 +44,12 @@ positional arguments:
   base_url              The base URL of the OPTIMADE
                         implementation to point at, e.g.
                         'http://example.com/optimade/v1' or
-                        'http://localhost:5000/v1
+                        'http://localhost:5000/v1'
 
 optional arguments:
-  -h, --help            show this help message and exit
+  -h, --help            Show this help message and exit.
   -v, --verbosity       Increase the verbosity of the output.
+                        (-v: warning, -vv: info, -vvv: debug)
   -j, --json            Only a JSON summary of the validator
                         results will be printed to stdout.
   -t AS_TYPE, --as-type AS_TYPE
