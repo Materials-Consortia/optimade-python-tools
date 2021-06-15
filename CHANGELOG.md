@@ -1,5 +1,27 @@
 # Changelog
 
+## [v0.15.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.4) (2021-06-15)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.3...v0.15.4)
+
+**Implemented enhancements:**
+
+- Missing documentation for new configuration methods [\#766](https://github.com/Materials-Consortia/optimade-python-tools/issues/766)
+
+**Closed issues:**
+
+- Add docs "use case" for the validator [\#841](https://github.com/Materials-Consortia/optimade-python-tools/issues/841)
+- Use specific configuration file for Heroku deployment [\#738](https://github.com/Materials-Consortia/optimade-python-tools/issues/738)
+- Potential submission to JOSS? [\#203](https://github.com/Materials-Consortia/optimade-python-tools/issues/203)
+- Add more tests [\#104](https://github.com/Materials-Consortia/optimade-python-tools/issues/104)
+
+**Merged pull requests:**
+
+- Tweak configuration docs [\#851](https://github.com/Materials-Consortia/optimade-python-tools/pull/851) ([ml-evs](https://github.com/ml-evs))
+- Add some more tutorial-style documentation [\#850](https://github.com/Materials-Consortia/optimade-python-tools/pull/850) ([ml-evs](https://github.com/ml-evs))
+- Bump FastAPI version in setup.py [\#849](https://github.com/Materials-Consortia/optimade-python-tools/pull/849) ([CasperWA](https://github.com/CasperWA))
+- Bump fastapi from 0.65.1 to 0.65.2 [\#848](https://github.com/Materials-Consortia/optimade-python-tools/pull/848) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.15.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.3) (2021-06-10)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.2...v0.15.3)
