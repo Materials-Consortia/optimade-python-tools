@@ -2,8 +2,8 @@ arrange:
     - index.md
     - INSTALL.md
     - configuration.md
+    - getting_started
     - CONTRIBUTING.md
-    - use_cases
     - CHANGELOG.md
     - all_models.md
     - api_reference
