@@ -36,7 +36,7 @@ def validate():  # pragma: no cover
         default="http://localhost:5000/v0",
         help=(
             "The base URL of the OPTIMADE implementation to point at, "
-            "e.g. 'http://example.com/optimade/v1' or 'http://localhost:5000/v1"
+            "e.g. 'http://example.com/optimade/v1' or 'http://localhost:5000/v1'"
         ),
     )
     parser.add_argument(
@@ -44,7 +44,8 @@ def validate():  # pragma: no cover
         "--verbosity",
         action="count",
         default=0,
-        help="""Increase the verbosity of the output.""",
+        help="""Increase the verbosity of the output.
+        (-v: warning, -vv: info, -vvv: debug)""",
     )
     parser.add_argument(
         "-j",
