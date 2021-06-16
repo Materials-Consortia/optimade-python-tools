@@ -5,7 +5,7 @@ This guide will briefly outline how to parse OPTIMADE filter strings into databa
 
 ## Parsing OPTIMADE filter strings
 
-The `optimade.filterparser.LarkParser` will take an OPTIMADE filter string, supplied by the user, and parse it into a `lark.Tree`.
+The [`LarkParser`][`optimade.filterparser.LarkParser`] class will take an OPTIMADE filter string, supplied by the user, and parse it into a `lark.Tree` instance.
 
 Example use:
 
@@ -68,8 +68,8 @@ filter
 
 ## Flow for parsing a user-supplied filter and converting to a backend query
 
-After the `optimade.filterparser.LarkParser` has turned the filter string into a `lark.Tree`, it is fed to a `lark.Transformer` which transforms the 'lark.Tree' into a backend specific representation of the query.
-For example, `optimade.filtertransformers.mongo.MongoTransformer` will turn the tree into something useful for a MongoDB backend:
+After the [`LarkParser`][`optimade.filterparser.LarkParser`] has turned the filter string into a `lark.Tree`, it is fed to a `lark.Transformer` instance, which transforms the 'lark.Tree' into a backend-specific representation of the query.
+For example, [`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer] will turn the tree into something useful for a MongoDB backend:
 
 ```python
 # Example: Converting to MongoDB Query Syntax
