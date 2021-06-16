@@ -120,6 +120,33 @@ class TestMongoTransformer:
             "$or": [{"a": {"$eq": 4}}, {"b": {"$eq": 6}}]
         }
 
+        assert self.transform("a=4 AND b= 6 AND c=10") == {
+            "$and": [{"a": {"$eq": 4}}, {"b": {"$eq": 6}}, {"c": {"$eq": 10}}]
+        }
+
+        assert self.transform("NOT(a<4 OR a>20 AND NOT(c=10))") == {
+            "$and": [
+                {"a": {"$gte": 4}},
+                {"$or": [{"a": {"$lte": 20}}, {"c": {"$eq": 10}}]},
+            ]
+        }
+
+        assert self.transform("NOT(a>4 AND a<20 AND c=10)") == {
+            "$or": [
+                {"a": {"$lte": 4}},
+                {"a": {"$gte": 20}},
+                {"$and": [{"c": {"$ne": 10}}, {"c": {"$ne": None}}]},
+            ]
+        }
+
+        assert self.transform("NOT(a>4 OR a<20 OR c=10)") == {
+            "$and": [
+                {"a": {"$lte": 4}},
+                {"a": {"$gte": 20}},
+                {"$and": [{"c": {"$ne": 10}}, {"c": {"$ne": None}}]},
+            ]
+        }
+
         assert self.transform(
             "NOT ( "
             'chemical_formula_hill = "Al" AND chemical_formula_anonymous = "A" OR '
@@ -344,16 +371,12 @@ class TestMongoTransformer:
             "$and": [
                 {
                     "$and": [
-                        {
-                            "relationships.structures.data": {
-                                "$size": 1,
-                            }
-                        },
+                        {"relationships.structures.data": {"$size": 1}},
                         {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
                     ]
                 },
                 {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},
-            ],
+            ]
         }
 
     def test_other_provider_fields(self, mapper):
@@ -667,12 +690,7 @@ class TestMongoTransformer:
             "$and": [
                 {"elements": {"$in": ["H"]}},
                 {"elements": {"$all": ["H", "He", "Ga", "Ta"]}},
-                {
-                    "elements": {
-                        "$all": ["H", "He", "Ga", "Ta"],
-                        "$size": 4,
-                    }
-                },
+                {"elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}},
                 {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},
             ]
         }
