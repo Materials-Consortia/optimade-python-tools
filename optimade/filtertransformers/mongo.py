@@ -217,7 +217,7 @@ class MongoTransformer(BaseTransformer):
             which is equal to `{"or": [{"$not": expr1}, {"$not": expr2}]}`}
             We have to check for the special case in which the "and" was created by a previous NOT
             e.g `NOT (NOT ({"a": {"$eq" : 6}})) -> NOT({$and:[{"a": {"$ne" : 6}},{"a": {"$ne": None}}]})`
-            
+
             """
 
             expr1 = arg["$and"][0]
@@ -236,9 +236,11 @@ class MongoTransformer(BaseTransformer):
             }
 
         def handle_not_or(arg):
-            # Handle the case of {"$not": {"$or": [expr1, expr2]}} using:
-            # {"$not": {"$or": [expr1, expr2]}} == {"$and": [(NOT, expr1), (NOT, expr2)]}}
-            # {"$nor": [expr1, expr2]} is not convenient because nor will also return documents where the field in expr1 or exp2 is missing.
+            """Handle the case of {"$not": {"$or": [expr1, expr2]}} using:
+            {"$not": {"$or": [expr1, expr2]}} == {"$and": [(NOT, expr1), (NOT, expr2)]}}
+            {"$nor": [expr1, expr2]} is not convenient because nor will also return documents where the field in expr1 or exp2 is missing.
+
+            """
 
             return {
                 "$and": [
