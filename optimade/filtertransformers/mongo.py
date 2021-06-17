@@ -34,6 +34,17 @@ class MongoTransformer(BaseTransformer):
         "=": "$eq",
     }
 
+    inverse_operator_map = {
+        "$lt": "$gte",
+        "$lte": "$gt",
+        "$gt": "$lte",
+        "$gte": "$lt",
+        "$ne": "$eq",
+        "$eq": "$ne",
+        "$in": "$nin",
+        "$nin": "$in",
+    }
+
     def postprocess(self, query: Dict[str, Any]):
         """Used to post-process the nested dictionary of the parsed query."""
         query = self._apply_relationship_filtering(query)
@@ -261,30 +272,24 @@ class MongoTransformer(BaseTransformer):
 
         # Incase the NOT operator occurs at the lowest nesting level,
         # the expression can be simplified by using the opposite operator and removing the not.
-        opposite_operator_map = {
-            "$lt": "$gte",
-            "$lte": "$gt",
-            "$gt": "$lte",
-            "$gte": "$lt",
-            "$ne": "$eq",
-            "$eq": "$ne",
-            "$in": "$nin",
-            "$nin": "$in",
-        }
 
         for prop, expr in arg[1].items():
             for operator, value in expr.items():
-                if operator in opposite_operator_map:
+                if operator in self.inverse_operator_map:
                     if operator in ("$in", "$eq"):
                         return {
                             "$and": [
-                                {prop: {opposite_operator_map.get(operator): value}},
+                                {
+                                    prop: {
+                                        self.inverse_operator_map.get(operator): value
+                                    }
+                                },
                                 {prop: {"$ne": None}},
                             ]
                         }
 
                     else:
-                        return {prop: {opposite_operator_map.get(operator): value}}
+                        return {prop: {self.inverse_operator_map.get(operator): value}}
                 else:
                     if "#known" in expr:
                         return {prop: {"$not": expr}}
