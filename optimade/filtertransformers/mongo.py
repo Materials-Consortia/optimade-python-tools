@@ -213,10 +213,12 @@ class MongoTransformer(BaseTransformer):
         """
 
         def handle_not_and(arg):
-            # Handle the case of {"$not": {"$and": [expr1, expr2]}}
-            # which is equal to {"or": [{"$not": expr1}, {"$not": expr2}]}}
-            # We have to check for the special case in which the "and" was created by a previous NOT
-            # e.g NOT (NOT ({"a": {"$eq" : 6}})) -> NOT({$and:[{"a": {"$ne" : 6}},{"a": {"$ne": None}}]})
+            """Handle the case of `{"$not": {"$and": [expr1, expr2]}}`
+            which is equal to `{"or": [{"$not": expr1}, {"$not": expr2}]}`}
+            We have to check for the special case in which the "and" was created by a previous NOT
+            e.g `NOT (NOT ({"a": {"$eq" : 6}})) -> NOT({$and:[{"a": {"$ne" : 6}},{"a": {"$ne": None}}]})`
+            
+            """
 
             expr1 = arg["$and"][0]
             expr2 = arg["$and"][1]
