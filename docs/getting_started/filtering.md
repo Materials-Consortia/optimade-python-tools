@@ -96,7 +96,7 @@ print(query)
 
 In order to support a new backend, you will need to create a new filter transformer that inherits from the [`BaseTransformer`][optimade.filtertransformers.base_transformer.BaseTransformer].
 This transformer will need to override the methods that match the particular grammatical constructs in the Lark grammar in order to construct a query.
-Two examples can be found within 'optimade-python-tools', one for MongoDB ([`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer]) and one for Elasticsearch ([`ElasticTransformer`][optimade.filtertransformers.elasticsearch.ElasticTransformer]).
+Two examples can be found within `optimade-python-tools`, one for MongoDB ([`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer]) and one for Elasticsearch ([`ElasticTransformer`][optimade.filtertransformers.elasticsearch.ElasticTransformer]).
 
 In some cases, you may also need to extend the base [`EntryCollection`][optimade.server.entry_collections.entry_collections.EntryCollection], the class that receives the transformed filter as an argument to its private `._run_db_query()` method.
 This class handles the connections to the underlying database, formatting of the response in an OPTIMADE format, and other API features such as sorting and pagination.

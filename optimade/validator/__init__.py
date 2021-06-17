@@ -44,7 +44,7 @@ def validate():  # pragma: no cover
         "--verbosity",
         action="count",
         default=0,
-        help="""Increase the verbosity of the output. (-v: warning, -vv: info, -vvv: debug)""",
+        help="Increase the verbosity of the output. (-v: warning, -vv: info, -vvv: debug)",
     )
     parser.add_argument(
         "-j",

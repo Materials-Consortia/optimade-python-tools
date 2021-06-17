@@ -47,7 +47,7 @@ positional arguments:
                         'http://localhost:5000/v1'
 
 optional arguments:
-  -h, --help            Show this help message and exit.
+  -h, --help            show this help message and exit
   -v, --verbosity       Increase the verbosity of the output.
                         (-v: warning, -vv: info, -vvv: debug)
   -j, --json            Only a JSON summary of the validator
