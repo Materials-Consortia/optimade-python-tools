@@ -382,6 +382,18 @@ def test_not_or_and_precedence(check_response):
     expected_ids = []
     check_response(request, expected_ids)
 
+    request = '/structures?filter=NOT(elements HAS "Ag" AND nelements>1 )'
+    expected_ids = [
+        "mpf_1",
+        "mpf_23",
+        "mpf_30",
+        "mpf_110",
+        "mpf_3803",
+        "mpf_3819",
+        "mpf_200",
+    ]
+    check_response(request, expected_ids)
+
 
 def test_brackets(check_response):
     request = '/structures?filter=elements HAS "Ac" AND nelements=1 OR nsites=1'
