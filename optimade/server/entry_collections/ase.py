@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Any, Callable, Dict, Generator, List, NamedTuple, Tuple
 
-from lark import LarkParser
+from optimade.filterparser import LarkParser
 from optimade.filtertransformers.ase import ASEQueryTree, ASETransformer
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG
@@ -24,7 +24,7 @@ class ASECollection(EntryCollection):
                  resource_mapper: BaseResourceMapper,
                  database: str = CONFIG.ase_database):
 
-        self.ase_transformer = ASETransformer(mapper=resource_mapper)
+        self.ase_transformer = ASETransformer()  # mapper=resource_mapper)
 
         super().__init__(resource_cls,
                          resource_mapper,
@@ -37,24 +37,23 @@ class ASECollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return len(self.collection)
 
-    def xxxcount(self, *, filter, skip=0, limit=INF) -> int:
-        return self.collection.count(filter, skip=skip, limit=limit)
+    def insert(self, data: List[EntryResource]) -> None:
+        raise NotImplementedError
+
+    def count(self, *, filter, skip=0, limit=INF) -> int:
+        filter_function = create_filter_function(filter)
+        return self.collection.count(filter_function, skip=skip, limit=limit)
 
     def _run_db_query(self,
                       criteria: Dict[str, Any],
-                      single_entry: bool = False) -> Tuple[List[Dict[str,
-                                                                     Any]],
-                                                           int,
-                                                           bool]:
+                      single_entry: bool = False
+                      ) -> Tuple[List[Dict[str, Any]], int, bool]:
 
-        filter_function = create_filter_function(
-            criteria['filter'],
-            self.parser.parse,
-            self.ase_transformer.transform)
+        filter_function = create_filter_function(criteria['filter'])
 
         ids = [row.id
                for row in self.collection.select(filter_function,
-                                                 skip=criteria['skip'])]
+                                                 skip=criteria.get('skip', 0))]
 
         results = [self.collection.get_result(id)
                    for id in ids[:criteria['limit']]]
@@ -114,8 +113,10 @@ class ASEDBWrapper:
             if i >= skip and filter_function(row):
                 yield row
 
-    def xxxcount(self, filter: str, skip=0, limit=INF):
-        return sum(1 for _ in self.select(filter, skip=skip, limit=limit))
+    def count(self, filter_function, skip=0, limit=INF):
+        return sum(1 for _ in self.select(filter_function,
+                                          skip=skip,
+                                          limit=limit))
 
 
 def create_code_string(query: ASEQueryTree) -> str:
@@ -153,23 +154,8 @@ def create_code_string(query: ASEQueryTree) -> str:
 
 
 @lru_cache(maxsize=100)
-def xxxcreate_filter_function(query) -> Callable[[RowInfo], bool]:
-    """Convert OPTIMADE query string to a Python filter function."""
-    code_string = create_code_string(query)
-    code = compile('lambda row: ' + code_string,
-                   '<string>',
-                   'eval')
-    filter_function = eval(code)
-    return filter_function
-
-
-@lru_cache(maxsize=100)
-def create_filter_function(optimade_query: str,
-                           parse,
-                           transform) -> FilterFunction:
-    """Convert OPTIMADE query string to a Python filter function."""
-    tree = parse(optimade_query)
-    query = transform(tree)
+def create_filter_function(query: ASEQueryTree) -> FilterFunction:
+    """Convert query-tree from ASETransofmer to a Python filter-function."""
     code_string = create_code_string(query)
     code = compile('lambda row: ' + code_string,
                    '<string>',
