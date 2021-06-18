@@ -382,6 +382,19 @@ def test_not_or_and_precedence(check_response):
     expected_ids = []
     check_response(request, expected_ids)
 
+
+# TODO This xfail can be removed when a patch for double negation has been included in mongomock
+@pytest.mark.xfail(
+    CONFIG.database_backend == SupportedBackend.MONGOMOCK,
+    reason='Mongomock does not support queries with double negation, e.g. .{"$not": {"$not": expr}}.',
+)
+def test_behaviour_not(check_response):
+    request = (
+        '/structures?filter=NOT(NOT(chemical_formula_descriptive STARTS WITH "Ag2" ))'
+    )
+    expected_ids = ["mpf_259", "mpf_272", "mpf_276", "mpf_281"]
+    check_response(request, expected_ids)
+
     request = '/structures?filter=NOT(elements HAS "Ag" AND nelements>1 )'
     expected_ids = [
         "mpf_1",
