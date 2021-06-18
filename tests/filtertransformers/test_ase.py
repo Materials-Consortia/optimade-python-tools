@@ -15,12 +15,14 @@ def transform():
 
 
 cases = [
-    ('nelements=2',
-     ('nelements', ('=', 2))),
-    ('nelements=3 AND elements HAS "Cu"',
-     ('AND', [('nelements', ('=', 3)), ('elements', ('HAS', '"Cu"'))]))]
+    ("nelements=2", ("nelements", ("=", 2))),
+    (
+        'nelements=3 AND elements HAS "Cu"',
+        ("AND", [("nelements", ("=", 3)), ("elements", ("HAS", '"Cu"'))]),
+    ),
+]
 
 
-@pytest.mark.parametrize(['query', 'tree'], cases)
+@pytest.mark.parametrize(["query", "tree"], cases)
 def test_simple(query, tree, transform):
     assert transform(query) == tree

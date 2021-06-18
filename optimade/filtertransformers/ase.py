@@ -17,7 +17,7 @@ class ASETransformer(Transformer):
     def expression_clause(self, args):
         if len(args) == 1:
             return args[0]
-        return 'AND', args
+        return "AND", args
 
     def expression_phrase(self, arg):
         return arg[0]
@@ -39,7 +39,7 @@ class ASETransformer(Transformer):
         return args[0]
 
     def number(self, args):
-        val, = args
+        (val,) = args
         return int(val)
 
     def set_op_rhs(self, args):

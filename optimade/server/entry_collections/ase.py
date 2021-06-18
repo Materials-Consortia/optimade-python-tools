@@ -12,6 +12,7 @@ from optimade.filtertransformers.ase import ASEQueryTree, ASETransformer
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
+
 # from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
 
@@ -19,15 +20,15 @@ INF = 9999999999999
 
 
 class ASECollection(EntryCollection):
-    def __init__(self,
-                 name: str,
-                 resource_cls: EntryResource,
-                 resource_mapper: BaseResourceMapper,
-                 database: str = CONFIG.ase_database):
+    def __init__(
+        self,
+        name: str,
+        resource_cls: EntryResource,
+        resource_mapper: BaseResourceMapper,
+        database: str = CONFIG.ase_database,
+    ):
 
-        super().__init__(resource_cls,
-                         resource_mapper,
-                         ASETransformer())
+        super().__init__(resource_cls, resource_mapper, ASETransformer())
 
         self.parser = LarkParser(version=(1, 0, 0), variant="default")
         self.collection = ASEDBWrapper(database)
@@ -43,19 +44,20 @@ class ASECollection(EntryCollection):
         filter_function = create_filter_function(filter)
         return self.collection.count(filter_function, skip=skip, limit=limit)
 
-    def _run_db_query(self,
-                      criteria: Dict[str, Any],
-                      single_entry: bool = False
-                      ) -> Tuple[List[Dict[str, Any]], int, bool]:
+    def _run_db_query(
+        self, criteria: Dict[str, Any], single_entry: bool = False
+    ) -> Tuple[List[Dict[str, Any]], int, bool]:
 
-        filter_function = create_filter_function(criteria['filter'])
+        filter_function = create_filter_function(criteria["filter"])
 
-        ids = [row.id
-               for row in self.collection.select(filter_function,
-                                                 skip=criteria.get('skip', 0))]
+        ids = [
+            row.id
+            for row in self.collection.select(
+                filter_function, skip=criteria.get("skip", 0)
+            )
+        ]
 
-        results = [self.collection.get_result(id)
-                   for id in ids[:criteria['limit']]]
+        results = [self.collection.get_result(id) for id in ids[: criteria["limit"]]]
 
         if single_entry:
             data_returned = len(results)
@@ -83,11 +85,9 @@ FilterFunction = Callable[[RowInfo], bool]
 def dbrow2rowinfo(row: AtomsRow) -> RowInfo:
     """Pull out stuff needed for search."""
     formula = Formula(row.formula)
-    rowinfo = RowInfo(row.id,
-                      row.count_atoms(),
-                      f'{formula:hill}',
-                      f'{formula:abc}',
-                      row.natoms)
+    rowinfo = RowInfo(
+        row.id, row.count_atoms(), f"{formula:hill}", f"{formula:abc}", row.natoms
+    )
 
     return rowinfo
 
@@ -101,10 +101,9 @@ class ASEDBWrapper:
     def __len__(self):
         return len(self.rows)
 
-    def select(self,
-               filter_function: FilterFunction,
-               skip: int = 0,
-               limit: int = INF) -> Generator[RowInfo, None, None]:
+    def select(
+        self, filter_function: FilterFunction, skip: int = 0, limit: int = INF
+    ) -> Generator[RowInfo, None, None]:
         """Select rows using a filter function."""
         for i, row in enumerate(self.rows):
             if i == skip + limit:
@@ -113,9 +112,7 @@ class ASEDBWrapper:
                 yield row
 
     def count(self, filter_function, skip=0, limit=INF):
-        return sum(1 for _ in self.select(filter_function,
-                                          skip=skip,
-                                          limit=limit))
+        return sum(1 for _ in self.select(filter_function, skip=skip, limit=limit))
 
     def get_result(self, id: int) -> Dict[str, Any]:
         row = self.db.get(id=id)
@@ -124,27 +121,29 @@ class ASEDBWrapper:
         abc, _, N = formula.stoichiometry()
         anonymous = dict2str({symb: n * N for symb, n in abc._count.items()})
         t = row.mtime * YEAR + T2000
-        last_modified = strftime('%Y-%m-%dT%H:%M:%SZ', gmtime(t))
-        dct = {'cartesian_site_positions': row.positions.tolist(),
-               'species_at_sites': row.symbols,
-               'nsites': row.natoms,
-               'species': [{'name': symbol,
-                            'chemical_symbols': [symbol],
-                            'concentration': [1.0]}
-                           for symbol in count],
-               'lattice_vectors': row.cell.tolist(),
-               'dimension_types': row.pbc.astype(int).tolist(),
-               'last_modified': last_modified,
-               'elements': list(count),
-               'nelements': len(count),
-               'elements_ratios': [n / row.natoms for n in count.values()],
-               'chemical_formula_descriptive': 'x',
-               'chemical_formula_reduced': f'{formula}',
-               'chemical_formula_hill': f'{formula:hill}',
-               'chemical_formula_anonymous': anonymous,
-               'nperiodic_dimensions': sum(row.pbc),
-               'structure_features': [],
-               'id': str(row.id)}
+        last_modified = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime(t))
+        dct = {
+            "cartesian_site_positions": row.positions.tolist(),
+            "species_at_sites": row.symbols,
+            "nsites": row.natoms,
+            "species": [
+                {"name": symbol, "chemical_symbols": [symbol], "concentration": [1.0]}
+                for symbol in count
+            ],
+            "lattice_vectors": row.cell.tolist(),
+            "dimension_types": row.pbc.astype(int).tolist(),
+            "last_modified": last_modified,
+            "elements": list(count),
+            "nelements": len(count),
+            "elements_ratios": [n / row.natoms for n in count.values()],
+            "chemical_formula_descriptive": "x",
+            "chemical_formula_reduced": f"{formula}",
+            "chemical_formula_hill": f"{formula:hill}",
+            "chemical_formula_anonymous": anonymous,
+            "nperiodic_dimensions": sum(row.pbc),
+            "structure_features": [],
+            "id": str(row.id),
+        }
 
         return dct
 
@@ -162,23 +161,23 @@ def create_code_string(query: ASEQueryTree) -> str:
 
     q1, q2 = query
 
-    if q1 == 'AND':
-        return ' and '.join(f'({create_code_string(q)})' for q in q2)
+    if q1 == "AND":
+        return " and ".join(f"({create_code_string(q)})" for q in q2)
 
-    if q1 == 'nelements':
+    if q1 == "nelements":
         op, val = q2
-        if op == '=':
-            op = '=='
-        return f'len(row.elements) {op} {val}'
+        if op == "=":
+            op = "=="
+        return f"len(row.elements) {op} {val}"
 
-    if q1 == 'elements':
+    if q1 == "elements":
         q3, q4 = q2
 
-        if q3 == 'HAS':
-            return f'{q4} in row.elements'
+        if q3 == "HAS":
+            return f"{q4} in row.elements"
 
-        if q3 == 'HAS ALL':
-            return f'all(symbol in row.elements for symbol in {q4})'
+        if q3 == "HAS ALL":
+            return f"all(symbol in row.elements for symbol in {q4})"
 
     raise NotImplementedError(query)
 
@@ -187,8 +186,6 @@ def create_code_string(query: ASEQueryTree) -> str:
 def create_filter_function(query: ASEQueryTree) -> FilterFunction:
     """Convert query-tree from ASETransofmer to a Python filter-function."""
     code_string = create_code_string(query)
-    code = compile('lambda row: ' + code_string,
-                   '<string>',
-                   'eval')
+    code = compile("lambda row: " + code_string, "<string>", "eval")
     filter_function = eval(code)
     return filter_function
