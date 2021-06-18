@@ -1,5 +1,11 @@
 from functools import lru_cache
+from time import strftime, gmtime
 from typing import Any, Callable, Dict, Generator, List, NamedTuple, Tuple
+
+from ase.db import connect
+from ase.db.core import T2000, YEAR
+from ase.db.row import AtomsRow
+from ase.formula import Formula, dict2str
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.ase import ASEQueryTree, ASETransformer
@@ -8,11 +14,6 @@ from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
 # from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
-
-from ase.db import connect
-# from ase.db.core import Database
-from ase.db.row import AtomsRow
-from ase.formula import Formula
 
 INF = 9999999999999
 
@@ -117,6 +118,37 @@ class ASEDBWrapper:
         return sum(1 for _ in self.select(filter_function,
                                           skip=skip,
                                           limit=limit))
+
+    def get_result(self, id: int) -> Dict[str, Any]:
+        row = self.db.get(id=id)
+        count = dict(sorted(row.count_atoms().items()))
+        formula = Formula.from_dict(count)
+        abc, _, N = formula.stoichiometry()
+        anonymous = dict2str({symb: n * N for symb, n in abc._count.items()})
+        t = row.mtime * YEAR + T2000
+        last_modified = strftime('%Y-%m-%dT%H:%M:%SZ', gmtime(t))
+        dct = {'cartesian_site_positions': row.positions.tolist(),
+               'species_at_sites': row.symbols,
+               'nsites': row.natoms,
+               'species': [{'name': symbol,
+                            'chemical_symbols': [symbol],
+                            'concentration': [1.0]}
+                           for symbol in count],
+               'lattice_vectors': row.cell.tolist(),
+               'dimension_types': row.pbc.astype(int).tolist(),
+               'last_modified': last_modified,
+               'elements': list(count),
+               'nelements': len(count),
+               'elements_ratios': [n / row.natoms for n in count.values()],
+               'chemical_formula_descriptive': 'x',
+               'chemical_formula_reduced': f'{formula}',
+               'chemical_formula_hill': f'{formula:hill}',
+               'chemical_formula_anonymous': anonymous,
+               'nperiodic_dimensions': sum(row.pbc),
+               'structure_features': [],
+               'id': str(row.id)}
+
+        return dct
 
 
 def create_code_string(query: ASEQueryTree) -> str:
