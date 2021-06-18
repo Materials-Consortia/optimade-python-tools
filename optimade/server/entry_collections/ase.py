@@ -25,11 +25,9 @@ class ASECollection(EntryCollection):
                  resource_mapper: BaseResourceMapper,
                  database: str = CONFIG.ase_database):
 
-        self.ase_transformer = ASETransformer()  # mapper=resource_mapper)
-
         super().__init__(resource_cls,
                          resource_mapper,
-                         self.ase_transformer)
+                         ASETransformer())
 
         self.parser = LarkParser(version=(1, 0, 0), variant="default")
         self.collection = ASEDBWrapper(database)
@@ -159,7 +157,7 @@ def create_code_string(query: ASEQueryTree) -> str:
     >>> tree = ('AND', [('nelements', ('=', 3)),
     ...                 ('elements', ('HAS', '"Cu"'))])
     >>> create_code_string(tree)
-    '(len(row.elements) == 3) and ("Cu" in row.elements)'
+    <function <lambda> at 0x7f6d5bad6ca0>
     """
 
     q1, q2 = query
