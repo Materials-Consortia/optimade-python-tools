@@ -137,7 +137,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9]
 
     services:
       mongo:
@@ -203,9 +203,10 @@ jobs:
     - name: Install adapter conversion dependencies
       run: |
         pip install -r requirements-client.txt
+        # See PR aiidateam/aiida-core#4989 for this temporary fix.
+        # It should be removed as soon as `aiida-core`>1.6.3 is released.
+        pip install psycopg2-binary~=2.8.3
         # AiiDA-specific
-        # sqlalchemy install is temporary and has not been fixed for Python 3.6 versions
-        if [ "${{ matrix.python-version }}" == "3.6" ]; then pip install sqlalchemy==1.3.23; fi
         reentry scan
 
     - name: Setup up environment for AiiDA
@@ -238,7 +239,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v1.5.0
+      uses: codecov/codecov-action@v1.5.2
       with:
         name: project
         file: ./coverage.xml
@@ -246,7 +247,7 @@ jobs:
 
     - name: Upload validator coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v1.5.0
+      uses: codecov/codecov-action@v1.5.2
       with:
         name: validator
         file: ./validator_cov.xml
@@ -276,7 +277,7 @@ jobs:
     - name: Build
       run: |
         invoke create-api-reference-docs
-        mkdocs build --strict --verbose
+        mkdocs build --strict
 
   test_build:
     runs-on: ubuntu-latest
@@ -296,7 +297,7 @@ jobs:
         pip install --upgrade setuptools requests
 
     - name: Install package
-      run: pip install -e .
+      run: pip install -U -e .[all]
 
     - name: Build source distribution
       run: python ./setup.py sdist
