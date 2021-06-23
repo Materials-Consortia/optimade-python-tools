@@ -378,23 +378,12 @@ def test_not_or_and_precedence(check_response):
     expected_ids = ["mpf_1", "mpf_200"]
     check_response(request, expected_ids)
 
-    request = '/structures?filter=elements HAS "Ac" AND nelements>1 AND nsites=1'
-    expected_ids = []
+    request = '/structures?filter=elements HAS "Ac" AND nelements>1 AND nsites=3'
+    expected_ids = ["mpf_23"]
     check_response(request, expected_ids)
 
 
-# TODO This xfail can be removed when a patch for double negation has been included in mongomock
-@pytest.mark.xfail(
-    CONFIG.database_backend == SupportedBackend.MONGOMOCK,
-    reason='Mongomock does not support queries with double negation, e.g. .{"$not": {"$not": expr}}.',
-)
-def test_behaviour_not(check_response):
-    request = (
-        '/structures?filter=NOT(NOT(chemical_formula_descriptive STARTS WITH "Ag2" ))'
-    )
-    expected_ids = ["mpf_259", "mpf_272", "mpf_276", "mpf_281"]
-    check_response(request, expected_ids)
-
+def test_behaviour_not(check_response, client, check_error_response):
     request = '/structures?filter=NOT(elements HAS "Ag" AND nelements>1 )'
     expected_ids = [
         "mpf_1",
@@ -404,6 +393,93 @@ def test_behaviour_not(check_response):
         "mpf_3803",
         "mpf_3819",
         "mpf_200",
+    ]
+    check_response(request, expected_ids)
+
+    request = (
+        '/structures?filter=NOT(references.id HAS ALL "dummy/2019", "dijkstra1968")'
+    )
+    expected_ids = ["mpf_1", "mpf_2", "mpf_3", "mpf_3819"]
+    if CONFIG.database_backend == SupportedBackend.ELASTIC:
+        check_error_response(
+            request,
+            expected_status=501,
+            expected_title="NotImplementedError",
+            expected_detail="Unable to filter on relationships with type 'references'",
+        )
+        pytest.xfail("Elasticsearch backend does not support relationship filtering.")
+    check_response(request, expected_ids)
+
+    request = '/structures?filter=NOT(elements HAS ALL "Ag", "N")'
+    expected_ids = [
+        "mpf_1",
+        "mpf_2",
+        "mpf_3",
+        "mpf_23",
+        "mpf_30",
+        "mpf_110",
+        "mpf_200",
+        "mpf_220",
+        "mpf_446",
+        "mpf_3803",
+        "mpf_3819",
+    ]
+    check_response(request, expected_ids)
+
+    request = '/structures?filter=NOT(elements HAS "Ac" AND nelements>1 AND nsites=1)'
+    expected_ids = [
+        structure["id"] for structure in client.get("/structures").json()["data"]
+    ]
+    check_response(request, expected_ids)
+
+    request = '/structures?filter=NOT(elements HAS "Ac" OR nelements>1 OR nsites>1)'
+    expected_ids = ["mpf_200"]
+    check_response(request, expected_ids)
+
+    request = "/structures?filter=NOT(nsites<4 OR nsites>20 AND NOT(nelements >5))"
+    expected_ids = [
+        "mpf_2",
+        "mpf_3",
+        "mpf_30",
+        "mpf_110",
+        "mpf_220",
+        "mpf_259",
+        "mpf_281",
+        "mpf_446",
+        "mpf_551",
+        "mpf_632",
+        "mpf_3803",
+        "mpf_3819",
+    ]
+    check_response(request, expected_ids)
+
+
+# TODO This xfail can be removed when a patch for double negation has been included in mongomock
+@pytest.mark.xfail(
+    CONFIG.database_backend == SupportedBackend.MONGOMOCK,
+    reason='Mongomock does not support queries with double negation, e.g. .{"$not": {"$not": expr}}.',
+)
+def test_behaviour_double_negation(check_response):
+    request = (
+        '/structures?filter=NOT(NOT(chemical_formula_descriptive STARTS WITH "Ag2" ))'
+    )
+    expected_ids = ["mpf_259", "mpf_272", "mpf_276", "mpf_281"]
+    check_response(request, expected_ids)
+
+    request = '/structures?filter=NOT(NOT(chemical_formula_descriptive CONTAINS "F"))'
+    expected_ids = ["mpf_110", "mpf_3803", "mpf_3819"]
+    check_response(request, expected_ids)
+
+    request = '/structures?filter=NOT(NOT(nelements < 4 OR nsites < 10 OR elements HAS "Fe") )'
+    expected_ids = [
+        "mpf_1",
+        "mpf_2",
+        "mpf_3",
+        "mpf_23",
+        "mpf_30",
+        "mpf_110",
+        "mpf_200",
+        "mpf_3803",
     ]
     check_response(request, expected_ids)
 
@@ -419,7 +495,6 @@ def test_brackets(check_response):
 
 
 def test_filter_on_relationships(check_response, check_error_response):
-
     request = '/structures?filter=references.id HAS "dummy/2019"'
     expected_ids = ["mpf_3819"]
     if CONFIG.database_backend == SupportedBackend.ELASTIC:
