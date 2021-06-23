@@ -203,9 +203,6 @@ jobs:
     - name: Install adapter conversion dependencies
       run: |
         pip install -r requirements-client.txt
-        # See PR aiidateam/aiida-core#4989 for this temporary fix.
-        # It should be removed as soon as `aiida-core`>1.6.3 is released.
-        pip install psycopg2-binary~=2.8.3
         # AiiDA-specific
         reentry scan
 
