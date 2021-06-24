@@ -38,6 +38,9 @@ conda activate optimade
 # Install package and dependencies in editable mode (including "dev" requirements).
 pip install -e ".[dev]"
 
+# Optional: Retrieve the list of OPTIMADE providers. (Without this submodule, some of the tests will fail because "providers.json" cannot be found.)
+git submodule update --init
+
 # Run the tests with pytest
 py.test
 
