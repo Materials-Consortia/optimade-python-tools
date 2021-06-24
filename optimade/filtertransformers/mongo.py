@@ -306,11 +306,7 @@ class MongoTransformer(BaseTransformer):
                     subdict["$and"] = []
                 subdict["$and"].extend(
                     [
-                        {
-                            f"relationships.{_prop}.data": {
-                                "$size": expr.pop("$size"),
-                            }
-                        },
+                        {f"relationships.{_prop}.data": {"$size": expr.pop("$size")}},
                         {f"relationships.{_prop}.data.{_field}": expr},
                     ]
                 )
@@ -332,7 +328,7 @@ class MongoTransformer(BaseTransformer):
             """Find cases where '#only is in the query."""
             return isinstance(expr, dict) and ("#only" in expr)
 
-        def replace_only_filter(subdict, prop, expr):
+        def replace_only_filter(subdict: dict, prop: str, expr: dict):
             """Replace magic key `"#only"` (added by this transformer)
             the first part of the query first selects all the documents that have a value, in their list, that is not within the alowed values.
             Subsequently this selection is inversed, to get the documents that only have the alowed values.
@@ -343,10 +339,24 @@ class MongoTransformer(BaseTransformer):
 
             if "$and" not in subdict:
                 subdict["$and"] = []
-            subdict["$and"].append(
-                {prop: {"$not": {"$elemMatch": {"$nin": expr["#only"]}}}}
-            )
-            subdict["$and"].append({prop + ".0": {"$exists": True}})
+
+            if prop == "relationships.references.data.id":
+                subdict["$and"].append(
+                    {
+                        "relationships.references.data": {
+                            "$not": {"$elemMatch": {"id": {"$nin": expr["#only"]}}}
+                        }
+                    }
+                )
+                subdict["$and"].append(
+                    {"relationships.references.data" + ".0": {"$exists": True}}
+                )
+
+            else:
+                subdict["$and"].append(
+                    {prop: {"$not": {"$elemMatch": {"$nin": expr["#only"]}}}}
+                )
+                subdict["$and"].append({prop + ".0": {"$exists": True}})
 
             subdict.pop(prop)
             return subdict
@@ -379,7 +389,6 @@ class MongoTransformer(BaseTransformer):
             combination of $exists and/or $eq/$ne null.
 
             """
-
             not_ = set(expr.keys()) == {"$not"}
             if not_:
                 expr = expr["$not"]
