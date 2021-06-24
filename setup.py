@@ -26,7 +26,7 @@ server_deps = [
 ] + mongo_deps
 
 # Client minded
-aiida_deps = ["aiida-core~=1.6"]
+aiida_deps = ["aiida-core~=1.6,>=1.6.4"]
 ase_deps = ["ase~=3.21"]
 cif_deps = ["numpy~=1.20"]
 pdb_deps = cif_deps
