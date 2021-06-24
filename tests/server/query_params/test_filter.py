@@ -415,6 +415,32 @@ def test_filter_on_relationships(check_response, check_error_response):
     expected_ids = ["mpf_1", "mpf_2"]
     check_response(request, expected_ids)
 
+    request = '/structures?filter=species.name HAS ONLY "Ac","O"'
+    expected_ids = ["mpf_1", "mpf_30"]
+    check_response(request, expected_ids)
+
+    request = "/structures?filter=species.concentration HAS ONLY 1.0"
+    expected_ids = [
+        "mpf_1",
+        "mpf_110",
+        "mpf_2",
+        "mpf_200",
+        "mpf_220",
+        "mpf_23",
+        "mpf_259",
+        "mpf_272",
+        "mpf_276",
+        "mpf_281",
+        "mpf_3",
+        "mpf_30",
+        "mpf_3803",
+        "mpf_3819",
+        "mpf_446",
+        "mpf_551",
+        "mpf_632",
+    ]
+    check_response(request, expected_ids)
+
     request = '/structures?filter=references.doi HAS ONLY "10/123"'
     error_detail = 'Cannot filter relationships by field "doi", only "id" is supported.'
     check_error_response(

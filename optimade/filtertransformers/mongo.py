@@ -351,6 +351,15 @@ class MongoTransformer(BaseTransformer):
                 subdict["$and"].append(
                     {"relationships.references.data" + ".0": {"$exists": True}}
                 )
+            elif prop == "species.name":
+                subdict["$and"].append(
+                    {
+                        "species": {
+                            "$not": {"$elemMatch": {"name": {"$nin": expr["#only"]}}}
+                        }
+                    }
+                )
+                subdict["$and"].append({"species" + ".0": {"$exists": True}})
 
             else:
                 subdict["$and"].append(
