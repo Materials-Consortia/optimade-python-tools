@@ -29,6 +29,9 @@ class MongoTransformer(BaseTransformer):
             to the mongoDB specific versions.
         inverse_operator_map: A map from operators to their
             logical inverse.
+        mapper: A resource mapper object that defines the
+            expected fields and acts as a container for
+            various field-related configuration.
 
     """
 

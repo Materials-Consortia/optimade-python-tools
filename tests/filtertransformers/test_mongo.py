@@ -149,6 +149,15 @@ class TestMongoTransformer:
 
         assert self.transform('NOT(NOT(chemical_formula_hill CONTAINS "Al"))') == {
             "$and": [
+                {"chemical_formula_hill": {"$regex": "Al"}},
+                {"chemical_formula_hill": {"$ne": None}},
+            ]
+        }
+
+        assert self.transform(
+            'NOT(nelements > 3 AND NOT(elements HAS "Ac" AND chemical_formula_hill CONTAINS "Al"))'
+        ) == {
+            "$and": [
                 {"chemical_formula_hill": {"$not": {"$not": {"$regex": "Al"}}}},
                 {"chemical_formula_hill": {"$ne": None}},
             ]
