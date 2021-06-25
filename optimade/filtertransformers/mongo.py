@@ -6,6 +6,7 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.
 
 import copy
 import warnings
+import itertools
 from typing import Dict, Any
 from lark import v_args, Token
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
@@ -22,6 +23,12 @@ class MongoTransformer(BaseTransformer):
     Parses a lark tree into a dictionary representation to be
     used by pymongo or mongomock. Uses post-processing functions
     to handle some specific edge-cases for MongoDB.
+
+    Attributes:
+        operator_map: A map from comparison operators
+            to the mongoDB specific versions.
+        inverse_operator_map: A map from operators to their
+            logical inverse.
 
     """
 
@@ -225,21 +232,25 @@ class MongoTransformer(BaseTransformer):
 
         def handle_not_and(arg):
             """Handle the case of `~(A & B) -> (~A | ~B)`.
-            
-            We have to check for the special case in which the "and" was created 
-            by a previous NOT, e.g., 
+
+            We have to check for the special case in which the "and" was created
+            by a previous NOT, e.g.,
             `NOT (NOT ({"a": {"$eq": 6}})) -> NOT({"$and": [{"a": {"$ne": 6}},{"a": {"$ne": None}}]})`
 
             """
 
             expr1 = arg["$and"][0]
             expr2 = arg["$and"][1]
-            key = list(expr1.keys())[0]
             if expr1.keys() == expr2.keys():
-                if expr1.get(key) == {"$ne": None}:
-                    return self._recursive_expression_phrase(["NOT", expr2])
-                elif expr2.get(key) == {"$ne": None}:
-                    return self._recursive_expression_phrase(["NOT", expr1])
+                key = list(expr1.keys())[0]
+                for e, f in itertools.permutations((expr1, expr2)):
+                    if e.get(key) == {"$ne": None}:
+                        return self._recursive_expression_phrase(["NOT", f])
+
+                # if expr1.get(key) == {"$ne": None}:
+                #     return self._recursive_expression_phrase(["NOT", expr2])
+                # elif expr2.get(key) == {"$ne": None}:
+                #     return self._recursive_expression_phrase(["NOT", expr1])
             return {
                 "$or": [
                     self._recursive_expression_phrase(["NOT", subdict])
@@ -250,7 +261,7 @@ class MongoTransformer(BaseTransformer):
         def handle_not_or(arg):
             """Handle the case of ~(A | B) -> (~A & ~B).
 
-            !!! note 
+            !!! note
             Although the MongoDB `$nor` could be used here, it is not convenient as it
             will also return documents where the filtered field is missing when testing
             for inequality.
@@ -341,9 +352,7 @@ class MongoTransformer(BaseTransformer):
             return subdict
 
         return recursive_postprocessing(
-            filter_,
-            check_for_length_op_filter,
-            apply_length_op,
+            filter_, check_for_length_op_filter, apply_length_op
         )
 
     def _apply_relationship_filtering(self, filter_: dict) -> dict:
