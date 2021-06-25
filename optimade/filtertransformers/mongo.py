@@ -219,15 +219,16 @@ class MongoTransformer(BaseTransformer):
 
     def _recursive_expression_phrase(self, arg):
         """Helper function for parsing `expression_phrase`. Recursively sorts out
-        the correct precedence for `$not', '$and` and `$or`.
+        the correct precedence for `$not`, `$and` and `$or`.
 
         """
 
         def handle_not_and(arg):
-            """Handle the case of `{"$not": {"$and": [expr1, expr2]}}`
-            which is equal to `{"or": [{"$not": expr1}, {"$not": expr2}]}`}
-            We have to check for the special case in which the "and" was created by a previous NOT
-            e.g `NOT (NOT ({"a": {"$eq" : 6}})) -> NOT({$and:[{"a": {"$ne" : 6}},{"a": {"$ne": None}}]})`
+            """Handle the case of `~(A & B) -> (~A | ~B)`.
+            
+            We have to check for the special case in which the "and" was created 
+            by a previous NOT, e.g., 
+            `NOT (NOT ({"a": {"$eq": 6}})) -> NOT({"$and": [{"a": {"$ne": 6}},{"a": {"$ne": None}}]})`
 
             """
 
@@ -247,9 +248,12 @@ class MongoTransformer(BaseTransformer):
             }
 
         def handle_not_or(arg):
-            """Handle the case of {"$not": {"$or": [expr1, expr2]}} using:
-            {"$not": {"$or": [expr1, expr2]}} == {"$and": [(NOT, expr1), (NOT, expr2)]}}
-            {"$nor": [expr1, expr2]} is not convenient because nor will also return documents where the field in expr1 or exp2 is missing.
+            """Handle the case of ~(A | B) -> (~A & ~B).
+
+            !!! note 
+            Although the MongoDB `$nor` could be used here, it is not convenient as it
+            will also return documents where the filtered field is missing when testing
+            for inequality.
 
             """
 
@@ -270,9 +274,8 @@ class MongoTransformer(BaseTransformer):
         if "$and" in arg[1]:
             return handle_not_and(arg[1])
 
-        # Incase the NOT operator occurs at the lowest nesting level,
+        # If the NOT operator occurs at the lowest nesting level,
         # the expression can be simplified by using the opposite operator and removing the not.
-
         for prop, expr in arg[1].items():
             for operator, value in expr.items():
                 if operator in self.inverse_operator_map:
@@ -338,7 +341,9 @@ class MongoTransformer(BaseTransformer):
             return subdict
 
         return recursive_postprocessing(
-            filter_, check_for_length_op_filter, apply_length_op
+            filter_,
+            check_for_length_op_filter,
+            apply_length_op,
         )
 
     def _apply_relationship_filtering(self, filter_: dict) -> dict:
