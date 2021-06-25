@@ -227,19 +227,31 @@ class MongoTransformer(BaseTransformer):
         # property_zip_addon: ":" property (":" property)*
         raise NotImplementedError("Correlated list queries are not supported.")
 
-    def _recursive_expression_phrase(self, arg):
+    def _recursive_expression_phrase(self, arg: List) -> Dict[str, Any]:
         """Helper function for parsing `expression_phrase`. Recursively sorts out
         the correct precedence for `$not`, `$and` and `$or`.
+        
+        Parameters:
+            arg: A list containing the expression to be evaluated and whether it
+                is negated, e.g., `["NOT", expr]` or just `[expr]`.
+                
+        Returns:
+             The evaluated filter as a nested dictionary.
 
         """
 
-        def handle_not_and(arg):
+        def handle_not_and(arg: Dict[str, List]) -> Dict[str, List]:
             """Handle the case of `~(A & B) -> (~A | ~B)`.
 
             We have to check for the special case in which the "and" was created
             by a previous NOT, e.g.,
             `NOT (NOT ({"a": {"$eq": 6}})) -> NOT({"$and": [{"a": {"$ne": 6}},{"a": {"$ne": None}}]})`
 
+            Parameters:
+                arg: A dictionary with key `"$and"` containing a list of two expressions.
+    
+            Returns:
+                A dictionary with key `"$or"` containing a list of the appropriate expressions.
             """
 
             expr1 = arg["$and"][0]
@@ -261,7 +273,7 @@ class MongoTransformer(BaseTransformer):
                 ]
             }
 
-        def handle_not_or(arg):
+        def handle_not_or(arg: Dict[str, List]) -> Dict[str, List]:
             """Handle the case of ~(A | B) -> (~A & ~B).
 
             !!! note
@@ -269,6 +281,11 @@ class MongoTransformer(BaseTransformer):
             will also return documents where the filtered field is missing when testing
             for inequality.
 
+            Parameters:
+                arg: A dictionary with key `"$or"` that lists the negated expressions.
+                
+            Returns:
+                A dictionary with key `"$and"` that lists the appropriate negated expressions.
             """
 
             return {
