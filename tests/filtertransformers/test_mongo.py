@@ -389,9 +389,13 @@ class TestMongoTransformer:
             "$and": [
                 {
                     "$and": [
-                        {"relationships.structures.data": {"$size": 1}},
+                        {
+                            "relationships.structures.data": {
+                                "$size": 1,
+                            }
+                        },
                         {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
-                    ]
+                    ],
                 },
                 {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},
             ]
@@ -708,7 +712,12 @@ class TestMongoTransformer:
             "$and": [
                 {"elements": {"$in": ["H"]}},
                 {"elements": {"$all": ["H", "He", "Ga", "Ta"]}},
-                {"elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}},
+                {
+                    "elements": {
+                        "$all": ["H", "He", "Ga", "Ta"],
+                        "$size": 4,
+                    }
+                },
                 {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},
             ]
         }

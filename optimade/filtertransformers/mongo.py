@@ -361,7 +361,9 @@ class MongoTransformer(BaseTransformer):
             return subdict
 
         return recursive_postprocessing(
-            filter_, check_for_length_op_filter, apply_length_op
+            filter_,
+            check_for_length_op_filter,
+            apply_length_op,
         )
 
     def _apply_relationship_filtering(self, filter_: dict) -> dict:
@@ -391,7 +393,11 @@ class MongoTransformer(BaseTransformer):
                     subdict["$and"] = []
                 subdict["$and"].extend(
                     [
-                        {f"relationships.{_prop}.data": {"$size": expr.pop("$size")}},
+                        {
+                            f"relationships.{_prop}.data": {
+                                "$size": expr.pop("$size"),
+                            }
+                        },
                         {f"relationships.{_prop}.data.{_field}": expr},
                     ]
                 )
