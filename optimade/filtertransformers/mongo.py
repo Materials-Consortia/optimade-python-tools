@@ -6,7 +6,8 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.
 
 import copy
 import warnings
-from typing import Dict, Any
+import itertools
+from typing import Dict, List, Any
 from lark import v_args, Token
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
 
@@ -22,6 +23,15 @@ class MongoTransformer(BaseTransformer):
     Parses a lark tree into a dictionary representation to be
     used by pymongo or mongomock. Uses post-processing functions
     to handle some specific edge-cases for MongoDB.
+
+    Attributes:
+        operator_map: A map from comparison operators
+            to the mongoDB specific versions.
+        inverse_operator_map: A map from operators to their
+            logical inverse.
+        mapper: A resource mapper object that defines the
+            expected fields and acts as a container for
+            various field-related configuration.
 
     """
 
@@ -218,28 +228,43 @@ class MongoTransformer(BaseTransformer):
         # property_zip_addon: ":" property (":" property)*
         raise NotImplementedError("Correlated list queries are not supported.")
 
-    def _recursive_expression_phrase(self, arg):
+    def _recursive_expression_phrase(self, arg: List) -> Dict[str, Any]:
         """Helper function for parsing `expression_phrase`. Recursively sorts out
-        the correct precedence for `$not', '$and` and `$or`.
+        the correct precedence for `$not`, `$and` and `$or`.
+
+        Parameters:
+            arg: A list containing the expression to be evaluated and whether it
+                is negated, e.g., `["NOT", expr]` or just `[expr]`.
+
+        Returns:
+             The evaluated filter as a nested dictionary.
 
         """
 
-        def handle_not_and(arg):
-            """Handle the case of `{"$not": {"$and": [expr1, expr2]}}`
-            which is equal to `{"or": [{"$not": expr1}, {"$not": expr2}]}`}
-            We have to check for the special case in which the "and" was created by a previous NOT
-            e.g `NOT (NOT ({"a": {"$eq" : 6}})) -> NOT({$and:[{"a": {"$ne" : 6}},{"a": {"$ne": None}}]})`
+        def handle_not_and(arg: Dict[str, List]) -> Dict[str, List]:
+            """Handle the case of `~(A & B) -> (~A | ~B)`.
+
+            We have to check for the special case in which the "and" was created
+            by a previous NOT, e.g.,
+            `NOT (NOT ({"a": {"$eq": 6}})) -> NOT({"$and": [{"a": {"$ne": 6}},{"a": {"$ne": None}}]})`
+
+            Parameters:
+                arg: A dictionary with key `"$and"` containing a list of expressions.
+
+            Returns:
+                A dictionary with key `"$or"` containing a list of the appropriate negated expressions.
 
             """
 
             expr1 = arg["$and"][0]
             expr2 = arg["$and"][1]
-            key = list(expr1.keys())[0]
+
             if expr1.keys() == expr2.keys():
-                if expr1.get(key) == {"$ne": None}:
-                    return self._recursive_expression_phrase(["NOT", expr2])
-                elif expr2.get(key) == {"$ne": None}:
-                    return self._recursive_expression_phrase(["NOT", expr1])
+                key = list(expr1.keys())[0]
+                for e, f in itertools.permutations((expr1, expr2)):
+                    if e.get(key) == {"$ne": None}:
+                        return self._recursive_expression_phrase(["NOT", f])
+
             return {
                 "$or": [
                     self._recursive_expression_phrase(["NOT", subdict])
@@ -247,10 +272,19 @@ class MongoTransformer(BaseTransformer):
                 ]
             }
 
-        def handle_not_or(arg):
-            """Handle the case of {"$not": {"$or": [expr1, expr2]}} using:
-            {"$not": {"$or": [expr1, expr2]}} == {"$and": [(NOT, expr1), (NOT, expr2)]}}
-            {"$nor": [expr1, expr2]} is not convenient because nor will also return documents where the field in expr1 or exp2 is missing.
+        def handle_not_or(arg: Dict[str, List]) -> Dict[str, List]:
+            """Handle the case of ~(A | B) -> (~A & ~B).
+
+            !!! note
+            Although the MongoDB `$nor` could be used here, it is not convenient as it
+            will also return documents where the filtered field is missing when testing
+            for inequality.
+
+            Parameters:
+                arg: A dictionary with key `"$or"` containing a list of expressions.
+
+            Returns:
+                A dictionary with key `"$and"` that lists the appropriate negated expressions.
 
             """
 
@@ -271,31 +305,23 @@ class MongoTransformer(BaseTransformer):
         if "$and" in arg[1]:
             return handle_not_and(arg[1])
 
-        # Incase the NOT operator occurs at the lowest nesting level,
+        prop, expr = next(iter(arg[1].items()))
+        operator, value = next(iter(expr.items()))
+        if operator == "$not":  # Case of double negation e.g. NOT("$not":{ ...})
+            return {prop: value}
+
+        # If the NOT operator occurs at the lowest nesting level,
         # the expression can be simplified by using the opposite operator and removing the not.
+        if operator in self.inverse_operator_map:
+            filter_ = {prop: {self.inverse_operator_map[operator]: value}}
+            if operator in ("$in", "$eq"):
+                filter_ = {"$and": [filter_, {prop: {"$ne": None}}]}
+            return filter_
 
-        for prop, expr in arg[1].items():
-            for operator, value in expr.items():
-                if operator in self.inverse_operator_map:
-                    if operator in ("$in", "$eq"):
-                        return {
-                            "$and": [
-                                {
-                                    prop: {
-                                        self.inverse_operator_map.get(operator): value
-                                    }
-                                },
-                                {prop: {"$ne": None}},
-                            ]
-                        }
-
-                    else:
-                        return {prop: {self.inverse_operator_map.get(operator): value}}
-                else:
-                    if "#known" in expr:
-                        return {prop: {"$not": expr}}
-                    else:
-                        return {"$and": [{prop: {"$not": expr}}, {prop: {"$ne": None}}]}
+        filter_ = {prop: {"$not": expr}}
+        if "#known" in expr:
+            return filter_
+        return {"$and": [filter_, {prop: {"$ne": None}}]}
 
     def _apply_length_operators(self, filter_: dict) -> dict:
         """Check for any invalid pymongo queries that involve applying a

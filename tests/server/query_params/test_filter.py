@@ -454,11 +454,6 @@ def test_behaviour_not(check_response, client, check_error_response):
     check_response(request, expected_ids)
 
 
-# TODO This xfail can be removed when a patch for double negation has been included in mongomock
-@pytest.mark.xfail(
-    CONFIG.database_backend == SupportedBackend.MONGOMOCK,
-    reason='Mongomock does not support queries with double negation, e.g. .{"$not": {"$not": expr}}.',
-)
 def test_behaviour_double_negation(check_response):
     request = (
         '/structures?filter=NOT(NOT(chemical_formula_descriptive STARTS WITH "Ag2" ))'
