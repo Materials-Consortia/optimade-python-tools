@@ -76,6 +76,7 @@ class ImplementationValidator:
         index: bool = False,
         minimal: bool = False,
         http_headers: Dict[str, str] = None,
+        timeout: float = None,
     ):
         """Set up the tests to run, based on constants in this module
         for required endpoints.
@@ -104,6 +105,7 @@ class ImplementationValidator:
             index: Whether to validate the implementation as an index meta-database.
             minimal: Whether or not to run only a minimal test set.
             http_headers: Dictionary of additional headers to add to every request.
+            timeout: The timeout to use for all requests (passed to `requests.get`).
 
         """
         self.verbosity = verbosity
@@ -151,7 +153,10 @@ class ImplementationValidator:
                 base_url = base_url[:-1]
             self.base_url = base_url
             self.client = Client(
-                base_url, max_retries=self.max_retries, headers=http_headers
+                base_url,
+                max_retries=self.max_retries,
+                headers=http_headers,
+                timeout=timeout,
             )
 
         self._setup_log()

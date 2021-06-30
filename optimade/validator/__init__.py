@@ -97,6 +97,12 @@ def validate():  # pragma: no cover
         help="Additional HTTP headers to use for each request, specified as a JSON object.",
     )
 
+    parser.add_argument(
+        "--timeout",
+        type=float,
+        help="Timeout to use for each individual request.",
+    )
+
     args = vars(parser.parse_args())
 
     if os.environ.get("OPTIMADE_VERBOSITY") is not None:
@@ -129,6 +135,7 @@ def validate():  # pragma: no cover
         minimal=args["minimal"],
         page_limit=args["page_limit"],
         http_headers=args["headers"],
+        timeout=args["timeout"],
     )
 
     try:
