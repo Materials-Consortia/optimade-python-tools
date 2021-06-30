@@ -1,6 +1,7 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
 # pylint: disable=import-outside-toplevel
 from .validator import ImplementationValidator
+from .utils import DEFAULT_CONN_TIMEOUT
 
 __all__ = ["ImplementationValidator", "validate"]
 
@@ -100,7 +101,8 @@ def validate():  # pragma: no cover
     parser.add_argument(
         "--timeout",
         type=float,
-        help="Timeout to use for each individual request.",
+        default=DEFAULT_CONN_TIMEOUT,
+        help=f"Timeout to use for each individual request (DEFAULT: {DEFAULT_CONN_TIMEOUT} s)",
     )
 
     args = vars(parser.parse_args())
