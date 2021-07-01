@@ -377,11 +377,11 @@ class TestMongoTransformer:
         assert t.transform(p.parse('structures.id HAS ONLY "dummy/2019"')) == {
             "$and": [
                 {
-                    "relationships.structures.data.id": {
-                        "$not": {"$elemMatch": {"$nin": ["dummy/2019"]}}
+                    "relationships.structures.data": {
+                        "$not": {"$elemMatch": {"id": {"$nin": ["dummy/2019"]}}}
                     }
                 },
-                {"relationships.structures.data.id.0": {"$exists": True}},
+                {"relationships.structures.data.0": {"$exists": True}},
             ]
         }
 
@@ -394,11 +394,11 @@ class TestMongoTransformer:
                 {
                     "$and": [
                         {
-                            "relationships.structures.data.id": {
-                                "$not": {"$elemMatch": {"$nin": ["dummy/2019"]}}
+                            "relationships.structures.data": {
+                                "$not": {"$elemMatch": {"id": {"$nin": ["dummy/2019"]}}}
                             }
                         },
-                        {"relationships.structures.data.id.0": {"$exists": True}},
+                        {"relationships.structures.data.0": {"$exists": True}},
                     ]
                 },
                 {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},

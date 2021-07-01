@@ -413,17 +413,19 @@ class MongoTransformer(BaseTransformer):
             if "$and" not in subdict:
                 subdict["$and"] = []
 
-            if prop == "relationships.references.data.id":
+            if prop in [
+                "relationships.references.data.id",
+                "relationships.structures.data.id",
+            ]:
+                first_part_prop = ".".join(prop.split(".")[:-1])
                 subdict["$and"].append(
                     {
-                        "relationships.references.data": {
+                        first_part_prop: {
                             "$not": {"$elemMatch": {"id": {"$nin": expr["#only"]}}}
                         }
                     }
                 )
-                subdict["$and"].append(
-                    {"relationships.references.data" + ".0": {"$exists": True}}
-                )
+                subdict["$and"].append({first_part_prop + ".0": {"$exists": True}})
 
             else:
                 subdict["$and"].append(
