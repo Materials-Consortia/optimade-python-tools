@@ -36,7 +36,9 @@ from optimade.models import (
     StructureResource,
 )
 
-DEFAULT_CONN_TIMEOUT = 0.5
+# Default connection timeout allows for one default-sized TCP retransmission window
+# (see https://docs.python-requests.org/en/latest/user/advanced/#timeouts)
+DEFAULT_CONN_TIMEOUT = 3.05
 DEFAULT_READ_TIMEOUT = 300
 
 
