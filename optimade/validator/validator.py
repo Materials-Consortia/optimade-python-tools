@@ -795,10 +795,10 @@ class ImplementationValidator:
                 if query_optional:
                     return (
                         None,
-                        "Optional query {query!r} returned {reversed_response.status_code}.",
+                        "Optional query {query!r} raised the error: {message}.",
                     )
                 raise ResponseError(
-                    f"Unable to perform mandatory query {query!r}: responded with status code {response.status_code}"
+                    f"Unable to perform mandatory query {query!r}, which raised the error: {message}"
                 )
 
             response = response.json()
@@ -853,10 +853,10 @@ class ImplementationValidator:
                     if query_optional:
                         return (
                             None,
-                            "Optional query {query!r} returned {reversed_response.status_code}.",
+                            "Optional query {reversed_query!r} raised the error: {message}.",
                         )
                     raise ResponseError(
-                        f"Unable to perform mandatory query {query!r}: responded with status code {reversed_response.status_code}"
+                        f"Unable to perform mandatory query {reversed_query!r}, which raised the error: {message}"
                     )
 
                 reversed_response = reversed_response.json()
