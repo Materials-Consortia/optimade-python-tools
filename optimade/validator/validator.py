@@ -105,7 +105,7 @@ class ImplementationValidator:
             index: Whether to validate the implementation as an index meta-database.
             minimal: Whether or not to run only a minimal test set.
             http_headers: Dictionary of additional headers to add to every request.
-            timeout: The connection timeout to use for all requests.
+            timeout: The connection timeout to use for all requests (in seconds).
 
         """
         self.verbosity = verbosity

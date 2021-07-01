@@ -224,7 +224,6 @@ class Client:  # pragma: no cover
         status_code = None
         retries = 0
         errors = []
-        # probably a smarter way to do this with requests, but their documentation 404's...
         while retries < self.max_retries:
             retries += 1
             try:
@@ -235,6 +234,7 @@ class Client:  # pragma: no cover
                 )
 
                 status_code = self.response.status_code
+                # If we hit a 429 Too Many Requests status, then try again in 1 second
                 if status_code != 429:
                     return self.response
 
@@ -249,10 +249,9 @@ class Client:  # pragma: no cover
 
             # If the connection failed, or returned a 429, then wait 1 second before retrying
             time.sleep(1)
-            continue
 
         else:
-            message = f"Hit max (manual) retries on request {self.last_request!r}."
+            message = f"Hit max retries ({self.max_retries}) on request {self.last_request!r}."
             if errors:
                 error_str = "\n\t".join(errors)
                 message += f"\nErrors:\n\t{error_str}"
