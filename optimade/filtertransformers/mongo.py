@@ -60,7 +60,7 @@ class MongoTransformer(BaseTransformer):
         query = self._apply_relationship_filtering(query)
         query = self._apply_length_operators(query)
         query = self._apply_unknown_or_null_filter(query)
-        query = self._apply_only_filter(query)
+        query = self._apply_has_only_filter(query)
         query = self._apply_mongo_id_filter(query)
         query = self._apply_mongo_date_filter(query)
         return query
@@ -395,7 +395,7 @@ class MongoTransformer(BaseTransformer):
             filter_, check_for_entry_type, replace_with_relationship
         )
 
-    def _apply_only_filter(self, filter_: dict) -> dict:
+    def _apply_has_only_filter(self, filter_: dict) -> dict:
         """This method loops through the query and replaces #Only with the proper query"""
 
         def check_for_only_filter(_, expr):
