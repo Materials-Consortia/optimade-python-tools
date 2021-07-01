@@ -23,6 +23,7 @@ import requests
 
 from optimade.models import DataType, EntryInfoResponse, SupportLevel
 from optimade.validator.utils import (
+    DEFAULT_CONN_TIMEOUT,
     Client,
     test_case,
     print_failure,
@@ -76,7 +77,7 @@ class ImplementationValidator:
         index: bool = False,
         minimal: bool = False,
         http_headers: Dict[str, str] = None,
-        timeout: float = None,
+        timeout: float = DEFAULT_CONN_TIMEOUT,
     ):
         """Set up the tests to run, based on constants in this module
         for required endpoints.
