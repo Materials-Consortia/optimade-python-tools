@@ -20,27 +20,27 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
 mongo_deps = ["pymongo~=3.11", "mongomock~=3.23"]
 server_deps = [
-    "uvicorn~=0.13.4",
+    "uvicorn~=0.14",
     "Jinja2>=2.10,<4.0",
     "pyyaml~=5.1",  # Keep at pyyaml 5.1 for aiida-core support
 ] + mongo_deps
 
 # Client minded
 aiida_deps = ["aiida-core~=1.6,>=1.6.4"]
-ase_deps = ["ase~=3.21"]
-cif_deps = ["numpy~=1.20"]
+ase_deps = ["ase~=3.22"]
+cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2021.3.9"]
-jarvis_deps = ["jarvis-tools==2021.5.28"]
+jarvis_deps = ["jarvis-tools==2021.6.18"]
 client_deps = cif_deps
 
 # General
 docs_deps = [
-    "mkdocs~=1.1",
+    "mkdocs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.5",
     "mkdocs-material~=7.1",
     "mkdocs-minify-plugin~=0.4.0",
-    "mkdocstrings~=0.15.1",
+    "mkdocstrings~=0.15.2",
 ]
 testing_deps = [
     "pytest~=6.2",
@@ -49,7 +49,7 @@ testing_deps = [
     "jsondiff~=1.3",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.8", "pre-commit~=2.13", "invoke~=1.5"]
+    ["pylint~=2.9", "pre-commit~=2.13", "invoke~=1.5"]
     + docs_deps
     + testing_deps
     + client_deps
