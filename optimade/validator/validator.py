@@ -23,6 +23,7 @@ import requests
 
 from optimade.models import DataType, EntryInfoResponse, SupportLevel
 from optimade.validator.utils import (
+    DEFAULT_CONN_TIMEOUT,
     Client,
     test_case,
     print_failure,
@@ -76,6 +77,7 @@ class ImplementationValidator:
         index: bool = False,
         minimal: bool = False,
         http_headers: Dict[str, str] = None,
+        timeout: float = DEFAULT_CONN_TIMEOUT,
     ):
         """Set up the tests to run, based on constants in this module
         for required endpoints.
@@ -104,6 +106,7 @@ class ImplementationValidator:
             index: Whether to validate the implementation as an index meta-database.
             minimal: Whether or not to run only a minimal test set.
             http_headers: Dictionary of additional headers to add to every request.
+            timeout: The connection timeout to use for all requests (in seconds).
 
         """
         self.verbosity = verbosity
@@ -151,7 +154,10 @@ class ImplementationValidator:
                 base_url = base_url[:-1]
             self.base_url = base_url
             self.client = Client(
-                base_url, max_retries=self.max_retries, headers=http_headers
+                base_url,
+                max_retries=self.max_retries,
+                headers=http_headers,
+                timeout=timeout,
             )
 
         self._setup_log()
@@ -790,10 +796,10 @@ class ImplementationValidator:
                 if query_optional:
                     return (
                         None,
-                        "Optional query {query!r} returned {reversed_response.status_code}.",
+                        "Optional query {query!r} raised the error: {message}.",
                     )
                 raise ResponseError(
-                    f"Unable to perform mandatory query {query!r}: responded with status code {response.status_code}"
+                    f"Unable to perform mandatory query {query!r}, which raised the error: {message}"
                 )
 
             response = response.json()
@@ -848,10 +854,10 @@ class ImplementationValidator:
                     if query_optional:
                         return (
                             None,
-                            "Optional query {query!r} returned {reversed_response.status_code}.",
+                            "Optional query {reversed_query!r} raised the error: {message}.",
                         )
                     raise ResponseError(
-                        f"Unable to perform mandatory query {query!r}: responded with status code {reversed_response.status_code}"
+                        f"Unable to perform mandatory query {reversed_query!r}, which raised the error: {message}"
                     )
 
                 reversed_response = reversed_response.json()
