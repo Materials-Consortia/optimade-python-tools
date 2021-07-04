@@ -1,5 +1,37 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.5...HEAD)
+
+**Closed issues:**
+
+- Add timeout parameter to validator [\#681](https://github.com/Materials-Consortia/optimade-python-tools/issues/681)
+
+## [v0.15.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.5) (2021-07-03)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.4...v0.15.5)
+
+**Fixed bugs:**
+
+- NOT filter operation of mongo query for complex expressions [\#79](https://github.com/Materials-Consortia/optimade-python-tools/issues/79)
+
+**Closed issues:**
+
+- Remove CI psycopg2-binary install when aiida-core\>1.6.3 [\#855](https://github.com/Materials-Consortia/optimade-python-tools/issues/855)
+- Pytest fails at Setup environment for AiiDA [\#853](https://github.com/Materials-Consortia/optimade-python-tools/issues/853)
+- Add note in installation instructions about pulling submodule for providers [\#370](https://github.com/Materials-Consortia/optimade-python-tools/issues/370)
+
+**Merged pull requests:**
+
+- Update dependencies [\#872](https://github.com/Materials-Consortia/optimade-python-tools/pull/872) ([ml-evs](https://github.com/ml-evs))
+- Add request --timeout parameter to validator [\#860](https://github.com/Materials-Consortia/optimade-python-tools/pull/860) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `fa25ed3` to `91b51bd` [\#858](https://github.com/Materials-Consortia/optimade-python-tools/pull/858) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update to AiiDA v1.6.4 and remove CI fix [\#857](https://github.com/Materials-Consortia/optimade-python-tools/pull/857) ([CasperWA](https://github.com/CasperWA))
+- Temporary fix for CI tests with AiiDA [\#854](https://github.com/Materials-Consortia/optimade-python-tools/pull/854) ([CasperWA](https://github.com/CasperWA))
+- Documentation tweaks [\#852](https://github.com/Materials-Consortia/optimade-python-tools/pull/852) ([JPBergsma](https://github.com/JPBergsma))
+- Fix query negation in MongoDB [\#814](https://github.com/Materials-Consortia/optimade-python-tools/pull/814) ([JPBergsma](https://github.com/JPBergsma))
+
 ## [v0.15.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.4) (2021-06-15)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.3...v0.15.4)
