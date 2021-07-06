@@ -2,6 +2,14 @@ import pytest
 
 
 @pytest.fixture
+def structures():
+    """Fixture to provide a sorted list of structures."""
+    from optimade.server.data import structures
+
+    return sorted(structures, key=lambda x: x["task_id"])
+
+
+@pytest.fixture
 def check_include_response(get_good_response):
     """Fixture to check "good" `include` response"""
     from typing import Union, List, Set
@@ -66,10 +74,10 @@ def check_required_fields_response(get_good_response):
         expected_fields |= (
             get_mapper[endpoint].get_required_fields() - known_unused_fields
         )
-        expected_fields.add("attributes")
         request = f"/{endpoint}?response_fields={','.join(expected_fields)}"
 
         response = get_good_response(request, server)
+        expected_fields.add("attributes")
 
         response_fields = set()
         for entry in response["data"]:

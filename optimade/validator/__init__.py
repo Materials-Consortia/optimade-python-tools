@@ -1,15 +1,17 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
 # pylint: disable=import-outside-toplevel
 from .validator import ImplementationValidator
+from .utils import DEFAULT_CONN_TIMEOUT
 
 __all__ = ["ImplementationValidator", "validate"]
 
 
-def validate():
+def validate():  # pragma: no cover
     import argparse
     import sys
     import os
     import traceback
+    import json
 
     parser = argparse.ArgumentParser(
         prog="optimade-validator",
@@ -35,7 +37,7 @@ def validate():
         default="http://localhost:5000/v0",
         help=(
             "The base URL of the OPTIMADE implementation to point at, "
-            "e.g. 'http://example.com/optimade/v1' or 'http://localhost:5000/v1"
+            "e.g. 'http://example.com/optimade/v1' or 'http://localhost:5000/v1'"
         ),
     )
     parser.add_argument(
@@ -43,7 +45,7 @@ def validate():
         "--verbosity",
         action="count",
         default=0,
-        help="""Increase the verbosity of the output.""",
+        help="Increase the verbosity of the output. (-v: warning, -vv: info, -vvv: debug)",
     )
     parser.add_argument(
         "-j",
@@ -90,6 +92,19 @@ def validate():
         help="Alter the requested page limit for some tests.",
     )
 
+    parser.add_argument(
+        "--headers",
+        type=json.loads,
+        help="Additional HTTP headers to use for each request, specified as a JSON object.",
+    )
+
+    parser.add_argument(
+        "--timeout",
+        type=float,
+        default=DEFAULT_CONN_TIMEOUT,
+        help=f"Timeout to use for each individual request (DEFAULT: {DEFAULT_CONN_TIMEOUT} s)",
+    )
+
     args = vars(parser.parse_args())
 
     if os.environ.get("OPTIMADE_VERBOSITY") is not None:
@@ -121,6 +136,8 @@ def validate():
         fail_fast=args["fail_fast"],
         minimal=args["minimal"],
         page_limit=args["page_limit"],
+        http_headers=args["headers"],
+        timeout=args["timeout"],
     )
 
     try:

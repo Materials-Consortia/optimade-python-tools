@@ -41,6 +41,8 @@ Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
 
 
 class Periodicity(IntEnum):
+    """Integer enumeration of dimension_types values"""
+
     APERIODIC = 0
     PERIODIC = 1
 
@@ -67,9 +69,9 @@ class Species(BaseModel):
     - **Examples**:
         - `[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]`: any site with this species is occupied by a Ti atom.
         - `[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
-        - `[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
-        - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
-        - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
+        - `[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": [0.0, 137.327, 40.078]} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
+        - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": [12.0]} ]`: any site with this species is occupied by a carbon isotope with mass 12.
+        - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": [13.0]} ]`: any site with this species is occupied by a carbon isotope with mass 13.
         - `[ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.
 
     """
@@ -106,9 +108,10 @@ Note that concentrations are uncorrelated between different site (even of the sa
         queryable=SupportLevel.OPTIONAL,
     )
 
-    mass: Optional[float] = OptimadeField(
+    mass: Optional[List[float]] = OptimadeField(
         None,
-        description="""If present MUST be a float expressed in a.m.u.""",
+        description="""If present MUST be a list of floats expressed in a.m.u.
+Elements denoting vacancies MUST have masses equal to 0.""",
         unit="a.m.u.",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
@@ -143,8 +146,10 @@ Note: With regards to "source database", we refer to the immediate source being 
             raise ValueError(f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}")
         return v
 
-    @validator("concentration")
-    def validate_concentration(cls, v, values):
+    @validator("concentration", "mass")
+    def validate_concentration_and_mass(cls, v, values, field):
+        if not v:
+            return v
         if values.get("chemical_symbols"):
             if len(v) != len(values["chemical_symbols"]):
                 raise ValueError(
@@ -154,7 +159,7 @@ Note: With regards to "source database", we refer to the immediate source being 
             return v
 
         raise ValueError(
-            "Could not validate concentration as 'chemical_symbols' is missing/invalid."
+            "Could not validate {field.name} as 'chemical_symbols' is missing/invalid."
         )
 
     @validator("attached", "nattached")
@@ -266,6 +271,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
     - The strings are the chemical symbols, i.e., either a single uppercase letter or an uppercase letter followed by a number of lowercase letters.
     - The order MUST be alphabetical.
+    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements_ratios`, if the latter is provided.
     - Note: This property SHOULD NOT contain the string "X" to indicate non-chemical elements or "vacancy" to indicate vacancies (in contrast to the field `chemical_symbols` for the `species` property).
 
 - **Examples**:
@@ -274,7 +280,8 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
 - **Query examples**:
     - A filter that matches all records of structures that contain Si, Al **and** O, and possibly other elements: `elements HAS ALL "Si", "Al", "O"`.
-    - To match structures with exactly these three elements, use `elements HAS ALL "Si", "Al", "O" AND elements LENGTH 3`.""",
+    - To match structures with exactly these three elements, use `elements HAS ALL "Si", "Al", "O" AND elements LENGTH 3`.
+    - Note: length queries on this property can be equivalently formulated by filtering on the `nelements`_ property directly.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
     )
@@ -288,6 +295,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 - **Requirements/Conventions**:
     - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - MUST be equal to the lengths of the list properties `elements` and `elements_ratios`, if they are provided.
 
 - **Examples**:
     - `3`
@@ -311,6 +319,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
     - Composed by the proportions of elements in the structure as a list of floating point numbers.
     - The sum of the numbers MUST be 1.0 (within floating point accuracy)
+    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements`, if the latter is provided.
 
 - **Examples**:
     - `[1.0]`
@@ -439,6 +448,7 @@ The proportion number MUST be omitted if it is 1.
         conlist(Periodicity, min_items=3, max_items=3)
     ] = OptimadeField(
         None,
+        title="Dimension Types",
         description="""List of three integers.
 For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`), this list indicates if the direction is periodic (value `1`) or non-periodic (value `0`).
 Note: the elements in this list each refer to the direction of the corresponding entry in `lattice_vectors` and *not* the Cartesian x, y, z directions.
@@ -560,7 +570,9 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     - `name`: string (REQUIRED)
     - `chemical_symbols`: list of strings (REQUIRED)
     - `concentration`: list of float (REQUIRED)
-    - `mass`: float (OPTIONAL)
+    - `attached`: list of strings (REQUIRED)
+    - `nattached`: list of integers (OPTIONAL)
+    - `mass`: list of floats (OPTIONAL)
     - `original_name`: string (OPTIONAL).
 
 - **Requirements/Conventions**:
@@ -593,7 +605,8 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
           The implementation MUST include either both or none of the `attached` and `nattached` keys, and if they are provided, they MUST be of the same length.
           Furthermore, if they are provided, the `structure_features` property MUST include the string `site_attachments`.
 
-        - **mass**: OPTIONAL. If present MUST be a float expressed in a.m.u.
+        - **mass**: OPTIONAL. If present MUST be a list of floats, with the same length as `chemical_symbols`, providing element masses expressed in a.m.u.
+          Elements denoting vacancies MUST have masses equal to 0.
 
         - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
@@ -609,9 +622,9 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
 - **Examples**:
     - `[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]`: any site with this species is occupied by a Ti atom.
     - `[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
-    - `[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": 88.5} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
-    - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 12.0} ]`: any site with this species is occupied by a carbon isotope with mass 12.
-    - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": 13.0} ]`: any site with this species is occupied by a carbon isotope with mass 13.
+    - `[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": [0.0, 137.327, 40.078]} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.
+    - `[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": [12.0]} ]`: any site with this species is occupied by a carbon isotope with mass 12.
+    - `[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": [13.0]} ]`: any site with this species is occupied by a carbon isotope with mass 13.
     - `[ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.OPTIONAL,
@@ -707,11 +720,11 @@ The properties of the species are found in the property `species`.
             {
               "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0] ],
               "species_at_sites": ["Si", "Ge", "vac"],
-              "species": {
-                "Si": { "chemical_symbols": ["Si"], "concentration": [1.0] },
-                "Ge": { "chemical_symbols": ["Ge"], "concentration": [1.0] },
-                "vac": { "chemical_symbols": ["vacancy"], "concentration": [1.0] }
-              },
+              "species": [
+                { "name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0] },
+                { "name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0] },
+                { "name": "vac", "chemical_symbols": ["vacancy"], "concentration": [1.0] }
+              ],
               "assemblies": [
                 {
               "sites_in_groups": [ [0], [1], [2] ],
@@ -751,6 +764,7 @@ The properties of the species are found in the property `species`.
 
     structure_features: List[StructureFeatures] = OptimadeField(
         ...,
+        title="Structure Features",
         description="""A list of strings that flag which special features are used by the structure.
 
 - **Type**: list of strings

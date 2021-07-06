@@ -3,13 +3,13 @@ default_language_version:
 
 repos:
   - repo: https://github.com/ambv/black
-    rev: 20.8b1
+    rev: 21.6b0
     hooks:
     - id: black
       name: Blacken
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.3.0
+    rev: v4.0.1
     hooks:
     - id: trailing-whitespace
       exclude: README.md
@@ -18,7 +18,7 @@ repos:
     - id: end-of-file-fixer
 
   - repo: https://gitlab.com/pycqa/flake8
-    rev: '3.8.4'
+    rev: '3.9.2'
     hooks:
     -   id: flake8
 
