@@ -1,14 +1,18 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.16.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.0) (2021-07-06)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.5...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.5...v0.16.0)
 
 **Closed issues:**
 
-- Add timeout parameter to validator [\#681](https://github.com/Materials-Consortia/optimade-python-tools/issues/681)
+- Incoming model update \(new field: issue\_tracker\) [\#592](https://github.com/Materials-Consortia/optimade-python-tools/issues/592)
 
-## [v0.15.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.5) (2021-07-03)
+**Merged pull requests:**
+
+- Add issue\_tracker field to provider model [\#593](https://github.com/Materials-Consortia/optimade-python-tools/pull/593) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.15.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.15.5) (2021-07-04)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.4...v0.15.5)
 
@@ -20,6 +24,7 @@
 
 - Remove CI psycopg2-binary install when aiida-core\>1.6.3 [\#855](https://github.com/Materials-Consortia/optimade-python-tools/issues/855)
 - Pytest fails at Setup environment for AiiDA [\#853](https://github.com/Materials-Consortia/optimade-python-tools/issues/853)
+- Add timeout parameter to validator [\#681](https://github.com/Materials-Consortia/optimade-python-tools/issues/681)
 - Add note in installation instructions about pulling submodule for providers [\#370](https://github.com/Materials-Consortia/optimade-python-tools/issues/370)
 
 **Merged pull requests:**
