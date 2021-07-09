@@ -87,7 +87,7 @@ class Species(BaseModel):
         ...,
         description="""MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
 
-- a valid chemical-element name, or
+- a valid chemical-element symbol, or
 - the special value `"X"` to represent a non-chemical element, or
 - the special value `"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).
 

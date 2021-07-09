@@ -3243,7 +3243,7 @@
             "items": {
               "type": "string"
             },
-            "description": "MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:\n\n- a valid chemical-element name, or\n- the special value `\"X\"` to represent a non-chemical element, or\n- the special value `\"vacancy\"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).\n\nIf any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`."
+            "description": "MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:\n\n- a valid chemical-element symbol, or\n- the special value `\"X\"` to represent a non-chemical element, or\n- the special value `\"vacancy\"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).\n\nIf any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`."
           },
           "concentration": {
             "title": "Concentration",
