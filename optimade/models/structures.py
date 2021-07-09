@@ -262,7 +262,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     elements: Optional[List[str]] = OptimadeField(
         ...,
-        description="""Symbols of the different elements present in the structure.
+        description="""The chemical symbols of the different elements present in the structure.
 
 - **Type**: list of strings.
 
