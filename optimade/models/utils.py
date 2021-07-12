@@ -145,48 +145,51 @@ class SemanticVersion(str):
     @classmethod
     def validate(cls, v: str):
         if not cls.regex.match(v):
-            raise ValueError(f"Unable to validate version {v} as a semver.")
+            raise ValueError(
+                f"Unable to validate the version string {v!r} as a semantic version (expected <major>.<minor>.<patch>)."
+                "See https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string for more information."
+            )
 
         return v
 
     @property
     def _match(self):
-        """ The result of the regex match. """
+        """The result of the regex match."""
         return self.regex.match(self)
 
     @property
     def major(self) -> int:
-        """ The major version number. """
+        """The major version number."""
         return int(self._match.group(1))
 
     @property
     def minor(self) -> int:
-        """ The minor version number. """
+        """The minor version number."""
         return int(self._match.group(2))
 
     @property
     def patch(self) -> int:
-        """ The patch version number. """
+        """The patch version number."""
         return int(self._match.group(3))
 
     @property
     def prerelease(self) -> str:
-        """ The pre-release tag. """
+        """The pre-release tag."""
         return self._match.group(4)
 
     @property
     def build_metadata(self) -> str:
-        """ The build metadata. """
+        """The build metadata."""
         return self._match.group(5)
 
     @property
     def base_version(self) -> str:
-        """ The base version string without patch and metadata info. """
+        """The base version string without patch and metadata info."""
         return f"{self.major}.{self.minor}.{self.patch}"
 
 
 def anonymous_element_generator():
-    """ Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme. """
+    """Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme."""
     from string import ascii_lowercase
 
     for size in itertools.count(1):

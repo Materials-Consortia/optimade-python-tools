@@ -5,7 +5,8 @@ import pytest
 
 from lark import Tree
 
-from optimade.filterparser import LarkParser, ParserError
+from optimade.filterparser import LarkParser
+from optimade.server.exceptions import BadRequest
 
 testfile_dir = os.path.join(os.path.dirname(__file__), "testfiles")
 
@@ -22,7 +23,7 @@ class TestParserV0_9_5:
     def test_inputs(self):
         for tf in self.test_filters:
             if tf == "filter=number=0.0.1":
-                with pytest.raises(ParserError):
+                with pytest.raises(BadRequest):
                     self.parser.parse(tf)
             else:
                 tree = self.parser.parse(tf)
@@ -59,13 +60,13 @@ class TestParserV1_0_0:
         assert isinstance(self.parse("cell_length_a = 1"), Tree)
         assert isinstance(self.parse("cell_volume = 1"), Tree)
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("0_kvak IS KNOWN")  # starts with a number
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse('"foo bar" IS KNOWN')  # contains space; contains quotes
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("BadLuck IS KNOWN")  # contains upper-case letters
 
         # database-provider-specific prefixes
@@ -96,19 +97,19 @@ class TestParserV1_0_0:
         assert isinstance(self.parse("l = -.1e-12"), Tree)
         assert isinstance(self.parse("m = 1000000000.E1000000000"), Tree)
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("number=1.234D12")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("number=.e1")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("number= -.E1")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("number=+.E2")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("number=1.23E+++")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("number=+-123")
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("number=0.0.1")
 
     def test_operators(self):
@@ -268,11 +269,11 @@ class TestParserV1_0_0:
             self.parse('"NOTice"=val'), Tree
         )  # value ("NOTice") = property (val)
 
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("NOTICE=val")  # not valid property or value (NOTICE)
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse('"NOTICE"=Val')  # not valid property (Val)
-        with pytest.raises(ParserError):
+        with pytest.raises(BadRequest):
             self.parse("NOTICE=val")  # not valid property or value (NOTICE)
 
     def test_parser_version(self):

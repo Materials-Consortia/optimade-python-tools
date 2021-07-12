@@ -41,7 +41,7 @@ class StructureRelationship(TypedRelationship):
 
 
 class EntryRelationships(Relationships):
-    """This model wraps the JSON API Relationships to include type-specific top level keys. """
+    """This model wraps the JSON API Relationships to include type-specific top level keys."""
 
     references: Optional[ReferenceRelationship] = StrictField(
         None,

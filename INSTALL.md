@@ -23,7 +23,7 @@ The dependencies of this package can be found in `setup.py` with their latest su
 By default, a minimal set of requirements are installed to work with the filter language and the `pydantic` models.
 The install mode `server` (i.e. `pip install .[server]`) is sufficient to run a `uvicorn` server using the `mongomock` backend (or MongoDB with `pymongo`, if present).
 The suite of development and testing tools are installed with via the install modes `dev` and `testing`.
-There are additionally three backend-specific install modes, `django`, `elastic` and `mongo`, as well as the `all` mode, which installs all dependencies.
+There are additionally two backend-specific install modes, `elastic` and `mongo`, as well as the `all` mode, which installs all dependencies.
 All contributed Python code, must use the [black](https://github.com/ambv/black) code formatter, and must pass the [flake8](http://flake8.pycqa.org/en/latest/) linter that is run automatically on all PRs.
 
 ```sh
@@ -38,13 +38,16 @@ conda activate optimade
 # Install package and dependencies in editable mode (including "dev" requirements).
 pip install -e ".[dev]"
 
+# Optional: Retrieve the list of OPTIMADE providers. (Without this submodule, some of the tests will fail because "providers.json" cannot be found.)
+git submodule update --init
+
 # Run the tests with pytest
 py.test
 
 # Install pre-commit environment (e.g., auto-formats code on `git commit`)
 pre-commit install
 
-# Optional: Install MongoDB (and set `use_real_mongo = true`)
+# Optional: Install MongoDB (and set `database_backend = mongodb`)
 # Below method installs in conda environment and
 # - starts server in background
 # - ensures and uses ~/dbdata directory to store data
@@ -71,3 +74,31 @@ uvicorn optimade.server.main_index:app --reload --port 5001
 ```
 
 will run the index meta-database server at <http://localhost:5001/v1>.
+
+## Testing specific backends
+
+In order to run the test suite for a specific backend, the
+`OPTIMADE_DATABASE_BACKEND` [environment variable (or config
+option)](https://www.optimade.org/optimade-python-tools/configuration/) can be
+set to one of `'mongodb'`, `'mongomock'` or `'elastic'` (see
+[`ServerConfig.database_backend`][optimade.server.config.ServerConfig.database_backend]).
+Tests for the two "real" database backends, MongoDB and Elasticsearch, require a writable, temporary database to be accessible.
+
+The easiest way to deploy these databases and run the tests is with Docker, as shown below.
+[Docker installation instructions](https://docs.docker.com/engine/install/) will depend on your system; on Linux, the `docker` commands below may need to be prepended with `sudo`, depending on your distribution.
+These commands should be run from a local optimade-python-tools directory.
+
+The following command starts a local Elasticsearch v6 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):
+```shell
+docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:6.8.13 \
+&& sleep 10 \
+&& OPTIMADE_DATABASE_BACKEND="elastic" py.test; \
+docker container stop elasticsearch_test; docker container rm elasticsearch_test
+```
+
+The following command starts a local MongoDB instance, runs the test suite, then stops and deletes the containers:
+```shell
+docker run -d --name mongo_test -p 27017:27017 -d mongo:4.4.6 \
+&& OPTIMADE_DATABASE_BACKEND="mongodb" py.test; \
+docker container stop mongo_test; docker container rm mongo_test
+```

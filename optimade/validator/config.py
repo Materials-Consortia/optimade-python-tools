@@ -33,6 +33,8 @@ _ENTRY_SCHEMAS = {
     for endp in ENTRY_INFO_SCHEMAS
 }
 
+_ENTRY_ENDPOINTS = ("structures", "references", "calculations")
+
 _NON_ENTRY_ENDPOINTS = ("info", "links", "versions")
 
 
@@ -71,7 +73,7 @@ _INCLUSIVE_OPERATORS = {
         "ENDS",
     ),
     DataType.TIMESTAMP: (
-        # "=" and "<=" are disabled due to issue with microseconds stored in database vs API response (see Materials-Consortia/optimade-python-tools/#606)
+        # N.B. "=" and "<=" are disabled due to issue with microseconds stored in database vs API response (see Materials-Consortia/optimade-python-tools/#606)
         # ">=" is fine as all microsecond trimming will round times down
         # "=",
         # "<=",
@@ -82,11 +84,7 @@ _INCLUSIVE_OPERATORS = {
         "<=",
         ">=",
     ),
-    DataType.FLOAT: (
-        "=",
-        "<=",
-        ">=",
-    ),
+    DataType.FLOAT: (),
     DataType.LIST: ("HAS", "HAS ALL", "HAS ANY"),
 }
 
@@ -95,7 +93,7 @@ exclusive_ops = ("!=", "<", ">")
 _EXCLUSIVE_OPERATORS = {
     DataType.STRING: exclusive_ops,
     DataType.TIMESTAMP: (),
-    DataType.FLOAT: exclusive_ops,
+    DataType.FLOAT: (),
     DataType.INTEGER: exclusive_ops,
     DataType.LIST: (),
 }
@@ -121,6 +119,11 @@ class ValidatorConfig(BaseSettings):
 
     entry_schemas: Dict[str, Any] = Field(
         _ENTRY_SCHEMAS, description="The entry listing endpoint schemas"
+    )
+
+    entry_endpoints: Set[str] = Field(
+        _ENTRY_ENDPOINTS,
+        description="The entry endpoints to validate, if present in the API's `/info` response `entry_types_by_format['json']`",
     )
 
     unique_properties: Set[str] = Field(

@@ -180,7 +180,7 @@ class Warnings(OptimadeError):
 
 
 class ResponseMetaQuery(BaseModel):
-    """ Information on the query that was requested. """
+    """Information on the query that was requested."""
 
     representation: str = StrictField(
         ...,
@@ -242,6 +242,11 @@ class Implementation(BaseModel):
     maintainer: Optional[ImplementationMaintainer] = StrictField(
         None,
         description="A dictionary providing details about the maintainer of the implementation.",
+    )
+
+    issue_tracker: Optional[Union[AnyUrl, jsonapi.Link]] = StrictField(
+        None,
+        description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation's issue tracker.",
     )
 
 
