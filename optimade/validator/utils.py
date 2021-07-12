@@ -344,12 +344,13 @@ class Client:  # pragma: no cover
             # If the connection failed, or returned a 429, then wait 1 second before retrying
             time.sleep(1)
 
-        else:
-            message = f"Hit max retries ({self.max_retries}) on request {self.last_request!r}."
-            if errors:
-                error_str = "\n\t".join(errors)
-                message += f"\nErrors:\n\t{error_str}"
-            raise ResponseError(message)
+        message = (
+            f"Hit max retries ({self.max_retries}) on request {self.last_request!r}."
+        )
+        if errors:
+            error_str = "\n\t".join(errors)
+            message += f"\nErrors:\n\t{error_str}"
+        raise ResponseError(message)
 
 
 def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
@@ -478,7 +479,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                 if validator.fail_fast and not optional:
                     validator.print_summary()
                     raise SystemExit
-                    
+
             # Reset the client request so that it can be properly
             # displayed if the next request fails
             if not multistage:
