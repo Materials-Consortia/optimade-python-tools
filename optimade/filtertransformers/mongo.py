@@ -396,27 +396,36 @@ class MongoTransformer(BaseTransformer):
         )
 
     def _apply_has_only_filter(self, filter_: dict) -> dict:
-        """This method loops through the query and replaces #Only with the proper query"""
+        """This method loops through the query and replaces the magic key `"#only"` 
+        with the proper 'HAS ONLY' query.
+        """
 
         def check_for_only_filter(_, expr):
-            """Find cases where '#only is in the query."""
+            """Find cases where the magic key `"#only"` is in the query."""
             return isinstance(expr, dict) and ("#only" in expr)
 
         def replace_only_filter(subdict: dict, prop: str, expr: dict):
-            """Replace magic key `"#only"` (added by this transformer)
-            the first part of the query first selects all the documents that have a value, in their list, that is not within the alowed values.
-            Subsequently this selection is inversed, to get the documents that only have the alowed values.
-            With this inversion also documents with "weird" values such as null or empty lists are selected.
-            The second part of the query makes sure that only documents with lists that have at least one value are selected.
+            """Replace the magic key `"#only"` (added by this transformer) with an `$elemMatch`-based query.
+            
+            The first part of the query selects all the documents that contain any value that does not 
+            match any target values for the property `prop`.
+            Subsequently, this selection is inverted, to get the documents that only have
+            the allowed values.
+            This inversion also selects documents with edge-case values such as null or empty lists; 
+            these are removed in the second part of the query that makes sure that only documents
+            with lists that have at least one value are selected.
+            
             """
 
             if "$and" not in subdict:
                 subdict["$and"] = []
 
-            if prop in [
-                "relationships.references.data.id",
-                "relationships.structures.data.id",
-            ]:
+            if prop.startswith("relationships."):
+                if prop not in (
+                    "relationships.references.data.id",
+                    "relationships.structures.data.id",
+                ):
+                    raise BadRequest(f"Unable to query on unrecognised field {prop}.")
                 first_part_prop = ".".join(prop.split(".")[:-1])
                 subdict["$and"].append(
                     {
