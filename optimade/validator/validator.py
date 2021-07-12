@@ -11,6 +11,7 @@ import sys
 import logging
 import random
 import urllib.parse
+import warnings
 from typing import Union, Tuple, Any, List, Dict, Optional
 
 try:
@@ -143,7 +144,7 @@ class ImplementationValidator:
                 if not hasattr(self.client, "headers"):
                     self.client.headers = http_headers
                 else:
-                    print_warning(
+                    warnings.warn(
                         f"Not using specified request headers {http_headers} with custom client {self.client}."
                     )
         else:
