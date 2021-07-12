@@ -188,6 +188,10 @@ def test_list_has_only(check_response):
     expected_ids = ["mpf_1", "mpf_23"]
     check_response(request, expected_ids)
 
+    request = '/structures?filter=elements HAS ONLY "Ac", "Ag"'
+    expected_ids = ["mpf_1", "mpf_200"]
+    check_response(request, expected_ids)
+
     request = '/structures?filter=elements HAS ONLY "Ac"'
     expected_ids = ["mpf_1"]
     check_response(request, expected_ids)
@@ -508,6 +512,10 @@ def test_filter_on_relationships(check_response, check_error_response):
 
     request = '/structures?filter=references.id HAS ONLY "dijkstra1968"'
     expected_ids = ["mpf_1", "mpf_2"]
+    check_response(request, expected_ids)
+
+    request = '/structures?filter=references.id HAS ONLY "dijkstra1968", "dummy/2019"'
+    expected_ids = ["mpf_1", "mpf_2", "mpf_3819"]
     check_response(request, expected_ids)
 
     request = '/structures?filter=references.doi HAS ONLY "10/123"'
