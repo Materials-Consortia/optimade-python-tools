@@ -38,11 +38,7 @@ Each release of the `optimade` package from this repository only targets one ver
 | OPTIMADE API version | `optimade` version |
 |:--------------------:|:------------------:|
 | [v1.0.0](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst) | [v0.12.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.9) |
-| [v1.0.1](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.1/optimade.rst) [<sup>†</sup>](#version_footnote) | [v0.13.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.13.1) |
-
-<span id="#version_footnote"><sup>†</sup></span>
-Whilst both the specification and this package follow semantic versioning, a [potentially backwards incompatible change](https://github.com/Materials-Consortia/OPTIMADE/pull/344) was introduced in v1.0.1 of the specification.
-
+| [v1.1.0](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.1.0/optimade.rst) | [v0.16.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.0) |
 
 ## Contributing
 
