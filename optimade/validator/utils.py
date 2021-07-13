@@ -36,6 +36,11 @@ from optimade.models import (
     StructureResource,
 )
 
+# Default connection timeout allows for one default-sized TCP retransmission window
+# (see https://docs.python-requests.org/en/latest/user/advanced/#timeouts)
+DEFAULT_CONN_TIMEOUT = 3.05
+DEFAULT_READ_TIMEOUT = 300
+
 
 class ResponseError(Exception):
     """This exception should be raised for a manual hardcoded test failure."""
@@ -162,13 +167,17 @@ class ValidatorResults:
 
 class Client:  # pragma: no cover
     def __init__(
-        self, base_url: str, max_retries: int = 5, headers: Dict[str, str] = None
+        self,
+        base_url: str,
+        max_retries: int = 5,
+        headers: Dict[str, str] = None,
+        timeout: Optional[float] = DEFAULT_CONN_TIMEOUT,
     ) -> None:
         """Initialises the Client with the given `base_url` without testing
         if it is valid.
 
         Parameters:
-            base_url (str): the base URL of the optimade implementation, including
+            base_url: the base URL of the optimade implementation, including
                 request protocol (e.g. `'http://'`) and API version number if necessary.
 
                 Examples:
@@ -180,6 +189,7 @@ class Client:  # pragma: no cover
 
             max_retries: The maximum number of attempts to make for each query.
             headers: Dictionary of additional headers to add to every request.
+            timeout: Connection timeout in seconds.
 
         """
         self.base_url = base_url
@@ -187,6 +197,7 @@ class Client:  # pragma: no cover
         self.response = None
         self.max_retries = max_retries
         self.headers = headers or {}
+        self.timeout = timeout or DEFAULT_CONN_TIMEOUT
 
     def get(self, request: str):
         """Makes the given request, with a number of retries if being rate limited. The
@@ -214,29 +225,39 @@ class Client:  # pragma: no cover
 
         status_code = None
         retries = 0
-        # probably a smarter way to do this with requests, but their documentation 404's...
+        errors = []
         while retries < self.max_retries:
             retries += 1
             try:
-                self.response = requests.get(self.last_request, headers=self.headers)
-            except requests.exceptions.ConnectionError as exc:
-                sys.exit(
-                    f"{exc.__class__.__name__}: No response from server at {self.last_request}, please check the URL."
+                self.response = requests.get(
+                    self.last_request,
+                    headers=self.headers,
+                    timeout=(self.timeout, DEFAULT_READ_TIMEOUT),
                 )
+
+                status_code = self.response.status_code
+                # If we hit a 429 Too Many Requests status, then try again in 1 second
+                if status_code != 429:
+                    return self.response
+
+            # If the connection times out, retry but cache the error
+            except requests.exceptions.ConnectionError as exc:
+                errors.append(str(exc))
+
             except requests.exceptions.MissingSchema:
                 sys.exit(
                     f"Unable to make request on {self.last_request}, did you mean http://{self.last_request}?"
                 )
-            status_code = self.response.status_code
-            if status_code != 429:
-                break
 
+            # If the connection failed, or returned a 429, then wait 1 second before retrying
             time.sleep(1)
 
         else:
-            raise ResponseError("Hit max (manual) retries on request.")
-
-        return self.response
+            message = f"Hit max retries ({self.max_retries}) on request {self.last_request!r}."
+            if errors:
+                error_str = "\n\t".join(errors)
+                message += f"\nErrors:\n\t{error_str}"
+            raise ResponseError(message)
 
 
 def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):

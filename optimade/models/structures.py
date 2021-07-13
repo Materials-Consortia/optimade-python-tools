@@ -87,7 +87,7 @@ class Species(BaseModel):
         ...,
         description="""MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
 
-- a valid chemical-element name, or
+- a valid chemical-element symbol, or
 - the special value `"X"` to represent a non-chemical element, or
 - the special value `"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).
 
@@ -262,7 +262,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
 
     elements: Optional[List[str]] = OptimadeField(
         ...,
-        description="""Names of the different elements present in the structure.
+        description="""The chemical symbols of the different elements present in the structure.
 
 - **Type**: list of strings.
 
@@ -373,7 +373,7 @@ The proportion number MUST be omitted if it is 1.
     - **Query**: MUST be a queryable property.
       However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
       Intricate queries on formula components are instead suggested to be formulated using set-type filter operators on the multi valued `elements` and `elements_ratios` properties.
-    - Element names MUST have proper capitalization (e.g., `"Si"`, not `"SI"` for "silicon").
+    - Element symbols MUST have proper capitalization (e.g., `"Si"`, not `"SI"` for "silicon").
     - Elements MUST be placed in alphabetical order, followed by their integer chemical proportion number.
     - For structures with no partial occupation, the chemical proportion numbers are the smallest integers for which the chemical proportion is exactly correct.
     - For structures with partial occupation, the chemical proportion numbers are integers that within reasonable approximation indicate the correct chemical proportions. The precise details of how to perform the rounding is chosen by the API implementation.
@@ -404,7 +404,7 @@ The proportion number MUST be omitted if it is 1.
     - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.
       For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, `chemical_formula_hill` is `"H2O2"` (i.e., not `"HO"`, nor `"H4O4"`).
     - If the chemical insight needed to ascribe a Hill formula to the system is not present, the property MUST be handled as unset.
-    - Element names MUST have proper capitalization (e.g., `"Si"`, not `"SI"` for "silicon").
+    - Element symbols MUST have proper capitalization (e.g., `"Si"`, not `"SI"` for "silicon").
     - Elements MUST be placed in [Hill order](https://dx.doi.org/10.1021/ja02046a005), followed by their integer chemical proportion number.
       Hill order means: if carbon is present, it is placed first, and if also present, hydrogen is placed second.
       After that, all other elements are ordered alphabetically.
@@ -583,7 +583,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
         - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the `species` list;
         - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.
           Each item of the list MUST be one of the following:
-            - a valid chemical-element name, or
+            - a valid chemical-element symbol, or
             - the special value `"X"` to represent a non-chemical element, or
             - the special value `"vacancy"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).
 

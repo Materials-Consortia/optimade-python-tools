@@ -405,6 +405,34 @@ class TestMongoTransformer:
             ]
         }
 
+        with pytest.raises(
+            NotImplementedError,
+            match='Cannot filter relationships by field "doi", only "id" is supported.',
+        ):
+            assert t.transform(
+                p.parse(
+                    'references.doi HAS ONLY "10.123/12345" AND structures.id HAS "dummy/2019"'
+                )
+            ) == {
+                "$and": [
+                    {
+                        "$and": [
+                            {
+                                "relationships.references.data": {
+                                    "$not": {
+                                        "$elemMatch": {
+                                            "doi": {"$nin": ["10.123/12345"]}
+                                        }
+                                    }
+                                }
+                            },
+                            {"relationships.references.data.0": {"$exists": True}},
+                        ]
+                    },
+                    {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},
+                ]
+            }
+
     def test_other_provider_fields(self, mapper):
         """Test that fields from other providers generate
         queries that treat the value of the field as `null`.
