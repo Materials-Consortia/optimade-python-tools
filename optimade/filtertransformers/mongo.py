@@ -10,8 +10,7 @@ import itertools
 from typing import Dict, List, Any
 from lark import v_args, Token
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
-
-
+from optimade.server.exceptions import BadRequest
 from optimade.server.warnings import TimestampNotRFCCompliant
 
 __all__ = ("MongoTransformer",)
@@ -60,6 +59,7 @@ class MongoTransformer(BaseTransformer):
         query = self._apply_relationship_filtering(query)
         query = self._apply_length_operators(query)
         query = self._apply_unknown_or_null_filter(query)
+        query = self._apply_has_only_filter(query)
         query = self._apply_mongo_id_filter(query)
         query = self._apply_mongo_date_filter(query)
         return query
@@ -189,7 +189,7 @@ class MongoTransformer(BaseTransformer):
             return {"$in": arg[2]}
 
         if arg[1] == "ONLY":
-            return {"$all": arg[2], "$size": len(arg[2])}
+            return {"#only": arg[2]}
 
         # value with OPERATOR
         raise NotImplementedError(
@@ -386,30 +386,66 @@ class MongoTransformer(BaseTransformer):
                     f'Cannot filter relationships by field "{_field}", only "id" is supported.'
                 )
 
-            # in the case of HAS ONLY, the size operator needs to be applied
-            # one level up, i.e. excluding the field
-            if "$size" in expr:
-                if "$and" not in subdict:
-                    subdict["$and"] = []
-                subdict["$and"].extend(
-                    [
-                        {
-                            f"relationships.{_prop}.data": {
-                                "$size": expr.pop("$size"),
-                            }
-                        },
-                        {f"relationships.{_prop}.data.{_field}": expr},
-                    ]
-                )
-            else:
-                subdict[f"relationships.{_prop}.data.{_field}"] = expr
-
+            subdict[f"relationships.{_prop}.data.{_field}"] = expr
             subdict.pop(prop)
-
             return subdict
 
         return recursive_postprocessing(
             filter_, check_for_entry_type, replace_with_relationship
+        )
+
+    def _apply_has_only_filter(self, filter_: dict) -> dict:
+        """This method loops through the query and replaces the magic key `"#only"`
+        with the proper 'HAS ONLY' query.
+        """
+
+        def check_for_only_filter(_, expr):
+            """Find cases where the magic key `"#only"` is in the query."""
+            return isinstance(expr, dict) and ("#only" in expr)
+
+        def replace_only_filter(subdict: dict, prop: str, expr: dict):
+            """Replace the magic key `"#only"` (added by this transformer) with an `$elemMatch`-based query.
+
+            The first part of the query selects all the documents that contain any value that does not
+            match any target values for the property `prop`.
+            Subsequently, this selection is inverted, to get the documents that only have
+            the allowed values.
+            This inversion also selects documents with edge-case values such as null or empty lists;
+            these are removed in the second part of the query that makes sure that only documents
+            with lists that have at least one value are selected.
+
+            """
+
+            if "$and" not in subdict:
+                subdict["$and"] = []
+
+            if prop.startswith("relationships."):
+                if prop not in (
+                    "relationships.references.data.id",
+                    "relationships.structures.data.id",
+                ):
+                    raise BadRequest(f"Unable to query on unrecognised field {prop}.")
+                first_part_prop = ".".join(prop.split(".")[:-1])
+                subdict["$and"].append(
+                    {
+                        first_part_prop: {
+                            "$not": {"$elemMatch": {"id": {"$nin": expr["#only"]}}}
+                        }
+                    }
+                )
+                subdict["$and"].append({first_part_prop + ".0": {"$exists": True}})
+
+            else:
+                subdict["$and"].append(
+                    {prop: {"$not": {"$elemMatch": {"$nin": expr["#only"]}}}}
+                )
+                subdict["$and"].append({prop + ".0": {"$exists": True}})
+
+            subdict.pop(prop)
+            return subdict
+
+        return recursive_postprocessing(
+            filter_, check_for_only_filter, replace_only_filter
         )
 
     def _apply_unknown_or_null_filter(self, filter_: dict) -> dict:

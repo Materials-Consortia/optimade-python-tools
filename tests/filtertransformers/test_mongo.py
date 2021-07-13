@@ -376,8 +376,12 @@ class TestMongoTransformer:
 
         assert t.transform(p.parse('structures.id HAS ONLY "dummy/2019"')) == {
             "$and": [
-                {"relationships.structures.data": {"$size": 1}},
-                {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
+                {
+                    "relationships.structures.data": {
+                        "$not": {"$elemMatch": {"id": {"$nin": ["dummy/2019"]}}}
+                    }
+                },
+                {"relationships.structures.data.0": {"$exists": True}},
             ]
         }
 
@@ -391,15 +395,43 @@ class TestMongoTransformer:
                     "$and": [
                         {
                             "relationships.structures.data": {
-                                "$size": 1,
+                                "$not": {"$elemMatch": {"id": {"$nin": ["dummy/2019"]}}}
                             }
                         },
-                        {"relationships.structures.data.id": {"$all": ["dummy/2019"]}},
-                    ],
+                        {"relationships.structures.data.0": {"$exists": True}},
+                    ]
                 },
                 {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},
             ]
         }
+
+        with pytest.raises(
+            NotImplementedError,
+            match='Cannot filter relationships by field "doi", only "id" is supported.',
+        ):
+            assert t.transform(
+                p.parse(
+                    'references.doi HAS ONLY "10.123/12345" AND structures.id HAS "dummy/2019"'
+                )
+            ) == {
+                "$and": [
+                    {
+                        "$and": [
+                            {
+                                "relationships.references.data": {
+                                    "$not": {
+                                        "$elemMatch": {
+                                            "doi": {"$nin": ["10.123/12345"]}
+                                        }
+                                    }
+                                }
+                            },
+                            {"relationships.references.data.0": {"$exists": True}},
+                        ]
+                    },
+                    {"relationships.structures.data.id": {"$in": ["dummy/2019"]}},
+                ]
+            }
 
     def test_other_provider_fields(self, mapper):
         """Test that fields from other providers generate
@@ -694,7 +726,14 @@ class TestMongoTransformer:
     def test_list_properties(self):
         """Test the HAS ALL, ANY and optional ONLY queries."""
         assert self.transform('elements HAS ONLY "H","He","Ga","Ta"') == {
-            "elements": {"$all": ["H", "He", "Ga", "Ta"], "$size": 4}
+            "$and": [
+                {
+                    "elements": {
+                        "$not": {"$elemMatch": {"$nin": ["H", "He", "Ga", "Ta"]}}
+                    }
+                },
+                {"elements.0": {"$exists": True}},
+            ]
         }
 
         assert self.transform('elements HAS ANY "H","He","Ga","Ta"') == {
@@ -713,10 +752,16 @@ class TestMongoTransformer:
                 {"elements": {"$in": ["H"]}},
                 {"elements": {"$all": ["H", "He", "Ga", "Ta"]}},
                 {
-                    "elements": {
-                        "$all": ["H", "He", "Ga", "Ta"],
-                        "$size": 4,
-                    }
+                    "$and": [
+                        {
+                            "elements": {
+                                "$not": {
+                                    "$elemMatch": {"$nin": ["H", "He", "Ga", "Ta"]}
+                                }
+                            }
+                        },
+                        {"elements.0": {"$exists": True}},
+                    ]
                 },
                 {"elements": {"$in": ["H", "He", "Ga", "Ta"]}},
             ]
