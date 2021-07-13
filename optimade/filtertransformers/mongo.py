@@ -10,8 +10,7 @@ import itertools
 from typing import Dict, List, Any
 from lark import v_args, Token
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
-
-
+from optimade.server.exceptions import BadRequest
 from optimade.server.warnings import TimestampNotRFCCompliant
 
 __all__ = ("MongoTransformer",)
@@ -396,7 +395,7 @@ class MongoTransformer(BaseTransformer):
         )
 
     def _apply_has_only_filter(self, filter_: dict) -> dict:
-        """This method loops through the query and replaces the magic key `"#only"` 
+        """This method loops through the query and replaces the magic key `"#only"`
         with the proper 'HAS ONLY' query.
         """
 
@@ -406,15 +405,15 @@ class MongoTransformer(BaseTransformer):
 
         def replace_only_filter(subdict: dict, prop: str, expr: dict):
             """Replace the magic key `"#only"` (added by this transformer) with an `$elemMatch`-based query.
-            
-            The first part of the query selects all the documents that contain any value that does not 
+
+            The first part of the query selects all the documents that contain any value that does not
             match any target values for the property `prop`.
             Subsequently, this selection is inverted, to get the documents that only have
             the allowed values.
-            This inversion also selects documents with edge-case values such as null or empty lists; 
+            This inversion also selects documents with edge-case values such as null or empty lists;
             these are removed in the second part of the query that makes sure that only documents
             with lists that have at least one value are selected.
-            
+
             """
 
             if "$and" not in subdict:
