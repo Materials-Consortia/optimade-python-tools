@@ -87,7 +87,7 @@ def handle_response_fields(
 
     new_results = []
     while results:
-        new_entry = results.pop(0).dict(exclude_unset=True)
+        new_entry = results.pop(0).dict(exclude_unset=True, by_alias=True)
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
