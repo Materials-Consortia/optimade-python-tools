@@ -20,9 +20,21 @@ class HTTPException(FastAPIHTTPException, ABC):
     of an exception that contains the HTTPException
     detail string, rather than the standard Python exception message.
 
+    Attributes:
+        status_code: The HTTP status code accompanying this exception.
+        title: A descriptive title for this exception.
+
     """
 
+    status_code: int = None
+    title: str
+
     def __init__(self, detail: str = None, headers: dict = None) -> None:
+        if self.status_code is None:
+            raise AttributeError(
+                "HTTPException class {self.__class__.__name__} is missing required `status_code` attribute."
+            )
+
         super().__init__(status_code=self.status_code, detail=detail, headers=headers)
 
     def __str__(self):

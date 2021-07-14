@@ -32,7 +32,7 @@ BASE_URL_PREFIXES = {
 
 
 class JSONAPIResponse(JSONResponse):
-    """This class simply patches `fastapi.resopnses.JSONResponse` to use the
+    """This class simply patches `fastapi.responses.JSONResponse` to use the
     JSON:API 'application/vnd.api+json' MIME type.
 
     """
