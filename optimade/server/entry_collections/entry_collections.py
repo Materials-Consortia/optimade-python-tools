@@ -4,12 +4,11 @@ import warnings
 import re
 
 from lark import Transformer
-from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
-from optimade.server.exceptions import BadRequest, Forbidden
+from optimade.server.exceptions import BadRequest, Forbidden, NotFound
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import FieldValueNotRecognized, UnknownProviderProperty
@@ -138,8 +137,7 @@ class EntryCollection(ABC):
             results = results[0] if results else None
 
             if data_returned > 1:
-                raise HTTPException(
-                    status_code=404,
+                raise NotFound(
                     detail=f"Instead of a single entry, {data_returned} entries were found",
                 )
 
