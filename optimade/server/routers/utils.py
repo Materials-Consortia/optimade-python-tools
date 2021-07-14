@@ -1,8 +1,8 @@
 # pylint: disable=import-outside-toplevel,too-many-locals
 import re
-import urllib
+import urllib.parse
 from datetime import datetime
-from typing import Union, List, Dict, Set
+from typing import Any, Dict, List, Set, Union
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
@@ -76,7 +76,7 @@ def handle_response_fields(
     results: Union[List[EntryResource], EntryResource],
     exclude_fields: Set[str],
     include_fields: Set[str],
-) -> List[dict]:
+) -> List[Dict[str, Any]]:
     """Handle query parameter `response_fields`.
 
     It is assumed that all fields are under `attributes`.
@@ -97,7 +97,7 @@ def handle_response_fields(
 
     new_results = []
     while results:
-        new_entry = results.pop(0).dict(exclude_unset=True)
+        new_entry = results.pop(0).dict(exclude_unset=True, by_alias=True)
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
