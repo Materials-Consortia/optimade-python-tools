@@ -7,14 +7,13 @@ from pydantic import ValidationError
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from fastapi import Request
-from fastapi.responses import JSONResponse
 
 from optimade.models import OptimadeError, ErrorResponse, ErrorSource
 
 from optimade.server.config import CONFIG
 from optimade.server.exceptions import BadRequest
 from optimade.server.logger import LOGGER
-from optimade.server.routers.utils import meta_values
+from optimade.server.routers.utils import meta_values, JSONAPIResponse
 
 
 def general_exception(
@@ -22,7 +21,7 @@ def general_exception(
     exc: Exception,
     status_code: int = 500,  # A status_code in `exc` will take precedence
     errors: List[OptimadeError] = None,
-) -> JSONResponse:
+) -> JSONAPIResponse:
     """Handle an exception
 
     Parameters:
@@ -73,7 +72,7 @@ def general_exception(
         errors=errors,
     )
 
-    return JSONResponse(
+    return JSONAPIResponse(
         status_code=http_response_code,
         content=jsonable_encoder(response, exclude_unset=True),
     )
@@ -81,7 +80,7 @@ def general_exception(
 
 def http_exception_handler(
     request: Request, exc: StarletteHTTPException
-) -> JSONResponse:
+) -> JSONAPIResponse:
     """Handle a general HTTP Exception from Starlette
 
     Parameters:
@@ -97,7 +96,7 @@ def http_exception_handler(
 
 def request_validation_exception_handler(
     request: Request, exc: RequestValidationError
-) -> JSONResponse:
+) -> JSONAPIResponse:
     """Handle a request validation error from FastAPI
 
     `RequestValidationError` is a specialization of a general pydantic `ValidationError`.
@@ -116,7 +115,7 @@ def request_validation_exception_handler(
 
 def validation_exception_handler(
     request: Request, exc: ValidationError
-) -> JSONResponse:
+) -> JSONAPIResponse:
     """Handle a general pydantic validation error
 
     The pydantic `ValidationError` usually contains a list of errors,
@@ -146,7 +145,9 @@ def validation_exception_handler(
     return general_exception(request, exc, status_code=status, errors=list(errors))
 
 
-def grammar_not_implemented_handler(request: Request, exc: VisitError) -> JSONResponse:
+def grammar_not_implemented_handler(
+    request: Request, exc: VisitError
+) -> JSONAPIResponse:
     """Handle an error raised by Lark during filter transformation
 
     All errors raised during filter transformation are wrapped in the Lark `VisitError`.
@@ -183,7 +184,9 @@ def grammar_not_implemented_handler(request: Request, exc: VisitError) -> JSONRe
     return general_exception(request, exc, status_code=status, errors=[error])
 
 
-def not_implemented_handler(request: Request, exc: NotImplementedError) -> JSONResponse:
+def not_implemented_handler(
+    request: Request, exc: NotImplementedError
+) -> JSONAPIResponse:
     """Handle a standard NotImplementedError Python exception
 
     Parameters:
@@ -201,7 +204,7 @@ def not_implemented_handler(request: Request, exc: NotImplementedError) -> JSONR
     return general_exception(request, exc, status_code=status, errors=[error])
 
 
-def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+def general_exception_handler(request: Request, exc: Exception) -> JSONAPIResponse:
     """Catch all Python Exceptions not handled by other exception handlers
 
     Pass-through directly to [`general_exception()`][optimade.server.exception_handlers.general_exception].
@@ -217,7 +220,9 @@ def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     return general_exception(request, exc)
 
 
-OPTIMADE_EXCEPTIONS: Tuple[Exception, Callable[[Request, Exception], JSONResponse]] = (
+OPTIMADE_EXCEPTIONS: Tuple[
+    Exception, Callable[[Request, Exception], JSONAPIResponse]
+] = (
     (StarletteHTTPException, http_exception_handler),
     (RequestValidationError, request_validation_exception_handler),
     (ValidationError, validation_exception_handler),

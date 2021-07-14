@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Union, List, Dict, Set
 
 from fastapi import HTTPException, Request
+from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
@@ -28,6 +29,15 @@ BASE_URL_PREFIXES = {
     "minor": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:2])}",
     "patch": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:3])}",
 }
+
+
+class JSONAPIResponse(JSONResponse):
+    """This class simply patches `fastapi.resopnses.JSONResponse` to use the
+    JSON:API 'application/vnd.api+json' MIME type.
+
+    """
+
+    media_type = "application/vnd.api+json"
 
 
 def meta_values(
