@@ -4,12 +4,11 @@ import warnings
 import re
 
 from lark import Transformer
-from fastapi import HTTPException
 
 from optimade.filterparser import LarkParser
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
-from optimade.server.exceptions import BadRequest, Forbidden
+from optimade.server.exceptions import BadRequest, Forbidden, NotFound
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import FieldValueNotRecognized, UnknownProviderProperty
@@ -86,6 +85,8 @@ class EntryCollection(ABC):
         self.provider_prefix = CONFIG.provider.prefix
         self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
 
+        self._all_fields: Set[str] = None
+
     @abstractmethod
     def __len__(self) -> int:
         """Returns the total number of entries in the collection."""
@@ -110,8 +111,10 @@ class EntryCollection(ABC):
         """
 
     def find(
-        self, params: EntryListingQueryParams
-    ) -> Tuple[List[EntryResource], int, bool, set]:
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+    ) -> Tuple[
+        Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]
+    ]:
         """
         Fetches results and indicates if more data is available.
 
@@ -120,10 +123,11 @@ class EntryCollection(ABC):
         for more information.
 
         Parameters:
-            params (EntryListingQueryParams): entry listing URL query params
+            params: Entry listing URL query params.
 
         Returns:
-            (`results`, `data_returned`, `more_data_available`, `fields`).
+            A tuple of various relevant values:
+            (`results`, `data_returned`, `more_data_available`, `exclude_fields`, `include_fields`).
 
         """
         criteria = self.handle_query_params(params)
@@ -131,15 +135,14 @@ class EntryCollection(ABC):
         response_fields = criteria.pop("fields")
 
         results, data_returned, more_data_available = self._run_db_query(
-            criteria, single_entry=isinstance(params, SingleEntryQueryParams)
+            criteria, single_entry
         )
 
         if single_entry:
             results = results[0] if results else None
 
             if data_returned > 1:
-                raise HTTPException(
-                    status_code=404,
+                raise NotFound(
                     detail=f"Instead of a single entry, {data_returned} entries were found",
                 )
 
@@ -200,24 +203,30 @@ class EntryCollection(ABC):
         """
 
     @property
-    def all_fields(self) -> set:
+    def all_fields(self) -> Set[str]:
         """Get the set of all fields handled in this collection,
         from attribute fields in the schema, provider fields and top-level OPTIMADE fields.
+
+        The set of all fields are lazily created and then cached.
+        This means the set is created the first time the property is requested and then cached.
 
         Returns:
             All fields handled in this collection.
 
         """
-        # All OPTIMADE fields
-        fields = self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
-        fields |= self.get_attribute_fields()
-        # All provider-specific fields
-        fields |= {
-            f"_{self.provider_prefix}_{field_name}"
-            for field_name in self.provider_fields
-        }
+        if not self._all_fields:
+            # All OPTIMADE fields
+            self._all_fields = (
+                self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS.copy()
+            )
+            self._all_fields |= self.get_attribute_fields()
+            # All provider-specific fields
+            self._all_fields |= {
+                f"_{self.provider_prefix}_{field_name}"
+                for field_name in self.provider_fields
+            }
 
-        return fields
+        return self._all_fields
 
     def get_attribute_fields(self) -> Set[str]:
         """Get the set of attribute fields
@@ -251,7 +260,7 @@ class EntryCollection(ABC):
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[Dict[str, Any]]:
+    ) -> Dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
@@ -273,12 +282,15 @@ class EntryCollection(ABC):
         """
         cursor_kwargs = {}
 
+        # filter
         if getattr(params, "filter", False):
-            tree = self.parser.parse(params.filter)
-            cursor_kwargs["filter"] = self.transformer.transform(tree)
+            cursor_kwargs["filter"] = self.transformer.transform(
+                self.parser.parse(params.filter)
+            )
         else:
             cursor_kwargs["filter"] = {}
 
+        # response_format
         if (
             getattr(params, "response_format", False)
             and params.response_format != "json"
@@ -287,6 +299,7 @@ class EntryCollection(ABC):
                 detail=f"Response format {params.response_format} is not supported, please use response_format='json'"
             )
 
+        # page_limit
         if getattr(params, "page_limit", False):
             limit = params.page_limit
             if limit > CONFIG.page_limit_max:
@@ -297,6 +310,7 @@ class EntryCollection(ABC):
         else:
             cursor_kwargs["limit"] = CONFIG.page_limit
 
+        # response_fields
         cursor_kwargs["projection"] = {
             f"{self.resource_mapper.get_backend_field(f)}": True
             for f in self.all_fields
@@ -304,12 +318,6 @@ class EntryCollection(ABC):
 
         if "_id" not in cursor_kwargs["projection"]:
             cursor_kwargs["projection"]["_id"] = False
-
-        if getattr(params, "sort", False):
-            cursor_kwargs["sort"] = self.parse_sort_params(params.sort)
-
-        if getattr(params, "page_offset", False):
-            cursor_kwargs["skip"] = params.page_offset
 
         if getattr(params, "response_fields", False):
             response_fields = set(params.response_fields.split(","))
@@ -319,9 +327,17 @@ class EntryCollection(ABC):
 
         cursor_kwargs["fields"] = response_fields
 
+        # sort
+        if getattr(params, "sort", False):
+            cursor_kwargs["sort"] = self.parse_sort_params(params.sort)
+
+        # page_offset
+        if getattr(params, "page_offset", False):
+            cursor_kwargs["skip"] = params.page_offset
+
         return cursor_kwargs
 
-    def parse_sort_params(self, sort_params) -> List[Tuple[str, int]]:
+    def parse_sort_params(self, sort_params: str) -> Tuple[Tuple[str, int]]:
         """Handles any sort parameters passed to the collection,
         resolving aliases and dealing with any invalid fields.
 
@@ -329,7 +345,7 @@ class EntryCollection(ABC):
             BadRequest: if an invalid sort is requested.
 
         Returns:
-            A list of tuples containing the aliased field name and
+            A tuple of tuples containing the aliased field name and
             sort direction encoded as 1 (ascending) or -1 (descending).
 
         """
