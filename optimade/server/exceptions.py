@@ -37,7 +37,7 @@ class HTTPException(FastAPIHTTPException, ABC):
 
         super().__init__(status_code=self.status_code, detail=detail, headers=headers)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.detail if self.detail is not None else self.__repr__()
 
 
