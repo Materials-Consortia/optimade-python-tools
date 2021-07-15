@@ -1,5 +1,24 @@
 # Changelog
 
+## [v0.16.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.1) (2021-07-15)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.0...v0.16.1)
+
+**Implemented enhancements:**
+
+- Change MIME type to application/vnd.api+json where appropriate [\#875](https://github.com/Materials-Consortia/optimade-python-tools/issues/875)
+- Minor corrections + use model aliases for `handle_response_fields()` [\#876](https://github.com/Materials-Consortia/optimade-python-tools/pull/876) ([CasperWA](https://github.com/CasperWA))
+
+**Fixed bugs:**
+
+- Wrong behaviour HAS ONLY query for MongoDB [\#810](https://github.com/Materials-Consortia/optimade-python-tools/issues/810)
+- Correct the behaviour of HAS ONLY with MongoDB backend [\#861](https://github.com/Materials-Consortia/optimade-python-tools/pull/861) ([JPBergsma](https://github.com/JPBergsma))
+
+**Merged pull requests:**
+
+- Change default MIME type to "application/vnd.api+json" [\#877](https://github.com/Materials-Consortia/optimade-python-tools/pull/877) ([ml-evs](https://github.com/ml-evs))
+- Update elements description to match specification [\#874](https://github.com/Materials-Consortia/optimade-python-tools/pull/874) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.16.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.0) (2021-07-06)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.15.5...v0.16.0)
