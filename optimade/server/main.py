@@ -30,7 +30,7 @@ from optimade.server.routers import (
     structures,
     versions,
 )
-from optimade.server.routers.utils import BASE_URL_PREFIXES
+from optimade.server.routers.utils import BASE_URL_PREFIXES, JSONAPIResponse
 
 
 if os.getenv("OPTIMADE_CONFIG_FILE") is None:
@@ -56,6 +56,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
     docs_url=f"{BASE_URL_PREFIXES['major']}/extensions/docs",
     redoc_url=f"{BASE_URL_PREFIXES['major']}/extensions/redoc",
     openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
+    default_response_class=JSONAPIResponse,
 )
 
 

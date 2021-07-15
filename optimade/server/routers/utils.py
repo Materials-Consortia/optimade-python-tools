@@ -4,7 +4,8 @@ import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union
 
-from fastapi import HTTPException, Request
+from fastapi import Request
+from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
@@ -18,7 +19,7 @@ from optimade.models import (
 
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.exceptions import BadRequest
+from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 # we need to get rid of any release tags (e.g. -rc.2) and any build metadata (e.g. +py36)
@@ -28,6 +29,15 @@ BASE_URL_PREFIXES = {
     "minor": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:2])}",
     "patch": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:3])}",
 }
+
+
+class JSONAPIResponse(JSONResponse):
+    """This class simply patches `fastapi.responses.JSONResponse` to use the
+    JSON:API 'application/vnd.api+json' MIME type.
+
+    """
+
+    media_type = "application/vnd.api+json"
 
 
 def meta_values(
@@ -275,8 +285,7 @@ def get_single_entry(
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
-        raise HTTPException(
-            status_code=500,
+        raise InternalServerError(
             detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
         )
 
