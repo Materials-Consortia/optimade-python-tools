@@ -6,7 +6,7 @@ updates:
     interval: monthly
   # Needs to be larger than the number of total requirements (currently 31)
   open-pull-requests-limit: 50
-  target-branch: master
+  target-branch: dependabot_updates
   labels:
   - dependency_updates
 - package-ecosystem: gitsubmodule
