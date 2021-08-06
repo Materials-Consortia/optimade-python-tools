@@ -30,6 +30,11 @@ BASE_URL_PREFIXES = {
     "patch": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:3])}",
 }
 
+PROVIDER_LIST_URLS = (
+    "https://providers.optimade.org/v1/links",
+    "https://raw.githubusercontent.com/Materials-Consortia/providers/master/src/links/v1/providers.json",
+)
+
 
 class JSONAPIResponse(JSONResponse):
     """This class simply patches `fastapi.responses.JSONResponse` to use the
@@ -341,13 +346,7 @@ def get_providers() -> list:
     except ImportError:
         import json
 
-    provider_list_urls = [
-        "https://providers.optimade.org/v1/links",
-        "https://raw.githubusercontent.com/Materials-Consortia/providers",
-        "/master/src/links/v1/providers.json",
-    ]
-
-    for provider_list_url in provider_list_urls:
+    for provider_list_url in PROVIDER_LIST_URLS:
         try:
             providers = requests.get(provider_list_url).json()
         except (
@@ -372,7 +371,7 @@ def get_providers() -> list:
 {}
     The list of providers will not be included in the `/links`-endpoint.
 """.format(
-                    "".join([f"    * {_}\n" for _ in provider_list_urls])
+                    "".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS])
                 )
             )
             return []
