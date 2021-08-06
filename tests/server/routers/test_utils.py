@@ -76,13 +76,7 @@ def test_get_providers():
 def test_get_providers_warning(caplog, top_dir):
     """Make sure a warning is logged as a last resort."""
     import copy
-    from optimade.server.routers.utils import get_providers
-
-    provider_list_urls = [
-        "https://providers.optimade.org/v1/links",
-        "https://raw.githubusercontent.com/Materials-Consortia/providers",
-        "/master/src/links/v1/providers.json",
-    ]
+    from optimade.server.routers.utils import get_providers, PROVIDER_LIST_URLS
 
     providers_cache = False
     try:
@@ -103,7 +97,7 @@ def test_get_providers_warning(caplog, top_dir):
 {}
     The list of providers will not be included in the `/links`-endpoint.
 """.format(
-                "".join([f"    * {_}\n" for _ in provider_list_urls])
+                "".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS])
             )
             assert warning_message in caplog.messages
 
