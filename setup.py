@@ -18,7 +18,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Dependencies
 # Server minded
 elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
-mongo_deps = ["pymongo~=3.11", "mongomock~=3.23"]
+mongo_deps = ["pymongo~=3.12", "mongomock~=3.23"]
 server_deps = [
     "uvicorn~=0.14.0",
     "Jinja2>=2.10,<4.0",
@@ -31,7 +31,7 @@ ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2021.3.9"]
-jarvis_deps = ["jarvis-tools==2021.6.18"]
+jarvis_deps = ["jarvis-tools==2021.7.19"]
 client_deps = cif_deps
 
 # General
@@ -49,7 +49,7 @@ testing_deps = [
     "jsondiff~=1.3",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.9", "pre-commit~=2.13", "invoke~=1.5"]
+    ["pylint~=2.9", "pre-commit~=2.13", "invoke~=1.6"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -86,7 +86,7 @@ setup(
         "fastapi~=0.65.2",
         "pydantic~=1.8,>=1.8.2",
         "email_validator~=1.1",
-        "requests~=2.25",
+        "requests~=2.26",
     ],
     extras_require={
         "all": all_deps,
