@@ -343,8 +343,7 @@ def get_providers() -> list:
 
     provider_list_urls = [
         "https://providers.optimade.org/v1/links",
-        "https://raw.githubusercontent.com/Materials-Consortia/providers",
-        "/master/src/links/v1/providers.json",
+        "https://raw.githubusercontent.com/Materials-Consortia/providers/master/src/links/v1/providers.json",
     ]
 
     for provider_list_url in provider_list_urls:
