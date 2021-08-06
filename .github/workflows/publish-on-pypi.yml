@@ -39,7 +39,7 @@ jobs:
       run: .github/workflows/update_docs.sh
 
     - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
-      uses: CasperWA/push-protected@v2.3.0
+      uses: CasperWA/push-protected@v2.4.0
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
