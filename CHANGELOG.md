@@ -1,5 +1,20 @@
 # Changelog
 
+## [v0.16.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.2) (2021-08-06)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.1...v0.16.2)
+
+**Fixed bugs:**
+
+- Provider fallbacks are still not working [\#896](https://github.com/Materials-Consortia/optimade-python-tools/issues/896)
+- Fix provider fallbacks [\#897](https://github.com/Materials-Consortia/optimade-python-tools/pull/897) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Dependency updates for v0.16.2 [\#894](https://github.com/Materials-Consortia/optimade-python-tools/pull/894) ([ml-evs](https://github.com/ml-evs))
+- Bump codecov/codecov-action from 2.0.1 to 2.0.2 [\#882](https://github.com/Materials-Consortia/optimade-python-tools/pull/882) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump codecov/codecov-action from 1.5.2 to 2.0.1 [\#878](https://github.com/Materials-Consortia/optimade-python-tools/pull/878) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.16.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.1) (2021-07-15)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.0...v0.16.1)
