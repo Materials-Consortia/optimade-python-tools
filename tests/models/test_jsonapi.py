@@ -70,8 +70,12 @@ def test_response_top_level():
     assert isinstance(Response(data=None), Response)
     assert isinstance(Response(meta={}), Response)
     assert isinstance(Response(meta=None), Response)
-    assert isinstance(Response(errors=[]), Response)
-    assert isinstance(Response(errors=None), Response)
 
-    with pytest.raises(ValidationError):
+    # "errors" MUST NOT be an empty or `null` value if given.
+    with pytest.raises(ValidationError, match=r"Errors MUST NOT be an empty.*"):
+        assert isinstance(Response(errors=[]), Response)
+    with pytest.raises(ValidationError, match=r"Errors MUST NOT be an empty.*"):
+        assert isinstance(Response(errors=None), Response)
+
+    with pytest.raises(ValidationError, match=r"At least one of .*"):
         Response(links={})
