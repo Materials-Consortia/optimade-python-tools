@@ -1,9 +1,12 @@
 from pydantic import ValidationError
 import pytest
-from optimade.models.jsonapi import Error, ToplevelLinks
 
 
 def test_hashability():
+    """Check a list of errors can be converted to a set,
+    i.e., check that Errors can be hashed."""
+    from optimade.models.jsonapi import Error
+
     error = Error(id="test")
     assert set([error])
 
@@ -14,6 +17,8 @@ def test_toplevel_links():
     can be validated as a URL or a Links object too.
 
     """
+    from optimade.models.jsonapi import ToplevelLinks
+
     test_links = {
         "first": {"href": "http://example.org/structures?page_limit=3&page_offset=0"},
         "last": {"href": "http://example.org/structures?page_limit=3&page_offset=10"},
@@ -55,3 +60,18 @@ def test_toplevel_links():
 
     with pytest.raises(ValidationError):
         ToplevelLinks(**{"base_url": {"href": "not a link"}})
+
+
+def test_response_top_level():
+    """Ensure a response with "null" values can be created."""
+    from optimade.models.jsonapi import Response
+
+    assert isinstance(Response(data=[]), Response)
+    assert isinstance(Response(data=None), Response)
+    assert isinstance(Response(meta={}), Response)
+    assert isinstance(Response(meta=None), Response)
+    assert isinstance(Response(errors=[]), Response)
+    assert isinstance(Response(errors=None), Response)
+
+    with pytest.raises(ValidationError):
+        Response(links={})
