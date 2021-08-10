@@ -349,6 +349,8 @@ class Response(BaseModel):
             raise ValueError(
                 f"At least one of {required_fields} MUST be specified in the top-level response"
             )
+        if "errors" in values and not values.get("errors"):
+            raise ValueError("Errors MUST NOT be an empty or 'null' value.")
         return values
 
     class Config:
