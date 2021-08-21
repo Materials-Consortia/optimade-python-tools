@@ -418,7 +418,12 @@
             "title": "Version",
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
-            "description": "A string containing the full version number of the API served at that versioned base URL.\nThe version number string MUST NOT be prefixed by, e.g., 'v'.\nExamples: `1.0.0`, `1.0.0-rc.2`."
+            "description": "A string containing the full version number of the API served at that versioned base URL.\nThe version number string MUST NOT be prefixed by, e.g., 'v'.\nExamples: `1.0.0`, `1.0.0-rc.2`.",
+            "examples": [
+              "0.10.1",
+              "1.0.0-rc.2",
+              "1.2.3-rc.5+develop"
+            ]
           }
         },
         "description": "A JSON object containing information about an available API version"
@@ -505,12 +510,16 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`"
+            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
+            "support": "must",
+            "queryable": "must"
           },
           "type": {
             "title": "Type",
             "type": "string",
-            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Example**: `\"structures\"`"
+            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Example**: `\"structures\"`",
+            "support": "must",
+            "queryable": "must"
           },
           "links": {
             "title": "Links",
@@ -561,13 +570,17 @@
           "immutable_id": {
             "title": "Immutable Id",
             "type": "string",
-            "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
+            "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)",
+            "support": "optional",
+            "queryable": "must"
           },
           "last_modified": {
             "title": "Last Modified",
             "type": "string",
             "description": "Date and time representing when the entry was last modified.\n\n- **Type**: timestamp.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.\n\n- **Example**:\n    - As part of JSON response format: `\"2007-04-05T14:30:20Z\"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)",
-            "format": "date-time"
+            "format": "date-time",
+            "support": "should",
+            "queryable": "must"
           }
         },
         "description": "Contains key-value pairs representing the entry's properties."
@@ -639,9 +652,9 @@
             "title": "About",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -760,9 +773,9 @@
             "title": "Homepage",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -775,9 +788,9 @@
             "title": "Source Url",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -799,9 +812,9 @@
             "title": "Issue Tracker",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -843,7 +856,12 @@
             "title": "Api Version",
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
-            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`."
+            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`.",
+            "examples": [
+              "0.10.1",
+              "1.0.0-rc.2",
+              "1.2.3-rc.5+develop"
+            ]
           },
           "available_api_versions": {
             "title": "Available Api Versions",
@@ -886,7 +904,8 @@
           "is_index": {
             "title": "Is Index",
             "type": "boolean",
-            "description": "This must be `true` since this is an index meta-database (see section Index Meta-Database)."
+            "description": "This must be `true` since this is an index meta-database (see section Index Meta-Database).",
+            "const": true
           }
         },
         "description": "Attributes for Base URL Info endpoint for an Index Meta-Database"
@@ -904,12 +923,14 @@
           "id": {
             "title": "Id",
             "pattern": "^/$",
-            "type": "string"
+            "type": "string",
+            "const": "/"
           },
           "type": {
             "title": "Type",
             "pattern": "^info$",
-            "type": "string"
+            "type": "string",
+            "const": "info"
           },
           "links": {
             "title": "Links",
@@ -1098,13 +1119,16 @@
           "id": {
             "title": "Id",
             "type": "string",
-            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`"
+            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
+            "support": "must",
+            "queryable": "must"
           },
           "type": {
             "title": "Type",
             "pattern": "^links$",
             "type": "string",
-            "description": "These objects are described in detail in the section Links Endpoint"
+            "description": "These objects are described in detail in the section Links Endpoint",
+            "const": "links"
           },
           "links": {
             "title": "Links",
@@ -1170,9 +1194,9 @@
             "title": "Base Url",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1185,9 +1209,9 @@
             "title": "Homepage",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1404,9 +1428,9 @@
             "title": "Homepage",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1475,7 +1499,8 @@
           "type": {
             "title": "Type",
             "pattern": "^links$",
-            "type": "string"
+            "type": "string",
+            "const": "links"
           }
         },
         "description": "A related Links resource object"
@@ -1488,9 +1513,9 @@
             "title": "Self",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1503,9 +1528,9 @@
             "title": "Related",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1588,9 +1613,9 @@
             "title": "Self",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1624,7 +1649,12 @@
             "title": "Api Version",
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
-            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`."
+            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`.",
+            "examples": [
+              "0.10.1",
+              "1.0.0-rc.2",
+              "1.2.3-rc.5+develop"
+            ]
           },
           "more_data_available": {
             "title": "More Data Available",
@@ -1635,9 +1665,9 @@
             "title": "Schema",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1767,9 +1797,9 @@
             "title": "Self",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1782,9 +1812,9 @@
             "title": "Related",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1797,9 +1827,9 @@
             "title": "First",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1812,9 +1842,9 @@
             "title": "Last",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1827,9 +1857,9 @@
             "title": "Prev",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1842,9 +1872,9 @@
             "title": "Next",
             "anyOf": [
               {
-                "type": "string",
-                "minLength": 1,
                 "maxLength": 65536,
+                "minLength": 1,
+                "type": "string",
                 "format": "uri"
               },
               {
@@ -1915,7 +1945,8 @@
             "title": "Type",
             "pattern": "^warning$",
             "type": "string",
-            "description": "Warnings must be of type \"warning\""
+            "description": "Warnings must be of type \"warning\"",
+            "const": "warning"
           }
         },
         "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\n\nFrom the specification:\n\nA warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value \"warning\".\nThe field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
