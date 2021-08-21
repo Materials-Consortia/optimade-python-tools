@@ -26,7 +26,7 @@ This document, guides, and the full module API documentation can be found online
 
 ## Installation
 
-Detailed instructions for installing and running the index meta-database and the main API can be found in [the installation documentation](INSTALL.md).
+Detailed installation instructions for different use cases (e.g., using the library or running a server) can be found in [the installation documentation](INSTALL.md).
 
 The latest stable version of this package can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade`.
 The latest development version of this package can be installed from the master branch of this repository `git clone https://github.com/Materials-Consortia/optimade-python-tools`.
