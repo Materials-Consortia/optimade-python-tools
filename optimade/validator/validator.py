@@ -389,7 +389,7 @@ class ImplementationValidator:
             prop_type = _impl_properties[prop]["type"]
             sortable = _impl_properties[prop]["sortable"]
             optional = (
-                CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+                CONF.entry_schemas[endp].get(prop, {}).get("x-optimade-queryable")
                 == SupportLevel.OPTIONAL
             )
 
@@ -485,7 +485,7 @@ class ImplementationValidator:
         must_props = set(
             prop
             for prop in CONF.entry_schemas.get(endp, {})
-            if CONF.entry_schemas[endp].get(prop, {}).get("support")
+            if CONF.entry_schemas[endp].get(prop, {}).get("x-optimade-support")
             == SupportLevel.MUST
         )
         must_props_supported = set(prop for prop in properties if prop in must_props)
@@ -645,7 +645,7 @@ class ImplementationValidator:
             )
 
         query_optional = (
-            CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+            CONF.entry_schemas[endp].get(prop, {}).get("x-optimade-queryable")
             == SupportLevel.OPTIONAL
         )
 
@@ -726,8 +726,10 @@ class ImplementationValidator:
             test_value = chosen_entry.get("attributes", {}).get(prop, "_missing")
 
         if test_value in ("_missing", None):
-            support = CONF.entry_schemas[endp].get(prop, {}).get("support")
-            queryable = CONF.entry_schemas[endp].get(prop, {}).get("queryable")
+            support = CONF.entry_schemas[endp].get(prop, {}).get("x-optimade-support")
+            queryable = (
+                CONF.entry_schemas[endp].get(prop, {}).get("x-optimade-queryable")
+            )
             submsg = "had no value" if test_value == "_missing" else "had `None` value"
             msg = (
                 f"Chosen entry {submsg} for {prop!r} with support level {support} and queryability {queryable}, "

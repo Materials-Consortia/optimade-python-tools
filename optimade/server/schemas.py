@@ -50,11 +50,19 @@ def retrieve_queryable_properties(
             else:
                 properties[name] = {"description": value.get("description", "")}
                 # Update schema with extension keys provided they are not None
-                for key in [_ for _ in ("unit", "queryable", "support") if _ in value]:
+                for key in [
+                    _
+                    for _ in (
+                        "x-optimade-unit",
+                        "x-optimade-queryable",
+                        "x-optimade-support",
+                    )
+                    if _ in value
+                ]:
                     properties[name][key] = value[key]
                 # All properties are sortable with the MongoDB backend.
                 # While the result for sorting lists may not be as expected, they are still sorted.
-                properties[name]["sortable"] = value.get("sortable", True)
+                properties[name]["sortable"] = value.get("x-optimade-sortable", True)
                 # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
                 properties[name]["type"] = DataType.from_json_type(
                     value.get("format", value.get("type"))

@@ -55,15 +55,16 @@ def StrictField(
 
     """
 
-    allowed_keys = [
-        "unit",
-        "pattern",
-        "uniqueItems",
-        "support",
-        "queryable",
-        "sortable",
+    allowed_keys = ["pattern", "uniqueItems"]
+
+    optimade_extension_keys = ["unit", "support", "queryable", "sortable"]
+    prefix = "x-optimade"
+
+    _banned = [
+        k
+        for k in kwargs
+        if k not in set(_PYDANTIC_FIELD_KWARGS + allowed_keys + optimade_extension_keys)
     ]
-    _banned = [k for k in kwargs if k not in set(_PYDANTIC_FIELD_KWARGS + allowed_keys)]
 
     if _banned:
         raise RuntimeError(
@@ -77,6 +78,10 @@ def StrictField(
         warnings.warn(
             f"No description provided for StrictField specified by {args}, {kwargs}."
         )
+
+    for k in optimade_extension_keys:
+        if k in kwargs:
+            kwargs[f"{prefix}-{k}"] = kwargs.pop(k)
 
     return Field(*args, **kwargs)
 

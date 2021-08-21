@@ -1,7 +1,7 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
 from typing import Optional, Dict, List
-from pydantic import BaseModel, Field, validator  # pylint: disable=no-name-in-module
+from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
 
 from optimade.models.jsonapi import Relationships, Attributes, Resource
 from optimade.models.optimade_json import Relationship, DataType
@@ -116,7 +116,7 @@ class EntryResource(Resource):
         queryable=SupportLevel.MUST,
     )
 
-    type: str = Field(
+    type: str = StrictField(
         description="""The name of the type of an entry.
 
 - **Type**: string.
