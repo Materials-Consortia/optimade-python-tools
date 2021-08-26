@@ -40,9 +40,10 @@ Each release of the `optimade` package from this repository only targets one ver
 | [v1.0.0](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst) | [v0.12.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.9) |
 | [v1.1.0](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.1.0/optimade.rst) | [v0.16.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.0) |
 
-## Contributing
+## Contributing and Getting Help
 
-Contribution tips and guidelines can be found in [the contributing guidelines](CONTRIBUTING.md).
+All development of this package (bug reports, suggestions, feedback and pull requests) occurs in the [optimade-python-tools GitHub repository](https;//github.com/Materials-Consortia/optimade-python-tools).
+Contribution guidelines and tips for getting help can be found online under [contributing](CONTRIBUTING.md).
 
 ## Links
 
