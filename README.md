@@ -23,6 +23,7 @@ The release history and changelog can be found in [the changelog](CHANGELOG.md).
 ## Documentation
 
 This document, guides, and the full module API documentation can be found online at [https://optimade.org/optimade-python-tools](https://optimade.org/optimade-python-tools).
+In particular, documentation of the OPTIMADE API response data models (implemented here with [pydantic](https://github.com/samuelcolvin/pydantic)) can be found online under [OPTIMADE Data Models](https://optimade.org/optimade-python-tools/all_models).
 
 ## Installation
 
