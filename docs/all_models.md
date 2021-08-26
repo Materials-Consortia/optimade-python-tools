@@ -1,6 +1,6 @@
 # OPTIMADE Data Models
 
-This page provides unfolded documentation for specifically for the `optimade.models` submodule, where all of the OPTIMADE (and JSON:API)-defined data models are located.
+This page provides documentation for the `optimade.models` submodule, where all the OPTIMADE (and JSON:API)-defined data models are located.
 
 For example, the three OPTIMADE entry types, `structures`, `references` and `links`, are defined primarily through the corresponding attribute models:
 
