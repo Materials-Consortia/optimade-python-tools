@@ -43,7 +43,7 @@ Each release of the `optimade` package from this repository only targets one ver
 ## Contributing and Getting Help
 
 All development of this package (bug reports, suggestions, feedback and pull requests) occurs in the [optimade-python-tools GitHub repository](https;//github.com/Materials-Consortia/optimade-python-tools).
-Contribution guidelines and tips for getting help can be found online under [contributing](CONTRIBUTING.md).
+Contribution guidelines and tips for getting help can be found in the [contributing notes](CONTRIBUTING.md).
 
 ## Links
 
