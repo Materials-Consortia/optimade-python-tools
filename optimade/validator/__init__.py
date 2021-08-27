@@ -1,5 +1,6 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
 # pylint: disable=import-outside-toplevel
+from optimade import __version__, __api_version__
 from .validator import ImplementationValidator
 from .utils import DEFAULT_CONN_TIMEOUT
 
@@ -96,6 +97,12 @@ def validate():  # pragma: no cover
         "--headers",
         type=json.loads,
         help="Additional HTTP headers to use for each request, specified as a JSON object.",
+    )
+
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"optimade-validator running from optimade-python-tools v{__version__} which implements OPTIMADE specification v{__api_version__}.",
     )
 
     parser.add_argument(
