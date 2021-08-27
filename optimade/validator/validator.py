@@ -321,12 +321,6 @@ class ImplementationValidator:
                 entry_info_endpoint
             )
 
-        # Use the _entry_info_by_type to construct filters on the relevant endpoints
-        if not self.minimal:
-            for endp in self.available_json_endpoints:
-                self._log.debug("Testing queries on JSON entry endpoint of %s", endp)
-                self._recurse_through_endpoint(endp)
-
         # Test that the results from multi-entry-endpoints obey, e.g. page limits,
         # and that all entries can be deserialized with the patched models.
         # These methods also set the test_ids for each type of entry, which are validated
@@ -339,6 +333,12 @@ class ImplementationValidator:
         for endp in self.available_json_endpoints:
             self._log.debug("Testing single entry request of type %s", endp)
             self._test_single_entry_endpoint(endp)
+
+        # Use the _entry_info_by_type to construct filters on the relevant endpoints
+        if not self.minimal:
+            for endp in self.available_json_endpoints:
+                self._log.debug("Testing queries on JSON entry endpoint of %s", endp)
+                self._recurse_through_endpoint(endp)
 
         # Test that the links endpoint can be serialized correctly
         self._log.debug("Testing %s endpoint", CONF.links_endpoint)
@@ -997,9 +997,6 @@ class ImplementationValidator:
     def _test_multi_entry_endpoint(self, endp: str) -> None:
         """Requests and deserializes a multi-entry endpoint with the
         appropriate model.
-
-        TODO: deserialization is currently classed as an optional
-        test until our models are robust to support levels.
 
         Parameters:
             request_str: The multi-entry request to make, e.g.,
