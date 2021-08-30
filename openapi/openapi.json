@@ -1544,7 +1544,7 @@
           "description": {
             "title": "Description",
             "type": "string",
-            "description": "OPTIONAL human-readable description of the relationship"
+            "description": "OPTIONAL human-readable description of the relationship."
           }
         },
         "description": "Specific meta field for base relationship resource"
@@ -1685,7 +1685,7 @@
                 "$ref": "#/components/schemas/EntryInfoResource"
               }
             ],
-            "description": "OPTIMADE information for an entry endpoint"
+            "description": "OPTIMADE information for an entry endpoint."
           },
           "meta": {
             "title": "Meta",
@@ -1959,7 +1959,7 @@
                 "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
-            "description": "A meta object containing non-standard information"
+            "description": "A meta object containing non-standard information."
           },
           "errors": {
             "title": "Errors",
@@ -2119,7 +2119,7 @@
                 "$ref": "#/components/schemas/BaseInfoResource"
               }
             ],
-            "description": "The implementations /info data"
+            "description": "The implementations /info data."
           },
           "meta": {
             "title": "Meta",
@@ -2393,7 +2393,7 @@
                 }
               }
             ],
-            "description": "List of unique OPTIMADE links resource objects"
+            "description": "List of unique OPTIMADE links resource objects."
           },
           "meta": {
             "title": "Meta",
@@ -2642,7 +2642,7 @@
             "description": "a meta object that contains non-standard meta-information about the relationship."
           }
         },
-        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"
+        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."
       },
       "ReferenceResource": {
         "title": "ReferenceResource",
@@ -2943,7 +2943,7 @@
                 }
               }
             ],
-            "description": "List of unique OPTIMADE references entry resource objects"
+            "description": "List of unique OPTIMADE references entry resource objects."
           },
           "meta": {
             "title": "Meta",
@@ -3020,7 +3020,7 @@
                 "type": "object"
               }
             ],
-            "description": "A single references entry resource"
+            "description": "A single references entry resource."
           },
           "meta": {
             "title": "Meta",
@@ -3448,7 +3448,7 @@
             "description": "a meta object that contains non-standard meta-information about the relationship."
           }
         },
-        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"
+        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."
       },
       "StructureResource": {
         "title": "StructureResource",
@@ -3730,7 +3730,7 @@
                 }
               }
             ],
-            "description": "List of unique OPTIMADE structures entry resource objects"
+            "description": "List of unique OPTIMADE structures entry resource objects."
           },
           "meta": {
             "title": "Meta",
@@ -3807,7 +3807,7 @@
                 "type": "object"
               }
             ],
-            "description": "A single structures entry resource"
+            "description": "A single structures entry resource."
           },
           "meta": {
             "title": "Meta",

@@ -9,6 +9,8 @@ updates:
   target-branch: dependabot_updates
   labels:
   - dependency_updates
+  # Turn off automatic rebases so that auto-merge can work without needed N**2 CI runs
+  rebase-strategy: "disabled"
 - package-ecosystem: gitsubmodule
   directory: "/"
   schedule:
@@ -20,6 +22,6 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  target-branch: master
+  target-branch: dependabot_updates
   labels:
   - CI

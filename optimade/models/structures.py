@@ -1,6 +1,9 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 import re
 import warnings
+import sys
+import math
+from functools import reduce
 from enum import IntEnum, Enum
 from sys import float_info
 from typing import List, Optional, Union
@@ -874,7 +877,7 @@ The properties of the species are found in the property `species`.
         elements = tuple(re.findall(r"[A-Z][a-z]*", v))
         numbers = [int(n.strip()) for n in re.split(r"[A-Z][a-z]*", v) if n.strip()]
 
-        if any(n == 1 for n in numbers):
+        if 1 in numbers:
             raise ValueError(
                 f"'chemical_formula_anonymous' {v} must omit proportion '1'"
             )
@@ -892,6 +895,32 @@ The properties of the species are found in the property `species`.
             )
 
         return v
+
+    @validator("chemical_formula_anonymous", "chemical_formula_reduced")
+    def check_reduced_formulae(cls, value, field):
+        if value is None:
+            return value
+
+        numbers = [n.strip() or 1 for n in re.split(r"[A-Z][a-z]*", value)]
+        # Need to remove leading 1 from split and convert to ints
+        numbers = [int(n) for n in numbers[1:]]
+
+        if 0 in numbers:
+            raise ValueError(
+                f"{field.name} {value!r} cannot contain chemical proportion of 0."
+            )
+
+        if sys.version_info[1] >= 9:
+            gcd = math.gcd(*numbers)
+        else:
+            gcd = reduce(math.gcd, numbers)
+
+        if gcd != 1:
+            raise ValueError(
+                f"{field.name} {value!r} is not properly reduced: greatest common divisor was {gcd}, expected 1."
+            )
+
+        return value
 
     @validator("elements", each_item=True)
     def element_must_be_chemical_symbol(cls, v):

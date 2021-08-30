@@ -166,6 +166,22 @@ deformities = (
         {"chemical_formula_reduced": "Ag6 Cl2"},
         "chemical_formula_reduced\n  string does not match regex",
     ),
+    (
+        {"chemical_formula_reduced": "Ge2Si2"},
+        "chemical_formula_reduced 'Ge2Si2' is not properly reduced: greatest common divisor was 2, expected 1.",
+    ),
+    (
+        {"chemical_formula_reduced": "Ge144Si60V24"},
+        "chemical_formula_reduced 'Ge144Si60V24' is not properly reduced: greatest common divisor was 12, expected 1.",
+    ),
+    (
+        {"chemical_formula_anonymous": "A10B5C5"},
+        "chemical_formula_anonymous 'A10B5C5' is not properly reduced: greatest common divisor was 5, expected 1.",
+    ),
+    (
+        {"chemical_formula_anonymous": "A44B15C9D4E3F2GHI0J0K0L0"},
+        "chemical_formula_anonymous 'A44B15C9D4E3F2GHI0J0K0L0' cannot contain chemical proportion of 0.",
+    ),
 )
 
 

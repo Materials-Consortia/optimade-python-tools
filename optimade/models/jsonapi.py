@@ -345,10 +345,12 @@ class Response(BaseModel):
     @root_validator(pre=True)
     def either_data_meta_or_errors_must_be_set(cls, values):
         required_fields = ("data", "meta", "errors")
-        if not any(values.get(field) for field in required_fields):
+        if not any(field in values for field in required_fields):
             raise ValueError(
                 f"At least one of {required_fields} MUST be specified in the top-level response"
             )
+        if "errors" in values and not values.get("errors"):
+            raise ValueError("Errors MUST NOT be an empty or 'null' value.")
         return values
 
     class Config:

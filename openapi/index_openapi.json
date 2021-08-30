@@ -438,7 +438,7 @@
           "description": {
             "title": "Description",
             "type": "string",
-            "description": "OPTIONAL human-readable description of the relationship"
+            "description": "OPTIONAL human-readable description of the relationship."
           }
         },
         "description": "Specific meta field for base relationship resource"
@@ -697,7 +697,7 @@
                 "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
-            "description": "A meta object containing non-standard information"
+            "description": "A meta object containing non-standard information."
           },
           "errors": {
             "title": "Errors",
@@ -979,7 +979,7 @@
                 "$ref": "#/components/schemas/IndexInfoResource"
               }
             ],
-            "description": "Index meta-database /info data"
+            "description": "Index meta-database /info data."
           },
           "meta": {
             "title": "Meta",
@@ -1272,7 +1272,7 @@
                 }
               }
             ],
-            "description": "List of unique OPTIMADE links resource objects"
+            "description": "List of unique OPTIMADE links resource objects."
           },
           "meta": {
             "title": "Meta",
@@ -1481,7 +1481,7 @@
             "description": "a meta object that contains non-standard meta-information about the relationship."
           }
         },
-        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"
+        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."
       },
       "RelatedLinksResource": {
         "title": "RelatedLinksResource",
@@ -1787,7 +1787,7 @@
             "description": "a meta object that contains non-standard meta-information about the relationship."
           }
         },
-        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"
+        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."
       },
       "ToplevelLinks": {
         "title": "ToplevelLinks",
