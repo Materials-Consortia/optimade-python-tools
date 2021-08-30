@@ -1,4 +1,4 @@
-aiida-core==1.6.4
+aiida-core==1.6.5
 ase==3.22.0
 numpy==1.21.1
 pymatgen==2021.3.9
