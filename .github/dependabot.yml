@@ -20,6 +20,6 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  target-branch: master
+  target-branch: dependabot_updates
   labels:
   - CI
