@@ -338,4 +338,8 @@ class ServerConfig(BaseSettings):
             )
 
 
-CONFIG = ServerConfig()
+CONFIG: ServerConfig = ServerConfig()
+"""This singleton loads the config from a hierarchy of sources (see
+[`customise_sources`][optimade.server.config.ServerConfig.Config.customise_sources])
+and makes it importable in the server code.
+"""
