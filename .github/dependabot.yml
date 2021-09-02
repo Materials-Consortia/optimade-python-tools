@@ -21,7 +21,7 @@ updates:
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
-    interval: daily
+    interval: monthly
   target-branch: dependabot_updates
   labels:
   - CI
