@@ -12,7 +12,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 with warnings.catch_warnings(record=True) as w:
-    from optimade.server.config import CONFIG
+    from optimade.server.config import CONFIG, DEFAULT_CONFIG_FILE_PATH
 
     config_warnings = w
 
@@ -32,14 +32,15 @@ from optimade.server.routers import (
 )
 from optimade.server.routers.utils import BASE_URL_PREFIXES, JSONAPIResponse
 
-
-if os.getenv("OPTIMADE_CONFIG_FILE") is None:
+if config_warnings:
     LOGGER.warn(
         f"Invalid config file or no config file provided, running server with default settings. Errors: "
         f"{[warnings.formatwarning(w.message, w.category, w.filename, w.lineno, '') for w in config_warnings]}"
     )
 else:
-    LOGGER.info(f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE')}.")
+    LOGGER.info(
+        f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE', DEFAULT_CONFIG_FILE_PATH)}."
+    )
 
 if CONFIG.debug:  # pragma: no cover
     LOGGER.info("DEBUG MODE")
