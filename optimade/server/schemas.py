@@ -1,3 +1,4 @@
+from typing import Dict, Callable
 from optimade.models import (
     DataType,
     ErrorResponse,
@@ -6,12 +7,15 @@ from optimade.models import (
 )
 from optimade.server.exceptions import POSSIBLE_ERRORS
 
-ENTRY_INFO_SCHEMAS = {
+__all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
+
+ENTRY_INFO_SCHEMAS: Dict[str, Callable[[None], Dict]] = {
     "structures": StructureResource.schema,
     "references": ReferenceResource.schema,
 }
+"""This dictionary is used to define the `/info/<entry_type>` endpoints."""
 
-ERROR_RESPONSES = {
+ERROR_RESPONSES: Dict[int, Dict] = {
     err.status_code: {"model": ErrorResponse, "description": err.title}
     for err in POSSIBLE_ERRORS
 }
