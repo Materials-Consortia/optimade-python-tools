@@ -1,5 +1,44 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.3...HEAD)
+
+**Closed issues:**
+
+- Missing guide for how to set up an implementation from existing database [\#176](https://github.com/Materials-Consortia/optimade-python-tools/issues/176)
+
+## [v0.16.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.3) (2021-09-02)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.2...v0.16.3)
+
+**Implemented enhancements:**
+
+- Add validation that anonymous/reduced chemical formulae are in fact reduced [\#913](https://github.com/Materials-Consortia/optimade-python-tools/issues/913)
+
+**Fixed bugs:**
+
+- No error/warning when specifying a config file that does not exist [\#930](https://github.com/Materials-Consortia/optimade-python-tools/issues/930)
+- Docker tests failing in CI: http://gh\_actions\_host no longer exists? [\#906](https://github.com/Materials-Consortia/optimade-python-tools/issues/906)
+- Fix config file warnings when file is missing [\#931](https://github.com/Materials-Consortia/optimade-python-tools/pull/931) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Docs don't introduce the idea of "models" [\#910](https://github.com/Materials-Consortia/optimade-python-tools/issues/910)
+- Docs don't mention anything about where to go for support [\#909](https://github.com/Materials-Consortia/optimade-python-tools/issues/909)
+- `run.sh` does not appear to be available from the pip installation [\#904](https://github.com/Materials-Consortia/optimade-python-tools/issues/904)
+
+**Merged pull requests:**
+
+- Add tutorial-style guide on setting up an API [\#915](https://github.com/Materials-Consortia/optimade-python-tools/pull/915) ([ml-evs](https://github.com/ml-evs))
+- Add validator to check whether anonymous and reduced formulae are reduced [\#914](https://github.com/Materials-Consortia/optimade-python-tools/pull/914) ([ml-evs](https://github.com/ml-evs))
+- Clarify the "all models" documentation page [\#912](https://github.com/Materials-Consortia/optimade-python-tools/pull/912) ([ml-evs](https://github.com/ml-evs))
+- Add more specific 'Getting Help' info to Contributing and README [\#911](https://github.com/Materials-Consortia/optimade-python-tools/pull/911) ([ml-evs](https://github.com/ml-evs))
+- Bump Materials-Consortia/optimade-validator-action from 2.5.0 to 2.6.0 [\#907](https://github.com/Materials-Consortia/optimade-python-tools/pull/907) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Clarify installation methods by use-case [\#905](https://github.com/Materials-Consortia/optimade-python-tools/pull/905) ([ml-evs](https://github.com/ml-evs))
+- Relax response top-level root validator [\#903](https://github.com/Materials-Consortia/optimade-python-tools/pull/903) ([CasperWA](https://github.com/CasperWA))
+- Add integrated app docs, tweak other use case docs [\#883](https://github.com/Materials-Consortia/optimade-python-tools/pull/883) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.16.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.2) (2021-08-06)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.1...v0.16.2)
