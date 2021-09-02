@@ -1,4 +1,4 @@
-# Contributing and Getting Help
+# Contributing and getting help
 
 If you run into any problems using this package, or if you have a question, suggestion or feedback, then please raise an issue on [GitHub](https://github.com/Materials-Consortia/optimade-python-tools/issues/new).
 

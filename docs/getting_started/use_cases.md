@@ -1,4 +1,4 @@
-# Use cases
+# Example use cases
 
 ## Serving a single database
 
