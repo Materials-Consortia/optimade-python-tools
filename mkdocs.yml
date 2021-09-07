@@ -41,8 +41,6 @@ markdown_extensions:
 plugins:
   - search:
       lang: en
-  - minify:
-      minify_html: true
   - mkdocstrings:
       default_handler: python
       handlers:
