@@ -14,7 +14,7 @@ In the reference server, these data sources, or collections, are created in the 
 Here, we shall use the built-in MongoDB collections for each entry type, by simply specifying the appropriate options in the [configuration](../configuration.md), namely [`"database_backend": "mongodb"`][optimade.server.config.ServerConfig.database_backend], [`"mongo_uri": "mongodb://localhost:27017"`][optimade.server.config.ServerConfig.mongo_uri], [`"mongo_database": "optimade"`][optimade.server.config.ServerConfig.mongo_database] and the collection names for each entry type ([`"structures_collection": "structures"`][optimade.server.config.ServerConfig.structures_collection] etc.).
 These notes will now assume that you have a MongoDB instance running and you have created a database that matches your [`"mongo_database"`][optimade.server.config.ServerConfig.mongo_database] config option.
 
-If you disable inserting test data (with the [`"insert_test_data": false`][optimade.server.config.ServerConfig.insert_test_data] configuration option), you can test your API/database connection by running the web server with `uvicorn optimade.main:app` and visiting the (hopefully empty) structures endpoint at `localhost:5000/v1/structures` (or your chosen base URL).
+If you disable inserting test data (with the [`"insert_test_data": false`][optimade.server.config.ServerConfig.insert_test_data] configuration option), you can test your API/database connection by running the web server with `uvicorn optimade.server.main:app --port 5000` and visiting the (hopefully empty) structures endpoint at `localhost:5000/v1/structures` (or your chosen base URL).
 
 !!! note
     As of version v0.16, the other supported database backend is Elasticsearch.
@@ -104,7 +104,7 @@ Currently, the reference server is not flexible enough to use custom response cl
 
 ## Validating your implementation
 
-With the database collections, mappers, aliases and provider configured, you can try running the web server (with e.g., `uvicorn optimade.main:app`, if your app is in the same file as the reference server) and validating it as an OPTIMADE API, following the [validation guide](./validation.md).
+With the database collections, mappers, aliases and provider configured, you can try running the web server (with e.g., `uvicorn optimade.server.main:app`, if your app is in the same file as the reference server) and validating it as an OPTIMADE API, following the [validation guide](./validation.md).
 
 ## Registering as a provider
 

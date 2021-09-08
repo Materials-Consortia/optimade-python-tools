@@ -39,7 +39,6 @@ docs_deps = [
     "mkdocs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.5",
     "mkdocs-material~=7.2",
-    "mkdocs-minify-plugin~=0.4.0",
     "mkdocstrings~=0.15.2",
 ]
 testing_deps = [
