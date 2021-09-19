@@ -162,7 +162,7 @@ Note: With regards to "source database", we refer to the immediate source being 
             return v
 
         raise ValueError(
-            f"Could not validate {field.name} as 'chemical_symbols' is missing/invalid."
+            f"Could not validate {field.name!r} as 'chemical_symbols' is missing/invalid."
         )
 
     @validator("attached", "nattached")
