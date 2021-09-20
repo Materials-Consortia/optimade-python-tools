@@ -1,12 +1,24 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.16.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.4) (2021-09-20)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.3...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.3...v0.16.4)
 
 **Closed issues:**
 
-- Missing guide for how to set up an implementation from existing database [\#176](https://github.com/Materials-Consortia/optimade-python-tools/issues/176)
+- Code check fails because there is no valid version of jsmin [\#938](https://github.com/Materials-Consortia/optimade-python-tools/issues/938)
+- Be properly compliant with the new pip resolver [\#625](https://github.com/Materials-Consortia/optimade-python-tools/issues/625)
+
+**Merged pull requests:**
+
+- Bump providers from `357c27b` to `fb05359` [\#945](https://github.com/Materials-Consortia/optimade-python-tools/pull/945) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump providers from `368f9f6` to `357c27b` [\#944](https://github.com/Materials-Consortia/optimade-python-tools/pull/944) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump providers from `91b51bd` to `368f9f6` [\#942](https://github.com/Materials-Consortia/optimade-python-tools/pull/942) ([dependabot[bot]](https://github.com/apps/dependabot))
+- remove the dependency on mkdocs-minify because of issue \#938. [\#941](https://github.com/Materials-Consortia/optimade-python-tools/pull/941) ([JPBergsma](https://github.com/JPBergsma))
+- Corrected command to call uvicorn server [\#937](https://github.com/Materials-Consortia/optimade-python-tools/pull/937) ([JPBergsma](https://github.com/JPBergsma))
+- Use proper pip dependency resolver in publish workflow [\#935](https://github.com/Materials-Consortia/optimade-python-tools/pull/935) ([ml-evs](https://github.com/ml-evs))
+- Dependency updates for v0.16.4 [\#901](https://github.com/Materials-Consortia/optimade-python-tools/pull/901) ([ml-evs](https://github.com/ml-evs))
+- Add JOSS paper [\#804](https://github.com/Materials-Consortia/optimade-python-tools/pull/804) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.16.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.3) (2021-09-02)
 
@@ -27,6 +39,7 @@
 - Docs don't introduce the idea of "models" [\#910](https://github.com/Materials-Consortia/optimade-python-tools/issues/910)
 - Docs don't mention anything about where to go for support [\#909](https://github.com/Materials-Consortia/optimade-python-tools/issues/909)
 - `run.sh` does not appear to be available from the pip installation [\#904](https://github.com/Materials-Consortia/optimade-python-tools/issues/904)
+- Missing guide for how to set up an implementation from existing database [\#176](https://github.com/Materials-Consortia/optimade-python-tools/issues/176)
 
 **Merged pull requests:**
 
