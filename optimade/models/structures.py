@@ -5,7 +5,6 @@ import sys
 import math
 from functools import reduce
 from enum import IntEnum, Enum
-from sys import float_info
 from typing import List, Optional, Union
 
 from pydantic import BaseModel, validator, root_validator, conlist
@@ -36,7 +35,8 @@ __all__ = (
 )
 
 
-EPS = float_info.epsilon
+# Use machine epsilon for single point floating precision
+EPS = 2 ** -23
 
 
 Vector3D = conlist(float, min_items=3, max_items=3)
@@ -944,7 +944,7 @@ The properties of the species are found in the property `species`.
 
         if abs(sum(v) - 1) > EPS:
             raise ValueError(
-                f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
+                f"elements_ratios MUST sum to 1 within (at least single precision) floating point accuracy. It sums to: {sum(v)}"
             )
         return v
 
