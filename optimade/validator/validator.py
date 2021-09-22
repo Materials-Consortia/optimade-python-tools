@@ -1436,14 +1436,18 @@ class ImplementationValidator:
         if isinstance(expected_status_code, int):
             expected_status_code = [expected_status_code]
 
-        if response.status_code not in expected_status_code:
-            message = f"Request to '{request_str}' returned HTTP code {response.status_code} and not the allowed {expected_status_code}."
-            message += "\nAdditional details:"
+        message = f"received expected response: {response}."
+
+        if response.status_code != 200:
+            message = f"Request to '{request_str}' returned HTTP status code {response.status_code}."
+            message += "\nAdditional details from implementation:"
             try:
                 for error in response.json().get("errors", []):
                     message += f'\n  {error.get("title", "N/A")}: {error.get("detail", "N/A")} ({error.get("source", {}).get("pointer", "N/A")})'
             except json.JSONDecodeError:
                 message += f"\n  Could not parse response as JSON. Content type was {response.headers.get('content-type')!r}."
-            raise ResponseError(message)
 
-        return response, f"received expected response: {response}."
+            if response.status_code not in expected_status_code:
+                raise ResponseError(message)
+
+        return response, message
