@@ -21,7 +21,7 @@ from optimade.models.utils import (
 )
 from optimade.server.warnings import MissingExpectedField
 
-EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
+EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
 
 __all__ = (
@@ -145,8 +145,10 @@ Note: With regards to "source database", we refer to the immediate source being 
 
     @validator("chemical_symbols", each_item=True)
     def validate_chemical_symbols(cls, v):
-        if not (v in EXTENDED_CHEMICAL_SYMBOLS):
-            raise ValueError(f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}")
+        if v not in EXTENDED_CHEMICAL_SYMBOLS:
+            raise ValueError(
+                f'{v!r} MUST be an element symbol, e.g., "C", "He", or a special symbol from {EXTRA_SYMBOLS}.'
+            )
         return v
 
     @validator("concentration", "mass")
