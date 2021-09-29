@@ -271,9 +271,11 @@ jobs:
         pip install -r requirements-dev.txt
         pip install -r requirements-docs.txt
 
+    # NOTE: While we're now using `mike`, this is still useful
+    # to test the integrity of the documentation build.
     - name: Build
       run: |
-        invoke create-api-reference-docs
+        invoke create-api-reference-docs --pre-clean
         mkdocs build --strict
 
   test_build:
