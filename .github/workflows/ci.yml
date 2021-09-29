@@ -101,7 +101,7 @@ jobs:
     - name: Start Docker image - server
       run: |
         docker-compose up optimade &
-        .github/workflows/wait_for_it.sh localhost:3213 -t 120
+        .github/utils/wait_for_it.sh localhost:3213 -t 120
         sleep 15
 
     - name: Test server, including OPTIONAL base URLs
@@ -115,7 +115,7 @@ jobs:
     - name: Start Docker image - index server
       run: |
         docker-compose up optimade-index &
-        .github/workflows/wait_for_it.sh localhost:3214 -t 120
+        .github/utils/wait_for_it.sh localhost:3214 -t 120
         sleep 15
 
     - name: Test index server, including OPTIONAL base URLs

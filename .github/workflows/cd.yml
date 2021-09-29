@@ -1,4 +1,4 @@
-name: Publish on PyPI
+name: Publish and Deploy
 
 on:
   release:
@@ -36,7 +36,7 @@ jobs:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
 
     - name: Update API Reference docs and version - Commit changes and update tag
-      run: .github/workflows/update_docs.sh
+      run: .github/utils/update_docs.sh
 
     - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
       uses: CasperWA/push-protected@v2.4.0

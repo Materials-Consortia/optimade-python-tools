@@ -25,6 +25,6 @@ git add CHANGELOG.md
 git commit -m "Release ${GITHUB_REF#refs/tags/} - Changelog"
 
 echo -e "\n-o- Update version tag -o-"
-TAG_MSG=.github/workflows/release_tag_msg.txt
+TAG_MSG=.github/utils/release_tag_msg.txt
 sed -i "s|TAG_NAME|${GITHUB_REF#refs/tags/}|" "${TAG_MSG}"
 git tag -af -F "${TAG_MSG}" ${GITHUB_REF#refs/tags/}
