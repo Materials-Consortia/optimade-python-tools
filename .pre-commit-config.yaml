@@ -29,4 +29,11 @@ repos:
       description: Check for differences in openapi.json and index_openapi.json with local versions.
       entry: invoke check-openapi-diff
       pass_filenames: false
-      language: system
+      language: python
+    - id: update-docs-api-reference
+      name: Update API Reference in Documentation
+      entry: invoke create-api-reference-docs --pre-clean --pre-commit
+      language: python
+      pass_filenames: false
+      files: ^optimade/.*\.py$
+      description: Update the API Reference documentation whenever a Python file is touched in the code base.
