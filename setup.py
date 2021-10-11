@@ -31,24 +31,24 @@ ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2021.3.9"]
-jarvis_deps = ["jarvis-tools==2021.8.18"]
+jarvis_deps = ["jarvis-tools==2021.10.3"]
 client_deps = cif_deps
 
 # General
 docs_deps = [
     "mkdocs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.5",
-    "mkdocs-material~=7.2",
-    "mkdocstrings~=0.15.2",
+    "mkdocs-material~=7.3",
+    "mkdocstrings~=0.16.2",
 ]
 testing_deps = [
     "pytest~=6.2",
-    "pytest-cov~=2.12",
+    "pytest-cov~=3.0",
     "codecov~=2.1",
     "jsondiff~=1.3",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.10", "pre-commit~=2.14", "invoke~=1.6"]
+    ["pylint~=2.11", "pre-commit~=2.15", "invoke~=1.6"]
     + docs_deps
     + testing_deps
     + client_deps

@@ -53,6 +53,7 @@ plugins:
             show_category_heading: false
             show_if_no_docstring: false
             show_source: true
+            show_bases: false
             group_by_category: true
             heading_level: 2
           selection:
