@@ -2,8 +2,8 @@
 set -e
 
 echo -e "\n-o- Setting commit user -o-"
-git config --local user.email "dev@optimade.org"
-git config --local user.name "OPTIMADE Developers"
+git config --global user.email "dev@optimade.org"
+git config --global user.name "OPTIMADE Developers"
 
 echo -e "\n-o- Update 'API Reference' docs -o-"
 invoke create-api-reference-docs --pre-clean

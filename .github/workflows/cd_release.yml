@@ -8,6 +8,7 @@ on:
 jobs:
 
   publish:
+    name: Publish OPTIMADE Python tools
     runs-on: ubuntu-latest
     if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
     env:
@@ -59,12 +60,13 @@ jobs:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         since_tag: "${{ env.PREVIOUS_VERSION }}"
-        output: "release_msg.md"
+        output: "release_changelog.md"
 
-    - name: Update release description with changelog (append it)
-      uses: softprops/action-gh-release@v1
-      with:
-        body_path: "release_msg.md"
+    - name: Append changelog to release body
+      run: |
+        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} --jq '.body' > release_body.md
+        cat release_changelog.md >> release_body.md
+        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} -X PATCH -F body='@release_body.md'
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_CASPER }}
 
@@ -78,4 +80,6 @@ jobs:
         password: ${{ secrets.PYPI_PASSWORD }}
 
     - name: Deploy documentation
-      run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
+      run: |
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest master
