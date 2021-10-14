@@ -1,0 +1,3878 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the OPTIMADE-Python-Tools">
+      
+      
+      
+      
+        <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/0.9.6/reference/models/jsonapi/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.3">
+    
+    
+      
+        <title>Jsonapi - OPTIMADE-Python-Tools Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.5143246d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#optimade.models.jsonapi" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="OPTIMADE-Python-Tools Documentation" class="md-header__button md-logo" aria-label="OPTIMADE-Python-Tools Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OPTIMADE-Python-Tools Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Jsonapi
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/Materials-Consortia/optimade-python-tools/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="OPTIMADE-Python-Tools Documentation" class="md-nav__button md-logo" aria-label="OPTIMADE-Python-Tools Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    OPTIMADE-Python-Tools Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/Materials-Consortia/optimade-python-tools/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        OPTIMADE Python tools
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../INSTALL/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CONTRIBUTING/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Use Cases
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Use Cases" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Use Cases
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../use_cases/single_db/" class="md-nav__link">
+        OPTIMADE API for a single database
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../use_cases/multi_db/" class="md-nav__link">
+        OPTIMADE API for multiple databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../use_cases/dynamic_db/" class="md-nav__link">
+        OPTIMADE API for dynamic databases
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2" type="checkbox" id="__nav_6_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2">
+          Filtertransformers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Filtertransformers" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          Filtertransformers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/debug/" class="md-nav__link">
+        Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/django/" class="md-nav__link">
+        Django
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/elasticsearch/" class="md-nav__link">
+        Elasticsearch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/json/" class="md-nav__link">
+        Json
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/mongo/" class="md-nav__link">
+        Mongo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" type="checkbox" id="__nav_6_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3">
+          Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../baseinfo/" class="md-nav__link">
+        Baseinfo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entries/" class="md-nav__link">
+        Entries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index_metadb/" class="md-nav__link">
+        Index metadb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Jsonapi
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Jsonapi
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi" class="md-nav__link">
+    optimade.models.jsonapi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.BaseResource" class="md-nav__link">
+    BaseResource
+  </a>
+  
+    <nav class="md-nav" aria-label="BaseResource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.BaseResource.id" class="md-nav__link">
+    id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.BaseResource.type" class="md-nav__link">
+    type
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error" class="md-nav__link">
+    Error
+  </a>
+  
+    <nav class="md-nav" aria-label="Error">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.code" class="md-nav__link">
+    code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.detail" class="md-nav__link">
+    detail
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.id" class="md-nav__link">
+    id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.source" class="md-nav__link">
+    source
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.status" class="md-nav__link">
+    status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.title" class="md-nav__link">
+    title
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.__hash__" class="md-nav__link">
+    __hash__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorLinks" class="md-nav__link">
+    ErrorLinks
+  </a>
+  
+    <nav class="md-nav" aria-label="ErrorLinks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorLinks.about" class="md-nav__link">
+    about
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorSource" class="md-nav__link">
+    ErrorSource
+  </a>
+  
+    <nav class="md-nav" aria-label="ErrorSource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorSource.parameter" class="md-nav__link">
+    parameter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorSource.pointer" class="md-nav__link">
+    pointer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.JsonApi" class="md-nav__link">
+    JsonApi
+  </a>
+  
+    <nav class="md-nav" aria-label="JsonApi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.JsonApi.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.JsonApi.version" class="md-nav__link">
+    version
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Link" class="md-nav__link">
+    Link
+  </a>
+  
+    <nav class="md-nav" aria-label="Link">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Link.href" class="md-nav__link">
+    href
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Link.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Meta" class="md-nav__link">
+    Meta
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationship" class="md-nav__link">
+    Relationship
+  </a>
+  
+    <nav class="md-nav" aria-label="Relationship">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationship.data" class="md-nav__link">
+    data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationship.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationship.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.RelationshipLinks" class="md-nav__link">
+    RelationshipLinks
+  </a>
+  
+    <nav class="md-nav" aria-label="RelationshipLinks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.RelationshipLinks.related" class="md-nav__link">
+    related
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.RelationshipLinks.self" class="md-nav__link">
+    self
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationships" class="md-nav__link">
+    Relationships
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource" class="md-nav__link">
+    Resource
+  </a>
+  
+    <nav class="md-nav" aria-label="Resource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource.attributes" class="md-nav__link">
+    attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource.relationships" class="md-nav__link">
+    relationships
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ResourceLinks" class="md-nav__link">
+    ResourceLinks
+  </a>
+  
+    <nav class="md-nav" aria-label="ResourceLinks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ResourceLinks.self" class="md-nav__link">
+    self
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response" class="md-nav__link">
+    Response
+  </a>
+  
+    <nav class="md-nav" aria-label="Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.data" class="md-nav__link">
+    data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.errors" class="md-nav__link">
+    errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.included" class="md-nav__link">
+    included
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.jsonapi" class="md-nav__link">
+    jsonapi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.__json_encoder__" class="md-nav__link">
+    __json_encoder__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks" class="md-nav__link">
+    ToplevelLinks
+  </a>
+  
+    <nav class="md-nav" aria-label="ToplevelLinks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.first" class="md-nav__link">
+    first
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.last" class="md-nav__link">
+    last
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.next" class="md-nav__link">
+    next
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.prev" class="md-nav__link">
+    prev
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.related" class="md-nav__link">
+    related
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.self" class="md-nav__link">
+    self
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        Links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimade_json/" class="md-nav__link">
+        Optimade json
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../responses/" class="md-nav__link">
+        Responses
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structures/" class="md-nav__link">
+        Structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        Utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4">
+          Server
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Server" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          Server
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/config/" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/exception_handlers/" class="md-nav__link">
+        Exception handlers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/exceptions/" class="md-nav__link">
+        Exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/main/" class="md-nav__link">
+        Main
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/main_index/" class="md-nav__link">
+        Main index
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/middleware/" class="md-nav__link">
+        Middleware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/query_params/" class="md-nav__link">
+        Query params
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_8" type="checkbox" id="__nav_6_4_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_8">
+          Entry collections
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Entry collections" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_8">
+          <span class="md-nav__icon md-icon"></span>
+          Entry collections
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/entry_collections/entry_collections/" class="md-nav__link">
+        Entry collections
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/entry_collections/mongo/" class="md-nav__link">
+        Mongo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_9" type="checkbox" id="__nav_6_4_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_9">
+          Mappers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Mappers" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_9">
+          <span class="md-nav__icon md-icon"></span>
+          Mappers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/entries/" class="md-nav__link">
+        Entries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/links/" class="md-nav__link">
+        Links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/references/" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/structures/" class="md-nav__link">
+        Structures
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_10" type="checkbox" id="__nav_6_4_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_10">
+          Routers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Routers" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_10">
+          <span class="md-nav__icon md-icon"></span>
+          Routers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/index_info/" class="md-nav__link">
+        Index info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/info/" class="md-nav__link">
+        Info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/landing/" class="md-nav__link">
+        Landing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/links/" class="md-nav__link">
+        Links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/references/" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/structures/" class="md-nav__link">
+        Structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/utils/" class="md-nav__link">
+        Utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5" type="checkbox" id="__nav_6_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5">
+          Validator
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Validator" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_5">
+          <span class="md-nav__icon md-icon"></span>
+          Validator
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/validator/" class="md-nav__link">
+        Validator
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/validator_model_patches/" class="md-nav__link">
+        Validator model patches
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi" class="md-nav__link">
+    optimade.models.jsonapi
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.BaseResource" class="md-nav__link">
+    BaseResource
+  </a>
+  
+    <nav class="md-nav" aria-label="BaseResource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.BaseResource.id" class="md-nav__link">
+    id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.BaseResource.type" class="md-nav__link">
+    type
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error" class="md-nav__link">
+    Error
+  </a>
+  
+    <nav class="md-nav" aria-label="Error">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.code" class="md-nav__link">
+    code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.detail" class="md-nav__link">
+    detail
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.id" class="md-nav__link">
+    id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.source" class="md-nav__link">
+    source
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.status" class="md-nav__link">
+    status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.title" class="md-nav__link">
+    title
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Error.__hash__" class="md-nav__link">
+    __hash__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorLinks" class="md-nav__link">
+    ErrorLinks
+  </a>
+  
+    <nav class="md-nav" aria-label="ErrorLinks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorLinks.about" class="md-nav__link">
+    about
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorSource" class="md-nav__link">
+    ErrorSource
+  </a>
+  
+    <nav class="md-nav" aria-label="ErrorSource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorSource.parameter" class="md-nav__link">
+    parameter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ErrorSource.pointer" class="md-nav__link">
+    pointer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.JsonApi" class="md-nav__link">
+    JsonApi
+  </a>
+  
+    <nav class="md-nav" aria-label="JsonApi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.JsonApi.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.JsonApi.version" class="md-nav__link">
+    version
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Link" class="md-nav__link">
+    Link
+  </a>
+  
+    <nav class="md-nav" aria-label="Link">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Link.href" class="md-nav__link">
+    href
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Link.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Meta" class="md-nav__link">
+    Meta
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationship" class="md-nav__link">
+    Relationship
+  </a>
+  
+    <nav class="md-nav" aria-label="Relationship">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationship.data" class="md-nav__link">
+    data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationship.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationship.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.RelationshipLinks" class="md-nav__link">
+    RelationshipLinks
+  </a>
+  
+    <nav class="md-nav" aria-label="RelationshipLinks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.RelationshipLinks.related" class="md-nav__link">
+    related
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.RelationshipLinks.self" class="md-nav__link">
+    self
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Relationships" class="md-nav__link">
+    Relationships
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource" class="md-nav__link">
+    Resource
+  </a>
+  
+    <nav class="md-nav" aria-label="Resource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource.attributes" class="md-nav__link">
+    attributes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Resource.relationships" class="md-nav__link">
+    relationships
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ResourceLinks" class="md-nav__link">
+    ResourceLinks
+  </a>
+  
+    <nav class="md-nav" aria-label="ResourceLinks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ResourceLinks.self" class="md-nav__link">
+    self
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response" class="md-nav__link">
+    Response
+  </a>
+  
+    <nav class="md-nav" aria-label="Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.data" class="md-nav__link">
+    data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.errors" class="md-nav__link">
+    errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.included" class="md-nav__link">
+    included
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.jsonapi" class="md-nav__link">
+    jsonapi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.meta" class="md-nav__link">
+    meta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.Response.__json_encoder__" class="md-nav__link">
+    __json_encoder__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks" class="md-nav__link">
+    ToplevelLinks
+  </a>
+  
+    <nav class="md-nav" aria-label="ToplevelLinks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.first" class="md-nav__link">
+    first
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.last" class="md-nav__link">
+    last
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.next" class="md-nav__link">
+    next
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.prev" class="md-nav__link">
+    prev
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.related" class="md-nav__link">
+    related
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.jsonapi.ToplevelLinks.self" class="md-nav__link">
+    self
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Materials-Consortia/optimade-python-tools/edit/master/docs/reference/models/jsonapi.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>Jsonapi</h1>
+                
+                <div class="doc doc-object doc-module">
+
+<a id="optimade.models.jsonapi"></a>
+    <div class="doc doc-contents first">
+
+      <p>This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.Attributes" class="doc doc-heading">
+        <code>
+Attributes            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Attributes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Members of the attributes object ("attributes") represent information about the resource object in which it's defined.
+The keys for Attributes MUST NOT be:
+    relationships
+    links
+    id
+    type</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.BaseResource" class="doc doc-heading">
+        <code>
+BaseResource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.BaseResource" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Minimum requirements to represent a Resource</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.BaseResource.id" class="doc doc-heading">
+<code class="codehilite language-python"><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.BaseResource.id" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Resource ID</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.BaseResource.type" class="doc doc-heading">
+<code class="codehilite language-python"><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.BaseResource.type" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Resource type</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.Error" class="doc doc-heading">
+        <code>
+Error            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>An error response</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.code" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">code</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.code" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>an application-specific error code, expressed as a string value.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.detail" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">detail</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.detail" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A human-readable explanation specific to this occurrence of the problem.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.id" class="doc doc-heading">
+<code class="codehilite language-python"><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.id" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A unique identifier for this particular occurrence of the problem.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.links" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">links</span><span class="p">:</span> <span class="n">ErrorLinks</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.links" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A links object storing about</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.meta" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.meta" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a meta object containing non-standard meta-information about the error.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.source" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">source</span><span class="p">:</span> <span class="n">ErrorSource</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.source" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>An object containing references to the source of the error</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.status" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">status</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.status" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>the HTTP status code applicable to this problem, expressed as a string value.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.title" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.title" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A short, human-readable summary of the problem. It <strong>SHOULD NOT</strong> change from occurrence to occurrence of the problem, except for purposes of localization.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.models.jsonapi.Error.__hash__" class="doc doc-heading">
+<code class="codehilite language-python"><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Error.__hash__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Return hash(self).</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.ErrorLinks" class="doc doc-heading">
+        <code>
+ErrorLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ErrorLinks" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A Links object specific to Error objects</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ErrorLinks.about" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">about</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ErrorLinks.about" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A link that leads to further details about this particular occurrence of the problem.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.ErrorSource" class="doc doc-heading">
+        <code>
+ErrorSource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ErrorSource" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>an object containing references to the source of the error</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ErrorSource.parameter" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">parameter</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ErrorSource.parameter" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a string indicating which URI query parameter caused the error.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ErrorSource.pointer" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">pointer</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ErrorSource.pointer" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.JsonApi" class="doc doc-heading">
+        <code>
+JsonApi            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.JsonApi" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>An object describing the server's implementation</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.JsonApi.meta" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.JsonApi.meta" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Non-standard meta information</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.JsonApi.version" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">version</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.JsonApi.version" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Version of the json API used</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.Link" class="doc doc-heading">
+        <code>
+Link            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Link" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A link <strong>MUST</strong> be represented as either: a string containing the link's URL or a link object.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Link.href" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">href</span><span class="p">:</span> <span class="n">AnyUrl</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Link.href" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a string containing the link’s URL.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Link.meta" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Link.meta" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a meta object containing non-standard meta-information about the link.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.Meta" class="doc doc-heading">
+        <code>
+Meta            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Meta" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Non-standard meta-information that can not be represented as an attribute or relationship.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.Relationship" class="doc doc-heading">
+        <code>
+Relationship            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Relationship" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Representation references from the resource object in which it’s defined to other resource objects.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Relationship.data" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">]]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Relationship.data" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Resource linkage</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Relationship.links" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">links</span><span class="p">:</span> <span class="n">RelationshipLinks</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Relationship.links" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a links object containing at least one of the following: self, related</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Relationship.meta" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Relationship.meta" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a meta object that contains non-standard meta-information about the relationship.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.RelationshipLinks" class="doc doc-heading">
+        <code>
+RelationshipLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.RelationshipLinks" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A resource object <strong>MAY</strong> contain references to other resource objects ("relationships").
+Relationships may be to-one or to-many.
+Relationships can be specified by including a member in a resource's links object.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.RelationshipLinks.related" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">related</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.RelationshipLinks.related" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A <a href="https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links">related resource link</a>.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.RelationshipLinks.self" class="doc doc-heading">
+<code class="codehilite language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.RelationshipLinks.self" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A link for the relationship itself (a 'relationship link').
+This link allows the client to directly manipulate the relationship.
+When fetched successfully, this link returns the <a href="https://jsonapi.org/format/1.0/#document-resource-object-linkage">linkage</a> for the related resources as its primary data.
+(See <a href="https://jsonapi.org/format/1.0/#fetching-relationships">Fetching Relationships</a>.)</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.Relationships" class="doc doc-heading">
+        <code>
+Relationships            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Relationships" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Members of the relationships object ("relationships") represent references from the resource object in which it's defined to other resource objects.
+Keys MUST NOT be:
+    type
+    id</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.Resource" class="doc doc-heading">
+        <code>
+Resource            (<a title="optimade.models.jsonapi.BaseResource" href="#optimade.models.jsonapi.BaseResource">BaseResource</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Resource" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Resource objects appear in a JSON API document to represent resources.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Resource.attributes" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">Attributes</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Resource.attributes" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>an attributes object representing some of the resource’s data.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Resource.links" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">links</span><span class="p">:</span> <span class="n">ResourceLinks</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Resource.links" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a links object containing links related to the resource.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Resource.meta" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Resource.meta" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Resource.relationships" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Relationships</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Resource.relationships" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p><a href="https://jsonapi.org/format/1.0/#document-resource-object-relationships">Relationships object</a>
+describing relationships between the resource and other JSON API resources.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.ResourceLinks" class="doc doc-heading">
+        <code>
+ResourceLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ResourceLinks" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A Resource Links object</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ResourceLinks.self" class="doc doc-heading">
+<code class="codehilite language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ResourceLinks.self" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A link that identifies the resource represented by the resource object.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.Response" class="doc doc-heading">
+        <code>
+Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Response" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A top-level response</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Response.data" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NoneType</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">]]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Response.data" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Outputted Data</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Response.errors" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Error</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Response.errors" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A list of unique errors</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Response.included" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">included</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Response.included" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A list of unique included resources</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Response.jsonapi" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">JsonApi</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Response.jsonapi" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Information about the JSON API used</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Response.links" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">links</span><span class="p">:</span> <span class="n">ToplevelLinks</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Response.links" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Links associated with the primary data or errors</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.Response.meta" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Response.meta" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A meta object containing non-standard information related to the Success</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.models.jsonapi.Response.__json_encoder__" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">__json_encoder__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.Response.__json_encoder__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>partial(func, <em>args, </em>*keywords) - new function with partial application
+of the given arguments and keywords.</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.jsonapi.ToplevelLinks" class="doc doc-heading">
+        <code>
+ToplevelLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ToplevelLinks" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A set of Links objects, possibly including pagination</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ToplevelLinks.first" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">first</span><span class="p">:</span> <span class="n">AnyUrl</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ToplevelLinks.first" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The first page of data</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ToplevelLinks.last" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">last</span><span class="p">:</span> <span class="n">AnyUrl</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ToplevelLinks.last" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The last page of data</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ToplevelLinks.next" class="doc doc-heading">
+<code class="codehilite language-python"><span class="nb">next</span><span class="p">:</span> <span class="n">AnyUrl</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ToplevelLinks.next" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The next page of data</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ToplevelLinks.prev" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">prev</span><span class="p">:</span> <span class="n">AnyUrl</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ToplevelLinks.prev" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The previous page of data</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ToplevelLinks.related" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">related</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ToplevelLinks.related" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A related resource link</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.jsonapi.ToplevelLinks.self" class="doc doc-heading">
+<code class="codehilite language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.models.jsonapi.ToplevelLinks.self" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A link to itself</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../index_metadb/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Index metadb" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Index metadb
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../links/" class="md-footer__link md-footer__link--next" aria-label="Next: Links" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Links
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Built by OPTIMADE Development Team
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.8397ff9e.min.js", "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f89c2efe.min.js"></script>
+      
+    
+  </body>
+</html>
