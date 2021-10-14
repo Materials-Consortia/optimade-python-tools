@@ -1,0 +1,2901 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the OPTIMADE-Python-Tools">
+      
+      
+      
+      
+        <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/0.9.8/reference/validator/validator/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.3">
+    
+    
+      
+        <title>Validator - OPTIMADE-Python-Tools Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.5143246d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#optimade.validator.validator" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="OPTIMADE-Python-Tools Documentation" class="md-header__button md-logo" aria-label="OPTIMADE-Python-Tools Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OPTIMADE-Python-Tools Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Validator
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/Materials-Consortia/optimade-python-tools/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="OPTIMADE-Python-Tools Documentation" class="md-nav__button md-logo" aria-label="OPTIMADE-Python-Tools Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    OPTIMADE-Python-Tools Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/Materials-Consortia/optimade-python-tools/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        OPTIMADE Python tools
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../INSTALL/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CONTRIBUTING/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Use Cases
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Use Cases" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Use Cases
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../use_cases/single_db/" class="md-nav__link">
+        OPTIMADE API for a single database
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../use_cases/multi_db/" class="md-nav__link">
+        OPTIMADE API for multiple databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../use_cases/dynamic_db/" class="md-nav__link">
+        OPTIMADE API for dynamic databases
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2" type="checkbox" id="__nav_6_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2">
+          Filtertransformers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Filtertransformers" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          Filtertransformers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/debug/" class="md-nav__link">
+        Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/django/" class="md-nav__link">
+        Django
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/elasticsearch/" class="md-nav__link">
+        Elasticsearch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/json/" class="md-nav__link">
+        Json
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/mongo/" class="md-nav__link">
+        Mongo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" type="checkbox" id="__nav_6_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3">
+          Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/baseinfo/" class="md-nav__link">
+        Baseinfo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/entries/" class="md-nav__link">
+        Entries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/index_metadb/" class="md-nav__link">
+        Index metadb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/jsonapi/" class="md-nav__link">
+        Jsonapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/links/" class="md-nav__link">
+        Links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/optimade_json/" class="md-nav__link">
+        Optimade json
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/references/" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/responses/" class="md-nav__link">
+        Responses
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/structures/" class="md-nav__link">
+        Structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/utils/" class="md-nav__link">
+        Utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4">
+          Server
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Server" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          Server
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/config/" class="md-nav__link">
+        Config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/exception_handlers/" class="md-nav__link">
+        Exception handlers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/exceptions/" class="md-nav__link">
+        Exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/main/" class="md-nav__link">
+        Main
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/main_index/" class="md-nav__link">
+        Main index
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/middleware/" class="md-nav__link">
+        Middleware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/query_params/" class="md-nav__link">
+        Query params
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_8" type="checkbox" id="__nav_6_4_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_8">
+          Entry collections
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Entry collections" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_8">
+          <span class="md-nav__icon md-icon"></span>
+          Entry collections
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/entry_collections/entry_collections/" class="md-nav__link">
+        Entry collections
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/entry_collections/mongo/" class="md-nav__link">
+        Mongo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_9" type="checkbox" id="__nav_6_4_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_9">
+          Mappers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Mappers" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_9">
+          <span class="md-nav__icon md-icon"></span>
+          Mappers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/entries/" class="md-nav__link">
+        Entries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/links/" class="md-nav__link">
+        Links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/references/" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/structures/" class="md-nav__link">
+        Structures
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_10" type="checkbox" id="__nav_6_4_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4_10">
+          Routers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Routers" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_10">
+          <span class="md-nav__icon md-icon"></span>
+          Routers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/index_info/" class="md-nav__link">
+        Index info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/info/" class="md-nav__link">
+        Info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/landing/" class="md-nav__link">
+        Landing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/links/" class="md-nav__link">
+        Links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/references/" class="md-nav__link">
+        References
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/structures/" class="md-nav__link">
+        Structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/utils/" class="md-nav__link">
+        Utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5" type="checkbox" id="__nav_6_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5">
+          Validator
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Validator" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_5">
+          <span class="md-nav__icon md-icon"></span>
+          Validator
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Validator
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Validator
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator" class="md-nav__link">
+    optimade.validator.validator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.Client" class="md-nav__link">
+    Client
+  </a>
+  
+    <nav class="md-nav" aria-label="Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.Client.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.Client.get" class="md-nav__link">
+    get()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator" class="md-nav__link">
+    ImplementationValidator
+  </a>
+  
+    <nav class="md-nav" aria-label="ImplementationValidator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.deserialize_response" class="md-nav__link">
+    deserialize_response()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.get_available_endpoints" class="md-nav__link">
+    get_available_endpoints()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.get_endpoint" class="md-nav__link">
+    get_endpoint()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.get_single_id_from_multi_endpoint" class="md-nav__link">
+    get_single_id_from_multi_endpoint()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.main" class="md-nav__link">
+    main()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_info_or_links_endpoints" class="md-nav__link">
+    test_info_or_links_endpoints()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_multi_entry_endpoint" class="md-nav__link">
+    test_multi_entry_endpoint()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_page_limit" class="md-nav__link">
+    test_page_limit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_query_syntax" class="md-nav__link">
+    test_query_syntax()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_single_entry_endpoint" class="md-nav__link">
+    test_single_entry_endpoint()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ResponseError" class="md-nav__link">
+    ResponseError
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.print_failure" class="md-nav__link">
+    print_failure()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.print_success" class="md-nav__link">
+    print_success()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.print_warning" class="md-nav__link">
+    print_warning()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.test_case" class="md-nav__link">
+    test_case()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validator_model_patches/" class="md-nav__link">
+        Validator model patches
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator" class="md-nav__link">
+    optimade.validator.validator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.Client" class="md-nav__link">
+    Client
+  </a>
+  
+    <nav class="md-nav" aria-label="Client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.Client.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.Client.get" class="md-nav__link">
+    get()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator" class="md-nav__link">
+    ImplementationValidator
+  </a>
+  
+    <nav class="md-nav" aria-label="ImplementationValidator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.deserialize_response" class="md-nav__link">
+    deserialize_response()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.get_available_endpoints" class="md-nav__link">
+    get_available_endpoints()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.get_endpoint" class="md-nav__link">
+    get_endpoint()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.get_single_id_from_multi_endpoint" class="md-nav__link">
+    get_single_id_from_multi_endpoint()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.main" class="md-nav__link">
+    main()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_info_or_links_endpoints" class="md-nav__link">
+    test_info_or_links_endpoints()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_multi_entry_endpoint" class="md-nav__link">
+    test_multi_entry_endpoint()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_page_limit" class="md-nav__link">
+    test_page_limit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_query_syntax" class="md-nav__link">
+    test_query_syntax()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ImplementationValidator.test_single_entry_endpoint" class="md-nav__link">
+    test_single_entry_endpoint()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.ResponseError" class="md-nav__link">
+    ResponseError
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.print_failure" class="md-nav__link">
+    print_failure()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.print_success" class="md-nav__link">
+    print_success()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.print_warning" class="md-nav__link">
+    print_warning()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.validator.validator.test_case" class="md-nav__link">
+    test_case()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Materials-Consortia/optimade-python-tools/edit/master/docs/reference/validator/validator.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>Validator</h1>
+                
+                <div class="doc doc-object doc-module">
+
+<a id="optimade.validator.validator"></a>
+    <div class="doc doc-contents first">
+
+      <p>This module contains a validator class that can be pointed
+at an OPTIMADE implementation and validated against the pydantic
+models in this package.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.validator.validator.Client" class="doc doc-heading">
+        <code>
+Client        </code>
+
+
+
+<a href="#optimade.validator.validator.Client" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.Client.__init__" class="doc doc-heading">
+<code class="codehilite language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#optimade.validator.validator.Client.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initialises the Client with the given <code>base_url</code> without testing
+if it is valid.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>base_url</code></td>
+        <td><code>str</code></td>
+        <td><p>the base URL of the optimade implementation, including</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>request</code></td>
+        <td><code>protocol (e.g. `&#39;http</code></td>
+        <td><p>//'`) and API version number if necessary.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>Examples</code></td>
+        <td></td>
+        <td><ul>
+<li><code>'http://example.org/optimade/v1'</code>,</li>
+<li><code>'www.crystallography.net/cod-test/optimade/v0.10.0/'</code></li>
+</ul></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>Note</code></td>
+        <td></td>
+        <td><p>A maximum of one slash ("/") is allowed as the last character.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Initialises the Client with the given `base_url` without testing</span>
+<span class="sd">    if it is valid.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        base_url (str): the base URL of the optimade implementation, including</span>
+<span class="sd">        request protocol (e.g. `&#39;http://&#39;`) and API version number if necessary.</span>
+<span class="sd">        Examples:</span>
+<span class="sd">            - `&#39;http://example.org/optimade/v1&#39;`,</span>
+<span class="sd">            - `&#39;www.crystallography.net/cod-test/optimade/v0.10.0/&#39;`</span>
+<span class="sd">        Note: A maximum of one slash (&quot;/&quot;) is allowed as the last character.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">max_retries</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.Client.get" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.Client.get" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Makes the given request, with a number of retries if being rate limited. The
+request will be prepended with the <code>base_url</code> unless the request appears to be an
+absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>request</code></td>
+        <td><code>str</code></td>
+        <td><p>the request to make against the base URL of this client.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>response (requests.models.Response)</code></td>
+      <td><p>the response from the server.</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>SystemExit</code></td>
+        <td><p>if there is no response from the server, or if the URL is invalid.</p></td>
+      </tr>
+      <tr>
+        <td><code>ResponseError</code></td>
+        <td><p>if the server does not respond with a non-429 status code within
+the <code>MAX_RETRIES</code> attempts.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Makes the given request, with a number of retries if being rate limited. The</span>
+<span class="sd">    request will be prepended with the `base_url` unless the request appears to be an</span>
+<span class="sd">    absolute URL (i.e. starts with `http://` or `https://`).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        request (str): the request to make against the base URL of this client.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        response (requests.models.Response): the response from the server.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        SystemExit: if there is no response from the server, or if the URL is invalid.</span>
+<span class="sd">        ResponseError: if the server does not respond with a non-429 status code within</span>
+<span class="sd">            the `MAX_RETRIES` attempts.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">allow_fragments</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">scheme</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="o">=</span> <span class="n">request</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">request</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">request</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">request</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">status_code</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">retries</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># probably a smarter way to do this with requests, but their documentation 404&#39;s...</span>
+    <span class="k">while</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">:</span>
+        <span class="n">retries</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No response from server at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">MissingSchema</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unable to make request on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="si">}</span><span class="s2">, did you mean http://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="si">}</span><span class="s2">?&quot;</span>
+            <span class="p">)</span>
+        <span class="n">status_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+        <span class="k">if</span> <span class="n">status_code</span> <span class="o">!=</span> <span class="mi">429</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hit rate limit, sleeping for 1 s...&quot;</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="s2">&quot;Hit max (manual) retries on request.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.validator.validator.ImplementationValidator" class="doc doc-heading">
+        <code>
+ImplementationValidator        </code>
+
+
+
+<a href="#optimade.validator.validator.ImplementationValidator" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Class to call test functions on a particular OPTIMADE
+implementation.</p>
+<p>Uses the pydantic models in <code>optimade.models</code> to validate the
+response from the server and crawl through the available endpoints.</p>
+<div class="admonition drawbacks">
+<p class="admonition-title">Drawbacks</p>
+<ul>
+<li>only works for current version of the specification as defined
+by <code>optimade.models</code>.</li>
+</ul>
+</div>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.__init__" class="doc doc-heading">
+<code class="codehilite language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">as_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#optimade.validator.validator.ImplementationValidator.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Set up the tests to run, based on constants in this module
+for required endpoints.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Client</span><span class="p">,</span> <span class="n">TestClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">as_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Set up the tests to run, based on constants in this module</span>
+<span class="sd">    for required endpoints.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">max_retries</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">page_limit</span> <span class="o">=</span> <span class="n">page_limit</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+
+    <span class="k">if</span> <span class="n">as_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">as_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">RESPONSE_CLASSES_INDEX</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Provided as_type=&#39;</span><span class="si">{</span><span class="n">as_type</span><span class="si">}</span><span class="s2">&#39; not allowed for an Index meta-database.&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span> <span class="o">=</span> <span class="n">RESPONSE_CLASSES_INDEX</span><span class="p">[</span><span class="n">as_type</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">as_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;structure&quot;</span><span class="p">,</span> <span class="s2">&quot;reference&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span> <span class="o">=</span> <span class="n">RESPONSE_CLASSES</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">as_type</span><span class="si">}</span><span class="s2">s/&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span> <span class="o">=</span> <span class="n">RESPONSE_CLASSES</span><span class="p">[</span><span class="n">as_type</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">base_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;Need at least a URL or a client to initialize validator.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">base_url</span> <span class="ow">and</span> <span class="n">client</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Please specify at most one of base_url or client.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">client</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">base_url</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">base_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+            <span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_id_by_type</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_setup_log</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">expected_entry_endpoints</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">REQUIRED_ENTRY_ENDPOINTS_INDEX</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="k">else</span> <span class="n">REQUIRED_ENTRY_ENDPOINTS</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_entry_endpoints</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_entry_endpoints</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_mandatory_queries</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">{}</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="k">else</span> <span class="n">ENDPOINT_MANDATORY_QUERIES</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_optional_queries</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="k">else</span> <span class="n">ENDPOINT_OPTIONAL_QUERIES</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">response_classes</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">RESPONSE_CLASSES_INDEX</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="k">else</span> <span class="n">RESPONSE_CLASSES</span>
+    <span class="p">)</span>
+
+    <span class="c1"># some simple checks on base_url</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
+    <span class="c1"># only allow filters/endpoints if we are working in &quot;as_type&quot; mode</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="n">base_url</span><span class="o">.</span><span class="n">query</span>
+        <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">endp</span> <span class="ow">in</span> <span class="n">base_url</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">endp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_entry_endpoints</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
+            <span class="s2">&quot;Base URL not appropriate: should not contain an endpoint or filter.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># if valid is True on exit, script returns 0 to shell</span>
+    <span class="c1"># if valid is False on exit, script returns 1 to shell</span>
+    <span class="c1"># if valid is None on exit, script returns 2 to shell, indicating an internal failure</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">success_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">failure_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">optional_success_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">optional_failure_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">failure_messages</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.deserialize_response" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">deserialize_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.deserialize_response" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Try to create the appropriate pydantic model from the response. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@test_case</span>
+<span class="k">def</span> <span class="nf">deserialize_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Try to create the appropriate pydantic model from the response. &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="s2">&quot;Request failed&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">response_cls</span><span class="p">(</span><span class="o">**</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()),</span>
+        <span class="s2">&quot;deserialized correctly as object of type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response_cls</span><span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.get_available_endpoints" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">get_available_endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_info</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.get_available_endpoints" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Try to get <code>entry_types_by_format</code> even if base info response could not be validated. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@test_case</span>
+<span class="k">def</span> <span class="nf">get_available_endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_info</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Try to get `entry_types_by_format` even if base info response could not be validated. &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">available_json_entry_endpoints</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">available_json_entry_endpoints</span> <span class="o">=</span> <span class="n">base_info</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">entry_types_by_format</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="s2">&quot;json&quot;</span>
+            <span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Info endpoint failed serialization, trying to manually extract entry_types_by_format.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">base_info</span><span class="o">.</span><span class="n">json</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to get entry types from base info endpoint. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;This may most likely be attributed to a wrong request to the &#39;</span><span class="si">{</span><span class="n">BASE_INFO_ENDPOINT</span><span class="si">}</span><span class="s2">&#39; endpoint.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">available_json_entry_endpoints</span> <span class="o">=</span> <span class="n">base_info</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span>
+                <span class="s2">&quot;entry_types_by_format&quot;</span>
+            <span class="p">][</span><span class="s2">&quot;json&quot;</span><span class="p">]</span>
+            <span class="k">break</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to get entry_types_by_format from unserializable base info response </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">base_info</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+            <span class="s2">&quot;Unable to find any JSON entry types in entry_types_by_format&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="ow">and</span> <span class="n">available_json_entry_endpoints</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+            <span class="s2">&quot;No entry endpoint are allowed for an Index meta-database&quot;</span>
+        <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_entry_endpoints</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">available_json_entry_endpoints</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">non_entry_endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">non_entry_endpoint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_entry_endpoints</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Illegal entry &quot;</span><span class="si">{</span><span class="n">non_entry_endpoint</span><span class="si">}</span><span class="s1">&quot; was found in entry_types_by_format&quot;&#39;</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">available_json_entry_endpoints</span><span class="p">,</span>
+        <span class="s2">&quot;successfully found available entry types in baseinfo&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.get_endpoint" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">get_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.get_endpoint" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Gets the response from the endpoint specified by <code>request_str</code>. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@test_case</span>
+<span class="k">def</span> <span class="nf">get_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Gets the response from the endpoint specified by `request_str`. &quot;&quot;&quot;</span>
+
+    <span class="n">request_str</span> <span class="o">=</span> <span class="n">request_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request_str</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Request to &#39;</span><span class="si">{</span><span class="n">request_str</span><span class="si">}</span><span class="s2">&#39; returned HTTP code </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Error(s):&quot;</span>
+        <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errors&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;N/A&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;detail&quot;</span><span class="p">,</span> <span class="s2">&quot;N/A&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pointer&quot;</span><span class="p">,</span> <span class="s2">&quot;N/A&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span><span class="p">,</span> <span class="s2">&quot;request successful.&quot;</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.get_single_id_from_multi_endpoint" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">get_single_id_from_multi_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deserialized</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.get_single_id_from_multi_endpoint" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Scrape an ID from the multi-entry endpoint to use as query
+for single entry endpoint.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@test_case</span>
+<span class="k">def</span> <span class="nf">get_single_id_from_multi_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deserialized</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Scrape an ID from the multi-entry endpoint to use as query</span>
+<span class="sd">    for single entry endpoint.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">deserialized</span> <span class="ow">and</span> <span class="n">deserialized</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_id_by_type</span><span class="p">[</span><span class="n">deserialized</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="p">]</span> <span class="o">=</span> <span class="n">deserialized</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Set type </span><span class="si">%s</span><span class="s2"> test ID to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">deserialized</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+            <span class="n">deserialized</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="s2">&quot;No entries found under endpoint to scrape ID from.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_id_by_type</span><span class="p">[</span><span class="n">deserialized</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="p">],</span>
+        <span class="sa">f</span><span class="s2">&quot;successfully scraped test ID from </span><span class="si">{</span><span class="n">deserialized</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> endpoint&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.main" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">main</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.main" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Run all the test cases of the implementation, or the single type test. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Run all the test cases of the implementation, or the single type test. &quot;&quot;&quot;</span>
+
+    <span class="c1"># if single type has been set, only run that test</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Validating response of </span><span class="si">%s</span><span class="s2"> with model </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_as_type</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">failure_count</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># test entire implementation</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Testing entire implementation at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Mandatory tests:&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing base info endpoint of </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">BASE_INFO_ENDPOINT</span><span class="p">)</span>
+    <span class="n">base_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_info_or_links_endpoints</span><span class="p">(</span><span class="n">BASE_INFO_ENDPOINT</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">get_available_endpoints</span><span class="p">(</span><span class="n">base_info</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">endp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_entry_endpoints</span><span class="p">:</span>
+        <span class="n">entry_info_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_INFO_ENDPOINT</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing expected info endpoint </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">entry_info_endpoint</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_info_or_links_endpoints</span><span class="p">(</span><span class="n">entry_info_endpoint</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">endp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_entry_endpoints</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing multiple entry endpoint of </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">endp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_multi_entry_endpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2">?page_limit=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">page_limit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">endp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_entry_endpoints</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing single entry request of type </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">endp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_single_entry_endpoint</span><span class="p">(</span><span class="n">endp</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">endp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_mandatory_queries</span><span class="p">:</span>
+        <span class="c1"># skip empty endpoint query lists</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_mandatory_queries</span><span class="p">[</span><span class="n">endp</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing mandatory query syntax on endpoint </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">endp</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_query_syntax</span><span class="p">(</span><span class="n">endp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_mandatory_queries</span><span class="p">[</span><span class="n">endp</span><span class="p">])</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing </span><span class="si">%s</span><span class="s2"> endpoint&quot;</span><span class="p">,</span> <span class="n">LINKS_ENDPOINT</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_info_or_links_endpoints</span><span class="p">(</span><span class="n">LINKS_ENDPOINT</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">failure_count</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Optional tests:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">endp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_optional_queries</span><span class="p">:</span>
+        <span class="c1"># skip empty endpoint query lists</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_mandatory_queries</span><span class="p">[</span><span class="n">endp</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Testing optional query syntax on endpoint </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">endp</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_query_syntax</span><span class="p">(</span>
+                <span class="n">endp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_optional_queries</span><span class="p">[</span><span class="n">endp</span><span class="p">],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">FAILURES</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">failure_messages</span><span class="p">:</span>
+            <span class="n">print_failure</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">message</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">print_warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
+
+    <span class="n">final_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Passed </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">success_count</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">success_count</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">failure_count</span><span class="si">}</span><span class="s2"> tests.&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
+        <span class="n">print_failure</span><span class="p">(</span><span class="n">final_message</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">print_success</span><span class="p">(</span><span class="n">final_message</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Additionally passed </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">optional_success_count</span><span class="si">}</span><span class="s2"> out of &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">optional_success_count</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">optional_failure_count</span><span class="si">}</span><span class="s2"> optional tests.&quot;</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.test_info_or_links_endpoints" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">test_info_or_links_endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.test_info_or_links_endpoints" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Runs the test cases for the info endpoints. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_info_or_links_endpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Runs the test cases for the info endpoints. &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_endpoint</span><span class="p">(</span><span class="n">request_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+        <span class="n">deserialized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialize_response</span><span class="p">(</span>
+            <span class="n">response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_classes</span><span class="p">[</span><span class="n">request_str</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">deserialized</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">response</span>
+        <span class="k">return</span> <span class="n">deserialized</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.test_multi_entry_endpoint" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">test_multi_entry_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.test_multi_entry_endpoint" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Runs the test cases for the multi entry endpoints. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_multi_entry_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Runs the test cases for the multi entry endpoints. &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_endpoint</span><span class="p">(</span><span class="n">request_str</span><span class="p">)</span>
+    <span class="n">_type</span> <span class="o">=</span> <span class="n">request_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_classes</span><span class="p">:</span>
+        <span class="n">response_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_classes</span><span class="p">[</span><span class="n">_type</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Deserializing multi entry response from </span><span class="si">%s</span><span class="s2"> with generic response rather than defined endpoint.&quot;</span><span class="p">,</span>
+            <span class="n">_type</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">response_cls</span> <span class="o">=</span> <span class="n">ValidatorEntryResponseMany</span>
+    <span class="n">deserialized</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deserialize_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_page_limit</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">get_single_id_from_multi_endpoint</span><span class="p">(</span><span class="n">deserialized</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.test_page_limit" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">test_page_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">check_next_link</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.test_page_limit" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Test that a multi-entry endpoint obeys the page limit.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>response</code></td>
+        <td><code>requests.Response</code></td>
+        <td><p>the response to test for page limit
+compliance.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ResponseError</code></td>
+        <td><p>if test fails in a predictable way.</p></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>bool, str</code></td>
+      <td><p>True if the test was successful, with a string describing
+    the success.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@test_case</span>
+<span class="k">def</span> <span class="nf">test_page_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">check_next_link</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Test that a multi-entry endpoint obeys the page limit.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        response (requests.Response): the response to test for page limit</span>
+<span class="sd">            compliance.</span>
+
+<span class="sd">    Keyword arguments:</span>
+<span class="sd">        check_next (bool): whether or not to recursively follow and test any</span>
+<span class="sd">            pagination links provided under `links-&gt;next`.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ResponseError: if test fails in a predictable way.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool, str: True if the test was successful, with a string describing</span>
+<span class="sd">            the success.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="s2">&quot;Unable to test endpoint page limit.&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">num_entries</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+            <span class="s2">&quot;Response under `data` field was missing or had wrong type.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">num_entries</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_limit</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Endpoint did not obey page limit: </span><span class="si">{</span><span class="n">num_entries</span><span class="si">}</span><span class="s2"> entries vs </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">page_limit</span><span class="si">}</span><span class="s2"> limit&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">][</span><span class="s2">&quot;more_data_available&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="s2">&quot;Field `meta-&gt;more_data_available` was missing.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">more_data_available</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">next_link</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">][</span><span class="s2">&quot;next&quot;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                <span class="s2">&quot;Endpoint suggested more data was available but provided no links-&gt;next link.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">next_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_endpoint</span><span class="p">(</span><span class="n">next_link</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_page_limit</span><span class="p">(</span><span class="n">next_response</span><span class="p">,</span> <span class="n">check_next_link</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="kc">True</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;Endpoint obeyed page limit of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">page_limit</span><span class="si">}</span><span class="s2"> by returning </span><span class="si">{</span><span class="n">num_entries</span><span class="si">}</span><span class="s2"> entries.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.test_query_syntax" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">test_query_syntax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">endpoint_queries</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.test_query_syntax" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Execute a list of valid queries agains the endpoint and assert
+that no errors are raised.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>endpoint</code></td>
+        <td><code>str</code></td>
+        <td><p>the endpoint to query (e.g. "structures").</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>endpoint_queries</code></td>
+        <td><code>list</code></td>
+        <td><p>the list of valid mandatory queries
+for that endpoint, where the queries do not include the
+"?filter=" prefix, e.g. ['elements HAS "Na"'].</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_query_syntax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">endpoint_queries</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Execute a list of valid queries agains the endpoint and assert</span>
+<span class="sd">    that no errors are raised.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        endpoint (str): the endpoint to query (e.g. &quot;structures&quot;).</span>
+<span class="sd">        endpoint_queries (list): the list of valid mandatory queries</span>
+<span class="sd">            for that endpoint, where the queries do not include the</span>
+<span class="sd">            &quot;?filter=&quot; prefix, e.g. [&#39;elements HAS &quot;Na&quot;&#39;].</span>
+
+<span class="sd">    Keyword arguments:</span>
+<span class="sd">        optional (bool): treat the success of the queries as optional.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">valid_queries</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">?filter=</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">endpoint_queries</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">valid_queries</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_endpoint</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="n">optional</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.validator.validator.ImplementationValidator.test_single_entry_endpoint" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">test_single_entry_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.ImplementationValidator.test_single_entry_endpoint" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Runs the test cases for the single entry endpoints. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_single_entry_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Runs the test cases for the single entry endpoints. &quot;&quot;&quot;</span>
+    <span class="n">_type</span> <span class="o">=</span> <span class="n">request_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">response_cls_name</span> <span class="o">=</span> <span class="n">_type</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+    <span class="k">if</span> <span class="n">response_cls_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_classes</span><span class="p">:</span>
+        <span class="n">response_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_classes</span><span class="p">[</span><span class="n">response_cls_name</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Deserializing single entry response </span><span class="si">%s</span><span class="s2"> with generic response rather than defined endpoint.&quot;</span><span class="p">,</span>
+            <span class="n">_type</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">response_cls</span> <span class="o">=</span> <span class="n">ValidatorEntryResponseOne</span>
+    <span class="k">if</span> <span class="n">_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_id_by_type</span><span class="p">:</span>
+        <span class="n">test_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_id_by_type</span><span class="p">[</span><span class="n">_type</span><span class="p">]</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_endpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_type</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">test_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deserialize_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.validator.validator.ResponseError" class="doc doc-heading">
+        <code>
+ResponseError            (<span title="Exception">Exception</span>)
+        </code>
+
+
+
+<a href="#optimade.validator.validator.ResponseError" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>This exception should be raised for a manual hardcoded test failure. </p>
+
+
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade.validator.validator.print_failure" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">print_failure</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.print_failure" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Print but sad. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">print_failure</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Print but sad. &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[91m</span><span class="se">\033</span><span class="s2">[4m</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade.validator.validator.print_success" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">print_success</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.print_success" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Print but happy. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">print_success</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Print but happy. &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m</span><span class="se">\033</span><span class="s2">[1m</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade.validator.validator.print_warning" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">print_warning</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.print_warning" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Print but angry. </p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">print_warning</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Print but angry. &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[93m</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade.validator.validator.test_case" class="doc doc-heading">
+<code class="codehilite language-python"><span class="n">test_case</span><span class="p">(</span><span class="n">test_fn</span><span class="p">)</span></code>
+
+
+<a href="#optimade.validator.validator.test_case" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Wrapper for test case functions, which pretty_prints any errors
+depending on verbosity level and returns only the response to the caller.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>test_fn</code></td>
+        <td><code>callable</code></td>
+        <td><p>function that returns a response to pass to caller,
+and a message to print upon success. Should raise <code>ResponseError</code>,
+<code>ValidationError</code> or <code>ManualValidationError</code> if the test case has failed.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">test_case</span><span class="p">(</span><span class="n">test_fn</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Wrapper for test case functions, which pretty_prints any errors</span>
+<span class="sd">    depending on verbosity level and returns only the response to the caller.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        test_fn (callable): function that returns a response to pass to caller,</span>
+<span class="sd">            and a message to print upon success. Should raise `ResponseError`,</span>
+<span class="sd">            `ValidationError` or `ManualValidationError` if the test case has failed.</span>
+
+<span class="sd">    Keyword arguments:</span>
+<span class="sd">        optional (bool): whether or not to treat the test as optional.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">test_fn</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">test_fn</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;Critical: unable to parse server response as JSON. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">ResponseError</span><span class="p">,</span> <span class="n">ValidationError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">last_request</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">base_url</span>
+
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
+                <span class="n">validator</span><span class="o">.</span><span class="n">success_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">validator</span><span class="o">.</span><span class="n">optional_success_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;✔: </span><span class="si">{</span><span class="n">request</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">validator</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">optional</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">print_success</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">optional</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">print_success</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">optional</span><span class="p">:</span>
+                <span class="n">validator</span><span class="o">.</span><span class="n">failure_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">validator</span><span class="o">.</span><span class="n">optional_failure_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">summary</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;✖: </span><span class="si">{</span><span class="n">request</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">test_fn</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> - failed with error&quot;</span>
+            <span class="n">validator</span><span class="o">.</span><span class="n">failure_messages</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">summary</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">validator</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">optional</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">message</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">print_failure</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">message</span><span class="p">:</span>
+                        <span class="n">print_warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">optional</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✖&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">print_failure</span><span class="p">(</span><span class="s2">&quot;✖&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../server/routers/utils/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Utils" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Utils
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../validator_model_patches/" class="md-footer__link md-footer__link--next" aria-label="Next: Validator model patches" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Validator model patches
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Built by OPTIMADE Development Team
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.8397ff9e.min.js", "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f89c2efe.min.js"></script>
+      
+    
+  </body>
+</html>
