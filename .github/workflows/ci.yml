@@ -251,7 +251,6 @@ jobs:
         flags: validator
 
   docs:
-    name: Documentation
     runs-on: ubuntu-latest
 
     steps:
