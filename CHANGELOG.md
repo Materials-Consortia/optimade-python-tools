@@ -1,5 +1,24 @@
 # Changelog
 
+## [v0.16.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.5) (2021-10-18)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.4...v0.16.5)
+
+**Closed issues:**
+
+- 'elements\_ratios' model validator uses double-precision machine epsilon - could be relaxed [\#947](https://github.com/Materials-Consortia/optimade-python-tools/issues/947)
+- Versioning in Docs [\#724](https://github.com/Materials-Consortia/optimade-python-tools/issues/724)
+
+**Merged pull requests:**
+
+- Update dependencies [\#974](https://github.com/Materials-Consortia/optimade-python-tools/pull/974) ([CasperWA](https://github.com/CasperWA))
+- Fix option value for checkout in CD Docs workflow [\#972](https://github.com/Materials-Consortia/optimade-python-tools/pull/972) ([CasperWA](https://github.com/CasperWA))
+- Correct default branch name to `master` [\#971](https://github.com/Materials-Consortia/optimade-python-tools/pull/971) ([CasperWA](https://github.com/CasperWA))
+- Dependabot updates for v0.16.5 [\#964](https://github.com/Materials-Consortia/optimade-python-tools/pull/964) ([ml-evs](https://github.com/ml-evs))
+- Automate versioned documentation [\#951](https://github.com/Materials-Consortia/optimade-python-tools/pull/951) ([CasperWA](https://github.com/CasperWA))
+- Add JOSS citation [\#949](https://github.com/Materials-Consortia/optimade-python-tools/pull/949) ([ml-evs](https://github.com/ml-evs))
+- Some validation QoL tweaks [\#948](https://github.com/Materials-Consortia/optimade-python-tools/pull/948) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.16.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.4) (2021-09-20)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.3...v0.16.4)
