@@ -22,7 +22,7 @@ mongo_deps = ["pymongo~=3.12", "mongomock~=3.23"]
 server_deps = [
     "uvicorn~=0.15",
     "Jinja2>=2.10,<4.0",
-    "pyyaml~=5.1",  # Keep at pyyaml 5.1 for aiida-core support
+    "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
 ] + mongo_deps
 
 # Client minded
