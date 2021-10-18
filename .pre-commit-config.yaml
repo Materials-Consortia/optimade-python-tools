@@ -3,7 +3,7 @@ default_language_version:
 
 repos:
   - repo: https://github.com/ambv/black
-    rev: 21.6b0
+    rev: 21.9b0
     hooks:
     - id: black
       name: Blacken
@@ -11,16 +11,22 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
-    - id: trailing-whitespace
-      exclude: README.md
+    - id: check-symlinks
     - id: check-yaml
+      name: Check YAML
     - id: check-json
+    - id: destroyed-symlinks
     - id: end-of-file-fixer
+    - id: requirements-txt-fixer
+      name: Fix requirements*.txt
+      files: ^requirements.*\.txt$
+    - id: trailing-whitespace
+      args: [--markdown-linebreak-ext=md]
 
   - repo: https://gitlab.com/pycqa/flake8
     rev: '3.9.2'
     hooks:
-    -   id: flake8
+    - id: flake8
 
   - repo: local
     hooks:
@@ -29,4 +35,11 @@ repos:
       description: Check for differences in openapi.json and index_openapi.json with local versions.
       entry: invoke check-openapi-diff
       pass_filenames: false
-      language: system
+      language: python
+    - id: update-docs-api-reference
+      name: Update API Reference in Documentation
+      entry: invoke create-api-reference-docs --pre-clean --pre-commit
+      language: python
+      pass_filenames: false
+      files: ^optimade/.*\.py$
+      description: Update the API Reference documentation whenever a Python file is touched in the code base.

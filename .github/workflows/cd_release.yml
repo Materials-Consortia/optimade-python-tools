@@ -1,0 +1,85 @@
+name: Publish and Deploy
+
+on:
+  release:
+    types:
+    - published
+
+jobs:
+
+  publish:
+    name: Publish OPTIMADE Python tools
+    runs-on: ubuntu-latest
+    if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
+    env:
+      PUBLISH_UPDATE_BRANCH: master
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install -U pip
+        pip install -U setuptools
+        pip install -U -e .[all]
+
+    - name: Update changelog
+      uses: CharMixer/auto-changelog-action@v1
+      with:
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+
+    - name: Update API Reference docs and version - Commit changes and update tag
+      run: .github/utils/update_docs.sh
+
+    - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
+      uses: CasperWA/push-protected@v2
+      with:
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        unprotect_reviews: true
+        sleep: 15
+        force: true
+        tags: true
+
+    - name: Get tagged versions
+      run: echo "PREVIOUS_VERSION=$(git tag -l --sort -version:refname | sed -n 2p)" >> $GITHUB_ENV
+
+    - name: Create release-specific changelog
+      uses: CharMixer/auto-changelog-action@v1
+      with:
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        since_tag: "${{ env.PREVIOUS_VERSION }}"
+        output: "release_changelog.md"
+
+    - name: Append changelog to release body
+      run: |
+        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} --jq '.body' > release_body.md
+        cat release_changelog.md >> release_body.md
+        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} -X PATCH -F body='@release_body.md'
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_CASPER }}
+
+    - name: Build source distribution
+      run: python ./setup.py sdist
+
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_PASSWORD }}
+
+    - name: Deploy documentation
+      run: |
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest master
