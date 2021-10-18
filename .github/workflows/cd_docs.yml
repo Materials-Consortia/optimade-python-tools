@@ -14,7 +14,7 @@ jobs:
     steps:
     - name: Release check
       run: |
-        COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/main --jq '.commit.message')"
+        COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/master --jq '.commit.message')"
         if [[ "${COMMIT_MSG}" =~ ^Release\ v.*\ -\ Changelog$ ]]; then
           echo "In a release - do not run this job !"
           echo "RELEASE_RUN=true" >> $GITHUB_ENV
