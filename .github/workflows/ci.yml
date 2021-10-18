@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v2
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2.2.2
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
@@ -37,12 +37,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v2
       with:
         submodules: true
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2.2.2
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
@@ -62,12 +62,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v2
       with:
         submodules: true
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2.2.2
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v2
       with:
         submodules: true
 
@@ -101,11 +101,11 @@ jobs:
     - name: Start Docker image - server
       run: |
         docker-compose up optimade &
-        .github/workflows/wait_for_it.sh localhost:3213 -t 120
+        .github/utils/wait_for_it.sh localhost:3213 -t 120
         sleep 15
 
     - name: Test server, including OPTIONAL base URLs
-      uses: Materials-Consortia/optimade-validator-action@v2.6.0
+      uses: Materials-Consortia/optimade-validator-action@v2
       with:
         port: 3213
         path: /
@@ -115,11 +115,11 @@ jobs:
     - name: Start Docker image - index server
       run: |
         docker-compose up optimade-index &
-        .github/workflows/wait_for_it.sh localhost:3214 -t 120
+        .github/utils/wait_for_it.sh localhost:3214 -t 120
         sleep 15
 
     - name: Test index server, including OPTIONAL base URLs
-      uses: Materials-Consortia/optimade-validator-action@v2.6.0
+      uses: Materials-Consortia/optimade-validator-action@v2
       with:
         port: 3214
         path: /
@@ -166,13 +166,13 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v2
       with:
         submodules: true
         fetch-depth: 2
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2.2.2
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -236,7 +236,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v2.1.0
+      uses: codecov/codecov-action@v2
       with:
         name: project
         file: ./coverage.xml
@@ -244,7 +244,7 @@ jobs:
 
     - name: Upload validator coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v2.1.0
+      uses: codecov/codecov-action@v2
       with:
         name: validator
         file: ./validator_cov.xml
@@ -254,11 +254,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v2
       with:
         submodules: true
 
-    - uses: actions/setup-python@v2.2.2
+    - uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
@@ -271,9 +271,11 @@ jobs:
         pip install -r requirements-dev.txt
         pip install -r requirements-docs.txt
 
+    # NOTE: While we're now using `mike`, this is still useful
+    # to test the integrity of the documentation build.
     - name: Build
       run: |
-        invoke create-api-reference-docs
+        invoke create-api-reference-docs --pre-clean
         mkdocs build --strict
 
   test_build:
@@ -281,10 +283,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2.3.4
+      uses: actions/checkout@v2
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2.2.2
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
 

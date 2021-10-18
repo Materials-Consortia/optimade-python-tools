@@ -1,0 +1,67 @@
+name: CD Documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy `latest` documentation
+    if: github.repository_owner == 'Materials-Consortia'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Release check
+      run: |
+        COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/main --jq '.commit.message')"
+        if [[ "${COMMIT_MSG}" =~ ^Release\ v.*\ -\ Changelog$ ]]; then
+          echo "In a release - do not run this job !"
+          echo "RELEASE_RUN=true" >> $GITHUB_ENV
+        else
+          echo "Not a release - update docs"
+          echo "RELEASE_RUN=false" >> $GITHUB_ENV
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout repository
+      if: env.RELEASE_RUN == 'false'
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        submodule: true
+
+    - name: Set up Python 3.8
+      if: env.RELEASE_RUN == 'false'
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      if: env.RELEASE_RUN == 'false'
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U setuptools wheel
+        pip install -U -e .[all]
+
+    - name: Set up git user
+      if: env.RELEASE_RUN == 'false'
+      run: |
+        git config --global user.name "OPTIMADE Developers"
+        git config --global user.email "dev@optimade.org"
+
+    - name: Check API Reference and landing page
+      if: env.RELEASE_RUN == 'false'
+      run: |
+        invoke create-api-reference-docs --pre-clean
+
+        if [ -n "$(git status --porcelain docs/api_reference)" ]; then
+          echo "The following files in the documentation have not been committed:"
+          git status --porcelain docs/api_reference
+          exit 1
+        fi
+
+    - name: Deploy documentation
+      if: env.RELEASE_RUN == 'false'
+      run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest master

@@ -23,6 +23,9 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Materials-Consortia
+  version:
+    provider: mike
+    default: latest
 
 extra_css:
   - css/reference.css

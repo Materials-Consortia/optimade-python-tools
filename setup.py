@@ -36,6 +36,7 @@ client_deps = cif_deps
 
 # General
 docs_deps = [
+    "mike~=1.1",
     "mkdocs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.5",
     "mkdocs-material~=7.3",
