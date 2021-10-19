@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.16.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.6) (2021-10-19)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.5...v0.16.6)
+
+**Merged pull requests:**
+
+- Put docs release deployment in separate job [\#978](https://github.com/Materials-Consortia/optimade-python-tools/pull/978) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.16.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.5) (2021-10-18)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.4...v0.16.5)
