@@ -1,0 +1,120 @@
+name: CI/CD - New updates to `master`
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  DEFAULT_REPO_BRANCH: master
+  GIT_USER_NAME: OPTIMADE Developers
+  GIT_USER_EMAIL: "dev@optimade.org"
+
+jobs:
+  deploy-docs:
+    name: Deploy `latest` documentation
+    if: github.repository_owner == 'Materials-Consortia'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Release check
+      run: |
+        COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/${{ env.DEFAULT_REPO_BRANCH }} --jq '.commit.message')"
+        if [[ "${COMMIT_MSG}" =~ ^Release\ v.*\ -\ Changelog$ ]]; then
+          echo "In a release - do not run this job !"
+          echo "RELEASE_RUN=true" >> $GITHUB_ENV
+        else
+          echo "Not a release - update docs"
+          echo "RELEASE_RUN=false" >> $GITHUB_ENV
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout repository
+      if: env.RELEASE_RUN == 'false'
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        submodules: true
+
+    - name: Set up Python 3.8
+      if: env.RELEASE_RUN == 'false'
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      if: env.RELEASE_RUN == 'false'
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U setuptools wheel
+        pip install -U -e .[all]
+
+    - name: Set up git user
+      if: env.RELEASE_RUN == 'false'
+      run: |
+        git config --global user.name "${{ env.GIT_USER_NAME }}"
+        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+
+    - name: Check API Reference and landing page
+      if: env.RELEASE_RUN == 'false'
+      run: |
+        invoke create-api-reference-docs --pre-clean
+
+        if [ -n "$(git status --porcelain docs/api_reference)" ]; then
+          echo "The following files in the documentation have not been committed:"
+          git status --porcelain docs/api_reference
+          exit 1
+        fi
+
+    - name: Deploy documentation
+      if: env.RELEASE_RUN == 'false'
+      run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_REPO_BRANCH }}
+
+  update-dependabot-branch:
+    name: Update permanent dependabot branch `dependabot_updates`
+    if: github.repository_owner == 'Materials-Consortia'
+    runs-on: ubuntu-latest
+
+    env:
+      DEPENDABOT_BRANCH: dependabot_updates
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ env.DEPENDABOT_BRANCH }}
+        fetch-depth: 0
+
+    - name: Set up git config
+      run: |
+        git config --global user.name "${{ env.GIT_USER_NAME }}"
+        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+
+    - name: Update '${{ env.DEPENDABOT_BRANCH }}'
+      run: |
+        git fetch origin
+
+        LATEST_PR_BODY="$(gh api /repos/${{ github.repository}}/pulls -X GET -f state=closed -f per_page=1 -f sort=updated -f direction=desc --jq '.[].body')"
+        if [ "${LATEST_PR_BODY}" == "$(cat .github/utils/single_dependency_pr_body.txt)" ]; then
+          # The dependency branch has just been merged into ${DEFAULT_REPO_BRANCH}
+          # The dependency branch should be reset to ${DEFAULT_REPO_BRANCH}
+          echo "The dependencies have just been updated! Reset to ${{ env.DEFAULT_REPO_BRANCH }}."
+          git reset --hard origin/${{ env.DEFAULT_REPO_BRANCH }}
+          echo "FORCE_PUSH=yes" >> $GITHUB_ENV
+        else
+          # Normal procedure: Merge ${DEFAULT_REPO_BRANCH} into ${DEPENDABOT_BRANCH}
+          echo "Merge new updates to ${{ env.DEFAULT_REPO_BRANCH }} into ${DEPENDABOT_BRANCH}"
+          git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with '${{ env.DEFAULT_REPO_BRANCH }}'" origin/${{ env.DEFAULT_REPO_BRANCH }}
+          echo "FORCE_PUSH=no" >> $GITHUB_ENV
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push to '${{ env.DEPENDABOT_BRANCH }}'
+      uses: CasperWA/push-protected@v2
+      with:
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        branch: ${{ env.DEPENDABOT_BRANCH }}
+        sleep: 15
+        force: ${{ env.FORCE_PUSH }}
