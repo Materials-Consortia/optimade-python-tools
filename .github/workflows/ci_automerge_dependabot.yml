@@ -13,6 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.ref }}
+
     - name: Activate auto-merge
       run: |
         PR_ID="$(gh api graphql -F owner='{owner}' -F name='{repo}' -f query='query($owner: String!, $name: String!) {repository(owner: $owner, name: $name) {pullRequest(number: ${{ github.event.pull_request.number }}) {id}}}' --jq '.data.repository.pullRequest.id')"
