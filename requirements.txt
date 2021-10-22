@@ -6,7 +6,7 @@ lark-parser==0.12.0
 mongomock==3.23.0
 pydantic==1.8.2
 pymongo==3.12.0
-pyyaml==5.4
+pyyaml==6.0
 requests==2.26.0
 typing-extensions==3.10.0.2
 uvicorn==0.15.0
