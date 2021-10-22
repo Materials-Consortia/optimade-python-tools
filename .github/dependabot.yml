@@ -3,7 +3,9 @@ updates:
 - package-ecosystem: pip
   directory: "/"
   schedule:
-    interval: monthly
+    interval: weekly
+    day: monday
+    time: "05:43"
   # Needs to be larger than the number of total requirements (currently 31)
   open-pull-requests-limit: 50
   target-branch: dependabot_updates
@@ -15,13 +17,15 @@ updates:
   directory: "/"
   schedule:
     interval: daily
+    time: "05:38"
   target-branch: master
   labels:
   - providers_updates
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
-    interval: monthly
+    interval: daily
+    time: "05:33"
   target-branch: dependabot_updates
   labels:
   - CI

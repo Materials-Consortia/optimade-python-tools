@@ -1,0 +1,5 @@
+### Update dependencies
+
+Automatically created PR from [`dependabot_updates`](https://github.com/Materials-Consortia/optimade-python-tools/tree/dependabot_updates).
+
+For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-python-tools/blob/master/.github/workflows/ci_dependabot.yml).
