@@ -93,7 +93,6 @@ def test_formula_regexp():
         "LiP5",
         "Jn7Qb4",  # Regexp does not care about the actual existence of elements
         "A5B213CeD3E65F12G",
-        "A1Be2",
     )
 
     bad_formulae = (
@@ -102,6 +101,9 @@ def test_formula_regexp():
         "Ag   Cl",
         "abcd",
         "6F7G",
+        "A0Be2",
+        "A1Be2",
+        "",
     )
 
     for formula in good_formulae:
