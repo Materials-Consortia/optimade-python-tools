@@ -202,7 +202,7 @@ def anonymous_element_generator():
 ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
 """ Returns the first 150 values of the anonymous element generator. """
 
-CHEMICAL_FORMULA_REGEXP = r"^([A-Z][a-z]?\d*)*$"
+CHEMICAL_FORMULA_REGEXP = r"^([A-Z][a-z]?([02-9]|[1-9]\d+)?)+$"
 
 EXTRA_SYMBOLS = ["X", "vacancy"]
 
