@@ -842,7 +842,6 @@ The properties of the species are found in the property `species`.
         if v is None:
             return v
 
-        numbers = re.findall(r"(\d+\.?)+", v)
         elements = re.findall(r"[A-Z][a-z]?", v)
         expected_elements = sorted(elements)
 
@@ -859,10 +858,6 @@ The properties of the species are found in the property `species`.
                 f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {field.name!r}"
             )
 
-        if "1" in numbers:
-            raise ValueError(
-                f"Must omit proportion '1' from formula {v} in {field.name!r}"
-            )
         if expected_elements != elements:
             order = "Hill" if field.name == "chemical_formula_hill" else "alphabetical"
             raise ValueError(
@@ -878,11 +873,6 @@ The properties of the species are found in the property `species`.
 
         elements = tuple(re.findall(r"[A-Z][a-z]*", v))
         numbers = [int(n.strip()) for n in re.split(r"[A-Z][a-z]*", v) if n.strip()]
-
-        if 1 in numbers:
-            raise ValueError(
-                f"'chemical_formula_anonymous' {v} must omit proportion '1'"
-            )
 
         expected_labels = ANONYMOUS_ELEMENTS[: len(elements)]
         expected_numbers = sorted(numbers, reverse=True)
@@ -906,11 +896,6 @@ The properties of the species are found in the property `species`.
         numbers = [n.strip() or 1 for n in re.split(r"[A-Z][a-z]*", value)]
         # Need to remove leading 1 from split and convert to ints
         numbers = [int(n) for n in numbers[1:]]
-
-        if 0 in numbers:
-            raise ValueError(
-                f"{field.name} {value!r} cannot contain chemical proportion of 0."
-            )
 
         if sys.version_info[1] >= 9:
             gcd = math.gcd(*numbers)
