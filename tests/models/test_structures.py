@@ -84,11 +84,11 @@ deformities = (
     ),
     (
         {"chemical_formula_anonymous": "A1B1"},
-        "'chemical_formula_anonymous' A1B1 must omit proportion '1'",
+        "string does not match regex",
     ),
     (
         {"chemical_formula_anonymous": "BC1"},
-        "'chemical_formula_anonymous' BC1 must omit proportion '1'",
+        "string does not match regex",
     ),
     (
         {"chemical_formula_anonymous": "A9C"},
@@ -136,11 +136,11 @@ deformities = (
     ),
     (
         {"chemical_formula_reduced": "Ge1Si"},
-        "Must omit proportion '1' from formula Ge1Si in 'chemical_formula_reduced'",
+        "string does not match regex",
     ),
     (
         {"chemical_formula_reduced": "GeSi1"},
-        "Must omit proportion '1' from formula GeSi1 in 'chemical_formula_reduced'",
+        "string does not match regex",
     ),
     (
         {"chemical_formula_reduced": "SiGe2"},
@@ -180,7 +180,7 @@ deformities = (
     ),
     (
         {"chemical_formula_anonymous": "A44B15C9D4E3F2GHI0J0K0L0"},
-        "chemical_formula_anonymous 'A44B15C9D4E3F2GHI0J0K0L0' cannot contain chemical proportion of 0.",
+        "string does not match regex",
     ),
 )
 
