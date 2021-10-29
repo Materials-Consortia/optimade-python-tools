@@ -7,5 +7,5 @@ For more information see the ["Dependabot updates" workflow](https://github.com/
 #### To-do
 
 - [ ] Check that the diff is sensible, and that tests and builds pass with the new dependency versions.
-- [ ] Check whether the dependency versions in [`setup.py`](https://github.com/Materials-Consortia/optimade-python-tools/blob/ci/update_dependencies/setup.py) need updating, keeping the version requirements as loose as possible.
+- [ ] Check whether the dependency versions in [`setup.py`](https://github.com/Materials-Consortia/optimade-python-tools/blob/ci/update-dependencies/setup.py) need updating, keeping the version requirements as loose as possible.
 - [ ] Make sure that the PR is **squash** merged, with a sensible commit message.
