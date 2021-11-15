@@ -96,7 +96,7 @@ jobs:
         git fetch origin
 
         LATEST_PR_BODY="$(gh api /repos/${{ github.repository}}/pulls -X GET -f state=closed -f per_page=1 -f sort=updated -f direction=desc --jq '.[].body')"
-        if [ "${LATEST_PR_BODY}" == "$(cat .github/utils/single_dependency_pr_body.txt)" ]; then
+        if [ "$(printf '%s\n' "${LATEST_PR_BODY}" | head -8)" == "$(cat .github/utils/single_dependency_pr_body.txt | head -8)" ]; then
           # The dependency branch has just been merged into ${DEFAULT_REPO_BRANCH}
           # The dependency branch should be reset to ${DEFAULT_REPO_BRANCH}
           echo "The dependencies have just been updated! Reset to ${{ env.DEFAULT_REPO_BRANCH }}."
