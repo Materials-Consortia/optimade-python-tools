@@ -9,6 +9,32 @@ on:
 
 jobs:
 
+  temp_job:
+    name: TEMPORARY job
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Test comparisons for PR body
+      run: |
+        git fetch origin
+
+        DEPENDENCY_PR_BODY="$(gh api /repos/${{ github.repository}}/pulls/998 -X GET --jq '.body')"
+        RANDOM_PR_BODY="$(gh api /repos/${{ github.repository}}/pulls/986 -X GET --jq '.body')"
+        cat .github/utils/single_dependency_pr_body.txt | head -8 > .tmp_file.txt
+        echo "DEPENDENCY_PR_BODY: ${DEPENDENCY_PR_BODY}"
+        echo ".tmp_file.txt: $(cat .tmp_file.txt)"
+        echo "diff w/DEPENDENCY_PR_BODY (function within slashes): /$(printf '%s\n' "${DEPENDENCY_PR_BODY}" | head -8 | diff - .tmp_file.txt --strip-trailing-cr)/"
+        echo "RANDOM_PR_BODY: ${RANDOM_PR_BODY}"
+        echo "diff w/RANDOM_PR_BODY (function within slashes): /$(printf '%s\n' "${RANDOM_PR_BODY}" | head -8 | diff - .tmp_file.txt --strip-trailing-cr)/"
+        if [ -z "$(printf '%s\n' "${DEPENDENCY_PR_BODY}" | head -8 | diff - .tmp_file.txt --strip-trailing-cr)" ]; then
+          echo "WILL NOT BE DONE: The dependencies have just been updated! Reset to master."
+        else
+          echo "WILL NOT BE DONE: Merge new updates to master into dependabot_updates"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   lint:
     runs-on: ubuntu-latest
 
