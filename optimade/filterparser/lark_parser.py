@@ -61,7 +61,10 @@ class LarkParser:
 
         """
 
-        version = version if version else max(AVAILABLE_PARSERS.keys())
+        if not version:
+            version = max(
+                _ for _ in AVAILABLE_PARSERS if AVAILABLE_PARSERS[_].get("default")
+            )
 
         if version not in AVAILABLE_PARSERS:
             raise ParserError(f"Unknown parser grammar version: {version}")
