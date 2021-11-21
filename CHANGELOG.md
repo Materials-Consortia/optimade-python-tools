@@ -1,5 +1,41 @@
 # Changelog
 
+## [v0.16.7](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.7) (2021-11-21)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.6...v0.16.7)
+
+**Implemented enhancements:**
+
+- Automate dependency workflow further [\#958](https://github.com/Materials-Consortia/optimade-python-tools/issues/958)
+- Stricter validation of chemical formulas in OpenAPI schema [\#708](https://github.com/Materials-Consortia/optimade-python-tools/issues/708)
+
+**Fixed bugs:**
+
+- `chemical_formula_anonymous` validator accepts incorrect proportion order if started with 1 [\#1002](https://github.com/Materials-Consortia/optimade-python-tools/issues/1002)
+- Reinstate `typing-extensions` [\#999](https://github.com/Materials-Consortia/optimade-python-tools/issues/999)
+- Updating permanent dependabot branch not working after updating dependencies [\#995](https://github.com/Materials-Consortia/optimade-python-tools/issues/995)
+- Auto-merge dependabot PR-workflow not running [\#984](https://github.com/Materials-Consortia/optimade-python-tools/issues/984)
+
+**Closed issues:**
+
+- Update the auto-PR description for updating deps [\#988](https://github.com/Materials-Consortia/optimade-python-tools/issues/988)
+- Versioned docs do not redirect all links correctly [\#977](https://github.com/Materials-Consortia/optimade-python-tools/issues/977)
+- Missing support for timestamps/datetime in grammar [\#102](https://github.com/Materials-Consortia/optimade-python-tools/issues/102)
+
+**Merged pull requests:**
+
+- Fixed bug in check\_anonymous\_formula which caused `chemical_formula_anonymous = AB2` to pass validation. [\#1001](https://github.com/Materials-Consortia/optimade-python-tools/pull/1001) ([JPBergsma](https://github.com/JPBergsma))
+- Use `diff` for checking PR body [\#1000](https://github.com/Materials-Consortia/optimade-python-tools/pull/1000) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#998](https://github.com/Materials-Consortia/optimade-python-tools/pull/998) ([CasperWA](https://github.com/CasperWA))
+- Correct PR body comparison [\#996](https://github.com/Materials-Consortia/optimade-python-tools/pull/996) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#993](https://github.com/Materials-Consortia/optimade-python-tools/pull/993) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#991](https://github.com/Materials-Consortia/optimade-python-tools/pull/991) ([CasperWA](https://github.com/CasperWA))
+- Update dependency auto-PR message [\#989](https://github.com/Materials-Consortia/optimade-python-tools/pull/989) ([ml-evs](https://github.com/ml-evs))
+- Update dependencies [\#987](https://github.com/Materials-Consortia/optimade-python-tools/pull/987) ([CasperWA](https://github.com/CasperWA))
+- Stricter formula syntax [\#986](https://github.com/Materials-Consortia/optimade-python-tools/pull/986) ([merkys](https://github.com/merkys))
+- Implement workflows for dependency updates [\#979](https://github.com/Materials-Consortia/optimade-python-tools/pull/979) ([CasperWA](https://github.com/CasperWA))
+- Tidy up old grammars, add a development grammar for v1.2 and update filterparser tests [\#879](https://github.com/Materials-Consortia/optimade-python-tools/pull/879) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.16.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.6) (2021-10-19)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.5...v0.16.6)
