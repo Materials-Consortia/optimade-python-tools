@@ -103,8 +103,8 @@ deformities = (
         "'chemical_formula_anonymous' A2B90 has wrong order: elements with highest proportion should appear first: [2, 90] vs expected [90, 2]",
     ),
     (
-        {"chemical_formula_anonymous": "A2B10"},
-        "'chemical_formula_anonymous' A2B10 has wrong order: elements with highest proportion should appear first: [2, 10] vs expected [10, 2]",
+        {"chemical_formula_anonymous": "AB10"},
+        "'chemical_formula_anonymous' AB10 has wrong order: elements with highest proportion should appear first: [1, 10] vs expected [10, 1]",
     ),
     (
         {"chemical_formula_hill": "SiGe"},

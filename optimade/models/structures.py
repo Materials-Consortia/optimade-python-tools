@@ -872,7 +872,8 @@ The properties of the species are found in the property `species`.
             return v
 
         elements = tuple(re.findall(r"[A-Z][a-z]*", v))
-        numbers = [int(n.strip()) for n in re.split(r"[A-Z][a-z]*", v) if n.strip()]
+        numbers = re.split(r"[A-Z][a-z]*", v)[1:]
+        numbers = [int(i) if i else 1 for i in numbers]
 
         expected_labels = ANONYMOUS_ELEMENTS[: len(elements)]
         expected_numbers = sorted(numbers, reverse=True)
