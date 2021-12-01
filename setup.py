@@ -39,7 +39,7 @@ docs_deps = [
     "mike~=1.1",
     "mkdocs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.6",
-    "mkdocs-material~=7.3",
+    "mkdocs-material~=8.0",
     "mkdocstrings~=0.16.2",
 ]
 testing_deps = [
@@ -49,7 +49,7 @@ testing_deps = [
     "jsondiff~=1.3",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.11", "pre-commit~=2.15", "invoke~=1.6"]
+    ["pylint~=2.12", "pre-commit~=2.15", "invoke~=1.6"]
     + docs_deps
     + testing_deps
     + client_deps
