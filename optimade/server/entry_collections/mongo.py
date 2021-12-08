@@ -10,7 +10,13 @@ from optimade.server.mappers import BaseResourceMapper
 
 
 if CONFIG.database_backend.value == "mongodb":
-    from pymongo import MongoClient
+    from pymongo import MongoClient, version_tuple
+
+    if version_tuple[0] < 4:
+        LOGGER.warning(
+            "Support for pymongo<=3 (and thus MongoDB v3) is deprecated and will be "
+            "removed in the next minor release."
+        )
 
     LOGGER.info("Using: Real MongoDB (pymongo)")
 
