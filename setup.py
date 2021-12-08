@@ -18,7 +18,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Dependencies
 # Server minded
 elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
-mongo_deps = ["pymongo~=3.12", "mongomock~=3.23"]
+mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=3.23"]
 server_deps = [
     "uvicorn~=0.15",
     "Jinja2>=2.10,<4.0",
@@ -49,7 +49,7 @@ testing_deps = [
     "jsondiff~=1.3",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.12", "pre-commit~=2.15", "invoke~=1.6"]
+    ["pylint~=2.12", "pre-commit~=2.16", "invoke~=1.6"]
     + docs_deps
     + testing_deps
     + client_deps
