@@ -30,7 +30,7 @@ aiida_deps = ["aiida-core~=1.6,>=1.6.4"]
 ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2021.3.9"]
+pymatgen_deps = ["pymatgen==2022.0.16"]
 jarvis_deps = ["jarvis-tools==2021.10.3"]
 client_deps = cif_deps
 
@@ -75,12 +75,13 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Intended Audience :: Developers",
         "Topic :: Database",
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.7,<3.11",
     install_requires=[
         "lark-parser~=0.12",
         "fastapi~=0.65.2",

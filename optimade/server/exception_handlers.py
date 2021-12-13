@@ -38,7 +38,7 @@ def general_exception(
     debug_info = {}
     if CONFIG.debug:
         tb = "".join(
-            traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__)
+            traceback.format_exception(type(exc), value=exc, tb=exc.__traceback__)
         )
         LOGGER.error("Traceback:\n%s", tb)
         debug_info[f"_{CONFIG.provider.prefix}_traceback"] = tb
