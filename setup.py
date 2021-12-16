@@ -20,7 +20,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
 mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=3.23"]
 server_deps = [
-    "uvicorn~=0.15",
+    "uvicorn~=0.16",
     "Jinja2>=2.10,<4.0",
     "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
 ] + mongo_deps
@@ -39,7 +39,7 @@ docs_deps = [
     "mike~=1.1",
     "mkdocs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.6",
-    "mkdocs-material~=8.0",
+    "mkdocs-material~=8.1",
     "mkdocstrings~=0.16.2",
 ]
 testing_deps = [
