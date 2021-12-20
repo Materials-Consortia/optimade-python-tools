@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/validator/config/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.edf004c2.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1602,6 +1602,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.validator.config.ValidatorConfig.field_specific_overrides" class="md-nav__link">
+    field_specific_overrides
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.validator.config.ValidatorConfig.inclusive_operators" class="md-nav__link">
     inclusive_operators
   </a>
@@ -1789,6 +1796,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.validator.config.ValidatorConfig.field_specific_overrides" class="md-nav__link">
+    field_specific_overrides
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.validator.config.ValidatorConfig.inclusive_operators" class="md-nav__link">
     inclusive_operators
   </a>
@@ -1886,6 +1900,8 @@ the hardcoded values.</p>
 
 
   <div class="doc doc-children">
+
+
 
 
 
@@ -2009,6 +2025,28 @@ but it may be desirable to modify them in certain cases.</p>
     <div class="doc doc-contents ">
 
       <p>Dictionary mapping OPTIMADE <code>DataType</code>s to a list of operators that are 'exclusive', i.e. those that should not return entries with the matching value from the filter.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.validator.config.ValidatorConfig.field_specific_overrides" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">field_specific_overrides</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">SupportLevel</span><span class="p">,</span> <span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.validator.config.ValidatorConfig.field_specific_overrides" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Some fields do not require all type comparison operators to be supported. This dictionary allows overriding the list of supported operators for a field, using the field name as a key, and the support level of different operators with a subkey. Queries on fields listed in this way will pass the validator provided the server returns a 501 status.</p>
     </div>
 
   </div>
@@ -2320,7 +2358,7 @@ but it may be desirable to modify them in certain cases.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.e1a181d9.min.js"></script>
       
     
   </body>
