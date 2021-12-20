@@ -7,10 +7,16 @@ the hardcoded values.
 
 """
 
-from typing import Dict, Any, Set, List
+from typing import Dict, Any, Set, List, Container
 from pydantic import BaseSettings, Field
 
-from optimade.models import InfoResponse, IndexInfoResponse, DataType, StructureFeatures
+from optimade.models import (
+    InfoResponse,
+    IndexInfoResponse,
+    DataType,
+    StructureFeatures,
+    SupportLevel,
+)
 from optimade.validator.utils import (
     ValidatorLinksResponse,
     ValidatorReferenceResponseOne,
@@ -61,17 +67,11 @@ _ENUM_DUMMY_VALUES = {
 
 _UNIQUE_PROPERTIES = ("id", "immutable_id")
 
+inclusive_ops = ("=", "<=", ">=")
+substring_operators = ("CONTAINS", "STARTS WITH", "STARTS", "ENDS WITH", "ENDS")
+
 _INCLUSIVE_OPERATORS = {
-    DataType.STRING: (
-        "=",
-        "<=",
-        ">=",
-        "CONTAINS",
-        "STARTS WITH",
-        "STARTS",
-        "ENDS WITH",
-        "ENDS",
-    ),
+    DataType.STRING: inclusive_ops + substring_operators,
     DataType.TIMESTAMP: (
         # N.B. "=" and "<=" are disabled due to issue with microseconds stored in database vs API response (see Materials-Consortia/optimade-python-tools/#606)
         # ">=" is fine as all microsecond trimming will round times down
@@ -79,11 +79,7 @@ _INCLUSIVE_OPERATORS = {
         # "<=",
         ">=",
     ),
-    DataType.INTEGER: (
-        "=",
-        "<=",
-        ">=",
-    ),
+    DataType.INTEGER: inclusive_ops,
     DataType.FLOAT: (),
     DataType.LIST: ("HAS", "HAS ALL", "HAS ANY"),
 }
@@ -96,6 +92,16 @@ _EXCLUSIVE_OPERATORS = {
     DataType.FLOAT: (),
     DataType.INTEGER: exclusive_ops,
     DataType.LIST: (),
+}
+
+
+_FIELD_SPECIFIC_OVERRIDES = {
+    "chemical_formula_anonymous": {
+        SupportLevel.OPTIONAL: substring_operators,
+    },
+    "chemical_formula_reduced": {
+        SupportLevel.OPTIONAL: substring_operators,
+    },
 }
 
 
@@ -147,6 +153,16 @@ class ValidatorConfig(BaseSettings):
         description=(
             "Dictionary mapping OPTIMADE `DataType`s to a list of operators that are 'exclusive', "
             "i.e. those that should not return entries with the matching value from the filter."
+        ),
+    )
+
+    field_specific_overrides: Dict[str, Dict[SupportLevel, Container[str]]] = Field(
+        _FIELD_SPECIFIC_OVERRIDES,
+        description=(
+            "Some fields do not require all type comparison operators to be supported. "
+            "This dictionary allows overriding the list of supported operators for a field, using "
+            "the field name as a key, and the support level of different operators with a subkey. "
+            "Queries on fields listed in this way will pass the validator provided the server returns a 501 status."
         ),
     )
 
