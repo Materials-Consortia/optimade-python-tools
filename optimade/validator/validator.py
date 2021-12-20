@@ -778,10 +778,17 @@ class ImplementationValidator:
 
         inclusive_operators = CONF.inclusive_operators[prop_type]
         exclusive_operators = CONF.exclusive_operators[prop_type]
+        field_specific_support_overrides = CONF.field_specific_overrides.get(prop, {})
 
         for operator in inclusive_operators | exclusive_operators:
             # Need to pre-format list and string test values for the query
             _test_value = self._format_test_value(test_value, prop_type, operator)
+
+            query_optional = (
+                query_optional
+                or operator
+                in field_specific_support_overrides.get(SupportLevel.OPTIONAL, [])
+            )
 
             query = f"{prop} {operator} {_test_value}"
             request = f"{endp}?filter={query}"
