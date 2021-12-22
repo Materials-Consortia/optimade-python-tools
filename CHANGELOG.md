@@ -1,5 +1,31 @@
 # Changelog
 
+## [v0.16.8](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.8) (2021-12-22)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.7...v0.16.8)
+
+**Implemented enhancements:**
+
+- Support for Python 3.10 [\#956](https://github.com/Materials-Consortia/optimade-python-tools/issues/956)
+
+**Fixed bugs:**
+
+- Overzealous validation of substring comparisons for chemical formula fields [\#1024](https://github.com/Materials-Consortia/optimade-python-tools/issues/1024)
+
+**Closed issues:**
+
+- Updating to pymatgen v2022+ [\#762](https://github.com/Materials-Consortia/optimade-python-tools/issues/762)
+
+**Merged pull requests:**
+
+- Update dependencies [\#1028](https://github.com/Materials-Consortia/optimade-python-tools/pull/1028) ([CasperWA](https://github.com/CasperWA))
+- Add configurable field-specific validator overrides to set filter operators as optional [\#1025](https://github.com/Materials-Consortia/optimade-python-tools/pull/1025) ([ml-evs](https://github.com/ml-evs))
+- Update dependencies [\#1023](https://github.com/Materials-Consortia/optimade-python-tools/pull/1023) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#1017](https://github.com/Materials-Consortia/optimade-python-tools/pull/1017) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#1008](https://github.com/Materials-Consortia/optimade-python-tools/pull/1008) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#1004](https://github.com/Materials-Consortia/optimade-python-tools/pull/1004) ([CasperWA](https://github.com/CasperWA))
+- Add Python 3.10 support [\#957](https://github.com/Materials-Consortia/optimade-python-tools/pull/957) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.16.7](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.7) (2021-11-21)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.6...v0.16.7)
