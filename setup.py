@@ -40,7 +40,7 @@ docs_deps = [
     "mkdocs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.6",
     "mkdocs-material~=8.1",
-    "mkdocstrings~=0.16.2",
+    "mkdocstrings~=0.17.0",
 ]
 testing_deps = [
     "pytest~=6.2",
@@ -85,7 +85,7 @@ setup(
     install_requires=[
         "lark-parser~=0.12",
         "fastapi~=0.65.2",
-        "pydantic~=1.8,>=1.8.2",
+        "pydantic~=1.9",
         "email_validator~=1.1",
         "requests~=2.26",
         "typing-extensions~=4.0;python_version<'3.8'",
