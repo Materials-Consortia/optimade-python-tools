@@ -5,7 +5,7 @@ from .utils import get_min_ver
 
 min_ver = get_min_ver("pymatgen")
 pymatgen = pytest.importorskip(
-    "pymatgen",
+    "pymatgen.core",
     minversion=min_ver,
     reason=f"pymatgen must be installed with minimum version {min_ver} for these tests to"
     " be able to run",
