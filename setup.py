@@ -31,7 +31,7 @@ ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2022.0.16"]
-jarvis_deps = ["jarvis-tools==2021.10.3"]
+jarvis_deps = ["jarvis-tools==2021.12.16"]
 client_deps = cif_deps
 
 # General
