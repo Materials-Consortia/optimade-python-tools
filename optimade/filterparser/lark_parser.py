@@ -1,4 +1,4 @@
-"""This submodule implements the [`LarkParser`][optimade.filterparser.LarkParser] class,
+"""This submodule implements the [`LarkParser`][optimade.filterparser.lark_parser.LarkParser] class,
 which uses the lark library to parse filter strings with a defined OPTIMADE filter grammar
 into `Lark.Tree` objects for use by the filter transformers.
 
