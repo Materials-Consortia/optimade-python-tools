@@ -1767,6 +1767,119 @@ MongoCollection        </code>
       <p>Class for querying MongoDB collections (implemented by either pymongo or mongomock)
 containing serialized <a href="../../../models/entries/#optimade.models.entries.EntryResource"><code>EntryResource</code></a>s objects.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MongoCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for querying MongoDB collections (implemented by either pymongo or mongomock)</span>
+<span class="sd">    containing serialized [`EntryResource`][optimade.models.entries.EntryResource]s objects.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">resource_cls</span><span class="p">:</span> <span class="n">EntryResource</span><span class="p">,</span>
+        <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span>
+        <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            name: The name of the collection.</span>
+<span class="sd">            resource_cls: The type of entry resource that is stored by the collection.</span>
+<span class="sd">            resource_mapper: A resource mapper object that handles aliases and</span>
+<span class="sd">                format changes between deserialization and response.</span>
+<span class="sd">            database: The name of the underlying MongoDB database to connect to.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">resource_cls</span><span class="p">,</span>
+            <span class="n">resource_mapper</span><span class="p">,</span>
+            <span class="n">MongoTransformer</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">resource_mapper</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">LarkParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">variant</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collection</span> <span class="o">=</span> <span class="n">CLIENT</span><span class="p">[</span><span class="n">database</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+
+        <span class="c1"># check aliases do not clash with mongo operators</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
+<span class="sd">        by the keyword arguments.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            kwargs (dict): Query parameters as keyword arguments. The keys</span>
+<span class="sd">                &#39;filter&#39;, &#39;skip&#39;, &#39;limit&#39;, &#39;hint&#39; and &#39;maxTimeMS&#39; will be passed</span>
+<span class="sd">                to the `pymongo.collection.Collection.count_documents` method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="s2">&quot;hint&quot;</span><span class="p">,</span> <span class="s2">&quot;maxTimeMS&quot;</span><span class="p">):</span>
+                <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;filter&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="c1"># &quot;filter&quot; is needed for count_documents()</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+
+<span class="sd">        Warning:</span>
+<span class="sd">            No validation is performed on the incoming data.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            data: The entry resource objects to add to the database.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            criteria: A dictionary representation of the query parameters.</span>
+<span class="sd">            single_entry: Whether or not the caller is expecting a single entry response.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of entries from the database (without any re-mapping), the total number of</span>
+<span class="sd">            entries matching the query and a boolean for whether or not there is more data available.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
+                <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+
+        <span class="n">nresults_now</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">single_entry</span><span class="p">:</span>
+            <span class="n">criteria_nolimit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">data_returned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="o">**</span><span class="n">criteria_nolimit</span><span class="p">)</span>
+            <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">nresults_now</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># SingleEntryQueryParams, e.g., /structures/{entry_id}</span>
+            <span class="n">data_returned</span> <span class="o">=</span> <span class="n">nresults_now</span>
+            <span class="n">more_data_available</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span>
+
+    <span class="k">def</span> <span class="nf">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aliases</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that aliases do not clash with mongo keywords.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot define an alias starting with a &#39;$&#39;: </span><span class="si">{</span><span class="n">aliases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 

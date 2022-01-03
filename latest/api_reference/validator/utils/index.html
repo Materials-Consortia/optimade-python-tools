@@ -1861,6 +1861,103 @@ Client        </code>
     <div class="doc doc-contents ">
 
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Client</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">headers</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialises the Client with the given `base_url` without testing</span>
+<span class="sd">        if it is valid.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            base_url: the base URL of the optimade implementation, including</span>
+<span class="sd">                request protocol (e.g. `&#39;http://&#39;`) and API version number if necessary.</span>
+
+<span class="sd">                Examples:</span>
+
+<span class="sd">                - `&#39;http://example.org/optimade/v1&#39;`,</span>
+<span class="sd">                - `&#39;www.crystallography.net/cod-test/optimade/v0.10.0/&#39;`</span>
+
+<span class="sd">                Note: A maximum of one slash (&quot;/&quot;) is allowed as the last character.</span>
+
+<span class="sd">            max_retries: The maximum number of attempts to make for each query.</span>
+<span class="sd">            headers: Dictionary of additional headers to add to every request.</span>
+<span class="sd">            timeout: Connection timeout in seconds.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">max_retries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="n">DEFAULT_CONN_TIMEOUT</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Makes the given request, with a number of retries if being rate limited. The</span>
+<span class="sd">        request will be prepended with the `base_url` unless the request appears to be an</span>
+<span class="sd">        absolute URL (i.e. starts with `http://` or `https://`).</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            request (str): the request to make against the base URL of this client.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            response (requests.models.Response): the response from the server.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SystemExit: if there is no response from the server, or if the URL is invalid.</span>
+<span class="sd">            ResponseError: if the server does not respond with a non-429 status code within</span>
+<span class="sd">                the `MAX_RETRIES` attempts.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">allow_fragments</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">scheme</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="o">=</span> <span class="n">request</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+                <span class="n">request</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">request</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}{</span><span class="n">request</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">status_code</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">retries</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">:</span>
+            <span class="n">retries</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="p">,</span>
+                    <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">),</span>
+                <span class="p">)</span>
+
+                <span class="n">status_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+                <span class="c1"># If we hit a 429 Too Many Requests status, then try again in 1 second</span>
+                <span class="k">if</span> <span class="n">status_code</span> <span class="o">!=</span> <span class="mi">429</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span>
+
+            <span class="c1"># If the connection times out, retry but cache the error</span>
+            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span>
+
+            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">MissingSchema</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unable to make request on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="si">}</span><span class="s2">, did you mean http://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="si">}</span><span class="s2">?&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># If the connection failed, or returned a 429, then wait 1 second before retrying</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Hit max retries (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">) on request </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+            <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+                <span class="n">error_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Errors:</span><span class="se">\n\t</span><span class="si">{</span><span class="n">error_str</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2144,6 +2241,15 @@ InternalError        </code>
       <p>This exception should be raised when validation throws an unexpected error.
 These should be counted separately from <code>ResponseError</code>'s and <code>ValidationError</code>'s.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">InternalError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This exception should be raised when validation throws an unexpected error.</span>
+<span class="sd">    These should be counted separately from `ResponseError`&#39;s and `ValidationError`&#39;s.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -2168,6 +2274,12 @@ ResponseError        </code>
 
       <p>This exception should be raised for a manual hardcoded test failure.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This exception should be raised for a manual hardcoded test failure.&quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>

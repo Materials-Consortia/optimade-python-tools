@@ -2586,6 +2586,16 @@ BaseRelationshipMeta        </code>
 
       <p>Specific meta field for base relationship resource</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Specific meta field for base relationship resource&quot;&quot;&quot;</span>
+
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;OPTIONAL human-readable description of the relationship.&quot;</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2651,6 +2661,17 @@ BaseRelationshipResource        </code>
 
       <p>Minimum requirements to represent a relationship resource</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipResource</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Minimum requirements to represent a relationship resource&quot;&quot;&quot;</span>
+
+    <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseRelationshipMeta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Relationship meta field. MUST contain &#39;description&#39; if supplied.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2713,6 +2734,104 @@ DataType        </code>
       <p>Optimade Data Types</p>
 <p>See the section "Data types" in the OPTIMADE API specification for more information.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Optimade Data Types</span>
+
+<span class="sd">    See the section &quot;Data types&quot; in the OPTIMADE API specification for more information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">STRING</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span>
+    <span class="n">INTEGER</span> <span class="o">=</span> <span class="s2">&quot;integer&quot;</span>
+    <span class="n">FLOAT</span> <span class="o">=</span> <span class="s2">&quot;float&quot;</span>
+    <span class="n">BOOLEAN</span> <span class="o">=</span> <span class="s2">&quot;boolean&quot;</span>
+    <span class="n">TIMESTAMP</span> <span class="o">=</span> <span class="s2">&quot;timestamp&quot;</span>
+    <span class="n">LIST</span> <span class="o">=</span> <span class="s2">&quot;list&quot;</span>
+    <span class="n">DICTIONARY</span> <span class="o">=</span> <span class="s2">&quot;dictionary&quot;</span>
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data types (enum values) as a (sorted) list&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">cls</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_python_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">python_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a Python type&quot;&quot;&quot;</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">,</span>
+            <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;complex&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;generator&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;list&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;tuple&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;hash&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;str&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;bytes&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;bytearray&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;memoryview&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;set&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;frozenset&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">DICTIONARY</span><span class="p">,</span>
+            <span class="s2">&quot;dict_keys&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;dict_values&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;dict_items&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;NoneType&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">,</span>
+            <span class="s2">&quot;None&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">,</span>
+            <span class="s2">&quot;datetime&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+            <span class="s2">&quot;datetime.datetime&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+            <span class="s2">&quot;datetime.date&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+            <span class="s2">&quot;datetime.time&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">python_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="n">python_type</span> <span class="o">=</span> <span class="n">python_type</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">python_type</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">python_type</span><span class="p">)</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+                <span class="n">python_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">python_type</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">python_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">python_type</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+
+        <span class="k">return</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">python_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a named JSON type&quot;&quot;&quot;</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>  <span class="c1"># actually includes both integer and float</span>
+            <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">DICTIONARY</span><span class="p">,</span>
+            <span class="s2">&quot;array&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span>
+            <span class="s2">&quot;boolean&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">,</span>
+            <span class="s2">&quot;null&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">,</span>
+            <span class="c1"># OpenAPI &quot;format&quot;s:</span>
+            <span class="s2">&quot;double&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">,</span>
+            <span class="s2">&quot;int32&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;int64&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
+            <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+            <span class="s2">&quot;date-time&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span>
+            <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;byte&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;binary&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="c1"># Non-OpenAPI &quot;format&quot;s, but may still be used by pydantic/FastAPI</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;uri&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;hostname&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;ipv4&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+            <span class="s2">&quot;ipv6&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">json_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2899,6 +3018,38 @@ Implementation        </code>
 
       <p>Information on the server implementation</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Information on the server implementation&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of the implementation&quot;</span><span class="p">)</span>
+
+    <span class="n">version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;version string of the current implementation&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">homepage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyHttpUrl</span><span class="p">,</span> <span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the homepage of the implementation.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">source_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation source, either downloadable archive or version control system.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">maintainer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ImplementationMaintainer</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dictionary providing details about the maintainer of the implementation.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">issue_tracker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation&#39;s issue tracker.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3073,6 +3224,14 @@ ImplementationMaintainer        </code>
 
       <p>Details about the maintainer of the implementation</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationMaintainer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Details about the maintainer of the implementation&quot;&quot;&quot;</span>
+
+    <span class="n">email</span><span class="p">:</span> <span class="n">EmailStr</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;the maintainer&#39;s email address&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3138,6 +3297,17 @@ OptimadeError        </code>
 
       <p>detail MUST be present</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeError</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;detail MUST be present&quot;&quot;&quot;</span>
+
+    <span class="n">detail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A human-readable explanation specific to this occurrence of the problem.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3208,6 +3378,31 @@ Provider        </code>
 
       <p>Information on the database provider of the implementation.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Provider</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Information on the database provider of the implementation.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a short name for the database provider&quot;</span><span class="p">)</span>
+
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a longer description of the database provider&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^[a-z]([a-z]|[0-9]|_)*$&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">homepage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyHttpUrl</span><span class="p">,</span> <span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a [JSON API links object](http://jsonapi.org/format/1.0#document-links) &quot;</span>
+        <span class="s2">&quot;pointing to homepage of the database provider, either &quot;</span>
+        <span class="s2">&quot;directly as a string, or as a link object.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3341,6 +3536,16 @@ Relationship        </code>
 
       <p>Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Relationship</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource.&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Resource linkage&quot;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -3373,6 +3578,89 @@ meta-information.</p>
 specified in this document, MUST start with a
 database-provider-specific prefix.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)</span>
+<span class="sd">    that contains JSON API meta objects of non-standard</span>
+<span class="sd">    meta-information.</span>
+
+<span class="sd">    OPTIONAL additional information global to the query that is not</span>
+<span class="sd">    specified in this document, MUST start with a</span>
+<span class="sd">    database-provider-specific prefix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">query</span><span class="p">:</span> <span class="n">ResponseMetaQuery</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Information on the Query that was requested&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">api_version</span><span class="p">:</span> <span class="n">SemanticVersion</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Presently used full version of the OPTIMADE API.</span>
+<span class="s2">The version number string MUST NOT be prefixed by, e.g., &quot;v&quot;.</span>
+<span class="s2">Examples: `1.0.0`, `1.0.0-rc.2`.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">more_data_available</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;`false` if the response contains all data for the request (e.g., a request issued to a single entry endpoint, or a `filter` query at the last page of a paginated response) and `true` if the response is incomplete in the sense that multiple objects match the request, and not all of them have been included in the response (e.g., a query with multiple pages that is not at the last page).&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># start of &quot;SHOULD&quot; fields for meta response</span>
+    <span class="n">optimade_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyHttpUrl</span><span class="p">,</span> <span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;schema&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.</span>
+<span class="s2">If it is a string, or a dictionary containing no `meta` field, the provided URL MUST point at an [OpenAPI](https://swagger.io/specification/) schema.</span>
+<span class="s2">It is possible that future versions of this specification allows for alternative schema types.</span>
+<span class="s2">Hence, if the `meta` field of the JSON API links object is provided and contains a field `schema_type` that is not equal to the string `OpenAPI` the client MUST not handle failures to parse the schema or to validate the response against the schema as errors.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">time_stamp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A timestamp containing the date and time at which the query was executed.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">data_returned</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.&quot;</span><span class="p">,</span>
+        <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Provider</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;information on the database provider of the implementation.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># start of &quot;MAY&quot; fields for meta response</span>
+    <span class="n">data_available</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An integer containing the total number of data resource objects available in the database for the endpoint.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">last_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a string containing the last ID returned&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">response_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;response string from the server&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">implementation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Implementation</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a dictionary describing the server implementation&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">warnings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Warnings</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list of warning resource objects representing non-critical errors or warnings.</span>
+<span class="s2">A warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `&quot;warning&quot;`.</span>
+<span class="s2">The field `detail` MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.</span>
+<span class="s2">The field `status`, representing a HTTP response status code, MUST NOT be present for a warning resource object.</span>
+<span class="s2">This is an exclusive field for error resource objects.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3691,6 +3979,20 @@ ResponseMetaQuery        </code>
 
       <p>Information on the query that was requested.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMetaQuery</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Information on the query that was requested.&quot;&quot;&quot;</span>
+
+    <span class="n">representation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A string with the part of the URL following the versioned or unversioned base URL that serves the API.</span>
+<span class="s2">Query parameters that have not been used in processing the request MAY be omitted.</span>
+<span class="s2">In particular, if no query parameters have been involved in processing the request, the query part of the URL MAY be excluded.</span>
+<span class="s2">Example: `/structures?filter=nelements=2`&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3759,6 +4061,31 @@ Success        </code>
 
       <p>errors are not allowed</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Success</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;errors are not allowed&quot;&quot;&quot;</span>
+
+    <span class="n">meta</span><span class="p">:</span> <span class="n">ResponseMeta</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A meta object containing non-standard information&quot;</span>
+    <span class="p">)</span>
+
+    <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
+        <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># errors MUST be skipped</span>
+        <span class="k">if</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3846,6 +4173,55 @@ Warnings        </code>
 The field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.</p>
 <p>Note: Must be named "Warnings", since "Warning" is a built-in Python class.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Warnings</span><span class="p">(</span><span class="n">OptimadeError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.</span>
+
+<span class="sd">    From the specification:</span>
+
+<span class="sd">    A warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value &quot;warning&quot;.</span>
+<span class="sd">    The field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.</span>
+
+<span class="sd">    Note: Must be named &quot;Warnings&quot;, since &quot;Warning&quot; is a built-in Python class.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="s2">&quot;warning&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;warning&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Warnings must be of type &quot;warning&quot;&#39;</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^warning$&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">status_must_not_be_specified</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;status MUST NOT be specified for warnings&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span>
+
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
+
+<span class="sd">            * Ensure `type` is in the list required properties and in the correct place.</span>
+<span class="sd">            * Remove `status` property.</span>
+<span class="sd">              This property is not allowed for `Warning`, nor is it a part of the OPTIMADE</span>
+<span class="sd">              definition of the `Warning` object.</span>
+
+<span class="sd">            Note:</span>
+<span class="sd">                Since `type` is the _last_ model field defined, it will simply be appended.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="s2">&quot;required&quot;</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]:</span>
+                    <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3894,6 +4270,30 @@ Config        </code>
     <div class="doc doc-contents ">
 
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
+
+<span class="sd">        * Ensure `type` is in the list required properties and in the correct place.</span>
+<span class="sd">        * Remove `status` property.</span>
+<span class="sd">          This property is not allowed for `Warning`, nor is it a part of the OPTIMADE</span>
+<span class="sd">          definition of the `Warning` object.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Since `type` is the _last_ model field defined, it will simply be appended.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;required&quot;</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]:</span>
+                <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 

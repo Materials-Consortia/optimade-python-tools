@@ -1833,6 +1833,166 @@ EntryAdapter        </code>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryAdapter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for lazy resource entry adapters.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        ENTRY_RESOURCE (EntryResource): Entry resource to store entry as.</span>
+<span class="sd">        _type_converters (Dict[str, Callable]): Dictionary of valid conversion types for entry.</span>
+<span class="sd">        as_&lt;_type_converters&gt;: Convert entry to a type listed in `_type_converters`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">=</span> <span class="n">EntryResource</span>
+    <span class="n">_type_converters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            entry (dict): A JSON OPTIMADE single resource entry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">entry</span> <span class="o">=</span> <span class="n">entry</span>
+
+        <span class="c1"># Note that these return also the default values for otherwise non-provided properties.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">json</span><span class="p">,</span>  <span class="c1"># Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson</span>
+            <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">dict</span><span class="p">,</span>  <span class="c1"># Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResource</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get OPTIMADE entry.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The entry resource.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span>
+
+    <span class="nd">@entry</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set OPTIMADE entry.</span>
+
+<span class="sd">        If already set, print that this can _only_ be set once.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            value (dict): Raw entry to wrap in the relevant pydantic model represented by `ENTRY_RESOURCE`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">(</span><span class="o">**</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;entry can only be set once and is already set.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Convert OPTIMADE entry to desired format.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            format (str): Type or format to which the entry should be converted.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: If `format` can not be found in `_type_converters` or `_common_converters`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The converted entry according to the desired format or type.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span>
+            <span class="ow">and</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to convert to: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">format</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">[</span><span class="nb">format</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="p">[</span><span class="nb">format</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">[</span><span class="nb">format</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="p">[</span><span class="nb">format</span><span class="p">]()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">[</span><span class="nb">format</span><span class="p">]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_model_attributes</span><span class="p">(</span>
+        <span class="n">starting_instances</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Helper method for retrieving the OPTIMADE model&#39;s attribute, supporting &quot;.&quot;-nested attributes&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">starting_instances</span><span class="p">:</span>
+            <span class="n">nested_attributes</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">nested_attribute</span> <span class="ow">in</span> <span class="n">nested_attributes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nested_attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;__fields__&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">nested_attribute</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">res</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span>
+
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get converted entry or attribute from OPTIMADE entry.</span>
+
+<span class="sd">        Support any level of &quot;.&quot;-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,</span>
+<span class="sd">        `attributes.species` for [`StuctureResource`][optimade.models.structures.StructureResource].</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            All nested attributes must individually be subclasses of `pydantic.BaseModel`,</span>
+<span class="sd">            i.e., one can not access nested attributes in lists by passing a &quot;.&quot;-nested `name` to this method,</span>
+<span class="sd">            e.g., `attributes.species.name` or `attributes.species[0].name` will not work for variable `name`.</span>
+
+<span class="sd">        Order:</span>
+
+<span class="sd">        - Try to return converted entry if using `as_&lt;_type_converters key&gt;`.</span>
+<span class="sd">        - Try to return OPTIMADE `ENTRY_RESOURCE` (nested) attribute.</span>
+<span class="sd">        - Try to return OPTIMADE `ENTRY_RESOURCE.attributes` (nested) attribute.</span>
+<span class="sd">        - Raise `AttributeError`.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            name (str): Requested attribute.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: If the requested attribute is not recognized.</span>
+<span class="sd">                See above for the description of the order in which an attribute is tested for validity.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># as_&lt;entry_type&gt;</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;as_&quot;</span><span class="p">):</span>
+            <span class="n">entry_type</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">entry_type</span><span class="p">)</span>
+
+        <span class="c1"># Try returning ENTRY_RESOURCE attribute</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_attributes</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span>
+
+        <span class="c1"># Non-valid attribute</span>
+        <span class="n">entry_resource_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;(&lt;class &#39;)([a-zA-Z_]+\.)*([a-zA-Z_]+)(&#39;&gt;)&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">entry_resource_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">entry_resource_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">entry_resource_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="s2">&quot;UNKNOWN RESOURCE&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unknown attribute: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;If you want to get a converted entry as &lt;entry_type&gt; use `as_&lt;entry_type&gt;`, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Otherwise, you can try to retrieve an OPTIMADE </span><span class="si">{</span><span class="n">entry_resource_name</span><span class="si">}</span><span class="s2"> attribute or property.&quot;</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1901,6 +2061,62 @@ ENTRY_RESOURCE        </code>
 
       <p>The base model for an entry resource.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An entry&#39;s ID as defined in section Definition of Terms.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;db/1234567&quot;`</span>
+<span class="s2">    - `&quot;cod/2000000&quot;`</span>
+<span class="s2">    - `&quot;cod/2000000@1234567&quot;`</span>
+<span class="s2">    - `&quot;nomad/L1234567890&quot;`</span>
+<span class="s2">    - `&quot;42&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - MUST be an existing entry type.</span>
+<span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
+
+<span class="s2">- **Example**: `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">EntryResourceAttributes</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A dictionary, containing key-value pairs representing the entry&#39;s properties, except for `type` and `id`.</span>
+<span class="s2">Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">relationships</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EntryRelationships</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span>
+<span class="s2">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>

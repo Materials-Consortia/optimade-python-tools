@@ -1843,6 +1843,175 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryListingQueryParams</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Common query params for all Entry listing endpoints.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        filter (str): A filter string, in the format described in section API Filtering Format Specification of the specification.</span>
+
+<span class="sd">        response_format (str): The output format requested (see section Response Format).</span>
+<span class="sd">            Defaults to the format string &#39;json&#39;, which specifies the standard output format described in this specification.</span>
+
+<span class="sd">            **Example**: `http://example.com/v1/structures?response_format=xml`</span>
+
+<span class="sd">        email_address (EmailStr): An email address of the user making the request.</span>
+<span class="sd">            The email SHOULD be that of a person and not an automatic system.</span>
+
+<span class="sd">            **Example**: `http://example.com/v1/structures?email_address=user@example.com`</span>
+
+<span class="sd">        response_fields (str): A comma-delimited set of fields to be provided in the output.</span>
+<span class="sd">            If provided, these fields MUST be returned along with the REQUIRED fields.</span>
+<span class="sd">            Other OPTIONAL fields MUST NOT be returned when this parameter is present.</span>
+
+<span class="sd">            **Example**: `http://example.com/v1/structures?response_fields=last_modified,nsites`</span>
+
+<span class="sd">        sort (str): If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified</span>
+<span class="sd">            by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).</span>
+
+<span class="sd">            An implementation MAY support multiple sort fields for a single query.</span>
+<span class="sd">            If it does, it again MUST conform to the JSON API 1.0 specification.</span>
+
+<span class="sd">            If an implementation supports sorting for an entry listing endpoint, then the `/info/&lt;entries&gt;` endpoint MUST include,</span>
+<span class="sd">            for each field name `&lt;fieldname&gt;` in its `data.properties.&lt;fieldname&gt;` response value that can be used for sorting,</span>
+<span class="sd">            the key `sortable` with value `true`.</span>
+<span class="sd">            If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either</span>
+<span class="sd">            leave out the `sortable` key or set it equal to `false` for the specific field name.</span>
+<span class="sd">            The set of field names, with `sortable` equal to `true` are allowed to be used in the &quot;sort fields&quot; list according to</span>
+<span class="sd">            its definition in the JSON API 1.0 specification.</span>
+<span class="sd">            The field `sortable` is in addition to each property description and other OPTIONAL fields.</span>
+<span class="sd">            An example is shown in the section Entry Listing Info Endpoints.</span>
+
+<span class="sd">        page_limit (int): Sets a numerical limit on the number of entries returned.</span>
+<span class="sd">            See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).</span>
+<span class="sd">            The API implementation MUST return no more than the number specified.</span>
+<span class="sd">            It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers</span>
+<span class="sd">            (in which case an error code -- `403 Forbidden` -- MUST be returned).</span>
+<span class="sd">            The default limit value is up to the API implementation to decide.</span>
+
+<span class="sd">            **Example**: `http://example.com/optimade/v1/structures?page_limit=100`</span>
+
+<span class="sd">        page_offset (int): RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.</span>
+
+<span class="sd">            **Example**: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&amp;page_limit=100`.</span>
+
+<span class="sd">        page_number (int): RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.</span>
+<span class="sd">            It is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.</span>
+
+<span class="sd">            **Example**: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&amp;page_limit=50`.</span>
+
+<span class="sd">        page_cursor (int): RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.</span>
+
+<span class="sd">        page_above (int): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.</span>
+
+<span class="sd">            **Example**: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by</span>
+<span class="sd">            increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&amp;page_limit=100`.</span>
+
+<span class="sd">        page_below (int): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.</span>
+
+<span class="sd">        include (str): A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents)</span>
+<span class="sd">            by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).</span>
+
+<span class="sd">            All related resource objects MUST be returned as part of an array value for the top-level `included` field,</span>
+<span class="sd">            see the section JSON Response Schema: Common Fields.</span>
+
+<span class="sd">            The value of `include` MUST be a comma-separated list of &quot;relationship paths&quot;, as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).</span>
+<span class="sd">            If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.</span>
+
+<span class="sd">            The **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field</span>
+<span class="sd">            `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.</span>
+<span class="sd">            Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level</span>
+<span class="sd">            field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.</span>
+
+<span class="sd">            **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.</span>
+
+<span class="sd">        api_hint (str): If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`,</span>
+<span class="sd">            where MAJOR is a major version and MINOR is a minor version of the API.</span>
+<span class="sd">            For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-builtin</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A filter string, in the format described in section API Filtering Format Specification of the specification.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">response_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The output format requested (see section Response Format).</span><span class="se">\n</span><span class="s2">Defaults to the format string &#39;json&#39;, which specifies the standard output format described in this specification.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/v1/structures?response_format=xml`&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">email_address</span><span class="p">:</span> <span class="n">EmailStr</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An email address of the user making the request.</span><span class="se">\n</span><span class="s2">The email SHOULD be that of a person and not an automatic system.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/v1/structures?email_address=user@example.com`&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">response_fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A comma-delimited set of fields to be provided in the output.</span><span class="se">\n</span><span class="s2">If provided, these fields MUST be returned along with the REQUIRED fields.</span><span class="se">\n</span><span class="s2">Other OPTIONAL fields MUST NOT be returned when this parameter is present.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/v1/structures?response_fields=last_modified,nsites`&quot;</span><span class="p">,</span>
+            <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s1">&#39;If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).</span><span class="se">\n\n</span><span class="s1">An implementation MAY support multiple sort fields for a single query.</span><span class="se">\n</span><span class="s1">If it does, it again MUST conform to the JSON API 1.0 specification.</span><span class="se">\n\n</span><span class="s1">If an implementation supports sorting for an entry listing endpoint, then the `/info/&lt;entries&gt;` endpoint MUST include, for each field name `&lt;fieldname&gt;` in its `data.properties.&lt;fieldname&gt;` response value that can be used for sorting, the key `sortable` with value `true`.</span><span class="se">\n</span><span class="s1">If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name.</span><span class="se">\n</span><span class="s1">The set of field names, with `sortable` equal to `true` are allowed to be used in the &quot;sort fields&quot; list according to its definition in the JSON API 1.0 specification.</span><span class="se">\n</span><span class="s1">The field `sortable` is in addition to each property description and other OPTIONAL fields.</span><span class="se">\n</span><span class="s1">An example is shown in the section Entry Listing Info Endpoints.&#39;</span><span class="p">,</span>
+            <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="n">CONFIG</span><span class="o">.</span><span class="n">page_limit</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Sets a numerical limit on the number of entries returned.</span><span class="se">\n</span><span class="s2">See [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).</span><span class="se">\n</span><span class="s2">The API implementation MUST return no more than the number specified.</span><span class="se">\n</span><span class="s2">It MAY return fewer.</span><span class="se">\n</span><span class="s2">The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).</span><span class="se">\n</span><span class="s2">The default limit value is up to the API implementation to decide.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/optimade/v1/structures?page_limit=100`&quot;</span><span class="p">,</span>
+            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">page_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.</span><span class="se">\n</span><span class="s2">Example: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&amp;page_limit=100`.&quot;</span><span class="p">,</span>
+            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">page_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.</span><span class="se">\n</span><span class="s2">It is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.</span><span class="se">\n</span><span class="s2">Example: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&amp;page_limit=50`.&quot;</span><span class="p">,</span>
+            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">page_cursor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.&quot;</span><span class="p">,</span>
+            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">page_above</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.</span><span class="se">\n</span><span class="s2">Example: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&amp;page_limit=100`.&quot;</span><span class="p">,</span>
+            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">page_below</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.&quot;</span><span class="p">,</span>
+            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">include</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;references&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).</span><span class="se">\n\n</span><span class="s1">All related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.</span><span class="se">\n\n</span><span class="s1">The value of `include` MUST be a comma-separated list of &quot;relationship paths&quot;, as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).</span><span class="se">\n</span><span class="s1">If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.</span><span class="se">\n\n</span><span class="s1">The **default value** for `include` is `references`.</span><span class="se">\n</span><span class="s1">This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.</span><span class="se">\n</span><span class="s1">Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.</span><span class="se">\n\n</span><span class="s1">&gt; **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">api_hint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.&quot;</span><span class="p">,</span>
+            <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(v[0-9]+(\.[0-9]+)?)?&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="nb">filter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_format</span> <span class="o">=</span> <span class="n">response_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_address</span> <span class="o">=</span> <span class="n">email_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_fields</span> <span class="o">=</span> <span class="n">response_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort</span> <span class="o">=</span> <span class="n">sort</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_limit</span> <span class="o">=</span> <span class="n">page_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_offset</span> <span class="o">=</span> <span class="n">page_offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="n">page_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_cursor</span> <span class="o">=</span> <span class="n">page_cursor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_above</span> <span class="o">=</span> <span class="n">page_above</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_below</span> <span class="o">=</span> <span class="n">page_below</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="n">include</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1939,6 +2108,83 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SingleEntryQueryParams</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Common query params for single entry endpoints.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        response_format (str): The output format requested (see section Response Format).</span>
+<span class="sd">            Defaults to the format string &#39;json&#39;, which specifies the standard output format described in this specification.</span>
+
+<span class="sd">            **Example**: `http://example.com/v1/structures?response_format=xml`</span>
+
+<span class="sd">        email_address (EmailStr): An email address of the user making the request.</span>
+<span class="sd">            The email SHOULD be that of a person and not an automatic system.</span>
+
+<span class="sd">            **Example**: `http://example.com/v1/structures?email_address=user@example.com`</span>
+
+<span class="sd">        response_fields (str): A comma-delimited set of fields to be provided in the output.</span>
+<span class="sd">            If provided, these fields MUST be returned along with the REQUIRED fields.</span>
+<span class="sd">            Other OPTIONAL fields MUST NOT be returned when this parameter is present.</span>
+
+<span class="sd">            **Example**: `http://example.com/v1/structures?response_fields=last_modified,nsites`</span>
+
+<span class="sd">        include (str): A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents)</span>
+<span class="sd">            by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).</span>
+
+<span class="sd">            All related resource objects MUST be returned as part of an array value for the top-level `included` field,</span>
+<span class="sd">            see the section JSON Response Schema: Common Fields.</span>
+
+<span class="sd">            The value of `include` MUST be a comma-separated list of &quot;relationship paths&quot;, as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).</span>
+<span class="sd">            If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.</span>
+
+<span class="sd">            The **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field</span>
+<span class="sd">            `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.</span>
+<span class="sd">            Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level</span>
+<span class="sd">            field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.</span>
+
+<span class="sd">            **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.</span>
+
+<span class="sd">        api_hint (str): If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`,</span>
+<span class="sd">            where MAJOR is a major version and MINOR is a minor version of the API.</span>
+<span class="sd">            For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">response_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The output format requested (see section Response Format).</span><span class="se">\n</span><span class="s2">Defaults to the format string &#39;json&#39;, which specifies the standard output format described in this specification.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/v1/structures?response_format=xml`&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">email_address</span><span class="p">:</span> <span class="n">EmailStr</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An email address of the user making the request.</span><span class="se">\n</span><span class="s2">The email SHOULD be that of a person and not an automatic system.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/v1/structures?email_address=user@example.com`&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">response_fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A comma-delimited set of fields to be provided in the output.</span><span class="se">\n</span><span class="s2">If provided, these fields MUST be returned along with the REQUIRED fields.</span><span class="se">\n</span><span class="s2">Other OPTIONAL fields MUST NOT be returned when this parameter is present.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/v1/structures?response_fields=last_modified,nsites`&quot;</span><span class="p">,</span>
+            <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">include</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;references&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).</span><span class="se">\n\n</span><span class="s1">All related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.</span><span class="se">\n\n</span><span class="s1">The value of `include` MUST be a comma-separated list of &quot;relationship paths&quot;, as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).</span><span class="se">\n</span><span class="s1">If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.</span><span class="se">\n\n</span><span class="s1">The **default value** for `include` is `references`.</span><span class="se">\n</span><span class="s1">This means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.</span><span class="se">\n</span><span class="s1">Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.</span><span class="se">\n\n</span><span class="s1">&gt; **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">api_hint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.&quot;</span><span class="p">,</span>
+            <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(v[0-9]+(\.[0-9]+)?)?&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_format</span> <span class="o">=</span> <span class="n">response_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email_address</span> <span class="o">=</span> <span class="n">email_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_fields</span> <span class="o">=</span> <span class="n">response_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="n">include</span>
+</code></pre></div>
+        </details>
 
 
 

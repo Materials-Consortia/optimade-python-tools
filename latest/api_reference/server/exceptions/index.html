@@ -1809,6 +1809,15 @@ BadRequest        </code>
 
       <p>400 Bad Request</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/exceptions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BadRequest</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;400 Bad Request&quot;&quot;&quot;</span>
+
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Bad Request&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1850,6 +1859,15 @@ Forbidden        </code>
 
       <p>403 Forbidden</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/exceptions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Forbidden</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;403 Forbidden&quot;&quot;&quot;</span>
+
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">403</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Forbidden&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1917,6 +1935,37 @@ detail string, rather than the standard Python exception message.</p>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/exceptions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">HTTPException</span><span class="p">(</span><span class="n">FastAPIHTTPException</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This abstract class makes it easier to subclass FastAPI&#39;s HTTPException with</span>
+<span class="sd">    new status codes.</span>
+
+<span class="sd">    It can also be useful when testing requires a string representation</span>
+<span class="sd">    of an exception that contains the HTTPException</span>
+<span class="sd">    detail string, rather than the standard Python exception message.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        status_code: The HTTP status code accompanying this exception.</span>
+<span class="sd">        title: A descriptive title for this exception.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="s2">&quot;HTTPException class </span><span class="si">{self.__class__.__name__}</span><span class="s2"> is missing required `status_code` attribute.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">detail</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1959,6 +2008,15 @@ InternalServerError        </code>
 
       <p>500 Internal Server Error</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/exceptions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">InternalServerError</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;500 Internal Server Error&quot;&quot;&quot;</span>
+
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Internal Server Error&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2000,6 +2058,15 @@ NotFound        </code>
 
       <p>404 Not Found</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/exceptions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NotFound</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;404 Not Found&quot;&quot;&quot;</span>
+
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">404</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Not Found&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2041,6 +2108,15 @@ NotImplementedResponse        </code>
 
       <p>501 Not Implemented</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/exceptions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NotImplementedResponse</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;501 Not Implemented&quot;&quot;&quot;</span>
+
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">501</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Not Implemented&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2082,6 +2158,15 @@ UnprocessableEntity        </code>
 
       <p>422 Unprocessable Entity</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/exceptions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnprocessableEntity</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;422 Unprocessable Entity&quot;&quot;&quot;</span>
+
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">422</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Unprocessable Entity&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2123,6 +2208,15 @@ VersionNotSupported        </code>
 
       <p>553 Version Not Supported</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/exceptions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">VersionNotSupported</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;553 Version Not Supported&quot;&quot;&quot;</span>
+
+    <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">553</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Version Not Supported&quot;</span>
+</code></pre></div>
+        </details>
 
 
 

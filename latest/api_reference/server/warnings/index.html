@@ -1794,6 +1794,12 @@ FieldValueNotRecognized        </code>
 
       <p>A field or value used in the request is not recognised by this implementation.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">FieldValueNotRecognized</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A field or value used in the request is not recognised by this implementation.&quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1819,6 +1825,13 @@ MissingExpectedField        </code>
       <p>A field was provided with a null value when a related field was provided
 with a value.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MissingExpectedField</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A field was provided with a null value when a related field was provided</span>
+<span class="sd">    with a value.&quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1843,6 +1856,37 @@ OptimadeWarning        </code>
 
       <p>Base Warning for the <code>optimade</code> package</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base Warning for the `optimade` package&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">detail</span> <span class="o">=</span> <span class="n">detail</span> <span class="k">if</span> <span class="n">detail</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">detail</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="o">=</span> <span class="n">detail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span> <span class="k">if</span> <span class="n">title</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{:s}</span><span class="s2">(</span><span class="si">{:s}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                    <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1885,6 +1929,12 @@ QueryParamNotUsed        </code>
 
       <p>A query parameter is not used in this request.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryParamNotUsed</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A query parameter is not used in this request.&quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1910,6 +1960,15 @@ TimestampNotRFCCompliant        </code>
       <p>A timestamp has been used in a filter that contains microseconds and is thus not
 RFC 3339 compliant. This may cause undefined behaviour in the query results.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TimestampNotRFCCompliant</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A timestamp has been used in a filter that contains microseconds and is thus not</span>
+<span class="sd">    RFC 3339 compliant. This may cause undefined behaviour in the query results.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1934,6 +1993,12 @@ TooManyValues        </code>
 
       <p>A field or query parameter has too many values to be handled by this implementation.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TooManyValues</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A field or query parameter has too many values to be handled by this implementation.&quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1959,6 +2024,15 @@ UnknownProviderProperty        </code>
       <p>A provider-specific property has been requested via <code>response_fields</code> or as in a <code>filter</code> that is not
 recognised by this implementation.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderProperty</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A provider-specific property has been requested via `response_fields` or as in a `filter` that is not</span>
+<span class="sd">    recognised by this implementation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>

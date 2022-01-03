@@ -2024,6 +2024,17 @@ Aggregate        </code>
 
       <p>Enumeration of aggregate values</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/links.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Aggregate</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enumeration of aggregate values&quot;&quot;&quot;</span>
+
+    <span class="n">OK</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span>
+    <span class="n">TEST</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+    <span class="n">STAGING</span> <span class="o">=</span> <span class="s2">&quot;staging&quot;</span>
+    <span class="n">NO</span> <span class="o">=</span> <span class="s2">&quot;no&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2135,6 +2146,17 @@ LinkType        </code>
 
       <p>Enumeration of link_type values</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/links.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LinkType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enumeration of link_type values&quot;&quot;&quot;</span>
+
+    <span class="n">CHILD</span> <span class="o">=</span> <span class="s2">&quot;child&quot;</span>
+    <span class="n">ROOT</span> <span class="o">=</span> <span class="s2">&quot;root&quot;</span>
+    <span class="n">EXTERNAL</span> <span class="o">=</span> <span class="s2">&quot;external&quot;</span>
+    <span class="n">PROVIDERS</span> <span class="o">=</span> <span class="s2">&quot;providers&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2249,6 +2271,30 @@ LinksResource        </code>
 
       <p>A Links endpoint resource object</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/links.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LinksResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Links endpoint resource object&quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="s2">&quot;links&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;links&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;These objects are described in detail in the section Links Endpoint&quot;</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^links$&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">LinksResourceAttributes</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dictionary containing key-value pairs representing the Links resource&#39;s properties.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">relationships_must_not_be_present</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;relationships&quot; is not allowed for links resources&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2322,6 +2368,58 @@ LinksResourceAttributes        </code>
 
       <p>Links endpoint resource object attributes</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/links.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LinksResourceAttributes</span><span class="p">(</span><span class="n">Attributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Links endpoint resource object attributes&quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Human-readable name for the OPTIMADE API implementation, e.g., for use in clients to show the name to the end-user.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Human-readable description for the OPTIMADE API implementation, e.g., for use in clients to show a description to the end-user.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">base_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;JSON API links object, pointing to the base URL for this implementation&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">homepage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;JSON API links object, pointing to a homepage URL for this implementation&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">link_type</span><span class="p">:</span> <span class="n">LinkType</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Link Type&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The type of the linked relation.</span>
+<span class="s2">MUST be one of these values: &#39;child&#39;, &#39;root&#39;, &#39;external&#39;, &#39;providers&#39;.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">aggregate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Aggregate</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="n">Aggregate</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Aggregate&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.</span>
+<span class="s2">This flag SHOULD NOT be indicated for links where `link_type` is not `child`.</span>
+
+<span class="s2">If not specified, clients MAY assume that the value is `ok`.</span>
+<span class="s2">If specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).</span>
+
+<span class="s2">Specific values indicate the reason why the server is providing the suggestion.</span>
+<span class="s2">A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).</span>
+
+<span class="s2">If specified, it MUST be one of the values listed in section Link Aggregate Options.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">no_aggregate_reason</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.</span>
+<span class="s2">It SHOULD NOT be present if `aggregate`=`ok`.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 

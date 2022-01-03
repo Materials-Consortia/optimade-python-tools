@@ -1947,6 +1947,330 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResourceMapper</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generic Resource Mapper that defines and performs the mapping</span>
+<span class="sd">    between objects in the database and the resource objects defined by</span>
+<span class="sd">    the specification.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        ALIASES: a tuple of aliases between</span>
+<span class="sd">            OPTIMADE field names and the field names in the database ,</span>
+<span class="sd">            e.g. `((&quot;elements&quot;, &quot;custom_elements_field&quot;))`.</span>
+<span class="sd">        LENGTH_ALIASES: a tuple of aliases between</span>
+<span class="sd">            a field name and another field that defines its length, to be used</span>
+<span class="sd">            when querying, e.g. `((&quot;elements&quot;, &quot;nelements&quot;))`.</span>
+<span class="sd">            e.g. `((&quot;elements&quot;, &quot;custom_elements_field&quot;))`.</span>
+<span class="sd">        ENTRY_RESOURCE_CLASS: The entry type that this mapper corresponds to.</span>
+<span class="sd">        PROVIDER_FIELDS: a tuple of extra field names that this</span>
+<span class="sd">            mapper should support when querying with the database prefix.</span>
+<span class="sd">        TOP_LEVEL_NON_ATTRIBUTES_FIELDS: the set of top-level</span>
+<span class="sd">            field names common to all endpoints.</span>
+<span class="sd">        SUPPORTED_PREFIXES: The set of prefixes registered by this mapper.</span>
+<span class="sd">        ALL_ATTRIBUTES: The set of attributes defined across the entry</span>
+<span class="sd">            resource class and the server configuration.</span>
+<span class="sd">        ENTRY_RESOURCE_ATTRIBUTES: A dictionary of attributes and their definitions</span>
+<span class="sd">            defined by the schema of the entry resource class.</span>
+<span class="sd">        ENDPOINT: The expected endpoint name for this resource, as defined by</span>
+<span class="sd">            the `type` in the schema of the entry resource class.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.data</span> <span class="kn">import</span> <span class="p">(</span>
+            <span class="n">providers</span> <span class="k">as</span> <span class="n">PROVIDERS</span><span class="p">,</span>
+        <span class="p">)</span>  <span class="c1"># pylint: disable=no-name-in-module</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+        <span class="n">PROVIDERS</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+        <span class="n">prov</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">prov</span> <span class="ow">in</span> <span class="n">PROVIDERS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="p">)</span>
+    <span class="n">ALIASES</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">LENGTH_ALIASES</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">PROVIDER_FIELDS</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
+    <span class="n">RELATIONSHIP_ENTRY_TYPES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">}</span>
+    <span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">}</span>
+    <span class="n">SUPPORTED_PREFIXES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">ALL_ATTRIBUTES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">ENTRY_RESOURCE_ATTRIBUTES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="n">ENDPOINT</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
+<span class="sd">        including those defined by the server config. The first member</span>
+<span class="sd">        of each tuple is the OPTIMADE-compliant field name, the second</span>
+<span class="sd">        is the backend-specific field name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple of alias tuples.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.config</span> <span class="kn">import</span> <span class="n">CONFIG</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">(</span>
+                <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">PROVIDER_FIELDS</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ALIASES</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">SUPPORTED_PREFIXES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;A set of prefixes handled by this entry type.</span>
+
+<span class="sd">        !!! note</span>
+<span class="sd">            This implementation only includes the provider prefix,</span>
+<span class="sd">            but in the future this property may be extended to include other</span>
+<span class="sd">            namespaces (for serving fields from, e.g., other providers or</span>
+<span class="sd">            domain-specific terms).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.config</span> <span class="kn">import</span> <span class="n">CONFIG</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="p">}</span>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">ALL_ATTRIBUTES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns all attributes served by this entry.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.config</span> <span class="kn">import</span> <span class="n">CONFIG</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">set</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_ATTRIBUTES</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">union</span><span class="p">(</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">())</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">PROVIDER_FIELDS</span><span class="p">))</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">ENTRY_RESOURCE_ATTRIBUTES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the dictionary of attributes defined by the underlying entry resource class.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.schemas</span> <span class="kn">import</span> <span class="n">retrieve_queryable_properties</span>
+
+        <span class="k">return</span> <span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="o">.</span><span class="n">schema</span><span class="p">())</span>
+
+    <span class="nd">@classproperty</span>
+    <span class="k">def</span> <span class="nf">ENDPOINT</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the expected endpoint for this mapper, corresponding</span>
+<span class="sd">        to the `type` property of the resource class.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="o">.</span><span class="n">schema</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;const&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
+<span class="sd">        including those defined by the server config.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple of length alias tuples.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.config</span> <span class="kn">import</span> <span class="n">CONFIG</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">LENGTH_ALIASES</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">CONFIG</span><span class="o">.</span><span class="n">length_aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">length_alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the length alias for the particular field,</span>
+<span class="sd">        or `None` if no such alias is found.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            field: OPTIMADE field name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Aliased field as found in [`all_length_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases].</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_backend_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">optimade_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return the field name configured for the particular</span>
+<span class="sd">        underlying database for the passed OPTIMADE field name, that would</span>
+<span class="sd">        be used in an API filter.</span>
+
+<span class="sd">        Aliases are read from</span>
+<span class="sd">        [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].</span>
+
+<span class="sd">        If a dot-separated OPTIMADE field is provided, e.g., `species.mass`, only the first part will be mapped.</span>
+<span class="sd">        This means for an (OPTIMADE, DB) alias of (`species`, `kinds`), `get_backend_fields(&quot;species.mass&quot;)`</span>
+<span class="sd">        will return `kinds.mass`.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            optimade_field: The OPTIMADE field to attempt to map to the backend-specific field.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; get_backend_field(&quot;chemical_formula_anonymous&quot;)</span>
+<span class="sd">            &#39;formula_anon&#39;</span>
+<span class="sd">            &gt;&gt;&gt; get_backend_field(&quot;formula_anon&quot;)</span>
+<span class="sd">            &#39;formula_anon&#39;</span>
+<span class="sd">            &gt;&gt;&gt; get_backend_field(&quot;_exmpl_custom_provider_field&quot;)</span>
+<span class="sd">            &#39;custom_provider_field&#39;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The mapped field name to be used in the query to the backend.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">split</span> <span class="o">=</span> <span class="n">optimade_field</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">alias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">alias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">alias</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">optimade_field</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return aliased field name.</span>
+
+<span class="sd">        !!! warning &quot;Deprecated&quot;</span>
+<span class="sd">            This method is deprecated could be removed without further warning. Please use</span>
+<span class="sd">            [`get_backend_field()`][optimade.server.mappers.entries.BaseResourceMapper.get_backend_field].</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            field: OPTIMADE field name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Aliased field as found in [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;The `.alias_for(...)` method is deprecated, please use `.get_backend_field(...)`.&quot;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_optimade_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return the corresponding OPTIMADE field name for the underlying database field,</span>
+<span class="sd">        ready to be used to construct the OPTIMADE-compliant JSON response.</span>
+
+<span class="sd">        Aliases are read from</span>
+<span class="sd">        [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            backend_field: The backend field to attempt to map to an OPTIMADE field.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; get_optimade_field(&quot;chemical_formula_anonymous&quot;)</span>
+<span class="sd">            &#39;chemical_formula_anonymous&#39;</span>
+<span class="sd">            &gt;&gt;&gt; get_optimade_field(&quot;formula_anon&quot;)</span>
+<span class="sd">            &#39;chemical_formula_anonymous&#39;</span>
+<span class="sd">            &gt;&gt;&gt; get_optimade_field(&quot;custom_provider_field&quot;)</span>
+<span class="sd">            &#39;_exmpl_custom_provider_field&#39;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The mapped field name to be used in an OPTIMADE-compliant response.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">alias</span><span class="p">:</span> <span class="n">real</span> <span class="k">for</span> <span class="n">real</span><span class="p">,</span> <span class="n">alias</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">()}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">backend_field</span><span class="p">,</span> <span class="n">backend_field</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">alias_of</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return de-aliased field name, if it exists,</span>
+<span class="sd">        otherwise return the input field name.</span>
+
+<span class="sd">        !!! warning &quot;Deprecated&quot;</span>
+<span class="sd">            This method is deprecated could be removed without further warning. Please use</span>
+<span class="sd">            [`get_optimade_field()`][optimade.server.mappers.entries.BaseResourceMapper.get_optimade_field].</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            field: Field name to be de-aliased.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            De-aliased field name, falling back to returning `field`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;The `.alias_of(...)` method is deprecated, please use `.get_optimade_field(...)`.&quot;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_required_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            REQUIRED response fields.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE.</span>
+
+<span class="sd">        Starting from a MongoDB document `doc`, map the DB fields to the corresponding OPTIMADE fields.</span>
+<span class="sd">        Then, the fields are all added to the top-level field &quot;attributes&quot;,</span>
+<span class="sd">        with the exception of other top-level fields, defined in `cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS`.</span>
+<span class="sd">        All fields not in `cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS` + &quot;attributes&quot; will be removed.</span>
+<span class="sd">        Finally, the `type` is given the value of the specified `cls.ENDPOINT`.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            doc: A resource object in MongoDB format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A resource object in OPTIMADE format.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">((</span><span class="n">real</span><span class="p">,</span> <span class="n">alias</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span><span class="p">,</span> <span class="n">real</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">())</span>
+        <span class="n">newdoc</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">reals</span> <span class="o">=</span> <span class="p">{</span><span class="n">real</span> <span class="k">for</span> <span class="n">alias</span><span class="p">,</span> <span class="n">real</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">()}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reals</span><span class="p">:</span>
+                <span class="n">newdoc</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">real</span><span class="p">,</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">real</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+                <span class="n">newdoc</span><span class="p">[</span><span class="n">alias</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="n">real</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;attributes&quot;</span> <span class="ow">in</span> <span class="n">newdoc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Will overwrite doc field!&quot;</span><span class="p">)</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">newdoc</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">newdoc</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">newdoc</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">newdoc</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+
+        <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ENDPOINT</span>
+        <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributes</span>
+
+        <span class="k">return</span> <span class="n">newdoc</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">(</span><span class="o">**</span><span class="bp">cls</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">(</span><span class="o">**</span><span class="bp">cls</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1987,6 +2311,62 @@ ENTRY_RESOURCE_CLASS        </code>
 
       <p>The base model for an entry resource.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An entry&#39;s ID as defined in section Definition of Terms.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;db/1234567&quot;`</span>
+<span class="s2">    - `&quot;cod/2000000&quot;`</span>
+<span class="s2">    - `&quot;cod/2000000@1234567&quot;`</span>
+<span class="s2">    - `&quot;nomad/L1234567890&quot;`</span>
+<span class="s2">    - `&quot;42&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - MUST be an existing entry type.</span>
+<span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
+
+<span class="s2">- **Example**: `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">EntryResourceAttributes</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A dictionary, containing key-value pairs representing the entry&#39;s properties, except for `type` and `id`.</span>
+<span class="s2">Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">relationships</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EntryRelationships</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span>
+<span class="s2">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -2772,6 +3152,27 @@ rather than instances.</p>
 <p>Modelled on this <a href="https://stackoverflow.com/a/5192374">StackOverflow answer</a>
 with some tweaks to allow mkdocstrings to do its thing.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">classproperty</span><span class="p">(</span><span class="nb">property</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A simple extension of the property decorator that binds to types</span>
+<span class="sd">    rather than instances.</span>
+
+<span class="sd">    Modelled on this [StackOverflow answer](https://stackoverflow.com/a/5192374)</span>
+<span class="sd">    with some tweaks to allow mkdocstrings to do its thing.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__module__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wrapped__</span> <span class="o">=</span> <span class="n">func</span>
+
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__wrapped__</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 

@@ -2767,6 +2767,62 @@ Assembly        </code>
 </li>
 </ul>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Assembly</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A description of groups of sites that are statistically correlated.</span>
+
+<span class="sd">    - **Examples** (for each entry of the assemblies list):</span>
+<span class="sd">        - `{&quot;sites_in_groups&quot;: [[0], [1]], &quot;group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.</span>
+<span class="sd">          Statistically, 30 % of the times the first site is present, while 70 % of the times the second site is present.</span>
+<span class="sd">        - `{&quot;sites_in_groups&quot;: [[1,2], [3]], &quot;group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.</span>
+<span class="sd">          The second group is formed by the fourth site. Sites of the first group (the second and the third) are never present at the same time as the fourth site.</span>
+<span class="sd">          30 % of times sites 1 and 2 are present (and site 3 is absent); 70 % of times site 3 is present (and sites 1 and 2 are absent).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sites_in_groups</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Index of the sites (0-based) that belong to each group for each assembly.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `[[1], [2]]`: two groups, one with the second site, one with the third.</span>
+<span class="s2">    - `[[1,2], [3]]`: one group with the second and third site, one with the fourth.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">group_probabilities</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Statistical probability of each group. It MUST have the same length as `sites_in_groups`.</span>
+<span class="s2">It SHOULD sum to one.</span>
+<span class="s2">See below for examples of how to specify the probability of the occurrence of a vacancy.</span>
+<span class="s2">The possible reasons for the values not to sum to one are the same as already specified above for the `concentration` of each `species`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;sites_in_groups&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_sites_in_groups</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">sites</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">sites</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sites</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sites</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;A site MUST NOT appear in more than one group. Given value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;group_probabilities&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_self_consistency</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sites_in_groups&quot;</span><span class="p">,</span> <span class="p">[])):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;sites_in_groups and group_probabilities MUST be of same length, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sites_in_groups&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">, respectively&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2932,6 +2988,15 @@ Periodicity        </code>
 
       <p>Integer enumeration of dimension_types values</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Periodicity</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Integer enumeration of dimension_types values&quot;&quot;&quot;</span>
+
+    <span class="n">APERIODIC</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">PERIODIC</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3027,6 +3092,149 @@ hydrogens might represent a methyl group, -CH3).</p>
 </li>
 </ul>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Species</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A list describing the species of the sites of this structure.</span>
+
+<span class="sd">    Species can represent pure chemical elements, virtual-crystal atoms representing a</span>
+<span class="sd">    statistical occupation of a given site by multiple chemical elements, and/or a</span>
+<span class="sd">    location to which there are attached atoms, i.e., atoms whose precise location are</span>
+<span class="sd">    unknown beyond that they are attached to that position (frequently used to indicate</span>
+<span class="sd">    hydrogen atoms attached to another element, e.g., a carbon with three attached</span>
+<span class="sd">    hydrogens might represent a methyl group, -CH3).</span>
+
+<span class="sd">    - **Examples**:</span>
+<span class="sd">        - `[ {&quot;name&quot;: &quot;Ti&quot;, &quot;chemical_symbols&quot;: [&quot;Ti&quot;], &quot;concentration&quot;: [1.0]} ]`: any site with this species is occupied by a Ti atom.</span>
+<span class="sd">        - `[ {&quot;name&quot;: &quot;Ti&quot;, &quot;chemical_symbols&quot;: [&quot;Ti&quot;, &quot;vacancy&quot;], &quot;concentration&quot;: [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.</span>
+<span class="sd">        - `[ {&quot;name&quot;: &quot;BaCa&quot;, &quot;chemical_symbols&quot;: [&quot;vacancy&quot;, &quot;Ba&quot;, &quot;Ca&quot;], &quot;concentration&quot;: [0.05, 0.45, 0.5], &quot;mass&quot;: [0.0, 137.327, 40.078]} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.</span>
+<span class="sd">        - `[ {&quot;name&quot;: &quot;C12&quot;, &quot;chemical_symbols&quot;: [&quot;C&quot;], &quot;concentration&quot;: [1.0], &quot;mass&quot;: [12.0]} ]`: any site with this species is occupied by a carbon isotope with mass 12.</span>
+<span class="sd">        - `[ {&quot;name&quot;: &quot;C13&quot;, &quot;chemical_symbols&quot;: [&quot;C&quot;], &quot;concentration&quot;: [1.0], &quot;mass&quot;: [13.0]} ]`: any site with this species is occupied by a carbon isotope with mass 13.</span>
+<span class="sd">        - `[ {&quot;name&quot;: &quot;CH3&quot;, &quot;chemical_symbols&quot;: [&quot;C&quot;], &quot;concentration&quot;: [1.0], &quot;attached&quot;: [&quot;H&quot;], &quot;nattached&quot;: [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Gives the name of the species; the **name** value MUST be unique in the `species` list.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">chemical_symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:</span>
+
+<span class="s2">- a valid chemical-element symbol, or</span>
+<span class="s2">- the special value `&quot;X&quot;` to represent a non-chemical element, or</span>
+<span class="s2">- the special value `&quot;vacancy&quot;` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).</span>
+
+<span class="s2">If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">concentration</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;MUST be a list of floats, with same length as `chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species. The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:</span>
+
+<span class="s2">- Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations `1/3` and `2/3`, the concentration might look something like `[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.</span>
+<span class="s2">- Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.</span>
+
+<span class="s2">Note that concentrations are uncorrelated between different site (even of the same species).&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If present MUST be a list of floats expressed in a.m.u.</span>
+<span class="s2">Elements denoting vacancies MUST have masses equal to 0.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;a.m.u.&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">original_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.</span>
+
+<span class="s2">Note: With regards to &quot;source database&quot;, we refer to the immediate source being queried via the OPTIMADE API implementation.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or &quot;X&quot; for a non-chemical element.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">nattached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;chemical_symbols&quot;</span><span class="p">,</span> <span class="n">each_item</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_chemical_symbols</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXTENDED_CHEMICAL_SYMBOLS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s1"> MUST be an element symbol, e.g., &quot;C&quot;, &quot;He&quot;, or a special symbol from </span><span class="si">{</span><span class="n">EXTRA_SYMBOLS</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;concentration&quot;</span><span class="p">,</span> <span class="s2">&quot;mass&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_concentration_and_mass</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chemical_symbols&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;chemical_symbols&quot;</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Length of concentration (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">) MUST equal length of chemical_symbols &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chemical_symbols&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Could not validate </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> as &#39;chemical_symbols&#39; is missing/invalid.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;attached&quot;</span><span class="p">,</span> <span class="s2">&quot;nattached&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_minimum_list_length</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The list&#39;s length MUST be 1 or more, instead it was found to be </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@root_validator</span>
+    <span class="k">def</span> <span class="nf">attached_nattached_mutually_exclusive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="n">attached</span><span class="p">,</span> <span class="n">nattached</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attached&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nattached&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">attached</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">nattached</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">attached</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">nattached</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Either both or none of attached (</span><span class="si">{</span><span class="n">attached</span><span class="si">}</span><span class="s2">) and nattached (</span><span class="si">{</span><span class="n">nattached</span><span class="si">}</span><span class="s2">) MUST be set.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">attached</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">nattached</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">attached</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nattached</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;attached (</span><span class="si">{</span><span class="n">attached</span><span class="si">}</span><span class="s2">) and nattached (</span><span class="si">{</span><span class="n">nattached</span><span class="si">}</span><span class="s2">) MUST be lists of equal length.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3392,6 +3600,17 @@ StructureFeatures        </code>
 
       <p>Enumeration of structure_features values</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureFeatures</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enumeration of structure_features values&quot;&quot;&quot;</span>
+
+    <span class="n">DISORDER</span> <span class="o">=</span> <span class="s2">&quot;disorder&quot;</span>
+    <span class="n">IMPLICIT_ATOMS</span> <span class="o">=</span> <span class="s2">&quot;implicit_atoms&quot;</span>
+    <span class="n">SITE_ATTACHMENTS</span> <span class="o">=</span> <span class="s2">&quot;site_attachments&quot;</span>
+    <span class="n">ASSEMBLIES</span> <span class="o">=</span> <span class="s2">&quot;assemblies&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3506,6 +3725,35 @@ StructureResource        </code>
 
       <p>Representing a structure.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - MUST be an existing entry type.</span>
+<span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^structures$&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">StructureResourceAttributes</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -3533,6 +3781,847 @@ StructureResourceAttributes        </code>
 
       <p>This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.&quot;&quot;&quot;</span>
+
+    <span class="n">elements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The chemical symbols of the different elements present in the structure.</span>
+
+<span class="s2">- **Type**: list of strings.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - The strings are the chemical symbols, i.e., either a single uppercase letter or an uppercase letter followed by a number of lowercase letters.</span>
+<span class="s2">    - The order MUST be alphabetical.</span>
+<span class="s2">    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements_ratios`, if the latter is provided.</span>
+<span class="s2">    - Note: This property SHOULD NOT contain the string &quot;X&quot; to indicate non-chemical elements or &quot;vacancy&quot; to indicate vacancies (in contrast to the field `chemical_symbols` for the `species` property).</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `[&quot;Si&quot;]`</span>
+<span class="s2">    - `[&quot;Al&quot;,&quot;O&quot;,&quot;Si&quot;]`</span>
+
+<span class="s2">- **Query examples**:</span>
+<span class="s2">    - A filter that matches all records of structures that contain Si, Al **and** O, and possibly other elements: `elements HAS ALL &quot;Si&quot;, &quot;Al&quot;, &quot;O&quot;`.</span>
+<span class="s2">    - To match structures with exactly these three elements, use `elements HAS ALL &quot;Si&quot;, &quot;Al&quot;, &quot;O&quot; AND elements LENGTH 3`.</span>
+<span class="s2">    - Note: length queries on this property can be equivalently formulated by filtering on the `nelements`_ property directly.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">nelements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Number of different elements in the structure as an integer.</span>
+
+<span class="s2">- **Type**: integer</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - MUST be equal to the lengths of the list properties `elements` and `elements_ratios`, if they are provided.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `3`</span>
+
+<span class="s2">- **Querying**:</span>
+<span class="s2">    - Note: queries on this property can equivalently be formulated using `elements LENGTH`.</span>
+<span class="s2">    - A filter that matches structures that have exactly 4 elements: `nelements=4`.</span>
+<span class="s2">    - A filter that matches structures that have between 2 and 7 elements: `nelements&gt;=2 AND nelements&lt;=7`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">elements_ratios</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Relative proportions of different elements in the structure.</span>
+
+<span class="s2">- **Type**: list of floats</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - Composed by the proportions of elements in the structure as a list of floating point numbers.</span>
+<span class="s2">    - The sum of the numbers MUST be 1.0 (within floating point accuracy)</span>
+<span class="s2">    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements`, if the latter is provided.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `[1.0]`</span>
+<span class="s2">    - `[0.3333333333333333, 0.2222222222222222, 0.4444444444444444]`</span>
+
+<span class="s2">- **Query examples**:</span>
+<span class="s2">    - Note: Useful filters can be formulated using the set operator syntax for correlated values.</span>
+<span class="s2">      However, since the values are floating point values, the use of equality comparisons is generally inadvisable.</span>
+<span class="s2">    - OPTIONAL: a filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: `elements:elements_ratios HAS ALL &quot;Al&quot;:&gt;0.3333, &quot;Al&quot;:&lt;0.3334`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">chemical_formula_descriptive</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The chemical formula for a structure as a string in a form chosen by the API implementation.</span>
+
+<span class="s2">- **Type**: string</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets `(`,`)`, `[`,`]`, `{`, `}`, commas, the `+`, `-`, `:` and `=` symbols. The parentheses are allowed to be followed by a number. Spaces are allowed anywhere except within chemical symbols. The order of elements and any groupings indicated by parentheses or brackets are chosen freely by the API implementation.</span>
+<span class="s2">    - The string SHOULD be arithmetically consistent with the element ratios in the `chemical_formula_reduced` property.</span>
+<span class="s2">    - It is RECOMMENDED, but not mandatory, that symbols, parentheses and brackets, if used, are used with the meanings prescribed by [IUPAC&#39;s Nomenclature of Organic Chemistry](https://www.qmul.ac.uk/sbcs/iupac/bibliog/blue.html).</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;(H2O)2 Na&quot;`</span>
+<span class="s2">    - `&quot;NaCl&quot;`</span>
+<span class="s2">    - `&quot;CaCO3&quot;`</span>
+<span class="s2">    - `&quot;CCaO3&quot;`</span>
+<span class="s2">    - `&quot;(CH3)3N+ - [CH2]2-OH = Me3N+ - CH2 - CH2OH&quot;`</span>
+
+<span class="s2">- **Query examples**:</span>
+<span class="s2">    - Note: the free-form nature of this property is likely to make queries on it across different databases inconsistent.</span>
+<span class="s2">    - A filter that matches an exactly given formula: `chemical_formula_descriptive=&quot;(H2O)2 Na&quot;`.</span>
+<span class="s2">    - A filter that does a partial match: `chemical_formula_descriptive CONTAINS &quot;H2O&quot;`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">chemical_formula_reduced</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.</span>
+<span class="s2">The proportion number MUST be omitted if it is 1.</span>
+
+<span class="s2">- **Type**: string</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property.</span>
+<span class="s2">      However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).</span>
+<span class="s2">      Intricate queries on formula components are instead suggested to be formulated using set-type filter operators on the multi valued `elements` and `elements_ratios` properties.</span>
+<span class="s2">    - Element symbols MUST have proper capitalization (e.g., `&quot;Si&quot;`, not `&quot;SI&quot;` for &quot;silicon&quot;).</span>
+<span class="s2">    - Elements MUST be placed in alphabetical order, followed by their integer chemical proportion number.</span>
+<span class="s2">    - For structures with no partial occupation, the chemical proportion numbers are the smallest integers for which the chemical proportion is exactly correct.</span>
+<span class="s2">    - For structures with partial occupation, the chemical proportion numbers are integers that within reasonable approximation indicate the correct chemical proportions. The precise details of how to perform the rounding is chosen by the API implementation.</span>
+<span class="s2">    - No spaces or separators are allowed.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;H2NaO&quot;`</span>
+<span class="s2">    - `&quot;ClNa&quot;`</span>
+<span class="s2">    - `&quot;CCaO3&quot;`</span>
+
+<span class="s2">- **Query examples**:</span>
+<span class="s2">    - A filter that matches an exactly given formula is `chemical_formula_reduced=&quot;H2NaO&quot;`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="n">CHEMICAL_FORMULA_REGEXP</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">chemical_formula_hill</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The chemical formula for a structure in [Hill form](https://dx.doi.org/10.1021/ja02046a005) with element symbols followed by integer chemical proportion numbers. The proportion number MUST be omitted if it is 1.</span>
+
+<span class="s2">- **Type**: string</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.</span>
+<span class="s2">    - **Query**: Support for queries on this property is OPTIONAL.</span>
+<span class="s2">      If supported, only a subset of the filter features MAY be supported.</span>
+<span class="s2">    - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.</span>
+<span class="s2">      For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, `chemical_formula_hill` is `&quot;H2O2&quot;` (i.e., not `&quot;HO&quot;`, nor `&quot;H4O4&quot;`).</span>
+<span class="s2">    - If the chemical insight needed to ascribe a Hill formula to the system is not present, the property MUST be handled as unset.</span>
+<span class="s2">    - Element symbols MUST have proper capitalization (e.g., `&quot;Si&quot;`, not `&quot;SI&quot;` for &quot;silicon&quot;).</span>
+<span class="s2">    - Elements MUST be placed in [Hill order](https://dx.doi.org/10.1021/ja02046a005), followed by their integer chemical proportion number.</span>
+<span class="s2">      Hill order means: if carbon is present, it is placed first, and if also present, hydrogen is placed second.</span>
+<span class="s2">      After that, all other elements are ordered alphabetically.</span>
+<span class="s2">      If carbon is not present, all elements are ordered alphabetically.</span>
+<span class="s2">    - If the system has sites with partial occupation and the total occupations of each element do not all sum up to integers, then the Hill formula SHOULD be handled as unset.</span>
+<span class="s2">    - No spaces or separators are allowed.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;H2O2&quot;`</span>
+
+<span class="s2">- **Query examples**:</span>
+<span class="s2">    - A filter that matches an exactly given formula is `chemical_formula_hill=&quot;H2O2&quot;`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="n">CHEMICAL_FORMULA_REGEXP</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">chemical_formula_anonymous</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.</span>
+
+<span class="s2">- **Type**: string</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property.</span>
+<span class="s2">      However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;A2B&quot;`</span>
+<span class="s2">    - `&quot;A42B42C16D12E10F9G5&quot;`</span>
+
+<span class="s2">- **Querying**:</span>
+<span class="s2">    - A filter that matches an exactly given formula is `chemical_formula_anonymous=&quot;A2B&quot;`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="n">CHEMICAL_FORMULA_REGEXP</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">dimension_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">conlist</span><span class="p">(</span><span class="n">Periodicity</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Dimension Types&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;List of three integers.</span>
+<span class="s2">For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`), this list indicates if the direction is periodic (value `1`) or non-periodic (value `0`).</span>
+<span class="s2">Note: the elements in this list each refer to the direction of the corresponding entry in `lattice_vectors` and *not* the Cartesian x, y, z directions.</span>
+
+<span class="s2">- **Type**: list of integers.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: Support for queries on this property is OPTIONAL.</span>
+<span class="s2">    - MUST be a list of length 3.</span>
+<span class="s2">    - Each integer element MUST assume only the value 0 or 1.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - For a molecule: `[0, 0, 0]`</span>
+<span class="s2">    - For a wire along the direction specified by the third lattice vector: `[0, 0, 1]`</span>
+<span class="s2">    - For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: `[1, 0, 1]`</span>
+<span class="s2">    - For a bulk 3D system: `[1, 1, 1]`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">nperiodic_dimensions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.</span>
+
+<span class="s2">- **Type**: integer</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types` property.</span>
+<span class="s2">    - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `2` should be indicated in cases where `dimension_types` is any of `[1, 1, 0]`, `[1, 0, 1]`, `[0, 1, 1]`.</span>
+
+<span class="s2">- **Query examples**:</span>
+<span class="s2">    - Match only structures with exactly 3 periodic dimensions: `nperiodic_dimensions=3`</span>
+<span class="s2">    - Match all structures with 2 or fewer periodic dimensions: `nperiodic_dimensions&lt;=2`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">lattice_vectors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">conlist</span><span class="p">(</span><span class="n">Vector3D_unknown</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The three lattice vectors in Cartesian coordinates, in ångström (Å).</span>
+
+<span class="s2">- **Type**: list of list of floats or unknown values.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: Support for queries on this property is OPTIONAL.</span>
+<span class="s2">      If supported, filters MAY support only a subset of comparison operators.</span>
+<span class="s2">    - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector&#39;s coordinates along the x, y, and z Cartesian coordinates.</span>
+<span class="s2">      (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).</span>
+<span class="s2">    - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.</span>
+<span class="s2">    - MUST always contain three vectors of three coordinates each, independently of the elements of property `dimension_types`.</span>
+<span class="s2">      The vectors SHOULD by convention be chosen so the determinant of the `lattice_vectors` matrix is different from zero.</span>
+<span class="s2">      The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.</span>
+<span class="s2">    - The coordinates of the lattice vectors of non-periodic dimensions (i.e., those dimensions for which `dimension_types` is `0`) MAY be given as a list of all `null` values.</span>
+<span class="s2">        If a lattice vector contains the value `null`, all coordinates of that lattice vector MUST be `null`.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is `(4, 0, 0)`, i.e., a vector aligned along the `x` axis of length 4 Å; the second vector is `(0, 4, 0)`; and the third vector is `(0, 1, 4)`.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;Å&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Cartesian positions of each site in the structure.</span>
+<span class="s2">A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.</span>
+
+<span class="s2">- **Type**: list of list of floats</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: Support for queries on this property is OPTIONAL.</span>
+<span class="s2">      If supported, filters MAY support only a subset of comparison operators.</span>
+<span class="s2">    - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three Cartesian coordinates of a site expressed as float values in the unit angstrom (Å).</span>
+<span class="s2">    - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`).</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 Å away from the origin.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;Å&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">nsites</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An integer specifying the length of the `cartesian_site_positions` property.</span>
+
+<span class="s2">- **Type**: integer</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `42`</span>
+
+<span class="s2">- **Query examples**:</span>
+<span class="s2">    - Match only structures with exactly 4 sites: `nsites=4`</span>
+<span class="s2">    - Match structures that have between 2 and 7 sites: `nsites&gt;=2 AND nsites&lt;=7`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">species</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Species</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list describing the species of the sites of this structure.</span>
+<span class="s2">Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).</span>
+
+<span class="s2">- **Type**: list of dictionary with keys:</span>
+<span class="s2">    - `name`: string (REQUIRED)</span>
+<span class="s2">    - `chemical_symbols`: list of strings (REQUIRED)</span>
+<span class="s2">    - `concentration`: list of float (REQUIRED)</span>
+<span class="s2">    - `attached`: list of strings (REQUIRED)</span>
+<span class="s2">    - `nattached`: list of integers (OPTIONAL)</span>
+<span class="s2">    - `mass`: list of floats (OPTIONAL)</span>
+<span class="s2">    - `original_name`: string (OPTIONAL).</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: Support for queries on this property is OPTIONAL.</span>
+<span class="s2">        If supported, filters MAY support only a subset of comparison operators.</span>
+<span class="s2">    - Each list member MUST be a dictionary with the following keys:</span>
+<span class="s2">        - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the `species` list;</span>
+<span class="s2">        - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.</span>
+<span class="s2">          Each item of the list MUST be one of the following:</span>
+<span class="s2">            - a valid chemical-element symbol, or</span>
+<span class="s2">            - the special value `&quot;X&quot;` to represent a non-chemical element, or</span>
+<span class="s2">            - the special value `&quot;vacancy&quot;` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).</span>
+
+<span class="s2">          If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.</span>
+
+<span class="s2">        - **concentration**: REQUIRED; MUST be a list of floats, with same length as `chemical_symbols`.</span>
+<span class="s2">          The numbers represent the relative concentration of the corresponding chemical symbol in this species.</span>
+<span class="s2">          The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:</span>
+
+<span class="s2">            - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations `1/3` and `2/3`, the concentration might look something like `[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.</span>
+<span class="s2">            - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.</span>
+
+<span class="s2">            Note that concentrations are uncorrelated between different sites (even of the same species).</span>
+
+<span class="s2">        - **attached**: OPTIONAL; if provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or &quot;X&quot; for a non-chemical element.</span>
+
+<span class="s2">        - **nattached**: OPTIONAL; if provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the `attached` key.</span>
+
+<span class="s2">          The implementation MUST include either both or none of the `attached` and `nattached` keys, and if they are provided, they MUST be of the same length.</span>
+<span class="s2">          Furthermore, if they are provided, the `structure_features` property MUST include the string `site_attachments`.</span>
+
+<span class="s2">        - **mass**: OPTIONAL. If present MUST be a list of floats, with the same length as `chemical_symbols`, providing element masses expressed in a.m.u.</span>
+<span class="s2">          Elements denoting vacancies MUST have masses equal to 0.</span>
+
+<span class="s2">        - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.</span>
+
+<span class="s2">          Note: With regards to &quot;source database&quot;, we refer to the immediate source being queried via the OPTIMADE API implementation.</span>
+
+<span class="s2">          The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`).</span>
+
+<span class="s2">    - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., `&quot;Ti&quot;` for titanium, `&quot;O&quot;` for oxygen, etc.)</span>
+<span class="s2">      However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.</span>
+<span class="s2">      This means that a species `{&quot;name&quot;: &quot;C&quot;, &quot;chemical_symbols&quot;: [&quot;Ti&quot;], &quot;concentration&quot;: [1.0]}` is valid and represents a titanium species (and *not* a carbon species).</span>
+<span class="s2">    - It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `[ {&quot;name&quot;: &quot;Ti&quot;, &quot;chemical_symbols&quot;: [&quot;Ti&quot;], &quot;concentration&quot;: [1.0]} ]`: any site with this species is occupied by a Ti atom.</span>
+<span class="s2">    - `[ {&quot;name&quot;: &quot;Ti&quot;, &quot;chemical_symbols&quot;: [&quot;Ti&quot;, &quot;vacancy&quot;], &quot;concentration&quot;: [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.</span>
+<span class="s2">    - `[ {&quot;name&quot;: &quot;BaCa&quot;, &quot;chemical_symbols&quot;: [&quot;vacancy&quot;, &quot;Ba&quot;, &quot;Ca&quot;], &quot;concentration&quot;: [0.05, 0.45, 0.5], &quot;mass&quot;: [0.0, 137.327, 40.078]} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.</span>
+<span class="s2">    - `[ {&quot;name&quot;: &quot;C12&quot;, &quot;chemical_symbols&quot;: [&quot;C&quot;], &quot;concentration&quot;: [1.0], &quot;mass&quot;: [12.0]} ]`: any site with this species is occupied by a carbon isotope with mass 12.</span>
+<span class="s2">    - `[ {&quot;name&quot;: &quot;C13&quot;, &quot;chemical_symbols&quot;: [&quot;C&quot;], &quot;concentration&quot;: [1.0], &quot;mass&quot;: [13.0]} ]`: any site with this species is occupied by a carbon isotope with mass 13.</span>
+<span class="s2">    - `[ {&quot;name&quot;: &quot;CH3&quot;, &quot;chemical_symbols&quot;: [&quot;C&quot;], &quot;concentration&quot;: [1.0], &quot;attached&quot;: [&quot;H&quot;], &quot;nattached&quot;: [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">species_at_sites</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).</span>
+<span class="s2">The properties of the species are found in the property `species`.</span>
+
+<span class="s2">- **Type**: list of strings.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span>
+<span class="s2">    - **Query**: Support for queries on this property is OPTIONAL.</span>
+<span class="s2">      If supported, filters MAY support only a subset of comparison operators.</span>
+<span class="s2">    - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`).</span>
+<span class="s2">    - Each species name mentioned in the `species_at_sites` list MUST be described in the list property `species` (i.e. for each value in the `species_at_sites` list there MUST exist exactly one dictionary in the `species` list with the `name` attribute equal to the corresponding `species_at_sites` value).</span>
+<span class="s2">    - Each site MUST be associated only to a single species.</span>
+<span class="s2">      **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.</span>
+<span class="s2">      This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `[&quot;Ti&quot;,&quot;O2&quot;]` indicates that the first site is hosting a species labeled `&quot;Ti&quot;` and the second a species labeled `&quot;O2&quot;`.</span>
+<span class="s2">    - `[&quot;Ac&quot;, &quot;Ac&quot;, &quot;Ag&quot;, &quot;Ir&quot;]` indicating the first two sites contains the `&quot;Ac&quot;` species, while the third and fourth sites contain the `&quot;Ag&quot;` and `&quot;Ir&quot;` species, respectively.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">assemblies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Assembly</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A description of groups of sites that are statistically correlated.</span>
+
+<span class="s2">- **Type**: list of dictionary with keys:</span>
+<span class="s2">    - `sites_in_groups`: list of list of integers (REQUIRED)</span>
+<span class="s2">    - `group_probabilities`: list of floats (REQUIRED)</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.</span>
+<span class="s2">    - **Query**: Support for queries on this property is OPTIONAL.</span>
+<span class="s2">        If supported, filters MAY support only a subset of comparison operators.</span>
+<span class="s2">    - The property SHOULD be `null` for entries that have no partial occupancies.</span>
+<span class="s2">    - If present, the correct flag MUST be set in the list `structure_features`.</span>
+<span class="s2">    - Client implementations MUST check its presence (as its presence changes the interpretation of the structure).</span>
+<span class="s2">    - If present, it MUST be a list of dictionaries, each of which represents an assembly and MUST have the following two keys:</span>
+<span class="s2">        - **sites_in_groups**: Index of the sites (0-based) that belong to each group for each assembly.</span>
+
+<span class="s2">            Example: `[[1], [2]]`: two groups, one with the second site, one with the third.</span>
+<span class="s2">            Example: `[[1,2], [3]]`: one group with the second and third site, one with the fourth.</span>
+
+<span class="s2">        - **group_probabilities**: Statistical probability of each group. It MUST have the same length as `sites_in_groups`.</span>
+<span class="s2">            It SHOULD sum to one.</span>
+<span class="s2">            See below for examples of how to specify the probability of the occurrence of a vacancy.</span>
+<span class="s2">            The possible reasons for the values not to sum to one are the same as already specified above for the `concentration` of each `species`.</span>
+
+<span class="s2">    - If a site is not present in any group, it means that it is present with 100 % probability (as if no assembly was specified).</span>
+<span class="s2">    - A site MUST NOT appear in more than one group.</span>
+
+<span class="s2">- **Examples** (for each entry of the assemblies list):</span>
+<span class="s2">    - `{&quot;sites_in_groups&quot;: [[0], [1]], &quot;group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.</span>
+<span class="s2">        Statistically, 30 </span><span class="si">% o</span><span class="s2">f the times the first site is present, while 70 </span><span class="si">% o</span><span class="s2">f the times the second site is present.</span>
+<span class="s2">    - `{&quot;sites_in_groups&quot;: [[1,2], [3]], &quot;group_probabilities: [0.3, 0.7]}`: the second and third site are either present together or not present; they form the first group of atoms for this assembly.</span>
+<span class="s2">        The second group is formed by the fourth site.</span>
+<span class="s2">        Sites of the first group (the second and the third) are never present at the same time as the fourth site.</span>
+<span class="s2">        30 </span><span class="si">% o</span><span class="s2">f times sites 1 and 2 are present (and site 3 is absent); 70 </span><span class="si">% o</span><span class="s2">f times site 3 is present (and sites 1 and 2 are absent).</span>
+
+<span class="s2">- **Notes**:</span>
+<span class="s2">    - Assemblies are essential to represent, for instance, the situation where an atom can statistically occupy two different positions (sites).</span>
+
+<span class="s2">    - By defining groups, it is possible to represent, e.g., the case where a functional molecule (and not just one atom) is either present or absent (or the case where it it is present in two conformations)</span>
+
+<span class="s2">    - Considerations on virtual alloys and on vacancies: In the special case of a virtual alloy, these specifications allow two different, equivalent ways of specifying them.</span>
+<span class="s2">        For instance, for a site at the origin with 30 % probability of being occupied by Si, 50 % probability of being occupied by Ge, and 20 </span><span class="si">% o</span><span class="s2">f being a vacancy, the following two representations are possible:</span>
+
+<span class="s2">        - Using a single species:</span>
+<span class="s2">            ```json</span>
+<span class="s2">            {</span>
+<span class="s2">              &quot;cartesian_site_positions&quot;: [[0,0,0]],</span>
+<span class="s2">              &quot;species_at_sites&quot;: [&quot;SiGe-vac&quot;],</span>
+<span class="s2">              &quot;species&quot;: [</span>
+<span class="s2">              {</span>
+<span class="s2">                &quot;name&quot;: &quot;SiGe-vac&quot;,</span>
+<span class="s2">                &quot;chemical_symbols&quot;: [&quot;Si&quot;, &quot;Ge&quot;, &quot;vacancy&quot;],</span>
+<span class="s2">                &quot;concentration&quot;: [0.3, 0.5, 0.2]</span>
+<span class="s2">              }</span>
+<span class="s2">              ]</span>
+<span class="s2">              // ...</span>
+<span class="s2">            }</span>
+<span class="s2">            ```</span>
+
+<span class="s2">        - Using multiple species and the assemblies:</span>
+<span class="s2">            ```json</span>
+<span class="s2">            {</span>
+<span class="s2">              &quot;cartesian_site_positions&quot;: [ [0,0,0], [0,0,0], [0,0,0] ],</span>
+<span class="s2">              &quot;species_at_sites&quot;: [&quot;Si&quot;, &quot;Ge&quot;, &quot;vac&quot;],</span>
+<span class="s2">              &quot;species&quot;: [</span>
+<span class="s2">                { &quot;name&quot;: &quot;Si&quot;, &quot;chemical_symbols&quot;: [&quot;Si&quot;], &quot;concentration&quot;: [1.0] },</span>
+<span class="s2">                { &quot;name&quot;: &quot;Ge&quot;, &quot;chemical_symbols&quot;: [&quot;Ge&quot;], &quot;concentration&quot;: [1.0] },</span>
+<span class="s2">                { &quot;name&quot;: &quot;vac&quot;, &quot;chemical_symbols&quot;: [&quot;vacancy&quot;], &quot;concentration&quot;: [1.0] }</span>
+<span class="s2">              ],</span>
+<span class="s2">              &quot;assemblies&quot;: [</span>
+<span class="s2">                {</span>
+<span class="s2">              &quot;sites_in_groups&quot;: [ [0], [1], [2] ],</span>
+<span class="s2">              &quot;group_probabilities&quot;: [0.3, 0.5, 0.2]</span>
+<span class="s2">                }</span>
+<span class="s2">              ]</span>
+<span class="s2">              // ...</span>
+<span class="s2">            }</span>
+<span class="s2">            ```</span>
+
+<span class="s2">    - It is up to the database provider to decide which representation to use, typically depending on the internal format in which the structure is stored.</span>
+<span class="s2">        However, given a structure identified by a unique ID, the API implementation MUST always provide the same representation for it.</span>
+
+<span class="s2">    - The probabilities of occurrence of different assemblies are uncorrelated.</span>
+<span class="s2">        So, for instance in the following case with two assemblies:</span>
+<span class="s2">        ```json</span>
+<span class="s2">        {</span>
+<span class="s2">          &quot;assemblies&quot;: [</span>
+<span class="s2">            {</span>
+<span class="s2">              &quot;sites_in_groups&quot;: [ [0], [1] ],</span>
+<span class="s2">              &quot;group_probabilities&quot;: [0.2, 0.8],</span>
+<span class="s2">            },</span>
+<span class="s2">            {</span>
+<span class="s2">              &quot;sites_in_groups&quot;: [ [2], [3] ],</span>
+<span class="s2">              &quot;group_probabilities&quot;: [0.3, 0.7]</span>
+<span class="s2">            }</span>
+<span class="s2">          ]</span>
+<span class="s2">        }</span>
+<span class="s2">        ```</span>
+
+<span class="s2">        Site 0 is present with a probability of 20 </span><span class="si">% a</span><span class="s2">nd site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 </span><span class="si">% a</span><span class="s2">nd site 3 with a probability of 70 %.</span>
+<span class="s2">        These two sites are correlated (either site 2 or 3 is present).</span>
+<span class="s2">        However, the presence or absence of sites 0 and 1 is not correlated with the presence or absence of sites 2 and 3 (in the specific example, the pair of sites (0, 2) can occur with 0.2*0.3 = 6 % probability; the pair (0, 3) with 0.2*0.7 = 14 % probability; the pair (1, 2) with 0.8*0.3 = 24 % probability; and the pair (1, 3) with 0.8*0.7 = 56 % probability).&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">structure_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">StructureFeatures</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Structure Features&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list of strings that flag which special features are used by the structure.</span>
+
+<span class="s2">- **Type**: list of strings</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property.</span>
+<span class="s2">    Filters on the list MUST support all mandatory HAS-type queries.</span>
+<span class="s2">    Filter operators for comparisons on the string components MUST support equality, support for other comparison operators are OPTIONAL.</span>
+<span class="s2">    - MUST be an empty list if no special features are used.</span>
+<span class="s2">    - MUST be sorted alphabetically.</span>
+<span class="s2">    - If a special feature listed below is used, the list MUST contain the corresponding string.</span>
+<span class="s2">    - If a special feature listed below is not used, the list MUST NOT contain the corresponding string.</span>
+<span class="s2">    - **List of strings used to indicate special structure features**:</span>
+<span class="s2">        - `disorder`: this flag MUST be present if any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element.</span>
+<span class="s2">        - `implicit_atoms`: this flag MUST be present if the structure contains atoms that are not assigned to sites via the property `species_at_sites` (e.g., because their positions are unknown).</span>
+<span class="s2">           When this flag is present, the properties related to the chemical formula will likely not match the type and count of atoms represented by the `species_at_sites`, `species` and `assemblies` properties.</span>
+<span class="s2">        - `site_attachments`: this flag MUST be present if any one entry in the `species` list includes `attached` and `nattached`.</span>
+<span class="s2">        - `assemblies`: this flag MUST be present if the property `assemblies` is present.</span>
+
+<span class="s2">- **Examples**: A structure having implicit atoms and using assemblies: `[&quot;assemblies&quot;, &quot;implicit_atoms&quot;]`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
+
+<span class="sd">            1. Constrained types in pydantic do not currently play nicely with</span>
+<span class="sd">            &quot;Required Optional&quot; fields, i.e. fields must be specified but can be null.</span>
+<span class="sd">            The two contrained list fields, `dimension_types` and `lattice_vectors`,</span>
+<span class="sd">            are OPTIMADE &#39;SHOULD&#39; fields, which means that they are allowed to be null.</span>
+
+<span class="sd">            2. All OPTIMADE &#39;SHOULD&#39; fields are allowed to be null, so we manually set them</span>
+<span class="sd">            to be `nullable` according to the OpenAPI definition.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;dimension_types&quot;</span><span class="p">)</span>
+            <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;lattice_vectors&quot;</span><span class="p">)</span>
+
+            <span class="n">nullable_props</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">prop</span>
+                <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="n">prop</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;support&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">nullable_props</span><span class="p">:</span>
+                <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="n">prop</span><span class="p">][</span><span class="s2">&quot;nullable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">warn_on_missing_correlated_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
+<span class="sd">        was expected based on the value/nullity of another field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">accumulated_warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">field_set</span> <span class="ow">in</span> <span class="n">CORRELATED_STRUCTURE_FIELDS</span><span class="p">:</span>
+            <span class="n">missing_fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">field_set</span> <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">missing_fields</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_fields</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_set</span><span class="p">):</span>
+                <span class="n">accumulated_warnings</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span> <span class="o">-</span> <span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
+                <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">warn</span> <span class="ow">in</span> <span class="n">accumulated_warnings</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">warn</span><span class="p">,</span> <span class="n">MissingExpectedField</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;chemical_formula_reduced&quot;</span><span class="p">,</span> <span class="s2">&quot;chemical_formula_hill&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_ordered_formula</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[A-Z][a-z]?&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">expected_elements</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;chemical_formula_hill&quot;</span><span class="p">:</span>
+            <span class="c1"># Make sure C is first (and H is second, if present along with C).</span>
+            <span class="k">if</span> <span class="s2">&quot;C&quot;</span> <span class="ow">in</span> <span class="n">expected_elements</span><span class="p">:</span>
+                <span class="n">expected_elements</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+                    <span class="n">expected_elements</span><span class="p">,</span>
+                    <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">elem</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">elem</span><span class="p">),</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot use unknown chemical symbols </span><span class="si">{</span><span class="p">[</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">expected_elements</span> <span class="o">!=</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="s2">&quot;Hill&quot;</span> <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;chemical_formula_hill&quot;</span> <span class="k">else</span> <span class="s2">&quot;alphabetical&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Elements in </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> must appear in </span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2"> order: </span><span class="si">{</span><span class="n">expected_elements</span><span class="si">}</span><span class="s2"> not </span><span class="si">{</span><span class="n">elements</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;chemical_formula_anonymous&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_anonymous_formula</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[A-Z][a-z]*&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="n">numbers</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[A-Z][a-z]*&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">]</span>
+
+        <span class="n">expected_labels</span> <span class="o">=</span> <span class="n">ANONYMOUS_ELEMENTS</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)]</span>
+        <span class="n">expected_numbers</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">expected_numbers</span> <span class="o">!=</span> <span class="n">numbers</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;chemical_formula_anonymous&#39; </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> has wrong order: elements with highest proportion should appear first: </span><span class="si">{</span><span class="n">numbers</span><span class="si">}</span><span class="s2"> vs expected </span><span class="si">{</span><span class="n">expected_numbers</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">elements</span> <span class="o">!=</span> <span class="n">expected_labels</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;chemical_formula_anonymous&#39; </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2"> has wrong labels: </span><span class="si">{</span><span class="n">elements</span><span class="si">}</span><span class="s2"> vs expected </span><span class="si">{</span><span class="n">expected_labels</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;chemical_formula_anonymous&quot;</span><span class="p">,</span> <span class="s2">&quot;chemical_formula_reduced&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_reduced_formulae</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+        <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">or</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[A-Z][a-z]*&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)]</span>
+        <span class="c1"># Need to remove leading 1 from split and convert to ints</span>
+        <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">:</span>
+            <span class="n">gcd</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="o">*</span><span class="n">numbers</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gcd</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">gcd</span><span class="p">,</span> <span class="n">numbers</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">gcd</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> is not properly reduced: greatest common divisor was </span><span class="si">{</span><span class="n">gcd</span><span class="si">}</span><span class="s2">, expected 1.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;elements&quot;</span><span class="p">,</span> <span class="n">each_item</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">element_must_be_chemical_symbol</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Only chemical symbols are allowed, you passed: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;elements&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">elements_must_be_alphabetical</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;elements must be sorted alphabetically, but is: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;elements_ratios&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">ratios_must_sum_to_one</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">EPS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;elements_ratios MUST sum to 1 within (at least single precision) floating point accuracy. It sums to: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;nperiodic_dimensions&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_periodic_dimensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dimension_types&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dimension_types&quot;</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;nperiodic_dimensions (</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">) does not match expected value of </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;from dimension_types (</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;lattice_vectors&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">required_if_dimension_types_has_one</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dimension_types&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">dim_type</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dimension_types&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">),</span> <span class="n">v</span><span class="p">):</span>
+                <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="n">dim_type</span> <span class="o">==</span> <span class="n">Periodicity</span><span class="o">.</span><span class="n">PERIODIC</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Null entries in lattice vectors are only permitted when the corresponding dimension type is </span><span class="si">{</span><span class="n">Periodicity</span><span class="o">.</span><span class="n">APERIODIC</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Here: dimension_types = </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">, lattice_vectors = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;lattice_vectors&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">null_values_for_whole_vector</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;A lattice vector MUST be either all `null` or all numbers (vector: </span><span class="si">{</span><span class="n">vector</span><span class="si">}</span><span class="s2">, all vectors: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_nsites</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cartesian_site_positions&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cartesian_site_positions&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;nsites (value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">) MUST equal length of cartesian_site_positions &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cartesian_site_positions&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_species_at_sites</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Number of species_at_sites (value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">) MUST equal number of sites &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites&#39;</span><span class="p">,</span> <span class="s1">&#39;Not specified&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">):</span>
+            <span class="n">all_species_names</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="p">[{}])</span>
+            <span class="p">}</span>
+            <span class="n">all_species_names</span> <span class="o">-=</span> <span class="p">{</span><span class="kc">None</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_species_names</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;species_at_sites MUST be represented by a species&#39; name, &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;but </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> was not found in the list of species names: </span><span class="si">{</span><span class="n">all_species_names</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_species</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="n">all_species</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+        <span class="n">unique_species</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">all_species</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_species</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_species</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Species MUST be unique based on their &#39;name&#39;. Found species names: </span><span class="si">{</span><span class="n">all_species</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;structure_features&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_structure_features</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">[</span><span class="n">StructureFeatures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">))]</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;structure_features MUST be sorted alphabetically, given value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># assemblies</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;assemblies&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">ASSEMBLIES</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">ASSEMBLIES</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST be present, since the property of the same name is present&quot;</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">ASSEMBLIES</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">ASSEMBLIES</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST NOT be present, &quot;</span>
+                <span class="s2">&quot;since the property of the same name is not present&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">):</span>
+            <span class="c1"># disorder</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST be present when any one entry in species &quot;</span>
+                            <span class="s2">&quot;has a chemical_symbols list greater than one element&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST NOT be present, since all species&#39; chemical_symbols &quot;</span>
+                        <span class="s2">&quot;lists are equal to or less than one element&quot;</span>
+                    <span class="p">)</span>
+            <span class="c1"># site_attachments</span>
+            <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="c1"># There is no need to also test &quot;nattached&quot;,</span>
+                <span class="c1"># since a Species validator makes sure either both are present or both are None.</span>
+                <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="s2">&quot;attached&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">SITE_ATTACHMENTS</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">SITE_ATTACHMENTS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST be present when any one entry &quot;</span>
+                            <span class="s2">&quot;in species includes attached and nattached&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">SITE_ATTACHMENTS</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">SITE_ATTACHMENTS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST NOT be present, since no species includes &quot;</span>
+                        <span class="s2">&quot;the attached and nattached fields&quot;</span>
+                    <span class="p">)</span>
+            <span class="c1"># implicit_atoms</span>
+            <span class="n">species_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="p">[])]</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">species_names</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s2">&quot;species_at_sites&quot;</span>
+                <span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                    <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">IMPLICIT_ATOMS</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">IMPLICIT_ATOMS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST be present when any one entry in species &quot;</span>
+                            <span class="s2">&quot;is not represented in species_at_sites&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">IMPLICIT_ATOMS</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">IMPLICIT_ATOMS</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST NOT be present, since all species are &quot;</span>
+                        <span class="s2">&quot;represented in species_at_sites&quot;</span>
+                    <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -4533,6 +5622,33 @@ Config        </code>
     <div class="doc doc-contents ">
 
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
+
+<span class="sd">        1. Constrained types in pydantic do not currently play nicely with</span>
+<span class="sd">        &quot;Required Optional&quot; fields, i.e. fields must be specified but can be null.</span>
+<span class="sd">        The two contrained list fields, `dimension_types` and `lattice_vectors`,</span>
+<span class="sd">        are OPTIMADE &#39;SHOULD&#39; fields, which means that they are allowed to be null.</span>
+
+<span class="sd">        2. All OPTIMADE &#39;SHOULD&#39; fields are allowed to be null, so we manually set them</span>
+<span class="sd">        to be `nullable` according to the OpenAPI definition.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;dimension_types&quot;</span><span class="p">)</span>
+        <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;lattice_vectors&quot;</span><span class="p">)</span>
+
+        <span class="n">nullable_props</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">prop</span>
+            <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="n">prop</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;support&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">nullable_props</span><span class="p">:</span>
+            <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="n">prop</span><span class="p">][</span><span class="s2">&quot;nullable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+        </details>
 
 
 

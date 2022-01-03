@@ -1933,6 +1933,90 @@ can be easily modified for testing niche implementations. Many
 of these fields are determined by the specification directly,
 but it may be desirable to modify them in certain cases.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/validator/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ValidatorConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class stores validator config parameters in a way that</span>
+<span class="sd">    can be easily modified for testing niche implementations. Many</span>
+<span class="sd">    of these fields are determined by the specification directly,</span>
+<span class="sd">    but it may be desirable to modify them in certain cases.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">response_classes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_RESPONSE_CLASSES</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dictionary containing the mapping between endpoints and response classes for the main database&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">response_classes_index</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_RESPONSE_CLASSES_INDEX</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dictionary containing the mapping between endpoints and response classes for the index meta-database&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">entry_schemas</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_ENTRY_SCHEMAS</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The entry listing endpoint schemas&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">entry_endpoints</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_ENTRY_ENDPOINTS</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The entry endpoints to validate, if present in the API&#39;s `/info` response `entry_types_by_format[&#39;json&#39;]`&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">unique_properties</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_UNIQUE_PROPERTIES</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Fields that should be treated as unique indexes for all endpoints, &quot;</span>
+            <span class="s2">&quot;i.e. fields on which filters should return at most one entry.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">inclusive_operators</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">DataType</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_INCLUSIVE_OPERATORS</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Dictionary mapping OPTIMADE `DataType`s to a list of operators that are &#39;inclusive&#39;, &quot;</span>
+            <span class="s2">&quot;i.e. those that should return entries with the matching value from the filter.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">exclusive_operators</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">DataType</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_EXCLUSIVE_OPERATORS</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Dictionary mapping OPTIMADE `DataType`s to a list of operators that are &#39;exclusive&#39;, &quot;</span>
+            <span class="s2">&quot;i.e. those that should not return entries with the matching value from the filter.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">field_specific_overrides</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">SupportLevel</span><span class="p">,</span> <span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_FIELD_SPECIFIC_OVERRIDES</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Some fields do not require all type comparison operators to be supported. &quot;</span>
+            <span class="s2">&quot;This dictionary allows overriding the list of supported operators for a field, using &quot;</span>
+            <span class="s2">&quot;the field name as a key, and the support level of different operators with a subkey. &quot;</span>
+            <span class="s2">&quot;Queries on fields listed in this way will pass the validator provided the server returns a 501 status.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">links_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the links endpoint&quot;</span><span class="p">)</span>
+    <span class="n">versions_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;versions&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the versions endpoint&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">info_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the info endpoint&quot;</span><span class="p">)</span>
+    <span class="n">non_entry_endpoints</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_NON_ENTRY_ENDPOINTS</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The list specification-mandated endpoint names that do not contain entries&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">top_level_non_attribute_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">BaseResourceMapper</span><span class="o">.</span><span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Field names to treat as top-level&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">enum_fallback_values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">_ENUM_DUMMY_VALUES</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Provide fallback values for enum fields to use when validating filters.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 

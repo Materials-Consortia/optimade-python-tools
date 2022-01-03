@@ -1769,6 +1769,28 @@ and properties.</p>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/references/adapter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Reference</span><span class="p">(</span><span class="n">EntryAdapter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Lazy reference resource converter.</span>
+
+<span class="sd">    Go to [`EntryAdapter`][optimade.adapters.base.EntryAdapter] to see the full list of methods</span>
+<span class="sd">    and properties.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        ENTRY_RESOURCE (ReferenceResource): This adapter stores entry resources as</span>
+<span class="sd">            [`ReferenceResource`][optimade.models.references.ReferenceResource]s.</span>
+<span class="sd">        _type_converters (Dict[str, Callable]): Dictionary of valid conversion types for entry.</span>
+
+<span class="sd">            There are currently no available types.</span>
+<span class="sd">        as_&lt;_type_converters&gt;: Convert entry to a type listed in `_type_converters`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">ReferenceResource</span> <span class="o">=</span> <span class="n">ReferenceResource</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1817,6 +1839,52 @@ ENTRY_RESOURCE        </code>
 </li>
 </ul>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/references/adapter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The `references` entries describe bibliographic references.</span>
+
+<span class="sd">    The following properties are used to provide the bibliographic details:</span>
+
+<span class="sd">    - **address**, **annote**, **booktitle**, **chapter**, **crossref**, **edition**, **howpublished**, **institution**, **journal**, **key**, **month**, **note**, **number**, **organization**, **pages**, **publisher**, **school**, **series**, **title**, **volume**, **year**: meanings of these properties match the [BibTeX specification](http://bibtexml.sourceforge.net/btxdoc.pdf), values are strings;</span>
+<span class="sd">    - **bib_type**: type of the reference, corresponding to **type** property in the BibTeX specification, value is string;</span>
+<span class="sd">    - **authors** and **editors**: lists of *person objects* which are dictionaries with the following keys:</span>
+<span class="sd">        - **name**: Full name of the person, REQUIRED.</span>
+<span class="sd">        - **firstname**, **lastname**: Parts of the person&#39;s name, OPTIONAL.</span>
+<span class="sd">    - **doi** and **url**: values are strings.</span>
+<span class="sd">    - **Requirements/Conventions**:</span>
+<span class="sd">        - **Support**: OPTIONAL support in implementations, i.e., any of the properties MAY be `null`.</span>
+<span class="sd">        - **Query**: Support for queries on any of these properties is OPTIONAL.</span>
+<span class="sd">            If supported, filters MAY support only a subset of comparison operators.</span>
+<span class="sd">        - Every references entry MUST contain at least one of the properties.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="s2">&quot;references&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;references&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+<span class="s2">- **Type**: string.</span>
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - MUST be an existing entry type.</span>
+<span class="s2">    - The entry of type &lt;type&gt; and ID &lt;id&gt; MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
+<span class="s2">- **Example**: `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^references$&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">ReferenceResourceAttributes</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;reference object must have at least one field defined&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+</code></pre></div>
+        </details>
 
 
 

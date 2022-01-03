@@ -1783,6 +1783,75 @@ LarkParser        </code>
       <p>This class wraps a versioned OPTIMADE grammar and allows
 it to be parsed into Lark tree objects.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/filterparser/lark_parser.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LarkParser</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This class wraps a versioned OPTIMADE grammar and allows</span>
+<span class="sd">    it to be parsed into Lark tree objects.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">variant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For a given version and variant, try to load the corresponding grammar.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            version: The grammar version number to use (e.g., `(1, 0, 1)` for v1.0.1).</span>
+<span class="sd">            variant: The grammar variant to employ.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ParserError: If the requested version/variant of the</span>
+<span class="sd">                grammar does not exist.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">version</span><span class="p">:</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                <span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">AVAILABLE_PARSERS</span> <span class="k">if</span> <span class="n">AVAILABLE_PARSERS</span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">AVAILABLE_PARSERS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown parser grammar version: </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">variant</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">AVAILABLE_PARSERS</span><span class="p">[</span><span class="n">version</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown variant of the parser: </span><span class="si">{</span><span class="n">variant</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variant</span> <span class="o">=</span> <span class="n">variant</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">AVAILABLE_PARSERS</span><span class="p">[</span><span class="n">version</span><span class="p">][</span><span class="n">variant</span><span class="p">])</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lark</span> <span class="o">=</span> <span class="n">Lark</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tree</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse a filter string into a `lark.Tree`.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            filter_: The filter string to parse.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            BadRequest: If the filter cannot be parsed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The parsed filter.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lark</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filter_</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">filter_</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unable to parse filter </span><span class="si">{</span><span class="n">filter_</span><span class="si">}</span><span class="s2">. Lark traceback: </span><span class="se">\n</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">,</span> <span class="n">Tree</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">pretty</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lark</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2018,6 +2087,14 @@ ParserError        </code>
       <p>Triggered by critical parsing errors that should lead
 to 500 Server Error HTTP statuses.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/filterparser/lark_parser.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ParserError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Triggered by critical parsing errors that should lead</span>
+<span class="sd">    to 500 Server Error HTTP statuses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
 
 
     </div>

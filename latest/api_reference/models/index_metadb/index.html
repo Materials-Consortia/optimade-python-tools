@@ -1818,6 +1818,14 @@ DefaultRelationship        </code>
 
       <p>Enumeration of key(s) for relationship dictionary in IndexInfoResource</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DefaultRelationship</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enumeration of key(s) for relationship dictionary in IndexInfoResource&quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1878,6 +1886,18 @@ IndexInfoAttributes        </code>
 
       <p>Attributes for Base URL Info endpoint for an Index Meta-Database</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexInfoAttributes</span><span class="p">(</span><span class="n">BaseInfoAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint for an Index Meta-Database&quot;&quot;&quot;</span>
+
+    <span class="n">is_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">True</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;This must be `true` since this is an index meta-database (see section Index Meta-Database).&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1905,6 +1925,22 @@ IndexInfoResource        </code>
 
       <p>Index Meta-Database Base URL Info endpoint resource</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexInfoResource</span><span class="p">(</span><span class="n">BaseInfoResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Index Meta-Database Base URL Info endpoint resource&quot;&quot;&quot;</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">IndexInfoAttributes</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="n">relationships</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">DefaultRelationship</span><span class="p">,</span> <span class="n">IndexRelationship</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Relationships&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their &#39;default&#39; OPTIMADE API database.</span>
+<span class="s2">A client SHOULD present this database as the first choice when an end-user chooses this provider.&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1932,6 +1968,18 @@ IndexRelationship        </code>
 
       <p>Index Meta-Database relationship</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexRelationship</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Index Meta-Database relationship&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">RelatedLinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;[JSON API resource linkage](http://jsonapi.org/format/1.0/#document-links).</span>
+<span class="s2">It MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1998,6 +2046,14 @@ RelatedLinksResource        </code>
 
       <p>A related Links resource object</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RelatedLinksResource</span><span class="p">(</span><span class="n">BaseResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A related Links resource object&quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="n">const</span><span class="o">=</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^links$&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>

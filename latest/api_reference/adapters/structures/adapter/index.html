@@ -1778,6 +1778,46 @@ and properties.</p>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/structures/adapter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Structure</span><span class="p">(</span><span class="n">EntryAdapter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Lazy structure resource converter.</span>
+
+<span class="sd">    Go to [`EntryAdapter`][optimade.adapters.base.EntryAdapter] to see the full list of methods</span>
+<span class="sd">    and properties.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        ENTRY_RESOURCE (StructureResource): This adapter stores entry resources as</span>
+<span class="sd">            [`StructureResource`][optimade.models.structures.StructureResource]s.</span>
+<span class="sd">        _type_converters (Dict[str, Callable]): Dictionary of valid conversion types for entry.</span>
+
+<span class="sd">            Currently available types:</span>
+
+<span class="sd">            - `aiida_structuredata`</span>
+<span class="sd">            - `ase`</span>
+<span class="sd">            - `cif`</span>
+<span class="sd">            - `pdb`</span>
+<span class="sd">            - `pdbx_mmcif`</span>
+<span class="sd">            - `pymatgen`</span>
+<span class="sd">            - `jarvis`</span>
+
+<span class="sd">        as_&lt;_type_converters&gt;: Convert entry to a type listed in `_type_converters`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">StructureResource</span> <span class="o">=</span> <span class="n">StructureResource</span>
+    <span class="n">_type_converters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;aiida_structuredata&quot;</span><span class="p">:</span> <span class="n">get_aiida_structure_data</span><span class="p">,</span>
+        <span class="s2">&quot;ase&quot;</span><span class="p">:</span> <span class="n">get_ase_atoms</span><span class="p">,</span>
+        <span class="s2">&quot;cif&quot;</span><span class="p">:</span> <span class="n">get_cif</span><span class="p">,</span>
+        <span class="s2">&quot;pdb&quot;</span><span class="p">:</span> <span class="n">get_pdb</span><span class="p">,</span>
+        <span class="s2">&quot;pdbx_mmcif&quot;</span><span class="p">:</span> <span class="n">get_pdbx_mmcif</span><span class="p">,</span>
+        <span class="s2">&quot;pymatgen&quot;</span><span class="p">:</span> <span class="n">get_pymatgen</span><span class="p">,</span>
+        <span class="s2">&quot;jarvis&quot;</span><span class="p">:</span> <span class="n">get_jarvis_atoms</span><span class="p">,</span>
+    <span class="p">}</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1808,6 +1848,35 @@ ENTRY_RESOURCE        </code>
 
       <p>Representing a structure.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/structures/adapter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - MUST be an existing entry type.</span>
+<span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^structures$&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">StructureResourceAttributes</span>
+</code></pre></div>
+        </details>
 
 
     </div>

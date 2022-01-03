@@ -1737,6 +1737,19 @@ StructureMapper        </code>
     <div class="doc doc-contents ">
 
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/mappers/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
+
+    <span class="n">LENGTH_ALIASES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s2">&quot;elements&quot;</span><span class="p">,</span> <span class="s2">&quot;nelements&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;element_ratios&quot;</span><span class="p">,</span> <span class="s2">&quot;nelements&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;cartesian_site_positions&quot;</span><span class="p">,</span> <span class="s2">&quot;nsites&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">,</span> <span class="s2">&quot;nsites&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">ENTRY_RESOURCE_CLASS</span> <span class="o">=</span> <span class="n">StructureResource</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1768,6 +1781,35 @@ ENTRY_RESOURCE_CLASS        </code>
 
       <p>Representing a structure.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/mappers/structures.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - MUST be an existing entry type.</span>
+<span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^structures$&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">StructureResourceAttributes</span>
+</code></pre></div>
+        </details>
 
 
     </div>

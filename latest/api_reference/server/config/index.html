@@ -2251,6 +2251,28 @@ LogLevel        </code>
 <li><code>critical</code></li>
 </ul>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LogLevel</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replication of logging LogLevels</span>
+
+<span class="sd">    - `notset`</span>
+<span class="sd">    - `debug`</span>
+<span class="sd">    - `info`</span>
+<span class="sd">    - `warning`</span>
+<span class="sd">    - `error`</span>
+<span class="sd">    - `critical`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">NOTSET</span> <span class="o">=</span> <span class="s2">&quot;notset&quot;</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="s2">&quot;debug&quot;</span>
+    <span class="n">INFO</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
+    <span class="n">WARNING</span> <span class="o">=</span> <span class="s2">&quot;warning&quot;</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
+    <span class="n">CRITICAL</span> <span class="o">=</span> <span class="s2">&quot;critical&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2300,6 +2322,217 @@ ServerConfig        </code>
       <p>This class stores server config parameters in a way that
 can be easily extended for new config file types.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class stores server config parameters in a way that</span>
+<span class="sd">    can be easily extended for new config file types.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Turns on Debug Mode for the OPTIMADE Server implementation&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">insert_test_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">True</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Insert test data into each collection on server initialisation. If true, the &quot;</span>
+            <span class="s2">&quot;configured backend will be populated with test data on server start. Should be &quot;</span>
+            <span class="s2">&quot;disabled for production usage.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">use_real_mongo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;DEPRECATED: force usage of MongoDB over any other backend.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">database_backend</span><span class="p">:</span> <span class="n">SupportedBackend</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGOMOCK</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Which database backend to use out of the supported backends.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Host settings to pass through to the `Elasticsearch` class.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">mongo_database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;optimade&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo database for collection data&quot;</span>
+    <span class="p">)</span>
+    <span class="n">mongo_uri</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;localhost:27017&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;URI for the Mongo server&quot;</span><span class="p">)</span>
+    <span class="n">links_collection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /links endpoint resources&quot;</span>
+    <span class="p">)</span>
+    <span class="n">references_collection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;references&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /references endpoint resources&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">structures_collection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /structures endpoint resources&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Default number of resources per page&quot;</span><span class="p">)</span>
+    <span class="n">page_limit_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">500</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Max allowed number of resources per page&quot;</span>
+    <span class="p">)</span>
+    <span class="n">default_db</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;test_server&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;ID of /links endpoint resource for the chosen default OPTIMADE implementation (only &quot;</span>
+            <span class="s2">&quot;relevant for the index meta-database)&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">root_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Sets the FastAPI app `root_path` parameter. This can be used to serve the API under a&quot;</span>
+            <span class="s2">&quot; path prefix behind a proxy or as a sub-application of another FastAPI app. See &quot;</span>
+            <span class="s2">&quot;https://fastapi.tiangolo.com/advanced/sub-applications/#technical-details-root_path &quot;</span>
+            <span class="s2">&quot;for details.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">base_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Base URL for this implementation&quot;</span>
+    <span class="p">)</span>
+    <span class="n">implementation</span><span class="p">:</span> <span class="n">Implementation</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Implementation</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;OPTIMADE Python Tools&quot;</span><span class="p">,</span>
+            <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+            <span class="n">source_url</span><span class="o">=</span><span class="s2">&quot;https://github.com/Materials-Consortia/optimade-python-tools&quot;</span><span class="p">,</span>
+            <span class="n">maintainer</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;dev@optimade.org&quot;</span><span class="p">},</span>
+            <span class="n">issue_tracker</span><span class="o">=</span><span class="s2">&quot;https://github.com/Materials-Consortia/optimade-python-tools/issues&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Introspective information about this OPTIMADE implementation&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">index_base_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyHttpUrl</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An optional link to the base URL for the index meta-database of the provider.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">provider</span><span class="p">:</span> <span class="n">Provider</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Provider</span><span class="p">(</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;exmpl&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Example provider&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Provider used for examples, not to be assigned to a real database&quot;</span><span class="p">,</span>
+            <span class="n">homepage</span><span class="o">=</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;General information about the provider of this OPTIMADE implementation&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">provider_fields</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+        <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">{},</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;A list of additional fields to be served with the provider&#39;s prefix attached, &quot;</span>
+            <span class="s2">&quot;broken down by endpoint.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">aliases</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">{},</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;A mapping between field names in the database with their corresponding OPTIMADE field&quot;</span>
+            <span class="s2">&quot; names, broken down by endpoint.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">length_aliases</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+        <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">{},</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;A mapping between a list property (or otherwise) and an integer property that defines&quot;</span>
+            <span class="s2">&quot; the length of that list, for example elements -&gt; nelements. The standard aliases are&quot;</span>
+            <span class="s2">&quot; applied first, so this dictionary must refer to the API fields, not the database &quot;</span>
+            <span class="s2">&quot;fields.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">index_links_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;index_links.json&quot;</span><span class="p">),</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Absolute path to a JSON file containing the MongoDB collecton of links entries &quot;</span>
+            <span class="s2">&quot;(documents) to serve under the /links endpoint of the index meta-database. &quot;</span>
+            <span class="s2">&quot;NB! As suggested in the previous sentence, these will only be served when using a &quot;</span>
+            <span class="s2">&quot;MongoDB-based backend.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">log_level</span><span class="p">:</span> <span class="n">LogLevel</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">LogLevel</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Logging level for the OPTIMADE server.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">log_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/var/log/optimade/&quot;</span><span class="p">),</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Folder in which log files will be saved.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">set_implementation_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set defaults and modify bypassed value(s)&quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">}</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">use_real_mongo_override</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overrides the `database_backend` setting with MongoDB and</span>
+<span class="sd">        raises a deprecation warning.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">use_real_mongo</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;use_real_mongo&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_real_mongo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;use_real_mongo&#39; is deprecated, please set the appropriate &#39;database_backend&#39; &quot;</span>
+                <span class="s2">&quot;instead.&quot;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">use_real_mongo</span><span class="p">:</span>
+                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;database_backend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGODB</span>
+
+        <span class="k">return</span> <span class="n">values</span>
+
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a pydantic model Config object that modifies the behaviour of</span>
+<span class="sd">        ServerConfig by adding a prefix to the environment variables that</span>
+<span class="sd">        override config file values. It has nothing to do with the OPTIMADE</span>
+<span class="sd">        config.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">env_prefix</span> <span class="o">=</span> <span class="s2">&quot;optimade_&quot;</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
+        <span class="n">env_file_encoding</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">customise_sources</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">init_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
+            <span class="n">env_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
+            <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            **Priority of config settings sources**:</span>
+
+<span class="sd">            1. Passed arguments upon initialization of</span>
+<span class="sd">               [`ServerConfig`][optimade.server.config.ServerConfig].</span>
+<span class="sd">            2. Environment variables, matching the syntax: `&quot;OPTIMADE_&quot;` or `&quot;optimade_&quot;` +</span>
+<span class="sd">               `&lt;config_name&gt;`, e.g., `OPTIMADE_LOG_LEVEL=debug` or</span>
+<span class="sd">               `optimade_log_dir=~/logs_dir/optimade/`.</span>
+<span class="sd">            3. Configuration file (JSON/YAML) taken from:</span>
+<span class="sd">               1. Environment variable `OPTIMADE_CONFIG_FILE`.</span>
+<span class="sd">               2. Default location (see</span>
+<span class="sd">                  [DEFAULT_CONFIG_FILE_PATH][optimade.server.config.DEFAULT_CONFIG_FILE_PATH]).</span>
+<span class="sd">            4. Settings from secret file (see</span>
+<span class="sd">               [pydantic documentation](https://pydantic-docs.helpmanual.io/usage/settings/#secret-support)</span>
+<span class="sd">               for more information).</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">init_settings</span><span class="p">,</span>
+                <span class="n">env_settings</span><span class="p">,</span>
+                <span class="n">config_file_settings</span><span class="p">,</span>
+                <span class="n">file_secret_settings</span><span class="p">,</span>
+            <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2858,6 +3091,53 @@ ServerConfig by adding a prefix to the environment variables that
 override config file values. It has nothing to do with the OPTIMADE
 config.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a pydantic model Config object that modifies the behaviour of</span>
+<span class="sd">    ServerConfig by adding a prefix to the environment variables that</span>
+<span class="sd">    override config file values. It has nothing to do with the OPTIMADE</span>
+<span class="sd">    config.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">env_prefix</span> <span class="o">=</span> <span class="s2">&quot;optimade_&quot;</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
+    <span class="n">env_file_encoding</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">customise_sources</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">init_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
+        <span class="n">env_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
+        <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        **Priority of config settings sources**:</span>
+
+<span class="sd">        1. Passed arguments upon initialization of</span>
+<span class="sd">           [`ServerConfig`][optimade.server.config.ServerConfig].</span>
+<span class="sd">        2. Environment variables, matching the syntax: `&quot;OPTIMADE_&quot;` or `&quot;optimade_&quot;` +</span>
+<span class="sd">           `&lt;config_name&gt;`, e.g., `OPTIMADE_LOG_LEVEL=debug` or</span>
+<span class="sd">           `optimade_log_dir=~/logs_dir/optimade/`.</span>
+<span class="sd">        3. Configuration file (JSON/YAML) taken from:</span>
+<span class="sd">           1. Environment variable `OPTIMADE_CONFIG_FILE`.</span>
+<span class="sd">           2. Default location (see</span>
+<span class="sd">              [DEFAULT_CONFIG_FILE_PATH][optimade.server.config.DEFAULT_CONFIG_FILE_PATH]).</span>
+<span class="sd">        4. Settings from secret file (see</span>
+<span class="sd">           [pydantic documentation](https://pydantic-docs.helpmanual.io/usage/settings/#secret-support)</span>
+<span class="sd">           for more information).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">init_settings</span><span class="p">,</span>
+            <span class="n">env_settings</span><span class="p">,</span>
+            <span class="n">config_file_settings</span><span class="p">,</span>
+            <span class="n">file_secret_settings</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -3070,6 +3350,25 @@ SupportedBackend        </code>
     creating an in-memory database, which is mainly used for testing.</li>
 </ul>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/config.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SupportedBackend</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Enumeration of supported database backends</span>
+
+<span class="sd">    - `elastic`: [Elasticsearch](https://www.elastic.co/).</span>
+<span class="sd">    - `mongodb`: [MongoDB](https://www.mongodb.com/).</span>
+<span class="sd">    - `mongomock`: Also MongoDB, but instead of using the</span>
+<span class="sd">        [`pymongo`](https://pymongo.readthedocs.io/) driver to connect to a live Mongo database</span>
+<span class="sd">        instance, this will use the [`mongomock`](https://github.com/mongomock/mongomock) driver,</span>
+<span class="sd">        creating an in-memory database, which is mainly used for testing.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ELASTIC</span> <span class="o">=</span> <span class="s2">&quot;elastic&quot;</span>
+    <span class="n">MONGODB</span> <span class="o">=</span> <span class="s2">&quot;mongodb&quot;</span>
+    <span class="n">MONGOMOCK</span> <span class="o">=</span> <span class="s2">&quot;mongomock&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
