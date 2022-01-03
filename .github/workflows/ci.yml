@@ -205,6 +205,8 @@ jobs:
         pip install -r requirements-client.txt
         # AiiDA-specific
         reentry scan
+        pip uninstall -y numpy
+        pip install numpy
 
     - name: Setup up environment for AiiDA
       env:
