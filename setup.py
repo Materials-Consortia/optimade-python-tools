@@ -87,7 +87,7 @@ setup(
         "fastapi~=0.65.2",
         "pydantic~=1.9",
         "email_validator~=1.1",
-        "requests~=2.26",
+        "requests~=2.27",
         "typing-extensions~=4.0;python_version<'3.8'",
     ],
     extras_require={
