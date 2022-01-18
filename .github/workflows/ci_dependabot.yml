@@ -1,6 +1,7 @@
 name: CI - Single Dependabot PR
 
 on:
+  workflow_dispatch:
   schedule:
     # At 6:30 UTC on the first of every month
     - cron: "30 6 1 * *"
