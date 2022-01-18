@@ -40,6 +40,7 @@ jobs:
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        exclude_tags: ["dependency_updates"]
 
     - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/utils/update_docs.sh
