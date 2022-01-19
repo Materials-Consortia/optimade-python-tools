@@ -1,11 +1,10 @@
 name: CI - Single Dependabot PR
 
 on:
+  workflow_dispatch:
   schedule:
-    # At 6:30 UTC every Wednesday
-    # Dependabot runs once a week (every Monday) (pip)
-    # and every day (GH Actions) at 5:00 UTC
-    - cron: "30 6 * * 3"
+    # At 6:30 UTC on the first of every month
+    - cron: "30 6 1 * *"
 
 jobs:
 
