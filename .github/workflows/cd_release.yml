@@ -65,6 +65,7 @@ jobs:
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         since_tag: "${{ env.PREVIOUS_VERSION }}"
         output: "release_changelog.md"
+        exclude_tags: ["dependency_updates"]
 
     - name: Append changelog to release body
       run: |
