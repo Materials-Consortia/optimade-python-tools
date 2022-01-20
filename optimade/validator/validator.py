@@ -24,6 +24,7 @@ import requests
 from optimade.models import DataType, EntryInfoResponse, SupportLevel
 from optimade.validator.utils import (
     DEFAULT_CONN_TIMEOUT,
+    DEFAULT_READ_TIMEOUT,
     Client,
     test_case,
     print_failure,
@@ -78,6 +79,7 @@ class ImplementationValidator:
         minimal: bool = False,
         http_headers: Dict[str, str] = None,
         timeout: float = DEFAULT_CONN_TIMEOUT,
+        read_timeout: float = DEFAULT_READ_TIMEOUT,
     ):
         """Set up the tests to run, based on constants in this module
         for required endpoints.
@@ -107,6 +109,7 @@ class ImplementationValidator:
             minimal: Whether or not to run only a minimal test set.
             http_headers: Dictionary of additional headers to add to every request.
             timeout: The connection timeout to use for all requests (in seconds).
+            read_timeout: The read timeout to use for all requests (in seconds).
 
         """
         self.verbosity = verbosity
@@ -158,6 +161,7 @@ class ImplementationValidator:
                 max_retries=self.max_retries,
                 headers=http_headers,
                 timeout=timeout,
+                read_timeout=read_timeout,
             )
 
         self._setup_log()
