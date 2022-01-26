@@ -247,6 +247,10 @@ class Client:  # pragma: no cover
             except requests.exceptions.ConnectionError as exc:
                 errors.append(str(exc))
 
+            # Read timeouts should prevent further retries
+            except requests.exceptions.ReadTimeout as exc:
+                raise ResponseError(str(exc)) from None
+
             except requests.exceptions.MissingSchema:
                 sys.exit(
                     f"Unable to make request on {self.last_request}, did you mean http://{self.last_request}?"
