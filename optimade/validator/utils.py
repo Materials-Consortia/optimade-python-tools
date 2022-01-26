@@ -249,7 +249,7 @@ class Client:  # pragma: no cover
 
             # Read timeouts should prevent further retries
             except requests.exceptions.ReadTimeout as exc:
-                raise ResponseError(str(exc)) from None
+                raise ResponseError(str(exc)) from exc
 
             except requests.exceptions.MissingSchema:
                 sys.exit(
