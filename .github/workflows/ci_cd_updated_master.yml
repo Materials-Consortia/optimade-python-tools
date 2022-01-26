@@ -73,6 +73,7 @@ jobs:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates"
+        future_release: "Unreleased changes"
 
     - name: Deploy documentation
       if: env.RELEASE_RUN == 'false'
