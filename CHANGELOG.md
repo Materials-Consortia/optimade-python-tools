@@ -1,5 +1,36 @@
 # Changelog
 
+## [v0.16.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.9) (2022-01-26)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.8...v0.16.9)
+
+**Implemented enhancements:**
+
+- Lower validator default read timeout and allow it to be customised [\#1051](https://github.com/Materials-Consortia/optimade-python-tools/pull/1051) ([ml-evs](https://github.com/ml-evs))
+
+**Fixed bugs:**
+
+- Dependabot not updating NumPy to 1.22 [\#1035](https://github.com/Materials-Consortia/optimade-python-tools/issues/1035)
+
+**Security fixes:**
+
+- Elastic search log4j vulnerability [\#1040](https://github.com/Materials-Consortia/optimade-python-tools/issues/1040)
+
+**Closed issues:**
+
+- Remove multiple "Update dependencies" entries in CHANGELOG generation [\#1038](https://github.com/Materials-Consortia/optimade-python-tools/issues/1038)
+- Docs reference to `LarkParser` failing. [\#1037](https://github.com/Materials-Consortia/optimade-python-tools/issues/1037)
+
+**Merged pull requests:**
+
+- Attempt to fix syntax for actions workflow [\#1053](https://github.com/Materials-Consortia/optimade-python-tools/pull/1053) ([ml-evs](https://github.com/ml-evs))
+- Update dependencies [\#1049](https://github.com/Materials-Consortia/optimade-python-tools/pull/1049) ([CasperWA](https://github.com/CasperWA))
+- Update dependabot config and changelog generation [\#1048](https://github.com/Materials-Consortia/optimade-python-tools/pull/1048) ([ml-evs](https://github.com/ml-evs))
+- Update dependencies [\#1044](https://github.com/Materials-Consortia/optimade-python-tools/pull/1044) ([CasperWA](https://github.com/CasperWA))
+- Bump elasticsearch image version to avoid any log4j issues [\#1041](https://github.com/Materials-Consortia/optimade-python-tools/pull/1041) ([ml-evs](https://github.com/ml-evs))
+- Make NumPy requirement py version-specific [\#1036](https://github.com/Materials-Consortia/optimade-python-tools/pull/1036) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#1031](https://github.com/Materials-Consortia/optimade-python-tools/pull/1031) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.16.8](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.8) (2021-12-22)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.7...v0.16.8)
