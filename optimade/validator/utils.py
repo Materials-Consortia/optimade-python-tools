@@ -39,7 +39,7 @@ from optimade.models import (
 # Default connection timeout allows for one default-sized TCP retransmission window
 # (see https://docs.python-requests.org/en/latest/user/advanced/#timeouts)
 DEFAULT_CONN_TIMEOUT = 3.05
-DEFAULT_READ_TIMEOUT = 30
+DEFAULT_READ_TIMEOUT = 60
 
 
 class ResponseError(Exception):
@@ -246,6 +246,10 @@ class Client:  # pragma: no cover
             # If the connection times out, retry but cache the error
             except requests.exceptions.ConnectionError as exc:
                 errors.append(str(exc))
+
+            # Read timeouts should prevent further retries
+            except requests.exceptions.ReadTimeout as exc:
+                raise ResponseError(str(exc)) from exc
 
             except requests.exceptions.MissingSchema:
                 sys.exit(

@@ -2,7 +2,7 @@
 # pylint: disable=import-outside-toplevel
 from optimade import __version__, __api_version__
 from .validator import ImplementationValidator
-from .utils import DEFAULT_CONN_TIMEOUT
+from .utils import DEFAULT_CONN_TIMEOUT, DEFAULT_READ_TIMEOUT
 
 __all__ = ["ImplementationValidator", "validate"]
 
@@ -112,6 +112,13 @@ def validate():  # pragma: no cover
         help=f"Timeout to use for each individual request (DEFAULT: {DEFAULT_CONN_TIMEOUT} s)",
     )
 
+    parser.add_argument(
+        "--read-timeout",
+        type=float,
+        default=DEFAULT_READ_TIMEOUT,
+        help=f"Read timeout to use for each individual request (DEFAULT: {DEFAULT_READ_TIMEOUT} s)",
+    )
+
     args = vars(parser.parse_args())
 
     if os.environ.get("OPTIMADE_VERBOSITY") is not None:
@@ -145,6 +152,7 @@ def validate():  # pragma: no cover
         page_limit=args["page_limit"],
         http_headers=args["headers"],
         timeout=args["timeout"],
+        read_timeout=args["read_timeout"],
     )
 
     try:
