@@ -40,7 +40,7 @@ jobs:
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates"
+        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
 
     - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/utils/update_docs.sh
@@ -65,7 +65,7 @@ jobs:
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         since_tag: "${{ env.PREVIOUS_VERSION }}"
         output: "release_changelog.md"
-        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates"
+        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
 
     - name: Append changelog to release body
       run: |
