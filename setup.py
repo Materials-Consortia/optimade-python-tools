@@ -43,10 +43,11 @@ docs_deps = [
     "mkdocstrings~=0.17.0",
 ]
 testing_deps = [
-    "pytest~=6.2",
-    "pytest-cov~=3.0",
+    "build~=0.7.0",
     "codecov~=2.1",
     "jsondiff~=1.3",
+    "pytest~=6.2",
+    "pytest-cov~=3.0",
 ] + server_deps
 dev_deps = (
     ["pylint~=2.12", "pre-commit~=2.16", "invoke~=1.6"]

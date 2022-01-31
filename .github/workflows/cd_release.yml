@@ -76,7 +76,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_CASPER }}
 
     - name: Build source distribution
-      run: python ./setup.py sdist
+      run: python -m build
 
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@master
