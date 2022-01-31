@@ -1,8 +1,10 @@
-import os
-from pathlib import Path
-import re
-import tempfile
+"""Distribution tests."""
+from typing import TYPE_CHECKING
+
 import pytest
+
+if TYPE_CHECKING:
+    from typing import List
 
 
 package_data = [
@@ -16,18 +18,30 @@ package_data = [
 ]
 
 
-@pytest.mark.parametrize("package_file", package_data)
-def test_distribution_package_data(package_file):
-    """Make sure a distribution has all the needed package data"""
+@pytest.fixture(scope="module")
+def build_dist() -> str:
+    """Run `python -m build` and return the output."""
+    import os
+    from pathlib import Path
+    from tempfile import TemporaryDirectory
+
     repo_root = Path(__file__).parent.parent.resolve()
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        file_output = Path(temp_dir).joinpath("sdist.out")
+    with TemporaryDirectory() as tmp_dir:
+        tmp_path = Path(tmp_dir).resolve()
+        file_output = tmp_path / "sdist.out"
 
         os.chdir(repo_root)
-        os.system(f"python setup.py sdist --dry-run > {file_output}")
+        os.system(f"python -m build -o {tmp_path / 'dist'} > {file_output}")
 
-        with open(file_output, "r") as file_:
-            lines = file_.read()
+        return file_output.read_text(encoding="utf-8")
 
-        assert re.findall(package_file, lines), f"{package_file} file NOT found."
+
+@pytest.mark.parametrize("package_file", package_data)
+def test_distribution_package_data(package_file: "List[str]", build_dist: str) -> None:
+    """Make sure a distribution has all the needed package data."""
+    import re
+
+    assert re.findall(
+        package_file, build_dist
+    ), f"{package_file} file NOT found.\nOUTPUT:\n{build_dist}"
