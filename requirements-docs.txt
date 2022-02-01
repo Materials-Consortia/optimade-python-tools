@@ -1,5 +1,5 @@
 mike==1.1.2
 mkdocs==1.2.3
 mkdocs-awesome-pages-plugin==2.6.1
-mkdocs-material==8.1.7
+mkdocs-material==8.1.9
 mkdocstrings==0.17.0

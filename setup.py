@@ -50,7 +50,7 @@ testing_deps = [
     "pytest-cov~=3.0",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.12", "pre-commit~=2.16", "invoke~=1.6"]
+    ["pylint~=2.12", "pre-commit~=2.17", "invoke~=1.6"]
     + docs_deps
     + testing_deps
     + client_deps

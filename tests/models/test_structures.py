@@ -198,7 +198,7 @@ def test_structure_fatal_deformities(good_structure, deformity):
 
     deformity, message = deformity
     good_structure["attributes"].update(deformity)
-    with pytest.raises(ValidationError, match=fr".*{re.escape(message)}.*"):
+    with pytest.raises(ValidationError, match=rf".*{re.escape(message)}.*"):
         StructureResource(**good_structure)
 
 
