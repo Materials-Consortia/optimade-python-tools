@@ -141,7 +141,7 @@ class ServerConfig(BaseSettings):
     )
 
     insert_test_data: bool = Field(
-        True,
+        False,
         description=(
             "Insert test data into each collection on server initialisation. If true, the "
             "configured backend will be populated with test data on server start. Should be "
