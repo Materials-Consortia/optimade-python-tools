@@ -80,7 +80,7 @@ def load_trajectory_data(
         microsecond=0
     )  # MongeDB does not accept microseconds  #TODO: Is this sufficient ? strange things can happen with times
     # elements
-    elements = struct.symbol_set
+    elements = sorted(struct.symbol_set)
     # nelements
     nelements = len(elements)
     # elements_ratios

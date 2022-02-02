@@ -177,6 +177,10 @@ class ServerConfig(BaseSettings):
         "structures",
         description="Mongo collection name for /structures endpoint resources",
     )
+    trajectories_collection: str = Field(
+        "trajectories",
+        description="Mongo collection name for /trajectories endpoint resources",
+    )
     page_limit: int = Field(20, description="Default number of resources per page")
     page_limit_max: int = Field(
         500, description="Max allowed number of resources per page"
@@ -232,7 +236,9 @@ class ServerConfig(BaseSettings):
             "broken down by endpoint."
         ),
     )
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
+    aliases: Dict[
+        Literal["links", "references", "structures", "trajectories"], Dict[str, str]
+    ] = Field(
         {},
         description=(
             "A mapping between field names in the database with their corresponding OPTIMADE field"
@@ -240,7 +246,7 @@ class ServerConfig(BaseSettings):
         ),
     )
     length_aliases: Dict[
-        Literal["links", "references", "structures"], Dict[str, str]
+        Literal["links", "references", "structures", "trajectories"], Dict[str, str]
     ] = Field(
         {},
         description=(
