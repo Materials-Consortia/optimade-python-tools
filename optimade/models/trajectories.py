@@ -128,6 +128,69 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         support=SupportLevel.MUST,
         queryable=SupportLevel.OPTIONAL,
     )
+    offset_linear: Optional[float] = OptimadeField(
+        ...,
+        description="""If :property:`frame_serialization_format` is set to :val:`"linear"` this property gives the value at frame 0.
+  - **Type**: float
+  - **Requirements/Conventions**: The value MAY be present when :property:`frame_serialization_format` is set to :val:`"linear"`, otherwise the value MUST NOT be present.
+    The default value is 0.
+  - **Examples**:
+
+    - :val:`1.5`""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+    step_size_linear: Optional[float] = OptimadeField(
+        ...,
+        description="""If :property:`frame_serialization_format` is set to :val:`"linear"`, this value gives the change in the value of the property per unit of frame number.
+    e.g. If at frame 3 the value of the property is 0.6 and :property:`step_size_linear` = 0.2 than at frame 4 the value of the property will be 0.8.
+  - **Type**: float
+  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to "linear".
+    Otherwise it MUST NOT be present.
+  - **Examples**:
+
+    - :val:`0.0005`""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+    offset_sparse: Optional[int] = OptimadeField(
+        ...,
+        description="""If :property:`frame_serialization_format` is set to :val:` "explicit_regular_sparse"` this property gives the frame number to which the first value belongs.
+  - **Type**: integer
+  - **Requirements/Conventions**: The value MAY be present when :property:`frame_serialization_format` is set to :val:`"explicit_regular_sparse"`, otherwise the value MUST NOT be present.
+    The default value is 0.
+  - **Examples**:
+
+    - :val:`100`""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+    step_size_sparse: Optional[int] = OptimadeField(
+        ...,
+        description="""If :property:`frame_serialization_format` is set to :val:` "explicit_regular_sparse"`, this value indicates that every step_size_sparse frames a value is defined.
+  - **Type**: integer
+  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to :val:`"explicit_regular_sparse"`.
+    Otherwise it MUST NOT be present.
+  - **Examples**:
+
+    - :val:`100`""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL,
+    )
+    sparse_frames: Optional[List[int]] = OptimadeField(
+        ...,
+        description="""If :property:`frame_serialization_format` is set to :val:`"explicit_custom_sparse"`, this field holds the frames to which the values in the value field belong.
+  - **Type**: List of integers
+  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to "explicit_custom_sparse".
+    Otherwise it MUST NOT be present.
+    The frame numbers in :property:`sparse_frames` MUST be in the same order as the values.
+  - **Examples**:
+
+    - :val:`[0,20,78,345]`""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL,
+    )
+
     values: Optional[List[Any]] = OptimadeField(
         ...,
         description="""A list with the values for this property in the trajectory.""",
