@@ -3,6 +3,7 @@ from optimade.models import (
     DataType,
     ErrorResponse,
     StructureResource,
+    TrajectoryResource,
     ReferenceResource,
 )
 from optimade.server.exceptions import POSSIBLE_ERRORS
@@ -12,6 +13,7 @@ __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properti
 ENTRY_INFO_SCHEMAS: Dict[str, Callable[[None], Dict]] = {
     "structures": StructureResource.schema,
     "references": ReferenceResource.schema,
+    "trajectories": TrajectoryResource.schema,
 }
 """This dictionary is used to define the `/info/<entry_type>` endpoints."""
 

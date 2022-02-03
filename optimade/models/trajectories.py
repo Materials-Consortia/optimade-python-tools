@@ -113,7 +113,7 @@ class AvailablePropertyAttributes(BaseModel):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    _trajexmpl_time: AvailablePropertySubfields = OptimadeField(
+    _exmpl_time: AvailablePropertySubfields = OptimadeField(
         ...,
         description="""""",
         support=SupportLevel.OPTIONAL,
@@ -349,7 +349,7 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
-    _trajexmpl_file_path: Optional[str] = OptimadeField(
+    _exmpl_file_path: Optional[str] = OptimadeField(
         ...,
         description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
         support=SupportLevel.OPTIONAL,
@@ -385,7 +385,7 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    _trajexmpl_time: TrajectoryDataAttributes = OptimadeField(
+    _exmpl_time: TrajectoryDataAttributes = OptimadeField(
         ...,
         description="""The time belonging to each frame""",
         support=SupportLevel.OPTIONAL,

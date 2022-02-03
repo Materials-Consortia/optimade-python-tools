@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request
 
+from optimade.models.trajectories import TrajectoryResource
 from optimade.models import (
-    TrajectoryResource,
     TrajectoryResponseMany,
     TrajectoryResponseOne,
 )

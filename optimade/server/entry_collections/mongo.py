@@ -86,7 +86,7 @@ class MongoCollection(EntryCollection):
             kwargs["filter"] = {}
         return self.collection.count_documents(**kwargs)
 
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: List[EntryResource]):
         """Add the given entries to the underlying database.
 
         Warning:
@@ -96,7 +96,20 @@ class MongoCollection(EntryCollection):
             data: The entry resource objects to add to the database.
 
         """
-        self.collection.insert_many(data)
+        return self.collection.insert_many(data)
+
+    def update_field(self, filter, updated_value):
+        """adds or updates a field of the documents specified by the filer
+
+        Warning:
+            No validation is performed on the incoming data.
+
+        Arguments:
+            filter: The filter use to select the documents that need to be updated
+            updated_value: a dictionary holding the property and the value or a method to generate a value.
+
+        """
+        return self.collection.update_one(filter, updated_value)
 
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry: bool = False

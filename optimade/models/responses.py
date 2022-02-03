@@ -11,6 +11,7 @@ from optimade.models.links import LinksResource
 from optimade.models.optimade_json import Success, ResponseMeta, OptimadeError
 from optimade.models.references import ReferenceResource
 from optimade.models.structures import StructureResource
+from optimade.models.trajectories import TrajectoryResource
 from optimade.models.utils import StrictField
 
 
@@ -24,6 +25,8 @@ __all__ = (
     "EntryResponseMany",
     "StructureResponseOne",
     "StructureResponseMany",
+    "TrajectoryResponseOne",
+    "TrajectoryResponseMany",
     "ReferenceResponseOne",
     "ReferenceResponseMany",
 )
@@ -100,6 +103,20 @@ class StructureResponseMany(EntryResponseMany):
     data: Union[List[StructureResource], List[Dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE structures entry resource objects.",
+        uniqueItems=True,
+    )
+
+
+class TrajectoryResponseOne(EntryResponseOne):
+    data: Union[TrajectoryResource, Dict[str, Any], None] = StrictField(
+        ..., description="A single trajectories entry resource."
+    )
+
+
+class TrajectoryResponseMany(EntryResponseMany):
+    data: Union[List[TrajectoryResource], List[Dict[str, Any]]] = StrictField(
+        ...,
+        description="List of unique OPTIMADE trajectories entry resource objects.",
         uniqueItems=True,
     )
 
