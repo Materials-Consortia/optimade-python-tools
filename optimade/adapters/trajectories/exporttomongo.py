@@ -171,9 +171,7 @@ def load_trajectory_data(
     # TODO find examples of trajectories where the number of coordinates sets and the number of frames does not match.
 
     if time_present:  # if the time step is not zero or none
-        available_properties["_trajexmpl_time"] = {
-            "frame_serialization_format": "linear"
-        }
+        available_properties["_exmpl_time"] = {"frame_serialization_format": "linear"}
 
     reference_structure = {
         "elements": elements,
@@ -227,7 +225,7 @@ def load_trajectory_data(
         },
     }
     if time_present:
-        entry["_trajexmpl_time"] = {
+        entry["_exmpl_time"] = {
             "storage_location": "mongo",
             "frame_serialization_format": "linear",
             "offset_linear": traj.trajectory[0].time,
@@ -255,11 +253,11 @@ def load_trajectory_data(
         if not storage_dir:
             storage_dir = "/home/kwibus/Documents/Cecam/testfiles/"  # TODO It would be better to specify this in a config file
         with h5py.File(hdf5path, "w") as hdf5file:
-            # if "_trajexmpl_time" in available_properties: #TODO It would be nice as we could store all the trajectory data in the HDF5 file So we should still add the storing of the other relevant trajectory info here as well.
-            #    if entry["_trajexmpl_time"]["storage_location"] == "file":
-            #        hdf5file["_trajexmpl_time/frame_serialization_format"] = "linear"
-            #        hdf5file["_trajexmpl_time/offset_linear"] = traj.trajectory[0].time
-            #        hdf5file["_trajexmpl_time/step_size_linear"] = dt
+            # if "_exmpl_time" in available_properties: #TODO It would be nice as we could store all the trajectory data in the HDF5 file So we should still add the storing of the other relevant trajectory info here as well.
+            #    if entry["_exmpl_time"]["storage_location"] == "file":
+            #        hdf5file["_exmpl_time/frame_serialization_format"] = "linear"
+            #        hdf5file["_exmpl_time/offset_linear"] = traj.trajectory[0].time
+            #        hdf5file["_exmpl_time/step_size_linear"] = dt
             if traj.trajectory[
                 reference_frame
             ].has_positions:  # TODO check whether there are more properties that can be stored such as force and velocities
