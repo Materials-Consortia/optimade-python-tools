@@ -39,7 +39,7 @@ from optimade.models import (
 # Default connection timeout allows for one default-sized TCP retransmission window
 # (see https://docs.python-requests.org/en/latest/user/advanced/#timeouts)
 DEFAULT_CONN_TIMEOUT = 3.05
-DEFAULT_READ_TIMEOUT = 300
+DEFAULT_READ_TIMEOUT = 60
 
 
 class ResponseError(Exception):
@@ -172,6 +172,7 @@ class Client:  # pragma: no cover
         max_retries: int = 5,
         headers: Dict[str, str] = None,
         timeout: Optional[float] = DEFAULT_CONN_TIMEOUT,
+        read_timeout: Optional[float] = DEFAULT_READ_TIMEOUT,
     ) -> None:
         """Initialises the Client with the given `base_url` without testing
         if it is valid.
@@ -190,6 +191,7 @@ class Client:  # pragma: no cover
             max_retries: The maximum number of attempts to make for each query.
             headers: Dictionary of additional headers to add to every request.
             timeout: Connection timeout in seconds.
+            read_timeout: Read timeout in seconds.
 
         """
         self.base_url = base_url
@@ -198,6 +200,7 @@ class Client:  # pragma: no cover
         self.max_retries = max_retries
         self.headers = headers or {}
         self.timeout = timeout or DEFAULT_CONN_TIMEOUT
+        self.read_timeout = read_timeout or DEFAULT_READ_TIMEOUT
 
     def get(self, request: str):
         """Makes the given request, with a number of retries if being rate limited. The
@@ -232,7 +235,7 @@ class Client:  # pragma: no cover
                 self.response = requests.get(
                     self.last_request,
                     headers=self.headers,
-                    timeout=(self.timeout, DEFAULT_READ_TIMEOUT),
+                    timeout=(self.timeout, self.read_timeout),
                 )
 
                 status_code = self.response.status_code
@@ -243,6 +246,10 @@ class Client:  # pragma: no cover
             # If the connection times out, retry but cache the error
             except requests.exceptions.ConnectionError as exc:
                 errors.append(str(exc))
+
+            # Read timeouts should prevent further retries
+            except requests.exceptions.ReadTimeout as exc:
+                raise ResponseError(str(exc)) from exc
 
             except requests.exceptions.MissingSchema:
                 sys.exit(

@@ -67,6 +67,14 @@ jobs:
           exit 1
         fi
 
+    - name: Update changelog with unreleased changes
+      uses: CharMixer/auto-changelog-action@v1
+      with:
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
+        future_release: "Unreleased changes"
+
     - name: Deploy documentation
       if: env.RELEASE_RUN == 'false'
       run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_REPO_BRANCH }}

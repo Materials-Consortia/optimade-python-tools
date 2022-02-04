@@ -7,8 +7,13 @@ on:
     - master
     - 'push-action/**'
 
-jobs:
+# Cancel running workflows when additional changes are pushed
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
+jobs:
   lint:
     runs-on: ubuntu-latest
 
@@ -23,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         pip install flake8
 
     - name: Lint with flake8
@@ -49,7 +54,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         pip install -e .
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
@@ -74,7 +79,7 @@ jobs:
     - name: Install tools
       run: |
         python -m pip install --upgrade pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         pip install -e .
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
@@ -157,7 +162,7 @@ jobs:
         ports:
         - 5432:5432
       elasticsearch:
-        image: elasticsearch:6.8.13
+        image: elasticsearch:6.8.22
         ports:
           - 9200:9200
           - 9300:9300
@@ -179,7 +184,7 @@ jobs:
     - name: Install latest compatible versions of immediate dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         pip install -e .
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
@@ -265,7 +270,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         pip install -e .
         pip install -r requirements.txt
         pip install -r requirements-dev.txt

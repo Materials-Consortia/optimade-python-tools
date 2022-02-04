@@ -32,7 +32,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install -U pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         pip install -U -e .[all]
 
     - name: Update changelog
@@ -40,6 +40,7 @@ jobs:
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
 
     - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/utils/update_docs.sh
@@ -64,6 +65,7 @@ jobs:
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         since_tag: "${{ env.PREVIOUS_VERSION }}"
         output: "release_changelog.md"
+        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
 
     - name: Append changelog to release body
       run: |
@@ -74,7 +76,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_CASPER }}
 
     - name: Build source distribution
-      run: python ./setup.py sdist
+      run: python -m build
 
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@master
@@ -103,7 +105,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install -U pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         pip install -U -e .[all]
 
     - name: Set git config

@@ -1,5 +1,62 @@
 # Changelog
 
+## [v0.16.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.9) (2022-01-26)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.8...v0.16.9)
+
+**Implemented enhancements:**
+
+- Lower validator default read timeout and allow it to be customised [\#1051](https://github.com/Materials-Consortia/optimade-python-tools/pull/1051) ([ml-evs](https://github.com/ml-evs))
+
+**Fixed bugs:**
+
+- Dependabot not updating NumPy to 1.22 [\#1035](https://github.com/Materials-Consortia/optimade-python-tools/issues/1035)
+
+**Security fixes:**
+
+- Elastic search log4j vulnerability [\#1040](https://github.com/Materials-Consortia/optimade-python-tools/issues/1040)
+
+**Closed issues:**
+
+- Remove multiple "Update dependencies" entries in CHANGELOG generation [\#1038](https://github.com/Materials-Consortia/optimade-python-tools/issues/1038)
+- Docs reference to `LarkParser` failing. [\#1037](https://github.com/Materials-Consortia/optimade-python-tools/issues/1037)
+
+**Merged pull requests:**
+
+- Attempt to fix syntax for actions workflow [\#1053](https://github.com/Materials-Consortia/optimade-python-tools/pull/1053) ([ml-evs](https://github.com/ml-evs))
+- Update dependencies [\#1049](https://github.com/Materials-Consortia/optimade-python-tools/pull/1049) ([CasperWA](https://github.com/CasperWA))
+- Update dependabot config and changelog generation [\#1048](https://github.com/Materials-Consortia/optimade-python-tools/pull/1048) ([ml-evs](https://github.com/ml-evs))
+- Update dependencies [\#1044](https://github.com/Materials-Consortia/optimade-python-tools/pull/1044) ([CasperWA](https://github.com/CasperWA))
+- Bump elasticsearch image version to avoid any log4j issues [\#1041](https://github.com/Materials-Consortia/optimade-python-tools/pull/1041) ([ml-evs](https://github.com/ml-evs))
+- Make NumPy requirement py version-specific [\#1036](https://github.com/Materials-Consortia/optimade-python-tools/pull/1036) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#1031](https://github.com/Materials-Consortia/optimade-python-tools/pull/1031) ([CasperWA](https://github.com/CasperWA))
+
+## [v0.16.8](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.8) (2021-12-22)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.7...v0.16.8)
+
+**Implemented enhancements:**
+
+- Support for Python 3.10 [\#956](https://github.com/Materials-Consortia/optimade-python-tools/issues/956)
+
+**Fixed bugs:**
+
+- Overzealous validation of substring comparisons for chemical formula fields [\#1024](https://github.com/Materials-Consortia/optimade-python-tools/issues/1024)
+
+**Closed issues:**
+
+- Updating to pymatgen v2022+ [\#762](https://github.com/Materials-Consortia/optimade-python-tools/issues/762)
+
+**Merged pull requests:**
+
+- Update dependencies [\#1028](https://github.com/Materials-Consortia/optimade-python-tools/pull/1028) ([CasperWA](https://github.com/CasperWA))
+- Add configurable field-specific validator overrides to set filter operators as optional [\#1025](https://github.com/Materials-Consortia/optimade-python-tools/pull/1025) ([ml-evs](https://github.com/ml-evs))
+- Update dependencies [\#1023](https://github.com/Materials-Consortia/optimade-python-tools/pull/1023) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#1017](https://github.com/Materials-Consortia/optimade-python-tools/pull/1017) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#1008](https://github.com/Materials-Consortia/optimade-python-tools/pull/1008) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#1004](https://github.com/Materials-Consortia/optimade-python-tools/pull/1004) ([CasperWA](https://github.com/CasperWA))
+- Add Python 3.10 support [\#957](https://github.com/Materials-Consortia/optimade-python-tools/pull/957) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.16.7](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.7) (2021-11-21)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.6...v0.16.7)
