@@ -252,7 +252,9 @@ def load_trajectory_data(
         # Write trajectory data in HDF5 format
         if not storage_dir:
             storage_dir = "/home/kwibus/Documents/Cecam/testfiles/"  # TODO It would be better to specify this in a config file
-        with h5py.File(hdf5path, "w") as hdf5file:
+        with h5py.File(
+            hdf5path, "w"
+        ) as hdf5file:  # TODO It would be better to use a try and except around storing the data. If writing the data to the hdf5 file failes the corresponding entry should be removed from the mongo DB.
             # if "_exmpl_time" in available_properties: #TODO It would be nice as we could store all the trajectory data in the HDF5 file So we should still add the storing of the other relevant trajectory info here as well.
             #    if entry["_exmpl_time"]["storage_location"] == "file":
             #        hdf5file["_exmpl_time/frame_serialization_format"] = "linear"
