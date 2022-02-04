@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 data_paths = {
+    "trajectories": "test_trajectories.json",
     "structures": "test_structures.json",
     "references": "test_references.json",
     "links": "test_links.json",
