@@ -8,4 +8,4 @@ ENTRY_COLLECTIONS = {
     "references": references_coll,
     "structures": structures_coll,
     "trajectories": trajectories_coll,
-}
+}  # TODO: make a check to determine which entry points are actually present.
