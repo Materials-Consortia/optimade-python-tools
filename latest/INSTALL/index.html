@@ -1763,7 +1763,7 @@ Tests for the two "real" database backends, MongoDB and Elasticsearch, require a
 <a href="https://docs.docker.com/engine/install/">Docker installation instructions</a> will depend on your system; on Linux, the <code>docker</code> commands below may need to be prepended with <code>sudo</code>, depending on your distribution.
 These commands should be run from a local optimade-python-tools directory.</p>
 <p>The following command starts a local Elasticsearch v6 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):
-<div class="highlight"><pre><span></span><code>docker run -d --name elasticsearch_test -p <span class="m">9200</span>:9200 -p <span class="m">9300</span>:9300 -e <span class="s2">&quot;discovery.type=single-node&quot;</span> elasticsearch:6.8.22 <span class="se">\</span>
+<div class="highlight"><pre><span></span><code>docker run -d --name elasticsearch_test -p <span class="m">9200</span>:9200 -p <span class="m">9300</span>:9300 -e <span class="s2">&quot;discovery.type=single-node&quot;</span> elasticsearch:6.8.23 <span class="se">\</span>
 <span class="o">&amp;&amp;</span> sleep <span class="m">10</span> <span class="se">\</span>
 <span class="o">&amp;&amp;</span> <span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">&quot;elastic&quot;</span> py.test<span class="p">;</span> <span class="se">\</span>
 docker container stop elasticsearch_test<span class="p">;</span> docker container rm elasticsearch_test
