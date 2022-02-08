@@ -40,6 +40,10 @@ class StructureRelationship(TypedRelationship):
     _req_type = "structures"
 
 
+class TrajectoryRelationship(TypedRelationship):
+    _req_type = "trajectories"
+
+
 class EntryRelationships(Relationships):
     """This model wraps the JSON API Relationships to include type-specific top level keys."""
 
@@ -51,6 +55,10 @@ class EntryRelationships(Relationships):
     structures: Optional[StructureRelationship] = StrictField(
         None,
         description="Object containing links to relationships with entries of the `structures` type.",
+    )
+    trajectories: Optional[TrajectoryRelationship] = StrictField(
+        None,
+        description="Object containing links to relationships with entries of the `trajectories` type.",
     )
 
 

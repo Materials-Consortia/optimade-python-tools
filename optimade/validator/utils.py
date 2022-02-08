@@ -34,6 +34,7 @@ from optimade.models import (
     LinksResource,
     ReferenceResource,
     StructureResource,
+    TrajectoryResource,
 )
 
 # Default connection timeout allows for one default-sized TCP retransmission window
@@ -432,3 +433,11 @@ class ValidatorStructureResponseOne(ValidatorEntryResponseOne):
 
 class ValidatorStructureResponseMany(ValidatorEntryResponseMany):
     data: List[StructureResource] = Field(...)
+
+
+class ValidatorTrajectoryResponseOne(ValidatorEntryResponseOne):
+    data: TrajectoryResource = Field(...)
+
+
+class ValidatorTrajectoryResponseMany(ValidatorEntryResponseMany):
+    data: List[TrajectoryResource] = Field(...)

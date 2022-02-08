@@ -1,8 +1,9 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 import warnings
+from datetime import datetime
 from typing import List, Optional, Union, Any
 from enum import IntEnum
-from pydantic import BaseModel, validator, root_validator, conlist
+from pydantic import BaseModel, root_validator, conlist
 
 from optimade.models.entries import EntryResourceAttributes, EntryResource
 from optimade.models.utils import (
@@ -13,17 +14,17 @@ from optimade.models.utils import (
     SupportLevel,
 )
 from optimade.server.warnings import MissingExpectedField
-from optimade.models.structures import (
-    StructureResourceAttributes,
-    CORRELATED_STRUCTURE_FIELDS,
-)
-
+from optimade.models.structures import StructureResourceAttributes
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
 __all__ = (
     "Vector3D",
     "TrajectoryResourceAttributes",
+    "ReferenceStructure",
+    "AvailablePropertySubfields",
+    "AvailablePropertyAttributes",
+    "TrajectoryDataAttributes",
     "TrajectoryResource",
     "Periodicity",
 )
@@ -33,6 +34,90 @@ EPS = 2**-23
 
 Vector3D = conlist(float, min_items=3, max_items=3)
 Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
+
+CORRELATED_STRUCTURE_FIELDS = (
+    {"cartesian_site_positions", "species_at_sites"},
+    {"species_at_sites", "species"},
+)
+
+general_description_trajectory_field = """To define how this property is stored for each of the frames in the trajectory the following properties have been defined:
+- **frame_serialization_format**:
+
+  - **Description**: To improve the compactness of the data there are several ways to show to which frame a value belongs.
+    This is specified by the :property:`frame_serialization_format`.
+  - **Type**: string
+  - **Requirements/Conventions**: This field MUST be present.
+  - **Values**:
+
+    - **constant**: The value of the property is constant and thus has the same value for each frame in the trajectory.
+    - **explicit**: A value is given for each frame.
+      The number of values MUST thus be equal to the number of frames and MUST be in the same order as the frames.
+      If there is no value for a particular frame the value MUST be :val:`null`.
+    - **linear**: The value is a linear function of the frame number.
+      This function is defined by :property:`offset_linear` and :property:`step_size_linear`.
+    - **explicit_regular_sparse**: The value is set every one per :property:`step_size_sparse` frames, with :property:`offset_sparse` as the first frame.
+    - **explicit_custom_sparse**: A separate list with frame numbers is defined in the field :property:`sparse_frames` to indicate to which frame a value belongs.
+
+- **offset_linear**:
+
+  - **Description**: If :property:`frame_serialization_format` is set to :val:`"linear"` this property gives the value at frame 0.
+  - **Type**: float
+  - **Requirements/Conventions**: The value MAY be present when :property:`frame_serialization_format` is set to :val:`"linear"`, otherwise the value MUST NOT be present.
+    The default value is 0.
+  - **Examples**:
+
+    - :val:`1.5`
+
+- **step_size_linear**:
+
+  - **Description**: If :property:`frame_serialization_format` is set to :val:`"linear"`, this value gives the change in the value of the property per unit of frame number.
+    e.g. If at frame 3 the value of the property is 0.6 and :property:`step_size_linear` = 0.2 than at frame 4 the value of the property will be 0.8.
+  - **Type**: float
+  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to "linear".
+    Otherwise it MUST NOT be present.
+  - **Examples**:
+
+    - :val:`0.0005`
+
+- **offset_sparse**:
+
+  - **Description**: If :property:`frame_serialization_format` is set to :val:` "explicit_regular_sparse"` this property gives the frame number to which the first value belongs.
+  - **Type**: integer
+  - **Requirements/Conventions**: The value MAY be present when :property:`frame_serialization_format` is set to :val:`"explicit_regular_sparse"`, otherwise the value MUST NOT be present.
+    The default value is 0.
+  - **Examples**:
+
+    - :val:`100`
+
+- **step_size_sparse**:
+
+  - **Description**: If :property:`frame_serialization_format` is set to :val:` "explicit_regular_sparse"`, this value indicates that every step_size_sparse frames a value is defined.
+  - **Type**: integer
+  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to :val:`"explicit_regular_sparse"`.
+    Otherwise it MUST NOT be present.
+  - **Examples**:
+
+    - :val:`100`
+
+- **sparse_frames**:
+
+  - **Description**: If :property:`frame_serialization_format` is set to :val:`"explicit_custom_sparse"`, this field holds the frames to which the values in the value field belong.
+  - **Type**: List of integers
+  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to "explicit_custom_sparse".
+    Otherwise it MUST NOT be present.
+    The frame numbers in :property:`sparse_frames` MUST be in the same order as the values.
+  - **Examples**:
+
+    - :val:`[0,20,78,345]`
+
+
+- **values**:- **Description**: The values belonging to this property.
+    The format of this field depends on the property and on the :property:`frame_serialization_format` parameter.
+  - **Type**: List of Any
+  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is not set to :val:`"linear"`.
+    If a value has not been sampled for a particular frame the value should be set to :val:`null` at the highest possible nesting level.
+    In case of `cartesian_site_positions`_, a site that has the value :val:`null` for the x,y and z coordinates means that the site is not in the simulation volume.
+    This may be useful for grand canonical simulations where the number of particles in the simulation volume is not constant."""
 
 
 class Periodicity(IntEnum):
@@ -47,7 +132,22 @@ class ReferenceStructure(StructureResourceAttributes):
     This reference structure is used to process queries on the trajectories without having to access the rest of the
     trajectory data. At the moment"""
 
-    pass
+    last_modified: Optional[datetime] = OptimadeField(
+        None,
+        description="""Date and time representing when the entry was last modified.
+
+    - **Type**: timestamp.
+
+    - **Requirements/Conventions**:
+        - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+        - **Query**: MUST be a queryable property with support for all mandatory filter features.
+        - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.
+
+    - **Example**:
+        - As part of JSON response format: `"2007-04-05T14:30:20Z"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
 
 
 class AvailablePropertySubfields(BaseModel):
@@ -70,8 +170,8 @@ class AvailablePropertySubfields(BaseModel):
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
-    nvalues: int = OptimadeField(
-        ...,
+    nvalues: Optional[int] = OptimadeField(
+        None,
         description="""This field gives the number of values for this property.
     - **Type**: integer
     - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to explicit, explicit_regular_sparse or explicit_custom_sparse.
@@ -83,53 +183,55 @@ class AvailablePropertySubfields(BaseModel):
 
 
 class AvailablePropertyAttributes(BaseModel):
-    cartesian_site_positions: AvailablePropertySubfields = OptimadeField(
-        ...,
+    cartesian_site_positions: Optional[AvailablePropertySubfields] = OptimadeField(
+        None,
         description="""""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    lattice_vectors: AvailablePropertySubfields = OptimadeField(
-        ...,
+    lattice_vectors: Optional[AvailablePropertySubfields] = OptimadeField(
+        None,
         description="""""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    species: AvailablePropertySubfields = OptimadeField(
-        ...,
+    species: Optional[AvailablePropertySubfields] = OptimadeField(
+        None,
         description="""""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    dimension_types: AvailablePropertySubfields = OptimadeField(
-        ...,
+    dimension_types: Optional[AvailablePropertySubfields] = OptimadeField(
+        None,
         description="""""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    species_at_sites: AvailablePropertySubfields = OptimadeField(
-        ...,
+    species_at_sites: Optional[AvailablePropertySubfields] = OptimadeField(
+        None,
         description="""""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    _exmpl_time: AvailablePropertySubfields = OptimadeField(
-        ...,
+    _exmpl_time: Optional[AvailablePropertySubfields] = OptimadeField(
+        None,
         description="""""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
 
 
-class TrajectoryDataAttributes(AvailablePropertySubfields):
-    storage_location: str = OptimadeField(
-        ...,
-        description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
-        support=SupportLevel.MUST,
-        queryable=SupportLevel.OPTIONAL,
-    )
+class TrajectoryDataAttributes(
+    AvailablePropertySubfields
+):  # TODO Figure out why I need to comment out the support field for these optional properties to pass the validator.
+    # storage_location: str = OptimadeField(
+    #     ...,
+    #     description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
+    #     support=SupportLevel.MUST,
+    #     queryable=SupportLevel.OPTIONAL,
+    # )
     offset_linear: Optional[float] = OptimadeField(
-        ...,
+        None,
         description="""If :property:`frame_serialization_format` is set to :val:`"linear"` this property gives the value at frame 0.
   - **Type**: float
   - **Requirements/Conventions**: The value MAY be present when :property:`frame_serialization_format` is set to :val:`"linear"`, otherwise the value MUST NOT be present.
@@ -141,7 +243,7 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         queryable=SupportLevel.OPTIONAL,
     )
     step_size_linear: Optional[float] = OptimadeField(
-        ...,
+        None,
         description="""If :property:`frame_serialization_format` is set to :val:`"linear"`, this value gives the change in the value of the property per unit of frame number.
     e.g. If at frame 3 the value of the property is 0.6 and :property:`step_size_linear` = 0.2 than at frame 4 the value of the property will be 0.8.
   - **Type**: float
@@ -154,7 +256,7 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         queryable=SupportLevel.OPTIONAL,
     )
     offset_sparse: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""If :property:`frame_serialization_format` is set to :val:` "explicit_regular_sparse"` this property gives the frame number to which the first value belongs.
   - **Type**: integer
   - **Requirements/Conventions**: The value MAY be present when :property:`frame_serialization_format` is set to :val:`"explicit_regular_sparse"`, otherwise the value MUST NOT be present.
@@ -166,7 +268,7 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         queryable=SupportLevel.OPTIONAL,
     )
     step_size_sparse: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""If :property:`frame_serialization_format` is set to :val:` "explicit_regular_sparse"`, this value indicates that every step_size_sparse frames a value is defined.
   - **Type**: integer
   - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to :val:`"explicit_regular_sparse"`.
@@ -174,11 +276,11 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
   - **Examples**:
 
     - :val:`100`""",
-        support=SupportLevel.MUST,
+        support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
     sparse_frames: Optional[List[int]] = OptimadeField(
-        ...,
+        None,
         description="""If :property:`frame_serialization_format` is set to :val:`"explicit_custom_sparse"`, this field holds the frames to which the values in the value field belong.
   - **Type**: List of integers
   - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to "explicit_custom_sparse".
@@ -187,12 +289,12 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
   - **Examples**:
 
     - :val:`[0,20,78,345]`""",
-        support=SupportLevel.MUST,
+        support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
 
     values: Optional[List[Any]] = OptimadeField(
-        ...,
+        None,
         description="""A list with the values for this property in the trajectory.""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
@@ -238,7 +340,7 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
     )
 
     reference_frame: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""The number of the frame at which the `reference_structure` was taken.
   The first frame is frame 0.
 - **Type**: integer
@@ -349,78 +451,150 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
-    _exmpl_file_path: Optional[str] = OptimadeField(
-        ...,
-        description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
+    # _exmpl_hdf5file_path: Optional[str] = OptimadeField( # TODO: this field is now still visible in the retrieved data this is however not neccesary.
+    #     None,
+    #     description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
+    #     support=SupportLevel.OPTIONAL,
+    #     queryable=SupportLevel.OPTIONAL,
+    # )
+    cartesian_site_positions: Optional[
+        TrajectoryDataAttributes
+    ] = OptimadeField(  # TODO It should be possible to get these fields from the strcutureattributes class.
+        None,
+        description="""Cartesian positions of each site in the structure. A site is usually used
+    to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the species_at_sites
+    property, and the species themselves are described in the species property.
+    Type: list of list of floats
+Requirements/Conventions:
+Query: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
+It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three Cartesian coordinates of a site expressed as float values in the unit angstrom (Å).
+An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property assemblies).
+When sharing `cartesian_site_positions`_ the `lattice_vectors`_, `species`_, `dimension_types`_ and `species_at_sites`_ MUST however be shared as well.
+Examples:
+[[0,0,0],[0,0,2]] indicates a structure with two sites, one sitting at the origin and one along the (positive) z-axis, 2 Å away from the origin.
+"""
+        + general_description_trajectory_field,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    cartesian_site_positions: TrajectoryDataAttributes = OptimadeField(
-        ...,
-        description="""""",
+    lattice_vectors: Optional[TrajectoryDataAttributes] = OptimadeField(
+        None,
+        description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
+Type: list of list of floats or unknown values.
+Requirements/Conventions:
+Query: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
+MUST be a list of three vectors a, b, and c, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates. (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).
+For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along x and the second on the xy-plane.
+MUST always contain three vectors of three coordinates each, independently of the elements of property dimension_types. The vectors SHOULD by convention be chosen so the determinant of the lattice_vectors matrix is different from zero. The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.
+The coordinates of the lattice vectors of non-periodic dimensions (i.e., those dimensions for which dimension_types is 0) MAY be given as a list of all null values. If a lattice vector contains the value null, all coordinates of that lattice vector MUST be null.
+Examples:
+[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]] represents a cell, where the first vector is (4, 0, 0), i.e., a vector aligned along the x axis of length 4 Å; the second vector is (0, 4, 0); and the third vector is (0, 1, 4)."""
+        + general_description_trajectory_field,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    lattice_vectors: TrajectoryDataAttributes = OptimadeField(
-        ...,
-        description="""""",
+    species: Optional[TrajectoryDataAttributes] = OptimadeField(
+        None,
+        description="""A list describing the species of the sites of this structure. Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
+Type: list of dictionary with keys:
+
+name: string (REQUIRED)
+chemical_symbols: list of strings (REQUIRED)
+concentration: list of float (REQUIRED)
+attached: list of strings (OPTIONAL)
+nattached: list of integers (OPTIONAL)
+mass: list of floats (OPTIONAL)
+original_name: string (OPTIONAL).
+Requirements/Conventions:
+
+Support: SHOULD be supported by all implementations, i.e., SHOULD NOT be null.
+Query: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
+Each list member MUST be a dictionary with the following keys:
+
+name: REQUIRED; gives the name of the species; the name value MUST be unique in the species list;
+chemical_symbols: REQUIRED; MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
+
+a valid chemical-element symbol, or
+the special value "X" to represent a non-chemical element, or
+the special value "vacancy" to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the concentration list, see below).
+If any one entry in the species list has a chemical_symbols list that is longer than 1 element, the correct flag MUST be set in the list structure_features (see property structure_features).
+concentration: REQUIRED; MUST be a list of floats, with same length as chemical_symbols. The numbers represent the relative concentration of the corresponding chemical symbol in this species. The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
+
+Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations 1/3 and 2/3, the concentration might look something like [0.33333333333, 0.66666666666]. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.
+Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.
+Note that concentrations are uncorrelated between different sites (even of the same species).
+attached: OPTIONAL; if provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.
+nattached: OPTIONAL; if provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the attached key.
+
+The implementation MUST include either both or none of the attached and nattached keys, and if they are provided, they MUST be of the same length. Furthermore, if they are provided, the structure_features property MUST include the string site_attachments.
+mass: OPTIONAL. If present MUST be a list of floats, with the same length as chemical_symbols, providing element masses expressed in a.m.u. Elements denoting vacancies MUST have masses equal to 0.
+original_name: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
+
+Note: With regards to "source database", we refer to the immediate source being queried via the OPTIMADE API implementation. The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property species_at_sites).
+For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., "Ti" for titanium, "O" for oxygen, etc.) However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol. This means that a species {"name": "C", "chemical_symbols": ["Ti"], "concentration": [1.0]} is valid and represents a titanium species (and not a carbon species).
+It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.
+Examples:
+
+[ {"name": "Ti", "chemical_symbols": ["Ti"], "concentration": [1.0]} ]: any site with this species is occupied by a Ti atom.
+[ {"name": "Ti", "chemical_symbols": ["Ti", "vacancy"], "concentration": [0.9, 0.1]} ]: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.
+[ {"name": "BaCa", "chemical_symbols": ["vacancy", "Ba", "Ca"], "concentration": [0.05, 0.45, 0.5], "mass": [0.0, 137.327, 40.078]} ]: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability.
+[ {"name": "C12", "chemical_symbols": ["C"], "concentration": [1.0], "mass": [12.0]} ]: any site with this species is occupied by a carbon isotope with mass 12.
+[ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": [13.0]} ]: any site with this species is occupied by a carbon isotope with mass 13.
+[ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.
+"""
+        + general_description_trajectory_field,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    species: TrajectoryDataAttributes = OptimadeField(
-        ...,
-        description="""""",
+    dimension_types: Optional[TrajectoryDataAttributes] = OptimadeField(
+        None,
+        description="""List of three integers. For each of the three directions indicated by the three lattice vectors (see property lattice_vectors), this list indicates if the direction is periodic (value 1) or non-periodic (value 0). Note: the elements in this list each refer to the direction of the corresponding entry in lattice_vectors and not the Cartesian x, y, z directions.
+Type: list of integers.
+Requirements/Conventions:
+Support: SHOULD be supported by all implementations, i.e., SHOULD NOT be null.
+Query: Support for queries on this property is OPTIONAL.
+MUST be a list of length 3.
+Each integer element MUST assume only the value 0 or 1.
+Examples:
+For a molecule: [0, 0, 0]
+For a wire along the direction specified by the third lattice vector: [0, 0, 1]
+For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: [1, 0, 1]
+For a bulk 3D system: [1, 1, 1]"""
+        + general_description_trajectory_field,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    dimension_types: TrajectoryDataAttributes = OptimadeField(
-        ...,
-        description="""""",
+    species_at_sites: Optional[TrajectoryDataAttributes] = OptimadeField(
+        None,
+        description="""Name of the species at each site (where values for sites are specified with the same order of the property cartesian_site_positions). The properties of the species are found in the property species.
+Type: list of strings.
+Requirements/Conventions:
+Support: SHOULD be supported by all implementations, i.e., SHOULD NOT be null.
+Query: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.
+MUST have length equal to the number of sites in the structure (first dimension of the list property cartesian_site_positions).
+Each species name mentioned in the species_at_sites list MUST be described in the list property species (i.e. for each value in the species_at_sites list there MUST exist exactly one dictionary in the species list with the name attribute equal to the corresponding species_at_sites value).
+Each site MUST be associated only to a single species. Note: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element. This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.
+Examples:
+["Ti","O2"] indicates that the first site is hosting a species labeled "Ti" and the second a species labeled "O2".
+["Ac", "Ac", "Ag", "Ir"] indicating the first two sites contains the "Ac" species, while the third and fourth sites contain the "Ag" and "Ir" species, respectively."""
+        + general_description_trajectory_field,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    species_at_sites: TrajectoryDataAttributes = OptimadeField(
-        ...,
-        description="""""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-    )
-    _exmpl_time: TrajectoryDataAttributes = OptimadeField(
-        ...,
+    _exmpl_time: Optional[TrajectoryDataAttributes] = OptimadeField(
+        None,
         description="""The time belonging to each frame""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
         unit="ps",
     )
 
-    class Config:
-        def schema_extra(schema, model):
-            """Two things need to be added to the schema:
-
-            1. Constrained types in pydantic do not currently play nicely with
-            "Required Optional" fields, i.e. fields must be specified but can be null.
-            The two contrained list fields, `dimension_types` and `lattice_vectors`,
-            are OPTIMADE 'SHOULD' fields, which means that they are allowed to be null.
-
-            2. All OPTIMADE 'SHOULD' fields are allowed to be null, so we manually set them
-            to be `nullable` according to the OpenAPI definition.
-
-            """
-            schema["required"].insert(7, "dimension_types")
-            schema["required"].insert(9, "lattice_vectors")
-
-            nullable_props = (
-                prop
-                for prop in schema["required"]
-                if schema["properties"][prop].get("support") == SupportLevel.SHOULD
-            )
-            for prop in nullable_props:
-                schema["properties"][prop]["nullable"] = True
-
     # TODO add more Trajectory specific validators
 
     @root_validator(pre=True)
-    def warn_on_missing_correlated_fields(cls, values):
+    def warn_on_missing_correlated_fields(
+        cls, values
+    ):  # TODO make better system for checking required sets of properties
         """Emit warnings if a field takes a null value when a value
         was expected based on the value/nullity of another field.
         """
@@ -435,69 +609,6 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
             warnings.warn(warn, MissingExpectedField)
 
         return values
-
-    @validator("lattice_vectors", always=True)
-    def required_if_dimension_types_has_one(cls, v, values):
-        if v is None:
-            return v
-
-        if values.get("dimension_types"):
-            for dim_type, vector in zip(values.get("dimension_types", (None,) * 3), v):
-                if None in vector and dim_type == Periodicity.PERIODIC.value:
-                    raise ValueError(
-                        f"Null entries in lattice vectors are only permitted when the corresponding dimension type is {Periodicity.APERIODIC.value}. "
-                        f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in values.get('dimension_types', []))}, lattice_vectors = {v}"
-                    )
-        return v
-
-    @validator("lattice_vectors")
-    def null_values_for_whole_vector(cls, v):
-        if v is None:
-            return v
-
-        for vector in v:
-            if None in vector and any((isinstance(_, float) for _ in vector)):
-                raise ValueError(
-                    f"A lattice vector MUST be either all `null` or all numbers (vector: {vector}, all vectors: {v})"
-                )
-        return v
-
-    @validator("species_at_sites")
-    def validate_species_at_sites(cls, v, values):
-        if v is None:
-            return v
-
-        if values.get("nsites") and len(v) != values.get("nsites"):
-            raise ValueError(
-                f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites "
-                f"(value: {values.get('nsites', 'Not specified')})"
-            )
-        if values.get("species"):
-            all_species_names = {
-                getattr(_, "name", None) for _ in values.get("species", [{}])
-            }
-            all_species_names -= {None}
-            for value in v:
-                if value not in all_species_names:
-                    raise ValueError(
-                        "species_at_sites MUST be represented by a species' name, "
-                        f"but {value} was not found in the list of species names: {all_species_names}"
-                    )
-        return v
-
-    @validator("species")
-    def validate_species(cls, v):
-        if v is None:
-            return v
-
-        all_species = [_.name for _ in v]
-        unique_species = set(all_species)
-        if len(all_species) != len(unique_species):
-            raise ValueError(
-                f"Species MUST be unique based on their 'name'. Found species names: {all_species}"
-            )
-
-        return v
 
 
 class TrajectoryResource(EntryResource):

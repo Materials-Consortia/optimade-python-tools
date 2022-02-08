@@ -489,6 +489,15 @@
               }
             ],
             "description": "Object containing links to relationships with entries of the `structures` type."
+          },
+          "trajectories": {
+            "title": "Trajectories",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TrajectoryRelationship"
+              }
+            ],
+            "description": "Object containing links to relationships with entries of the `trajectories` type."
           }
         },
         "description": "This model wraps the JSON API Relationships to include type-specific top level keys."
@@ -1855,6 +1864,47 @@
           }
         },
         "description": "A set of Links objects, possibly including pagination"
+      },
+      "TrajectoryRelationship": {
+        "title": "TrajectoryRelationship",
+        "type": "object",
+        "properties": {
+          "links": {
+            "title": "Links",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipLinks"
+              }
+            ],
+            "description": "a links object containing at least one of the following: self, related"
+          },
+          "data": {
+            "title": "Data",
+            "uniqueItems": true,
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BaseRelationshipResource"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BaseRelationshipResource"
+                }
+              }
+            ],
+            "description": "Resource linkage"
+          },
+          "meta": {
+            "title": "Meta",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "description": "a meta object that contains non-standard meta-information about the relationship."
+          }
+        },
+        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."
       },
       "Warnings": {
         "title": "Warnings",
