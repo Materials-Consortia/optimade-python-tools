@@ -68,12 +68,13 @@ class BaseResourceMapper:
     LENGTH_ALIASES: Tuple[Tuple[str, str]] = ()
     PROVIDER_FIELDS: Tuple[str] = ()
     ENTRY_RESOURCE_CLASS: Type[EntryResource] = EntryResource
-    RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
+    RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures", "trajectories"}
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {"id", "type", "relationships", "links"}
     SUPPORTED_PREFIXES: Set[str]
     ALL_ATTRIBUTES: Set[str]
     ENTRY_RESOURCE_ATTRIBUTES: Dict[str, Any]
     ENDPOINT: str
+    REFERENCE_STRUCTURE_FIELDS: List[str] = []
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:

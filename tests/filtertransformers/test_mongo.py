@@ -446,6 +446,19 @@ class TestMongoTransformer:
             "_other_provider_field": {"$gt": 1}
         }
 
+    def test_reference_structure(self, mapper):
+        """Test that fields from other providers generate
+        queries that treat the value of the field as `null`.
+
+        """
+        from optimade.filtertransformers.mongo import MongoTransformer
+
+        t = MongoTransformer(mapper=mapper("TrajectoryMapper"))
+        p = LarkParser(version=self.version, variant=self.variant)
+        assert t.transform(p.parse("nelements > 1")) == {
+            "reference_structure.nelements": {"$gt": 1}
+        }
+
     def test_not_implemented(self):
         """Test that list properties that are currently not implemented
         give a sensible response.
