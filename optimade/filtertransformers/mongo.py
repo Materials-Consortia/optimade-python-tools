@@ -320,9 +320,11 @@ class MongoTransformer(BaseTransformer):
             return filter_
         return {"$and": [filter_, {prop: {"$ne": None}}]}
 
-    def _apply_reference_structure(
-        self, filter_: dict
-    ):  # TODO perhaps it would be good to define this method in a more universla maner so it can be applied to more nested fields
+    def _apply_reference_structure(self, filter_: dict):
+        # TODO perhaps it would be good to define this method in a more universal manner so it can be applied to more nested fields
+        """For the trajectory endpoint the queries should be performed on the fields of the reference structure.
+        Therefore we prepend 'reference_structure.' to the property name if it is within the REFERENCE_STRUCTURE_FIELDS.
+        """
         if self.mapper is None:
             return filter_
         if len(self.mapper.REFERENCE_STRUCTURE_FIELDS) == 0:
