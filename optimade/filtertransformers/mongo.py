@@ -325,9 +325,7 @@ class MongoTransformer(BaseTransformer):
         """For the trajectory endpoint the queries should be performed on the fields of the reference structure.
         Therefore we prepend 'reference_structure.' to the property name if it is within the REFERENCE_STRUCTURE_FIELDS.
         """
-        if self.mapper is None:
-            return filter_
-        if len(self.mapper.REFERENCE_STRUCTURE_FIELDS) == 0:
+        if not hasattr(self.mapper, "REFERENCE_STRUCTURE_FIELDS"):
             return filter_
 
         def check_for_reference_structure_fields(prop, _):

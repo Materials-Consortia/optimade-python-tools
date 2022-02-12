@@ -74,7 +74,6 @@ class BaseResourceMapper:
     ALL_ATTRIBUTES: Set[str]
     ENTRY_RESOURCE_ATTRIBUTES: Dict[str, Any]
     ENDPOINT: str
-    REFERENCE_STRUCTURE_FIELDS: List[str] = []
 
     @classmethod
     def all_aliases(cls) -> Tuple[Tuple[str, str]]:
