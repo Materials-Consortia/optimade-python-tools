@@ -446,10 +446,10 @@ class TestMongoTransformer:
             "_other_provider_field": {"$gt": 1}
         }
 
-    def test_reference_structure(self, mapper):
-        """Test that fields from other providers generate
-        queries that treat the value of the field as `null`.
-
+    def test_prepend_reference_structure(self, mapper):
+        """For the trajectories endpoint the queries should be performed on the reference structure.
+        we therefore prepend the queries on the structure fields that are contained within the reference structure with "reference_structure."
+        Here we test whether this works correctly.
         """
         from optimade.filtertransformers.mongo import MongoTransformer
 
