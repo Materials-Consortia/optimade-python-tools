@@ -1,6 +1,5 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 import warnings
-from datetime import datetime
 from typing import List, Optional, Union, Any
 from enum import IntEnum
 from pydantic import BaseModel, root_validator, conlist
@@ -14,14 +13,13 @@ from optimade.models.utils import (
     SupportLevel,
 )
 from optimade.server.warnings import MissingExpectedField
-from optimade.models.structures import StructureResourceAttributes
+from optimade.models.structures import StructureAttributes
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
 __all__ = (
     "Vector3D",
     "TrajectoryResourceAttributes",
-    "ReferenceStructure",
     "AvailablePropertySubfields",
     "AvailablePropertyAttributes",
     "TrajectoryDataAttributes",
@@ -127,29 +125,6 @@ class Periodicity(IntEnum):
     PERIODIC = 1
 
 
-class ReferenceStructure(StructureResourceAttributes):
-    """This class contains the reference structure.
-    This reference structure is used to process queries on the trajectories without having to access the rest of the
-    trajectory data. At the moment"""
-
-    last_modified: Optional[datetime] = OptimadeField(
-        None,
-        description="""Date and time representing when the entry was last modified.
-
-    - **Type**: timestamp.
-
-    - **Requirements/Conventions**:
-        - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
-        - **Query**: MUST be a queryable property with support for all mandatory filter features.
-        - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.
-
-    - **Example**:
-        - As part of JSON response format: `"2007-04-05T14:30:20Z"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-    )
-
-
 class AvailablePropertySubfields(BaseModel):
     frame_serialization_format: str = OptimadeField(
         ...,
@@ -221,9 +196,8 @@ class AvailablePropertyAttributes(BaseModel):
     )
 
 
-class TrajectoryDataAttributes(
-    AvailablePropertySubfields
-):  # TODO Figure out why I need to comment out the support field for these optional properties to pass the validator.
+class TrajectoryDataAttributes(AvailablePropertySubfields):
+    # TODO Figure out why I need to comment out the support field for these optional properties to pass the validator.
     # storage_location: str = OptimadeField(
     #     ...,
     #     description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
@@ -304,7 +278,7 @@ class TrajectoryDataAttributes(
 class TrajectoryResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
-    reference_structure: ReferenceStructure = OptimadeField(
+    reference_structure: StructureAttributes = OptimadeField(
         ...,
         description="""This is an example of the structures that can be found in the trajectory.
   It can be used to select trajectories with queries and to give a quick visual impression of the structures in this trajectory.
