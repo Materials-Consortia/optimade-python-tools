@@ -13,6 +13,6 @@ class TrajectoryMapper(BaseResourceMapper):
         ("species_at_sites", "nsites"),
     )
     # TODO: the field names may different than
-    REFERENCE_STRUCTURE_FIELDS = [i for i in ReferenceStructure.__fields__.keys()]
+    REFERENCE_STRUCTURE_FIELDS = list(ReferenceStructure.__fields__.keys())
 
     ENTRY_RESOURCE_CLASS = TrajectoryResource
