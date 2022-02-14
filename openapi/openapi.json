@@ -4481,7 +4481,8 @@
       "TrajectoryDataAttributes": {
         "title": "TrajectoryDataAttributes",
         "required": [
-          "frame_serialization_format"
+          "frame_serialization_format",
+          "storage_location"
         ],
         "type": "object",
         "properties": {
@@ -4494,6 +4495,11 @@
             "title": "Nvalues",
             "type": "integer",
             "description": "This field gives the number of values for this property.\n    - **Type**: integer\n    - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to explicit, explicit_regular_sparse or explicit_custom_sparse.\n    - **Examples**:\n      - :val:`100`"
+          },
+          "storage_location": {
+            "title": "Storage Location",
+            "type": "string",
+            "description": "The location where the data belonging to this property is stored. For now either 'mongo' or file."
           },
           "offset_linear": {
             "title": "Offset Linear",
@@ -4673,6 +4679,11 @@
               }
             ],
             "description": "A dictionary with an entry for each of the properties for which data is available in the trajectory.\n  The key is the name of the property.\n  The value is a dictionary containing information about which value belongs to which frame.\n  This makes it easier for a client to estimate the amount of data a query returns.\n\n  It is up to the server to decide which properties to share and there are no mandatory fields.\n  When sharing `cartesian_site_positions`_ the `lattice_vectors`_, `species`_, `dimension_types`_ and `species_at_sites`_ MUST however be shared as well.\n\n\n- **Type**: dictionary of dictionaries\n- **Requirements/Conventions**:\n\n  -   **Support**: MUST be supported by all implementations, i.e., MUST NOT be :val:`null`.\n  -   **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Sub dictionary fields**\n\n  - **frame_serialization_format**\n\n    -   **Description**: This property describes how the frames and the returned values of a property are related.\n        For each :property:`frame_serialization_format` method there are additional fields that describe how the values belong to the frames.\n        These fields should also be present here.\n        A complete description of the :property:`frame_serialization_format` methods and the fields belonging to these methods can be found in the section: `Return Format for Trajectory Data`_\n\n  - **nvalues**:\n\n    - **Description**: This field gives the number of values for this property.\n    - **Type**: integer\n    - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to explicit, explicit_regular_sparse or explicit_custom_sparse.\n    - **Examples**:\n\n      - :val:`100`\n      - **Examples**:\n\n    .. code:: jsonc\n\n         \"available_properties\": {\n           \"cartesian_site_positions\": {\n             \"frame_serialization_format\": \"explicit\",\n             \"nvalues\": 1000\n           },\n           \"lattice_vectors\":{\n             \"frame_serialization_format\": \"constant\",\n           },\n           \"species\":{\n             \"frame_serialization_format\": \"constant\",\n           },\n           \"dimension_types\":{\n             \"frame_serialization_format\": \"constant\",\n           },\n           \"species_at_sites\":{\n             \"frame_serialization_format\": \"constant\",\n           },\n           \"_exmpl_pressure\":{\n             \"frame_serialization_format\": \"explicit_custom_sparse\",\n             \"nvalues\": 20\n           }\n           \"_exmpl_temperature\":{\n             \"frame_serialization_format\": \"explicit_regular_sparse\",\n             \"step_size_sparse\": 10\n             \"nvalues\": 100\n           }\n         }"
+          },
+          "hdf5file_path": {
+            "title": "Hdf5File Path",
+            "type": "string",
+            "description": "The path of the file in which the trajectory information is stored."
           },
           "cartesian_site_positions": {
             "title": "Cartesian Site Positions",

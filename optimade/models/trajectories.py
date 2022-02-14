@@ -198,12 +198,12 @@ class AvailablePropertyAttributes(BaseModel):
 
 class TrajectoryDataAttributes(AvailablePropertySubfields):
     # TODO Figure out why I need to comment out the support field for these optional properties to pass the validator.
-    # storage_location: str = OptimadeField(
-    #     ...,
-    #     description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
-    #     support=SupportLevel.MUST,
-    #     queryable=SupportLevel.OPTIONAL,
-    # )
+    storage_location: str = OptimadeField(
+        ...,
+        description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL,
+    )
     offset_linear: Optional[float] = OptimadeField(
         None,
         description="""If :property:`frame_serialization_format` is set to :val:`"linear"` this property gives the value at frame 0.
@@ -425,12 +425,14 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
-    # _exmpl_hdf5file_path: Optional[str] = OptimadeField( # TODO: this field is now still visible in the retrieved data this is however not neccesary.
-    #     None,
-    #     description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
-    #     support=SupportLevel.OPTIONAL,
-    #     queryable=SupportLevel.OPTIONAL,
-    # )
+    hdf5file_path: Optional[
+        str
+    ] = OptimadeField(  # TODO: this field is now still visible in the retrieved data this is however not neccesary.
+        None,
+        description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
     cartesian_site_positions: Optional[
         TrajectoryDataAttributes
     ] = OptimadeField(  # TODO It should be possible to get these fields from the strcutureattributes class.

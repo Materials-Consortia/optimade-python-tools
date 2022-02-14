@@ -103,7 +103,10 @@ def handle_response_fields(
     new_results = []
     while results:
         new_entry = results.pop(0).dict(exclude_unset=True, by_alias=True)
-
+        if (
+            "hdf5file_path" in new_entry["attributes"]
+        ):  # TODO perhaps hdf5file is not such a good name and we should be more generic like datalocation
+            path = new_entry["attributes"]["hdf5file_path"]  # TODO use Pathlib
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
             if field in new_entry["attributes"]:
@@ -113,10 +116,26 @@ def handle_response_fields(
         for field in include_fields:
             if field not in new_entry["attributes"]:
                 new_entry["attributes"][field] = None
+            else:  # retrieve field from file if not stored in database
+                if isinstance(new_entry["attributes"][field], Dict):
+                    if "storage_location" in new_entry["attributes"][field]:
+                        if (
+                            new_entry["attributes"][field]["storage_location"] == "file"
+                        ):  # TODO It would be nice if it would not just say file but also give the file type.
+                            new_entry["attributes"][field][
+                                "values"
+                            ] = get_field_from_file(field, path)
 
         new_results.append(new_entry)
 
     return new_results
+
+
+def get_field_from_file(field, path):
+    import h5py
+
+    file = h5py.File(path, "r")
+    return file[field]["values"][...].tolist()  # TODO add code for slicing
 
 
 def get_included_relationships(
