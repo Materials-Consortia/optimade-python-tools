@@ -81,6 +81,7 @@ def handle_response_fields(
     results: Union[List[EntryResource], EntryResource],
     exclude_fields: Set[str],
     include_fields: Set[str],
+    params: EntryListingQueryParams,
 ) -> List[Dict[str, Any]]:
     """Handle query parameter `response_fields`.
 
@@ -124,18 +125,24 @@ def handle_response_fields(
                         ):  # TODO It would be nice if it would not just say file but also give the file type.
                             new_entry["attributes"][field][
                                 "values"
-                            ] = get_field_from_file(field, path)
+                            ] = get_field_from_file(field, path, params)
 
         new_results.append(new_entry)
-
     return new_results
 
 
-def get_field_from_file(field, path):
+def get_field_from_file(field: str, path: str, params: EntryListingQueryParams):
     import h5py
 
+    first_frame = getattr(params, "first_frame")
+    last_frame = getattr(params, "last_frame")
+    if last_frame is None:
+        last_frame = -2
+    frame_step = getattr(params, "frame_step")
     file = h5py.File(path, "r")
-    return file[field]["values"][...].tolist()  # TODO add code for slicing
+    return file[field]["values"][
+        first_frame : last_frame + 1 : frame_step
+    ].tolist()  # TODO add code for slicing
 
 
 def get_included_relationships(
@@ -270,7 +277,7 @@ def get_entries(
         links = ToplevelLinks(next=None)
 
     if fields or include_fields:
-        results = handle_response_fields(results, fields, include_fields)
+        results = handle_response_fields(results, fields, include_fields, params)
 
     return response(
         links=links,
@@ -316,7 +323,7 @@ def get_single_entry(
     links = ToplevelLinks(next=None)
 
     if fields or include_fields and results is not None:
-        results = handle_response_fields(results, fields, include_fields)[0]
+        results = handle_response_fields(results, fields, include_fields, params)[0]
 
     return response(
         links=links,

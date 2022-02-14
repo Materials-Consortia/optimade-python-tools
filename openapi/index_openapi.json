@@ -259,6 +259,40 @@
             "in": "query"
           },
           {
+            "required": false,
+            "schema": {
+              "title": "First Frame",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "first_frame",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Last Frame",
+              "minimum": 0.0,
+              "type": "integer"
+            },
+            "name": "last_frame",
+            "in": "query"
+          },
+          {
+            "description": "Specifies that only one out of every frame_step frames should be returned.",
+            "required": false,
+            "schema": {
+              "title": "Frame Step",
+              "minimum": 1.0,
+              "type": "integer",
+              "description": "Specifies that only one out of every frame_step frames should be returned.",
+              "default": 1
+            },
+            "name": "frame_step",
+            "in": "query"
+          },
+          {
             "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
             "required": false,
             "schema": {
