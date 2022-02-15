@@ -259,22 +259,26 @@
             "in": "query"
           },
           {
+            "description": "The first frame of the trajectory that should be returned.",
             "required": false,
             "schema": {
               "title": "First Frame",
               "minimum": 0.0,
               "type": "integer",
+              "description": "The first frame of the trajectory that should be returned.",
               "default": 0
             },
             "name": "first_frame",
             "in": "query"
           },
           {
+            "description": "The last frame of the trajectory that should be returned.",
             "required": false,
             "schema": {
               "title": "Last Frame",
               "minimum": 0.0,
-              "type": "integer"
+              "type": "integer",
+              "description": "The last frame of the trajectory that should be returned."
             },
             "name": "last_frame",
             "in": "query"

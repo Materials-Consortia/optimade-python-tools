@@ -168,12 +168,12 @@ class EntryListingQueryParams:
         ),
         first_frame: int = Query(
             0,
-            descrition="The first frame of the trajectory that should be returned.",
+            description="The first frame of the trajectory that should be returned.",
             ge=0,
         ),
         last_frame: int = Query(
             None,
-            descrition="The last frame of the trajectory that should be returned.",
+            description="The last frame of the trajectory that should be returned.",
             ge=0,
         ),
         frame_step: int = Query(
@@ -204,7 +204,7 @@ class EntryListingQueryParams:
         self.frame_step = frame_step
 
 
-class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a superset of
+class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a superset of SingleEntryQueryParams so perhaps it is possible to defone it in a way where we do not have to repeat code.
     """
     Common query params for single entry endpoints.
 
@@ -285,12 +285,12 @@ class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a
         ),
         first_frame: int = Query(
             0,
-            descrition="The first frame of the trajectory that should be returned.",
+            description="The first frame of the trajectory that should be returned.",
             ge=0,
         ),
         last_frame: int = Query(
             None,
-            descrition="The last frame of the trajectory that should be returned.",
+            description="The last frame of the trajectory that should be returned.",
             ge=0,
         ),
         frame_step: int = Query(
@@ -303,7 +303,6 @@ class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
             regex=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
-        already_uploaded,
     ):
         self.response_format = response_format
         self.email_address = email_address
