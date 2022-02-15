@@ -245,6 +245,22 @@ class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a
             where MAJOR is a major version and MINOR is a minor version of the API.
             For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.
 
+        first_frame (int): first_frame specifies the first frame that should be returned from a trajectory.
+            The value MUST be larger or equal to 0 and MUST be less than nframes.(The total number of frames in the trajectory)
+            If this is not the case :http-error:`400 Bad Request` MUST be returned with a message indicating that the value for this field is incorrect. ToDo implement this check
+            The first frame is frame 0.
+            The default value is 0.
+
+        last_frame (int): last_frame specifies the last frame that should be returned from a trajectory.
+            The value MUST be larger or equal to :property:`first_frame` and MUST be less than `nframes`_ (the total number of frames in the trajectory).
+            If this is not the case :http-error:`400 Bad Request` MUST be returned with a message indicating that the value for this field is incorrect. ToDo implement this check
+            The default value is `nframes`_-1.
+
+        frame_step (int): Specifies that data should only be returned for one out of every :property:`frame_step` frames.
+            The value MUST be larger or equal to 1 and MUST be less than or equal to the total number of frames.
+            If this is not the case :http-error:`400 Bad Request` MUST be returned with a message indicating that the value for this field is incorrect.
+            The default value is 1.
+
     """
 
     def __init__(
@@ -267,13 +283,32 @@ class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a
             "references",
             description='A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of "relationship paths", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.',
         ),
+        first_frame: int = Query(
+            0,
+            descrition="The first frame of the trajectory that should be returned.",
+            ge=0,
+        ),
+        last_frame: int = Query(
+            None,
+            descrition="The last frame of the trajectory that should be returned.",
+            ge=0,
+        ),
+        frame_step: int = Query(
+            1,
+            description="Specifies that only one out of every frame_step frames should be returned.",
+            ge=1,
+        ),
         api_hint: str = Query(
             "",
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
             regex=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
+        already_uploaded,
     ):
         self.response_format = response_format
         self.email_address = email_address
         self.response_fields = response_fields
         self.include = include
+        self.first_frame = first_frame
+        self.last_frame = last_frame
+        self.frame_step = frame_step
