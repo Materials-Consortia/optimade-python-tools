@@ -22,7 +22,9 @@ def test_get_attribute_fields():
     assert set(entry_name_attributes.keys()) == set(ENTRY_COLLECTIONS.keys())
 
     for entry_name, attributes_model in entry_name_attributes.items():
-        assert (
-            set(attributes_model.__fields__.keys())
-            == ENTRY_COLLECTIONS[entry_name].get_attribute_fields()
-        )
+        entry_collection_fields = set()
+        for field in ENTRY_COLLECTIONS[entry_name].get_attribute_fields():
+            if field[0] == "_":
+                field = field[1:]
+            entry_collection_fields.add(field)
+        assert set(attributes_model.__fields__.keys()) == entry_collection_fields

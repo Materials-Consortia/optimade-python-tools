@@ -2136,6 +2136,14 @@
                 "$ref": "#/components/schemas/AvailablePropertySubfields"
               }
             ]
+          },
+          "_exmpl_time": {
+            "title": " Exmpl Time",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AvailablePropertySubfields"
+              }
+            ]
           }
         }
       },
@@ -4747,8 +4755,7 @@
       "TrajectoryDataAttributes": {
         "title": "TrajectoryDataAttributes",
         "required": [
-          "frame_serialization_format",
-          "storage_location"
+          "frame_serialization_format"
         ],
         "type": "object",
         "properties": {
@@ -4761,11 +4768,6 @@
             "title": "Nvalues",
             "type": "integer",
             "description": "This field gives the number of values for this property.\n    - **Type**: integer\n    - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to explicit, explicit_regular_sparse or explicit_custom_sparse.\n    - **Examples**:\n      - :val:`100`"
-          },
-          "storage_location": {
-            "title": "Storage Location",
-            "type": "string",
-            "description": "The location where the data belonging to this property is stored. For now either 'mongo' or file."
           },
           "offset_linear": {
             "title": "Offset Linear",
@@ -4946,11 +4948,6 @@
             ],
             "description": "A dictionary with an entry for each of the properties for which data is available in the trajectory.\n  The key is the name of the property.\n  The value is a dictionary containing information about which value belongs to which frame.\n  This makes it easier for a client to estimate the amount of data a query returns.\n\n  It is up to the server to decide which properties to share and there are no mandatory fields.\n  When sharing `cartesian_site_positions`_ the `lattice_vectors`_, `species`_, `dimension_types`_ and `species_at_sites`_ MUST however be shared as well.\n\n\n- **Type**: dictionary of dictionaries\n- **Requirements/Conventions**:\n\n  -   **Support**: MUST be supported by all implementations, i.e., MUST NOT be :val:`null`.\n  -   **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Sub dictionary fields**\n\n  - **frame_serialization_format**\n\n    -   **Description**: This property describes how the frames and the returned values of a property are related.\n        For each :property:`frame_serialization_format` method there are additional fields that describe how the values belong to the frames.\n        These fields should also be present here.\n        A complete description of the :property:`frame_serialization_format` methods and the fields belonging to these methods can be found in the section: `Return Format for Trajectory Data`_\n\n  - **nvalues**:\n\n    - **Description**: This field gives the number of values for this property.\n    - **Type**: integer\n    - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to explicit, explicit_regular_sparse or explicit_custom_sparse.\n    - **Examples**:\n\n      - :val:`100`\n      - **Examples**:\n\n    .. code:: jsonc\n\n         \"available_properties\": {\n           \"cartesian_site_positions\": {\n             \"frame_serialization_format\": \"explicit\",\n             \"nvalues\": 1000\n           },\n           \"lattice_vectors\":{\n             \"frame_serialization_format\": \"constant\",\n           },\n           \"species\":{\n             \"frame_serialization_format\": \"constant\",\n           },\n           \"dimension_types\":{\n             \"frame_serialization_format\": \"constant\",\n           },\n           \"species_at_sites\":{\n             \"frame_serialization_format\": \"constant\",\n           },\n           \"_exmpl_pressure\":{\n             \"frame_serialization_format\": \"explicit_custom_sparse\",\n             \"nvalues\": 20\n           }\n           \"_exmpl_temperature\":{\n             \"frame_serialization_format\": \"explicit_regular_sparse\",\n             \"step_size_sparse\": 10\n             \"nvalues\": 100\n           }\n         }"
           },
-          "hdf5file_path": {
-            "title": "Hdf5File Path",
-            "type": "string",
-            "description": "The path of the file in which the trajectory information is stored."
-          },
           "cartesian_site_positions": {
             "title": "Cartesian Site Positions",
             "allOf": [
@@ -4995,6 +4992,15 @@
               }
             ],
             "description": "Name of the species at each site (where values for sites are specified with the same order of the property cartesian_site_positions). The properties of the species are found in the property species.\nType: list of strings.\nRequirements/Conventions:\nSupport: SHOULD be supported by all implementations, i.e., SHOULD NOT be null.\nQuery: Support for queries on this property is OPTIONAL. If supported, filters MAY support only a subset of comparison operators.\nMUST have length equal to the number of sites in the structure (first dimension of the list property cartesian_site_positions).\nEach species name mentioned in the species_at_sites list MUST be described in the list property species (i.e. for each value in the species_at_sites list there MUST exist exactly one dictionary in the species list with the name attribute equal to the corresponding species_at_sites value).\nEach site MUST be associated only to a single species. Note: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element. This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.\nExamples:\n[\"Ti\",\"O2\"] indicates that the first site is hosting a species labeled \"Ti\" and the second a species labeled \"O2\".\n[\"Ac\", \"Ac\", \"Ag\", \"Ir\"] indicating the first two sites contains the \"Ac\" species, while the third and fourth sites contain the \"Ag\" and \"Ir\" species, respectively.To define how this property is stored for each of the frames in the trajectory the following properties have been defined:\n- **frame_serialization_format**:\n\n  - **Description**: To improve the compactness of the data there are several ways to show to which frame a value belongs.\n    This is specified by the :property:`frame_serialization_format`.\n  - **Type**: string\n  - **Requirements/Conventions**: This field MUST be present.\n  - **Values**:\n\n    - **constant**: The value of the property is constant and thus has the same value for each frame in the trajectory.\n    - **explicit**: A value is given for each frame.\n      The number of values MUST thus be equal to the number of frames and MUST be in the same order as the frames.\n      If there is no value for a particular frame the value MUST be :val:`null`.\n    - **linear**: The value is a linear function of the frame number.\n      This function is defined by :property:`offset_linear` and :property:`step_size_linear`.\n    - **explicit_regular_sparse**: The value is set every one per :property:`step_size_sparse` frames, with :property:`offset_sparse` as the first frame.\n    - **explicit_custom_sparse**: A separate list with frame numbers is defined in the field :property:`sparse_frames` to indicate to which frame a value belongs.\n\n- **offset_linear**:\n\n  - **Description**: If :property:`frame_serialization_format` is set to :val:`\"linear\"` this property gives the value at frame 0.\n  - **Type**: float\n  - **Requirements/Conventions**: The value MAY be present when :property:`frame_serialization_format` is set to :val:`\"linear\"`, otherwise the value MUST NOT be present.\n    The default value is 0.\n  - **Examples**:\n\n    - :val:`1.5`\n\n- **step_size_linear**:\n\n  - **Description**: If :property:`frame_serialization_format` is set to :val:`\"linear\"`, this value gives the change in the value of the property per unit of frame number.\n    e.g. If at frame 3 the value of the property is 0.6 and :property:`step_size_linear` = 0.2 than at frame 4 the value of the property will be 0.8.\n  - **Type**: float\n  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to \"linear\".\n    Otherwise it MUST NOT be present.\n  - **Examples**:\n\n    - :val:`0.0005`\n\n- **offset_sparse**:\n\n  - **Description**: If :property:`frame_serialization_format` is set to :val:` \"explicit_regular_sparse\"` this property gives the frame number to which the first value belongs.\n  - **Type**: integer\n  - **Requirements/Conventions**: The value MAY be present when :property:`frame_serialization_format` is set to :val:`\"explicit_regular_sparse\"`, otherwise the value MUST NOT be present.\n    The default value is 0.\n  - **Examples**:\n\n    - :val:`100`\n\n- **step_size_sparse**:\n\n  - **Description**: If :property:`frame_serialization_format` is set to :val:` \"explicit_regular_sparse\"`, this value indicates that every step_size_sparse frames a value is defined.\n  - **Type**: integer\n  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to :val:`\"explicit_regular_sparse\"`.\n    Otherwise it MUST NOT be present.\n  - **Examples**:\n\n    - :val:`100`\n\n- **sparse_frames**:\n\n  - **Description**: If :property:`frame_serialization_format` is set to :val:`\"explicit_custom_sparse\"`, this field holds the frames to which the values in the value field belong.\n  - **Type**: List of integers\n  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is set to \"explicit_custom_sparse\".\n    Otherwise it MUST NOT be present.\n    The frame numbers in :property:`sparse_frames` MUST be in the same order as the values.\n  - **Examples**:\n\n    - :val:`[0,20,78,345]`\n\n\n- **values**:- **Description**: The values belonging to this property.\n    The format of this field depends on the property and on the :property:`frame_serialization_format` parameter.\n  - **Type**: List of Any\n  - **Requirements/Conventions**: The value MUST be present when :property:`frame_serialization_format` is not set to :val:`\"linear\"`.\n    If a value has not been sampled for a particular frame the value should be set to :val:`null` at the highest possible nesting level.\n    In case of `cartesian_site_positions`_, a site that has the value :val:`null` for the x,y and z coordinates means that the site is not in the simulation volume.\n    This may be useful for grand canonical simulations where the number of particles in the simulation volume is not constant."
+          },
+          "_exmpl_time": {
+            "title": " Exmpl Time",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TrajectoryDataAttributes"
+              }
+            ],
+            "description": "The time belonging to each frame"
           }
         },
         "description": "This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."

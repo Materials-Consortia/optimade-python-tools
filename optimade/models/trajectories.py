@@ -188,17 +188,18 @@ class AvailablePropertyAttributes(BaseModel):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    _exmpl_time: Optional[AvailablePropertySubfields] = OptimadeField(
+    exmpl_time: Optional[AvailablePropertySubfields] = OptimadeField(
         None,
         description="""""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
+        alias="_exmpl_time",
     )
 
 
 class TrajectoryDataAttributes(AvailablePropertySubfields):
     # TODO Figure out why I need to comment out the support field for these optional properties to pass the validator.
-    storage_location: str = OptimadeField(
+    _storage_location: str = OptimadeField(
         ...,
         description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
         support=SupportLevel.MUST,
@@ -425,9 +426,7 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
-    hdf5file_path: Optional[
-        str
-    ] = OptimadeField(  # TODO: this field is now still visible in the retrieved data this is however not neccesary.
+    _hdf5file_path: Optional[str] = OptimadeField(
         None,
         description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
         support=SupportLevel.OPTIONAL,
@@ -557,12 +556,13 @@ Examples:
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    _exmpl_time: Optional[TrajectoryDataAttributes] = OptimadeField(
+    exmpl_time: Optional[TrajectoryDataAttributes] = OptimadeField(
         None,
         description="""The time belonging to each frame""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
         unit="ps",
+        alias="_exmpl_time",
     )
 
     # TODO add more Trajectory specific validators
