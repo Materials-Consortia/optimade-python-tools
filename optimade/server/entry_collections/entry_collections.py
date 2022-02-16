@@ -323,7 +323,9 @@ class EntryCollection(ABC):
             response_fields = set(params.response_fields.split(","))
             response_fields |= self.resource_mapper.get_required_fields()
         else:
-            response_fields = self.all_fields.copy()
+            response_fields = getattr(
+                self.resource_mapper, "STANDARD_FIELDS", self.all_fields.copy()
+            )
 
         cursor_kwargs["fields"] = response_fields
 

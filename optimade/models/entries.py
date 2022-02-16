@@ -51,7 +51,6 @@ class EntryRelationships(Relationships):
         None,
         description="Object containing links to relationships with entries of the `references` type.",
     )
-
     structures: Optional[StructureRelationship] = StrictField(
         None,
         description="Object containing links to relationships with entries of the `structures` type.",
