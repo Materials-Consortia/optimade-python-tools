@@ -136,13 +136,11 @@ def get_field_from_file(field: str, path: str, params: EntryListingQueryParams):
 
     first_frame = getattr(params, "first_frame")
     last_frame = getattr(params, "last_frame")
-    if last_frame is None:
-        last_frame = -2
+    if last_frame:
+        last_frame += 1
     frame_step = getattr(params, "frame_step")
     file = h5py.File(path, "r")
-    return file[field]["values"][
-        first_frame : last_frame + 1 : frame_step
-    ].tolist()  # TODO add code for slicing
+    return file[field]["values"][first_frame:last_frame:frame_step].tolist()
 
 
 def get_included_relationships(
