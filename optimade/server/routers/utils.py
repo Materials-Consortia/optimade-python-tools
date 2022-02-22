@@ -15,6 +15,7 @@ from optimade.models import (
     EntryResponseMany,
     EntryResponseOne,
     ToplevelLinks,
+    AvailablePropertyAttributes,
 )
 
 from optimade.server.config import CONFIG
@@ -103,11 +104,20 @@ def handle_response_fields(
 
     new_results = []
     while results:
-        new_entry = results.pop(0).dict(exclude_unset=True, by_alias=True)
+        one_doc = results.pop(0)
+        new_entry = one_doc.dict(exclude_unset=True, by_alias=True)
         if (
             "_hdf5file_path" in new_entry["attributes"]
         ):  # TODO perhaps hdf5file is not such a good name and we should be more generic like datalocation
             path = new_entry["attributes"]["_hdf5file_path"]  # TODO use Pathlib
+            # add storage_location_fields (these fields are prepended by an underscore and are therefore not added automaticly when the result is turned into a dict.
+            for field in AvailablePropertyAttributes.__fields__.keys():
+                if getattr(one_doc.attributes, field) is not None:
+                    new_entry["attributes"][field]["_storage_location"] = getattr(
+                        getattr(one_doc.attributes, field), "_storage_location"
+                    )
+        else:
+            path = None
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
             if field in new_entry["attributes"]:
@@ -119,14 +129,21 @@ def handle_response_fields(
                 new_entry["attributes"][field] = None
             else:  # retrieve field from file if not stored in database
                 if isinstance(new_entry["attributes"][field], Dict):
-                    if "_storage_location" in new_entry["attributes"][field]:
+                    if (
+                        "_storage_location" in new_entry["attributes"][field]
+                    ):  # TODO perhaps this can be done with one getattr
                         if (
-                            new_entry["attributes"][field]["storage_location"] == "file"
+                            new_entry["attributes"][field]["_storage_location"]
+                            == "file"
                         ):  # TODO It would be nice if it would not just say file but also give the file type.
+                            if path is None:
+                                raise InternalServerError(
+                                    f"The property{field} is supposed to be stored in a file yet no filepath is specified in hdf5file_path."
+                                )
                             new_entry["attributes"][field][
                                 "values"
                             ] = get_field_from_file(field, path, params)
-
+                            del new_entry["attributes"][field]["_storage_location"]
         new_results.append(new_entry)
     return new_results
 

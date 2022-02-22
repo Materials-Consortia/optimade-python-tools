@@ -198,7 +198,11 @@ class AvailablePropertyAttributes(BaseModel):
 
 
 class TrajectoryDataAttributes(AvailablePropertySubfields):
-    # TODO Figure out why I need to comment out the support field for these optional properties to pass the validator.
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if "_storage_location" in kwargs:
+            self._storage_location = kwargs["_storage_location"]
+
     _storage_location: str = OptimadeField(
         ...,
         description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
@@ -274,6 +278,9 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
+
+    class Config:
+        underscore_attrs_are_private = True
 
 
 class TrajectoryResourceAttributes(EntryResourceAttributes):
@@ -434,7 +441,7 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
     )
     cartesian_site_positions: Optional[
         TrajectoryDataAttributes
-    ] = OptimadeField(  # TODO It should be possible to get these fields from the strcutureattributes class.
+    ] = OptimadeField(  # TODO It should be possible to get these fields from the structureattributes class.
         None,
         description="""Cartesian positions of each site in the structure. A site is usually used
     to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the species_at_sites

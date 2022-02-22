@@ -14,6 +14,7 @@ class TrajectoryMapper(BaseResourceMapper):
         ("cartesian_site_positions", "nsites"),
         ("species_at_sites", "nsites"),
     )
+    HIDDEN_FIELDS = ["_hdf5file_path"]
 
     REFERENCE_STRUCTURE_FIELDS = list(StructureAttributes.__fields__.keys())
     STANDARD_FIELDS = (
