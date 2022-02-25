@@ -210,7 +210,7 @@ jobs:
         pip install -r requirements-client.txt
         # AiiDA-specific
         # reentry scan
-        pip install --r requirements.txt
+        pip install -r requirements.txt
 
     - name: Setup up environment for AiiDA
       env:
