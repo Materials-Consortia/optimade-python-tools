@@ -208,7 +208,6 @@ jobs:
     - name: Install adapter conversion dependencies
       run: |
         pip install -r requirements-client.txt
-        pip install -r requirements.txt
         # AiiDA-specific
         reentry scan
 
