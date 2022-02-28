@@ -21,9 +21,9 @@ def render_landing_page(url: str) -> HTMLResponse:
     from the original Jinja template. Instead of Jinja, some basic string
     replacement is used to fill out the fields from the server configuration.
 
-    !! warning
-    The removal of Jinja means that the fields are no longer validated as
-    web safe before inclusion in the template.
+    !!! warning "Careful"
+        The removal of Jinja means that the fields are no longer validated as
+        web safe before inclusion in the template.
 
     """
     meta = meta_values(url, 1, 1, more_data_available=False)
@@ -32,11 +32,10 @@ def render_landing_page(url: str) -> HTMLResponse:
 
     template_dir = Path(__file__).parent.joinpath("static").resolve()
 
-    with open(template_dir / "landing_page.html", "r") as f:
-        html = "\n".join(f.readlines())
+    html = (template_dir / "landing_page.html").read_text()
 
     # Build a dictionary that maps the old Jinja keys to the new simplified replacements
-    replacements: dict[str, str] = {
+    replacements = {
         "api_version": __api_version__,
     }
 
