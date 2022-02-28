@@ -63,7 +63,7 @@ def render_landing_page(url: str) -> HTMLResponse:
 
     # Build the list of endpoints. The template already opens and closes the `<ul>` tag.
     endpoints_list = [
-        f'<li><a href="{versioned_url}{endp}">{versioned_url}{endp}'
+        f'<li><a href="{versioned_url}{endp}">{versioned_url}{endp}</a></li>'
         for endp in list(ENTRY_COLLECTIONS.keys()) + ["info"]
     ]
     html = html.replace("{% ENDPOINTS %}", "\n".join(endpoints_list))
