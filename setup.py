@@ -38,9 +38,9 @@ docs_deps = [
     "markupsafe==2.0.1",  # Can be removed once aiida supports Jinja2>=3, see pallets/markupsafe#284
     "mike~=1.1",
     "mkdocs~=1.2",
-    "mkdocs-awesome-pages-plugin~=2.6",
-    "mkdocs-material~=8.1",
-    "mkdocstrings~=0.17.0",
+    "mkdocs-awesome-pages-plugin~=2.7",
+    "mkdocs-material~=8.2",
+    "mkdocstrings~=0.18.0",
 ]
 testing_deps = [
     "build~=0.7.0",
