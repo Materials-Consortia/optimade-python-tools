@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.16.11](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.11) (2022-03-02)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.10...v0.16.11)
+
+**Merged pull requests:**
+
+- Remove Jinja dependency for landing page generation [\#1082](https://github.com/Materials-Consortia/optimade-python-tools/pull/1082) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.16.10](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.10) (2022-02-05)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.9...v0.16.10)
