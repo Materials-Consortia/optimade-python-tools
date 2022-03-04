@@ -22,7 +22,9 @@ ERROR_RESPONSES: Dict[int, Dict] = {
 
 
 def retrieve_queryable_properties(
-    schema: dict, queryable_properties: list = None
+    schema: dict,
+    queryable_properties: list = None,
+    entry_type: str = None,
 ) -> dict:
     """Recursively loops through the schema of a pydantic model and
     resolves all references, returning a dictionary of all the
@@ -31,6 +33,8 @@ def retrieve_queryable_properties(
     Parameters:
         schema: The schema of the pydantic model.
         queryable_properties: The list of properties to find in the schema.
+        entry_type: An optional entry type for the model. Will be used to
+            lookup schemas for any config-defined fields.
 
     Returns:
         A flat dictionary with properties as keys, containing the field
@@ -63,5 +67,19 @@ def retrieve_queryable_properties(
                 properties[name]["type"] = DataType.from_json_type(
                     value.get("format", value.get("type"))
                 )
+
+    # If specified, check the config for any additional well-described provider fields
+    if entry_type:
+        from optimade.server.config import CONFIG
+
+        described_provider_fields = [
+            field
+            for field in CONFIG.provider_fields.get(entry_type, {})
+            if isinstance(field, dict)
+        ]
+        for field in described_provider_fields:
+            name = f"_{CONFIG.provider.prefix}_{field['name']}"
+            properties[name] = {k: field[k] for k in field if k != "name"}
+            properties[name]["sortable"] = field.get("sortable", True)
 
     return properties
