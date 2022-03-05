@@ -18,7 +18,7 @@
     "provider_fields": {
         "structures": [
             "band_gap",
-            "chemsys"
+            {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"}
         ]
     },
     "aliases": {
