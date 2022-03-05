@@ -1736,7 +1736,7 @@
 
 
 <h2 id="optimade.server.schemas.retrieve_queryable_properties" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entry_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 <a href="#optimade.server.schemas.retrieve_queryable_properties" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1770,6 +1770,13 @@ OPTIMADE-queryable properties of that model.</p>
         <td><p>The list of properties to find in the schema.</p></td>
         <td><code>None</code></td>
       </tr>
+      <tr>
+        <td><code>entry_type</code></td>
+        <td><code>str</code></td>
+        <td><p>An optional entry type for the model. Will be used to
+lookup schemas for any config-defined fields.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
 <p><strong>Returns:</strong></p>
@@ -1792,7 +1799,9 @@ and type, where provided.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/schemas.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">retrieve_queryable_properties</span><span class="p">(</span>
-    <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">queryable_properties</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Recursively loops through the schema of a pydantic model and</span>
 <span class="sd">    resolves all references, returning a dictionary of all the</span>
@@ -1801,6 +1810,8 @@ and type, where provided.</p></td>
 <span class="sd">    Parameters:</span>
 <span class="sd">        schema: The schema of the pydantic model.</span>
 <span class="sd">        queryable_properties: The list of properties to find in the schema.</span>
+<span class="sd">        entry_type: An optional entry type for the model. Will be used to</span>
+<span class="sd">            lookup schemas for any config-defined fields.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A flat dictionary with properties as keys, containing the field</span>
@@ -1833,6 +1844,20 @@ and type, where provided.</p></td>
                 <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataType</span><span class="o">.</span><span class="n">from_json_type</span><span class="p">(</span>
                     <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">))</span>
                 <span class="p">)</span>
+
+    <span class="c1"># If specified, check the config for any additional well-described provider fields</span>
+    <span class="k">if</span> <span class="n">entry_type</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.config</span> <span class="kn">import</span> <span class="n">CONFIG</span>
+
+        <span class="n">described_provider_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">field</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">described_provider_fields</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">field</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">field</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s2">&quot;name&quot;</span><span class="p">}</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;sortable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sortable&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">properties</span>
 </code></pre></div>

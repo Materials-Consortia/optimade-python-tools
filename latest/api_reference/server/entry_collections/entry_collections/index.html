@@ -1897,7 +1897,10 @@ EntryCollection        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span> <span class="o">=</span> <span class="n">transformer</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">provider_prefix</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">provider_fields</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">provider_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">field</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_all_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -2341,7 +2344,10 @@ interpret the filter.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span> <span class="o">=</span> <span class="n">transformer</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">provider_prefix</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">provider_fields</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">provider_fields</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">field</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="p">]</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_all_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
