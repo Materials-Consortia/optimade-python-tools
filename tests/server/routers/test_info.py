@@ -1,5 +1,3 @@
-import pytest
-
 from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse, DataType
 
 from ..utils import RegularEndpointTests, IndexEndpointTests
@@ -90,12 +88,10 @@ class TestInfoStructuresEndpoint(RegularEndpointTests):
             else:
                 assert "unit" not in info_keys, f"Field: {field}"
 
-    @pytest.mark.skip("Unskip when PR #277 has been merged.")
     def test_provider_fields(self):
         """Check the presence of provider-specific fields"""
-        from optimade.server.config import CONFIG
 
-        provider_fields = CONFIG.provider_fields.get("structures", [])
+        provider_fields = ["chemsys"]
 
         if not provider_fields:
             import warnings
@@ -104,7 +100,7 @@ class TestInfoStructuresEndpoint(RegularEndpointTests):
             return
 
         for field in provider_fields:
-            updated_field_name = f"_{CONFIG.provider.prefix}_{field}"
+            updated_field_name = f"_exmpl_{field}"
             assert updated_field_name in self.json_response.get("data", {}).get(
                 "properties", {}
             )

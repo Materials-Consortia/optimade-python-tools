@@ -83,7 +83,10 @@ class EntryCollection(ABC):
         self.transformer = transformer
 
         self.provider_prefix = CONFIG.provider.prefix
-        self.provider_fields = CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
+        self.provider_fields = [
+            field if isinstance(field, str) else field["name"]
+            for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
+        ]
 
         self._all_fields: Set[str] = None
 
