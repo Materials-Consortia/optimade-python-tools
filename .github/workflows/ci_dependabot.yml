@@ -81,7 +81,7 @@ jobs:
       id: cpr
       uses: peter-evans/create-pull-request@v3
       with:
-        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        token: ${{ secrets.RELEASE_PAT_BOT }}
         commit-message: New @dependabot-fueled updates
         committer: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
         author: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
