@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/getting_started/setting_up_an_api/">
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.4">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
@@ -1749,35 +1749,35 @@
 Complete examples of APIs that use this package are described in the <a href="../use_cases/">Use Cases</a> section.</p>
 <h2 id="setting-up-the-database">Setting up the database<a class="headerlink" href="#setting-up-the-database" title="Permanent link">&para;</a></h2>
 <p>The <code>optimade</code> reference server requires a data source per OPTIMADE entry type (<code>structures</code>, <code>references</code>, <code>links</code>).
-In the simplest case, these can be configured as named MongoDB collections with a defined MongoDB URI and database name (see below), but they can also be set up as custom subclasses of <a href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a> that could simply read from a static file.
+In the simplest case, these can be configured as named MongoDB collections with a defined MongoDB URI and database name (see below), but they can also be set up as custom subclasses of <a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a> that could simply read from a static file.
 In the reference server, these data sources, or collections, are created in the submodule for the corresponding routers/endpoints.</p>
-<p>Here, we shall use the built-in MongoDB collections for each entry type, by simply specifying the appropriate options in the <a href="../../configuration/">configuration</a>, namely <a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.database_backend"><code>"database_backend": "mongodb"</code></a>, <a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.mongo_uri"><code>"mongo_uri": "mongodb://localhost:27017"</code></a>, <a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.mongo_database"><code>"mongo_database": "optimade"</code></a> and the collection names for each entry type (<a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.structures_collection"><code>"structures_collection": "structures"</code></a> etc.).
-These notes will now assume that you have a MongoDB instance running and you have created a database that matches your <a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.mongo_database"><code>"mongo_database"</code></a> config option.</p>
-<p>If you disable inserting test data (with the <a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.insert_test_data"><code>"insert_test_data": false</code></a> configuration option), you can test your API/database connection by running the web server with <code>uvicorn optimade.server.main:app --port 5000</code> and visiting the (hopefully empty) structures endpoint at <code>localhost:5000/v1/structures</code> (or your chosen base URL).</p>
+<p>Here, we shall use the built-in MongoDB collections for each entry type, by simply specifying the appropriate options in the <a href="../../configuration/">configuration</a>, namely <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.database_backend"><code>"database_backend": "mongodb"</code></a>, <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.mongo_uri"><code>"mongo_uri": "mongodb://localhost:27017"</code></a>, <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.mongo_database"><code>"mongo_database": "optimade"</code></a> and the collection names for each entry type (<a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.structures_collection"><code>"structures_collection": "structures"</code></a> etc.).
+These notes will now assume that you have a MongoDB instance running and you have created a database that matches your <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.mongo_database"><code>"mongo_database"</code></a> config option.</p>
+<p>If you disable inserting test data (with the <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.insert_test_data"><code>"insert_test_data": false</code></a> configuration option), you can test your API/database connection by running the web server with <code>uvicorn optimade.server.main:app --port 5000</code> and visiting the (hopefully empty) structures endpoint at <code>localhost:5000/v1/structures</code> (or your chosen base URL).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>As of version v0.16, the other supported database backend is Elasticsearch.
 If you are interested in using another backend, or would like it to be supported in the <code>optimade</code> package, please raise an issue on <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/new">GitHub</a> and visit the notes on implementing new <a href="../filtering/#developing-new-filter-transformers">filter transformers</a>.</p>
 </div>
 <h2 id="mapping-non-optimade-data">Mapping non-OPTIMADE data<a class="headerlink" href="#mapping-non-optimade-data" title="Permanent link">&para;</a></h2>
-<p>There are two ways to work with data that does not exactly match the OPTIMADE specification, both of which require configuring a subclass of <a href="../../api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper"><code>BaseResourceMapper</code></a> that converts your stored data format into an OPTIMADE-compliant entry.
+<p>There are two ways to work with data that does not exactly match the OPTIMADE specification, both of which require configuring a subclass of <a class="autorefs autorefs-internal" href="../../api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper"><code>BaseResourceMapper</code></a> that converts your stored data format into an OPTIMADE-compliant entry.
 The two options are:</p>
 <ul>
 <li>Use the mapper to dynamically convert the data stored in the database, and the filters on that data, to an OPTIMADE format when responding to API requests.</li>
 <li>Apply the mapper to your entries before ingestion and use it to create a secondary database that stores the converted entries (e.g., normalized data), or equivalently, adding all the required OPTIMADE fields inside the existing entries (e.g., denormalized data)</li>
 </ul>
 <p>The main consideration when choosing these options is not necessarily how closely your data matches the OPTIMADE format, but instead how readily the OPTIMADE filtering of that document can be mapped into the corresponding database query.
-This could require writing or extending the <a href="../../api_reference/filtertransformers/base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer"><code>BaseFilterTransformer</code></a> class, which takes an OPTIMADE filter string and converts it into a backend-specific query.</p>
+This could require writing or extending the <a class="autorefs autorefs-internal" href="../../api_reference/filtertransformers/base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer"><code>BaseFilterTransformer</code></a> class, which takes an OPTIMADE filter string and converts it into a backend-specific query.</p>
 <p>For example, if your database stores chemical formulae with extraneous "1"'s, e.g., SiO<sub>2</sub> is represented as <code>"Si1O2"</code>, then the incoming OPTIMADE filter (which asserts that elements must be alphabetical, and "1"'s must be omitted) for <code>chemical_formula_reduced="O2Si"</code> will also need to be transformed so that the corresponding database query matches the stored string, which in this case can be done easily.
 Instead, if you are storing chemical formulae as an unreduced count per simulation cell, e.g., <code>"Si4O8"</code>, then it is impossible to remap the filter <code>chemical_formula_reduced="O2Si"</code> such that it matches all structures with the correct formula unit (e.g., <code>"SiO2"</code>, <code>"Si2O4"</code>, ...).
 This would then instead require option 2 above, namely either the addition of auxiliary fields that store the correct (or mappable) OPTIMADE format in the database, or the creation of a secondary database that returns the pre-converted structures.</p>
-<p>In the simplest case, the mapper classes can be used to define aliases between fields in the database and the OPTIMADE field name; these can be configured via the <a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.aliases"><code>aliases</code></a> option as a dictionary mapping stored in a dictionary under the appropriate endpoint name, e.g. <code>"aliases": {"structures": {"chemical_formula_reduced": "my_chem_form"}}</code>, or defined as part of a custom mapper class.</p>
+<p>In the simplest case, the mapper classes can be used to define aliases between fields in the database and the OPTIMADE field name; these can be configured via the <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.aliases"><code>aliases</code></a> option as a dictionary mapping stored in a dictionary under the appropriate endpoint name, e.g. <code>"aliases": {"structures": {"chemical_formula_reduced": "my_chem_form"}}</code>, or defined as part of a custom mapper class.</p>
 <p>In either option, you should now be able to insert your data into the corresponding MongoDB (or otherwise) collection.</p>
 <h2 id="serving-custom-fieldsproperties">Serving custom fields/properties<a class="headerlink" href="#serving-custom-fieldsproperties" title="Permanent link">&para;</a></h2>
 <p>According to the OPTIMADE specification, any field not standardized in the specification must be prefixed with an appropriate "provider prefix" (e.g., "<code>_aflow</code>" for <a href="https://aflow.org">AFLOW</a> and "<code>_cod</code>" for <a href="https://crystallography.net">COD</a>).
 This prefix is intended to be unique across all <a href="https://github.com/Materials-Consortia/providers">OPTIMADE providers</a> to enable filters to work across different implementations.
-The prefix can be set in the <a href="../../configuration/">configuration</a> as part of the <a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider"><code>provider</code></a> option.</p>
-<p>Once the prefix has been set, custom fields can be listed by endpoint in the <a href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider_fields"><code>provider_fields</code></a> configuration option.
+The prefix can be set in the <a href="../../configuration/">configuration</a> as part of the <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider"><code>provider</code></a> option.</p>
+<p>Once the prefix has been set, custom fields can be listed by endpoint in the <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider_fields"><code>provider_fields</code></a> configuration option.
 Filters that use the prefixed form of these fields will then be passed through to the underlying database without the prefix, and then the prefix will be reinstated in the response.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1792,7 +1792,7 @@ In this case, it may be easier to write a custom endpoint for your entry type, t
 <ol>
 <li>The data collection.</li>
 <li>The resource mapper class used by the collection.</li>
-<li>The <a href="../../api_reference/server/schemas/#optimade.server.schemas.ENTRY_INFO_SCHEMAS"><code>ENTRY_INFO_SCHEMAS</code></a> dictionary.</li>
+<li>The <a class="autorefs autorefs-internal" href="../../api_reference/server/schemas/#optimade.server.schemas.ENTRY_INFO_SCHEMAS"><code>ENTRY_INFO_SCHEMAS</code></a> dictionary.</li>
 </ol>
 <p>Finally, the model must be instructed to use the prefixed (aliased) fields when generating its schemas.</p>
 <p>Pulling all of this together:</p>
@@ -1917,7 +1917,7 @@ Instructions for how to do this can be found at in the <a href="https://github.c
     <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.5413a266.min.js"></script>
+      <script src="../../assets/javascripts/bundle.467223ff.min.js"></script>
       
     
   </body>

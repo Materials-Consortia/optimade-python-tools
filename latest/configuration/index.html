@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/configuration/">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.4">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
@@ -1706,9 +1706,9 @@
 This way of handling configuration options supports various different approaches to configure the server.
 We recommend either or a combination of the following:</p>
 <ol>
-<li>Create a JSON or YAML configuration file with an implementation's complete configuration in the default location <a href="../api_reference/server/config/#optimade.server.config.DEFAULT_CONFIG_FILE_PATH">DEFAULT_CONFIG_FILE_PATH</a> or specify its location with the <code>OPTIMADE_CONFIG_FILE</code> environment variable.</li>
+<li>Create a JSON or YAML configuration file with an implementation's complete configuration in the default location <a class="autorefs autorefs-internal" href="../api_reference/server/config/#optimade.server.config.DEFAULT_CONFIG_FILE_PATH">DEFAULT_CONFIG_FILE_PATH</a> or specify its location with the <code>OPTIMADE_CONFIG_FILE</code> environment variable.</li>
 <li>Set environment variables prefixed with <code>OPTIMADE_</code> or <code>optimade_</code>.</li>
-<li>Create a custom <a href="../api_reference/server/config/#optimade.server.config.ServerConfig"><code>ServerConfig</code></a> object with the desired settings directly.</li>
+<li>Create a custom <a class="autorefs autorefs-internal" href="../api_reference/server/config/#optimade.server.config.ServerConfig"><code>ServerConfig</code></a> object with the desired settings directly.</li>
 <li>Load settings from a secret file (see <a href="https://pydantic-docs.helpmanual.io/usage/settings/#secret-support">pydantic documentation</a> for more information).</li>
 </ol>
 <h2 id="the-json-configuration-file">The JSON configuration file<a class="headerlink" href="#the-json-configuration-file" title="Permanent link">&para;</a></h2>
@@ -1763,13 +1763,13 @@ By default, the server will try to load a JSON file called <code>.optimade.json<
 <p>Here the generally recognized environment variable prefix becomes evident, namely <code>OPTIMADE_</code> or <code>optimade_</code>.
 Hence, you can set (or overwrite) any configuration option from the server's defaults or a value read from the configuration JSON by setting an environment variable named <code>OPTIMADE_&lt;configuration_option&gt;</code>.</p>
 <h2 id="custom-configuration-options">Custom configuration options<a class="headerlink" href="#custom-configuration-options" title="Permanent link">&para;</a></h2>
-<p>One can extend the current list of configuration options by sub-classing <a href="../api_reference/server/config/#optimade.server.config.ServerConfig"><code>ServerConfig</code></a> and adding configuration options as attributes with values of <code>Field</code> (<code>pydantic.field</code>).
+<p>One can extend the current list of configuration options by sub-classing <a class="autorefs autorefs-internal" href="../api_reference/server/config/#optimade.server.config.ServerConfig"><code>ServerConfig</code></a> and adding configuration options as attributes with values of <code>Field</code> (<code>pydantic.field</code>).
 Any attribute type will be validated through <code>pydantic</code> as is the case for all of the regular configuration options.</p>
 <p>This is useful for, e.g., custom database backends, if one wants to utilize the general server configuration setup implemented in <code>optimade</code> to declare specific database information.
 It can also be useful if one wishes to extend and build upon the general <code>optimade</code> server with new endpoints and routes.</p>
 <p>Remember to instantiate an instance of the sub-class, which can be imported and used in your application.</p>
 <h2 id="list-of-configuration-options">List of configuration options<a class="headerlink" href="#list-of-configuration-options" title="Permanent link">&para;</a></h2>
-<p>See <a href="../api_reference/server/config/#optimade.server.config.ServerConfig"><code>config.py</code></a> for a complete list of configuration options.</p>
+<p>See <a class="autorefs autorefs-internal" href="../api_reference/server/config/#optimade.server.config.ServerConfig"><code>config.py</code></a> for a complete list of configuration options.</p>
 <p>The following configuration file represents the default values for all configuration options:</p>
 <div class="tabbed-set" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Default values for all configuration options</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
@@ -1893,7 +1893,7 @@ It can also be useful if one wishes to extend and build upon the general <code>o
     <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.5413a266.min.js"></script>
+      <script src="../assets/javascripts/bundle.467223ff.min.js"></script>
       
     
   </body>

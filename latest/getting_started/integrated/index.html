@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/getting_started/integrated/">
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.4">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
@@ -1708,14 +1708,14 @@ Let's say you have a file <code>optimade_config.json</code> as part of the Pytho
 
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;OPTIMADE_CONFIG_FILE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;optimade_config.json&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="customize-the-entrycollection-implementation">Customize the <a href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a> implementation<a class="headerlink" href="#customize-the-entrycollection-implementation" title="Permanent link">&para;</a></h2>
+<h2 id="customize-the-entrycollection-implementation">Customize the <a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a> implementation<a class="headerlink" href="#customize-the-entrycollection-implementation" title="Permanent link">&para;</a></h2>
 <p>Let's assume that your Elasticsearch backend stores structure data in a different enough manner that you need to provide your own custom implementation.
-The following code customizes the <a href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a> class for structures, whilst keeping the default MongoDB-based implementation (using <a href="../../api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection"><code>MongoCollection</code></a>) for all other entry types.</p>
+The following code customizes the <a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a> class for structures, whilst keeping the default MongoDB-based implementation (using <a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection"><code>MongoCollection</code></a>) for all other entry types.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.server.routers</span> <span class="kn">import</span> <span class="n">structures</span>
 
 <span class="n">structures</span><span class="o">.</span><span class="n">structures_coll</span> <span class="o">=</span> <span class="n">MyElasticsearchStructureCollection</span><span class="p">()</span>
 </code></pre></div>
-<p>You can imagine that <code>MyElasticsearchStructureCollection</code> either sub-classes the default <code>optimade</code> Elasticsearch implementation (<a href="../../api_reference/server/entry_collections/elasticsearch/#optimade.server.entry_collections.elasticsearch.ElasticCollection"><code>ElasticsearchCollection</code></a>) or sub-classes <a href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a>, depending on how deeply you need to customize the default <code>optimade</code> behavior.</p>
+<p>You can imagine that <code>MyElasticsearchStructureCollection</code> either sub-classes the default <code>optimade</code> Elasticsearch implementation (<a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/elasticsearch/#optimade.server.entry_collections.elasticsearch.ElasticCollection"><code>ElasticsearchCollection</code></a>) or sub-classes <a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a>, depending on how deeply you need to customize the default <code>optimade</code> behavior.</p>
 <h2 id="mounting-the-optimade-python-tools-fastapi-app-into-an-existing-fastapi-app">Mounting the OPTIMADE Python tools <em>FastAPI</em> app into an existing <em>FastAPI</em> app<a class="headerlink" href="#mounting-the-optimade-python-tools-fastapi-app-into-an-existing-fastapi-app" title="Permanent link">&para;</a></h2>
 <p>Let's assume you have an existing <em>FastAPI</em> app <code>my_app</code>.
 It already implements a few routers under certain path prefixes, and now you want to add an OPTIMADE implementation under the path prefix <code>/optimade</code>.</p>
@@ -1822,7 +1822,7 @@ To avoid the need for this, the <code>root_path</code> can be set in your JSON c
     <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.5413a266.min.js"></script>
+      <script src="../../assets/javascripts/bundle.467223ff.min.js"></script>
       
     
   </body>

@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/server/exception_handlers/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.4">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
@@ -1885,7 +1885,7 @@ OPTIMADE specification.</p>
   <tbody>
     <tr>
       <td><code>JSONAPIResponse</code></td>
-      <td><p>A JSON HTTP response based on <a href="../../models/responses/#optimade.models.responses.ErrorResponse"><code>ErrorResponse</code></a>.</p></td>
+      <td><p>A JSON HTTP response based on <a class="autorefs autorefs-internal" href="../../models/responses/#optimade.models.responses.ErrorResponse"><code>ErrorResponse</code></a>.</p></td>
     </tr>
   </tbody>
 </table>
@@ -1972,7 +1972,7 @@ OPTIMADE specification.</p>
     <div class="doc doc-contents ">
 
       <p>Catch all Python Exceptions not handled by other exception handlers</p>
-<p>Pass-through directly to <a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+<p>Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2010,7 +2010,7 @@ OPTIMADE specification.</p>
   <tbody>
     <tr>
       <td><code>JSONAPIResponse</code></td>
-      <td><p>A JSON HTTP response through <a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
+      <td><p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
     </tr>
   </tbody>
 </table>
@@ -2053,8 +2053,8 @@ OPTIMADE specification.</p>
       <p>Handle an error raised by Lark during filter transformation</p>
 <p>All errors raised during filter transformation are wrapped in the Lark <code>VisitError</code>.
 According to the OPTIMADE specification, these errors are repurposed to be 501 NotImplementedErrors.</p>
-<p>For special exceptions, like <a href="../exceptions/#optimade.server.exceptions.BadRequest"><code>BadRequest</code></a>, we pass-through to
-<a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>, since they should not
+<p>For special exceptions, like <a class="autorefs autorefs-internal" href="../exceptions/#optimade.server.exceptions.BadRequest"><code>BadRequest</code></a>, we pass-through to
+<a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>, since they should not
 return a 501 NotImplementedError.</p>
 
 <p><strong>Parameters:</strong></p>
@@ -2093,7 +2093,7 @@ return a 501 NotImplementedError.</p>
   <tbody>
     <tr>
       <td><code>JSONAPIResponse</code></td>
-      <td><p>A JSON HTTP response through <a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
+      <td><p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
     </tr>
   </tbody>
 </table>
@@ -2194,7 +2194,7 @@ return a 501 NotImplementedError.</p>
   <tbody>
     <tr>
       <td><code>JSONAPIResponse</code></td>
-      <td><p>A JSON HTTP response through <a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
+      <td><p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
     </tr>
   </tbody>
 </table>
@@ -2272,7 +2272,7 @@ return a 501 NotImplementedError.</p>
   <tbody>
     <tr>
       <td><code>JSONAPIResponse</code></td>
-      <td><p>A JSON HTTP response through <a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
+      <td><p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
     </tr>
   </tbody>
 </table>
@@ -2318,7 +2318,7 @@ return a 501 NotImplementedError.</p>
 
       <p>Handle a request validation error from FastAPI</p>
 <p><code>RequestValidationError</code> is a specialization of a general pydantic <code>ValidationError</code>.
-Pass-through directly to <a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2356,7 +2356,7 @@ Pass-through directly to <a href="#optimade.server.exception_handlers.general_ex
   <tbody>
     <tr>
       <td><code>JSONAPIResponse</code></td>
-      <td><p>A JSON HTTP response through <a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
+      <td><p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
     </tr>
   </tbody>
 </table>
@@ -2439,7 +2439,7 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
   <tbody>
     <tr>
       <td><code>JSONAPIResponse</code></td>
-      <td><p>A JSON HTTP response through <a href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
+      <td><p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p></td>
     </tr>
   </tbody>
 </table>
@@ -2576,7 +2576,7 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5413a266.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.467223ff.min.js"></script>
       
     
   </body>

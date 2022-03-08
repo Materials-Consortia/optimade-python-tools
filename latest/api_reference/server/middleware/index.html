@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/server/middleware/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.4">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
@@ -1906,7 +1906,7 @@ versioning.</p>
 <p class="admonition-title">Note</p>
 <p>The order in which middleware is added to an application matters.</p>
 <p>As discussed in the docstring of
-<a href="#optimade.server.middleware.AddWarnings"><code>AddWarnings</code></a>, this
+<a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings"><code>AddWarnings</code></a>, this
 middleware is the final entry to this list so that it is the first
 to be applied by the server.
 Any other middleware should therefore be added <em>before</em> iterating
@@ -1951,18 +1951,18 @@ AddWarnings        </code>
 
     <div class="doc doc-contents ">
 
-      <p>Add <a href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>s to the response.</p>
-<p>All sub-classes of <a href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>
+      <p>Add <a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>s to the response.</p>
+<p>All sub-classes of <a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>
 will also be added to the response's
-<a href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> list.</p>
+<a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> list.</p>
 <p>By overriding the <code>warnings.showwarning()</code> function with the
-<a href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code> method</a>,
+<a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code> method</a>,
 all usages of <code>warnings.warn()</code> will result in the regular printing of the
 warning message to <code>stderr</code>, but also its addition to an in-memory list of
 warnings.
 This middleware will, after the URL request has been handled, add the list of
 accumulated warnings to the JSON response under the
-<a href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> field.</p>
+<a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> field.</p>
 <p>To make sure the last part happens correctly and a Starlette <code>StreamingResponse</code>
 is returned, as is expected from a <code>BaseHTTPMiddleware</code> sub-class, one is
 instantiated with the updated <code>Content-Length</code> header, as well as making sure
@@ -1977,7 +1977,7 @@ catching all warnings that should be added to the response.</p>
 other middleware with the <code>.add_middleware()</code> method, or by
 initialising the app with a middleware list in which <code>AddWarnings</code>
 appears <em>first</em>. More information can be found in the docstring of
-<a href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE"><code>OPTIMADE_MIDDLEWARE</code></a>.</p>
+<a class="autorefs autorefs-internal" href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE"><code>OPTIMADE_MIDDLEWARE</code></a>.</p>
 </div>
 
 <p><strong>Attributes:</strong></p>
@@ -1993,8 +1993,8 @@ appears <em>first</em>. More information can be found in the docstring of
       <tr>
         <td><code>_warnings</code></td>
         <td><code>List[Warnings]</code></td>
-        <td><p>List of <a href="../../models/optimade_json/#optimade.models.optimade_json.Warnings"><code>Warnings</code></a>
-added through usages of <code>warnings.warn()</code> via <a href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code></a>.</p></td>
+        <td><p>List of <a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.Warnings"><code>Warnings</code></a>
+added through usages of <code>warnings.warn()</code> via <a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code></a>.</p></td>
       </tr>
   </tbody>
 </table>
@@ -2315,14 +2315,14 @@ Originally, it prints warning messages to <code>stderr</code>.
 This method will also print warning messages to <code>stderr</code> by calling
 <code>warnings._showwarning_orig()</code> or <code>warnings._showwarnmsg_impl()</code>.
 The first function will be called if the issued warning is not recognized
-as an <a href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>.
+as an <a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>.
 This is equivalent to "standard behaviour".
 The second function will be called <em>after</em> an
-<a href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a> has been handled.</p>
-<p>An <a href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a> will be
+<a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a> has been handled.</p>
+<p>An <a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a> will be
 translated into an OPTIMADE Warnings JSON object in accordance with
 <a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#json-response-schema-common-fields">the specification</a>.
-This process is similar to the <a href="../exception_handlers/#optimade.server.exception_handlers">Exception handlers</a>.</p>
+This process is similar to the <a class="autorefs autorefs-internal" href="../exception_handlers/#optimade.server.exception_handlers">Exception handlers</a>.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -3406,7 +3406,7 @@ Return <code>bool</code> of final result.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5413a266.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.467223ff.min.js"></script>
       
     
   </body>
