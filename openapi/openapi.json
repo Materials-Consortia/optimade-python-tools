@@ -4802,6 +4802,14 @@
             "type": "array",
             "items": {},
             "description": "A list with the values for this property in the trajectory."
+          },
+          "frames": {
+            "title": "Frames",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "A list with frame numbers which corresponds to the frames to which the values in the values field belong."
           }
         }
       },

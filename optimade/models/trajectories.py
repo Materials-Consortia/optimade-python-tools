@@ -279,6 +279,13 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         queryable=SupportLevel.OPTIONAL,
     )
 
+    frames: Optional[List[int]] = OptimadeField(
+        None,
+        description="""A list with frame numbers which corresponds to the frames to which the values in the values field belong.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+
     class Config:
         underscore_attrs_are_private = True
 
