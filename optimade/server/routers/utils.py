@@ -15,7 +15,6 @@ from optimade.models import (
     EntryResponseMany,
     EntryResponseOne,
     ToplevelLinks,
-    AvailablePropertyAttributes,
 )
 
 from optimade.server.config import CONFIG
@@ -106,49 +105,148 @@ def handle_response_fields(
     while results:
         one_doc = results.pop(0)
         new_entry = one_doc.dict(exclude_unset=True, by_alias=True)
-        if (
-            "_hdf5file_path" in new_entry["attributes"]
-        ):  # TODO perhaps hdf5file is not such a good name and we should be more generic like datalocation
-            path = new_entry["attributes"]["_hdf5file_path"]  # TODO use Pathlib
-            # add storage_location_fields (these fields are prepended by an underscore and are therefore not added automaticly when the result is turned into a dict.
-            for field in AvailablePropertyAttributes.__fields__.keys():
-                if getattr(one_doc.attributes, field) is not None:
-                    new_entry["attributes"][field]["_storage_location"] = getattr(
-                        getattr(one_doc.attributes, field), "_storage_location"
-                    )
-        else:
-            path = None
-        # Remove fields excluded by their omission in `response_fields`
-        for field in exclude_fields:
-            if field in new_entry["attributes"]:
-                del new_entry["attributes"][field]
 
         # Include missing fields that were requested in `response_fields`
         for field in include_fields:
             if field not in new_entry["attributes"]:
                 new_entry["attributes"][field] = None
-            else:  # retrieve field from file if not stored in database
-                if isinstance(new_entry["attributes"][field], Dict):
+            else:  # apply slicing to the trajectory
+                storage_method = getattr(
+                    getattr(one_doc.attributes, field), "_storage_location", None
+                )
+                if storage_method is not None:
+                    frame_serialization_format = new_entry["attributes"][field][
+                        "frame_serialization_format"
+                    ]
+                    last_frame = getattr(params, "last_frame")
+                    first_frame = getattr(params, "first_frame")
+                    frame_step = getattr(params, "frame_step")
+                    if last_frame is None:
+                        last_frame = (
+                            new_entry["attributes"]["nframes"] - 1
+                        )  # The frames are counted starting from 0 so if nframes = 10 the last frame is frame 9.
+                    # handle last_frame first_frame an frame step for the different ways in which the data could be encoded.
+
+                    new_entry["attributes"][field]["first_frame"] = first_frame
+                    new_entry["attributes"][field]["frame_step"] = frame_step
+                    new_entry["attributes"][field]["last_frame"] = last_frame
+
                     if (
-                        "_storage_location" in new_entry["attributes"][field]
-                    ):  # TODO perhaps this can be done with one getattr
+                        storage_method == "file"
+                    ):  # Retrieve field from file if not stored in database
+                        # Case file stored in file # TODO It would be nice if it would not just say file but also give the file type.
+                        path = getattr(
+                            one_doc.attributes, "_hdf5file_path", None
+                        )  # TODO perhaps hdf5file is not such a good name and we should be more generic like datalocation
+                        if path is None:
+                            raise InternalServerError(
+                                f"The property{field} is supposed to be stored in a file yet no filepath is specified in hdf5file_path."
+                            )
+                        values = get_values_from_file(
+                            field, path, params, frame_serialization_format
+                        )
+                    elif (
+                        storage_method == "mongo"
+                    ):  # Case data has been read from MongDB In that case we may need to reduce the data ranges
+                        values = []
                         if (
-                            new_entry["attributes"][field]["_storage_location"]
-                            == "file"
-                        ):  # TODO It would be nice if it would not just say file but also give the file type.
-                            if path is None:
-                                raise InternalServerError(
-                                    f"The property{field} is supposed to be stored in a file yet no filepath is specified in hdf5file_path."
+                            frame_serialization_format == "explicit"
+                        ):  # ToDo add warning if the set value of framestep
+                            if last_frame:
+                                last_frame += 1
+                            new_entry["attributes"][field]["values"] = new_entry[
+                                "attributes"
+                            ][field]["values"][first_frame:last_frame:frame_step]
+                        elif frame_serialization_format == "explicit_regular_sparse":
+                            step_size_sparse = new_entry["attributes"][field].get(
+                                "step_size_sparse"
+                            )
+                            offset = new_entry["attributes"][field].get(
+                                "offset_sparse", 0
+                            )
+
+                            if first_frame - offset % step_size_sparse == 0:
+                                if frame_step % step_size_sparse == 0:
+                                    values = new_entry["attributes"][field]["values"][
+                                        (first_frame - offset)
+                                        / step_size_sparse : (
+                                            last_frame / step_size_sparse
+                                        )
+                                        + 1 : frame_step / step_size_sparse
+                                    ]
+                                else:
+                                    for frame in range(
+                                        first_frame, last_frame, frame_step
+                                    ):
+                                        if (frame - offset) % step_size_sparse == 0:
+                                            index = int(
+                                                (frame - offset) / step_size_sparse
+                                            )
+                                            values.append(
+                                                new_entry["attributes"][field][
+                                                    "values"
+                                                ][index]
+                                            )
+                                        else:
+                                            values.append(None)
+
+                            elif frame_step % step_size_sparse == 0:
+                                values = [None] * (
+                                    1 + (last_frame - first_frame) / frame_step
                                 )
-                            new_entry["attributes"][field][
-                                "values"
-                            ] = get_field_from_file(field, path, params)
-                            del new_entry["attributes"][field]["_storage_location"]
+                            else:
+                                for frame in range(first_frame, last_frame, frame_step):
+                                    if (frame - offset) % step_size_sparse == 0:
+                                        index = int((frame - offset) / step_size_sparse)
+                                        values.append(
+                                            new_entry["attributes"][field]["values"][
+                                                index
+                                            ]
+                                        )
+                                    else:
+                                        values.append(None)
+                        elif frame_serialization_format == "explicit_custom_sparse":
+                            frames = new_entry["attributes"][field]["frames"]
+                            index = -1
+                            sparse_frame = -1
+                            for requested_frame in range(
+                                first_frame, last_frame, frame_step
+                            ):
+                                found = False
+                                while sparse_frame <= requested_frame:
+                                    if sparse_frame == requested_frame:
+                                        found = True
+                                        break
+                                    index += 1
+                                    sparse_frame = frames[index]
+                                if found:
+                                    values.append(
+                                        new_entry["attributes"][field]["values"][index]
+                                    )
+                                else:
+                                    values.append(None)
+                            new_entry["attributes"][field]["frames"] = list(
+                                range(first_frame, last_frame, frame_step)
+                            )
+                    else:
+                        raise InternalServerError(
+                            f"Unknown value for the _storage_location field:{new_entry['attributes'][field]['_storage_location']}"
+                        )
+                    new_entry["attributes"][field]["values"] = values
+                    new_entry["attributes"][field]["nvalues"] = len(values)
+
+        # Remove fields excluded by their omission in `response_fields`
+        for field in exclude_fields:
+            if field in new_entry["attributes"]:
+                del new_entry["attributes"][field]
+
         new_results.append(new_entry)
     return new_results
 
 
-def get_field_from_file(field: str, path: str, params: EntryListingQueryParams):
+def get_values_from_file(
+    field: str, path: str, params: EntryListingQueryParams, frame_serialization_method
+):
     import h5py
 
     first_frame = getattr(params, "first_frame")
@@ -157,7 +255,12 @@ def get_field_from_file(field: str, path: str, params: EntryListingQueryParams):
         last_frame += 1
     frame_step = getattr(params, "frame_step")
     file = h5py.File(path, "r")
-    return file[field]["values"][first_frame:last_frame:frame_step].tolist()
+    if frame_serialization_method == "explicit":
+        return file[field]["values"][first_frame:last_frame:frame_step].tolist()
+    else:
+        raise InternalServerError(
+            "Loading data from is not implemented yet for frame serialization methods other than 'explicit'."
+        )
 
 
 def get_included_relationships(
