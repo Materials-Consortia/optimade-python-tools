@@ -8,4 +8,4 @@ pymongo==4.0.2
 pyyaml==5.4
 requests==2.27.1
 typing-extensions==4.0.0;python_version<'3.8'
-uvicorn==0.17.5
+uvicorn==0.17.6
