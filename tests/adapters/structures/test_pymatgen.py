@@ -49,3 +49,8 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
     for special_structure in SPECIAL_SPECIES_STRUCTURES:
         structure = Structure(special_structure)
         assert isinstance(get_pymatgen(structure), PymatgenStructure)
+
+
+def test_null_species(null_species_structure):
+    """Make sure null species are handled"""
+    assert isinstance(get_pymatgen(null_species_structure), PymatgenStructure)

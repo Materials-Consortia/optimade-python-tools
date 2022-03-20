@@ -7,10 +7,11 @@ This conversion function relies on the [pymatgen](https://github.com/materialspr
 
 For more information on the pymatgen code see [their documentation](https://pymatgen.org).
 """
-from typing import Union, Dict, List
+from typing import Union, Dict, List, Optional
 
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
+from optimade.adapters.structures.utils import species_from_species_at_sites
 
 try:
     from pymatgen.core import Structure, Molecule
@@ -51,7 +52,9 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
         warn(PYMATGEN_NOT_FOUND, AdapterPackageNotFound)
         return None
 
-    if all(optimade_structure.attributes.dimension_types):
+    if optimade_structure.attributes.nperiodic_dimensions == 3 or all(
+        optimade_structure.attributes.dimension_types
+    ):
         return _get_structure(optimade_structure)
 
     return _get_molecule(optimade_structure)
@@ -90,12 +93,17 @@ def _get_molecule(optimade_structure: OptimadeStructure) -> Molecule:
 
 
 def _pymatgen_species(
-    nsites: int, species: List[OptimadeStructureSpecies], species_at_sites: List[str]
+    nsites: int,
+    species: Optional[List[OptimadeStructureSpecies]],
+    species_at_sites: List[str],
 ) -> List[Dict[str, float]]:
     """
     Create list of {"symbol": "concentration"} per site for values to pymatgen species parameters.
     Remove vacancies, if they are present.
     """
+    if not species:
+        # If species is missing, infer data from species_at_sites
+        species = species_from_species_at_sites(species_at_sites)
 
     optimade_species = {_.name: _ for _ in species}
 

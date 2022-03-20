@@ -49,3 +49,9 @@ def null_lattice_vector_structure(raw_structure) -> Structure:
     raw_structure["attributes"]["dimension_types"][0] = 0
     raw_structure["attributes"]["nperiodic_dimensions"] = 2
     return Structure(raw_structure)
+
+
+@pytest.fixture
+def null_species_structure(raw_structure) -> Structure:
+    raw_structure["attributes"]["species"] = None
+    return Structure(raw_structure)
