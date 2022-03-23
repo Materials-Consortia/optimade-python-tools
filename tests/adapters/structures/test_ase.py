@@ -40,3 +40,8 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
             r"(ASE cannot handle structures with unknown \('X'\) chemical symbols)",
         ):
             get_ase_atoms(structure)
+
+
+def test_null_species(null_species_structure):
+    """Make sure null species are handled"""
+    assert isinstance(get_ase_atoms(null_species_structure), Atoms)
