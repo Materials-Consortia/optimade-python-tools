@@ -6,6 +6,7 @@ Most of these functions rely on the [NumPy](https://numpy.org/) library.
 from typing import List, Tuple, Iterable
 
 from optimade.models.structures import Vector3D
+from optimade.models.structures import Species as OptimadeStructureSpecies
 
 try:
     import numpy as np
@@ -315,3 +316,28 @@ def pad_cell(
         outer=tuple,
         inner=tuple,
     )
+
+
+def species_from_species_at_sites(
+    species_at_sites: List[str],
+) -> List[OptimadeStructureSpecies]:
+    """When a list of species dictionaries is not provided, this function
+    can be used to infer the species from the provided species_at_sites.
+
+    In this use case, species_at_sites is assumed to provide a list of
+    element symbols, and refers to situations with no mixed occupancy, i.e.,
+    the constructed species list will contain all unique species with
+    concentration equal to 1 and the species_at_site tag will be used as
+    the chemical symbol.
+
+    Parameters:
+        species_at_sites: The list found under the species_at_sites field.
+
+    Returns:
+        An OPTIMADE species list.
+
+    """
+    return [
+        OptimadeStructureSpecies(name=_, concentration=[1.0], chemical_symbols=[_])
+        for _ in set(species_at_sites)
+    ]

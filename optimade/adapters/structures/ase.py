@@ -14,6 +14,7 @@ from optimade.models import StructureResource as OptimadeStructure
 from optimade.models import StructureFeatures
 
 from optimade.adapters.exceptions import ConversionError
+from optimade.adapters.structures.utils import species_from_species_at_sites
 
 try:
     from ase import Atoms, Atom
@@ -53,13 +54,16 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
             "ASE cannot handle structures with partial occupancies, sorry."
         )
 
-    species: Dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species
-    }
+    species = attributes.species
+    # If species is missing, infer data from species_at_sites
+    if not species:
+        species = species_from_species_at_sites(attributes.species_at_sites)
+
+    optimade_species: Dict[str, OptimadeStructureSpecies] = {_.name: _ for _ in species}
 
     # Since we've made sure there are no species with more than 1 chemical symbol,
     # asking for index 0 will always work.
-    if "X" in [specie.chemical_symbols[0] for specie in species.values()]:
+    if "X" in [specie.chemical_symbols[0] for specie in optimade_species.values()]:
         raise ConversionError(
             "ASE cannot handle structures with unknown ('X') chemical symbols, sorry."
         )
@@ -69,7 +73,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         species_name = attributes.species_at_sites[site_number]
         site = attributes.cartesian_site_positions[site_number]
 
-        current_species = species[species_name]
+        current_species = optimade_species[species_name]
 
         # Argument above about chemical symbols also holds here
         mass = None
