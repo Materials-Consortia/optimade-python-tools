@@ -1,6 +1,20 @@
 # Changelog
 
-## [v0.16.11](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.11) (2022-03-02)
+## [v0.16.12](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.12) (2022-03-23)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.11...v0.16.12)
+
+**Implemented enhancements:**
+
+- Allow provider field descriptions to be provided in the config [\#1095](https://github.com/Materials-Consortia/optimade-python-tools/issues/1095)
+- Make structure adapters infer `species` from `species_at_sites` when missing [\#1103](https://github.com/Materials-Consortia/optimade-python-tools/pull/1103) ([ml-evs](https://github.com/ml-evs))
+- Moving and adding some utilities for client code [\#589](https://github.com/Materials-Consortia/optimade-python-tools/pull/589) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Allow specification of provider field descriptions/units etc. in config file [\#1096](https://github.com/Materials-Consortia/optimade-python-tools/pull/1096) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.16.11](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.11) (2022-03-03)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.10...v0.16.11)
 
