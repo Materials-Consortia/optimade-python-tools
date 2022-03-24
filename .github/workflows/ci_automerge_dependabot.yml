@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
         ref: ${{ github.event.pull_request.head.ref }}
@@ -22,6 +22,6 @@ jobs:
     - name: Activate auto-merge
       run: |
         PR_ID="$(gh api graphql -F owner='{owner}' -F name='{repo}' -f query='query($owner: String!, $name: String!) {repository(owner: $owner, name: $name) {pullRequest(number: ${{ github.event.pull_request.number }}) {id}}}' --jq '.data.repository.pullRequest.id')"
-        gh api graphql -f pr_id="$PR_ID" -f query='mutation($pr_id: String!) {enablePullRequestAutoMerge(input:{mergeMethod:SQUASH,pullRequestId:$pr_id }) {pullRequest {number}}}'
+        gh api graphql -f pr_id="$PR_ID" -f query='mutation($pr_id: ID!) {enablePullRequestAutoMerge(input:{mergeMethod:SQUASH,pullRequestId:$pr_id }) {pullRequest {number}}}'
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_CASPER }}
+        GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_BOT }}

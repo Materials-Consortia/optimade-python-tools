@@ -92,6 +92,12 @@ class BaseResourceMapper:
             tuple(
                 (f"_{CONFIG.provider.prefix}_{field}", field)
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
+                if isinstance(field, str)
+            )
+            + tuple(
+                (f"_{CONFIG.provider.prefix}_{field['name']}", field["name"])
+                for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
+                if isinstance(field, dict)
             )
             + tuple(
                 (f"_{CONFIG.provider.prefix}_{field}", field)
@@ -126,6 +132,12 @@ class BaseResourceMapper:
             .union(
                 cls.get_optimade_field(field)
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, ())
+                if isinstance(field, str)
+            )
+            .union(
+                cls.get_optimade_field(field["name"])
+                for field in CONFIG.provider_fields.get(cls.ENDPOINT, ())
+                if isinstance(field, dict)
             )
             .union(set(cls.get_optimade_field(field) for field in cls.PROVIDER_FIELDS))
         )

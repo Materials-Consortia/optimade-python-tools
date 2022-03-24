@@ -2,7 +2,7 @@
 from enum import Enum
 from pathlib import Path
 import warnings
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 try:
     from typing import Literal
@@ -228,7 +228,8 @@ class ServerConfig(BaseSettings):
         description="General information about the provider of this OPTIMADE implementation",
     )
     provider_fields: Dict[
-        Literal["links", "references", "structures", "trajectories"], List[str]
+        Literal["links", "references", "structures"],
+        List[Union[str, Dict[Literal["name", "type", "unit", "description"], str]]],
     ] = Field(
         {},
         description=(

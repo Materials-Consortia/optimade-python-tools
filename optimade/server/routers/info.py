@@ -65,7 +65,9 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
 
     schema = ENTRY_INFO_SCHEMAS[entry]()
     queryable_properties = {"id", "type", "attributes"}
-    properties = retrieve_queryable_properties(schema, queryable_properties)
+    properties = retrieve_queryable_properties(
+        schema, queryable_properties, entry_type=entry
+    )
 
     output_fields_by_format = {"json": list(properties.keys())}
 

@@ -16,6 +16,7 @@ from optimade.adapters.structures.utils import (
     fractional_coordinates,
     pad_cell,
     scaled_cell,
+    species_from_species_at_sites,
 )
 
 
@@ -115,3 +116,47 @@ def test_scaled_cell_consistency(structure):
     volume_from_scale = 1 / numpy.linalg.det(scale)
 
     assert volume_from_scale == pytest.approx(volume_from_cellpar)
+
+
+def test_species_from_species_at_sites(structure):
+    """Test that species can be inferred from species_at_sites"""
+    species_at_sites = ["Si"]
+    assert [d.dict() for d in species_from_species_at_sites(species_at_sites)] == [
+        {
+            "name": "Si",
+            "concentration": [1.0],
+            "chemical_symbols": ["Si"],
+            "attached": None,
+            "mass": None,
+            "original_name": None,
+            "nattached": None,
+        },
+    ]
+
+    species_at_sites = ["Si", "Si", "O", "O", "O", "O"]
+    assert sorted(
+        [d.dict() for d in species_from_species_at_sites(species_at_sites)],
+        key=lambda _: _["name"],
+    ) == sorted(
+        [
+            {
+                "name": "O",
+                "concentration": [1.0],
+                "chemical_symbols": ["O"],
+                "attached": None,
+                "mass": None,
+                "original_name": None,
+                "nattached": None,
+            },
+            {
+                "name": "Si",
+                "concentration": [1.0],
+                "chemical_symbols": ["Si"],
+                "attached": None,
+                "mass": None,
+                "original_name": None,
+                "nattached": None,
+            },
+        ],
+        key=lambda _: _["name"],
+    )

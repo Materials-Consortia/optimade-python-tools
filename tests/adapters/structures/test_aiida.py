@@ -82,3 +82,8 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
                 )
         else:
             assert aiida_structure.kinds[0].mass == 1.0
+
+
+def test_null_species(null_species_structure):
+    """Make sure null species are handled"""
+    assert isinstance(get_aiida_structure_data(null_species_structure), StructureData)

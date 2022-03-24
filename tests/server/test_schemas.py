@@ -30,3 +30,23 @@ def test_schemas():
         # Check that all expected keys are present for OPTIMADE fields
         for key in ("type", "sortable", "queryable", "description"):
             assert all(key in properties[field] for field in properties)
+
+
+def test_provider_field_schemas():
+    """Tests that the default configured provider fields that have descriptions
+    are dereferenced appropriately.
+
+    """
+    entry = "structures"
+    test_field = "chemsys"
+    schema = ENTRY_INFO_SCHEMAS[entry]()
+    top_level_props = ("id", "type", "attributes")
+    properties = retrieve_queryable_properties(schema, top_level_props, entry)
+    name = f"_exmpl_{test_field}"
+
+    assert name in properties
+    assert properties[name] == {
+        "type": "string",
+        "description": "A string representing the chemical system in an ordered fashion",
+        "sortable": True,
+    }

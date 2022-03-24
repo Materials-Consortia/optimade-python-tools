@@ -32,14 +32,14 @@ jobs:
 
     - name: Checkout repository
       if: env.RELEASE_RUN == 'false'
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
         submodules: true
 
     - name: Set up Python 3.8
       if: env.RELEASE_RUN == 'false'
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: 3.8
 
@@ -70,7 +70,7 @@ jobs:
     - name: Update changelog with unreleased changes
       uses: CharMixer/auto-changelog-action@v1
       with:
-        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        token: ${{ secrets.RELEASE_PAT_BOT }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
         future_release: "Unreleased changes"
@@ -89,7 +89,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: ${{ env.DEPENDABOT_BRANCH }}
         fetch-depth: 0
@@ -123,7 +123,7 @@ jobs:
     - name: Push to '${{ env.DEPENDABOT_BRANCH }}'
       uses: CasperWA/push-protected@v2
       with:
-        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        token: ${{ secrets.RELEASE_PAT_BOT }}
         branch: ${{ env.DEPENDABOT_BRANCH }}
         sleep: 15
         force: ${{ env.FORCE_PUSH }}
