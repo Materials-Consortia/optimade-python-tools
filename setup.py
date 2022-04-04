@@ -37,20 +37,20 @@ client_deps = cif_deps
 docs_deps = [
     "markupsafe==2.0.1",  # Can be removed once aiida supports Jinja2>=3, see pallets/markupsafe#284
     "mike~=1.1",
-    "mkdocs~=1.2",
+    "mkdocs~=1.3",
     "mkdocs-awesome-pages-plugin~=2.7",
     "mkdocs-material~=8.2",
-    "mkdocstrings~=0.18.0",
+    "mkdocstrings~=0.18.1",
 ]
 testing_deps = [
     "build~=0.7.0",
     "codecov~=2.1",
     "jsondiff~=1.3",
-    "pytest~=7.0",
+    "pytest~=7.1",
     "pytest-cov~=3.0",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.12", "pre-commit~=2.17", "invoke~=1.6"]
+    ["pylint~=2.13", "pre-commit~=2.17", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
