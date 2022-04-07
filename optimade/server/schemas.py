@@ -66,10 +66,17 @@ def retrieve_queryable_properties(
                 # While the result for sorting lists may not be as expected, they are still sorted.
                 properties[name]["sortable"] = value.get("sortable", True)
                 # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
-                properties[name]["type"] = DataType.from_json_type(
+                property_type = DataType.from_json_type(
                     value.get("format", value.get("type"))
                 )
-
+                # For the Trajectory endpoint some of the properties are dictionaries. Therefore we set the json type here to object.
+                # I have tried to exclude other cases where type may be none by looking for "$ref".
+                if property_type is None:
+                    all_of = value.get("allOf", None)
+                    if all_of:
+                        if "$ref" in all_of[0].keys():
+                            property_type = DataType.from_json_type("object")
+                properties[name]["type"] = property_type
     # If specified, check the config for any additional well-described provider fields
     if entry_type:
         from optimade.server.config import CONFIG
