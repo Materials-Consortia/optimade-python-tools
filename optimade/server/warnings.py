@@ -56,3 +56,10 @@ class UnknownProviderProperty(OptimadeWarning):
     recognised by this implementation.
 
     """
+
+
+class UnknownProviderQueryParameter(OptimadeWarning):
+    """A provider-specific query parameter has been requested in the query who's prefix is not
+    recognised by this implementation.
+
+    """

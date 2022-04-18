@@ -597,3 +597,41 @@ def test_filter_on_unknown_fields(check_response, check_error_response):
     request = "/structures?filter=_optimade_random_field = 1"
     expected_ids = []
     check_response(request, expected_ids=expected_ids)
+
+
+def test_misspelled_query_param(check_error_response):
+    request = "/structures?_exmpl_filter=nelements=2"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail="The query parameter '_exmpl_filter' has a prefix that is supported by this server, yet the parameter is not known.",
+    )
+
+    request = "/structures?filer=nelements=2"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail="The query parameter 'filer' is not known by this server.",
+    )
+
+
+def test_handling_prefixed_query_param(check_response):
+    request = "/structures?_odbx_filter=nelements=2&filter=elements LENGTH >= 9"
+    expected_ids = ["mpf_3819"]
+    check_response(request, expected_ids)
+
+    request = (
+        "/structures?_unknown_filter=elements HAS 'Si'&filter=elements LENGTH >= 9"
+    )
+    expected_ids = ["mpf_3819"]
+    expected_warnings = [
+        {
+            "title": "UnknownProviderQueryParameter",
+            "detail": "The Query parameter '_unknown_filter' has an unknown provider prefix: 'unknown'. This query parameter has been ignored.",
+        }
+    ]
+    check_response(
+        request, expected_ids=expected_ids, expected_warnings=expected_warnings
+    )
