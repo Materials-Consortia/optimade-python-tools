@@ -599,7 +599,7 @@ def test_filter_on_unknown_fields(check_response, check_error_response):
     check_response(request, expected_ids=expected_ids)
 
 
-def test_misspelled_query_param(check_error_response):
+def test_wrong_query_param(check_error_response):
     request = "/structures?_exmpl_filter=nelements=2"
     check_error_response(
         request,
@@ -613,7 +613,15 @@ def test_misspelled_query_param(check_error_response):
         request,
         expected_status=400,
         expected_title="Bad Request",
-        expected_detail="The query parameter 'filer' is not known by this server.",
+        expected_detail="The query parameter 'filer' is not known by this entry point.",
+    )
+
+    request = "/structures/mpf_3819?filter=nelements=2"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail="The query parameter 'filter' is not known by this entry point.",
     )
 
 

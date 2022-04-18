@@ -288,6 +288,7 @@ def get_single_entry(
 ) -> EntryResponseOne:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
+    check_params(request, params)
     params.filter = f'id="{entry_id}"'
     (
         results,
@@ -343,5 +344,5 @@ def check_params(
                     )
             else:
                 raise BadRequest(
-                    detail=f"The query parameter '{param}' is not known by this server."
+                    detail=f"The query parameter '{param}' is not known by this entry point."
                 )
