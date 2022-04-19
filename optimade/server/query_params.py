@@ -10,7 +10,9 @@ from optimade.server.warnings import UnknownProviderQueryParameter
 
 class BaseQueryParams:
     def check_params(self, query_params):
-        """This method check whether there are no misspelled query parameters in the request."""
+        """This method check whether all the query_parameters that are specified in the URL string occur in the relevant QueryParams class.
+        If a query parameter is found that is not defined QueryParams class and it does not have a known prefix of an appropriate error or warning will be given.
+        """
         if CONFIG.check_parameters:
             errors = []
             warnings = []
