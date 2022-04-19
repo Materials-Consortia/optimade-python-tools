@@ -1,4 +1,4 @@
-from fastapi import Query, Request
+from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
 from optimade.server.config import CONFIG
@@ -9,12 +9,12 @@ from optimade.server.warnings import UnknownProviderQueryParameter
 
 
 class BaseQueryParams:
-    def check_params(self, request: Request):
+    def check_params(self, query_params):
         """This method check whether there are no misspelled query parameters in the request."""
         if CONFIG.check_parameters:
             errors = []
             warnings = []
-            for param in request.query_params.keys():
+            for param in query_params.keys():
                 if not hasattr(self, param):
                     split_param = param.split("_")
                     if param.startswith("_") and len(split_param) > 2:
