@@ -1,6 +1,6 @@
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
-
+from typing import Iterable
 from optimade.server.config import CONFIG
 from warnings import warn
 from optimade.server.mappers import BaseResourceMapper
@@ -9,14 +9,18 @@ from optimade.server.warnings import UnknownProviderQueryParameter
 
 
 class BaseQueryParams:
-    def check_params(self, query_params):
+    def check_params(self, query_params: Iterable[str]):
         """This method check whether all the query_parameters that are specified in the URL string occur in the relevant QueryParams class.
         If a query parameter is found that is not defined QueryParams class and it does not have a known prefix of an appropriate error or warning will be given.
+
+        args:
+            query_params: An iterable object that returns the query parameters, as strings, for which it should be checked that they are in the relevant QueryParams class.
+
         """
         if CONFIG.check_parameters:
             errors = []
             warnings = []
-            for param in query_params.keys():
+            for param in query_params:
                 if not hasattr(self, param):
                     split_param = param.split("_")
                     if param.startswith("_") and len(split_param) > 2:
