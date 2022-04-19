@@ -267,6 +267,10 @@ class ServerConfig(BaseSettings):
         Path("/var/log/optimade/"),
         description="Folder in which log files will be saved.",
     )
+    check_parameters: Optional[bool] = Field(
+        True,
+        description="If True, the code will check whether the query parameters given in the URL string are correct.",
+    )
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):

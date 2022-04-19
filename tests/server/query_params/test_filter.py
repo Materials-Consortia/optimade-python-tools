@@ -605,7 +605,7 @@ def test_wrong_query_param(check_error_response):
         request,
         expected_status=400,
         expected_title="Bad Request",
-        expected_detail="The query parameter '_exmpl_filter' has a prefix that is supported by this server, yet the parameter is not known.",
+        expected_detail="The query parameter(s) '['_exmpl_filter']' are not recognised by this endpoint.",
     )
 
     request = "/structures?filer=nelements=2"
@@ -613,7 +613,7 @@ def test_wrong_query_param(check_error_response):
         request,
         expected_status=400,
         expected_title="Bad Request",
-        expected_detail="The query parameter 'filer' is not known by this entry point.",
+        expected_detail="The query parameter(s) '['filer']' are not recognised by this endpoint.",
     )
 
     request = "/structures/mpf_3819?filter=nelements=2"
@@ -621,7 +621,7 @@ def test_wrong_query_param(check_error_response):
         request,
         expected_status=400,
         expected_title="Bad Request",
-        expected_detail="The query parameter 'filter' is not known by this entry point.",
+        expected_detail="The query parameter(s) '['filter']' are not recognised by this endpoint.",
     )
 
 
@@ -637,7 +637,7 @@ def test_handling_prefixed_query_param(check_response):
     expected_warnings = [
         {
             "title": "UnknownProviderQueryParameter",
-            "detail": "The Query parameter '_unknown_filter' has an unknown provider prefix: 'unknown'. This query parameter has been ignored.",
+            "detail": "The query parameter(s) '['_unknown_filter']' are unrecognised and have been ignored.",
         }
     ]
     check_response(

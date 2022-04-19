@@ -1,6 +1,5 @@
 # pylint: disable=import-outside-toplevel,too-many-locals
 import re
-from warnings import warn
 import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union
@@ -23,8 +22,7 @@ from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
-from optimade.server.mappers import BaseResourceMapper
-from optimade.server.warnings import UnknownProviderQueryParameter
+
 
 __all__ = (
     "BASE_URL_PREFIXES",
@@ -238,7 +236,7 @@ def get_entries(
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
-    check_params(request, params)
+    params.check_params(request)
     (
         results,
         data_returned,
@@ -288,7 +286,7 @@ def get_single_entry(
 ) -> EntryResponseOne:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
-    check_params(request, params)
+    params.check_params(request)
     params.filter = f'id="{entry_id}"'
     (
         results,
@@ -324,25 +322,3 @@ def get_single_entry(
         ),
         included=included,
     )
-
-
-def check_params(
-    request: Request, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-):
-    for param in request.query_params.keys():
-        if not hasattr(params, param):
-            split_param = param.split("_")
-            if param.startswith("_") and len(split_param) > 2:
-                if split_param[1] not in BaseResourceMapper.KNOWN_PROVIDER_PREFIXES:
-                    warn(
-                        f"The Query parameter '{param}' has an unknown provider prefix: '{split_param[1]}'. This query parameter has been ignored.",
-                        UnknownProviderQueryParameter,
-                    )
-                elif split_param[1] in BaseResourceMapper.SUPPORTED_PREFIXES:
-                    raise BadRequest(
-                        detail=f"The query parameter '{param}' has a prefix that is supported by this server, yet the parameter is not known."
-                    )
-            else:
-                raise BadRequest(
-                    detail=f"The query parameter '{param}' is not known by this entry point."
-                )
