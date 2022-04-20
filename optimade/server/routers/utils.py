@@ -23,7 +23,6 @@ from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
 
-
 __all__ = (
     "BASE_URL_PREFIXES",
     "meta_values",
