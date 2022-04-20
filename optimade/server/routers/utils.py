@@ -3,7 +3,7 @@ import re
 import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union
-
+import warnings
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
@@ -21,6 +21,7 @@ from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.warnings import IncompatibleFrameStep
 from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
 
 __all__ = (
@@ -119,9 +120,9 @@ def handle_response_fields(
         for field in include_fields:
             if field not in new_entry["attributes"]:
                 new_entry["attributes"][field] = None
-            else:  # apply slicing to the trajectory
+            else:  # apply slicing to the trajectory # TODO The section below is not relevant for structures so it would perhaps be faster to place an extra check here.
                 storage_method = getattr(
-                    getattr(one_doc.attributes, field), "_storage_location", None
+                    getattr(one_doc.attributes, field, None), "_storage_location", None
                 )
                 if storage_method is not None:
                     frame_serialization_format = new_entry["attributes"][field][
@@ -130,20 +131,28 @@ def handle_response_fields(
                     last_frame = getattr(params, "last_frame")
                     first_frame = getattr(params, "first_frame")
                     frame_step = getattr(params, "frame_step")
-                    if last_frame is None:
+
+                    if frame_step is None:
+                        frame_step_set = False
+                        frame_step = 1
+                    else:
+                        frame_step_set = True
+
+                    if (
+                        last_frame is None
+                        or last_frame > new_entry["attributes"]["nframes"] - 1
+                    ):
                         last_frame = (
                             new_entry["attributes"]["nframes"] - 1
                         )  # The frames are counted starting from 0 so if nframes = 10 the last frame is frame 9.
                     # handle last_frame first_frame an frame step for the different ways in which the data could be encoded.
 
-                    new_entry["attributes"][field]["first_frame"] = first_frame
                     new_entry["attributes"][field]["frame_step"] = frame_step
                     new_entry["attributes"][field]["last_frame"] = last_frame
 
                     if (
                         storage_method == "file"
-                    ):  # Retrieve field from file if not stored in database
-                        # Case file stored in file # TODO It would be nice if it would not just say file but also give the file type.
+                    ):  # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
                         path = getattr(
                             one_doc.attributes, "_hdf5file_path", None
                         )  # TODO perhaps hdf5file is not such a good name and we should be more generic like datalocation
@@ -156,16 +165,12 @@ def handle_response_fields(
                         )
                     elif (
                         storage_method == "mongo"
-                    ):  # Case data has been read from MongDB In that case we may need to reduce the data ranges
+                    ):  # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step
                         values = []
-                        if (
-                            frame_serialization_format == "explicit"
-                        ):  # ToDo add warning if the set value of framestep
-                            if last_frame:
-                                last_frame += 1
-                            new_entry["attributes"][field]["values"] = new_entry[
-                                "attributes"
-                            ][field]["values"][first_frame:last_frame:frame_step]
+                        if frame_serialization_format == "explicit":
+                            values = new_entry["attributes"][field]["values"][
+                                first_frame : last_frame + 1 : frame_step
+                            ]
                         elif frame_serialization_format == "explicit_regular_sparse":
                             step_size_sparse = new_entry["attributes"][field].get(
                                 "step_size_sparse"
@@ -174,23 +179,33 @@ def handle_response_fields(
                                 "offset_sparse", 0
                             )
 
-                            if first_frame - offset % step_size_sparse == 0:
+                            if not frame_step_set:
+                                frame_step = step_size_sparse
+                                new_entry["attributes"][field][
+                                    "frame_step"
+                                ] = frame_step
+                                if first_frame % step_size_sparse != 0:
+                                    first_frame = (
+                                        first_frame
+                                        + step_size_sparse
+                                        - (first_frame % step_size_sparse)
+                                    )
+
+                            if (first_frame - offset) % step_size_sparse == 0:
                                 if frame_step % step_size_sparse == 0:
                                     values = new_entry["attributes"][field]["values"][
                                         (first_frame - offset)
-                                        / step_size_sparse : (
-                                            last_frame / step_size_sparse
+                                        // step_size_sparse : (
+                                            last_frame // step_size_sparse
                                         )
-                                        + 1 : frame_step / step_size_sparse
+                                        + 1 : frame_step // step_size_sparse
                                     ]
                                 else:
                                     for frame in range(
                                         first_frame, last_frame, frame_step
                                     ):
                                         if (frame - offset) % step_size_sparse == 0:
-                                            index = int(
-                                                (frame - offset) / step_size_sparse
-                                            )
+                                            index = (frame - offset) // step_size_sparse
                                             values.append(
                                                 new_entry["attributes"][field][
                                                     "values"
@@ -198,15 +213,22 @@ def handle_response_fields(
                                             )
                                         else:
                                             values.append(None)
-
+                                    warnings.warn(
+                                        f"The frame_step value of {frame_step} is not a multiple of the step_size_sparse value of {step_size_sparse} for the field {field} in entry of entry {new_entry['id']}. As a result many of the returned values will be null.",
+                                        IncompatibleFrameStep,
+                                    )
                             elif frame_step % step_size_sparse == 0:
                                 values = [None] * (
-                                    1 + (last_frame - first_frame) / frame_step
+                                    1 + (last_frame - first_frame) // frame_step
+                                )
+                                warnings.warn(
+                                    f"The difference between the value of first_frame {first_frame} and offset_sparse {offset} is not a multiple of frame_step {frame_step} for the field {field} in entr of entry {new_entry['id']}. As a result all of the returned values will be null.",
+                                    IncompatibleFrameStep,
                                 )
                             else:
                                 for frame in range(first_frame, last_frame, frame_step):
                                     if (frame - offset) % step_size_sparse == 0:
-                                        index = int((frame - offset) / step_size_sparse)
+                                        index = (frame - offset) // step_size_sparse
                                         values.append(
                                             new_entry["attributes"][field]["values"][
                                                 index
@@ -214,12 +236,24 @@ def handle_response_fields(
                                         )
                                     else:
                                         values.append(None)
-                        elif frame_serialization_format == "explicit_custom_sparse":
+                                warnings.warn(
+                                    f"The frame_step value of {frame_step} for entry of entry {new_entry['id']} is not a multiple of the step_size_sparse value of {step_size_sparse} for the field {field}. The difference between the value of first_frame {first_frame} and offset_sparse {offset} is not a multiple of frame_step {frame_step} for the field {field}. As a result many of the returned values will be null.",
+                                    IncompatibleFrameStep,
+                                )
+                            new_entry["attributes"][field]["last_frame"] = (
+                                first_frame + (len(values) - 1) * frame_step
+                            )
+                        elif (
+                            frame_serialization_format == "explicit_custom_sparse"
+                        ):  # TODO this algorithm does not seem very efficient in case frame_step has not been set. It should be possible to add a more efficient algorithm for this case.
                             frames = new_entry["attributes"][field]["frames"]
                             index = -1
                             sparse_frame = -1
+                            null_value_added = False
+                            first_index = None
+                            last_included_index = 0
                             for requested_frame in range(
-                                first_frame, last_frame, frame_step
+                                first_frame, last_frame + 1, frame_step
                             ):
                                 found = False
                                 while sparse_frame <= requested_frame:
@@ -227,22 +261,44 @@ def handle_response_fields(
                                         found = True
                                         break
                                     index += 1
+                                    if index >= len(frames):
+                                        break
                                     sparse_frame = frames[index]
                                 if found:
+                                    if first_index is None:
+                                        first_index = index
+                                    last_included_index = index
                                     values.append(
                                         new_entry["attributes"][field]["values"][index]
                                     )
                                 else:
-                                    values.append(None)
-                            new_entry["attributes"][field]["frames"] = list(
-                                range(first_frame, last_frame, frame_step)
-                            )
+                                    if frame_step_set:
+                                        null_value_added = True
+                                        values.append(None)
+                            if frame_step_set:
+                                new_entry["attributes"][field][
+                                    "frames"
+                                ] = list(  # TODO if framestep is specified it is not neccesary to also return the frames here.
+                                    range(first_frame, last_frame, frame_step)
+                                )
+                            else:
+                                new_entry["attributes"][field]["frames"] = frames[
+                                    first_index : last_included_index + 1
+                                ]
+                            if null_value_added:
+                                warnings.warn(
+                                    IncompatibleFrameStep(
+                                        f"For property {field} of entry {new_entry['id']} the frame_serialization_format is 'explicit_custom_sparse'. If the frame_step parameter has also been set, null values will be returned if there is no value for a frame."
+                                    )
+                                )
+
                     else:
                         raise InternalServerError(
                             f"Unknown value for the _storage_location field:{new_entry['attributes'][field]['_storage_location']}"
                         )
                     new_entry["attributes"][field]["values"] = values
                     new_entry["attributes"][field]["nvalues"] = len(values)
+                    new_entry["attributes"][field]["first_frame"] = first_frame
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -268,7 +324,7 @@ def get_values_from_file(
         return file[field]["values"][first_frame:last_frame:frame_step].tolist()
     else:
         raise InternalServerError(
-            "Loading data from is not implemented yet for frame serialization methods other than 'explicit'."
+            "Loading data from a file is not implemented yet for frame serialization methods other than 'explicit'."
         )
 
 

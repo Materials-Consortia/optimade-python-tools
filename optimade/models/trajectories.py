@@ -1,8 +1,8 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
-import warnings
+# import warnings
 from typing import List, Optional, Union, Any
 from enum import IntEnum
-from pydantic import BaseModel, root_validator, conlist
+from pydantic import BaseModel, conlist  # ,root_validator
 
 from optimade.models.entries import EntryResourceAttributes, EntryResource
 from optimade.models.utils import (
@@ -12,7 +12,8 @@ from optimade.models.utils import (
     StrictField,
     SupportLevel,
 )
-from optimade.server.warnings import MissingExpectedField
+
+# from optimade.server.warnings import MissingExpectedField
 from optimade.models.structures import StructureAttributes
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
@@ -581,24 +582,24 @@ Examples:
 
     # TODO add more Trajectory specific validators
 
-    @root_validator(pre=True)
-    def warn_on_missing_correlated_fields(
-        cls, values
-    ):  # TODO make better system for checking required sets of properties
-        """Emit warnings if a field takes a null value when a value
-        was expected based on the value/nullity of another field.
-        """
-        accumulated_warnings = []
-        for field_set in CORRELATED_STRUCTURE_FIELDS:
-            missing_fields = {f for f in field_set if values.get(f) is None}
-            if missing_fields and len(missing_fields) != len(field_set):
-                accumulated_warnings += [
-                    f"Trajectories with values {values} is missing fields {missing_fields} which are required if {field_set - missing_fields} are present."
-                ]
-        for warn in accumulated_warnings:
-            warnings.warn(warn, MissingExpectedField)
-
-        return values
+    # @root_validator(pre=True)
+    # def warn_on_missing_correlated_fields(
+    #     cls, values
+    # ):  # TODO make better system for checking required sets of properties
+    #     """Emit warnings if a field takes a null value when a value
+    #     was expected based on the value/nullity of another field.
+    #     """
+    #     accumulated_warnings = []
+    #     for field_set in CORRELATED_STRUCTURE_FIELDS:
+    #         missing_fields = {f for f in field_set if values.get(f) is None}
+    #         if missing_fields and len(missing_fields) != len(field_set):
+    #             accumulated_warnings += [
+    #                 f"Trajectories with values {values} is missing fields {missing_fields} which are required if {field_set - missing_fields} are present."
+    #             ]
+    #     for warn in accumulated_warnings:
+    #         warnings.warn(warn, MissingExpectedField)
+    #
+    #     return values
 
 
 class TrajectoryResource(EntryResource):

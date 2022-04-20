@@ -290,8 +290,7 @@
               "title": "Frame Step",
               "minimum": 1.0,
               "type": "integer",
-              "description": "Specifies that only one out of every frame_step frames should be returned.",
-              "default": 1
+              "description": "Specifies that only one out of every frame_step frames should be returned."
             },
             "name": "frame_step",
             "in": "query"

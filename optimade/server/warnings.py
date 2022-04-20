@@ -56,3 +56,7 @@ class UnknownProviderProperty(OptimadeWarning):
     recognised by this implementation.
 
     """
+
+
+class IncompatibleFrameStep(OptimadeWarning):
+    """This is a warning that some of the returned values are null because the value has not been set at the requested frames"""

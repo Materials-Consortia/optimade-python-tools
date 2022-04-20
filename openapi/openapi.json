@@ -392,8 +392,7 @@
               "title": "Frame Step",
               "minimum": 1.0,
               "type": "integer",
-              "description": "Specifies that only one out of every frame_step frames should be returned.",
-              "default": 1
+              "description": "Specifies that only one out of every frame_step frames should be returned."
             },
             "name": "frame_step",
             "in": "query"
@@ -689,8 +688,7 @@
               "title": "Frame Step",
               "minimum": 1.0,
               "type": "integer",
-              "description": "Specifies that only one out of every frame_step frames should be returned.",
-              "default": 1
+              "description": "Specifies that only one out of every frame_step frames should be returned."
             },
             "name": "frame_step",
             "in": "query"
@@ -892,8 +890,7 @@
               "title": "Frame Step",
               "minimum": 1.0,
               "type": "integer",
-              "description": "Specifies that only one out of every frame_step frames should be returned.",
-              "default": 1
+              "description": "Specifies that only one out of every frame_step frames should be returned."
             },
             "name": "frame_step",
             "in": "query"
@@ -1189,8 +1186,7 @@
               "title": "Frame Step",
               "minimum": 1.0,
               "type": "integer",
-              "description": "Specifies that only one out of every frame_step frames should be returned.",
-              "default": 1
+              "description": "Specifies that only one out of every frame_step frames should be returned."
             },
             "name": "frame_step",
             "in": "query"
@@ -1392,8 +1388,7 @@
               "title": "Frame Step",
               "minimum": 1.0,
               "type": "integer",
-              "description": "Specifies that only one out of every frame_step frames should be returned.",
-              "default": 1
+              "description": "Specifies that only one out of every frame_step frames should be returned."
             },
             "name": "frame_step",
             "in": "query"
@@ -1689,8 +1684,7 @@
               "title": "Frame Step",
               "minimum": 1.0,
               "type": "integer",
-              "description": "Specifies that only one out of every frame_step frames should be returned.",
-              "default": 1
+              "description": "Specifies that only one out of every frame_step frames should be returned."
             },
             "name": "frame_step",
             "in": "query"
@@ -1798,8 +1792,8 @@
         "tags": [
           "Trajectories"
         ],
-        "summary": "Get Single Structure",
-        "operationId": "get_single_structure_trajectories__entry_id__get",
+        "summary": "Get Single Trajectory",
+        "operationId": "get_single_trajectory_trajectories__entry_id__get",
         "parameters": [
           {
             "required": true,
@@ -1892,8 +1886,7 @@
               "title": "Frame Step",
               "minimum": 1.0,
               "type": "integer",
-              "description": "Specifies that only one out of every frame_step frames should be returned.",
-              "default": 1
+              "description": "Specifies that only one out of every frame_step frames should be returned."
             },
             "name": "frame_step",
             "in": "query"

@@ -177,7 +177,7 @@ class EntryListingQueryParams:
             ge=0,
         ),
         frame_step: int = Query(
-            1,
+            None,
             description="Specifies that only one out of every frame_step frames should be returned.",
             ge=1,
         ),
@@ -294,7 +294,7 @@ class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a
             ge=0,
         ),
         frame_step: int = Query(
-            1,
+            None,
             description="Specifies that only one out of every frame_step frames should be returned.",
             ge=1,
         ),

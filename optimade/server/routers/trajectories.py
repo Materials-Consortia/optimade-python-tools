@@ -46,7 +46,7 @@ def get_trajectories(
     tags=["Trajectories"],
     responses=ERROR_RESPONSES,
 )
-def get_single_structure(
+def get_single_trajectory(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
 ) -> TrajectoryResponseOne:
     return get_single_entry(
