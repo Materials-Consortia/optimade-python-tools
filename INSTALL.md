@@ -85,7 +85,7 @@ will run the index meta-database server at <http://localhost:5001/v1>.
 
 In order to run the test suite for a specific backend, the
 `OPTIMADE_DATABASE_BACKEND` [environment variable (or config
-option)](https://www.optimade.org/optimade-python-tools/configuration/) can be
+option)](https://www.optimade.org/optimade-python-tools/latest/configuration/) can be
 set to one of `'mongodb'`, `'mongomock'` or `'elastic'` (see
 [`ServerConfig.database_backend`][optimade.server.config.ServerConfig.database_backend]).
 Tests for the two "real" database backends, MongoDB and Elasticsearch, require a writable, temporary database to be accessible.
