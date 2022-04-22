@@ -409,6 +409,17 @@
             },
             "name": "api_hint",
             "in": "query"
+          },
+          {
+            "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            "required": false,
+            "schema": {
+              "title": "Continue From Frame",
+              "type": "integer",
+              "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned."
+            },
+            "name": "continue_from_frame",
+            "in": "query"
           }
         ],
         "responses": {
@@ -705,6 +716,17 @@
             },
             "name": "api_hint",
             "in": "query"
+          },
+          {
+            "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            "required": false,
+            "schema": {
+              "title": "Continue From Frame",
+              "type": "integer",
+              "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned."
+            },
+            "name": "continue_from_frame",
+            "in": "query"
           }
         ],
         "responses": {
@@ -906,6 +928,17 @@
               "default": ""
             },
             "name": "api_hint",
+            "in": "query"
+          },
+          {
+            "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            "required": false,
+            "schema": {
+              "title": "Continue From Frame",
+              "type": "integer",
+              "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned."
+            },
+            "name": "continue_from_frame",
             "in": "query"
           }
         ],
@@ -1203,6 +1236,17 @@
             },
             "name": "api_hint",
             "in": "query"
+          },
+          {
+            "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            "required": false,
+            "schema": {
+              "title": "Continue From Frame",
+              "type": "integer",
+              "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned."
+            },
+            "name": "continue_from_frame",
+            "in": "query"
           }
         ],
         "responses": {
@@ -1404,6 +1448,17 @@
               "default": ""
             },
             "name": "api_hint",
+            "in": "query"
+          },
+          {
+            "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            "required": false,
+            "schema": {
+              "title": "Continue From Frame",
+              "type": "integer",
+              "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned."
+            },
+            "name": "continue_from_frame",
             "in": "query"
           }
         ],
@@ -1701,6 +1756,17 @@
             },
             "name": "api_hint",
             "in": "query"
+          },
+          {
+            "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            "required": false,
+            "schema": {
+              "title": "Continue From Frame",
+              "type": "integer",
+              "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned."
+            },
+            "name": "continue_from_frame",
+            "in": "query"
           }
         ],
         "responses": {
@@ -1902,6 +1968,17 @@
               "default": ""
             },
             "name": "api_hint",
+            "in": "query"
+          },
+          {
+            "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            "required": false,
+            "schema": {
+              "title": "Continue From Frame",
+              "type": "integer",
+              "description": "Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned."
+            },
+            "name": "continue_from_frame",
             "in": "query"
           }
         ],

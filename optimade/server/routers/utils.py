@@ -1,5 +1,6 @@
 # pylint: disable=import-outside-toplevel,too-many-locals
 import re
+import sys
 import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union
@@ -91,7 +92,7 @@ def handle_response_fields(
     results: Union[List[EntryResource], EntryResource],
     exclude_fields: Set[str],
     include_fields: Set[str],
-    params: EntryListingQueryParams,
+    params: Union[EntryListingQueryParams, SingleEntryQueryParams],
 ) -> List[Dict[str, Any]]:
     """Handle query parameter `response_fields`.
 
@@ -108,19 +109,86 @@ def handle_response_fields(
         the `response_fields` OPTIMADE URL query parameter.
 
     """
+    singleflag = False
     if not isinstance(results, list):
+        singleflag = True
         results = [results]
 
+    data_limit = 1000000  # For now we limit the product of the number of sites times the number of frames. A more accurate method would be to limit the
+    sum_entry_size = 0
+    continue_from_frame = getattr(params, "continue_from_frame")
     new_results = []
+    traj_trunc = False
+    last_frame = None
     while results:
         one_doc = results.pop(0)
         new_entry = one_doc.dict(exclude_unset=True, by_alias=True)
 
-        # Include missing fields that were requested in `response_fields`
+        # Add missing fields
         for field in include_fields:
             if field not in new_entry["attributes"]:
                 new_entry["attributes"][field] = None
-            else:  # apply slicing to the trajectory # TODO The section below is not relevant for structures so it would perhaps be faster to place an extra check here.
+
+        # Determine the expected size of an entry and reduce the last frame if neccesary
+        if new_entry["type"] == "trajectories":
+            last_frame = getattr(params, "last_frame")
+            first_frame = getattr(params, "first_frame")
+            frame_step = getattr(params, "frame_step")
+            if continue_from_frame:
+                first_frame = continue_from_frame
+                continue_from_frame = None
+
+            if frame_step is None:
+                frame_step_set = False
+                frame_step = 1
+            else:
+                frame_step_set = True
+
+            if (
+                last_frame is None
+                or last_frame > new_entry["attributes"]["nframes"] - 1
+            ):
+                last_frame = new_entry["attributes"]["nframes"] - 1
+                # The frames are counted starting from 0 so if nframes = 10 the last frame is frame 9.
+
+            # We make a rough estimate of the amount of data expected.
+            sum_item_size = 0
+            for field_name in include_fields:
+                if field_name in new_entry["attributes"]["available_properties"].keys():
+                    if new_entry["attributes"]["available_properties"][field_name][
+                        "frame_serialization_format"
+                    ] in [
+                        "explicit",
+                        "explicit_custom_sparse",
+                        "explicit_regular_sparse",
+                    ]:
+                        if field_name in new_entry["attributes"]["reference_structure"]:
+                            item_size = sys.getsizeof(
+                                new_entry["attributes"]["reference_structure"][
+                                    field_name
+                                ]
+                            )
+                        else:
+                            item_size = (
+                                12
+                                * new_entry["attributes"]["reference_structure"][
+                                    "nsites"
+                                ]
+                            )  # make a conservative guess of the size of the item. # TODO add a field to the database entry specifying the average size of the item per frame.
+                        sum_item_size += item_size
+            data_size = sum_item_size * ((last_frame - first_frame + 1) // frame_step)
+            if (sum_entry_size + data_size) > data_limit:
+                data_left = data_limit - sum_entry_size
+                n_frames_to_read = max(
+                    data_left // sum_item_size, 1
+                )  # TODO take into account whether other trajectories have been returned previously if so this value may also be 0
+                traj_trunc = True
+                last_frame = first_frame + frame_step * (n_frames_to_read - 1)
+            sum_entry_size += sum_item_size * (
+                (last_frame - first_frame + 1) // frame_step
+            )
+
+            for field in include_fields:
                 storage_method = getattr(
                     getattr(one_doc.attributes, field, None), "_storage_location", None
                 )
@@ -128,31 +196,12 @@ def handle_response_fields(
                     frame_serialization_format = new_entry["attributes"][field][
                         "frame_serialization_format"
                     ]
-                    last_frame = getattr(params, "last_frame")
-                    first_frame = getattr(params, "first_frame")
-                    frame_step = getattr(params, "frame_step")
-
-                    if frame_step is None:
-                        frame_step_set = False
-                        frame_step = 1
-                    else:
-                        frame_step_set = True
-
-                    if (
-                        last_frame is None
-                        or last_frame > new_entry["attributes"]["nframes"] - 1
-                    ):
-                        last_frame = (
-                            new_entry["attributes"]["nframes"] - 1
-                        )  # The frames are counted starting from 0 so if nframes = 10 the last frame is frame 9.
-                    # handle last_frame first_frame an frame step for the different ways in which the data could be encoded.
-
+                    new_entry["attributes"][field]["first_frame"] = first_frame
                     new_entry["attributes"][field]["frame_step"] = frame_step
                     new_entry["attributes"][field]["last_frame"] = last_frame
 
-                    if (
-                        storage_method == "file"
-                    ):  # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
+                    # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
+                    if storage_method == "file":
                         path = getattr(
                             one_doc.attributes, "_hdf5file_path", None
                         )  # TODO perhaps hdf5file is not such a good name and we should be more generic like datalocation
@@ -160,12 +209,12 @@ def handle_response_fields(
                             raise InternalServerError(
                                 f"The property{field} is supposed to be stored in a file yet no filepath is specified in hdf5file_path."
                             )
-                        values = get_values_from_file(
-                            field, path, params, frame_serialization_format
-                        )
-                    elif (
-                        storage_method == "mongo"
-                    ):  # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step
+                        values = get_values_from_file(field, path, new_entry)
+
+                    # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step
+                    elif storage_method == "mongo":
+                        if frame_serialization_format == "constant" or "linear":
+                            continue
                         values = []
                         if frame_serialization_format == "explicit":
                             values = new_entry["attributes"][field]["values"][
@@ -190,6 +239,9 @@ def handle_response_fields(
                                         + step_size_sparse
                                         - (first_frame % step_size_sparse)
                                     )
+                                    new_entry["attributes"][field][
+                                        "first_frame"
+                                    ] = first_frame
 
                             if (first_frame - offset) % step_size_sparse == 0:
                                 if frame_step % step_size_sparse == 0:
@@ -243,9 +295,8 @@ def handle_response_fields(
                             new_entry["attributes"][field]["last_frame"] = (
                                 first_frame + (len(values) - 1) * frame_step
                             )
-                        elif (
-                            frame_serialization_format == "explicit_custom_sparse"
-                        ):  # TODO this algorithm does not seem very efficient in case frame_step has not been set. It should be possible to add a more efficient algorithm for this case.
+                        elif frame_serialization_format == "explicit_custom_sparse":
+                            # TODO this algorithm does not seem very efficient in case frame_step has not been set. It should be possible to add a more efficient algorithm for this case.
                             frames = new_entry["attributes"][field]["frames"]
                             index = -1
                             sparse_frame = -1
@@ -298,7 +349,6 @@ def handle_response_fields(
                         )
                     new_entry["attributes"][field]["values"] = values
                     new_entry["attributes"][field]["nvalues"] = len(values)
-                    new_entry["attributes"][field]["first_frame"] = first_frame
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -306,26 +356,30 @@ def handle_response_fields(
                 del new_entry["attributes"][field]
 
         new_results.append(new_entry)
-    return new_results
+        if traj_trunc:
+            break
+    if singleflag:
+        return new_results[0], traj_trunc, last_frame
+    else:
+        return new_results, traj_trunc, last_frame
 
 
-def get_values_from_file(
-    field: str, path: str, params: EntryListingQueryParams, frame_serialization_method
-):
+def get_values_from_file(field: str, path: str, new_entry: Dict):
     import h5py
 
-    first_frame = getattr(params, "first_frame")
-    last_frame = getattr(params, "last_frame")
-    if last_frame:
-        last_frame += 1
-    frame_step = getattr(params, "frame_step")
+    frame_serialization_format = new_entry["attributes"][field][
+        "frame_serialization_format"
+    ]
+    first_frame = new_entry["attributes"][field]["first_frame"]
+    last_frame = new_entry["attributes"][field]["last_frame"] + 1
+    frame_step = new_entry["attributes"][field]["frame_step"]
     file = h5py.File(path, "r")
-    if frame_serialization_method == "explicit":
+    if frame_serialization_format == "explicit":
         return file[field]["values"][first_frame:last_frame:frame_step].tolist()
     else:
         raise InternalServerError(
             "Loading data from a file is not implemented yet for frame serialization methods other than 'explicit'."
-        )
+        )  # TODO implement this for the other frame_serialization_methods
 
 
 def get_included_relationships(
@@ -448,19 +502,27 @@ def get_entries(
         include.extend(params.include.split(","))
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
+    traj_trunc = False
+    if fields or include_fields:
+        results, traj_trunc, last_frame = handle_response_fields(
+            results, fields, include_fields, params
+        )
+
+    if traj_trunc:
+        more_data_available = True
     if more_data_available:
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
+        if traj_trunc:
+            query["page_offset"] -= 1
+            query["continue_from_frame"] = last_frame + 1
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
 
         links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
     else:
         links = ToplevelLinks(next=None)
-
-    if fields or include_fields:
-        results = handle_response_fields(results, fields, include_fields, params)
 
     return response(
         links=links,
@@ -503,10 +565,24 @@ def get_single_entry(
             detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
         )
 
-    links = ToplevelLinks(next=None)
-
+    traj_trunc = False
     if fields or include_fields and results is not None:
-        results = handle_response_fields(results, fields, include_fields, params)[0]
+        results, traj_trunc, last_frame = handle_response_fields(
+            results, fields, include_fields, params
+        )
+        # results = handle_response_fields(results, fields, include_fields, params)[0]
+
+    if traj_trunc:
+        more_data_available = True
+        # Deduce the `next` link from the current request
+        query = urllib.parse.parse_qs(request.url.query)
+        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results) - 1
+        query["continue_from_frame"] = last_frame + 1
+        urlencoded = urllib.parse.urlencode(query, doseq=True)
+        base_url = get_base_url(request.url)
+        links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
+    else:
+        links = ToplevelLinks(next=None)
 
     return response(
         links=links,

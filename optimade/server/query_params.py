@@ -186,6 +186,10 @@ class EntryListingQueryParams:
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
             regex=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
+        continue_from_frame: int = Query(
+            None,
+            description="Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+        )
     ):
         self.filter = filter
         self.response_format = response_format
@@ -202,6 +206,7 @@ class EntryListingQueryParams:
         self.first_frame = first_frame
         self.last_frame = last_frame
         self.frame_step = frame_step
+        self.continue_from_frame = continue_from_frame
 
 
 class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a superset of SingleEntryQueryParams so perhaps it is possible to defone it in a way where we do not have to repeat code.
@@ -303,6 +308,10 @@ class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
             regex=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
+        continue_from_frame: int = Query(
+            None,
+            description="Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+        )
     ):
         self.response_format = response_format
         self.email_address = email_address
@@ -311,3 +320,4 @@ class SingleEntryQueryParams:  # TODO It seems that EntryListingQueryParams is a
         self.first_frame = first_frame
         self.last_frame = last_frame
         self.frame_step = frame_step
+        self.continue_from_frame = continue_from_frame

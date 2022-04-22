@@ -8,6 +8,7 @@ __all__ = (
     "NotFound",
     "UnprocessableEntity",
     "NotImplementedResponse",
+    "InternalServerError",
     "POSSIBLE_ERRORS",
 )
 

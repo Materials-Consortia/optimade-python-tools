@@ -34,7 +34,7 @@ EPS = 2**-23
 Vector3D = conlist(float, min_items=3, max_items=3)
 Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
 
-CORRELATED_STRUCTURE_FIELDS = (
+CORRELATED_TRAJECTORY_FIELDS = (
     {"cartesian_site_positions", "species_at_sites"},
     {"species_at_sites", "species"},
 )
@@ -590,7 +590,7 @@ Examples:
     #     was expected based on the value/nullity of another field.
     #     """
     #     accumulated_warnings = []
-    #     for field_set in CORRELATED_STRUCTURE_FIELDS:
+    #     for field_set in CORRELATED_TRAJECTORY_FIELDS:
     #         missing_fields = {f for f in field_set if values.get(f) is None}
     #         if missing_fields and len(missing_fields) != len(field_set):
     #             accumulated_warnings += [
