@@ -6,6 +6,7 @@ from enum import Enum
 from typing import Optional
 
 from pydantic import Field
+from pydantic.fields import FieldInfo
 
 _PYDANTIC_FIELD_KWARGS = list(inspect.signature(Field).parameters.keys())
 
@@ -17,6 +18,9 @@ __all__ = (
     "SupportLevel",
 )
 
+OPTIMADE_SCHEMA_EXTENSION_KEYS = ["support", "queryable", "unit", "sortable"]
+OPTIMADE_SCHEMA_EXTENSION_PREFIX = "x-optimade-"
+
 
 class SupportLevel(Enum):
     """OPTIMADE property/field support levels"""
@@ -26,11 +30,35 @@ class SupportLevel(Enum):
     OPTIONAL = "optional"
 
 
+class StrictFieldInfo(FieldInfo):
+    """Wraps the standard pydantic `FieldInfo` in order
+    to prefix any custom keys from `StrictField`.
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
+            if key in self.extra:
+                self.extra[f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"] = self.extra.pop(
+                    key
+                )
+
+
+def StrictPydanticField(*args, **kwargs):
+    """Wrapper for `Field` that uses `StrictFieldInfo` instead of
+    the pydantic `FieldInfo`.
+    """
+    field_info = StrictFieldInfo(*args, **kwargs)
+    field_info._validate()
+    return field_info
+
+
 def StrictField(
     *args,
     description: str = None,
     **kwargs,
-) -> Field:
+) -> StrictFieldInfo:
     """A wrapper around `pydantic.Field` that does the following:
 
     - Forbids any "extra" keys that would be passed to `pydantic.Field`,
@@ -56,13 +84,10 @@ def StrictField(
     """
 
     allowed_keys = [
-        "unit",
         "pattern",
         "uniqueItems",
-        "support",
-        "queryable",
-        "sortable",
-    ]
+        "nullable",
+    ] + OPTIMADE_SCHEMA_EXTENSION_KEYS
     _banned = [k for k in kwargs if k not in set(_PYDANTIC_FIELD_KWARGS + allowed_keys)]
 
     if _banned:
@@ -78,7 +103,7 @@ def StrictField(
             f"No description provided for StrictField specified by {args}, {kwargs}."
         )
 
-    return Field(*args, **kwargs)
+    return StrictPydanticField(*args, **kwargs)
 
 
 def OptimadeField(
