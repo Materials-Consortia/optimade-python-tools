@@ -69,7 +69,7 @@ class TestSingleStructureEndpoint(RegularEndpointTests):
         assert "_exmpl_chemsys" in self.json_response["data"]["attributes"]
 
 
-def TestCheckResponseSingleStructure(check_response):
+def test_check_response_single_structure(check_response):
     """Tests whether check_response also handles single endpoint queries correctly."""
 
     test_id = "mpf_1"
