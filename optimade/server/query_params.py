@@ -6,12 +6,13 @@ from warnings import warn
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.exceptions import BadRequest
 from optimade.server.warnings import UnknownProviderQueryParameter
+from abc import ABC
 
 
-class BaseQueryParams:
+class BaseQueryParams(ABC):
     def check_params(self, query_params: Iterable[str]):
-        """This method check whether all the query_parameters that are specified in the URL string occur in the relevant QueryParams class.
-        If a query parameter is found that is not defined QueryParams class and it does not have a known prefix of an appropriate error or warning will be given.
+        """This method checks whether all the query_parameters that are specified in the URL string occur in the relevant QueryParams class.
+        If a query parameter is found that is not defined in the QueryParams class and it does not have a known prefix, an appropriate error or warning will be given.
 
         args:
             query_params: An iterable object that returns the query parameters, as strings, for which it should be checked that they are in the relevant QueryParams class.
@@ -19,30 +20,30 @@ class BaseQueryParams:
         """
         if not CONFIG.validate_query_parameters:
             return
-            errors = []
-            warnings = []
-            for param in query_params:
-                if not hasattr(self, param):
-                    split_param = param.split("_")
-                    if param.startswith("_") and len(split_param) > 2:
-                        prefix = split_param[1]
-                        if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
-                            errors.append(param)
-                        elif prefix not in BaseResourceMapper.KNOWN_PROVIDER_PREFIXES:
-                            warnings.append(param)
-                    else:
+        errors = []
+        warnings = []
+        for param in query_params:
+            if not hasattr(self, param):
+                split_param = param.split("_")
+                if param.startswith("_") and len(split_param) > 2:
+                    prefix = split_param[1]
+                    if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
                         errors.append(param)
+                    elif prefix not in BaseResourceMapper.KNOWN_PROVIDER_PREFIXES:
+                        warnings.append(param)
+                else:
+                    errors.append(param)
 
-            if warnings:
-                warn(
-                    f"The query parameter(s) '{warnings}' are unrecognised and have been ignored.",
-                    UnknownProviderQueryParameter,
-                )
+        if warnings:
+            warn(
+                f"The query parameter(s) '{warnings}' are unrecognised and have been ignored.",
+                UnknownProviderQueryParameter,
+            )
 
-            if errors:
-                raise BadRequest(
-                    f"The query parameter(s) '{errors}' are not recognised by this endpoint."
-                )
+        if errors:
+            raise BadRequest(
+                f"The query parameter(s) '{errors}' are not recognised by this endpoint."
+            )
 
 
 class EntryListingQueryParams(BaseQueryParams):

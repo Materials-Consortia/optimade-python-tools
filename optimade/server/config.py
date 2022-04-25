@@ -269,7 +269,7 @@ class ServerConfig(BaseSettings):
     )
     validate_query_parameters: Optional[bool] = Field(
         True,
-        description="If True, the code will check whether the query parameters given in the URL string are correct.",
+        description="If True, the server will check whether the query parameters given in the request are correct.",
     )
 
     @validator("implementation", pre=True)
