@@ -117,8 +117,10 @@ def check_response(get_good_response):
         server: Union[str, OptimadeTestClient] = "regular",
     ):
         response = get_good_response(request, server)
-
-        response_ids = [struct["id"] for struct in response["data"]]
+        if type(response["data"]) == dict:
+            response_ids = [response["data"]["id"]]
+        else:
+            response_ids = [struct["id"] for struct in response["data"]]
 
         if expected_return is None:
             expected_return = len(expected_ids)

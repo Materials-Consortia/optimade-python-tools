@@ -69,6 +69,15 @@ class TestSingleStructureEndpoint(RegularEndpointTests):
         assert "_exmpl_chemsys" in self.json_response["data"]["attributes"]
 
 
+def TestCheckResponseSingleStructure(check_response):
+    """Tests whether check_response also handles single endpoint queries correctly."""
+
+    test_id = "mpf_1"
+    expected_ids = ["mpf_1"]
+    request = f"/structures/{test_id}?response_fields=chemical_formula_reduced"
+    check_response(request, expected_ids=expected_ids)
+
+
 class TestMissingSingleStructureEndpoint(RegularEndpointTests):
     """Tests for /structures/<entry_id> for unknown <entry_id>"""
 
