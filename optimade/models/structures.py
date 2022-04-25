@@ -814,7 +814,8 @@ The properties of the species are found in the property `species`.
             nullable_props = (
                 prop
                 for prop in schema["required"]
-                if schema["properties"][prop].get("support") == SupportLevel.SHOULD
+                if schema["properties"][prop].get("x-optimade-support")
+                == SupportLevel.SHOULD
             )
             for prop in nullable_props:
                 schema["properties"][prop]["nullable"] = True
