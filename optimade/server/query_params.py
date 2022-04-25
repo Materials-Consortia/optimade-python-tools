@@ -17,7 +17,8 @@ class BaseQueryParams:
             query_params: An iterable object that returns the query parameters, as strings, for which it should be checked that they are in the relevant QueryParams class.
 
         """
-        if CONFIG.check_parameters:
+        if not CONFIG.validate_query_parameters:
+            return
             errors = []
             warnings = []
             for param in query_params:
