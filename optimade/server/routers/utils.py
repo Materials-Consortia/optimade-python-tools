@@ -366,7 +366,12 @@ def handle_response_fields(
 
 def get_values_from_file(field: str, path: str, new_entry: Dict):
     import h5py
+    from pathlib import Path
 
+    if (
+        path[0] != "/"
+    ):  # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
+        path = Path(__file__).parent.parent / "data" / path
     frame_serialization_format = new_entry["attributes"][field][
         "frame_serialization_format"
     ]

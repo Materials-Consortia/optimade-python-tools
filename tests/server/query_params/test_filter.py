@@ -609,3 +609,9 @@ def test_trajectories(
         "622b548fe73216ae229b188b",
     ]
     check_response(request, expected_ids=expected_ids)
+
+    request = "/trajectories?filter=nelements>=6&response_fields=cartesian_site_positions,_exmpl_time&last_frame=40&first_frame=5"
+    expected_ids = [
+        "62696ac7eef0323c842f9f51",
+    ]
+    check_response(request, expected_ids=expected_ids)
