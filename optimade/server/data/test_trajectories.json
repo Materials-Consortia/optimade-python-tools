@@ -59698,7 +59698,7 @@
     }
   },
   "type": "trajectories",
-  "last_modified": "2022-04-27T16:09:41.000Z",
+  "last_modified":{"$date": "2022-04-27T16:09:41.000Z"},
   "cartesian_site_positions": {
     "frame_serialization_format": "explicit",
     "nvalues": 34,

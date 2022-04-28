@@ -58,5 +58,24 @@
     "title": "Dummy reference that should remain orphaned from all structures for testing purposes",
     "journal": "JACS",
     "doi": "10.1038/00000"
+  },
+  {
+    "_id": "62696ac7eef0323c842f9f50",
+    "title": "Molecular Dynamics Simulations Related to SARS-CoV-2",
+    "organization": "D. E. Shaw Research",
+    "year": "2020",
+    "note": "Only a small fraction of trajectory DESRES-ANTON-10875754 is shared here as an example.",
+    "url": "http://www.deshawresearch.com/resources_sarscov2.html",
+    "id": "Shaw2020a",
+    "last_modified": {"$date":"2022-04-27T16:09:41.000Z"}
+  },
+  {
+    "_id": "62696ac7eef0323c842f9f4f",
+    "title": "Creative Commons Attribution 4.0 International Public License",
+    "url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+    "note": "Entries with a reference to this licence were and are shared under this licence.",
+    "organization": "Creative Commons",
+    "id": "CCBy4",
+    "last_modified": {"$date":"2022-04-27T16:09:41.000Z"}
   }
 ]
