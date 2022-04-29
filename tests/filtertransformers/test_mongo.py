@@ -891,3 +891,5 @@ class TestMongoTransformer:
 
     def test_constant_first_comparisson(self):
         assert self.transform("nelements != 5") == self.transform("5 != nelements")
+        assert self.transform("nelements > 5") == self.transform("5 < nelements")
+        assert self.transform("nelements <= 5") == self.transform("5 >= nelements")
