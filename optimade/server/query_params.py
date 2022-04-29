@@ -18,7 +18,7 @@ class BaseQueryParams(ABC):
             query_params: An iterable object that returns the query parameters, as strings, for which it should be checked that they are in the relevant QueryParams class.
 
         """
-        if not CONFIG.validate_query_parameters:
+        if not getattr(CONFIG, "validate_query_parameters", False):
             return
         errors = []
         warnings = []
