@@ -59,7 +59,7 @@ class UnknownProviderProperty(OptimadeWarning):
 
 
 class UnknownProviderQueryParameter(OptimadeWarning):
-    """A provider-specific query parameter has been requested in the query who's prefix is not
+    """A provider-specific query parameter has been requested in the query with a prefix not
     recognised by this implementation.
 
     """
