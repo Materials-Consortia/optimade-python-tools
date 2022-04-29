@@ -8,10 +8,7 @@ class OptimadeWarning(Warning):
         self.title = title if title else self.__class__.__name__
 
     def __repr__(self) -> str:
-        attrs = {
-            "detail": self.detail,
-            "title": self.title,
-        }
+        attrs = {"detail": self.detail, "title": self.title}
         return "<{:s}({:s})>".format(
             self.__class__.__name__,
             " ".join(

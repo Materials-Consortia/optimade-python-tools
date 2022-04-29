@@ -11,16 +11,16 @@ from abc import ABC
 
 class BaseQueryParams(ABC):
     def check_params(self, query_params: Iterable[str]) -> None:
-        """This method checks whether all the query parameters that are specified 
+        """This method checks whether all the query parameters that are specified
         in the URL string are implemented in the relevant `*QueryParams` class.
-        
-        If a query parameter is found that is not defined in the relevant `*QueryParams` class, 
-        and it does not have a known provider prefix, an appropriate error (`BadRequest`) 
+
+        If a query parameter is found that is not defined in the relevant `*QueryParams` class,
+        and it does not have a known provider prefix, an appropriate error (`BadRequest`)
         or warning (`UnknownProviderQueryParameter`) will be emitted.
 
         Arguments:
             query_params: An iterable of the request's string query parameters.
-            
+
         Raises:
             `BadRequest`: if the query parameter was not found in the relevant class, or if it
                 does not have a valid prefix.
