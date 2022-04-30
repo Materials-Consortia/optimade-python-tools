@@ -1183,6 +1183,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.server.query_params.BaseQueryParams" class="md-nav__link">
+    BaseQueryParams
+  </a>
+  
+    <nav class="md-nav" aria-label="BaseQueryParams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.query_params.BaseQueryParams.check_params" class="md-nav__link">
+    check_params()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.server.query_params.EntryListingQueryParams" class="md-nav__link">
     EntryListingQueryParams
   </a>
@@ -1664,6 +1684,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.server.query_params.BaseQueryParams" class="md-nav__link">
+    BaseQueryParams
+  </a>
+  
+    <nav class="md-nav" aria-label="BaseQueryParams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.query_params.BaseQueryParams.check_params" class="md-nav__link">
+    check_params()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.server.query_params.EntryListingQueryParams" class="md-nav__link">
     EntryListingQueryParams
   </a>
@@ -1707,6 +1747,196 @@
 
 
 
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.server.query_params.BaseQueryParams" class="doc doc-heading">
+        <code>
+BaseQueryParams        </code>
+
+
+
+<a href="#optimade.server.query_params.BaseQueryParams" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseQueryParams</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
+<span class="sd">        in the URL string are implemented in the relevant `*QueryParams` class.</span>
+
+<span class="sd">        If a query parameter is found that is not defined in the relevant `*QueryParams` class,</span>
+<span class="sd">        and it does not have a known provider prefix, an appropriate error (`BadRequest`)</span>
+<span class="sd">        or warning (`UnknownProviderQueryParameter`) will be emitted.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            query_params: An iterable of the request&#39;s string query parameters.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            `BadRequest`: if the query parameter was not found in the relevant class, or if it</span>
+<span class="sd">                does not have a valid prefix.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">,</span> <span class="s2">&quot;validate_query_parameters&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">query_params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+                <span class="n">split_param</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_param</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">prefix</span> <span class="o">=</span> <span class="n">split_param</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">BaseResourceMapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span><span class="p">:</span>
+                        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">BaseResourceMapper</span><span class="o">.</span><span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">warnings</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">warnings</span><span class="si">}</span><span class="s2">&#39; are unrecognised and have been ignored.&quot;</span><span class="p">,</span>
+                <span class="n">UnknownProviderQueryParameter</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
+            <span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.server.query_params.BaseQueryParams.check_params" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">)</span></code>
+
+
+<a href="#optimade.server.query_params.BaseQueryParams.check_params" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>This method checks whether all the query parameters that are specified
+in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
+<p>If a query parameter is found that is not defined in the relevant <code>*QueryParams</code> class,
+and it does not have a known provider prefix, an appropriate error (<code>BadRequest</code>)
+or warning (<code>UnknownProviderQueryParameter</code>) will be emitted.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>query_params</code></td>
+        <td><code>Iterable[str]</code></td>
+        <td><p>An iterable of the request's string query parameters.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>`BadRequest`</code></td>
+        <td><p>if the query parameter was not found in the relevant class, or if it
+does not have a valid prefix.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
+<span class="sd">    in the URL string are implemented in the relevant `*QueryParams` class.</span>
+
+<span class="sd">    If a query parameter is found that is not defined in the relevant `*QueryParams` class,</span>
+<span class="sd">    and it does not have a known provider prefix, an appropriate error (`BadRequest`)</span>
+<span class="sd">    or warning (`UnknownProviderQueryParameter`) will be emitted.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        query_params: An iterable of the request&#39;s string query parameters.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        `BadRequest`: if the query parameter was not found in the relevant class, or if it</span>
+<span class="sd">            does not have a valid prefix.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">CONFIG</span><span class="p">,</span> <span class="s2">&quot;validate_query_parameters&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">query_params</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+            <span class="n">split_param</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_param</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="n">split_param</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">BaseResourceMapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">BaseResourceMapper</span><span class="o">.</span><span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">warnings</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">warnings</span><span class="si">}</span><span class="s2">&#39; are unrecognised and have been ignored.&quot;</span><span class="p">,</span>
+            <span class="n">UnknownProviderQueryParameter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 
@@ -1847,7 +2077,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 </table>
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryListingQueryParams</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryListingQueryParams</span><span class="p">(</span><span class="n">BaseQueryParams</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Common query params for all Entry listing endpoints.</span>
 
@@ -2012,6 +2242,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <span class="bp">self</span><span class="o">.</span><span class="n">page_above</span> <span class="o">=</span> <span class="n">page_above</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_below</span> <span class="o">=</span> <span class="n">page_below</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="n">include</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_hint</span> <span class="o">=</span> <span class="n">api_hint</span>
 </code></pre></div>
         </details>
 
@@ -2112,7 +2343,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 </table>
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SingleEntryQueryParams</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SingleEntryQueryParams</span><span class="p">(</span><span class="n">BaseQueryParams</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Common query params for single entry endpoints.</span>
 
@@ -2185,6 +2416,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <span class="bp">self</span><span class="o">.</span><span class="n">email_address</span> <span class="o">=</span> <span class="n">email_address</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_fields</span> <span class="o">=</span> <span class="n">response_fields</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="n">include</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_hint</span> <span class="o">=</span> <span class="n">api_hint</span>
 </code></pre></div>
         </details>
 

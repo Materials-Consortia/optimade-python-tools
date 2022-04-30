@@ -1259,6 +1259,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#optimade.server.warnings.UnknownProviderQueryParameter" class="md-nav__link">
+    UnknownProviderQueryParameter
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1747,6 +1754,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#optimade.server.warnings.UnknownProviderQueryParameter" class="md-nav__link">
+    UnknownProviderQueryParameter
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1870,10 +1884,7 @@ OptimadeWarning        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span> <span class="k">if</span> <span class="n">title</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span><span class="p">,</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">}</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{:s}</span><span class="s2">(</span><span class="si">{:s}</span><span class="s2">)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
@@ -2030,6 +2041,40 @@ recognised by this implementation.</p>
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderProperty</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A provider-specific property has been requested via `response_fields` or as in a `filter` that is not</span>
+<span class="sd">    recognised by this implementation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
+
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.server.warnings.UnknownProviderQueryParameter" class="doc doc-heading">
+        <code>
+UnknownProviderQueryParameter        </code>
+
+
+
+<a href="#optimade.server.warnings.UnknownProviderQueryParameter" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A provider-specific query parameter has been requested in the query with a prefix not
+recognised by this implementation.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderQueryParameter</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A provider-specific query parameter has been requested in the query with a prefix not</span>
 <span class="sd">    recognised by this implementation.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

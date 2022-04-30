@@ -1282,6 +1282,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.validate_query_parameters" class="md-nav__link">
+    validate_query_parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.Config" class="md-nav__link">
     Config
   </a>
@@ -2097,6 +2104,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.validate_query_parameters" class="md-nav__link">
+    validate_query_parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.Config" class="md-nav__link">
     Config
   </a>
@@ -2463,6 +2477,10 @@ can be easily extended for new config file types.</p>
     <span class="n">log_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/var/log/optimade/&quot;</span><span class="p">),</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Folder in which log files will be saved.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">validate_query_parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">True</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;If True, the server will check whether the query parameters given in the request are correct.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3068,6 +3086,28 @@ can be easily extended for new config file types.</p>
     <div class="doc doc-contents ">
 
       <p>DEPRECATED: force usage of MongoDB over any other backend.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.server.config.ServerConfig.validate_query_parameters" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_query_parameters</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.server.config.ServerConfig.validate_query_parameters" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>If True, the server will check whether the query parameters given in the request are correct.</p>
     </div>
 
   </div>
