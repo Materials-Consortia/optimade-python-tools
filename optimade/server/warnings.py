@@ -8,10 +8,7 @@ class OptimadeWarning(Warning):
         self.title = title if title else self.__class__.__name__
 
     def __repr__(self) -> str:
-        attrs = {
-            "detail": self.detail,
-            "title": self.title,
-        }
+        attrs = {"detail": self.detail, "title": self.title}
         return "<{:s}({:s})>".format(
             self.__class__.__name__,
             " ".join(
@@ -53,6 +50,13 @@ class TimestampNotRFCCompliant(OptimadeWarning):
 
 class UnknownProviderProperty(OptimadeWarning):
     """A provider-specific property has been requested via `response_fields` or as in a `filter` that is not
+    recognised by this implementation.
+
+    """
+
+
+class UnknownProviderQueryParameter(OptimadeWarning):
+    """A provider-specific query parameter has been requested in the query with a prefix not
     recognised by this implementation.
 
     """
