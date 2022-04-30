@@ -2112,9 +2112,9 @@ various field-related configuration.</p></td>
 
     <span class="k">def</span> <span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="c1"># constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reversed_operator_map</span><span class="p">[</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_first_comparison</span><span class="p">(</span>
+            <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reversed_operator_map</span><span class="p">[</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+        <span class="p">)</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">value_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -2570,9 +2570,9 @@ various field-related configuration.</p></td>
           <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="c1"># constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reversed_operator_map</span><span class="p">[</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-    <span class="p">}</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_first_comparison</span><span class="p">(</span>
+        <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reversed_operator_map</span><span class="p">[</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
