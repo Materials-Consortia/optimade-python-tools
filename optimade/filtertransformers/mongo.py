@@ -141,9 +141,9 @@ class MongoTransformer(BaseTransformer):
 
     def constant_first_comparison(self, arg):
         # constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )
-        return {
-            arg[2]: {self.operator_map[self._reversed_operator_map[arg[1]]]: arg[0]}
-        }
+        return self.property_first_comparison(
+            arg[2], {self.operator_map[self._reversed_operator_map[arg[1]]]: arg[0]}
+        )
 
     @v_args(inline=True)
     def value_op_rhs(self, operator, value):
