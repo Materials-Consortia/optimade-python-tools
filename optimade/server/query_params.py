@@ -10,7 +10,7 @@ from abc import ABC
 
 
 class BaseQueryParams(ABC):
-    """ "A base class for query parameters that provides validation via the `check_params` method.
+    """A base class for query parameters that provides validation via the `check_params` method.
 
     Attributes:
         unsupported_params: Any string parameter listed here will raise a warning when passed to
