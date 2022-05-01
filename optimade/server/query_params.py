@@ -1,15 +1,26 @@
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
-from typing import Iterable
+from typing import Iterable, List
 from optimade.server.config import CONFIG
 from warnings import warn
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.exceptions import BadRequest
-from optimade.server.warnings import UnknownProviderQueryParameter
+from optimade.server.warnings import UnknownProviderQueryParameter, QueryParamNotUsed
 from abc import ABC
 
 
 class BaseQueryParams(ABC):
+    """ "A base class for query parameters that provides validation via the `check_params` method.
+
+    Attributes:
+        unsupported_params: Any string parameter listed here will raise a warning when passed to
+            the check_params methods. Useful for disabling optional OPTIMADE query parameters that
+            are not implemented by the server, e.g., cursor-based pagination.
+
+    """
+
+    unsupported_params: List[str] = []
+
     def check_params(self, query_params: Iterable[str]) -> None:
         """This method checks whether all the query parameters that are specified
         in the URL string are implemented in the relevant `*QueryParams` class.
@@ -30,7 +41,10 @@ class BaseQueryParams(ABC):
             return
         errors = []
         warnings = []
+        unsupported_warnings = []
         for param in query_params:
+            if param in self.unsupported_params:
+                unsupported_warnings.append(param)
             if not hasattr(self, param):
                 split_param = param.split("_")
                 if param.startswith("_") and len(split_param) > 2:
@@ -46,6 +60,12 @@ class BaseQueryParams(ABC):
             warn(
                 f"The query parameter(s) '{warnings}' are unrecognised and have been ignored.",
                 UnknownProviderQueryParameter,
+            )
+
+        if unsupported_warnings:
+            warn(
+                f"The query parameter(s) '{unsupported_warnings}' are not supported by this server and have been ignored.",
+                QueryParamNotUsed,
             )
 
         if errors:
@@ -141,6 +161,14 @@ class EntryListingQueryParams(BaseQueryParams):
             For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.
 
     """
+
+    # The reference server implementation only supports offset-based pagination
+    unsupported_params: List[str] = [
+        "page_number",
+        "page_cursor",
+        "page_below",
+        "page_above",
+    ]
 
     def __init__(
         self,
