@@ -25,9 +25,17 @@ class BaseQueryParams(ABC):
         """This method checks whether all the query parameters that are specified
         in the URL string are implemented in the relevant `*QueryParams` class.
 
-        If a query parameter is found that is not defined in the relevant `*QueryParams` class,
-        and it does not have a known provider prefix, an appropriate error (`BadRequest`)
-        or warning (`UnknownProviderQueryParameter`) will be emitted.
+        This method handles four cases:
+
+        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,
+          and it is not prefixed with a known provider prefix, then a `BadRequest` is raised.
+        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,
+          that is prefixed with a known provider prefix, then the parameter is silently ignored
+        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,
+          that is prefixed with an unknown provider prefix, then a `UnknownProviderQueryParameter`
+          warning is emitted.
+        * If a query parameter is passed that is on the `unsupported_params` list for the inherited
+          class, then a `QueryParamNotUsed` warning is emitted.
 
         Arguments:
             query_params: An iterable of the request's string query parameters.
