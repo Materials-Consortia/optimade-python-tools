@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/server/query_params/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.11">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.12">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.8c5ef100.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.27ad92d8.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.9647289d.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
         
           
           
@@ -1764,17 +1764,56 @@ BaseQueryParams        </code>
 
     <div class="doc doc-contents ">
 
+      <p>A base class for query parameters that provides validation via the <code>check_params</code> method.</p>
 
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>unsupported_params</code></td>
+        <td><code>List[str]</code></td>
+        <td><p>Any string parameter listed here will raise a warning when passed to
+the check_params methods. Useful for disabling optional OPTIMADE query parameters that
+are not implemented by the server, e.g., cursor-based pagination.</p></td>
+      </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseQueryParams</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A base class for query parameters that provides validation via the `check_params` method.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        unsupported_params: Any string parameter listed here will raise a warning when passed to</span>
+<span class="sd">            the check_params methods. Useful for disabling optional OPTIMADE query parameters that</span>
+<span class="sd">            are not implemented by the server, e.g., cursor-based pagination.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">unsupported_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="k">def</span> <span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
 <span class="sd">        in the URL string are implemented in the relevant `*QueryParams` class.</span>
 
-<span class="sd">        If a query parameter is found that is not defined in the relevant `*QueryParams` class,</span>
-<span class="sd">        and it does not have a known provider prefix, an appropriate error (`BadRequest`)</span>
-<span class="sd">        or warning (`UnknownProviderQueryParameter`) will be emitted.</span>
+<span class="sd">        This method handles four cases:</span>
+
+<span class="sd">        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,</span>
+<span class="sd">          and it is not prefixed with a known provider prefix, then a `BadRequest` is raised.</span>
+<span class="sd">        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,</span>
+<span class="sd">          that is prefixed with a known provider prefix, then the parameter is silently ignored</span>
+<span class="sd">        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,</span>
+<span class="sd">          that is prefixed with an unknown provider prefix, then a `UnknownProviderQueryParameter`</span>
+<span class="sd">          warning is emitted.</span>
+<span class="sd">        * If a query parameter is passed that is on the `unsupported_params` list for the inherited</span>
+<span class="sd">          class, then a `QueryParamNotUsed` warning is emitted.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            query_params: An iterable of the request&#39;s string query parameters.</span>
@@ -1788,7 +1827,10 @@ BaseQueryParams        </code>
             <span class="k">return</span>
         <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unsupported_warnings</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">query_params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsupported_params</span><span class="p">:</span>
+                <span class="n">unsupported_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
                 <span class="n">split_param</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_param</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -1806,6 +1848,12 @@ BaseQueryParams        </code>
                 <span class="n">UnknownProviderQueryParameter</span><span class="p">,</span>
             <span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">unsupported_warnings</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">unsupported_warnings</span><span class="si">}</span><span class="s2">&#39; are not supported by this server and have been ignored.&quot;</span><span class="p">,</span>
+                <span class="n">QueryParamNotUsed</span><span class="p">,</span>
+            <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
@@ -1816,6 +1864,7 @@ BaseQueryParams        </code>
 
 
   <div class="doc doc-children">
+
 
 
 
@@ -1839,9 +1888,18 @@ BaseQueryParams        </code>
 
       <p>This method checks whether all the query parameters that are specified
 in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
-<p>If a query parameter is found that is not defined in the relevant <code>*QueryParams</code> class,
-and it does not have a known provider prefix, an appropriate error (<code>BadRequest</code>)
-or warning (<code>UnknownProviderQueryParameter</code>) will be emitted.</p>
+<p>This method handles four cases:</p>
+<ul>
+<li>If a query parameter is passed that is not defined in the relevant <code>*QueryParams</code> class,
+  and it is not prefixed with a known provider prefix, then a <code>BadRequest</code> is raised.</li>
+<li>If a query parameter is passed that is not defined in the relevant <code>*QueryParams</code> class,
+  that is prefixed with a known provider prefix, then the parameter is silently ignored</li>
+<li>If a query parameter is passed that is not defined in the relevant <code>*QueryParams</code> class,
+  that is prefixed with an unknown provider prefix, then a <code>UnknownProviderQueryParameter</code>
+  warning is emitted.</li>
+<li>If a query parameter is passed that is on the <code>unsupported_params</code> list for the inherited
+  class, then a <code>QueryParamNotUsed</code> warning is emitted.</li>
+</ul>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1884,9 +1942,17 @@ does not have a valid prefix.</p></td>
     <span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
 <span class="sd">    in the URL string are implemented in the relevant `*QueryParams` class.</span>
 
-<span class="sd">    If a query parameter is found that is not defined in the relevant `*QueryParams` class,</span>
-<span class="sd">    and it does not have a known provider prefix, an appropriate error (`BadRequest`)</span>
-<span class="sd">    or warning (`UnknownProviderQueryParameter`) will be emitted.</span>
+<span class="sd">    This method handles four cases:</span>
+
+<span class="sd">    * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,</span>
+<span class="sd">      and it is not prefixed with a known provider prefix, then a `BadRequest` is raised.</span>
+<span class="sd">    * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,</span>
+<span class="sd">      that is prefixed with a known provider prefix, then the parameter is silently ignored</span>
+<span class="sd">    * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,</span>
+<span class="sd">      that is prefixed with an unknown provider prefix, then a `UnknownProviderQueryParameter`</span>
+<span class="sd">      warning is emitted.</span>
+<span class="sd">    * If a query parameter is passed that is on the `unsupported_params` list for the inherited</span>
+<span class="sd">      class, then a `QueryParamNotUsed` warning is emitted.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        query_params: An iterable of the request&#39;s string query parameters.</span>
@@ -1900,7 +1966,10 @@ does not have a valid prefix.</p></td>
         <span class="k">return</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">warnings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">unsupported_warnings</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">query_params</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsupported_params</span><span class="p">:</span>
+            <span class="n">unsupported_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
             <span class="n">split_param</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_param</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -1916,6 +1985,12 @@ does not have a valid prefix.</p></td>
         <span class="n">warn</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">warnings</span><span class="si">}</span><span class="s2">&#39; are unrecognised and have been ignored.&quot;</span><span class="p">,</span>
             <span class="n">UnknownProviderQueryParameter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">unsupported_warnings</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">unsupported_warnings</span><span class="si">}</span><span class="s2">&#39; are not supported by this server and have been ignored.&quot;</span><span class="p">,</span>
+            <span class="n">QueryParamNotUsed</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
@@ -2165,6 +2240,14 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># The reference server implementation only supports offset-based pagination</span>
+    <span class="n">unsupported_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;page_number&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;page_cursor&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;page_below&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;page_above&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -2249,6 +2332,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 
 
   <div class="doc doc-children">
+
 
 
 
@@ -2537,7 +2621,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.748e2769.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.ed9748b7.min.js"></script>
       
     
   </body>
