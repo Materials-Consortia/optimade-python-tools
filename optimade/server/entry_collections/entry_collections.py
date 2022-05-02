@@ -335,6 +335,13 @@ class EntryCollection(ABC):
         if getattr(params, "page_offset", False):
             cursor_kwargs["skip"] = params.page_offset
 
+        # page_number
+        if getattr(params, "page_number", False):
+            if isinstance(params.page_number, int):
+                cursor_kwargs["skip"] = (params.page_number - 1) * cursor_kwargs[
+                    "limit"
+                ]
+
         return cursor_kwargs
 
     def parse_sort_params(self, sort_params: str) -> Tuple[Tuple[str, int]]:

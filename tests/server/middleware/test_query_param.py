@@ -107,19 +107,19 @@ def test_handling_prefixed_query_param(check_response):
 
 def test_unsupported_optimade_query_param(check_response):
 
-    request = "/structures?filter=elements LENGTH >= 9&page_number=1"
+    request = "/structures?filter=elements LENGTH >= 9&page_below=1"
     expected_ids = ["mpf_3819"]
     expected_warnings = [
         {
             "title": "QueryParamNotUsed",
-            "detail": "The query parameter(s) '['page_number']' are not supported by this server and have been ignored.",
+            "detail": "The query parameter(s) '['page_below']' are not supported by this server and have been ignored.",
         }
     ]
     check_response(
         request, expected_ids=expected_ids, expected_warnings=expected_warnings
     )
 
-    request = "/structures?filter=elements LENGTH >= 9&page_number=1&_unknown_filter=elements HAS 'Si'"
+    request = "/structures?filter=elements LENGTH >= 9&page_cursor=1&_unknown_filter=elements HAS 'Si'"
     expected_ids = ["mpf_3819"]
     expected_warnings = [
         {
@@ -128,9 +128,18 @@ def test_unsupported_optimade_query_param(check_response):
         },
         {
             "title": "QueryParamNotUsed",
-            "detail": "The query parameter(s) '['page_number']' are not supported by this server and have been ignored.",
+            "detail": "The query parameter(s) '['page_cursor']' are not supported by this server and have been ignored.",
         },
     ]
     check_response(
         request, expected_ids=expected_ids, expected_warnings=expected_warnings
     )
+
+
+def test_page_number_and_offset(check_response):
+    request = "/structures?sort=id&page_offset=5&page_limit=5"
+    expected_ids = ["mpf_23", "mpf_259", "mpf_272", "mpf_276", "mpf_281"]
+    check_response(request, expected_ids=expected_ids)
+
+    request = "/structures?sort=id&page_number=2&page_limit=5"
+    check_response(request, expected_ids=expected_ids)

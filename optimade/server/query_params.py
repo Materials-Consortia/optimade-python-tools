@@ -172,7 +172,6 @@ class EntryListingQueryParams(BaseQueryParams):
 
     # The reference server implementation only supports offset-based pagination
     unsupported_params: List[str] = [
-        "page_number",
         "page_cursor",
         "page_below",
         "page_above",
@@ -214,7 +213,7 @@ class EntryListingQueryParams(BaseQueryParams):
             ge=0,
         ),
         page_number: int = Query(
-            0,
+            None,
             description="RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
             ge=0,
         ),

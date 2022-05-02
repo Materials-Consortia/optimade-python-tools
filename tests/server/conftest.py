@@ -122,18 +122,15 @@ def check_response(get_good_response):
         else:
             response_ids = [struct["id"] for struct in response["data"]]
 
-        if expected_return is None:
-            expected_return = len(expected_ids)
+        if expected_return is not None:
+            assert expected_return == response["meta"]["data_returned"]
 
-        assert response["meta"]["data_returned"] == expected_return
+        assert len(response["data"]) == len(expected_ids)
 
         if not expected_as_is:
             expected_ids = sorted(expected_ids)
 
-        if len(expected_ids) > page_limit:
-            assert expected_ids[:page_limit] == response_ids
-        else:
-            assert expected_ids == response_ids
+        assert expected_ids == response_ids
 
         if expected_warnings:
             assert "warnings" in response["meta"]
