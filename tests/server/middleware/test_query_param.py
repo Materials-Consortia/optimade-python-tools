@@ -143,3 +143,7 @@ def test_page_number_and_offset(check_response):
 
     request = "/structures?sort=id&page_number=2&page_limit=5"
     check_response(request, expected_ids=expected_ids)
+
+    request = "/structures?sort=last_modified&page_number=2&page_limit=5"
+    expected_ids = ["mpf_30", "mpf_110", "mpf_200", "mpf_220", "mpf_259"]
+    check_response(request, expected_ids=expected_ids)

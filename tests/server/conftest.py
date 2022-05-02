@@ -129,6 +129,7 @@ def check_response(get_good_response):
 
         if not expected_as_is:
             expected_ids = sorted(expected_ids)
+            response_ids = sorted(response_ids)
 
         assert expected_ids == response_ids
 
