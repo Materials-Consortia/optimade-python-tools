@@ -50,12 +50,12 @@ docs_deps = [
 testing_deps = [
     "build~=0.7.0",
     "codecov~=2.1",
-    "jsondiff~=1.3",
+    "jsondiff~=2.0",
     "pytest~=7.1",
     "pytest-cov~=3.0",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.13", "pre-commit~=2.17", "invoke~=1.7"]
+    ["pylint~=2.13", "pre-commit~=2.18", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -92,7 +92,7 @@ setup(
         "lark-parser~=0.12",
         "fastapi~=0.65.2",
         "pydantic~=1.9",
-        "email_validator~=1.1",
+        "email_validator~=1.2",
         "requests~=2.27",
         "typing-extensions~=4.0;python_version<'3.8'",
     ],

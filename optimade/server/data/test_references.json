@@ -76,6 +76,28 @@
     "note": "Entries with a reference to this licence were and are shared under this licence.",
     "organization": "Creative Commons",
     "id": "CCBy4",
-    "last_modified": {"$date":"2022-04-27T16:09:41.000Z"}
+    "last_modified": {
+      "$date": "2022-04-27T16:09:41.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "98fb441f053b1744107019e3"
+    },
+    "id": "dummy/2022",
+    "last_modified": {
+      "$date": "2022-01-23T14:24:37.332Z"
+    },
+    "authors": [
+      {
+        "name": "A Nother",
+        "firstname": "A",
+        "lastname": "Nother"
+      }
+    ],
+    "year": "2019",
+    "note": "Dummy reference",
+    "title": "Just another title",
+    "journal": "JACS"
   }
 ]

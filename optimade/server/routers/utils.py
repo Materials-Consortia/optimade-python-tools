@@ -494,6 +494,7 @@ def get_entries(
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
+    params.check_params(request.query_params)
     (
         results,
         data_returned,
@@ -551,6 +552,7 @@ def get_single_entry(
 ) -> EntryResponseOne:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
+    params.check_params(request.query_params)
     params.filter = f'id="{entry_id}"'
     (
         results,
