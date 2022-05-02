@@ -241,7 +241,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
         name: project
         file: ./coverage.xml
@@ -249,7 +249,7 @@ jobs:
 
     - name: Upload validator coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
         name: validator
         file: ./validator_cov.xml
