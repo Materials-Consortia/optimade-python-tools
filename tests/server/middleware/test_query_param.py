@@ -147,3 +147,13 @@ def test_page_number_and_offset(check_response):
     request = "/structures?sort=last_modified&page_number=2&page_limit=5"
     expected_ids = ["mpf_30", "mpf_110", "mpf_200", "mpf_220", "mpf_259"]
     check_response(request, expected_ids=expected_ids)
+
+
+def test_page_number_and_offset_both_set(check_error_response):
+    request = "/structures?sort=last_modified&page_number=2&page_limit=5&page_offset=5"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail="Only one of the query parameters 'page-number' and 'page_offsest' should be set.",
+    )

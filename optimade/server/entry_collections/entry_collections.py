@@ -331,12 +331,14 @@ class EntryCollection(ABC):
         if getattr(params, "sort", False):
             cursor_kwargs["sort"] = self.parse_sort_params(params.sort)
 
-        # page_offset
+        # page_offset and page_number
         if getattr(params, "page_offset", False):
+            if getattr(params, "page_number", False):
+                raise BadRequest(
+                    "Only one of the query parameters 'page-number' and 'page_offsest' should be set."
+                )
             cursor_kwargs["skip"] = params.page_offset
-
-        # page_number
-        if getattr(params, "page_number", False):
+        elif getattr(params, "page_number", False):
             if isinstance(params.page_number, int):
                 cursor_kwargs["skip"] = (params.page_number - 1) * cursor_kwargs[
                     "limit"
