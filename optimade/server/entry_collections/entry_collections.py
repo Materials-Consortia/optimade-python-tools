@@ -11,7 +11,11 @@ from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.exceptions import BadRequest, Forbidden, NotFound
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.warnings import FieldValueNotRecognized, UnknownProviderProperty
+from optimade.server.warnings import (
+    FieldValueNotRecognized,
+    UnknownProviderProperty,
+    QueryParamNotUsed,
+)
 
 
 def create_collection(
@@ -335,8 +339,10 @@ class EntryCollection(ABC):
         if getattr(params, "page_offset", False):
             if getattr(params, "page_number", False):
                 warnings.warn(
-                    "Only one of the query parameters 'page_number' and 'page_offset' should be set - 'page_number' will be ignored."
+                    message="Only one of the query parameters 'page_number' and 'page_offset' should be set - 'page_number' will be ignored.",
+                    category=QueryParamNotUsed,
                 )
+
             cursor_kwargs["skip"] = params.page_offset
         elif getattr(params, "page_number", False):
             if isinstance(params.page_number, int):
