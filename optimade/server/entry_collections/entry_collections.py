@@ -334,8 +334,8 @@ class EntryCollection(ABC):
         # page_offset and page_number
         if getattr(params, "page_offset", False):
             if getattr(params, "page_number", False):
-                raise BadRequest(
-                    "Only one of the query parameters 'page-number' and 'page_offsest' should be set."
+                warnings.warn(
+                    "Only one of the query parameters 'page_number' and 'page_offset' should be set - 'page_number' will be ignored."
                 )
             cursor_kwargs["skip"] = params.page_offset
         elif getattr(params, "page_number", False):
