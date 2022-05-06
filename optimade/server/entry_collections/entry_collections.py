@@ -272,7 +272,7 @@ class EntryCollection(ABC):
             which will need modification for modified for other backends.
 
         Parameters:
-            params (Union[EntryListingQueryParams, SingleEntryQueryParams]): The initialized query parameter model from the server.
+            params: The initialized query parameter model from the server.
 
         Raises:
             Forbidden: If too large of a page limit is provided.
@@ -318,9 +318,6 @@ class EntryCollection(ABC):
             f"{self.resource_mapper.get_backend_field(f)}": True
             for f in self.all_fields
         }
-
-        if "_id" not in cursor_kwargs["projection"]:
-            cursor_kwargs["projection"]["_id"] = False
 
         if getattr(params, "response_fields", False):
             response_fields = set(params.response_fields.split(","))
