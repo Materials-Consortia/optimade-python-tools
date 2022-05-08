@@ -1865,8 +1865,9 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="k">if</span> <span class="ow">not</span> <span class="n">single_entry</span><span class="p">:</span>
             <span class="n">criteria_nolimit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">skip</span> <span class="o">=</span> <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="n">data_returned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="o">**</span><span class="n">criteria_nolimit</span><span class="p">)</span>
-            <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">nresults_now</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
+            <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">nresults_now</span> <span class="o">+</span> <span class="n">skip</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># SingleEntryQueryParams, e.g., /structures/{entry_id}</span>
             <span class="n">data_returned</span> <span class="o">=</span> <span class="n">nresults_now</span>
