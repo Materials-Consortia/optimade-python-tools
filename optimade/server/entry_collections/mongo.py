@@ -123,8 +123,9 @@ class MongoCollection(EntryCollection):
         if not single_entry:
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
+            skip = criteria_nolimit.pop("skip", 0)
             data_returned = self.count(**criteria_nolimit)
-            more_data_available = nresults_now < data_returned
+            more_data_available = nresults_now + skip < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = nresults_now
