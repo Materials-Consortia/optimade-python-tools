@@ -116,7 +116,7 @@ def handle_response_fields(
 
     data_limit = 1000000  # For now we limit the product of the number of sites times the number of frames. A more accurate method would be to limit the
     sum_entry_size = 0
-    continue_from_frame = getattr(params, "continue_from_frame")
+    continue_from_frame = getattr(params, "continue_from_frame", None)
     new_results = []
     traj_trunc = False
     last_frame = None
@@ -130,7 +130,9 @@ def handle_response_fields(
                 new_entry["attributes"][field] = None
 
         # Determine the expected size of an entry and reduce the last frame if neccesary
-        if new_entry["type"] == "trajectories":
+        if (
+            new_entry["type"] == "trajectories"
+        ):  # TODO For now we only have trajectories with large properties but it would be nice if this could apply to other endpoints in the future as well.
             last_frame = getattr(params, "last_frame")
             first_frame = getattr(params, "first_frame")
             frame_step = getattr(params, "frame_step")
@@ -144,10 +146,7 @@ def handle_response_fields(
             else:
                 frame_step_set = True
 
-            if (
-                last_frame is None
-                or last_frame > new_entry["attributes"]["nframes"] - 1
-            ):
+            if last_frame is None or last_frame >= new_entry["attributes"]["nframes"]:
                 last_frame = new_entry["attributes"]["nframes"] - 1
                 # The frames are counted starting from 0 so if nframes = 10 the last frame is frame 9.
 
@@ -213,7 +212,10 @@ def handle_response_fields(
 
                     # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step
                     elif storage_method == "mongo":
-                        if frame_serialization_format == "constant" or "linear":
+                        if (
+                            frame_serialization_format == "constant"
+                            or frame_serialization_format == "linear"
+                        ):
                             continue
                         values = []
                         if frame_serialization_format == "explicit":
@@ -347,6 +349,7 @@ def handle_response_fields(
                         raise InternalServerError(
                             f"Unknown value for the _storage_location field:{new_entry['attributes'][field]['_storage_location']}"
                         )
+
                     new_entry["attributes"][field]["values"] = values
                     new_entry["attributes"][field]["nvalues"] = len(values)
 
