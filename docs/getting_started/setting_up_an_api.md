@@ -65,7 +65,12 @@ This can be achieved by providing a dictionary per field at [`provider_fields`][
     ```json
         "provider_fields": {
             "structures": [
-                {"name": "cell_volume", "description": "The volume of the cell per formula unit.", "units": "Ao3", "type": "float"},
+                {
+                    "name": "cell_volume",
+                    "description": "The volume of the cell per formula unit.",
+                    "unit": "Ao3",
+                    "type": "float"
+                },
                 "total_energy"
             ],
             "references": ["orcid", "num_citations"],
