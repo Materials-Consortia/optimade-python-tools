@@ -189,13 +189,6 @@ class AvailablePropertyAttributes(BaseModel):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    exmpl_time: Optional[AvailablePropertySubfields] = OptimadeField(
-        None,
-        description="""""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-        alias="_exmpl_time",
-    )
 
 
 class TrajectoryDataAttributes(AvailablePropertySubfields):
@@ -570,14 +563,6 @@ Examples:
         + general_description_trajectory_field,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
-    )
-    exmpl_time: Optional[TrajectoryDataAttributes] = OptimadeField(
-        None,
-        description="""The time belonging to each frame""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-        unit="ps",
-        alias="_exmpl_time",
     )
 
     # TODO add more Trajectory specific validators

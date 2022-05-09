@@ -600,7 +600,7 @@ def test_filter_on_unknown_fields(check_response, check_error_response):
 
 
 def test_trajectories(
-    check_response, check_error_response
+    check_response,
 ):  # TODO check whether there is a better place to put these tests
     request = "/trajectories?filter=nelements<6&response_fields=cartesian_site_positions,_exmpl_time&last_frame=40&first_frame=5"
     expected_ids = [

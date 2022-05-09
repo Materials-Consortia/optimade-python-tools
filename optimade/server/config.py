@@ -228,7 +228,7 @@ class ServerConfig(BaseSettings):
         description="General information about the provider of this OPTIMADE implementation",
     )
     provider_fields: Dict[
-        Literal["links", "references", "structures"],
+        Literal["links", "references", "structures", "trajectories"],
         List[Union[str, Dict[Literal["name", "type", "unit", "description"], str]]],
     ] = Field(
         {},
