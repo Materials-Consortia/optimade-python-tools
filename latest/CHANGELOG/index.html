@@ -2525,6 +2525,7 @@
 <ul>
 <li><code>meta-&gt;data_returned</code> is incorrect for paginated results with MongoDB <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1140">#1140</a></li>
 <li>Queries with the form: 'value != prop' return entries where 'prop == None'  <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1133">#1133</a></li>
+<li>Test on Queries on single structures fail with the check_response function. <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1125">#1125</a></li>
 <li>Fix incorrect <code>meta-&gt;data_returned</code> for paginated results with MongoDB <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1141">#1141</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Fix cases where comparison first and property first queries did not match <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1134">#1134</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
 </ul>
@@ -2534,7 +2535,9 @@
 </ul>
 <p><strong>Merged pull requests:</strong></p>
 <ul>
+<li>Add deprecation warning for Python 3.7 <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1157">#1157</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Added way to specify unsupported query parameters and provide a warning <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1136">#1136</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Adjusted check_response so it can also handle single entries. <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1130">#1130</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
 <li>Corrected link in Install.MD <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1124">#1124</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
 </ul>
 <h2 id="v01612-2022-03-23"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.12">v0.16.12</a> (2022-03-23)<a class="headerlink" href="#v01612-2022-03-23" title="Permanent link">&para;</a></h2>
