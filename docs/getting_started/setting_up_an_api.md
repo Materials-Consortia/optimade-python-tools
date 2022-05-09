@@ -72,7 +72,7 @@ This can be achieved by providing a dictionary per field at [`provider_fields`][
         }
     ```
 
-### More advanced usage
+### Extending the pydantic models
 
 The pydantic models can also be extended with your custom fields.
 This can be useful for validation, and for generating custom OpenAPI schemas for your implementation.
@@ -122,6 +122,12 @@ ENTRY_INFO_SCHEMAS["structures"] = MyStructureResource.schema
 ```
 
 Currently, the reference server is not flexible enough to use custom response classes via configuration only (there is an open issue tracking this [#929](https://github.com/Materials-Consortia/optimade-python-tools/issues/929)), so instead the code will need to be forked and modified for your implementation.
+
+!!! note
+    A similar procedure can be followed for the URL query parameter classes [`EntryListingQueryParams`][optimade.server.query_params.EntryListingQueryParams] and [`SingleEntryQueryParams`][optimade.server.query_params.SingleEntryQueryParams] so that custom query parameters can be defined for your API.
+    The individual API routes then need to be adjusted to use the custom query parameter classes.
+    By default, the reference server will validate the incoming query parameters against these classes.
+    If you want to use custom query parameters without redefining the classes mentioned above, you can disable this behaviour by setting the configuration option [`validate_query_parameters`][optimade.server.config.ServerConfig.validate_query_parameters] to false, after which all query parameters will be passed on to the corresponding router method (e.g., database queries).
 
 ## Validating your implementation
 
