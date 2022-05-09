@@ -49,7 +49,7 @@ Once the prefix has been set, custom fields can be listed by endpoint in the [`p
 Filters that use the prefixed form of these fields will then be passed through to the underlying database without the prefix, and then the prefix will be reinstated in the response.
 
 !!! example
-    Example JSON config file fragment for adding two fields to each of the `structures` and `references` endpoints, that will be served as, e.g., `_exmpl_cell_volume` if the `provider.prefix` is configured.
+    Example JSON config file fragment for adding two fields to each of the `structures` and `references` endpoints, that will be served as, e.g., `_exmpl_cell_volume` if the `provider.prefix` is set to 'exmpl'.
     ```json
         "provider_fields": {
             "structures": ["cell_volume", "total_energy"],
