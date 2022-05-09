@@ -2516,6 +2516,12 @@
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
 <h2 id="unreleased-2022-05-09"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2022-05-09)<a class="headerlink" href="#unreleased-2022-05-09" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.12...Unreleased">Full Changelog</a></p>
+<p>This minor release contains fixes recommended for those deploying the optimade-python-tools reference server:</p>
+<ul>
+<li>The <code>meta-&gt;data_returned</code> field was previously incorrect when using the MongoDB backend.</li>
+<li>Incoming URL query parameters are now validated against the provided query parameters class (if using custom query parameters, this class should be extended or the parameters should use your registered provider prefix). This functionality can be disabled with the <code>validate_query_parameters</code> config option.</li>
+<li>The results of some queries were not reversible with MongoDB (e.g., <code>nelements != 2</code> vs <code>2 != nelements</code>); this has now been fixed.</li>
+</ul>
 <p><strong>Implemented enhancements:</strong></p>
 <ul>
 <li>Add server check for typos in query parameters <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1120">#1120</a></li>
