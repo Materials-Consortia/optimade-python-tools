@@ -347,8 +347,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#more-advanced-usage" class="md-nav__link">
-    More advanced usage
+  <a href="#extending-the-pydantic-models" class="md-nav__link">
+    Extending the pydantic models
   </a>
   
 </li>
@@ -1704,8 +1704,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#more-advanced-usage" class="md-nav__link">
-    More advanced usage
+  <a href="#extending-the-pydantic-models" class="md-nav__link">
+    Extending the pydantic models
   </a>
   
 </li>
@@ -1779,13 +1779,37 @@ This prefix is intended to be unique across all <a href="https://github.com/Mate
 The prefix can be set in the <a href="../../configuration/">configuration</a> as part of the <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider"><code>provider</code></a> option.</p>
 <p>Once the prefix has been set, custom fields can be listed by endpoint in the <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider_fields"><code>provider_fields</code></a> configuration option.
 Filters that use the prefixed form of these fields will then be passed through to the underlying database without the prefix, and then the prefix will be reinstated in the response.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This config-only approach does not provide any way of <strong>describing</strong> the underlying field (via <code>description</code>), its type, or any potential physical units, and the field will not be added to the corresponding entry info endpoint (e.g., <code>/info/structures</code>).
-For this, you will need to follow the more complicated method below, under <a href="#more_advanced_usage">More advanced usage</a>.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Example JSON config file fragment for adding two fields to each of the <code>structures</code> and <code>references</code> endpoints, that will be served as, e.g., <code>_exmpl_cell_volume</code> if the <code>provider.prefix</code> is set to 'exmpl'.
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="nt">&quot;provider_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;cell_volume&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;total_energy&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;orcid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;num_citations&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+</code></pre></div></p>
 </div>
-<h3 id="more-advanced-usage">More advanced usage<a class="headerlink" href="#more-advanced-usage" title="Permanent link">&para;</a></h3>
 <p>It is recommended that you provide a description, type and unit for each custom field that can be returned at the corresponding <code>/info/&lt;entry_type&gt;</code> endpoint.
+This can be achieved by providing a dictionary per field at <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider_fields"><code>provider_fields</code></a>, rather than a simple list.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Example JSON config file fragment for adding a description, type and unit for the custom <code>_exmpl_cell_volume</code> field, which will cause it to be added to the <code>/info/structures</code> endpoint.
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="nt">&quot;provider_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">            </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cell_volume&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The volume of the cell per formula unit.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ao3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;float&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;total_energy&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;orcid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;num_citations&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+</code></pre></div></p>
+</div>
+<h3 id="extending-the-pydantic-models">Extending the pydantic models<a class="headerlink" href="#extending-the-pydantic-models" title="Permanent link">&para;</a></h3>
+<p>The pydantic models can also be extended with your custom fields.
+This can be useful for validation, and for generating custom OpenAPI schemas for your implementation.
 To do this, the underlying <code>EntryResourceAttributes</code> model will need to be sub-classed, the pydantic fields added to that class, and the server adjusted to make use of those models in responses.
 In this case, it may be easier to write a custom endpoint for your entry type, that copies the existing reference endpoint.</p>
 <p>Your custom model will need to be registered in three places:</p>
@@ -1827,6 +1851,13 @@ In this case, it may be easier to write a custom endpoint for your entry type, t
 <span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">[</span><span class="s2">&quot;structures&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MyStructureResource</span><span class="o">.</span><span class="n">schema</span>
 </code></pre></div>
 <p>Currently, the reference server is not flexible enough to use custom response classes via configuration only (there is an open issue tracking this <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/929">#929</a>), so instead the code will need to be forked and modified for your implementation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A similar procedure can be followed for the URL query parameter classes <a class="autorefs autorefs-internal" href="../../api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams"><code>EntryListingQueryParams</code></a> and <a class="autorefs autorefs-internal" href="../../api_reference/server/query_params/#optimade.server.query_params.SingleEntryQueryParams"><code>SingleEntryQueryParams</code></a> so that custom query parameters can be defined for your API.
+The individual API routes then need to be adjusted to use the custom query parameter classes.
+By default, the reference server will validate the incoming query parameters against these classes.
+If you want to use custom query parameters without redefining the classes mentioned above, you can disable this behaviour by setting the configuration option <a class="autorefs autorefs-internal" href="../../api_reference/server/config/#optimade.server.config.ServerConfig.validate_query_parameters"><code>validate_query_parameters</code></a> to false, after which all query parameters will be passed on to the corresponding router method (e.g., database queries).</p>
+</div>
 <h2 id="validating-your-implementation">Validating your implementation<a class="headerlink" href="#validating-your-implementation" title="Permanent link">&para;</a></h2>
 <p>With the database collections, mappers, aliases and provider configured, you can try running the web server (with e.g., <code>uvicorn optimade.server.main:app</code>, if your app is in the same file as the reference server) and validating it as an OPTIMADE API, following the <a href="../validation/">validation guide</a>.</p>
 <h2 id="registering-as-a-provider">Registering as a provider<a class="headerlink" href="#registering-as-a-provider" title="Permanent link">&para;</a></h2>
