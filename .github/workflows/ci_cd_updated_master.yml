@@ -130,6 +130,7 @@ jobs:
 
   deploy-heroku:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'Materials-Consortia'
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -140,7 +141,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "optimade"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-          branch: master
+          branch: ${{env.DEFAULT_REPO_BRANCH}}
       env:
           HD_OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
           HD_OPTIMADE_BASE_URL: https://optimade.herokuapp.com
