@@ -27,7 +27,6 @@ server_deps = [
 # Client minded
 aiida_deps = [
     "aiida-core~=1.6,>=1.6.4",
-    "upf-to-json==0.9.2",  # Can be removed if aiida-core pins to a working version
 ]
 ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
