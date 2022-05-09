@@ -48,13 +48,39 @@ The prefix can be set in the [configuration](../configuration.md) as part of the
 Once the prefix has been set, custom fields can be listed by endpoint in the [`provider_fields`][optimade.server.config.ServerConfig.provider_fields] configuration option.
 Filters that use the prefixed form of these fields will then be passed through to the underlying database without the prefix, and then the prefix will be reinstated in the response.
 
-!!! warning
-    This config-only approach does not provide any way of **describing** the underlying field (via `description`), its type, or any potential physical units, and the field will not be added to the corresponding entry info endpoint (e.g., `/info/structures`).
-    For this, you will need to follow the more complicated method below, under [More advanced usage](#more_advanced_usage).
-
-### More advanced usage
+!!! example
+    Example JSON config file fragment for adding two fields to each of the `structures` and `references` endpoints, that will be served as, e.g., `_exmpl_cell_volume` if the `provider.prefix` is set to 'exmpl'.
+    ```json
+        "provider_fields": {
+            "structures": ["cell_volume", "total_energy"],
+            "references": ["orcid", "num_citations"],
+        }
+    ```
 
 It is recommended that you provide a description, type and unit for each custom field that can be returned at the corresponding `/info/<entry_type>` endpoint.
+This can be achieved by providing a dictionary per field at [`provider_fields`][optimade.server.config.ServerConfig.provider_fields], rather than a simple list.
+
+!!! example
+    Example JSON config file fragment for adding a description, type and unit for the custom `_exmpl_cell_volume` field, which will cause it to be added to the `/info/structures` endpoint.
+    ```json
+        "provider_fields": {
+            "structures": [
+                {
+                    "name": "cell_volume",
+                    "description": "The volume of the cell per formula unit.",
+                    "unit": "Ao3",
+                    "type": "float"
+                },
+                "total_energy"
+            ],
+            "references": ["orcid", "num_citations"],
+        }
+    ```
+
+### Extending the pydantic models
+
+The pydantic models can also be extended with your custom fields.
+This can be useful for validation, and for generating custom OpenAPI schemas for your implementation.
 To do this, the underlying `EntryResourceAttributes` model will need to be sub-classed, the pydantic fields added to that class, and the server adjusted to make use of those models in responses.
 In this case, it may be easier to write a custom endpoint for your entry type, that copies the existing reference endpoint.
 
@@ -101,6 +127,12 @@ ENTRY_INFO_SCHEMAS["structures"] = MyStructureResource.schema
 ```
 
 Currently, the reference server is not flexible enough to use custom response classes via configuration only (there is an open issue tracking this [#929](https://github.com/Materials-Consortia/optimade-python-tools/issues/929)), so instead the code will need to be forked and modified for your implementation.
+
+!!! note
+    A similar procedure can be followed for the URL query parameter classes [`EntryListingQueryParams`][optimade.server.query_params.EntryListingQueryParams] and [`SingleEntryQueryParams`][optimade.server.query_params.SingleEntryQueryParams] so that custom query parameters can be defined for your API.
+    The individual API routes then need to be adjusted to use the custom query parameter classes.
+    By default, the reference server will validate the incoming query parameters against these classes.
+    If you want to use custom query parameters without redefining the classes mentioned above, you can disable this behaviour by setting the configuration option [`validate_query_parameters`][optimade.server.config.ServerConfig.validate_query_parameters] to false, after which all query parameters will be passed on to the corresponding router method (e.g., database queries).
 
 ## Validating your implementation
 
