@@ -416,8 +416,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2022-05-10" class="md-nav__link">
-    Unreleased (2022-05-10)
+  <a href="#v0170-2022-05-10" class="md-nav__link">
+    v0.17.0 (2022-05-10)
   </a>
   
 </li>
@@ -2066,8 +2066,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2022-05-10" class="md-nav__link">
-    Unreleased (2022-05-10)
+  <a href="#v0170-2022-05-10" class="md-nav__link">
+    v0.17.0 (2022-05-10)
   </a>
   
 </li>
@@ -2514,8 +2514,8 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased-2022-05-10"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2022-05-10)<a class="headerlink" href="#unreleased-2022-05-10" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.12...Unreleased">Full Changelog</a></p>
+<h2 id="v0170-2022-05-10"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.0">v0.17.0</a> (2022-05-10)<a class="headerlink" href="#v0170-2022-05-10" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.12...v0.17.0">Full Changelog</a></p>
 <p>This minor release contains fixes recommended for those deploying the optimade-python-tools reference server:</p>
 <ul>
 <li>The <code>meta-&gt;data_returned</code> field was previously incorrect when using the MongoDB backend.</li>
@@ -2525,12 +2525,12 @@
 <p><strong>Implemented enhancements:</strong></p>
 <ul>
 <li>Add server check for typos in query parameters <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1120">#1120</a></li>
+<li>Improve handling of MongoDB ObjectIDs as OPTIMADE <code>immutable_id</code> <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1142">#1142</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Add support for number-based pagination  <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1139">#1139</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
 <li>Added option to validate incoming URL query parameters <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1122">#1122</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
 </ul>
 <p><strong>Fixed bugs:</strong></p>
 <ul>
-<li>Heroku not deploying <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1158">#1158</a></li>
 <li><code>meta-&gt;data_returned</code> is incorrect for paginated results with MongoDB <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1140">#1140</a></li>
 <li>Queries with the form: 'value != prop' return entries where 'prop == None'  <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1133">#1133</a></li>
 <li>Test on Queries on single structures fail with the check_response function. <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1125">#1125</a></li>
@@ -2547,7 +2547,6 @@
 <li>Use GitHub Actions for Heroku deployment <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1165">#1165</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Add docs for custom provider fields and query parameters <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1164">#1164</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Add deprecation warning for Python 3.7 <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1157">#1157</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
-<li>Improve handling of MongoDB ObjectIDs as OPTIMADE <code>immutable_id</code> <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1142">#1142</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Added way to specify unsupported query parameters and provide a warning <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1136">#1136</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Adjusted check_response so it can also handle single entries. <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1130">#1130</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
 <li>Corrected link in Install.MD <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1124">#1124</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
