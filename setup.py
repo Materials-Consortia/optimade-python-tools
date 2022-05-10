@@ -32,7 +32,7 @@ ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2022.0.16"]
-jarvis_deps = ["jarvis-tools==2022.1.10"]
+jarvis_deps = ["jarvis-tools==2022.5.5"]
 client_deps = cif_deps
 
 # General
@@ -52,7 +52,7 @@ testing_deps = [
     "pytest-cov~=3.0",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.13", "pre-commit~=2.18", "invoke~=1.7"]
+    ["pylint~=2.13", "pre-commit~=2.19", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
