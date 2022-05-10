@@ -91,6 +91,14 @@ class EntryResourceAttributes(Attributes):
         queryable=SupportLevel.MUST,
     )
 
+    @validator("immutable_id", pre=True)
+    def cast_immutable_id_to_str(cls, value):
+        """Convenience validator for casting `immutable_id` to a string."""
+        if value is not None and not isinstance(value, str):
+            value = str(value)
+
+        return value
+
 
 class EntryResource(Resource):
     """The base model for an entry resource."""

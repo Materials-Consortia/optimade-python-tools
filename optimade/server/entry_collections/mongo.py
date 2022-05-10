@@ -1,12 +1,13 @@
-from typing import Dict, Tuple, List, Any
+from typing import Dict, Tuple, List, Any, Union
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
-from optimade.server.config import CONFIG
+from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
+from optimade.server.query_params import SingleEntryQueryParams, EntryListingQueryParams
 
 
 if CONFIG.database_backend.value == "mongodb":
@@ -98,6 +99,39 @@ class MongoCollection(EntryCollection):
         """
         self.collection.insert_many(data)
 
+    def handle_query_params(
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+    ) -> Dict[str, Any]:
+        """Parse and interpret the backend-agnostic query parameter models into a dictionary
+        that can be used by MongoDB.
+
+        This Mongo-specific method calls the base `EntryCollection.handle_query_params` method
+        and adds additional handling of the MongoDB ObjectID type.
+
+        Parameters:
+            params: The initialized query parameter model from the server.
+
+        Raises:
+            Forbidden: If too large of a page limit is provided.
+            BadRequest: If an invalid request is made, e.g., with incorrect fields
+                or response format.
+
+        Returns:
+            A dictionary representation of the query parameters.
+
+        """
+        criteria = super().handle_query_params(params)
+        # Handle MongoDB ObjectIDs:
+        # - If they were not requested, then explicitly remove them
+        # - If they were requested, then cast them to strings in the response
+        if "_id" not in criteria.get("projection", {}):
+            criteria["projection"]["_id"] = False
+
+        if criteria.get("projection", {}).get("_id"):
+            criteria["projection"]["_id"] = {"$toString": "$_id"}
+
+        return criteria
+
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry: bool = False
     ) -> Tuple[List[Dict[str, Any]], int, bool]:
@@ -112,12 +146,14 @@ class MongoCollection(EntryCollection):
             entries matching the query and a boolean for whether or not there is more data available.
 
         """
+        results = list(self.collection.find(**criteria))
 
-        results = []
-        for doc in self.collection.find(**criteria):
-            if criteria.get("projection", {}).get("_id"):
-                doc["_id"] = str(doc["_id"])
-            results.append(doc)
+        if CONFIG.database_backend == SupportedBackend.MONGOMOCK and criteria.get(
+            "projection", {}
+        ).get("_id"):
+            # mongomock does not support `$toString`` in projection, so we have to do it manually
+            for ind, doc in enumerate(results):
+                results[ind]["_id"] = str(doc["_id"])
 
         nresults_now = len(results)
         if not single_entry:
