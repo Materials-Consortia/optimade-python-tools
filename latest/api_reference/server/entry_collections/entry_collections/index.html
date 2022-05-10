@@ -2145,9 +2145,20 @@ EntryCollection        </code>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
             <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_sort_params</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>
 
-        <span class="c1"># page_offset</span>
+        <span class="c1"># page_offset and page_number</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Only one of the query parameters &#39;page_number&#39; and &#39;page_offset&#39; should be set - &#39;page_number&#39; will be ignored.&quot;</span><span class="p">,</span>
+                    <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
+                <span class="p">)</span>
+
             <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_offset</span>
+        <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cursor_kwargs</span><span class="p">[</span>
+                    <span class="s2">&quot;limit&quot;</span>
+                <span class="p">]</span>
 
         <span class="k">return</span> <span class="n">cursor_kwargs</span>
 
@@ -2796,9 +2807,20 @@ or response format.</p></td>
     <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_sort_params</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>
 
-    <span class="c1"># page_offset</span>
+    <span class="c1"># page_offset and page_number</span>
     <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Only one of the query parameters &#39;page_number&#39; and &#39;page_offset&#39; should be set - &#39;page_number&#39; will be ignored.&quot;</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
+            <span class="p">)</span>
+
         <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_offset</span>
+    <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cursor_kwargs</span><span class="p">[</span>
+                <span class="s2">&quot;limit&quot;</span>
+            <span class="p">]</span>
 
     <span class="k">return</span> <span class="n">cursor_kwargs</span>
 </code></pre></div>
