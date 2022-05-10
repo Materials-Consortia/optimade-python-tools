@@ -11,7 +11,11 @@ from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.exceptions import BadRequest, Forbidden, NotFound
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.warnings import FieldValueNotRecognized, UnknownProviderProperty
+from optimade.server.warnings import (
+    FieldValueNotRecognized,
+    UnknownProviderProperty,
+    QueryParamNotUsed,
+)
 
 
 def create_collection(
@@ -275,7 +279,7 @@ class EntryCollection(ABC):
             which will need modification for modified for other backends.
 
         Parameters:
-            params (Union[EntryListingQueryParams, SingleEntryQueryParams]): The initialized query parameter model from the server.
+            params: The initialized query parameter model from the server.
 
         Raises:
             Forbidden: If too large of a page limit is provided.
@@ -322,9 +326,6 @@ class EntryCollection(ABC):
             for f in self.all_fields
         }
 
-        if "_id" not in cursor_kwargs["projection"]:
-            cursor_kwargs["projection"]["_id"] = False
-
         if getattr(params, "response_fields", False):
             response_fields = set(params.response_fields.split(","))
             response_fields |= self.resource_mapper.get_required_fields()
@@ -341,9 +342,20 @@ class EntryCollection(ABC):
         if getattr(params, "sort", False):
             cursor_kwargs["sort"] = self.parse_sort_params(params.sort)
 
-        # page_offset
+        # page_offset and page_number
         if getattr(params, "page_offset", False):
+            if getattr(params, "page_number", False):
+                warnings.warn(
+                    message="Only one of the query parameters 'page_number' and 'page_offset' should be set - 'page_number' will be ignored.",
+                    category=QueryParamNotUsed,
+                )
+
             cursor_kwargs["skip"] = params.page_offset
+        elif getattr(params, "page_number", False):
+            if isinstance(params.page_number, int):
+                cursor_kwargs["skip"] = (params.page_number - 1) * cursor_kwargs[
+                    "limit"
+                ]
 
         return cursor_kwargs
 

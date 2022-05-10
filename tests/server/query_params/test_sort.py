@@ -36,7 +36,7 @@ def test_str_asc(check_response, structures):
     limit = 5
 
     request = f"/structures?sort=id&page_limit={limit}"
-    expected_ids = sorted([doc["task_id"] for doc in structures])
+    expected_ids = sorted([doc["task_id"] for doc in structures])[:limit]
     check_response(
         request,
         expected_ids=expected_ids,
@@ -49,7 +49,7 @@ def test_str_desc(check_response, structures):
     limit = 5
 
     request = f"/structures?sort=-id&page_limit={limit}"
-    expected_ids = sorted([doc["task_id"] for doc in structures], reverse=True)
+    expected_ids = sorted([doc["task_id"] for doc in structures], reverse=True)[:limit]
     check_response(
         request,
         expected_ids=expected_ids,

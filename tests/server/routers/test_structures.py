@@ -35,11 +35,13 @@ class TestStructuresEndpoint(RegularEndpointTests):
 
         cursor = json_response["data"].copy()
         assert json_response["meta"]["more_data_available"]
+        assert json_response["meta"]["data_returned"] == total_data
         more_data_available = True
         next_request = json_response["links"]["next"]
 
         while more_data_available:
             next_response = get_good_response(next_request)
+            assert next_response["meta"]["data_returned"] == total_data
             next_request = next_response["links"]["next"]
             cursor.extend(next_response["data"])
             more_data_available = next_response["meta"]["more_data_available"]
@@ -65,6 +67,15 @@ class TestSingleStructureEndpoint(RegularEndpointTests):
         assert self.json_response["data"]["type"] == "structures"
         assert "attributes" in self.json_response["data"]
         assert "_exmpl_chemsys" in self.json_response["data"]["attributes"]
+
+
+def test_check_response_single_structure(check_response):
+    """Tests whether check_response also handles single endpoint queries correctly."""
+
+    test_id = "mpf_1"
+    expected_ids = "mpf_1"
+    request = f"/structures/{test_id}?response_fields=chemical_formula_reduced"
+    check_response(request, expected_ids=expected_ids)
 
 
 class TestMissingSingleStructureEndpoint(RegularEndpointTests):
