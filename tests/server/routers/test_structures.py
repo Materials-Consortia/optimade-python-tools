@@ -73,7 +73,7 @@ def test_check_response_single_structure(check_response):
     """Tests whether check_response also handles single endpoint queries correctly."""
 
     test_id = "mpf_1"
-    expected_ids = ["mpf_1"]
+    expected_ids = "mpf_1"
     request = f"/structures/{test_id}?response_fields=chemical_formula_reduced"
     check_response(request, expected_ids=expected_ids)
 

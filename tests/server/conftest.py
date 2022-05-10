@@ -102,14 +102,26 @@ def get_good_response(client, index_client):
 
 @pytest.fixture
 def check_response(get_good_response):
-    """Fixture to check "good" response"""
+    """Check response matches expectations for a given request.
+
+    Parameters:
+        request: The request to check.
+        expected_ids: A list of IDs, or a single ID to check
+            the response for.
+        page_limit: The number of results expected per page.
+        expected_return: The number of results expected to be returned.
+        expected_as_is: Whether to enforce the order of the IDs.
+        expected_warnings: A list of expected warning messages.
+        server: The type of server to test, or the actual test client class.
+
+    """
     from typing import List
     from optimade.server.config import CONFIG
     from .utils import OptimadeTestClient
 
     def inner(
         request: str,
-        expected_ids: List[str],
+        expected_ids: Union[str, List[str]],
         page_limit: int = CONFIG.page_limit,
         expected_return: int = None,
         expected_as_is: bool = False,
@@ -117,23 +129,22 @@ def check_response(get_good_response):
         server: Union[str, OptimadeTestClient] = "regular",
     ):
         response = get_good_response(request, server)
-        if isinstance(response["data"], dict):
-            response_ids = [response["data"]["id"]]
-        else:
-            response_ids = [struct["id"] for struct in response["data"]]
+        if isinstance(expected_ids, str):
+            expected_ids = [expected_ids]
+            response["data"] = [response["data"]]
 
-        if expected_return is None:
-            expected_return = len(expected_ids)
+        response_ids = [struct["id"] for struct in response["data"]]
 
-        assert response["meta"]["data_returned"] == expected_return
+        if expected_return is not None:
+            assert expected_return == response["meta"]["data_returned"]
+
+        assert len(response["data"]) == len(expected_ids)
 
         if not expected_as_is:
             expected_ids = sorted(expected_ids)
+            response_ids = sorted(response_ids)
 
-        if len(expected_ids) > page_limit:
-            assert expected_ids[:page_limit] == response_ids
-        else:
-            assert expected_ids == response_ids
+        assert expected_ids == response_ids
 
         if expected_warnings:
             assert "warnings" in response["meta"]
