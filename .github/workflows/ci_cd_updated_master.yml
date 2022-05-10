@@ -145,3 +145,67 @@ jobs:
       env:
           HD_OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
           HD_OPTIMADE_BASE_URL: https://optimade.herokuapp.com
+
+  publish_container_image:
+    name: Publish Container image on GH Container Registry
+    if: github.repository_owner == 'Materials-Consortiau'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    env:
+      IMAGE_NAME: optimade
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ env.DEFAULT_REPO_BRANCH }}
+        fetch-depth: 0
+        submodules: true
+
+    - name: Set up git config
+      run: |
+        git config --global user.name "${{ env.GIT_USER_NAME }}"
+        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+
+    - name: Build image
+      run: |
+        docker build \
+          --file Dockerfile \
+          --tag "${IMAGE_NAME}" \
+          --label "gh_actions_runnumber=${GITHUB_RUN_ID}" \
+          --label "org.opencontainers.image.description=$(cat README.md)" \
+          .
+
+    - name: Log in to registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    - name: Push image
+      run: |
+        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}
+
+        # Change all uppercase to lowercase
+        IMAGE_ID=$(echo ${IMAGE_ID} | tr '[A-Z]' '[a-z]')
+
+        # Get current OPTIMADE version from optimade/__init__.py
+        regex="^__version__ = (\"|')(.*)(\"|')$"
+        while IFS="" read -r line || [ -n "${line}" ]; do
+          if [[ "${line}" =~ $regex ]]; then
+            VERSION="${BASH_REMATCH[2]}"
+          fi
+        done < optimade/__init__.py
+
+        echo IMAGE_ID=${IMAGE_ID}
+        echo VERSION=${VERSION}
+
+        # Tag image using current OTEAPI Services version
+        docker tag ${IMAGE_NAME} ${IMAGE_ID}:${VERSION}
+
+        # Always tag as the "latest"
+        docker tag ${IMAGE_NAME} ${IMAGE_ID}:latest
+
+        docker image inspect ${IMAGE_NAME}
+
+        docker push --all-tags ${IMAGE_ID}
