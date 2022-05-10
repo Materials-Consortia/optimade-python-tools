@@ -152,7 +152,7 @@ jobs:
       postgres:
         image: postgres:10
         env:
-          POSTGRES_DB: test_django
+          POSTGRES_DB: test_aiida
           POSTGRES_PASSWORD: test
         options: >-
           --health-cmd pg_isready
@@ -208,13 +208,21 @@ jobs:
     - name: Install adapter conversion dependencies
       run: |
         pip install -r requirements-client.txt
-        # AiiDA-specific
-        reentry scan
 
-    - name: Setup up environment for AiiDA
+    - name: Setup environment for AiiDA v1 (Python 3.7)
+      if: matrix.python-version == 3.7
       env:
         AIIDA_TEST_BACKEND: django
-      run: .github/aiida/setup_aiida.sh
+      run: |
+        reentry scan
+        .github/aiida/setup_aiida.sh
+
+    - name: Setup environment for AiiDA v2 (Python 3.8+)
+      if: matrix.python-version != 3.7
+      env:
+        AIIDA_TEST_BACKEND: psql_dos
+      run: |
+        .github/aiida/setup_aiida.sh
 
     - name: Run previously skipped tests for adapter conversion
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
