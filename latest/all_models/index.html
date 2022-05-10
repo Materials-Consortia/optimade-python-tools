@@ -692,6 +692,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#optimade.models.entries.EntryResourceAttributes.cast_immutable_id_to_str" class="md-nav__link">
+    cast_immutable_id_to_str()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3840,6 +3847,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#optimade.models.entries.EntryResourceAttributes.cast_immutable_id_to_str" class="md-nav__link">
+    cast_immutable_id_to_str()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -6638,6 +6652,14 @@ EntryResourceAttributes        </code>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
     <span class="p">)</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">value</span>
 </code></pre></div>
         </details>
 
@@ -6733,6 +6755,40 @@ EntryResourceAttributes        </code>
 
 
 
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="optimade.models.entries.EntryResourceAttributes.cast_immutable_id_to_str" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cast_immutable_id_to_str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#optimade.models.entries.EntryResourceAttributes.cast_immutable_id_to_str" class="headerlink" title="Permanent link">&para;</a></h4>
+
+    <div class="doc doc-contents ">
+
+      <p>Convenience validator for casting <code>immutable_id</code> to a string.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/entries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
 
 
 
@@ -15715,7 +15771,7 @@ of this field.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7f478d41fa00&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7f746ecf1a00&gt;</code></td>
       <td><p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" href="../api_reference/models/utils/#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p></td>
     </tr>
   </tbody>
@@ -15847,7 +15903,7 @@ by models in this package (see above).</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7f478d41fa00&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7f746ecf1a00&gt;</code></td>
       <td><p>The pydantic <code>Field</code>.</p></td>
     </tr>
   </tbody>

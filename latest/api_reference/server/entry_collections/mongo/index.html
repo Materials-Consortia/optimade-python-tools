@@ -1303,6 +1303,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.mongo.MongoCollection.handle_query_params" class="md-nav__link">
+    handle_query_params()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.mongo.MongoCollection.insert" class="md-nav__link">
     insert()
   </a>
@@ -1708,6 +1715,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.mongo.MongoCollection.handle_query_params" class="md-nav__link">
+    handle_query_params()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.mongo.MongoCollection.insert" class="md-nav__link">
     insert()
   </a>
@@ -1840,6 +1854,39 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="sd">        that can be used by MongoDB.</span>
+
+<span class="sd">        This Mongo-specific method calls the base `EntryCollection.handle_query_params` method</span>
+<span class="sd">        and adds additional handling of the MongoDB ObjectID type.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            params: The initialized query parameter model from the server.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Forbidden: If too large of a page limit is provided.</span>
+<span class="sd">            BadRequest: If an invalid request is made, e.g., with incorrect fields</span>
+<span class="sd">                or response format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary representation of the query parameters.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">criteria</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="c1"># Handle MongoDB ObjectIDs:</span>
+        <span class="c1"># - If they were not requested, then explicitly remove them</span>
+        <span class="c1"># - If they were requested, then cast them to strings in the response</span>
+        <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+            <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
+            <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$toString&quot;</span><span class="p">:</span> <span class="s2">&quot;$_id&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">criteria</span>
+
     <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
@@ -1854,12 +1901,14 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 <span class="sd">            entries matching the query and a boolean for whether or not there is more data available.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">))</span>
 
-        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
-                <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">==</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGOMOCK</span> <span class="ow">and</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{}</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
+            <span class="c1"># mongomock does not support `$toString`` in projection, so we have to do it manually</span>
+            <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
 
         <span class="n">nresults_now</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">single_entry</span><span class="p">:</span>
@@ -2045,6 +2094,119 @@ to the <code>pymongo.collection.Collection.count_documents</code> method.</p></t
     <span class="k">if</span> <span class="s2">&quot;filter&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>  <span class="c1"># &quot;filter&quot; is needed for count_documents()</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.server.entry_collections.mongo.MongoCollection.handle_query_params" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">handle_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+
+
+<a href="#optimade.server.entry_collections.mongo.MongoCollection.handle_query_params" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Parse and interpret the backend-agnostic query parameter models into a dictionary
+that can be used by MongoDB.</p>
+<p>This Mongo-specific method calls the base <code>EntryCollection.handle_query_params</code> method
+and adds additional handling of the MongoDB ObjectID type.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>params</code></td>
+        <td><code>Union[optimade.server.query_params.EntryListingQueryParams, optimade.server.query_params.SingleEntryQueryParams]</code></td>
+        <td><p>The initialized query parameter model from the server.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>Forbidden</code></td>
+        <td><p>If too large of a page limit is provided.</p></td>
+      </tr>
+      <tr>
+        <td><code>BadRequest</code></td>
+        <td><p>If an invalid request is made, e.g., with incorrect fields
+or response format.</p></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Dict[str, Any]</code></td>
+      <td><p>A dictionary representation of the query parameters.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="sd">    that can be used by MongoDB.</span>
+
+<span class="sd">    This Mongo-specific method calls the base `EntryCollection.handle_query_params` method</span>
+<span class="sd">    and adds additional handling of the MongoDB ObjectID type.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        params: The initialized query parameter model from the server.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Forbidden: If too large of a page limit is provided.</span>
+<span class="sd">        BadRequest: If an invalid request is made, e.g., with incorrect fields</span>
+<span class="sd">            or response format.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary representation of the query parameters.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">criteria</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="c1"># Handle MongoDB ObjectIDs:</span>
+    <span class="c1"># - If they were not requested, then explicitly remove them</span>
+    <span class="c1"># - If they were requested, then cast them to strings in the response</span>
+    <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+        <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
+        <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$toString&quot;</span><span class="p">:</span> <span class="s2">&quot;$_id&quot;</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">criteria</span>
 </code></pre></div>
         </details>
     </div>
