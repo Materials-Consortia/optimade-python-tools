@@ -152,7 +152,7 @@ jobs:
       postgres:
         image: postgres:10
         env:
-          POSTGRES_DB: test_django
+          POSTGRES_DB: test_aiida
           POSTGRES_PASSWORD: test
         options: >-
           --health-cmd pg_isready
