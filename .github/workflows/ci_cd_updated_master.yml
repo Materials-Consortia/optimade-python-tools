@@ -1,9 +1,10 @@
 name: CI/CD - New updates to `master`
 
 on:
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
+  pull_request:
 
 env:
   DEFAULT_REPO_BRANCH: master
@@ -11,144 +12,144 @@ env:
   GIT_USER_EMAIL: "dev@optimade.org"
 
 jobs:
-  deploy-docs:
-    name: Deploy `latest` documentation
-    if: github.repository_owner == 'Materials-Consortia'
-    runs-on: ubuntu-latest
+  # deploy-docs:
+  #   name: Deploy `latest` documentation
+  #   if: github.repository_owner == 'Materials-Consortia'
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Release check
-      run: |
-        COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/${{ env.DEFAULT_REPO_BRANCH }} --jq '.commit.message')"
-        if [[ "${COMMIT_MSG}" =~ ^Release\ v.*\ -\ Changelog$ ]]; then
-          echo "In a release - do not run this job !"
-          echo "RELEASE_RUN=true" >> $GITHUB_ENV
-        else
-          echo "Not a release - update docs"
-          echo "RELEASE_RUN=false" >> $GITHUB_ENV
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #   - name: Release check
+  #     run: |
+  #       COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/${{ env.DEFAULT_REPO_BRANCH }} --jq '.commit.message')"
+  #       if [[ "${COMMIT_MSG}" =~ ^Release\ v.*\ -\ Changelog$ ]]; then
+  #         echo "In a release - do not run this job !"
+  #         echo "RELEASE_RUN=true" >> $GITHUB_ENV
+  #       else
+  #         echo "Not a release - update docs"
+  #         echo "RELEASE_RUN=false" >> $GITHUB_ENV
+  #       fi
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Checkout repository
-      if: env.RELEASE_RUN == 'false'
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        submodules: true
+  #   - name: Checkout repository
+  #     if: env.RELEASE_RUN == 'false'
+  #     uses: actions/checkout@v3
+  #     with:
+  #       fetch-depth: 0
+  #       submodules: true
 
-    - name: Set up Python 3.8
-      if: env.RELEASE_RUN == 'false'
-      uses: actions/setup-python@v3
-      with:
-        python-version: 3.8
+  #   - name: Set up Python 3.8
+  #     if: env.RELEASE_RUN == 'false'
+  #     uses: actions/setup-python@v3
+  #     with:
+  #       python-version: 3.8
 
-    - name: Install dependencies
-      if: env.RELEASE_RUN == 'false'
-      run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools wheel
-        pip install -U -e .[all]
+  #   - name: Install dependencies
+  #     if: env.RELEASE_RUN == 'false'
+  #     run: |
+  #       python -m pip install --upgrade pip
+  #       pip install -U setuptools wheel
+  #       pip install -U -e .[all]
 
-    - name: Set up git user
-      if: env.RELEASE_RUN == 'false'
-      run: |
-        git config --global user.name "${{ env.GIT_USER_NAME }}"
-        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+  #   - name: Set up git user
+  #     if: env.RELEASE_RUN == 'false'
+  #     run: |
+  #       git config --global user.name "${{ env.GIT_USER_NAME }}"
+  #       git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
-    - name: Check API Reference and landing page
-      if: env.RELEASE_RUN == 'false'
-      run: |
-        invoke create-api-reference-docs --pre-clean
+  #   - name: Check API Reference and landing page
+  #     if: env.RELEASE_RUN == 'false'
+  #     run: |
+  #       invoke create-api-reference-docs --pre-clean
 
-        if [ -n "$(git status --porcelain docs/api_reference)" ]; then
-          echo "The following files in the documentation have not been committed:"
-          git status --porcelain docs/api_reference
-          exit 1
-        fi
+  #       if [ -n "$(git status --porcelain docs/api_reference)" ]; then
+  #         echo "The following files in the documentation have not been committed:"
+  #         git status --porcelain docs/api_reference
+  #         exit 1
+  #       fi
 
-    - name: Update changelog with unreleased changes
-      uses: CharMixer/auto-changelog-action@v1
-      with:
-        token: ${{ secrets.RELEASE_PAT_BOT }}
-        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
-        future_release: "Unreleased changes"
+  #   - name: Update changelog with unreleased changes
+  #     uses: CharMixer/auto-changelog-action@v1
+  #     with:
+  #       token: ${{ secrets.RELEASE_PAT_BOT }}
+  #       release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+  #       exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
+  #       future_release: "Unreleased changes"
 
-    - name: Deploy documentation
-      if: env.RELEASE_RUN == 'false'
-      run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_REPO_BRANCH }}
+  #   - name: Deploy documentation
+  #     if: env.RELEASE_RUN == 'false'
+  #     run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_REPO_BRANCH }}
 
-  update-dependabot-branch:
-    name: Update permanent dependabot branch `dependabot_updates`
-    if: github.repository_owner == 'Materials-Consortia'
-    runs-on: ubuntu-latest
+  # update-dependabot-branch:
+  #   name: Update permanent dependabot branch `dependabot_updates`
+  #   if: github.repository_owner == 'Materials-Consortia'
+  #   runs-on: ubuntu-latest
 
-    env:
-      DEPENDABOT_BRANCH: dependabot_updates
+  #   env:
+  #     DEPENDABOT_BRANCH: dependabot_updates
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ env.DEPENDABOT_BRANCH }}
-        fetch-depth: 0
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v3
+  #     with:
+  #       ref: ${{ env.DEPENDABOT_BRANCH }}
+  #       fetch-depth: 0
 
-    - name: Set up git config
-      run: |
-        git config --global user.name "${{ env.GIT_USER_NAME }}"
-        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+  #   - name: Set up git config
+  #     run: |
+  #       git config --global user.name "${{ env.GIT_USER_NAME }}"
+  #       git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
-    - name: Update '${{ env.DEPENDABOT_BRANCH }}'
-      run: |
-        git fetch origin
+  #   - name: Update '${{ env.DEPENDABOT_BRANCH }}'
+  #     run: |
+  #       git fetch origin
 
-        LATEST_PR_BODY="$(gh api /repos/${{ github.repository}}/pulls -X GET -f state=closed -f per_page=1 -f sort=updated -f direction=desc --jq '.[].body')"
-        cat .github/utils/single_dependency_pr_body.txt | head -8 > .tmp_file.txt
-        if [ -z "$(printf '%s\n' "${LATEST_PR_BODY}" | head -8 | diff - .tmp_file.txt --strip-trailing-cr)" ]; then
-          # The dependency branch has just been merged into ${DEFAULT_REPO_BRANCH}
-          # The dependency branch should be reset to ${DEFAULT_REPO_BRANCH}
-          echo "The dependencies have just been updated! Reset to ${{ env.DEFAULT_REPO_BRANCH }}."
-          git reset --hard origin/${{ env.DEFAULT_REPO_BRANCH }}
-          echo "FORCE_PUSH=yes" >> $GITHUB_ENV
-        else
-          # Normal procedure: Merge ${DEFAULT_REPO_BRANCH} into ${DEPENDABOT_BRANCH}
-          echo "Merge new updates to ${{ env.DEFAULT_REPO_BRANCH }} into ${DEPENDABOT_BRANCH}"
-          git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with '${{ env.DEFAULT_REPO_BRANCH }}'" origin/${{ env.DEFAULT_REPO_BRANCH }}
-          echo "FORCE_PUSH=no" >> $GITHUB_ENV
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       LATEST_PR_BODY="$(gh api /repos/${{ github.repository}}/pulls -X GET -f state=closed -f per_page=1 -f sort=updated -f direction=desc --jq '.[].body')"
+  #       cat .github/utils/single_dependency_pr_body.txt | head -8 > .tmp_file.txt
+  #       if [ -z "$(printf '%s\n' "${LATEST_PR_BODY}" | head -8 | diff - .tmp_file.txt --strip-trailing-cr)" ]; then
+  #         # The dependency branch has just been merged into ${DEFAULT_REPO_BRANCH}
+  #         # The dependency branch should be reset to ${DEFAULT_REPO_BRANCH}
+  #         echo "The dependencies have just been updated! Reset to ${{ env.DEFAULT_REPO_BRANCH }}."
+  #         git reset --hard origin/${{ env.DEFAULT_REPO_BRANCH }}
+  #         echo "FORCE_PUSH=yes" >> $GITHUB_ENV
+  #       else
+  #         # Normal procedure: Merge ${DEFAULT_REPO_BRANCH} into ${DEPENDABOT_BRANCH}
+  #         echo "Merge new updates to ${{ env.DEFAULT_REPO_BRANCH }} into ${DEPENDABOT_BRANCH}"
+  #         git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with '${{ env.DEFAULT_REPO_BRANCH }}'" origin/${{ env.DEFAULT_REPO_BRANCH }}
+  #         echo "FORCE_PUSH=no" >> $GITHUB_ENV
+  #       fi
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Push to '${{ env.DEPENDABOT_BRANCH }}'
-      uses: CasperWA/push-protected@v2
-      with:
-        token: ${{ secrets.RELEASE_PAT_BOT }}
-        branch: ${{ env.DEPENDABOT_BRANCH }}
-        sleep: 15
-        force: ${{ env.FORCE_PUSH }}
+  #   - name: Push to '${{ env.DEPENDABOT_BRANCH }}'
+  #     uses: CasperWA/push-protected@v2
+  #     with:
+  #       token: ${{ secrets.RELEASE_PAT_BOT }}
+  #       branch: ${{ env.DEPENDABOT_BRANCH }}
+  #       sleep: 15
+  #       force: ${{ env.FORCE_PUSH }}
 
-  deploy-heroku:
-    runs-on: ubuntu-latest
-    if: github.repository_owner == 'Materials-Consortia'
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+  # deploy-heroku:
+  #   runs-on: ubuntu-latest
+  #   if: github.repository_owner == 'Materials-Consortia'
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v3
 
-    - name: Deploy to Heroku
-      uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "optimade"
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
-          branch: ${{env.DEFAULT_REPO_BRANCH}}
-      env:
-          HD_OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
-          HD_OPTIMADE_BASE_URL: https://optimade.herokuapp.com
+  #   - name: Deploy to Heroku
+  #     uses: akhileshns/heroku-deploy@v3.12.12
+  #     with:
+  #         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+  #         heroku_app_name: "optimade"
+  #         heroku_email: ${{secrets.HEROKU_EMAIL}}
+  #         branch: ${{env.DEFAULT_REPO_BRANCH}}
+  #     env:
+  #         HD_OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
+  #         HD_OPTIMADE_BASE_URL: https://optimade.herokuapp.com
 
   publish_container_image:
     name: Publish Container image on GH Container Registry
-    if: github.repository_owner == 'Materials-Consortiau'
+    if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -172,11 +173,17 @@ jobs:
 
     - name: Build image
       run: |
+        # --label "org.opencontainers.image.description=$(cat README.md)"
         docker build \
           --file Dockerfile \
           --tag "${IMAGE_NAME}" \
           --label "gh_actions_runnumber=${GITHUB_RUN_ID}" \
-          --label "org.opencontainers.image.description=$(cat README.md)" \
+          --label "org.opencontainers.image.description=A server implementation for serving an OPTIMADE API." \
+          --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}/tree/${{ github.sha }}" \
+          --label "org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/${{ github.sha }}/README.md" \
+          --label "org.opencontainers.image.licenses=MIT" \
+          --label "org.opencontainers.image.url=https://github.com/${{ github.repository }}/pkgs/container/${IMAGE_NAME}" \
+          --label "org.opencontainers.image.vendor=${{ github.repository_owner }}" \
           .
 
     - name: Log in to registry
