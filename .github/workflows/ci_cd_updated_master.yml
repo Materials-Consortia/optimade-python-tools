@@ -170,19 +170,34 @@ jobs:
         git config --global user.name "${{ env.GIT_USER_NAME }}"
         git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
+    - name: Retrieve version
+      run: |
+        # Get current OPTIMADE version from optimade/__init__.py
+        regex="^__version__ = (\"|')(.*)(\"|')$"
+        while IFS="" read -r line || [ -n "${line}" ]; do
+          if [[ "${line}" =~ $regex ]]; then
+            VERSION="${BASH_REMATCH[2]}"
+          fi
+        done < optimade/__init__.py
+
+        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+        echo VERSION=${VERSION}
+
     - name: Build image
       run: |
-        # --label "org.opencontainers.image.description=$(cat README.md)"
         docker build \
           --file Dockerfile \
           --tag "${IMAGE_NAME}" \
           --label "gh_actions_runnumber=${GITHUB_RUN_ID}" \
+          --label "org.openctonainers.image.title=OPTIMADE" \
           --label "org.opencontainers.image.description=A server implementation for serving an OPTIMADE API." \
           --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}/tree/${{ github.sha }}" \
           --label "org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/${{ github.sha }}/README.md" \
           --label "org.opencontainers.image.licenses=MIT" \
           --label "org.opencontainers.image.url=https://github.com/${{ github.repository }}/pkgs/container/${IMAGE_NAME}" \
           --label "org.opencontainers.image.vendor=${{ github.repository_owner }}" \
+          --label "org.opencontainers.image.version=${{ env.VERSION }}" \
+          --label "org.opencontainers.image.base.name=docker.io/library/python:3.10-slim" \
           .
 
     - name: Log in to registry
@@ -194,20 +209,10 @@ jobs:
 
         # Change all uppercase to lowercase
         IMAGE_ID=$(echo ${IMAGE_ID} | tr '[A-Z]' '[a-z]')
-
-        # Get current OPTIMADE version from optimade/__init__.py
-        regex="^__version__ = (\"|')(.*)(\"|')$"
-        while IFS="" read -r line || [ -n "${line}" ]; do
-          if [[ "${line}" =~ $regex ]]; then
-            VERSION="${BASH_REMATCH[2]}"
-          fi
-        done < optimade/__init__.py
-
         echo IMAGE_ID=${IMAGE_ID}
-        echo VERSION=${VERSION}
 
-        # Tag image using current OTEAPI Services version
-        docker tag ${IMAGE_NAME} ${IMAGE_ID}:${VERSION}
+        # Tag image using current OPTIMADE version
+        docker tag ${IMAGE_NAME} ${IMAGE_ID}:${{ env.VERSION }}
 
         # Always tag as the "latest"
         docker tag ${IMAGE_NAME} ${IMAGE_ID}:latest
