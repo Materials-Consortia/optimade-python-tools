@@ -33,7 +33,9 @@ jobs:
         fi
 
         echo "RELEASE_RUN=${RELEASE_RUN}" >> $GITHUB_ENV
-        echo "::set-output name=release_run::${RELEASE_RUN}"
+        # echo "::set-output name=release_run::${RELEASE_RUN}"
+        echo "Faking setting it to 'Not a release'"
+        echo "::set-output name=release_run::false"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
