@@ -161,7 +161,8 @@ jobs:
     uses: ./.github/workflows/cd_container_image.yml
     if: needs.deploy_docs.outputs.release_run == 'false'
     with:
-      release: false
+      # Test release
+      release: true
       CHECKOUT_REF: ${{ github.sha }}
     secrets: inherit
     permissions:
