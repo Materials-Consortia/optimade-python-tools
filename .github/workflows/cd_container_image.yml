@@ -8,9 +8,14 @@ on:
         default: false
         required: false
         type: boolean
+      CHEKOUT_REF:
+        description: 'For testing only'
+        default: master
+        required: false
+        type: string
 
-env:
-  CHECKOUT_REF: master
+# env:
+#   CHECKOUT_REF: master
 
 jobs:
   publish_container_image:
@@ -27,7 +32,7 @@ jobs:
       with:
         fetch-depth: 0
         submodules: true
-        ref: ${{ env.CHECKOUT_REF }}
+        ref: ${{ inputs.CHECKOUT_REF }}
 
     - name: Retrieve version
       run: |
@@ -94,4 +99,4 @@ jobs:
     - name: Push image
       run: |
         docker image inspect ${IMAGE_NAME}
-        docker push --all-tags ${{ env.IMAGE_ID }}
+        # docker push --all-tags ${{ env.IMAGE_ID }}
