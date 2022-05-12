@@ -8,7 +8,7 @@ on:
         default: false
         required: false
         type: boolean
-      CHEKOUT_REF:
+      CHECKOUT_REF:
         description: 'For testing only'
         default: master
         required: false
