@@ -8,14 +8,11 @@ on:
         default: false
         required: false
         type: boolean
-      CHECKOUT_REF:
-        description: 'For testing only'
+      checkout_ref:
+        description: 'The git ref to checkout and use as source.'
         default: master
         required: false
         type: string
-
-# env:
-#   CHECKOUT_REF: master
 
 jobs:
   publish_container_image:
@@ -32,7 +29,7 @@ jobs:
       with:
         fetch-depth: 0
         submodules: true
-        ref: ${{ inputs.CHECKOUT_REF }}
+        ref: ${{ inputs.checkout_ref }}
 
     - name: Retrieve version
       run: |
@@ -99,4 +96,4 @@ jobs:
     - name: Push image
       run: |
         docker image inspect ${IMAGE_NAME}
-        # docker push --all-tags ${{ env.IMAGE_ID }}
+        docker push --all-tags ${{ env.IMAGE_ID }}
