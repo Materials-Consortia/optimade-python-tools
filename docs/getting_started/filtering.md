@@ -32,11 +32,11 @@ filter
       expression_phrase
         comparison
           property_first_comparison
-            property	nelements
+            property nelements
             value_op_rhs
               <
               value
-                number	3
+                number 3
 ```
 
 ```python
@@ -51,19 +51,19 @@ filter
       expression_phrase
         comparison
           property_first_comparison
-            property	_mp_bandgap
+            property _mp_bandgap
             value_op_rhs
               >
               value
-                number	5.0
+                number 5.0
       expression_phrase
         comparison
           property_first_comparison
-            property	_cod_molecular_weight
+            property _cod_molecular_weight
             value_op_rhs
               <
               value
-                number	350
+                number 350
 ```
 
 ## Flow for parsing a user-supplied filter and converting to a backend query
@@ -84,13 +84,12 @@ print(query)
 
 ```json
 {
-    "$and": [
-        {"_mp_bandgap": {"$gt": 5.0}},
-        {"_cod_molecular_weight": {"$lt": 350.0}}
-    ]
+  "$and": [
+    {"_mp_bandgap": {"$gt": 5.0}},
+    {"_cod_molecular_weight": {"$lt": 350.0}}
+  ]
 }
 ```
-
 
 ## Developing new filter transformers
 

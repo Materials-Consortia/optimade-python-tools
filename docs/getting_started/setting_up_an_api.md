@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD033 -->
 # Setting up an OPTIMADE API
 
 These notes describe how to set up and customize an OPTIMADE API based on the reference server in this package for some existing crystal structure data.
@@ -50,11 +51,12 @@ Filters that use the prefixed form of these fields will then be passed through t
 
 !!! example
     Example JSON config file fragment for adding two fields to each of the `structures` and `references` endpoints, that will be served as, e.g., `_exmpl_cell_volume` if the `provider.prefix` is set to 'exmpl'.
+
     ```json
-        "provider_fields": {
-            "structures": ["cell_volume", "total_energy"],
-            "references": ["orcid", "num_citations"],
-        }
+    "provider_fields": {
+      "structures": ["cell_volume", "total_energy"],
+      "references": ["orcid", "num_citations"],
+    }
     ```
 
 It is recommended that you provide a description, type and unit for each custom field that can be returned at the corresponding `/info/<entry_type>` endpoint.
@@ -62,19 +64,20 @@ This can be achieved by providing a dictionary per field at [`provider_fields`][
 
 !!! example
     Example JSON config file fragment for adding a description, type and unit for the custom `_exmpl_cell_volume` field, which will cause it to be added to the `/info/structures` endpoint.
+
     ```json
-        "provider_fields": {
-            "structures": [
-                {
-                    "name": "cell_volume",
-                    "description": "The volume of the cell per formula unit.",
-                    "unit": "Ao3",
-                    "type": "float"
-                },
-                "total_energy"
-            ],
-            "references": ["orcid", "num_citations"],
-        }
+    "provider_fields": {
+      "structures": [
+        {
+          "name": "cell_volume",
+          "description": "The volume of the cell per formula unit.",
+          "unit": "Ao3",
+          "type": "float"
+        },
+        "total_energy"
+      ],
+      "references": ["orcid", "num_citations"],
+    }
     ```
 
 ### Extending the pydantic models
@@ -94,6 +97,7 @@ Finally, the model must be instructed to use the prefixed (aliased) fields when 
 
 Pulling all of this together:
 
+<!-- markdownlint-disable-next-line MD046 -->
 ```python
 from optimade.server.schemas import ENTRY_INFO_SCHEMAS
 from optimade.models import (
