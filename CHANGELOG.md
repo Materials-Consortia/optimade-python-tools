@@ -1,18 +1,57 @@
 # Changelog
 
+## [v0.17.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.0) (2022-05-10)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.12...v0.17.0)
+
+This minor release contains fixes recommended for those deploying the optimade-python-tools reference server:
+
+- The `meta->data_returned` field was previously incorrect when using the MongoDB backend.
+- Incoming URL query parameters are now validated against the provided query parameters class (if using custom query parameters, this class should be extended or the parameters should use your registered provider prefix). This functionality can be disabled with the `validate_query_parameters` config option.
+- The results of some queries were not reversible with MongoDB (e.g., `nelements != 2` vs `2 != nelements`); this has now been fixed.
+
+**Implemented enhancements:**
+
+- Add server check for typos in query parameters [\#1120](https://github.com/Materials-Consortia/optimade-python-tools/issues/1120)
+- Improve handling of MongoDB ObjectIDs as OPTIMADE `immutable_id` [\#1142](https://github.com/Materials-Consortia/optimade-python-tools/pull/1142) ([ml-evs](https://github.com/ml-evs))
+- Add support for number-based pagination  [\#1139](https://github.com/Materials-Consortia/optimade-python-tools/pull/1139) ([JPBergsma](https://github.com/JPBergsma))
+- Added option to validate incoming URL query parameters [\#1122](https://github.com/Materials-Consortia/optimade-python-tools/pull/1122) ([JPBergsma](https://github.com/JPBergsma))
+
+**Fixed bugs:**
+
+- `meta->data_returned` is incorrect for paginated results with MongoDB [\#1140](https://github.com/Materials-Consortia/optimade-python-tools/issues/1140)
+- Queries with the form: 'value != prop' return entries where 'prop == None'  [\#1133](https://github.com/Materials-Consortia/optimade-python-tools/issues/1133)
+- Test on Queries on single structures fail with the check\_response function. [\#1125](https://github.com/Materials-Consortia/optimade-python-tools/issues/1125)
+- Fix incorrect `meta->data_returned` for paginated results with MongoDB [\#1141](https://github.com/Materials-Consortia/optimade-python-tools/pull/1141) ([ml-evs](https://github.com/ml-evs))
+- Fix cases where comparison first and property first queries did not match [\#1134](https://github.com/Materials-Consortia/optimade-python-tools/pull/1134) ([JPBergsma](https://github.com/JPBergsma))
+
+**Closed issues:**
+
+- Raise error/warning when using unsupported pagination method [\#1132](https://github.com/Materials-Consortia/optimade-python-tools/issues/1132)
+- Add missing documentation for serving custom query params and fields [\#1123](https://github.com/Materials-Consortia/optimade-python-tools/issues/1123)
+
+**Merged pull requests:**
+
+- Use GitHub Actions for Heroku deployment [\#1165](https://github.com/Materials-Consortia/optimade-python-tools/pull/1165) ([ml-evs](https://github.com/ml-evs))
+- Add docs for custom provider fields and query parameters [\#1164](https://github.com/Materials-Consortia/optimade-python-tools/pull/1164) ([ml-evs](https://github.com/ml-evs))
+- Add deprecation warning for Python 3.7 [\#1157](https://github.com/Materials-Consortia/optimade-python-tools/pull/1157) ([ml-evs](https://github.com/ml-evs))
+- Added way to specify unsupported query parameters and provide a warning [\#1136](https://github.com/Materials-Consortia/optimade-python-tools/pull/1136) ([ml-evs](https://github.com/ml-evs))
+- Adjusted check\_response so it can also handle single entries. [\#1130](https://github.com/Materials-Consortia/optimade-python-tools/pull/1130) ([JPBergsma](https://github.com/JPBergsma))
+- Corrected link in Install.MD [\#1124](https://github.com/Materials-Consortia/optimade-python-tools/pull/1124) ([JPBergsma](https://github.com/JPBergsma))
+
 ## [v0.16.12](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.12) (2022-03-23)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.11...v0.16.12)
 
 **Implemented enhancements:**
 
-- Allow provider field descriptions to be provided in the config [\#1095](https://github.com/Materials-Consortia/optimade-python-tools/issues/1095)
 - Make structure adapters infer `species` from `species_at_sites` when missing [\#1103](https://github.com/Materials-Consortia/optimade-python-tools/pull/1103) ([ml-evs](https://github.com/ml-evs))
+- Allow specification of provider field descriptions/units etc. in config file [\#1096](https://github.com/Materials-Consortia/optimade-python-tools/pull/1096) ([ml-evs](https://github.com/ml-evs))
 - Moving and adding some utilities for client code [\#589](https://github.com/Materials-Consortia/optimade-python-tools/pull/589) ([ml-evs](https://github.com/ml-evs))
 
-**Merged pull requests:**
+**Closed issues:**
 
-- Allow specification of provider field descriptions/units etc. in config file [\#1096](https://github.com/Materials-Consortia/optimade-python-tools/pull/1096) ([ml-evs](https://github.com/ml-evs))
+- Allow provider field descriptions to be provided in the config [\#1095](https://github.com/Materials-Consortia/optimade-python-tools/issues/1095)
 
 ## [v0.16.11](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.11) (2022-03-03)
 

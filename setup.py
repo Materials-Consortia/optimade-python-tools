@@ -31,7 +31,8 @@ server_deps = (
 
 # Client minded
 aiida_deps = [
-    "aiida-core~=1.6,>=1.6.4",
+    "aiida-core~=1.6,>=1.6.4;python_version<'3.8'",
+    "aiida-core~=2.0;python_version>='3.8'",
 ]
 ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
