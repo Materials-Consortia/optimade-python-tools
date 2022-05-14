@@ -70,7 +70,7 @@ class MongoTransformer(BaseTransformer):
         # NOTE: no support for optional OPERATOR, yet, so this takes the
         # parsed values and returns an error if that is being attempted
         for value in arg:
-            if str(value) in self.operator_map.keys():
+            if str(value) in self.operator_map:
                 raise NotImplementedError(
                     f"OPERATOR {value} inside value_list {arg} not implemented."
                 )
@@ -321,10 +321,11 @@ class MongoTransformer(BaseTransformer):
         return {"$and": [filter_, {prop: {"$ne": None}}]}
 
     def _apply_reference_structure(self, filter_: dict):
-        # TODO perhaps it would be good to define this method in a more universal manner so it can be applied to more nested fields
-        """For the trajectory endpoint the queries should be performed on the fields of the reference structure.
-        Therefore we prepend 'reference_structure.' to the property name if it is within the REFERENCE_STRUCTURE_FIELDS.
-        """
+        # TODO perhaps it would be good to define this method in a more universal manner so it can be applied to more nested fields.
+        # For the trajectory endpoint the queries should be performed on the fields of
+        # the reference structure. Therefore we prepend 'reference_structure.' to the
+        # property name if it is within the REFERENCE_STRUCTURE_FIELDS.
+
         if not hasattr(self.mapper, "REFERENCE_STRUCTURE_FIELDS"):
             return filter_
 
@@ -533,7 +534,7 @@ class MongoTransformer(BaseTransformer):
             """Find cases where the query dict is operating on the `_id` field."""
             return prop == "_id"
 
-        def replace_str_id_with_objectid(subdict, prop, expr):
+        def replace_str_id_with_objectid(subdict, prop, _):
             from bson import ObjectId
 
             for operator in subdict[prop]:
@@ -564,7 +565,7 @@ class MongoTransformer(BaseTransformer):
                 prop = self.mapper.get_optimade_field(prop)
             return prop == "last_modified"
 
-        def replace_str_date_with_datetime(subdict, prop, expr):
+        def replace_str_date_with_datetime(subdict, prop, _):
             """Encode suspected dates in with BSON."""
             import bson.json_util
 
@@ -577,7 +578,8 @@ class MongoTransformer(BaseTransformer):
                 )
                 if query_datetime.microsecond != 0:
                     warnings.warn(
-                        f"Query for timestamp {subdict[prop][operator]!r} for field {prop!r} contained microseconds, which is not RFC3339 compliant. "
+                        f"Query for timestamp {subdict[prop][operator]!r} for field {prop!r} "
+                        f"contained microseconds, which is not RFC3339 compliant. "
                         "This may cause undefined behaviour for the underlying database.",
                         TimestampNotRFCCompliant,
                     )

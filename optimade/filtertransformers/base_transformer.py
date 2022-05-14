@@ -238,9 +238,10 @@ class BaseTransformer(abc.ABC, Transformer):
         """
         quantity_name = str(args[0])
 
-        # If the quantity name matches an entry type (indicating a relationship filter or that the property is in the reference strcuture)
-        # then simply return the quantity name; the inherited property
-        # must then handle any further nested identifiers
+        # If the quantity name matches an entry type (indicating a relationship filter
+        # or that the property is in the reference structure) then simply return the
+        # quantity name; the inherited property must then handle any further nested
+        # identifiers.
         if self.mapper:
             if quantity_name in self.mapper.RELATIONSHIP_ENTRY_TYPES:
                 return quantity_name
@@ -306,7 +307,6 @@ class BaseTransformer(abc.ABC, Transformer):
 
     def value_zip(self, arg):
         """value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*"""
-        pass
 
     def value_zip_list(self, arg):
         """value_zip_list: value_zip ( "," value_zip )*"""
