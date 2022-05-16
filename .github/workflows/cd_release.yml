@@ -124,7 +124,7 @@ jobs:
     uses: ./.github/workflows/cd_container_image.yml
     with:
       release: true
-      checkout_ref: ${{ env.PUBLISH_UPDATE_BRANCH }}
+      checkout_ref: "${{ env.PUBLISH_UPDATE_BRANCH }}"
     secrets: inherit
     permissions:
       packages: write
