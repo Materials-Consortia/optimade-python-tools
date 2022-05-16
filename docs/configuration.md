@@ -16,6 +16,7 @@ The main way of configuring the OPTIMADE server is by creating a configuration J
 An example of one that works with the example implementation can be found in [`optimade_config.json`](static/optimade_config.json):
 
 === "Configuration file for the default OPTIMADE server"
+
     ```json
     --8<-- "optimade_config.json"
     ```
@@ -47,6 +48,7 @@ See [`config.py`][optimade.server.config.ServerConfig] for a complete list of co
 The following configuration file represents the default values for all configuration options:
 
 === "Default values for all configuration options"
+
     ```json
     --8<-- "docs/static/default_config.json"
     ```

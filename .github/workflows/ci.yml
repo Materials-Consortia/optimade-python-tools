@@ -100,12 +100,12 @@ jobs:
       with:
         submodules: true
 
-    - name: Build the Docker images
-      run: docker-compose build
+    - name: Build the container image
+      run: docker build -f Dockerfile --build-arg CONFIG_FILE=.docker/docker_config.json --tag optimade .
 
     - name: Start Docker image - server
       run: |
-        docker-compose up optimade &
+        docker run --rm -d -p 3213:5000 --name optimade optimade
         .github/utils/wait_for_it.sh localhost:3213 -t 120
         sleep 15
 
@@ -119,7 +119,7 @@ jobs:
 
     - name: Start Docker image - index server
       run: |
-        docker-compose up optimade-index &
+        docker run --rm -d -p 3214:5000 --name optimade-index -e MAIN=main_index optimade
         .github/utils/wait_for_it.sh localhost:3214 -t 120
         sleep 15
 
