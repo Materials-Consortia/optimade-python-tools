@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable-next-line MD041 -->
 <img width="10%" align="left" src="images/optimade_logo_180x180.svg">
 
 # OPTIMADE Python tools

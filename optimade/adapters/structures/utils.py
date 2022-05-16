@@ -3,7 +3,7 @@ Utility functions to help the conversion functions along.
 
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
-from typing import List, Tuple, Iterable
+from typing import List, Optional, Tuple, Iterable
 
 from optimade.models.structures import Vector3D
 from optimade.models.structures import Species as OptimadeStructureSpecies
@@ -263,9 +263,9 @@ def cellpar_to_cell(
 
 def _pad_iter_of_iters(
     iterable: Iterable[Iterable],
-    padding: float = None,
-    outer: Iterable = None,
-    inner: Iterable = None,
+    padding: Optional[float] = None,
+    outer: Optional[Iterable] = None,
+    inner: Optional[Iterable] = None,
 ) -> Tuple[Iterable[Iterable], bool]:
     """Turn any null/None values into a float in given iterable of iterables"""
     try:
@@ -293,7 +293,8 @@ def _pad_iter_of_iters(
 
 
 def pad_cell(
-    lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D], padding: float = None
+    lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D],
+    padding: Optional[float] = None,
 ) -> Tuple[Tuple[Vector3D, Vector3D, Vector3D], bool]:
     """Turn any `null`/`None` values into a `float` in given `tuple` of
     [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].
