@@ -132,6 +132,9 @@ docker pull ghcr.io/materials-consortia/optimade:latest
 If you'd like to pull a specific version, this can be done by replacing `latest` in the command above with the version of choice, e.g., `0.17.1`.
 To see which versions are available, please go [here](https://github.com/Materials-Consortia/optimade-python-tools/pkgs/container/optimade/versions).
 
+You can also install the `develop` version.
+This is an image built from the latest commit on the `master` branch and should never be used for production.
+
 ### Run a container
 
 When starting a container from the image there are a few choices.
