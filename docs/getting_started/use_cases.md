@@ -25,4 +25,4 @@ NOMAD also uses the package to implement a GUI search bar that accepts the OPTIM
 NOMAD uses the release versions of the `optimade-python-tools` package, performing all customisation via configuration and sub-classing.
 The NOMAD OPTIMADE API implementation is available in the [NOMAD FAIR GitLab repository](https://gitlab.mpcdf.mpg.de/nomad-lab/nomad-FAIR).
 
-This use case is demonstrated in the example [Integrate OPTIMADE with an existing web application](integrated.md).
+This use case is demonstrated in the example [Integrate OPTIMADE with an existing web application](../deployment/integrated.md).

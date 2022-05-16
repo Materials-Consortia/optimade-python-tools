@@ -19,7 +19,7 @@ If you disable inserting test data (with the [`"insert_test_data": false`][optim
 
 !!! note
     As of version v0.16, the other supported database backend is Elasticsearch.
-    If you are interested in using another backend, or would like it to be supported in the `optimade` package, please raise an issue on [GitHub](https://github.com/Materials-Consortia/optimade-python-tools/issues/new) and visit the notes on implementing new [filter transformers](./filtering.md#developing-new-filter-transformers).
+    If you are interested in using another backend, or would like it to be supported in the `optimade` package, please raise an issue on [GitHub](https://github.com/Materials-Consortia/optimade-python-tools/issues/new) and visit the notes on implementing new [filter transformers](../concepts/filtering.md#developing-new-filter-transformers).
 
 ## Mapping non-OPTIMADE data
 
@@ -140,7 +140,7 @@ Currently, the reference server is not flexible enough to use custom response cl
 
 ## Validating your implementation
 
-With the database collections, mappers, aliases and provider configured, you can try running the web server (with e.g., `uvicorn optimade.server.main:app`, if your app is in the same file as the reference server) and validating it as an OPTIMADE API, following the [validation guide](./validation.md).
+With the database collections, mappers, aliases and provider configured, you can try running the web server (with e.g., `uvicorn optimade.server.main:app`, if your app is in the same file as the reference server) and validating it as an OPTIMADE API, following the [validation guide](../concepts/validation.md).
 
 ## Registering as a provider
 
