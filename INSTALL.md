@@ -120,14 +120,14 @@ docker container stop mongo_test; docker container rm mongo_test
 ### Retrieve the image
 
 The [`optimade` container image](https://github.com/Materials-Consortia/optimade-python-tools/pkgs/container/optimade) is available from the [GitHub Container registry](https://ghcr.io).
-To pull the latest version using Docker run the following:
+To pull the latest version using [Docker](https://docs.docker.com/) run the following:
 
 ```shell
 docker pull ghcr.io/materials-consortia/optimade:latest
 ```
 
 !!! note
-    The `:latest` part can be left out, as the `latest` version will be pulled by default.
+    The tag, `:latest`, can be left out, as the `latest` version will be pulled by default.
 
 If you'd like to pull a specific version, this can be done by replacing `latest` in the command above with the version of choice, e.g., `0.17.1`.
 To see which versions are available, please go [here](https://github.com/Materials-Consortia/optimade-python-tools/pkgs/container/optimade/versions).
@@ -135,7 +135,8 @@ To see which versions are available, please go [here](https://github.com/Materia
 ### Run a container
 
 When starting a container from the image there are a few choices.
-It is possible to run both the standard OPTIMADE server implemented in this repository as well as an index meta-database from this image.
+It is possible to run either a standard OPTIMADE server, or an [index meta-database](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#index-meta-database) server from this image.
+Note, these servers can be run in separate containers at the same time.
 The key is setting the environment variable `MAIN`.
 
 | **MAIN** | **Result** |
@@ -163,7 +164,7 @@ The server should now be available at [localhost:8080](http://localhost:8080).
 
 ### Configure the server
 
-The server will use test data and a test configuration by default.
+By default, the server will use the test configuration, including test data for structures and references and an in-memory mongomock database backend.
 This can be changed in several different ways.
 
 One is to `git clone` the repository locally and bind the repository folder to the `/app` folder in the container:
@@ -180,7 +181,7 @@ docker run \
     ghcr.io/materials-consortia/optimade:latest
 ```
 
-Where you should change the `/path/to/optimade-python-tools` to the full local path to the repository - or use `$PWD` if you are running this command from the root of the cloned repository on a Unix system.
+You should change the `/path/to/optimade-python-tools` to the full local path to the repository - or use `$PWD` if you are running this command from the root of the cloned repository on a Unix system.
 Equivalently, `%cd%` should work on Windows.
 
 In this setup you can change the repository root file `optimade_config.json` with the appropriate information.
@@ -206,7 +207,7 @@ docker run \
 As shown, it is necessary to update the environment variable `OPTIMADE_CONFIG_FILE` within the container to point to the new internal path to the config file.
 By default, this environment variable points to `/app/optimade_config.json`.
 
-This also reveals another way of configuring the server: Use environment variables when running the container that supplies the values that would otherwise be supplied from the configuration file.
+This also reveals another way of configuring the server: set environment variables when running the container to supply values that would otherwise be supplied from the configuration file.
 
 The `docker run` command even has the opportunity to pass a path to a file containing a list of environment variables (`--env-file /path/to/env_file`), if you wish to configure the server in this way instead of through the standard configuration file.
 

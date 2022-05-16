@@ -2,7 +2,7 @@
 # Bash script to run upon starting the Dockerfile.
 #
 # Any extra parameters supplied to this script will be passed on to `uvicorn`.
-# This is can be nice if using the image for development (adding `--reload` and more).
+# This can be nice if using the image for development (adding `--reload` and more).
 set -e
 
 if [ "${OPTIMADE_CONFIG_FILE}" == "/app/optimade_config.json" ]; then
