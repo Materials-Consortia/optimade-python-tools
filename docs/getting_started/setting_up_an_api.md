@@ -1,5 +1,5 @@
-<!-- markdownlint-disable MD033 -->
 # Setting up an OPTIMADE API
+<!-- markdownlint-disable MD033 -->
 
 These notes describe how to set up and customize an OPTIMADE API based on the reference server in this package for some existing crystal structure data.
 
