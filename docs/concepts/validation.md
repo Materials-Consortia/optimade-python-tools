@@ -13,6 +13,8 @@ You can use the following to validate the Heroku deployment of our reference ser
 
 ```shell
 $ optimade-validator https://optimade.herokuapp.com/
+Testing entire implementation at https://optimade.herokuapp.com
+...
 ```
 
 Several additional options can be found under the `--help` flag, with the most important being `-v/-vvvv` to set the verbosity, `--index` to validate OPTIMADE index meta-databases and `--json` to receive the validation results as JSON document for programmatic use.
