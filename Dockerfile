@@ -1,20 +1,26 @@
-FROM python:3.7
+FROM python:3.10-slim
+
+# Prevent writing .pyc files on the import of source modules
+# and set unbuffered mode to ensure logging outputs
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-# copy repo contents
-COPY setup.py README.md ./
+# Copy repo contents
+COPY setup.py setup.cfg LICENSE MANIFEST.in README.md .docker/run.sh ./
 COPY optimade ./optimade
 COPY providers/src/links/v1/providers.json ./optimade/server/data/
-RUN pip install -e .[server]
+RUN apt-get purge -y --auto-remove \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --no-cache-dir --trusted-host pypi.org --trusted-host files.pythonhosted.org -U pip setuptools wheel flit \
+    && pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org .[server]
 
-ARG PORT=5000
-EXPOSE ${PORT}
-
-COPY .docker/run.sh ./
-
+# Setup server configuration
 ARG CONFIG_FILE=optimade_config.json
-COPY ${CONFIG_FILE} ./config.json
-ENV OPTIMADE_CONFIG_FILE /app/config.json
+COPY ${CONFIG_FILE} ./optimade_config.json
+ENV OPTIMADE_CONFIG_FILE=/app/optimade_config.json
 
-CMD ["/app/run.sh"]
+# Run app
+EXPOSE 5000
+ENTRYPOINT [ "/app/run.sh" ]

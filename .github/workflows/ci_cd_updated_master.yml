@@ -11,22 +11,28 @@ env:
   GIT_USER_EMAIL: "dev@optimade.org"
 
 jobs:
-  deploy-docs:
+  deploy_docs:
     name: Deploy `latest` documentation
     if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
+    outputs:
+      release_run: ${{ steps.release_check.outputs.release_run }}
 
     steps:
     - name: Release check
+      id: release_check
       run: |
         COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/${{ env.DEFAULT_REPO_BRANCH }} --jq '.commit.message')"
         if [[ "${COMMIT_MSG}" =~ ^Release\ v.*\ -\ Changelog$ ]]; then
           echo "In a release - do not run this job !"
-          echo "RELEASE_RUN=true" >> $GITHUB_ENV
+          RELEASE_RUN=true
         else
           echo "Not a release - update docs"
-          echo "RELEASE_RUN=false" >> $GITHUB_ENV
+          RELEASE_RUN=false
         fi
+
+        echo "RELEASE_RUN=${RELEASE_RUN}" >> $GITHUB_ENV
+        echo "::set-output name=release_run::${RELEASE_RUN}"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -145,3 +151,16 @@ jobs:
       env:
           HD_OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
           HD_OPTIMADE_BASE_URL: https://optimade.herokuapp.com
+
+  publish_container_image:
+    name: Publish container image
+    needs: deploy_docs
+    uses: ./.github/workflows/cd_container_image.yml
+    if: needs.deploy_docs.outputs.release_run == 'false'
+    with:
+      release: false
+      checkout_ref: ${{ github.sha }}
+    secrets: inherit
+    permissions:
+      packages: write
+      contents: read

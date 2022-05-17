@@ -1,8 +1,10 @@
-arrange:
+nav:
     - index.md
     - INSTALL.md
     - configuration.md
     - getting_started
+    - deployment
+    - concepts
     - CONTRIBUTING.md
     - CHANGELOG.md
     - all_models.md
