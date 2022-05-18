@@ -1,5 +1,28 @@
 # Changelog
 
+## [v0.17.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.1) (2022-05-18)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.0...v0.17.1)
+
+This patch release adds a pre-built Docker container for the reference server to the GitHub Container Registry (GHCR) and a series of [Deployment instructions](https://www.optimade.org/optimade-python-tools/v0.17.1/deployment/container/) in the online documentation.
+
+The image can be easily pulled from GHCR with:
+
+```docker pull ghcr.io/materials-consortia/optimade```
+
+**Implemented enhancements:**
+
+- Release a container \(Docker\) image for developers [\#1111](https://github.com/Materials-Consortia/optimade-python-tools/issues/1111)
+
+**Closed issues:**
+
+- Issues with GH Changelog updater \(secondary usage API requests\) [\#976](https://github.com/Materials-Consortia/optimade-python-tools/issues/976)
+
+**Merged pull requests:**
+
+- Don't use `env` context for step [\#1178](https://github.com/Materials-Consortia/optimade-python-tools/pull/1178) ([CasperWA](https://github.com/CasperWA))
+- Docker image for `optimade` on ghcr.io [\#1171](https://github.com/Materials-Consortia/optimade-python-tools/pull/1171) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.17.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.0) (2022-05-10)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.16.12...v0.17.0)
