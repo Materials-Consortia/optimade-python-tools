@@ -1,8 +1,8 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 # import warnings
-from typing import List, Optional, Union, Any
+from typing import List, Optional, Any
 from enum import IntEnum
-from pydantic import BaseModel, conlist  # ,root_validator
+from pydantic import BaseModel
 
 from optimade.models.entries import EntryResourceAttributes, EntryResource
 from optimade.models.utils import (
@@ -19,7 +19,6 @@ from optimade.models.structures import StructureAttributes
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
 __all__ = (
-    "Vector3D",
     "TrajectoryResourceAttributes",
     "AvailablePropertySubfields",
     "AvailablePropertyAttributes",
@@ -28,18 +27,12 @@ __all__ = (
     "Periodicity",
 )
 
-# Use machine epsilon for single point floating precision
-EPS = 2**-23
-
-Vector3D = conlist(float, min_items=3, max_items=3)
-Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
-
 CORRELATED_TRAJECTORY_FIELDS = (
     {"cartesian_site_positions", "species_at_sites"},
     {"species_at_sites", "species"},
 )
 
-general_description_trajectory_field = """To define how this property is stored for each of the frames in the trajectory the following properties have been defined:
+GENERAL_DESCRIPTION_TRAJECTORY_FIELD = """To define how this property is stored for each of the frames in the trajectory the following properties have been defined:
 - **frame_serialization_format**:
 
   - **Description**: To improve the compactness of the data there are several ways to show to which frame a value belongs.
@@ -456,7 +449,7 @@ When sharing `cartesian_site_positions`_ the `lattice_vectors`_, `species`_, `di
 Examples:
 [[0,0,0],[0,0,2]] indicates a structure with two sites, one sitting at the origin and one along the (positive) z-axis, 2 Å away from the origin.
 """
-        + general_description_trajectory_field,
+        + GENERAL_DESCRIPTION_TRAJECTORY_FIELD,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
@@ -472,7 +465,7 @@ MUST always contain three vectors of three coordinates each, independently of th
 The coordinates of the lattice vectors of non-periodic dimensions (i.e., those dimensions for which dimension_types is 0) MAY be given as a list of all null values. If a lattice vector contains the value null, all coordinates of that lattice vector MUST be null.
 Examples:
 [[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]] represents a cell, where the first vector is (4, 0, 0), i.e., a vector aligned along the x axis of length 4 Å; the second vector is (0, 4, 0); and the third vector is (0, 1, 4)."""
-        + general_description_trajectory_field,
+        + GENERAL_DESCRIPTION_TRAJECTORY_FIELD,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
@@ -525,7 +518,7 @@ Examples:
 [ {"name": "C13", "chemical_symbols": ["C"], "concentration": [1.0], "mass": [13.0]} ]: any site with this species is occupied by a carbon isotope with mass 13.
 [ {"name": "CH3", "chemical_symbols": ["C"], "concentration": [1.0], "attached": ["H"], "nattached": [3]} ]: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.
 """
-        + general_description_trajectory_field,
+        + GENERAL_DESCRIPTION_TRAJECTORY_FIELD,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
@@ -543,7 +536,7 @@ For a molecule: [0, 0, 0]
 For a wire along the direction specified by the third lattice vector: [0, 0, 1]
 For a 2D surface/slab, periodic on the plane defined by the first and third lattice vectors: [1, 0, 1]
 For a bulk 3D system: [1, 1, 1]"""
-        + general_description_trajectory_field,
+        + GENERAL_DESCRIPTION_TRAJECTORY_FIELD,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
@@ -560,7 +553,7 @@ Each site MUST be associated only to a single species. Note: However, species ca
 Examples:
 ["Ti","O2"] indicates that the first site is hosting a species labeled "Ti" and the second a species labeled "O2".
 ["Ac", "Ac", "Ag", "Ir"] indicating the first two sites contains the "Ac" species, while the third and fourth sites contain the "Ag" and "Ir" species, respectively."""
-        + general_description_trajectory_field,
+        + GENERAL_DESCRIPTION_TRAJECTORY_FIELD,
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
