@@ -278,7 +278,7 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
 
 
 class TrajectoryResourceAttributes(EntryResourceAttributes):
-    """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
+    """This class contains the Field for the attributes used to represent a trajectory, e.g. reference structure."""
 
     reference_structure: StructureAttributes = OptimadeField(
         ...,
