@@ -557,7 +557,7 @@ class ImplementationValidator:
         test_query = f"{endp}?response_fields={','.join(subset_fields)}&page_limit=1"
         response, _ = self._get_endpoint(test_query, multistage=True)
 
-        if response and len(response.json()["data"]) == 1:
+        if response and len(response.json()["data"]) >= 0:
             doc = response.json()["data"][0]
             expected_fields = set(subset_fields)
             expected_fields -= CONF.top_level_non_attribute_fields
