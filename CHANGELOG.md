@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.17.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.2) (2022-05-21)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.1...v0.17.2)
+
+**Fixed bugs:**
+
+- Server validation incorrectly passes with various unimplemented features [\#1180](https://github.com/Materials-Consortia/optimade-python-tools/issues/1180)
+
+**Merged pull requests:**
+
+- Harden validator for partially implemented APIs [\#1181](https://github.com/Materials-Consortia/optimade-python-tools/pull/1181) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.17.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.1) (2022-05-18)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.0...v0.17.1)
