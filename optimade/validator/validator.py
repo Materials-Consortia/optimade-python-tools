@@ -12,7 +12,7 @@ import logging
 import random
 import urllib.parse
 import dataclasses
-from typing import Union, Tuple, Any, List, Dict, Optional
+from typing import Union, Tuple, Any, List, Dict, Optional, Set
 
 try:
     import simplejson as json
@@ -70,7 +70,7 @@ class ImplementationValidator:
         base_url: str = None,
         verbosity: int = 0,
         respond_json: bool = False,
-        page_limit: int = 5,
+        page_limit: int = 4,
         max_retries: int = 5,
         run_optional_tests: bool = True,
         fail_fast: bool = False,
@@ -1237,7 +1237,10 @@ class ImplementationValidator:
 
     @test_case
     def _test_page_limit(
-        self, response: requests.models.Response, check_next_link: int = 5
+        self,
+        response: requests.models.Response,
+        check_next_link: int = 5,
+        previous_links: Optional[Set[str]] = None,
     ) -> Tuple[Optional[bool], str]:
         """Test that a multi-entry endpoint obeys the page limit by
         following pagination links up to a depth of `check_next_link`.
@@ -1247,12 +1250,16 @@ class ImplementationValidator:
                 compliance.
             check_next_link: Maximum recursion depth for following
                 pagination links.
+            previous_links: A set of previous links that will be used
+                to check that the `next` link is actually new.
 
         Returns:
             `True` if the test was successful and `None` if not, with a
             string summary.
 
         """
+        if previous_links is None:
+            previous_links = set()
         try:
             response = response.json()
         except (AttributeError, json.JSONDecodeError):
@@ -1285,6 +1292,12 @@ class ImplementationValidator:
                     "Endpoint suggested more data was available but provided no valid links->next link."
                 )
 
+            if next_link in previous_links:
+                raise ResponseError(
+                    f"The next link {next_link} has been provided already for a previous page."
+                )
+            previous_links.add(next_link)
+
             if not isinstance(next_link, str):
                 raise ResponseError(
                     f"Unable to parse links->next {next_link!r} as a link."
@@ -1302,6 +1315,7 @@ class ImplementationValidator:
                 next_response,
                 check_next_link=check_next_link,
                 multistage=check_next_link,
+                previous_links=previous_links,
             )
 
         return (

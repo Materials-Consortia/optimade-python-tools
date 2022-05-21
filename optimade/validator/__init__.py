@@ -1,5 +1,6 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
 # pylint: disable=import-outside-toplevel
+import warnings
 from optimade import __version__, __api_version__
 from .validator import ImplementationValidator
 from .utils import DEFAULT_CONN_TIMEOUT, DEFAULT_READ_TIMEOUT
@@ -89,7 +90,7 @@ def validate():  # pragma: no cover
     parser.add_argument(
         "--page_limit",
         type=int,
-        default=5,
+        default=None,
         help="Alter the requested page limit for some tests.",
     )
 
@@ -140,6 +141,11 @@ def validate():  # pragma: no cover
     if args["as_type"] is not None and args["as_type"] not in valid_types:
         sys.exit(f"{args['as_type']} is not a valid type, must be one of {valid_types}")
 
+    if args["page_limit"] is not None:
+        warnings.warn(
+            "The `--page_limit` flag is now deprecated and will not be used by the validator."
+        )
+
     validator = ImplementationValidator(
         base_url=args["base_url"],
         verbosity=args["verbosity"],
@@ -149,7 +155,6 @@ def validate():  # pragma: no cover
         run_optional_tests=not args["skip_optional"],
         fail_fast=args["fail_fast"],
         minimal=args["minimal"],
-        page_limit=args["page_limit"],
         http_headers=args["headers"],
         timeout=args["timeout"],
         read_timeout=args["read_timeout"],
