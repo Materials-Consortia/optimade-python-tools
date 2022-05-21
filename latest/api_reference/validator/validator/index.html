@@ -1908,7 +1908,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">respond_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
         <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">run_optional_tests</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">fail_fast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2218,6 +2218,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="n">prop_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_impl_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_response_fields</span><span class="p">(</span><span class="n">endp</span><span class="p">,</span> <span class="n">prop_list</span><span class="p">)</span>
+
         <span class="n">chosen_entry</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_archetypal_entry</span><span class="p">(</span><span class="n">endp</span><span class="p">,</span> <span class="n">prop_list</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">chosen_entry</span><span class="p">:</span>
@@ -2362,19 +2363,16 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
             <span class="k">if</span> <span class="n">data_returned</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="p">(</span>
                     <span class="kc">None</span><span class="p">,</span>
-                    <span class="s2">&quot;Endpoint </span><span class="si">{endp!r}</span><span class="s2"> returned no entries, cannot get archetypal entry.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Endpoint </span><span class="si">{endp!r}</span><span class="s2"> returned no entries, cannot get archetypal entry or test filtering.&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
 
-            <span class="n">response</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2">?page_offset=</span><span class="si">{</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_returned</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">&amp;response_fields=</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">multistage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">archetypal_entry</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_returned</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">archetypal_entry</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;set archetypal entry for </span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2"> with ID </span><span class="si">{</span><span class="n">archetypal_entry</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
-                <span class="n">archetypal_entry</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="k">return</span> <span class="p">(</span>
-                    <span class="n">archetypal_entry</span><span class="p">,</span>
-                    <span class="sa">f</span><span class="s2">&quot;set archetypal entry for </span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2"> with ID </span><span class="si">{</span><span class="n">archetypal_entry</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
-                <span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get archetypal entry. Details: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -2395,7 +2393,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="n">test_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2">?response_fields=</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subset_fields</span><span class="p">)</span><span class="si">}</span><span class="s2">&amp;page_limit=1&quot;</span>
         <span class="n">response</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span><span class="n">test_query</span><span class="p">,</span> <span class="n">multistage</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">doc</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">expected_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">subset_fields</span><span class="p">)</span>
             <span class="n">expected_fields</span> <span class="o">-=</span> <span class="n">CONF</span><span class="o">.</span><span class="n">top_level_non_attribute_fields</span>
@@ -2663,7 +2661,47 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">num_data_returned</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_returned&quot;</span><span class="p">)</span>
 
+            <span class="k">if</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">CONF</span><span class="o">.</span><span class="n">unique_properties</span> <span class="ow">and</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;=&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unable to filter field &#39;id&#39; for equality, no data was returned for </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Filter for an individual &#39;id&#39; returned </span><span class="si">{</span><span class="n">num_data_returned</span><span class="p">[</span><span class="s1">&#39;=&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> results, when only 1 was expected.&quot;</span>
+                    <span class="p">)</span>
+
             <span class="n">num_response</span> <span class="o">=</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span>
+
+            <span class="n">excluded</span> <span class="o">=</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">exclusive_operators</span>
+            <span class="c1"># if we have all results on this page, check that the blessed ID is in the response</span>
+            <span class="c1"># if not response[&quot;meta&quot;][&quot;more_data_available&quot;]:</span>
+            <span class="k">if</span> <span class="n">excluded</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">chosen_entry</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Entry </span><span class="si">{</span><span class="n">chosen_entry</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> with value </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">test_value</span><span class="si">}</span><span class="s2"> was not excluded by </span><span class="si">{</span><span class="n">query</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># check that at least the archetypal structure was returned, unless we are using a fallback value</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">excluded</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">using_fallback</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">num_data_returned</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                    <span class="ow">and</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+                <span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Supposedly inclusive query </span><span class="si">{</span><span class="n">query</span><span class="si">!r}</span><span class="s2"> did not include original entry ID </span><span class="si">{</span><span class="n">chosen_entry</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;(with field </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2"> = </span><span class="si">{</span><span class="n">test_value</span><span class="si">}</span><span class="s2">) potentially indicating a problem with filtering on this field.&quot;</span>
+                    <span class="p">)</span>
+
+            <span class="c1"># check that the filter returned no entries that had a null or missing value for the filtered property</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Filter </span><span class="si">{</span><span class="n">query</span><span class="si">!r}</span><span class="s2"> on field </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2"> returned entries that had null or missing values for the field.&quot;</span>
+                <span class="p">)</span>
 
             <span class="c1"># Numeric and string comparisons must work both ways...</span>
             <span class="k">if</span> <span class="n">prop_type</span> <span class="ow">in</span> <span class="p">(</span>
@@ -2742,46 +2780,6 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                     <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Filter </span><span class="si">{</span><span class="n">reversed_query</span><span class="si">!r}</span><span class="s2"> on field </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2"> returned entries that had null or missing values for the field.&quot;</span>
                     <span class="p">)</span>
-
-            <span class="n">excluded</span> <span class="o">=</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">exclusive_operators</span>
-            <span class="c1"># if we have all results on this page, check that the blessed ID is in the response</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">][</span><span class="s2">&quot;more_data_available&quot;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">excluded</span> <span class="ow">and</span> <span class="p">(</span>
-                    <span class="n">chosen_entry</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
-                <span class="p">):</span>
-                    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Object </span><span class="si">{</span><span class="n">chosen_entry</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> with value </span><span class="si">{</span><span class="n">test_value</span><span class="si">}</span><span class="s2"> was not excluded by </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
-
-            <span class="c1"># check that at least the archetypal structure was returned, unless we are using a fallback value</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">excluded</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">using_fallback</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">num_data_returned</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                    <span class="ow">and</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
-                <span class="p">):</span>
-                    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Supposedly inclusive query &#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39; did not include original object ID </span><span class="si">{</span><span class="n">chosen_entry</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;(with field &#39;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">test_value</span><span class="si">}</span><span class="s2">&#39;) potentially indicating a problem with filtering on this field.&quot;</span>
-                    <span class="p">)</span>
-
-            <span class="c1"># check that the filter returned no entries that had a null or missing value for the filtered property</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span>
-                <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
-            <span class="p">):</span>
-                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Filter </span><span class="si">{</span><span class="n">query</span><span class="si">!r}</span><span class="s2"> on field </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2"> returned entries that had null or missing values for the field.&quot;</span>
-                <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">CONF</span><span class="o">.</span><span class="n">unique_properties</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Unable to filter field &#39;id&#39; for equality, no data was returned for </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">.&quot;</span>
-                <span class="p">)</span>
-            <span class="k">if</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_data_returned</span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Filter for an individual &#39;id&#39; returned </span><span class="si">{</span><span class="n">num_data_returned</span><span class="p">[</span><span class="s1">&#39;=&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> results, when only 1 was expected.&quot;</span>
-                <span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> passed filter tests&quot;</span>
 
@@ -3075,7 +3073,10 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
     <span class="nd">@test_case</span>
     <span class="k">def</span> <span class="nf">_test_page_limit</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">check_next_link</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span>
+        <span class="n">check_next_link</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">previous_links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Test that a multi-entry endpoint obeys the page limit by</span>
 <span class="sd">        following pagination links up to a depth of `check_next_link`.</span>
@@ -3085,12 +3086,16 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 <span class="sd">                compliance.</span>
 <span class="sd">            check_next_link: Maximum recursion depth for following</span>
 <span class="sd">                pagination links.</span>
+<span class="sd">            previous_links: A set of previous links that will be used</span>
+<span class="sd">                to check that the `next` link is actually new.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `True` if the test was successful and `None` if not, with a</span>
 <span class="sd">            string summary.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">previous_links</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">previous_links</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
@@ -3123,6 +3128,12 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                     <span class="s2">&quot;Endpoint suggested more data was available but provided no valid links-&gt;next link.&quot;</span>
                 <span class="p">)</span>
 
+            <span class="k">if</span> <span class="n">next_link</span> <span class="ow">in</span> <span class="n">previous_links</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The next link </span><span class="si">{</span><span class="n">next_link</span><span class="si">}</span><span class="s2"> has been provided already for a previous page.&quot;</span>
+                <span class="p">)</span>
+            <span class="n">previous_links</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">next_link</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">next_link</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Unable to parse links-&gt;next </span><span class="si">{</span><span class="n">next_link</span><span class="si">!r}</span><span class="s2"> as a link.&quot;</span>
@@ -3140,6 +3151,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                 <span class="n">next_response</span><span class="p">,</span>
                 <span class="n">check_next_link</span><span class="o">=</span><span class="n">check_next_link</span><span class="p">,</span>
                 <span class="n">multistage</span><span class="o">=</span><span class="n">check_next_link</span><span class="p">,</span>
+                <span class="n">previous_links</span><span class="o">=</span><span class="n">previous_links</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span>
@@ -3320,7 +3332,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
 
 <h3 id="optimade.validator.validator.ImplementationValidator.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">respond_json</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">run_optional_tests</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fail_fast</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">as_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">http_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">3.05</span><span class="p">,</span> <span class="n">read_timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">respond_json</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">run_optional_tests</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fail_fast</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">as_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">http_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">3.05</span><span class="p">,</span> <span class="n">read_timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -3378,7 +3390,7 @@ results of validation to stdout.</p></td>
         <td><code>page_limit</code></td>
         <td><code>int</code></td>
         <td><p>The default page limit to apply to filters.</p></td>
-        <td><code>5</code></td>
+        <td><code>4</code></td>
       </tr>
       <tr>
         <td><code>max_retries</code></td>
@@ -3449,7 +3461,7 @@ to be pointed to the corresponding endpoint.</p></td>
     <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">respond_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="n">run_optional_tests</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">fail_fast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
