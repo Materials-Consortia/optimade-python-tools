@@ -380,6 +380,7 @@ class ImplementationValidator:
         prop_list = list(_impl_properties.keys())
 
         self._check_response_fields(endp, prop_list)
+
         chosen_entry, _ = self._get_archetypal_entry(endp, prop_list)
 
         if not chosen_entry:
@@ -524,19 +525,16 @@ class ImplementationValidator:
             if data_returned < 1:
                 return (
                     None,
-                    "Endpoint {endp!r} returned no entries, cannot get archetypal entry.",
+                    "Endpoint {endp!r} returned no entries, cannot get archetypal entry or test filtering.",
                 )
 
-            response, message = self._get_endpoint(
-                f"{endp}?page_offset={random.randint(0, data_returned-1)}&response_fields={','.join(properties)}",
-                multistage=True,
+            archetypal_entry = response.json()["data"][
+                random.randint(0, data_returned - 1)
+            ]
+            return (
+                archetypal_entry,
+                f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
             )
-            if response:
-                archetypal_entry = response.json()["data"][0]
-                return (
-                    archetypal_entry,
-                    f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
-                )
 
         raise ResponseError(f"Failed to get archetypal entry. Details: {message}")
 
