@@ -823,7 +823,47 @@ class ImplementationValidator:
             else:
                 num_data_returned[operator] = response["meta"].get("data_returned")
 
+            if prop in CONF.unique_properties and operator == "=":
+                if num_data_returned["="] is not None and num_data_returned["="] == 0:
+                    raise ResponseError(
+                        f"Unable to filter field 'id' for equality, no data was returned for {query}."
+                    )
+                if num_data_returned["="] is not None and num_data_returned["="] > 1:
+                    raise ResponseError(
+                        f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
+                    )
+
             num_response = num_data_returned[operator]
+
+            excluded = operator in exclusive_operators
+            # if we have all results on this page, check that the blessed ID is in the response
+            # if not response["meta"]["more_data_available"]:
+            if excluded and (
+                chosen_entry["id"] in set(entry["id"] for entry in response["data"])
+            ):
+                raise ResponseError(
+                    f"Entry {chosen_entry['id']} with value {prop!r}: {test_value} was not excluded by {query!r}"
+                )
+
+            # check that at least the archetypal structure was returned, unless we are using a fallback value
+            if not excluded and not using_fallback:
+                if (
+                    num_data_returned[operator] is not None
+                    and num_data_returned[operator] < 1
+                ):
+                    raise ResponseError(
+                        f"Supposedly inclusive query {query!r} did not include original entry ID {chosen_entry['id']!r} "
+                        f"(with field {prop!r} = {test_value}) potentially indicating a problem with filtering on this field."
+                    )
+
+            # check that the filter returned no entries that had a null or missing value for the filtered property
+            if any(
+                entry["attributes"].get(prop, entry.get(prop, None)) is None
+                for entry in response.get("data", [])
+            ):
+                raise ResponseError(
+                    f"Filter {query!r} on field {prop!r} returned entries that had null or missing values for the field."
+                )
 
             # Numeric and string comparisons must work both ways...
             if prop_type in (
@@ -902,46 +942,6 @@ class ImplementationValidator:
                     raise ResponseError(
                         f"Filter {reversed_query!r} on field {prop!r} returned entries that had null or missing values for the field."
                     )
-
-            excluded = operator in exclusive_operators
-            # if we have all results on this page, check that the blessed ID is in the response
-            if not response["meta"]["more_data_available"]:
-                if excluded and (
-                    chosen_entry["id"] in set(entry["id"] for entry in response["data"])
-                ):
-                    raise ResponseError(
-                        f"Object {chosen_entry['id']} with value {test_value} was not excluded by {query}"
-                    )
-
-            # check that at least the archetypal structure was returned, unless we are using a fallback value
-            if not excluded and not using_fallback:
-                if (
-                    num_data_returned[operator] is not None
-                    and num_data_returned[operator] < 1
-                ):
-                    raise ResponseError(
-                        f"Supposedly inclusive query '{query}' did not include original object ID {chosen_entry['id']} "
-                        f"(with field '{prop} = {test_value}') potentially indicating a problem with filtering on this field."
-                    )
-
-            # check that the filter returned no entries that had a null or missing value for the filtered property
-            if any(
-                entry["attributes"].get(prop, entry.get(prop, None)) is None
-                for entry in response.get("data", [])
-            ):
-                raise ResponseError(
-                    f"Filter {query!r} on field {prop!r} returned entries that had null or missing values for the field."
-                )
-
-        if prop in CONF.unique_properties:
-            if num_data_returned["="] is not None and num_data_returned["="] == 0:
-                raise ResponseError(
-                    f"Unable to filter field 'id' for equality, no data was returned for {query}."
-                )
-            if num_data_returned["="] is not None and num_data_returned["="] > 1:
-                raise ResponseError(
-                    f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
-                )
 
         return True, f"{prop} passed filter tests"
 
