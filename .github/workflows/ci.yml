@@ -188,6 +188,7 @@ jobs:
         pip install -e .
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
+        pip install -r requirements-http-client.txt
 
     - name: Run all tests (using `mongomock`)
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/
@@ -282,6 +283,7 @@ jobs:
         pip install -e .
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
+        pip install -r requirements-http-client.txt
         pip install -r requirements-docs.txt
 
     # NOTE: While we're now using `mike`, this is still useful
