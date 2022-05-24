@@ -27,6 +27,7 @@ except ImportError:
 import requests
 from pydantic import Field, ValidationError
 
+from optimade import __version__
 from optimade.models.optimade_json import Success
 from optimade.models import (
     ResponseMeta,
@@ -40,6 +41,7 @@ from optimade.models import (
 # (see https://docs.python-requests.org/en/latest/user/advanced/#timeouts)
 DEFAULT_CONN_TIMEOUT = 3.05
 DEFAULT_READ_TIMEOUT = 60
+DEFAULT_USER_AGENT_STRING = f"optimade-python-tools validator/{__version__}"
 
 
 class ResponseError(Exception):
@@ -199,6 +201,8 @@ class Client:  # pragma: no cover
         self.response = None
         self.max_retries = max_retries
         self.headers = headers or {}
+        if "User-Agent" not in self.headers:
+            self.headers["User-Agent"] = DEFAULT_USER_AGENT_STRING
         self.timeout = timeout or DEFAULT_CONN_TIMEOUT
         self.read_timeout = read_timeout or DEFAULT_READ_TIMEOUT
 
