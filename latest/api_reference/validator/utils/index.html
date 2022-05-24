@@ -1930,6 +1930,7 @@ used by the validator. The two main features being:</p>
 
 
 
+
   <div class="doc doc-object doc-class">
 
 
@@ -1981,6 +1982,8 @@ Client        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">max_retries</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="s2">&quot;User-Agent&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_USER_AGENT_STRING</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="n">DEFAULT_CONN_TIMEOUT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read_timeout</span> <span class="o">=</span> <span class="n">read_timeout</span> <span class="ow">or</span> <span class="n">DEFAULT_READ_TIMEOUT</span>
 
@@ -2165,6 +2168,8 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
     <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="o">=</span> <span class="n">max_retries</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="s2">&quot;User-Agent&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_USER_AGENT_STRING</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span> <span class="ow">or</span> <span class="n">DEFAULT_CONN_TIMEOUT</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">read_timeout</span> <span class="o">=</span> <span class="n">read_timeout</span> <span class="ow">or</span> <span class="n">DEFAULT_READ_TIMEOUT</span>
 </code></pre></div>

@@ -498,6 +498,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#unreleased-2022-05-24" class="md-nav__link">
+    Unreleased (2022-05-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0172-2022-05-21" class="md-nav__link">
     v0.17.2 (2022-05-21)
   </a>
@@ -2162,6 +2169,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#unreleased-2022-05-24" class="md-nav__link">
+    Unreleased (2022-05-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0172-2022-05-21" class="md-nav__link">
     v0.17.2 (2022-05-21)
   </a>
@@ -2624,8 +2638,18 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
+<h2 id="unreleased-2022-05-24"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2022-05-24)<a class="headerlink" href="#unreleased-2022-05-24" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.2...Unreleased">Full Changelog</a></p>
+<p>This release includes improvements to the validator to catch more cases where OPTIMADE APIs are only partially implemented.
+Previously, APIs that did not support filtering, pagination or limiting response fields at all (i.e., the query parameter is simply ignored) would pass most validation tests erroneously in some unlucky situations (#1180).</p>
+<p><strong>Merged pull requests:</strong></p>
+<ul>
+<li>Use a custom <code>User-Agent</code> with validator <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1189">#1189</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+</ul>
 <h2 id="v0172-2022-05-21"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.2">v0.17.2</a> (2022-05-21)<a class="headerlink" href="#v0172-2022-05-21" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.1...v0.17.2">Full Changelog</a></p>
+<p>This release includes improvements to the validator to catch more cases where OPTIMADE APIs are only partially implemented.
+Previously, APIs that did not support filtering, pagination or limiting response fields at all (i.e., the query parameter is simply ignored) would pass most validation tests erroneously in some unlucky situations (#1180).</p>
 <p><strong>Fixed bugs:</strong></p>
 <ul>
 <li>Server validation incorrectly passes with various unimplemented features <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1180">#1180</a></li>
