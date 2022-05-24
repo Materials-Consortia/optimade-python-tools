@@ -7,3 +7,7 @@ div.doc-contents:not(.first) {
 td code {
     word-break: normal !important;
 }
+
+code {
+    max-height: 20em;
+}
