@@ -248,6 +248,34 @@ jobs:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
         OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
 
+    - name: Run the OPTIMADE Client CLI
+      if: matrix.python-version == 3.8
+      run: |
+        coverage run --append --source optimade optimade/client/cli.py \
+           --filter 'nsites = 1' \
+           --output-file test_get_async.json \
+           https://optimade.herokuapp.com
+        test test_get_async.json
+
+        coverage run --append --source optimade optimade/client/cli.py \
+          --filter 'nsites = 1' \
+          --count \
+          --output-file test_count.json \
+          https://optimade.herokuapp.com
+        test test_count.json
+
+        coverage run --append --source optimade optimade/client/cli.py \
+          --no-async \
+          --filter 'nsites = 1' \
+          --count \
+          --output-file test_count_no_async.json \
+          https://optimade.herokuapp.com
+        test test_count_no_async.json
+
+        diff test_count_no_async.json test_count.json
+
+        coverage xml
+
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v3

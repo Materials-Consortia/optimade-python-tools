@@ -20,8 +20,8 @@ __all__ = ("_get",)
 @click.option("--use-async/--no-async", default=True, help="Use asyncio or not")
 @click.option(
     "--max-results-per-provider",
-    default=100,
-    help="Set the maximum number of results to download from any single provider",
+    default=10,
+    help="Set the maximum number of results to download from any single provider, where -1 or 0 indicate unlimited results.",
 )
 @click.option(
     "--output-file",
@@ -48,6 +48,11 @@ __all__ = ("_get",)
     default=None,
     help="A string of comma-separated response fields to request.",
 )
+@click.option(
+    "--pretty-print",
+    is_flag=True,
+    help="Pretty print the JSON results.",
+)
 @click.argument("base-url", default=None, nargs=-1)
 def get(
     use_async,
@@ -59,6 +64,7 @@ def get(
     response_fields,
     sort,
     endpoint,
+    pretty_print,
 ):
     return _get(
         use_async,
@@ -70,6 +76,7 @@ def get(
         response_fields,
         sort,
         endpoint,
+        pretty_print,
     )
 
 
@@ -83,6 +90,7 @@ def _get(
     response_fields,
     sort,
     endpoint,
+    pretty_print,
 ):
 
     if output_file:
@@ -116,8 +124,15 @@ def _get(
         sys.exit(1)
 
     if not output_file:
-        rich.print_json(data=results, default=lambda _: _.dict())
+        if pretty_print:
+            rich.print_json(data=results, indent=2, default=lambda _: _.dict())
+        else:
+            sys.stdout.write(json.dumps(results, indent=2, default=lambda _: _.dict()))
 
     if output_file:
         with open(output_file, "w") as f:
             json.dump(results, f, indent=2, default=lambda _: _.dict())
+
+
+if __name__ == "__main__":
+    get()

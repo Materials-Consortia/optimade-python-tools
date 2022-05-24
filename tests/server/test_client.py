@@ -132,6 +132,7 @@ def test_command_line_client(httpx_mocked_response, use_async, capsys):
         response_fields=None,
         sort=None,
         endpoint="structures",
+        pretty_print=False,
     )
 
     # Test multi-provider query
