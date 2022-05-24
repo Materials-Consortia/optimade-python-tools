@@ -30,7 +30,7 @@ from optimade.client.utils import (
 )
 from optimade.server.exceptions import BadRequest
 
-ENDPOINTS = ("structures", "references", "calculations", "info")
+ENDPOINTS = ("structures", "references", "calculations", "info", "extensions")
 
 __all__ = ("OptimadeClient",)
 
@@ -107,6 +107,8 @@ class OptimadeClient:
             base_urls = get_all_databases()
 
         self.max_results_per_provider = max_results_per_provider
+        if self.max_results_per_provider in (-1, 0):
+            self.max_results_per_provider = None
 
         self.base_urls = base_urls
         if isinstance(self.base_urls, str):
@@ -127,7 +129,10 @@ class OptimadeClient:
         self.use_async = use_async
 
     def __getattribute__(self, name):
-        """Allows entry endpoints to be queried via attribute access.
+        """Allows entry endpoints to be queried via attribute access, using the
+        allowed list for this module.
+
+        Should also pass through any `extensions/<example>` endpoints.
 
         Any non-entry-endpoint name requested will be passed to the
         original `__getattribute__`.
@@ -138,15 +143,19 @@ class OptimadeClient:
             cli = OptimadeClient()
             structures = cli.structures.get()
             references = cli.references.get()
+            info_structures = cli.info.structures.get()
             ```
 
         """
         if name in ENDPOINTS:
             if self.__current_endpoint == "info":
                 self.__current_endpoint = f"info/{name}"
+            elif self.__current_endpoint == "extensions":
+                self.__current_endpoint = f"extensions/{name}"
             else:
                 self.__current_endpoint = name
             return self
+
         return super().__getattribute__(name)
 
     def get(

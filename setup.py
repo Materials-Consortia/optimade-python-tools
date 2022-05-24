@@ -31,7 +31,7 @@ aiida_deps = [
     "aiida-core~=2.0;python_version>='3.8'",
 ]
 http_client_deps = [
-    "httpx~=0.22",
+    "httpx~=0.23",
     "rich~=12.4",
     "click~=8.1",
 ]
@@ -57,7 +57,7 @@ testing_deps = [
     "jsondiff~=2.0",
     "pytest~=7.1",
     "pytest-cov~=3.0",
-    "pytest-httpx~=0.20.0",
+    "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
     ["pylint~=2.13", "pre-commit~=2.19", "invoke~=1.7"]
