@@ -266,6 +266,16 @@ class ImplementationValidator:
             RuntimeError: If it was not possible to start the validation process.
 
         """
+        try:
+            self._validate_implementation()
+        finally:
+            try:
+                self.client.close()
+            except Exception:
+                pass
+
+    def _validate_implementation(self):
+        """See [`ImplementationValidator.validate_implementation()`][optimade.validator.ImplementationValidator]."""
         # If a single "as type" has been set, only run that test
         if self.as_type_cls is not None:
             self._log.debug(

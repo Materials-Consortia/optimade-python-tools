@@ -13,6 +13,7 @@ used by the validator. The two main features being:
 """
 
 import time
+
 import sys
 import urllib.parse
 import dataclasses
@@ -24,7 +25,7 @@ try:
 except ImportError:
     import json
 
-import requests
+import httpx
 from pydantic import Field, ValidationError
 
 from optimade.models.optimade_json import Success
@@ -201,6 +202,15 @@ class Client:  # pragma: no cover
         self.headers = headers or {}
         self.timeout = timeout or DEFAULT_CONN_TIMEOUT
         self.read_timeout = read_timeout or DEFAULT_READ_TIMEOUT
+        self.httpx_timeout = httpx.Timeout(self.timeout, read=self.read_timeout)
+        self.http_client = httpx.Client()
+
+    def close(self):
+        """Close the underlying httpx client, if it is still open."""
+        try:
+            self.http_client.close()
+        except Exception:
+            pass
 
     def get(self, request: str):
         """Makes the given request, with a number of retries if being rate limited. The
@@ -232,10 +242,8 @@ class Client:  # pragma: no cover
         while retries < self.max_retries:
             retries += 1
             try:
-                self.response = requests.get(
-                    self.last_request,
-                    headers=self.headers,
-                    timeout=(self.timeout, self.read_timeout),
+                self.response = self.http_client.get(
+                    self.last_request, headers=self.headers, timeout=self.httpx_timeout
                 )
 
                 status_code = self.response.status_code
@@ -244,16 +252,16 @@ class Client:  # pragma: no cover
                     return self.response
 
             # If the connection times out, retry but cache the error
-            except requests.exceptions.ConnectionError as exc:
+            except httpx.ConnectError as exc:
                 errors.append(str(exc))
 
             # Read timeouts should prevent further retries
-            except requests.exceptions.ReadTimeout as exc:
+            except httpx.ReadTimeout as exc:
                 raise ResponseError(str(exc)) from exc
 
-            except requests.exceptions.MissingSchema:
+            except httpx.UnsupportedProtocol as exc:
                 sys.exit(
-                    f"Unable to make request on {self.last_request}, did you mean http://{self.last_request}?"
+                    f"Unable to make request on {self.last_request!r}, did you mean 'https://{self.last_request}'?\nFull error: {exc}"
                 )
 
             # If the connection failed, or returned a 429, then wait 1 second before retrying
