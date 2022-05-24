@@ -57,6 +57,7 @@ testing_deps = [
     "jsondiff~=2.0",
     "pytest~=7.1",
     "pytest-cov~=3.0",
+    "pytest-httpx~=0.20.0",
 ] + server_deps
 dev_deps = (
     ["pylint~=2.13", "pre-commit~=2.19", "invoke~=1.7"]
@@ -126,6 +127,9 @@ setup(
         "jarvis": jarvis_deps,
     },
     entry_points={
-        "console_scripts": ["optimade-validator=optimade.validator:validate"]
+        "console_scripts": [
+            "optimade-validator=optimade.validator:validate",
+            "optimade-get=optimade.client.cli:get",
+        ]
     },
 )
