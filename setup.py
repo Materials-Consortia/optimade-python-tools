@@ -24,10 +24,16 @@ server_deps = [
     "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
 ] + mongo_deps
 
+
 # Client minded
 aiida_deps = [
     "aiida-core~=1.6,>=1.6.4;python_version<'3.8'",
     "aiida-core~=2.0;python_version>='3.8'",
+]
+http_client_deps = [
+    "httpx~=0.23",
+    "rich~=12.4",
+    "click~=8.1",
 ]
 ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
@@ -51,6 +57,7 @@ testing_deps = [
     "jsondiff~=2.0",
     "pytest~=7.1",
     "pytest-cov~=3.0",
+    "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
     ["pylint~=2.13", "pre-commit~=2.19", "invoke~=1.7"]
@@ -58,7 +65,15 @@ dev_deps = (
     + testing_deps
     + client_deps
 )
-all_deps = dev_deps + elastic_deps + aiida_deps + ase_deps + pymatgen_deps + jarvis_deps
+all_deps = (
+    dev_deps
+    + elastic_deps
+    + aiida_deps
+    + ase_deps
+    + pymatgen_deps
+    + jarvis_deps
+    + http_client_deps
+)
 
 setup(
     name="optimade",
@@ -97,6 +112,7 @@ setup(
     extras_require={
         "all": all_deps,
         "dev": dev_deps,
+        "http_client": http_client_deps,
         "docs": docs_deps,
         "testing": testing_deps,
         "server": server_deps,
@@ -111,6 +127,9 @@ setup(
         "jarvis": jarvis_deps,
     },
     entry_points={
-        "console_scripts": ["optimade-validator=optimade.validator:validate"]
+        "console_scripts": [
+            "optimade-validator=optimade.validator:validate",
+            "optimade-get=optimade.client.cli:get",
+        ]
     },
 )

@@ -1,0 +1,3 @@
+# cli
+
+::: optimade.client.cli

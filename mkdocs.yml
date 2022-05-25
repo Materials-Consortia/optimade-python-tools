@@ -36,7 +36,10 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.inlinehilite
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.snippets
   - toc:
       permalink: true
