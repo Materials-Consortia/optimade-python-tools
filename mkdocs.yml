@@ -14,7 +14,6 @@ theme:
   logo: images/optimade_logo_180x180.svg
   favicon: images/favicon.png
   language: en
-  custom_dir: override
 
 repo_name: optimade-python-tools
 repo_url: https://github.com/Materials-Consortia/optimade-python-tools
