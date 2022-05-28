@@ -3,7 +3,7 @@ with OPTIMADE providers that can be used in server or client code.
 
 """
 
-from typing import List
+from typing import List, Iterable
 
 from optimade.models.links import LinksResource
 
@@ -99,7 +99,9 @@ def get_providers(add_mongo_id: bool = False) -> list:
     return providers_list
 
 
-def get_child_database_links(provider: LinksResource) -> List[LinksResource]:
+def get_child_database_links(
+    provider: LinksResource, obey_aggregate=True
+) -> List[LinksResource]:
     """For a provider, return a list of available child databases.
 
     Arguments:
@@ -112,7 +114,7 @@ def get_child_database_links(provider: LinksResource) -> List[LinksResource]:
     """
     import requests
     from optimade.models.responses import LinksResponse
-    from optimade.models.links import LinkType
+    from optimade.models.links import LinkType, Aggregate
 
     base_url = provider.pop("base_url")
     if base_url is None:
@@ -130,6 +132,19 @@ def get_child_database_links(provider: LinksResource) -> List[LinksResource]:
     return [
         link
         for link in links.data
-        if link.attributes.link_type == LinkType.child
+        if link.attributes.link_type == LinkType.CHILD
         and link.attributes.base_url is not None
+        and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
     ]
+
+
+def get_all_databases() -> Iterable[str]:
+    """Iterate through all databases reported by registered OPTIMADE providers."""
+    for provider in get_providers():
+        try:
+            links = get_child_database_links(provider)
+            for link in links:
+                if link.attributes.base_url:
+                    yield str(link.attributes.base_url)
+        except RuntimeError:
+            pass

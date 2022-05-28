@@ -25,7 +25,7 @@ extra:
       link: https://github.com/Materials-Consortia
   version:
     provider: mike
-    default: latest
+    default: stable
 
 extra_css:
   - css/reference.css
@@ -36,7 +36,10 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.inlinehilite
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.snippets
   - toc:
       permalink: true
