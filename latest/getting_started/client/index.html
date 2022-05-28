@@ -2069,7 +2069,6 @@ cat results.json
 <p>The response is broken down by queried endpoint, filter and then base URL so that the query URL can be easily reconstructed.
 This is the same format as the cached results of the Python client:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
-<span class="kn">import</span> <span class="nn">json</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="s2">&quot;https://optimade.herokuapp.com&quot;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites = 1&#39;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites = 2&#39;</span><span class="p">)</span>
