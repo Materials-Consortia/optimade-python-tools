@@ -122,8 +122,11 @@ def handle_response_fields(
     last_frame = None
     while results:
         one_doc = results.pop(0)
-        new_entry = one_doc.dict(exclude_unset=True, by_alias=True)
-
+        if one_doc:
+            new_entry = one_doc.dict(exclude_unset=True, by_alias=True)
+        else:
+            new_results = [[]]
+            break
         # Add missing fields
         for field in include_fields:
             if field not in new_entry["attributes"]:
