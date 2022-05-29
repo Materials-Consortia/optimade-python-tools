@@ -111,15 +111,6 @@ def test_client_sort(httpx_mocked_response, use_async):
     assert len(results["structures"][""][TEST_URL]["data"]) > 0
 
 
-def test_client_get_databases():
-    try:
-        cli = OptimadeClient()
-        exited = False
-    except SystemExit:
-        exited = True
-    assert exited or len(list(cli.base_urls)) > 15
-
-
 @pytest.mark.parametrize("use_async", [False])
 def test_command_line_client(httpx_mocked_response, use_async, capsys):
     args = dict(
