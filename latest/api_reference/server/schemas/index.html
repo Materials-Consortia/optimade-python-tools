@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/server/schemas/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1c3799f8.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
@@ -2006,11 +2006,17 @@ and type, where provided.</p></td>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)}</span>
                 <span class="c1"># Update schema with extension keys provided they are not None</span>
-                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;queryable&quot;</span><span class="p">,</span> <span class="s2">&quot;support&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]:</span>
-                    <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
+                    <span class="s2">&quot;x-optimade-unit&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;x-optimade-queryable&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;x-optimade-support&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;x-optimade-unit&quot;</span><span class="p">,</span>
+                <span class="p">):</span>
+                    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;x-optimade-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                 <span class="c1"># All properties are sortable with the MongoDB backend.</span>
                 <span class="c1"># While the result for sorting lists may not be as expected, they are still sorted.</span>
-                <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;sortable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sortable&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;sortable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;x-optimade-sortable&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="c1"># Try to get OpenAPI-specific &quot;format&quot; if possible, else get &quot;type&quot;; a mandatory OpenAPI key.</span>
                 <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataType</span><span class="o">.</span><span class="n">from_json_type</span><span class="p">(</span>
                     <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">))</span>
@@ -2132,7 +2138,7 @@ and type, where provided.</p></td>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.3a4b43e5.min.js"></script>
       
     
   </body>

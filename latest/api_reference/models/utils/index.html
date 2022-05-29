@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/models/utils/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1c3799f8.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
@@ -1244,6 +1244,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.models.utils.OPTIMADE_SCHEMA_EXTENSION_KEYS" class="md-nav__link">
+    OPTIMADE_SCHEMA_EXTENSION_KEYS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.utils.OPTIMADE_SCHEMA_EXTENSION_PREFIX" class="md-nav__link">
+    OPTIMADE_SCHEMA_EXTENSION_PREFIX
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.models.utils.SemanticVersion" class="md-nav__link">
     SemanticVersion
   </a>
@@ -1327,6 +1341,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.models.utils.StrictFieldInfo" class="md-nav__link">
+    StrictFieldInfo
+  </a>
+  
+    <nav class="md-nav" aria-label="StrictFieldInfo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.utils.StrictFieldInfo.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.models.utils.SupportLevel" class="md-nav__link">
     SupportLevel
   </a>
@@ -1370,6 +1404,13 @@
         <li class="md-nav__item">
   <a href="#optimade.models.utils.StrictField" class="md-nav__link">
     StrictField()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.utils.StrictPydanticField" class="md-nav__link">
+    StrictPydanticField()
   </a>
   
 </li>
@@ -2029,6 +2070,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.models.utils.OPTIMADE_SCHEMA_EXTENSION_KEYS" class="md-nav__link">
+    OPTIMADE_SCHEMA_EXTENSION_KEYS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.utils.OPTIMADE_SCHEMA_EXTENSION_PREFIX" class="md-nav__link">
+    OPTIMADE_SCHEMA_EXTENSION_PREFIX
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.models.utils.SemanticVersion" class="md-nav__link">
     SemanticVersion
   </a>
@@ -2112,6 +2167,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.models.utils.StrictFieldInfo" class="md-nav__link">
+    StrictFieldInfo
+  </a>
+  
+    <nav class="md-nav" aria-label="StrictFieldInfo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.utils.StrictFieldInfo.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.models.utils.SupportLevel" class="md-nav__link">
     SupportLevel
   </a>
@@ -2155,6 +2230,13 @@
         <li class="md-nav__item">
   <a href="#optimade.models.utils.StrictField" class="md-nav__link">
     StrictField()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.utils.StrictPydanticField" class="md-nav__link">
+    StrictPydanticField()
   </a>
   
 </li>
@@ -2289,6 +2371,42 @@
 
 
 
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="optimade.models.utils.OPTIMADE_SCHEMA_EXTENSION_KEYS" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">OPTIMADE_SCHEMA_EXTENSION_KEYS</span></code>
+
+
+<a href="#optimade.models.utils.OPTIMADE_SCHEMA_EXTENSION_KEYS" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="optimade.models.utils.OPTIMADE_SCHEMA_EXTENSION_PREFIX" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">OPTIMADE_SCHEMA_EXTENSION_PREFIX</span></code>
+
+
+<a href="#optimade.models.utils.OPTIMADE_SCHEMA_EXTENSION_PREFIX" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
 
   <div class="doc doc-object doc-class">
 
@@ -2329,7 +2447,7 @@ https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-sem
     <span class="k">def</span> <span class="nf">__modify_schema__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field_schema</span><span class="p">):</span>
         <span class="n">field_schema</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="n">pattern</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span>
-            <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;0.10.1&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.0-rc.2&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2.3-rc.5+develop&quot;</span><span class="p">],</span>
+            <span class="n">example</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;0.10.1&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.0-rc.2&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2.3-rc.5+develop&quot;</span><span class="p">],</span>
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
@@ -2600,7 +2718,7 @@ https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-sem
 <span class="k">def</span> <span class="nf">__modify_schema__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field_schema</span><span class="p">):</span>
     <span class="n">field_schema</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="n">pattern</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span>
-        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;0.10.1&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.0-rc.2&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2.3-rc.5+develop&quot;</span><span class="p">],</span>
+        <span class="n">example</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;0.10.1&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.0-rc.2&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2.3-rc.5+develop&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -2637,6 +2755,97 @@ https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-sem
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">v</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.utils.StrictFieldInfo" class="doc doc-heading">
+        <code>
+StrictFieldInfo        </code>
+
+
+
+<a href="#optimade.models.utils.StrictFieldInfo" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Wraps the standard pydantic <code>FieldInfo</code> in order
+to prefix any custom keys from <code>StrictField</code>.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StrictFieldInfo</span><span class="p">(</span><span class="n">FieldInfo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wraps the standard pydantic `FieldInfo` in order</span>
+<span class="sd">    to prefix any custom keys from `StrictField`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">OPTIMADE_SCHEMA_EXTENSION_KEYS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">OPTIMADE_SCHEMA_EXTENSION_PREFIX</span><span class="si">}{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span>
+                    <span class="n">key</span>
+                <span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.models.utils.StrictFieldInfo.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#optimade.models.utils.StrictFieldInfo.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initialize self.  See help(type(self)) for accurate signature.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">OPTIMADE_SCHEMA_EXTENSION_KEYS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">OPTIMADE_SCHEMA_EXTENSION_PREFIX</span><span class="si">}{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span>
+                <span class="n">key</span>
+            <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2819,7 +3028,7 @@ of this field.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7fefa6e01d40&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7fd02639ed40&gt;</code></td>
       <td><p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" href="#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p></td>
     </tr>
   </tbody>
@@ -2951,7 +3160,7 @@ by models in this package (see above).</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7fefa6e01d40&gt;</code></td>
+      <td><code>StrictFieldInfo</code></td>
       <td><p>The pydantic <code>Field</code>.</p></td>
     </tr>
   </tbody>
@@ -2962,7 +3171,7 @@ by models in this package (see above).</p></td>
     <span class="o">*</span><span class="n">args</span><span class="p">,</span>
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Field</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StrictFieldInfo</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that does the following:</span>
 
 <span class="sd">    - Forbids any &quot;extra&quot; keys that would be passed to `pydantic.Field`,</span>
@@ -2988,13 +3197,10 @@ by models in this package (see above).</p></td>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">allowed_keys</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;unit&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pattern&quot;</span><span class="p">,</span>
         <span class="s2">&quot;uniqueItems&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;support&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;queryable&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;sortable&quot;</span><span class="p">,</span>
-    <span class="p">]</span>
+        <span class="s2">&quot;nullable&quot;</span><span class="p">,</span>
+    <span class="p">]</span> <span class="o">+</span> <span class="n">OPTIMADE_SCHEMA_EXTENSION_KEYS</span>
     <span class="n">_banned</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">_PYDANTIC_FIELD_KWARGS</span> <span class="o">+</span> <span class="n">allowed_keys</span><span class="p">)]</span>
 
     <span class="k">if</span> <span class="n">_banned</span><span class="p">:</span>
@@ -3010,7 +3216,39 @@ by models in this package (see above).</p></td>
             <span class="sa">f</span><span class="s2">&quot;No description provided for StrictField specified by </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">StrictPydanticField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade.models.utils.StrictPydanticField" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">StrictPydanticField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#optimade.models.utils.StrictPydanticField" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Wrapper for <code>Field</code> that uses <code>StrictFieldInfo</code> instead of
+the pydantic <code>FieldInfo</code>.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">StrictPydanticField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper for `Field` that uses `StrictFieldInfo` instead of</span>
+<span class="sd">    the pydantic `FieldInfo`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">field_info</span> <span class="o">=</span> <span class="n">StrictFieldInfo</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">field_info</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">field_info</span>
 </code></pre></div>
         </details>
     </div>
@@ -3145,7 +3383,7 @@ by models in this package (see above).</p></td>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.3a4b43e5.min.js"></script>
       
     
   </body>
