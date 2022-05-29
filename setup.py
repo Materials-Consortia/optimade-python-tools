@@ -22,6 +22,7 @@ elastic_deps = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
 mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
 server_deps = [
     "uvicorn~=0.19",
+    "fastapi~=0.86",
     "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
 ] + mongo_deps
 
@@ -101,7 +102,6 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "lark~=1.1",
-        "fastapi~=0.86.0",
         "pydantic~=1.10,>=1.10.2",
         "email_validator~=1.2",
         "requests~=2.28",
