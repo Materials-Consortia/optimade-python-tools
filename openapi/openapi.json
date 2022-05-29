@@ -1478,12 +1478,14 @@
           "id": {
             "title": "Id",
             "pattern": "^/$",
-            "type": "string"
+            "type": "string",
+            "default": "/"
           },
           "type": {
             "title": "Type",
             "pattern": "^info$",
-            "type": "string"
+            "type": "string",
+            "default": "info"
           },
           "links": {
             "title": "Links",
@@ -2222,7 +2224,8 @@
             "title": "Type",
             "pattern": "^links$",
             "type": "string",
-            "description": "These objects are described in detail in the section Links Endpoint"
+            "description": "These objects are described in detail in the section Links Endpoint",
+            "default": "links"
           },
           "links": {
             "title": "Links",
@@ -2629,7 +2632,8 @@
             "title": "Type",
             "pattern": "^references$",
             "type": "string",
-            "description": "The name of the type of an entry.\n- **Type**: string.\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n- **Example**: `\"structures\"`"
+            "description": "The name of the type of an entry.\n- **Type**: string.\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n- **Example**: `\"structures\"`",
+            "default": "references"
           },
           "links": {
             "title": "Links",
@@ -3354,7 +3358,8 @@
             "title": "Type",
             "pattern": "^structures$",
             "type": "string",
-            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Examples**:\n    - `\"structures\"`"
+            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Examples**:\n    - `\"structures\"`",
+            "default": "structures"
           },
           "links": {
             "title": "Links",
@@ -3879,7 +3884,8 @@
             "title": "Type",
             "pattern": "^warning$",
             "type": "string",
-            "description": "Warnings must be of type \"warning\""
+            "description": "Warnings must be of type \"warning\"",
+            "default": "warning"
           }
         },
         "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\n\nFrom the specification:\n\nA warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value \"warning\".\nThe field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
