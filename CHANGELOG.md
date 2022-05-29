@@ -1,8 +1,38 @@
 # Changelog
 
+## [v0.18.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.18.0) (2022-05-29)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.2...v0.18.0)
+
+This is a feature release that includes the new `optimade.client.OptimadeClient` class, a client capable asynchronously querying multiple OPTIMADE APIs simultaneously.
+It also contains a patch for the OPTIMADE models that allows them to be used with more recent FastAPI versions without breaking OpenAPI 3.0 compatibility.
+Other changes can be found below.
+This release includes improvements to the validator to catch more cases where OPTIMADE APIs are only partially implemented.
+Previously, APIs that did not support filtering, pagination or limiting response fields at all (i.e., the query parameter is simply ignored) would pass most validation tests erroneously in some unlucky situations (#1180).
+
+**Implemented enhancements:**
+
+- The validator should use a custom `User-Agent` header [\#1187](https://github.com/Materials-Consortia/optimade-python-tools/issues/1187)
+- Suggestion to include an OPTIMADE python API client [\#932](https://github.com/Materials-Consortia/optimade-python-tools/issues/932)
+- Implementation of an OPTIMADE client [\#1154](https://github.com/Materials-Consortia/optimade-python-tools/pull/1154) ([ml-evs](https://github.com/ml-evs))
+
+**Fixed bugs:**
+
+- `OptimadeClient` crashes if an index meta-database is down [\#1196](https://github.com/Materials-Consortia/optimade-python-tools/issues/1196)
+- Catch connection errors when populating client database list [\#1197](https://github.com/Materials-Consortia/optimade-python-tools/pull/1197) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Add a clearer error message on when trying to use client with missing deps [\#1200](https://github.com/Materials-Consortia/optimade-python-tools/pull/1200) ([ml-evs](https://github.com/ml-evs))
+- Use a custom `User-Agent` with validator [\#1189](https://github.com/Materials-Consortia/optimade-python-tools/pull/1189) ([ml-evs](https://github.com/ml-evs))
+- Syntactic tweaks to models and schemas for compatibility with `fastapi>0.66` [\#1131](https://github.com/Materials-Consortia/optimade-python-tools/pull/1131) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.17.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.2) (2022-05-21)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.1...v0.17.2)
+
+This release includes improvements to the validator to catch more cases where OPTIMADE APIs are only partially implemented.
+Previously, APIs that did not support filtering, pagination or limiting response fields at all (i.e., the query parameter is simply ignored) would pass most validation tests erroneously in some unlucky situations (#1180).
 
 **Fixed bugs:**
 
