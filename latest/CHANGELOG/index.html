@@ -2729,10 +2729,14 @@
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
 <h2 id="unreleased-2022-05-29"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2022-05-29)<a class="headerlink" href="#unreleased-2022-05-29" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.2...Unreleased">Full Changelog</a></p>
-<p>This release includes improvements to the validator to catch more cases where OPTIMADE APIs are only partially implemented.
+<p>This is a feature release that includes the new <code>optimade.client.OptimadeClient</code> class, a client capable asynchronously querying multiple OPTIMADE APIs simultaneously.
+It also contains a patch for the OPTIMADE models that allows them to be used with more recent FastAPI versions without breaking OpenAPI 3.0 compatibility.
+Other changes can be found below.
+This release includes improvements to the validator to catch more cases where OPTIMADE APIs are only partially implemented.
 Previously, APIs that did not support filtering, pagination or limiting response fields at all (i.e., the query parameter is simply ignored) would pass most validation tests erroneously in some unlucky situations (#1180).</p>
 <p><strong>Implemented enhancements:</strong></p>
 <ul>
+<li>The validator should use a custom <code>User-Agent</code> header <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1187">#1187</a></li>
 <li>Suggestion to include an OPTIMADE python API client <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/932">#932</a></li>
 <li>Implementation of an OPTIMADE client <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1154">#1154</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 </ul>
@@ -2740,11 +2744,6 @@ Previously, APIs that did not support filtering, pagination or limiting response
 <ul>
 <li><code>OptimadeClient</code> crashes if an index meta-database is down <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1196">#1196</a></li>
 <li>Catch connection errors when populating client database list <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1197">#1197</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
-</ul>
-<p><strong>Closed issues:</strong></p>
-<ul>
-<li>Version and prefix missing on Heroku example landing page.  <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1194">#1194</a></li>
-<li>The validator should use a custom <code>User-Agent</code> header <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1187">#1187</a></li>
 </ul>
 <p><strong>Merged pull requests:</strong></p>
 <ul>
