@@ -2733,7 +2733,13 @@
 Previously, APIs that did not support filtering, pagination or limiting response fields at all (i.e., the query parameter is simply ignored) would pass most validation tests erroneously in some unlucky situations (#1180).</p>
 <p><strong>Implemented enhancements:</strong></p>
 <ul>
+<li>Suggestion to include an OPTIMADE python API client <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/932">#932</a></li>
 <li>Implementation of an OPTIMADE client <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1154">#1154</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+</ul>
+<p><strong>Fixed bugs:</strong></p>
+<ul>
+<li><code>OptimadeClient</code> crashes if an index meta-database is down <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1196">#1196</a></li>
+<li>Catch connection errors when populating client database list <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1197">#1197</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 </ul>
 <p><strong>Closed issues:</strong></p>
 <ul>
