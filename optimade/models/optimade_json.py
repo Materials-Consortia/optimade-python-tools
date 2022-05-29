@@ -146,9 +146,8 @@ class Warnings(OptimadeError):
 
     type: str = StrictField(
         "warning",
-        const="warning",
         description='Warnings must be of type "warning"',
-        pattern="^warning$",
+        regex="^warning$",
     )
 
     @root_validator(pre=True)
