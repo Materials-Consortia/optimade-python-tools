@@ -39,7 +39,7 @@ ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2022.0.16"]
-jarvis_deps = ["jarvis-tools==2022.5.5"]
+jarvis_deps = ["jarvis-tools==2022.5.20"]
 client_deps = cif_deps
 
 # General
@@ -52,7 +52,7 @@ docs_deps = [
     "mkdocstrings~=0.18.1",
 ]
 testing_deps = [
-    "build~=0.7.0",
+    "build~=0.8.0",
     "codecov~=2.1",
     "jsondiff~=2.0",
     "pytest~=7.1",
