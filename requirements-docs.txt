@@ -2,5 +2,5 @@ markupsafe==2.0.1 # Can be removed once aiida supports Jinja2>=3, see pallets/ma
 mike==1.1.2
 mkdocs==1.3.0
 mkdocs-awesome-pages-plugin==2.7.0
-mkdocs-material==8.2.15
+mkdocs-material==8.2.16
 mkdocstrings==0.18.1
