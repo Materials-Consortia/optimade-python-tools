@@ -13,10 +13,20 @@ import time
 import json
 import functools
 
-import httpx
 from pydantic import AnyUrl
-from rich.progress import TaskID
-from rich.panel import Panel
+
+# External deps that are only used in the client code
+try:
+    import httpx
+    from rich.progress import TaskID
+    from rich.panel import Panel
+except ImportError as exc:
+    raise ImportError(
+        "Could not find dependencies required for the `OptimadeClient`. "
+        "Please install them with `pip install .[http_client]` (if using a local repository) "
+        "or `pip install optimade[http_client]` (if using the PyPI package)."
+    ) from exc
+
 
 from optimade.utils import get_all_databases
 from optimade.filterparser import LarkParser
