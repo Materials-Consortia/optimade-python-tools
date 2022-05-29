@@ -164,7 +164,7 @@ class SemanticVersion(str):
     def __modify_schema__(cls, field_schema):
         field_schema.update(
             pattern=cls.regex.pattern,
-            examples=["0.10.1", "1.0.0-rc.2", "1.2.3-rc.5+develop"],
+            example=["0.10.1", "1.0.0-rc.2", "1.2.3-rc.5+develop"],
         )
 
     @classmethod
