@@ -28,7 +28,6 @@ class IndexInfoAttributes(BaseInfoAttributes):
 
     is_index: bool = StrictField(
         True,
-        const=True,
         description="This must be `true` since this is an index meta-database (see section Index Meta-Database).",
     )
 
@@ -36,7 +35,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
 class RelatedLinksResource(BaseResource):
     """A related Links resource object"""
 
-    type: str = Field("links", const="links", regex="^links$")
+    type: str = Field("links", regex="^links$")
 
 
 class IndexRelationship(BaseModel):

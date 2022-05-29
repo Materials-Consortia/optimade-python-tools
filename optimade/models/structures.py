@@ -1106,7 +1106,6 @@ class StructureResource(EntryResource):
 
     type: str = StrictField(
         "structures",
-        const="structures",
         description="""The name of the type of an entry.
 
 - **Type**: string.
@@ -1120,7 +1119,7 @@ class StructureResource(EntryResource):
 
 - **Examples**:
     - `"structures"`""",
-        pattern="^structures$",
+        regex="^structures$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
