@@ -25,7 +25,13 @@ router = APIRouter(redirect_slashes=True)
 )
 def get_info(request: Request) -> IndexInfoResponse:
     return IndexInfoResponse(
-        meta=meta_values(request.url, 1, 1, more_data_available=False),
+        meta=meta_values(
+            request.url,
+            1,
+            1,
+            more_data_available=False,
+            schema=CONFIG.index_schema_url,
+        ),
         data=IndexInfoResource(
             id=IndexInfoResource.schema()["properties"]["id"]["default"],
             type=IndexInfoResource.schema()["properties"]["type"]["default"],

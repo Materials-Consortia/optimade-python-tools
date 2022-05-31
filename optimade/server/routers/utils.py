@@ -59,6 +59,7 @@ def meta_values(
     data_returned: int,
     data_available: int,
     more_data_available: bool,
+    schema: str,
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
@@ -82,6 +83,7 @@ def meta_values(
         provider=CONFIG.provider,
         data_available=data_available,
         implementation=CONFIG.implementation,
+        schema=schema,
         **kwargs,
     )
 
@@ -271,6 +273,7 @@ def get_entries(
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
+            schema=CONFIG.schema_url,
         ),
         included=included,
     )
@@ -318,6 +321,7 @@ def get_single_entry(
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
+            schema=CONFIG.schema_url,
         ),
         included=included,
     )
