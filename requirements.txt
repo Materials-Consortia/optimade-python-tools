@@ -1,4 +1,4 @@
-elasticsearch-dsl==6.4.0
+elasticsearch-dsl==7.4.0
 email_validator==1.2.1
 fastapi==0.78.0
 lark==0.12.0
