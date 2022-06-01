@@ -109,7 +109,7 @@ class ElasticCollection(EntryCollection):
 
     def __len__(self):
         """Returns the total number of entries in the collection."""
-        return Search(using=self.client, index=self.name).execute().hits.total
+        return Search(using=self.client, index=self.name).execute().hits.total.value
 
     def insert(self, data: List[EntryResource]) -> None:
         """Add the given entries to the underlying database.
@@ -189,12 +189,13 @@ class ElasticCollection(EntryCollection):
         search = search.sort(*elastic_sort)
 
         search = search[page_offset : page_offset + limit]
+        search = search.extra(track_total_hits=True)
         response = search.execute()
 
         results = [hit.to_dict() for hit in response.hits]
 
         if not single_entry:
-            data_returned = response.hits.total
+            data_returned = response.hits.total.value
             more_data_available = page_offset + limit < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
