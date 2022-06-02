@@ -1,6 +1,5 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 import re
-import warnings
 import sys
 import math
 from functools import reduce
@@ -19,7 +18,6 @@ from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
 )
-from optimade.server.warnings import MissingExpectedField
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
@@ -252,14 +250,6 @@ The possible reasons for the values not to sum to one are the same as already sp
                 f"but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
             )
         return v
-
-
-CORRELATED_STRUCTURE_FIELDS = (
-    {"dimension_types", "nperiodic_dimensions"},
-    {"cartesian_site_positions", "species_at_sites"},
-    {"nsites", "cartesian_site_positions"},
-    {"species_at_sites", "species"},
-)
 
 
 class StructureResourceAttributes(EntryResourceAttributes):
@@ -819,24 +809,6 @@ The properties of the species are found in the property `species`.
             )
             for prop in nullable_props:
                 schema["properties"][prop]["nullable"] = True
-
-    @root_validator(pre=True)
-    def warn_on_missing_correlated_fields(cls, values):
-        """Emit warnings if a field takes a null value when a value
-        was expected based on the value/nullity of another field.
-        """
-        accumulated_warnings = []
-        for field_set in CORRELATED_STRUCTURE_FIELDS:
-            missing_fields = {f for f in field_set if values.get(f) is None}
-            if missing_fields and len(missing_fields) != len(field_set):
-                accumulated_warnings += [
-                    f"Structure with values {values} is missing fields {missing_fields} which are required if {field_set - missing_fields} are present."
-                ]
-
-        for warn in accumulated_warnings:
-            warnings.warn(warn, MissingExpectedField)
-
-        return values
 
     @validator("chemical_formula_reduced", "chemical_formula_hill")
     def check_ordered_formula(cls, v, field):
