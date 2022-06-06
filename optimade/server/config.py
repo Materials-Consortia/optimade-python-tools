@@ -268,7 +268,7 @@ class ServerConfig(BaseSettings):
     )
 
     index_schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
-        f"https://schemas.optimade.org/openapi/{__api_version__}/optimade_index.json",
+        f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade_index.json",
         description=(
             "A URL that will be provided in the `meta->schema` field for every response from the index meta-database."
         ),
