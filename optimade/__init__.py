@@ -10,7 +10,7 @@ if sys.version_info.minor == 7:
         action="once",
         message=r"v0\.17 of the `optimade` package.*",
         category=DeprecationWarning,
-        append=False,
+        append=True,
     )
     warnings.warn(
         "v0.17 of the `optimade` package will be the last to support Python 3.7. "
