@@ -27,8 +27,8 @@ def get_info(request: Request) -> InfoResponse:
     return InfoResponse(
         meta=meta_values(request.url, 1, 1, more_data_available=False),
         data=BaseInfoResource(
-            id=BaseInfoResource.schema()["properties"]["id"]["const"],
-            type=BaseInfoResource.schema()["properties"]["type"]["const"],
+            id=BaseInfoResource.schema()["properties"]["id"]["default"],
+            type=BaseInfoResource.schema()["properties"]["type"]["default"],
             attributes=BaseInfoAttributes(
                 api_version=__api_version__,
                 available_api_versions=[

@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "OPTIMADE API - Index meta-database",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.17.2) v0.17.2.",
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.18.0) v0.18.0.",
     "version": "1.1.0"
   },
   "paths": {
@@ -466,7 +466,12 @@
             "title": "Version",
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
-            "description": "A string containing the full version number of the API served at that versioned base URL.\nThe version number string MUST NOT be prefixed by, e.g., 'v'.\nExamples: `1.0.0`, `1.0.0-rc.2`."
+            "description": "A string containing the full version number of the API served at that versioned base URL.\nThe version number string MUST NOT be prefixed by, e.g., 'v'.\nExamples: `1.0.0`, `1.0.0-rc.2`.",
+            "example": [
+              "0.10.1",
+              "1.0.0-rc.2",
+              "1.2.3-rc.5+develop"
+            ]
           }
         },
         "description": "A JSON object containing information about an available API version"
@@ -900,7 +905,12 @@
             "title": "Api Version",
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
-            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`."
+            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`.",
+            "example": [
+              "0.10.1",
+              "1.0.0-rc.2",
+              "1.2.3-rc.5+develop"
+            ]
           },
           "available_api_versions": {
             "title": "Available Api Versions",
@@ -943,7 +953,8 @@
           "is_index": {
             "title": "Is Index",
             "type": "boolean",
-            "description": "This must be `true` since this is an index meta-database (see section Index Meta-Database)."
+            "description": "This must be `true` since this is an index meta-database (see section Index Meta-Database).",
+            "default": true
           }
         },
         "description": "Attributes for Base URL Info endpoint for an Index Meta-Database"
@@ -961,12 +972,14 @@
           "id": {
             "title": "Id",
             "pattern": "^/$",
-            "type": "string"
+            "type": "string",
+            "default": "/"
           },
           "type": {
             "title": "Type",
             "pattern": "^info$",
-            "type": "string"
+            "type": "string",
+            "default": "info"
           },
           "links": {
             "title": "Links",
@@ -1161,7 +1174,8 @@
             "title": "Type",
             "pattern": "^links$",
             "type": "string",
-            "description": "These objects are described in detail in the section Links Endpoint"
+            "description": "These objects are described in detail in the section Links Endpoint",
+            "default": "links"
           },
           "links": {
             "title": "Links",
@@ -1532,7 +1546,8 @@
           "type": {
             "title": "Type",
             "pattern": "^links$",
-            "type": "string"
+            "type": "string",
+            "default": "links"
           }
         },
         "description": "A related Links resource object"
@@ -1681,7 +1696,12 @@
             "title": "Api Version",
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "type": "string",
-            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`."
+            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`.",
+            "example": [
+              "0.10.1",
+              "1.0.0-rc.2",
+              "1.2.3-rc.5+develop"
+            ]
           },
           "more_data_available": {
             "title": "More Data Available",
@@ -2013,7 +2033,8 @@
             "title": "Type",
             "pattern": "^warning$",
             "type": "string",
-            "description": "Warnings must be of type \"warning\""
+            "description": "Warnings must be of type \"warning\"",
+            "default": "warning"
           }
         },
         "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\n\nFrom the specification:\n\nA warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value \"warning\".\nThe field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."

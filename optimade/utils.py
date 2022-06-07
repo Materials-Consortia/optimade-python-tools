@@ -111,6 +111,10 @@ def get_child_database_links(
         A list of the valid links entries from this provider that
         have `link_type` `"child"`.
 
+    Raises:
+        RuntimeError: If the provider's index meta-database is down,
+        invalid, or the request otherwise fails.
+
     """
     import requests
     from optimade.models.responses import LinksResponse
@@ -121,7 +125,10 @@ def get_child_database_links(
         raise RuntimeError(f"Provider {provider['id']} provides no base URL.")
 
     links_endp = base_url + "/v1/links"
-    links = requests.get(links_endp)
+    try:
+        links = requests.get(links_endp, timeout=10)
+    except requests.ConnectionError as exc:
+        raise RuntimeError(f"Unable to connect to provider {provider['id']}") from exc
 
     if links.status_code != 200:
         raise RuntimeError(

@@ -250,7 +250,6 @@ class ReferenceResource(EntryResource):
 
     type: str = OptimadeField(
         "references",
-        const="references",
         description="""The name of the type of an entry.
 - **Type**: string.
 - **Requirements/Conventions**:
@@ -260,7 +259,7 @@ class ReferenceResource(EntryResource):
     - MUST be an existing entry type.
     - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
 - **Example**: `"structures"`""",
-        pattern="^references$",
+        regex="^references$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )

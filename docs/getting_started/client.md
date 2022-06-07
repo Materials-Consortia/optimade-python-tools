@@ -147,7 +147,6 @@ This is the same format as the cached results of the Python client:
 
 ```python
 from optimade.client import OptimadeClient
-import json
 client = OptimadeClient(base_urls="https://optimade.herokuapp.com")
 client.get('nsites = 1')
 client.get('nsites = 2')

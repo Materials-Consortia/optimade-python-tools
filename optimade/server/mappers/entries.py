@@ -159,7 +159,7 @@ class BaseResourceMapper:
             cls.ENTRY_RESOURCE_CLASS.schema()
             .get("properties", {})
             .get("type", {})
-            .get("const", "")
+            .get("default", "")
         )
 
     @classmethod
