@@ -42,7 +42,7 @@ git clone --recursive git@github.com:Materials-Consortia/optimade-python-tools.g
 cd optimade-python-tools
 
 # Ensure a Python>=3.8 (virtual) environment (example below using Anaconda/Miniconda)
-conda create -n optimade python=3.8
+conda create -n optimade python=3.10
 conda activate optimade
 
 # Install package and dependencies in editable mode (including "dev" requirements).
