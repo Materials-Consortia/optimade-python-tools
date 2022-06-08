@@ -41,8 +41,8 @@ All contributed Python code, must use the [black](https://github.com/ambv/black)
 git clone --recursive git@github.com:Materials-Consortia/optimade-python-tools.git
 cd optimade-python-tools
 
-# Ensure a Python>=3.7 (virtual) environment (example below using Anaconda/Miniconda)
-conda create -n optimade python=3.7
+# Ensure a Python>=3.8 (virtual) environment (example below using Anaconda/Miniconda)
+conda create -n optimade python=3.10
 conda activate optimade
 
 # Install package and dependencies in editable mode (including "dev" requirements).
