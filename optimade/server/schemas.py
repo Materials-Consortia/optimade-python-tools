@@ -62,7 +62,6 @@ def retrieve_queryable_properties(
                     "x-optimade-unit",
                     "x-optimade-queryable",
                     "x-optimade-support",
-                    "x-optimade-unit",
                 ):
                     if value.get(key) is not None:
                         properties[name][key.replace("x-optimade-", "")] = value[key]

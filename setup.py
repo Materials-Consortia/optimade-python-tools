@@ -64,6 +64,7 @@ dev_deps = (
     + docs_deps
     + testing_deps
     + client_deps
+    + http_client_deps
 )
 all_deps = (
     dev_deps
