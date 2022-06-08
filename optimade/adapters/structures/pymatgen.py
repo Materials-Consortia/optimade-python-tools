@@ -11,7 +11,10 @@ from typing import Union, Dict, List, Optional
 
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
-from optimade.adapters.structures.utils import species_from_species_at_sites
+from optimade.adapters.structures.utils import (
+    species_from_species_at_sites,
+    valid_lattice_vector,
+)
 
 try:
     from pymatgen.core import Structure, Molecule
@@ -34,9 +37,9 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
     This function will return either a pymatgen `Structure` or `Molecule` based
     on the periodicity or periodic dimensionality of OPTIMADE structure.
 
-    For bulk, three-dimensional structures, a pymatgen `Structure` is returned.
-    This means, if the [`dimension_types`][optimade.models.structures.StructureResourceAttributes.dimension_types]
-    attribute is comprised of all `1`s (or [`Periodicity.PERIODIC`][optimade.models.structures.Periodicity.PERIODIC]s).
+    For structures that are periodic in one or more dimensions, a pymatgen `Structure` is returned when valid lattice_vectors are given.
+    This means, if the any of the values in the [`dimension_types`][optimade.models.structures.StructureResourceAttributes.dimension_types]
+    attribute is `1`s or if [`nperiodic_dimesions`][optimade.models.structures.StructureResourceAttributes.nperiodic_dimensions] > 0.
 
     Otherwise, a pymatgen `Molecule` is returned.
 
@@ -52,8 +55,9 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
         warn(PYMATGEN_NOT_FOUND, AdapterPackageNotFound)
         return None
 
-    if optimade_structure.attributes.nperiodic_dimensions == 3 or all(
-        optimade_structure.attributes.dimension_types
+    if valid_lattice_vector(optimade_structure.attributes.lattice_vectors) and (
+        optimade_structure.attributes.nperiodic_dimensions > 0
+        or any(optimade_structure.attributes.dimension_types)
     ):
         return _get_structure(optimade_structure)
 
