@@ -4,7 +4,6 @@ Utility functions to help the conversion functions along.
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
 from typing import List, Optional, Tuple, Iterable
-import math
 from optimade.models.structures import Vector3D
 from optimade.models.structures import Species as OptimadeStructureSpecies
 
@@ -23,9 +22,7 @@ def valid_lattice_vector(lattice_vec: Tuple[Vector3D, Vector3D, Vector3D]):
         return False
     for vector in lattice_vec:
         if (
-            (len(vector) != 3)
-            or (None in vector)
-            or (math.hypot(vector[0], vector[1], vector[2]) < 1e-15)
+            (len(vector) != 3) or (None in vector) or (np.linalg.norm(vector) < 1e-15)
         ):  # Due to rounding errors very small values instead of 0.0 may appear for the lattice vectors. therefore I check here whether the value is not too small. I am however not sure what the smallest value is that I can put here.
             return False
     return True
