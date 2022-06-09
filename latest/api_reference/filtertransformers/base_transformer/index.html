@@ -2402,7 +2402,7 @@ various field-related configuration.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseTransformer</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Transformer</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseTransformer</span><span class="p">(</span><span class="n">Transformer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generic filter transformer that handles various</span>
 <span class="sd">    parts of the grammar in a backend non-specific way.</span>
 

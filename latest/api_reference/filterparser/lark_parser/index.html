@@ -1993,7 +1993,7 @@ it to be parsed into Lark tree objects.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">variant</span> <span class="o">=</span> <span class="n">variant</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">AVAILABLE_PARSERS</span><span class="p">[</span><span class="n">version</span><span class="p">][</span><span class="n">variant</span><span class="p">])</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lark</span> <span class="o">=</span> <span class="n">Lark</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lark</span> <span class="o">=</span> <span class="n">Lark</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">maybe_placeholders</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2127,7 +2127,7 @@ grammar does not exist.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">variant</span> <span class="o">=</span> <span class="n">variant</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">AVAILABLE_PARSERS</span><span class="p">[</span><span class="n">version</span><span class="p">][</span><span class="n">variant</span><span class="p">])</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lark</span> <span class="o">=</span> <span class="n">Lark</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lark</span> <span class="o">=</span> <span class="n">Lark</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">maybe_placeholders</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="kc">None</span>
