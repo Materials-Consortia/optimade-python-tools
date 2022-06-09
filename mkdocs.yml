@@ -69,7 +69,7 @@ plugins:
               - "!__all__$"
               - "!__config__$"
               - "!ValidatorResults$"
-            members: true
+            members: false
             inherited_members: false
             docstring_style: google
             docstring_options:
