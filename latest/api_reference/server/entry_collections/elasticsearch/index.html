@@ -2030,11 +2030,12 @@ ElasticCollection        </code>
             <span class="p">)</span>
 
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;doc&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="n">properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)]</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span>
                 <span class="s2">&quot;mappings&quot;</span>
-            <span class="p">][</span><span class="s2">&quot;doc&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-        <span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;doc&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
+            <span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
+        <span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with body </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2060,20 +2061,16 @@ ElasticCollection        </code>
 <span class="sd">            The `body` parameter to pass to `client.indices.create(..., body=...)`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
-                        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
+        <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span>
         <span class="p">}</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Search</span><span class="p">(</span><span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">total</span>
+        <span class="k">return</span> <span class="n">Search</span><span class="p">(</span><span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">total</span><span class="o">.</span><span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
@@ -2106,7 +2103,7 @@ ElasticCollection        </code>
                 <span class="p">{</span>
                     <span class="s2">&quot;_index&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                     <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">),</span>
-                    <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;doc&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;_source&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span>
@@ -2153,12 +2150,13 @@ ElasticCollection        </code>
         <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">*</span><span class="n">elastic_sort</span><span class="p">)</span>
 
         <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="p">[</span><span class="n">page_offset</span> <span class="p">:</span> <span class="n">page_offset</span> <span class="o">+</span> <span class="n">limit</span><span class="p">]</span>
+        <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">extra</span><span class="p">(</span><span class="n">track_total_hits</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">hit</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">hits</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">single_entry</span><span class="p">:</span>
-            <span class="n">data_returned</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">total</span>
+            <span class="n">data_returned</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">total</span><span class="o">.</span><span class="n">value</span>
             <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">page_offset</span> <span class="o">+</span> <span class="n">limit</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># SingleEntryQueryParams, e.g., /structures/{entry_id}</span>
@@ -2419,16 +2417,12 @@ by the keyword arguments.</p>
 <span class="sd">        The `body` parameter to pass to `client.indices.create(..., body=...)`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
-                    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span>
     <span class="p">}</span>
+    <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
 </code></pre></div>
         </details>
     </div>
@@ -2466,11 +2460,12 @@ to the current client.</p>
         <span class="p">)</span>
 
     <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;doc&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="n">properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)]</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span>
             <span class="s2">&quot;mappings&quot;</span>
-        <span class="p">][</span><span class="s2">&quot;doc&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-    <span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;doc&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
+        <span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+    <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
+    <span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with body </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -2552,7 +2547,7 @@ to the current client.</p>
             <span class="p">{</span>
                 <span class="s2">&quot;_index&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                 <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">),</span>
-                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;doc&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;_source&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span>
