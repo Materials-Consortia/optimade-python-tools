@@ -64,6 +64,7 @@ dev_deps = (
     + docs_deps
     + testing_deps
     + client_deps
+    + http_client_deps
 )
 all_deps = (
     dev_deps
@@ -102,7 +103,7 @@ setup(
     ],
     python_requires=">=3.7,<3.11",
     install_requires=[
-        "lark-parser~=0.12",
+        "lark~=0.12",
         "fastapi~=0.65",
         "pydantic~=1.9",
         "email_validator~=1.2",
