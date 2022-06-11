@@ -17,7 +17,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 
 # Dependencies
 # Server minded
-elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
+elastic_deps = ["elasticsearch-dsl~=7.4,<8.0"]
 mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.0"]
 server_deps = [
     "uvicorn~=0.17",
@@ -103,7 +103,7 @@ setup(
     ],
     python_requires=">=3.7,<3.11",
     install_requires=[
-        "lark~=0.12",
+        "lark~=1.1",
         "fastapi~=0.65",
         "pydantic~=1.9",
         "email_validator~=1.2",

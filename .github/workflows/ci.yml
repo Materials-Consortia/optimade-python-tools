@@ -162,12 +162,13 @@ jobs:
         ports:
         - 5432:5432
       elasticsearch:
-        image: elasticsearch:6.8.23
+        image: elasticsearch:7.17.1
         ports:
           - 9200:9200
           - 9300:9300
         env:
           discovery.type: single-node
+          xpack.security.enabled: 'false'
 
 
     steps:
