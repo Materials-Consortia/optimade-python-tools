@@ -1248,9 +1248,14 @@ class ImplementationValidator:
         request_str: str,
     ):
         """Tests that the endpoint responds with a `meta->schema`."""
-        if not response.json().get("meta", {}).get("schema"):
+        try:
+            if not response.json().get("meta", {}).get("schema"):
+                raise ResponseError(
+                    f"Query {request_str} did not report a schema in `meta->schema` field."
+                )
+        except json.JSONDecodeError:
             raise ResponseError(
-                f"Query {request_str} did not report a schema in `meta->schema` field."
+                f"Unable to test presence of `meta->schema`: could not decode response as JSON.\n{str(response.content)}"
             )
 
         return (
