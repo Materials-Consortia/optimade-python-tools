@@ -136,9 +136,9 @@ class BaseEndpointTests:
             "provider",
             "data_available",
             "implementation",
+            "schema",
             # TODO: These keys are not implemented in the example server implementations
             # Add them in when they are.
-            # "schema",
             # "last_id",
             # "response_message",
             # "warnings",
