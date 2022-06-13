@@ -2142,12 +2142,13 @@ EntryCollection        </code>
 
         <span class="n">bad_optimade_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">bad_provider_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">supported_prefixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span>
+        <span class="n">all_attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ALL_ATTRIBUTES</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">include_fields</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ALL_ATTRIBUTES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_attributes</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
                     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                        <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span>
-                        <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span>
+                        <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">supported_prefixes</span>
                     <span class="p">):</span>
                         <span class="n">bad_provider_fields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -2717,12 +2718,13 @@ for more information.</p>
 
     <span class="n">bad_optimade_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="n">bad_provider_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">supported_prefixes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span>
+    <span class="n">all_attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ALL_ATTRIBUTES</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">include_fields</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ALL_ATTRIBUTES</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_attributes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                    <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">supported_prefixes</span>
                 <span class="p">):</span>
                     <span class="n">bad_provider_fields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
