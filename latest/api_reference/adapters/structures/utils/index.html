@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/adapters/structures/utils/">
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.4">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
     
     
       
@@ -1938,15 +1938,16 @@
 <h1 id="utils">utils<a class="headerlink" href="#utils" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
 
 <a id="optimade.adapters.structures.utils"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Utility functions to help the conversion functions along.</p>
 <p>Most of these functions rely on the <a href="https://numpy.org/">NumPy</a> library.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1958,69 +1959,120 @@
 
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.adapters.structures.utils.cell_to_cellpar" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">cell_to_cellpar</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">radians</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
-
 <a href="#optimade.adapters.structures.utils.cell_to_cellpar" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Returns the cell parameters <code>[a, b, c, alpha, beta, gamma]</code>.</p>
 <p>Angles are in degrees unless <code>radian=True</code> is used.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Based on <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cell_to_cellpar">ASE code</a>.</p>
-</div>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+<details class="note">
+  <summary>Note</summary>
+  <p>Based on <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cell_to_cellpar">ASE code</a>.</p>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>cell</code></td>
-        <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
-        <td><p>A Cartesian 3x3 cell. This equates to the
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>cell</code></td>
+          <td>
+                <code><span title="typing.Tuple">Tuple</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>A Cartesian 3x3 cell. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
-        <td><em>required</em></td>
-      </tr>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>radians</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Use radians instead of degrees (default) for angles.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>radians</code></td>
-        <td><code>bool</code></td>
-        <td><p>Use radians instead of degrees (default) for angles.</p></td>
-        <td><code>False</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[float]</code></td>
-      <td><p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cell_to_cellpar</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[float]</code>
+          </td>
+          <td><p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cell_to_cellpar</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">radians</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns the cell parameters `[a, b, c, alpha, beta, gamma]`.</span>
@@ -2060,26 +2112,24 @@
     <span class="k">if</span> <span class="n">radians</span><span class="p">:</span>
         <span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="n">angle</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span> <span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">angles</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lengths</span> <span class="o">+</span> <span class="n">angles</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.adapters.structures.utils.cellpar_to_cell" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">cellpar_to_cell</span><span class="p">(</span><span class="n">cellpar</span><span class="p">,</span> <span class="n">ab_normal</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">a_direction</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-
 <a href="#optimade.adapters.structures.utils.cellpar_to_cell" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Return a 3x3 cell matrix from <code>cellpar=[a,b,c,alpha,beta,gamma]</code>.</p>
 <p>Angles must be in degrees.</p>
 <p>The returned cell is orientated such that a and b
@@ -2092,70 +2142,213 @@ cell will be oriented such that va and vb are normal to <code>ab_normal</code>
 and va will be along the projection of <code>a_direction</code> onto the a-b
 plane.</p>
 
-<p><strong>Examples:</strong></p>
-    <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">cell</span> <span class="o">=</span> <span class="n">cellpar_to_cell</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">array</span><span class="p">([[</span> <span class="mf">0.816</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.408</span><span class="p">,</span>  <span class="mf">0.408</span><span class="p">],</span>
-    <span class="p">[</span> <span class="mf">1.992</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.13</span> <span class="p">,</span>  <span class="mf">0.13</span> <span class="p">],</span>
-    <span class="p">[</span> <span class="mf">3.859</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.745</span><span class="p">,</span>  <span class="mf">0.745</span><span class="p">]])</span>
-</code></pre></div>
-      <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Direct copy of <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cellpar_to_cell">ASE code</a>.</p>
-</div>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+<details class="example">
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>cell = cellpar_to_cell([1, 2, 4, 10, 20, 30], (0, 1, 1), (1, 2, 3))
+np.round(cell, 3)
+array([[ 0.816, -0.408,  0.408],
+    [ 1.992, -0.13 ,  0.13 ],
+    [ 3.859, -0.745,  0.745]])</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+<details class="note">
+  <summary>Note</summary>
+  <p>Direct copy of <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cellpar_to_cell">ASE code</a>.</p>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>cellpar</code></td>
-        <td><code>List[float]</code></td>
-        <td><p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>cellpar</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[float]</code>
+          </td>
+          <td><p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p>
 <p><strong>Note</strong>: The angles must be given in degrees.</p></td>
-        <td><em>required</em></td>
-      </tr>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>ab_normal</code></td>
+          <td>
+                <code><span title="typing.Tuple">Tuple</span>[int, int, int]</code>
+          </td>
+          <td><p>Unit vector normal to the ab-plane.</p></td>
+          <td>
+                <code>(0, 0, 1)</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>a_direction</code></td>
+          <td>
+                <code><span title="typing.Tuple">Tuple</span>[int, int, int]</code>
+          </td>
+          <td><p>Unit vector defining the a-direction (default: <code>(1, 0, 0)</code>).</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>ab_normal</code></td>
-        <td><code>Tuple[int, int, int]</code></td>
-        <td><p>Unit vector normal to the ab-plane.</p></td>
-        <td><code>(0, 0, 1)</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>a_direction</code></td>
-        <td><code>Tuple[int, int, int]</code></td>
-        <td><p>Unit vector defining the a-direction (default: <code>(1, 0, 0)</code>).</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[types.ConstrainedListValue]</code></td>
-      <td><p>A Cartesian 3x3 cell.</p>
-<p>This should equate to the
-<a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cellpar_to_cell</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>A Cartesian 3x3 cell.</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>This should equate to the</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p><a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cellpar_to_cell</span><span class="p">(</span>
     <span class="n">cellpar</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">ab_normal</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">a_direction</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2267,78 +2460,124 @@ plane.</p>
     <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abc</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">cell</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.adapters.structures.utils.fractional_coordinates" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">fractional_coordinates</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">cartesian_positions</span><span class="p">)</span></code>
 
-
 <a href="#optimade.adapters.structures.utils.fractional_coordinates" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Returns fractional coordinates and wraps coordinates to <code>[0,1[</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Based on <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/atoms.html#Atoms.get_scaled_positions">ASE code</a>.</p>
-</div>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+<details class="note">
+  <summary>Note</summary>
+  <p>Based on <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/atoms.html#Atoms.get_scaled_positions">ASE code</a>.</p>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>cell</code></td>
-        <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
-        <td><p>A Cartesian 3x3 cell. This equates to the
-<a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>cartesian_positions</code></td>
-        <td><code>List[types.ConstrainedListValue]</code></td>
-        <td><p>A list of cartesian atomic positions. This equates to the
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>cell</code></td>
+          <td>
+                <code><span title="typing.Tuple">Tuple</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>A Cartesian 3x3 cell. This equates to the
+<a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>cartesian_positions</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>A list of cartesian atomic positions. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.cartesian_site_positions"><code>cartesian_site_positions</code></a>
 attribute.</p></td>
-        <td><em>required</em></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[types.ConstrainedListValue]</code></td>
-      <td><p>A list of fractional coordinates for the atomic positions.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fractional_coordinates</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>A list of fractional coordinates for the atomic positions.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fractional_coordinates</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">cartesian_positions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns fractional coordinates and wraps coordinates to `[0,1[`.</span>
@@ -2375,79 +2614,123 @@ attribute.</p></td>
         <span class="n">fractional</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">%=</span> <span class="mf">1.0</span>
 
     <span class="k">return</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">fractional</span><span class="p">]</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.adapters.structures.utils.pad_cell" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">pad_cell</span><span class="p">(</span><span class="n">lattice_vectors</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-
 <a href="#optimade.adapters.structures.utils.pad_cell" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Turn any <code>null</code>/<code>None</code> values into a <code>float</code> in given <code>tuple</code> of
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>lattice_vectors</code></td>
-        <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
-        <td><p>A 3x3 cartesian cell. This is the
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>lattice_vectors</code></td>
+          <td>
+                <code><span title="typing.Tuple">Tuple</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>A 3x3 cartesian cell. This is the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a>
 attribute.</p></td>
-        <td><em>required</em></td>
-      </tr>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>padding</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[float]</code>
+          </td>
+          <td><p>A value with which <code>null</code> or <code>None</code> values should be replaced.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>padding</code></td>
-        <td><code>Optional[float]</code></td>
-        <td><p>A value with which <code>null</code> or <code>None</code> values should be replaced.</p></td>
-        <td><code>None</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Tuple[Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue], bool]</code></td>
-      <td><p>The possibly redacted/padded <code>lattice_vectors</code> and a <code>bool</code> declaring whether or not
-the value has been redacted/padded or not, i.e., whether it contained <code>null</code> or <code>None</code>
-values.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pad_cell</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>tuple</code>
+          </td>
+          <td><p>The possibly redacted/padded <code>lattice_vectors</code> and a <code>bool</code> declaring whether or not</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>tuple</code>
+          </td>
+          <td><p>the value has been redacted/padded or not, i.e., whether it contained <code>null</code> or <code>None</code></p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>tuple</code>
+          </td>
+          <td><p>values.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pad_cell</span><span class="p">(</span>
     <span class="n">lattice_vectors</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span>
     <span class="n">padding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>  <span class="c1"># Setting this properly makes MkDocs fail.</span>
     <span class="sd">&quot;&quot;&quot;Turn any `null`/`None` values into a `float` in given `tuple` of</span>
 <span class="sd">    [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].</span>
 
@@ -2469,68 +2752,101 @@ values.</p></td>
         <span class="n">outer</span><span class="o">=</span><span class="nb">tuple</span><span class="p">,</span>
         <span class="n">inner</span><span class="o">=</span><span class="nb">tuple</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.adapters.structures.utils.scaled_cell" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">scaled_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></code>
 
-
 <a href="#optimade.adapters.structures.utils.scaled_cell" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Return a scaled 3x3 cell from cartesian 3x3 cell (<code>lattice_vectors</code>).</p>
 <p>This is based on PDB's method of calculating SCALE from CRYST data.
 For more info, see <a href="https://www.wwpdb.org/documentation/file-format-content/format33/sect8.html#SCALEn">this site</a>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>cell</code></td>
-        <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
-        <td><p>A Cartesian 3x3 cell. This equates to the
-<a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
-      <td><p>A scaled 3x3 cell.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">scaled_cell</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>cell</code></td>
+          <td>
+                <code><span title="typing.Tuple">Tuple</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>A Cartesian 3x3 cell. This equates to the
+<a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Tuple">Tuple</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+          </td>
+          <td><p>A scaled 3x3 cell.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scaled_cell</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).</span>
@@ -2558,26 +2874,24 @@ For more info, see <a href="https://www.wwpdb.org/documentation/file-format-cont
         <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">cell</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">],</span> <span class="n">cell</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="n">volume</span>
         <span class="n">scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.adapters.structures.utils.species_from_species_at_sites" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">species_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span></code>
 
-
 <a href="#optimade.adapters.structures.utils.species_from_species_at_sites" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>When a list of species dictionaries is not provided, this function
 can be used to infer the species from the provided species_at_sites.</p>
 <p>In this use case, species_at_sites is assumed to provide a list of
@@ -2586,43 +2900,73 @@ the constructed species list will contain all unique species with
 concentration equal to 1 and the species_at_site tag will be used as
 the chemical symbol.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>species_at_sites</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>The list found under the species_at_sites field.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[optimade.models.structures.Species]</code></td>
-      <td><p>An OPTIMADE species list.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">species_from_species_at_sites</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>species_at_sites</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>The list found under the species_at_sites field.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="optimade.models.structures.Species" href="../../../models/structures/#optimade.models.structures.Species">OptimadeStructureSpecies</a>]</code>
+          </td>
+          <td><p>An OPTIMADE species list.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">species_from_species_at_sites</span><span class="p">(</span>
     <span class="n">species_at_sites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">OptimadeStructureSpecies</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;When a list of species dictionaries is not provided, this function</span>
@@ -2645,65 +2989,86 @@ the chemical symbol.</p>
         <span class="n">OptimadeStructureSpecies</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">_</span><span class="p">,</span> <span class="n">concentration</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">chemical_symbols</span><span class="o">=</span><span class="p">[</span><span class="n">_</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span>
     <span class="p">]</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.adapters.structures.utils.unit_vector" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">unit_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
 
-
 <a href="#optimade.adapters.structures.utils.unit_vector" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Return a unit vector in the same direction as <code>x</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>x</code></td>
-        <td><code>ConstrainedListValue</code></td>
-        <td><p>A three-dimensional vector.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>ConstrainedListValue</code></td>
-      <td><p>A unit vector in the same direction as <code>x</code>.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">unit_vector</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Vector3D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector3D</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>x</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a></code>
+          </td>
+          <td><p>A three-dimensional vector.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a></code>
+          </td>
+          <td><p>A unit vector in the same direction as <code>x</code>.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">unit_vector</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Vector3D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector3D</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return a unit vector in the same direction as `x`.</span>
 
 <span class="sd">    Parameters:</span>
@@ -2719,22 +3084,19 @@ the chemical symbol.</p>
 
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
               
             </article>
@@ -2822,7 +3184,7 @@ the chemical symbol.</p>
     <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.f758a944.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.a877e258.min.js"></script>
       
     
   </body>

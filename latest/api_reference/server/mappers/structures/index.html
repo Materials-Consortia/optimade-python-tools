@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/server/mappers/structures/">
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.4">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
     
     
       
@@ -1541,26 +1541,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#optimade.server.mappers.structures.StructureMapper" class="md-nav__link">
-    StructureMapper
-  </a>
-  
-    <nav class="md-nav" aria-label="StructureMapper">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.server.mappers.structures.StructureMapper.ENTRY_RESOURCE_CLASS" class="md-nav__link">
-    ENTRY_RESOURCE_CLASS
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1843,26 +1823,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#optimade.server.mappers.structures.StructureMapper" class="md-nav__link">
-    StructureMapper
-  </a>
-  
-    <nav class="md-nav" aria-label="StructureMapper">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.server.mappers.structures.StructureMapper.ENTRY_RESOURCE_CLASS" class="md-nav__link">
-    ENTRY_RESOURCE_CLASS
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1880,52 +1840,13 @@
 <h1 id="structures">structures<a class="headerlink" href="#structures" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
 
 <a id="optimade.server.mappers.structures"></a>
-    <div class="doc doc-contents first">
+  <div class="doc doc-contents first">
 
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h2 id="optimade.server.mappers.structures.StructureMapper" class="doc doc-heading">
-        <code>
-StructureMapper        </code>
-
-
-
-<a href="#optimade.server.mappers.structures.StructureMapper" class="headerlink" title="Permanent link">&para;</a></h2>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>optimade/server/mappers/structures.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
-
-    <span class="n">LENGTH_ALIASES</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s2">&quot;elements&quot;</span><span class="p">,</span> <span class="s2">&quot;nelements&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;element_ratios&quot;</span><span class="p">,</span> <span class="s2">&quot;nelements&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;cartesian_site_positions&quot;</span><span class="p">,</span> <span class="s2">&quot;nsites&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">,</span> <span class="s2">&quot;nsites&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-    <span class="n">ENTRY_RESOURCE_CLASS</span> <span class="o">=</span> <span class="n">StructureResource</span>
-</code></pre></div>
-        </details>
-
-
+  
 
   <div class="doc doc-children">
 
@@ -1936,82 +1857,14 @@ StructureMapper        </code>
 
 
 
-  <div class="doc doc-object doc-class">
-
-
-
-<h3 id="optimade.server.mappers.structures.StructureMapper.ENTRY_RESOURCE_CLASS" class="doc doc-heading">
-        <code>
-ENTRY_RESOURCE_CLASS        </code>
-
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
-
-<a href="#optimade.server.mappers.structures.StructureMapper.ENTRY_RESOURCE_CLASS" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Representing a structure.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>optimade/server/mappers/structures.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
-
-    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
-        <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
-
-<span class="s2">- **Type**: string.</span>
-
-<span class="s2">- **Requirements/Conventions**:</span>
-<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
-<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
-<span class="s2">    - **Response**: REQUIRED in the response.</span>
-<span class="s2">    - MUST be an existing entry type.</span>
-<span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
-
-<span class="s2">- **Examples**:</span>
-<span class="s2">    - `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
-        <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^structures$&quot;</span><span class="p">,</span>
-        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
-        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">attributes</span><span class="p">:</span> <span class="n">StructureResourceAttributes</span>
-</code></pre></div>
-        </details>
-
-
-    </div>
-
-  </div>
-
-
-
-
 
 
 
   </div>
 
-    </div>
-
   </div>
 
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
+</div>
 
               
             </article>
@@ -2099,7 +1952,7 @@ ENTRY_RESOURCE_CLASS        </code>
     <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.f758a944.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.a877e258.min.js"></script>
       
     
   </body>

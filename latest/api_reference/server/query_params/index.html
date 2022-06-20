@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/latest/api_reference/server/query_params/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.4">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.6">
     
     
       
@@ -1906,13 +1906,13 @@
 <h1 id="query_params">query_params<a class="headerlink" href="#query_params" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
 
 <a id="optimade.server.query_params"></a>
-    <div class="doc doc-contents first">
+  <div class="doc doc-contents first">
 
-
-
+  
 
   <div class="doc doc-children">
 
@@ -1922,44 +1922,119 @@
 
 
 
-  <div class="doc doc-object doc-class">
+
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.query_params.BaseQueryParams" class="doc doc-heading">
-        <code>
-BaseQueryParams        </code>
-
+        <code>BaseQueryParams</code>
 
 
 <a href="#optimade.server.query_params.BaseQueryParams" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+
+  
       <p>A base class for query parameters that provides validation via the <code>check_params</code> method.</p>
 
-<p><strong>Attributes:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>unsupported_params</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>Any string parameter listed here will raise a warning when passed to
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>unsupported_params</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>Any string parameter listed here will raise a warning when passed to
 the check_params methods. Useful for disabling optional OPTIMADE query parameters that
 are not implemented by the server, e.g., cursor-based pagination.</p></td>
-      </tr>
-  </tbody>
-</table>
+        </tr>
+    </tbody>
+  </table>
+
+
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseQueryParams</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseQueryParams</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A base class for query parameters that provides validation via the `check_params` method.</span>
 
 <span class="sd">    Attributes:</span>
@@ -2030,10 +2105,10 @@ are not implemented by the server, e.g., cursor-based pagination.</p></td>
             <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
             <span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -2045,19 +2120,18 @@ are not implemented by the server, e.g., cursor-based pagination.</p></td>
 
 
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade.server.query_params.BaseQueryParams.check_params" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span></code>
 
 <a href="#optimade.server.query_params.BaseQueryParams.check_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>This method checks whether all the query parameters that are specified
 in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
 <p>This method handles four cases:</p>
@@ -2073,44 +2147,110 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
   class, then a <code>QueryParamNotUsed</code> warning is emitted.</li>
 </ul>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>query_params</code></td>
-        <td><code>Iterable[str]</code></td>
-        <td><p>An iterable of the request's string query parameters.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Exceptions:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>query_params</code></td>
+          <td>
+                <code><span title="typing.Iterable">Iterable</span>[str]</code>
+          </td>
+          <td><p>An iterable of the request's string query parameters.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>`BadRequest`</code></td>
-        <td><p>if the query parameter was not found in the relevant class, or if it
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>`BadRequest`</code>
+          </td>
+          <td><p>if the query parameter was not found in the relevant class, or if it
 does not have a valid prefix.</p></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
 <span class="sd">    in the URL string are implemented in the relevant `*QueryParams` class.</span>
 
@@ -2169,81 +2309,87 @@ does not have a valid prefix.</p></td>
         <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
         <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
+</div>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.query_params.EntryListingQueryParams" class="doc doc-heading">
-        <code>
-EntryListingQueryParams        </code>
-
+        <code>EntryListingQueryParams</code>
 
 
 <a href="#optimade.server.query_params.EntryListingQueryParams" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+
+  
       <p>Common query params for all Entry listing endpoints.</p>
 
-<p><strong>Attributes:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>filter</code></td>
-        <td><code>str</code></td>
-        <td><p>A filter string, in the format described in section API Filtering Format Specification of the specification.</p></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>response_format</code></td>
-        <td><code>str</code></td>
-        <td><p>The output format requested (see section Response Format).
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>filter</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A filter string, in the format described in section API Filtering Format Specification of the specification.</p></td>
+        </tr>
+        <tr>
+          <td><code>response_format</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The output format requested (see section Response Format).
 Defaults to the format string 'json', which specifies the standard output format described in this specification.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?response_format=xml</code></p></td>
-      </tr>
-      <tr>
-        <td><code>email_address</code></td>
-        <td><code>EmailStr</code></td>
-        <td><p>An email address of the user making the request.
+        </tr>
+        <tr>
+          <td><code>email_address</code></td>
+          <td>
+                <code><span title="pydantic.EmailStr">EmailStr</span></code>
+          </td>
+          <td><p>An email address of the user making the request.
 The email SHOULD be that of a person and not an automatic system.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?email_address=user@example.com</code></p></td>
-      </tr>
-      <tr>
-        <td><code>response_fields</code></td>
-        <td><code>str</code></td>
-        <td><p>A comma-delimited set of fields to be provided in the output.
+        </tr>
+        <tr>
+          <td><code>response_fields</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A comma-delimited set of fields to be provided in the output.
 If provided, these fields MUST be returned along with the REQUIRED fields.
 Other OPTIONAL fields MUST NOT be returned when this parameter is present.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?response_fields=last_modified,nsites</code></p></td>
-      </tr>
-      <tr>
-        <td><code>sort</code></td>
-        <td><code>str</code></td>
-        <td><p>If supporting sortable queries, an implementation MUST use the <code>sort</code> query parameter with format as specified
+        </tr>
+        <tr>
+          <td><code>sort</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>If supporting sortable queries, an implementation MUST use the <code>sort</code> query parameter with format as specified
 by <a href="https://jsonapi.org/format/1.0/#fetching-sorting">JSON API 1.0</a>.</p>
 <p>An implementation MAY support multiple sort fields for a single query.
 If it does, it again MUST conform to the JSON API 1.0 specification.</p>
@@ -2256,52 +2402,66 @@ The set of field names, with <code>sortable</code> equal to <code>true</code> ar
 its definition in the JSON API 1.0 specification.
 The field <code>sortable</code> is in addition to each property description and other OPTIONAL fields.
 An example is shown in the section Entry Listing Info Endpoints.</p></td>
-      </tr>
-      <tr>
-        <td><code>page_limit</code></td>
-        <td><code>int</code></td>
-        <td><p>Sets a numerical limit on the number of entries returned.
+        </tr>
+        <tr>
+          <td><code>page_limit</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Sets a numerical limit on the number of entries returned.
 See <a href="https://jsonapi.org/format/1.0/#fetching-pagination">JSON API 1.0</a>.
 The API implementation MUST return no more than the number specified.
 It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers
 (in which case an error code -- <code>403 Forbidden</code> -- MUST be returned).
 The default limit value is up to the API implementation to decide.</p>
 <p><strong>Example</strong>: <code>http://example.com/optimade/v1/structures?page_limit=100</code></p></td>
-      </tr>
-      <tr>
-        <td><code>page_offset</code></td>
-        <td><code>int</code></td>
-        <td><p>RECOMMENDED for use with <em>offset-based</em> pagination: using <code>page_offset</code> and <code>page_limit</code> is RECOMMENDED.</p>
+        </tr>
+        <tr>
+          <td><code>page_offset</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>RECOMMENDED for use with <em>offset-based</em> pagination: using <code>page_offset</code> and <code>page_limit</code> is RECOMMENDED.</p>
 <p><strong>Example</strong>: Skip 50 structures and fetch up to 100: <code>/structures?page_offset=50&amp;page_limit=100</code>.</p></td>
-      </tr>
-      <tr>
-        <td><code>page_number</code></td>
-        <td><code>int</code></td>
-        <td><p>RECOMMENDED for use with <em>page-based</em> pagination: using <code>page_number</code> and <code>page_limit</code> is RECOMMENDED.
+        </tr>
+        <tr>
+          <td><code>page_number</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>RECOMMENDED for use with <em>page-based</em> pagination: using <code>page_number</code> and <code>page_limit</code> is RECOMMENDED.
 It is RECOMMENDED that the first page has number 1, i.e., that <code>page_number</code> is 1-based.</p>
 <p><strong>Example</strong>: Fetch page 2 of up to 50 structures per page: <code>/structures?page_number=2&amp;page_limit=50</code>.</p></td>
-      </tr>
-      <tr>
-        <td><code>page_cursor</code></td>
-        <td><code>int</code></td>
-        <td><p>RECOMMENDED for use with <em>cursor-based</em> pagination: using <code>page_cursor</code> and <code>page_limit</code> is RECOMMENDED.</p></td>
-      </tr>
-      <tr>
-        <td><code>page_above</code></td>
-        <td><code>int</code></td>
-        <td><p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p>
+        </tr>
+        <tr>
+          <td><code>page_cursor</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>RECOMMENDED for use with <em>cursor-based</em> pagination: using <code>page_cursor</code> and <code>page_limit</code> is RECOMMENDED.</p></td>
+        </tr>
+        <tr>
+          <td><code>page_above</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p>
 <p><strong>Example</strong>: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by
 increasing <code>id</code>, so <code>page_above</code> value refers to an <code>id</code> value): <code>/structures?page_above=4000&amp;page_limit=100</code>.</p></td>
-      </tr>
-      <tr>
-        <td><code>page_below</code></td>
-        <td><code>int</code></td>
-        <td><p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p></td>
-      </tr>
-      <tr>
-        <td><code>include</code></td>
-        <td><code>str</code></td>
-        <td><p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a>
+        </tr>
+        <tr>
+          <td><code>page_below</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p></td>
+        </tr>
+        <tr>
+          <td><code>include</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a>
 by utilizing the <code>include</code> query parameter as specified by <a href="https://jsonapi.org/format/1.0/#fetching-includes">JSON API 1.0</a>.</p>
 <p>All related resource objects MUST be returned as part of an array value for the top-level <code>included</code> field,
 see the section JSON Response Schema: Common Fields.</p>
@@ -2312,19 +2472,195 @@ If relationship paths are not supported, or a server is unable to identify a rel
 Note, if a client explicitly specifies <code>include</code> and leaves out <code>references</code>, <code>references</code> resource objects MUST NOT be included under the top-level
 field <code>included</code>, as per the definition of <code>included</code>, see section JSON Response Schema: Common Fields.</p>
 <p><strong>Note</strong>: A query with the parameter <code>include</code> set to the empty string means no related resource objects are to be returned under the top-level field <code>included</code>.</p></td>
-      </tr>
-      <tr>
-        <td><code>api_hint</code></td>
-        <td><code>str</code></td>
-        <td><p>If the client provides the parameter, the value SHOULD have the format <code>vMAJOR</code> or <code>vMAJOR.MINOR</code>,
+        </tr>
+        <tr>
+          <td><code>api_hint</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>If the client provides the parameter, the value SHOULD have the format <code>vMAJOR</code> or <code>vMAJOR.MINOR</code>,
 where MAJOR is a major version and MINOR is a minor version of the API.
 For example, if a client appends <code>api_hint=v1.0</code> to the query string, the hint provided is for major version 1 and minor version 0.</p></td>
-      </tr>
-  </tbody>
-</table>
+        </tr>
+    </tbody>
+  </table>
+
+
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryListingQueryParams</span><span class="p">(</span><span class="n">BaseQueryParams</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryListingQueryParams</span><span class="p">(</span><span class="n">BaseQueryParams</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Common query params for all Entry listing endpoints.</span>
 
@@ -2497,10 +2833,10 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <span class="bp">self</span><span class="o">.</span><span class="n">page_below</span> <span class="o">=</span> <span class="n">page_below</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="n">include</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_hint</span> <span class="o">=</span> <span class="n">api_hint</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -2514,68 +2850,72 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 
 
 
-
+  </div>
 
   </div>
 
-    </div>
+</div>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.query_params.SingleEntryQueryParams" class="doc doc-heading">
-        <code>
-SingleEntryQueryParams        </code>
-
+        <code>SingleEntryQueryParams</code>
 
 
 <a href="#optimade.server.query_params.SingleEntryQueryParams" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+
+  
       <p>Common query params for single entry endpoints.</p>
 
-<p><strong>Attributes:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>response_format</code></td>
-        <td><code>str</code></td>
-        <td><p>The output format requested (see section Response Format).
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>response_format</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The output format requested (see section Response Format).
 Defaults to the format string 'json', which specifies the standard output format described in this specification.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?response_format=xml</code></p></td>
-      </tr>
-      <tr>
-        <td><code>email_address</code></td>
-        <td><code>EmailStr</code></td>
-        <td><p>An email address of the user making the request.
+        </tr>
+        <tr>
+          <td><code>email_address</code></td>
+          <td>
+                <code><span title="pydantic.EmailStr">EmailStr</span></code>
+          </td>
+          <td><p>An email address of the user making the request.
 The email SHOULD be that of a person and not an automatic system.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?email_address=user@example.com</code></p></td>
-      </tr>
-      <tr>
-        <td><code>response_fields</code></td>
-        <td><code>str</code></td>
-        <td><p>A comma-delimited set of fields to be provided in the output.
+        </tr>
+        <tr>
+          <td><code>response_fields</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A comma-delimited set of fields to be provided in the output.
 If provided, these fields MUST be returned along with the REQUIRED fields.
 Other OPTIONAL fields MUST NOT be returned when this parameter is present.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?response_fields=last_modified,nsites</code></p></td>
-      </tr>
-      <tr>
-        <td><code>include</code></td>
-        <td><code>str</code></td>
-        <td><p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a>
+        </tr>
+        <tr>
+          <td><code>include</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a>
 by utilizing the <code>include</code> query parameter as specified by <a href="https://jsonapi.org/format/1.0/#fetching-includes">JSON API 1.0</a>.</p>
 <p>All related resource objects MUST be returned as part of an array value for the top-level <code>included</code> field,
 see the section JSON Response Schema: Common Fields.</p>
@@ -2586,19 +2926,96 @@ If relationship paths are not supported, or a server is unable to identify a rel
 Note, if a client explicitly specifies <code>include</code> and leaves out <code>references</code>, <code>references</code> resource objects MUST NOT be included under the top-level
 field <code>included</code>, as per the definition of <code>included</code>, see section JSON Response Schema: Common Fields.</p>
 <p><strong>Note</strong>: A query with the parameter <code>include</code> set to the empty string means no related resource objects are to be returned under the top-level field <code>included</code>.</p></td>
-      </tr>
-      <tr>
-        <td><code>api_hint</code></td>
-        <td><code>str</code></td>
-        <td><p>If the client provides the parameter, the value SHOULD have the format <code>vMAJOR</code> or <code>vMAJOR.MINOR</code>,
+        </tr>
+        <tr>
+          <td><code>api_hint</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>If the client provides the parameter, the value SHOULD have the format <code>vMAJOR</code> or <code>vMAJOR.MINOR</code>,
 where MAJOR is a major version and MINOR is a minor version of the API.
 For example, if a client appends <code>api_hint=v1.0</code> to the query string, the hint provided is for major version 1 and minor version 0.</p></td>
-      </tr>
-  </tbody>
-</table>
+        </tr>
+    </tbody>
+  </table>
+
+
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SingleEntryQueryParams</span><span class="p">(</span><span class="n">BaseQueryParams</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">SingleEntryQueryParams</span><span class="p">(</span><span class="n">BaseQueryParams</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Common query params for single entry endpoints.</span>
 
@@ -2672,10 +3089,10 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <span class="bp">self</span><span class="o">.</span><span class="n">response_fields</span> <span class="o">=</span> <span class="n">response_fields</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="n">include</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_hint</span> <span class="o">=</span> <span class="n">api_hint</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -2689,24 +3106,20 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 
 
 
+  </div>
 
   </div>
 
-    </div>
-
-  </div>
-
-
-
+</div>
 
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
               
             </article>
@@ -2794,7 +3207,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.a877e258.min.js"></script>
       
     
   </body>
