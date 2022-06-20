@@ -70,12 +70,12 @@ class MongoCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return self.collection.estimated_document_count()
 
-    def count(self, **kwargs) -> int:
+    def count(self, **kwargs: Any) -> int:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
         Parameters:
-            kwargs (dict): Query parameters as keyword arguments. The keys
+            **kwargs: Query parameters as keyword arguments. The keys
                 'filter', 'skip', 'limit', 'hint' and 'maxTimeMS' will be passed
                 to the `pymongo.collection.Collection.count_documents` method.
 

@@ -71,7 +71,9 @@ plugins:
             members: null
             # inherited_members: false  # not yet supported
             docstring_style: google
-      watch:
-        - optimade
+            enable_inventory: true
   - awesome-pages
   - autorefs
+
+watch:
+  - optimade
