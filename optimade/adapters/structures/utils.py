@@ -295,7 +295,7 @@ def _pad_iter_of_iters(
 def pad_cell(
     lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D],
     padding: Optional[float] = None,
-) -> Tuple[Tuple[Vector3D, Vector3D, Vector3D], bool]:
+) -> tuple:  # Setting this properly makes MkDocs fail.
     """Turn any `null`/`None` values into a `float` in given `tuple` of
     [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].
 

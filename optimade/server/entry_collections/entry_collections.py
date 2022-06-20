@@ -108,12 +108,12 @@ class EntryCollection(ABC):
         """
 
     @abstractmethod
-    def count(self, **kwargs) -> int:
+    def count(self, **kwargs: Any) -> int:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
         Parameters:
-            kwargs (dict): Query parameters as keyword arguments.
+            **kwargs: Query parameters as keyword arguments.
 
         """
 

@@ -48,8 +48,8 @@ docs_deps = [
     "mike~=1.1",
     "mkdocs~=1.3",
     "mkdocs-awesome-pages-plugin~=2.7",
-    "mkdocs-material~=8.2",
-    "mkdocstrings~=0.18.1",
+    "mkdocs-material~=8.3",
+    "mkdocstrings[python]~=0.19.0",
 ]
 testing_deps = [
     "build~=0.8.0",
@@ -60,7 +60,7 @@ testing_deps = [
     "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.13", "pre-commit~=2.19", "invoke~=1.7"]
+    ["pylint~=2.14", "pre-commit~=2.19", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -104,10 +104,10 @@ setup(
     python_requires=">=3.7,<3.11",
     install_requires=[
         "lark~=1.1",
-        "fastapi~=0.65",
+        "fastapi~=0.78",
         "pydantic~=1.9",
         "email_validator~=1.2",
-        "requests~=2.27",
+        "requests~=2.28",
         "typing-extensions~=4.0;python_version<'3.8'",
     ],
     extras_require={

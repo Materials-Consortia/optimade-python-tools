@@ -1,5 +1,5 @@
 # utils
 
 ::: optimade.models.utils
-    rendering:
+    options:
       show_if_no_docstring: true
