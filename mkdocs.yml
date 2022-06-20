@@ -74,3 +74,4 @@ plugins:
       watch:
         - optimade
   - awesome-pages
+  - autorefs
