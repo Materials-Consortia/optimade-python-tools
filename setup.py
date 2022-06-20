@@ -49,7 +49,7 @@ docs_deps = [
     "mkdocs~=1.3",
     "mkdocs-awesome-pages-plugin~=2.7",
     "mkdocs-material~=8.2",
-    "mkdocstrings~=0.18.1",
+    "mkdocstrings[python]~=0.19.0",
 ]
 testing_deps = [
     "build~=0.8.0",

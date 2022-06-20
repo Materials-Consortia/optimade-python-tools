@@ -115,7 +115,7 @@ class EntryAdapter:
 
     @staticmethod
     def _get_model_attributes(
-        starting_instances: Union[Tuple[BaseModel], List[BaseModel]], name: str
+        starting_instances: Union[Tuple[BaseModel, ...], List[BaseModel]], name: str
     ) -> Any:
         """Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""
         for res in starting_instances:

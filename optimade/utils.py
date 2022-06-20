@@ -37,7 +37,8 @@ def get_providers(add_mongo_id: bool = False) -> list:
        `/links`-endpoint.
 
     Arguments:
-        Whether to populate the `_id` field of the provider with MongoDB ObjectID.
+        add_mongo_id: Whether to populate the `_id` field of the provider with MongoDB
+            ObjectID.
 
     Returns:
         List of raw JSON-decoded providers including MongoDB object IDs.

@@ -1,5 +1,5 @@
 # links
 
 ::: optimade.models.links
-    rendering:
+    options:
       show_if_no_docstring: true
