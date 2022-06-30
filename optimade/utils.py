@@ -3,8 +3,10 @@ with OPTIMADE providers that can be used in server or client code.
 
 """
 
+import json
 from typing import List, Iterable
 
+from pydantic import ValidationError
 from optimade.models.links import LinksResource
 
 PROVIDER_LIST_URLS = (
@@ -128,7 +130,7 @@ def get_child_database_links(
     links_endp = base_url + "/v1/links"
     try:
         links = requests.get(links_endp, timeout=10)
-    except requests.ConnectionError as exc:
+    except (requests.ConnectionError, requests.Timeout) as exc:
         raise RuntimeError(f"Unable to connect to provider {provider['id']}") from exc
 
     if links.status_code != 200:
@@ -136,7 +138,13 @@ def get_child_database_links(
             f"Invalid response from {links_endp} for provider {provider['id']}: {links.content}."
         )
 
-    links = LinksResponse(**links.json())
+    try:
+        links = LinksResponse(**links.json())
+    except (ValidationError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            f"Did not understand response from {provider['id']}: {links.content}"
+        ) from exc
+
     return [
         link
         for link in links.data
