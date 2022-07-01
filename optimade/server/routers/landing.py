@@ -26,7 +26,7 @@ def render_landing_page(url: str) -> HTMLResponse:
         web safe before inclusion in the template.
 
     """
-    meta = meta_values(url, 1, 1, more_data_available=False)
+    meta = meta_values(url, 1, 1, more_data_available=False, schema=CONFIG.schema_url)
     major_version = __api_version__.split(".")[0]
     versioned_url = f"{get_base_url(url)}/v{major_version}/"
 
