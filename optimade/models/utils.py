@@ -3,10 +3,14 @@ import warnings
 import re
 import itertools
 from enum import Enum
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from pydantic import Field
 from pydantic.fields import FieldInfo
+
+if TYPE_CHECKING:  # pragma: no cover
+    from typing import Any
+
 
 _PYDANTIC_FIELD_KWARGS = list(inspect.signature(Field).parameters.keys())
 
@@ -55,9 +59,9 @@ def StrictPydanticField(*args, **kwargs):
 
 
 def StrictField(
-    *args,
+    *args: "Any",
     description: str = None,
-    **kwargs,
+    **kwargs: "Any",
 ) -> StrictFieldInfo:
     """A wrapper around `pydantic.Field` that does the following:
 

@@ -1,4 +1,6 @@
 from typing import Union, Dict
+from optimade.server.warnings import OptimadeWarning
+
 
 import pytest
 
@@ -128,7 +130,12 @@ def check_response(get_good_response):
         expected_warnings: List[Dict[str, str]] = None,
         server: Union[str, OptimadeTestClient] = "regular",
     ):
-        response = get_good_response(request, server)
+        if expected_warnings:
+            with pytest.warns(OptimadeWarning):
+                response = get_good_response(request, server)
+        else:
+            response = get_good_response(request, server)
+
         if isinstance(expected_ids, str):
             expected_ids = [expected_ids]
             response["data"] = [response["data"]]

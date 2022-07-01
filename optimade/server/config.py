@@ -18,7 +18,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
 )
 from pydantic.env_settings import SettingsSourceCallable
 
-from optimade import __version__
+from optimade import __version__, __api_version__
 from optimade.models import Implementation, Provider
 
 
@@ -266,6 +266,20 @@ class ServerConfig(BaseSettings):
             "MongoDB-based backend."
         ),
     )
+    schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
+        f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade.json",
+        description=(
+            "A URL that will be provided in the `meta->schema` field for every response"
+        ),
+    )
+
+    index_schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
+        f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade_index.json",
+        description=(
+            "A URL that will be provided in the `meta->schema` field for every response from the index meta-database."
+        ),
+    )
+
     log_level: LogLevel = Field(
         LogLevel.INFO, description="Logging level for the OPTIMADE server."
     )

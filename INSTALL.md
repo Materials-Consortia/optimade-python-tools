@@ -41,8 +41,8 @@ All contributed Python code, must use the [black](https://github.com/ambv/black)
 git clone --recursive git@github.com:Materials-Consortia/optimade-python-tools.git
 cd optimade-python-tools
 
-# Ensure a Python>=3.7 (virtual) environment (example below using Anaconda/Miniconda)
-conda create -n optimade python=3.7
+# Ensure a Python>=3.8 (virtual) environment (example below using Anaconda/Miniconda)
+conda create -n optimade python=3.10
 conda activate optimade
 
 # Install package and dependencies in editable mode (including "dev" requirements).
@@ -101,7 +101,7 @@ These commands should be run from a local optimade-python-tools directory.
 The following command starts a local Elasticsearch v6 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):
 
 ```shell
-docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:6.8.23 \
+docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:7.17.1 \
 && sleep 10 \
 && OPTIMADE_DATABASE_BACKEND="elastic" py.test; \
 docker container stop elasticsearch_test; docker container rm elasticsearch_test

@@ -1,5 +1,5 @@
 # entries
 
 ::: optimade.models.entries
-    rendering:
+    options:
       show_if_no_docstring: true

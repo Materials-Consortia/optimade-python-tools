@@ -67,7 +67,7 @@ class Quantity:
         self.length_quantity = length_quantity
 
 
-class BaseTransformer(abc.ABC, Transformer):
+class BaseTransformer(Transformer, abc.ABC):
     """Generic filter transformer that handles various
     parts of the grammar in a backend non-specific way.
 
