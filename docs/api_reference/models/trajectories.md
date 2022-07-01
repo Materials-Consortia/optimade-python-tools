@@ -1,5 +1,5 @@
 # trajectories
 
 ::: optimade.models.trajectories
-    rendering:
+    options:
       show_if_no_docstring: true

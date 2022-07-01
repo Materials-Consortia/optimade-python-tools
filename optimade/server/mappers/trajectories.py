@@ -23,3 +23,4 @@ class TrajectoryMapper(BaseResourceMapper):
         .union(EntryResourceAttributes.__fields__.keys())
     )
     ENTRY_RESOURCE_CLASS = TrajectoryResource
+    ENDPOINT = "trajectories"

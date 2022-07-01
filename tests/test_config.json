@@ -18,7 +18,12 @@
     "provider_fields": {
         "structures": [
             "band_gap",
-            {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"}]
+            {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"}],
+        "trajectories": [{
+                "name": "time",
+                "description": "The time belonging to each frame.",
+                "unit": "ps",
+                "type": "dictionary"}]
     },
     "aliases": {
         "structures": {
