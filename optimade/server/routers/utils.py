@@ -139,7 +139,9 @@ def handle_response_fields(
             new_entry["type"] == "trajectories"
         ):  # TODO For now we only have trajectories with large properties but it would be nice if this could apply to other endpoints in the future as well.
             last_frame = getattr(params, "last_frame")
-            first_frame = getattr(params, "first_frame")
+            first_frame = (
+                getattr(params, "first_frame") - 1
+            )  # Originaly we started counting the frames from 0 now we count from one so we subtract 1 so the old code can be used
             frame_step = getattr(params, "frame_step")
             if continue_from_frame:
                 first_frame = continue_from_frame
@@ -151,9 +153,13 @@ def handle_response_fields(
             else:
                 frame_step_set = True
 
-            if last_frame is None or last_frame >= new_entry["attributes"]["nframes"]:
+            if last_frame is None or last_frame > new_entry["attributes"]["nframes"]:
                 last_frame = new_entry["attributes"]["nframes"] - 1
                 # The frames are counted starting from 0 so if nframes = 10 the last frame is frame 9.
+            else:
+                last_frame = (
+                    last_frame - 1
+                )  # Originaly we started counting the frames from 0 now we count from one so we subtract 1 so the old code can be used
 
             # We make a rough estimate of the amount of data expected.
             sum_item_size = 0
@@ -200,9 +206,11 @@ def handle_response_fields(
                     frame_serialization_format = new_entry["attributes"][field][
                         "frame_serialization_format"
                     ]
-                    new_entry["attributes"][field]["first_frame"] = first_frame
+                    new_entry["attributes"][field]["first_frame"] = (
+                        first_frame + 1
+                    )  # because OPTIMADE indexes from 1 we have to add 1 here
                     new_entry["attributes"][field]["frame_step"] = frame_step
-                    new_entry["attributes"][field]["last_frame"] = last_frame
+                    new_entry["attributes"][field]["last_frame"] = last_frame + 1
 
                     # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
                     if storage_method == "file":
@@ -281,7 +289,7 @@ def handle_response_fields(
                                     1 + (last_frame - first_frame) // frame_step
                                 )
                                 warnings.warn(
-                                    f"The difference between the value of first_frame {first_frame} and offset_sparse {offset} is not a multiple of frame_step {frame_step} for the field {field} in entr of entry {new_entry['id']}. As a result all of the returned values will be null.",
+                                    f"The difference between the value of first_frame {first_frame + 1} and offset_sparse {offset} is not a multiple of frame_step {frame_step} for the field {field} in entr of entry {new_entry['id']}. As a result all of the returned values will be null.",
                                     IncompatibleFrameStep,
                                 )
                             else:
@@ -296,7 +304,7 @@ def handle_response_fields(
                                     else:
                                         values.append(None)
                                 warnings.warn(
-                                    f"The frame_step value of {frame_step} for entry of entry {new_entry['id']} is not a multiple of the step_size_sparse value of {step_size_sparse} for the field {field}. The difference between the value of first_frame {first_frame} and offset_sparse {offset} is not a multiple of frame_step {frame_step} for the field {field}. As a result many of the returned values will be null.",
+                                    f"The frame_step value of {frame_step} for entry of entry {new_entry['id']} is not a multiple of the step_size_sparse value of {step_size_sparse} for the field {field}. The difference between the value of first_frame {first_frame+1} and offset_sparse {offset} is not a multiple of frame_step {frame_step} for the field {field}. As a result many of the returned values will be null.",
                                     IncompatibleFrameStep,
                                 )
                             new_entry["attributes"][field]["last_frame"] = (
@@ -383,8 +391,8 @@ def get_values_from_file(field: str, path: str, new_entry: Dict):
     frame_serialization_format = new_entry["attributes"][field][
         "frame_serialization_format"
     ]
-    first_frame = new_entry["attributes"][field]["first_frame"]
-    last_frame = new_entry["attributes"][field]["last_frame"] + 1
+    first_frame = new_entry["attributes"][field]["first_frame"] - 1
+    last_frame = new_entry["attributes"][field]["last_frame"]
     frame_step = new_entry["attributes"][field]["frame_step"]
     file = h5py.File(path, "r")
     if frame_serialization_format == "explicit":
@@ -530,7 +538,7 @@ def get_entries(
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
         if traj_trunc:
             query["page_offset"] -= 1
-            query["continue_from_frame"] = last_frame + 1
+            query["continue_from_frame"] = last_frame + 2
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
 
@@ -593,7 +601,7 @@ def get_single_entry(
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results) - 1
-        query["continue_from_frame"] = last_frame + 1
+        query["continue_from_frame"] = last_frame + 2
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
         links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
