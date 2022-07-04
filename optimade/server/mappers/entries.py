@@ -322,15 +322,8 @@ class BaseResourceMapper:
             A resource object in OPTIMADE format.
 
         """
-        mapping = ((real, alias) for alias, real in cls.all_aliases())
-        newdoc = {}
-        reals = {real for alias, real in cls.all_aliases()}
-        for key in doc:
-            if key not in reals:
-                newdoc[key] = doc[key]
-        for real, alias in mapping:
-            if real in doc:
-                newdoc[alias] = doc[real]
+
+        newdoc = cls.add_alias_and_prefix(doc)
 
         if "attributes" in newdoc:
             raise Exception("Will overwrite doc field!")
@@ -346,6 +339,20 @@ class BaseResourceMapper:
 
         newdoc["type"] = cls.ENDPOINT
         newdoc["attributes"] = attributes
+
+        return newdoc
+
+    @classmethod
+    def add_alias_and_prefix(cls, doc: dict):
+        aliases = cls.all_aliases()
+        newdoc = {}
+        reals = {real for alias, real in aliases}
+        for key in doc:
+            if key not in reals:
+                newdoc[key] = doc[key]
+        for alias, real in aliases:
+            if real in doc:
+                newdoc[alias] = doc[real]
 
         return newdoc
 

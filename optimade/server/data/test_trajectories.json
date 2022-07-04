@@ -59691,6 +59691,9 @@
     },
     "species_at_sites": {
       "frame_serialization_format": "constant"
+    },
+    "time":{
+	  "frame_serialization_format" : "linear"
     }
   },
   "type": "trajectories",
@@ -59699,6 +59702,12 @@
     "frame_serialization_format": "explicit",
     "nvalues": 34,
     "_storage_location": "file"
+  },
+  "time":{
+	"frame_serialization_format" : "linear",
+	"_storage_location" : "mongo",
+	"offset_linear" : 0.0,
+	"step_size_linear" : 0.04888821
   },
   "lattice_vectors": {
     "frame_serialization_format": "constant",

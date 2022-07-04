@@ -24,3 +24,10 @@ class TrajectoryMapper(BaseResourceMapper):
     )
     ENTRY_RESOURCE_CLASS = TrajectoryResource
     ENDPOINT = "trajectories"
+
+    @classmethod
+    def map_back(cls, doc: dict) -> dict:
+        doc["available_properties"] = cls.add_alias_and_prefix(
+            doc["available_properties"]
+        )
+        return super().map_back(doc)

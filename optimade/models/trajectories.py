@@ -183,6 +183,9 @@ class AvailablePropertyAttributes(BaseModel):
         queryable=SupportLevel.OPTIONAL,
     )
 
+    class Config:
+        extra = "allow"
+
 
 class TrajectoryDataAttributes(AvailablePropertySubfields):
     def __init__(self, **kwargs):
