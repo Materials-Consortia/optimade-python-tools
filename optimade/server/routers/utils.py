@@ -111,12 +111,12 @@ def handle_response_fields(
         the `response_fields` OPTIMADE URL query parameter.
 
     """
-    singleflag = False
+    single_entry = False
     if not isinstance(results, list):
-        singleflag = True
+        single_entry = True
         results = [results]
 
-    data_limit = 1000000  # For now we limit the product of the number of sites times the number of frames. A more accurate method would be to limit the
+    data_limit = 1000000  # For now we limit the product of the number of sites times the number of frames.
     sum_entry_size = 0
     continue_from_frame = getattr(params, "continue_from_frame", None)
     new_results = []
@@ -134,11 +134,10 @@ def handle_response_fields(
             if field not in new_entry["attributes"]:
                 new_entry["attributes"][field] = None
 
-        # Determine the expected size of an entry and reduce the last frame if neccesary
         if (
             new_entry["type"] == "trajectories"
         ):  # TODO For now we only have trajectories with large properties but it would be nice if this could apply to other endpoints in the future as well.
-            last_frame = getattr(params, "last_frame")
+            last_frame = getattr(params, "last_frame", None)
             first_frame = (
                 getattr(params, "first_frame") - 1
             )  # Originaly we started counting the frames from 0 now we count from one so we subtract 1 so the old code can be used
@@ -374,7 +373,7 @@ def handle_response_fields(
         new_results.append(new_entry)
         if traj_trunc:
             break
-    if singleflag:
+    if single_entry:
         return new_results[0], traj_trunc, last_frame
     else:
         return new_results, traj_trunc, last_frame
