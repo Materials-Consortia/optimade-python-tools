@@ -1,5 +1,5 @@
 # responses
 
 ::: optimade.models.responses
-    rendering:
+    options:
       show_if_no_docstring: true

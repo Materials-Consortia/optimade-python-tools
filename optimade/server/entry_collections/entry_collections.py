@@ -108,12 +108,12 @@ class EntryCollection(ABC):
         """
 
     @abstractmethod
-    def count(self, **kwargs) -> int:
+    def count(self, **kwargs: Any) -> int:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
         Parameters:
-            kwargs (dict): Query parameters as keyword arguments.
+            **kwargs: Query parameters as keyword arguments.
 
         """
 
@@ -160,12 +160,13 @@ class EntryCollection(ABC):
 
         bad_optimade_fields = set()
         bad_provider_fields = set()
+        supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
+        all_attributes = self.resource_mapper.ALL_ATTRIBUTES
         for field in include_fields:
-            if field not in self.resource_mapper.ALL_ATTRIBUTES:
+            if field not in all_attributes:
                 if field.startswith("_"):
                     if any(
-                        field.startswith(f"_{prefix}_")
-                        for prefix in self.resource_mapper.SUPPORTED_PREFIXES
+                        field.startswith(f"_{prefix}_") for prefix in supported_prefixes
                     ):
                         bad_provider_fields.add(field)
                 else:

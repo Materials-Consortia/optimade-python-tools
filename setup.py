@@ -17,10 +17,10 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 
 # Dependencies
 # Server minded
-elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
+elastic_deps = ["elasticsearch-dsl~=7.4,<8.0"]
 mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.0"]
 server_deps = [
-    "uvicorn~=0.17",
+    "uvicorn~=0.18",
     "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
 ] + mongo_deps
 
@@ -48,8 +48,8 @@ docs_deps = [
     "mike~=1.1",
     "mkdocs~=1.3",
     "mkdocs-awesome-pages-plugin~=2.7",
-    "mkdocs-material~=8.2",
-    "mkdocstrings~=0.18.1",
+    "mkdocs-material~=8.3",
+    "mkdocstrings[python]~=0.19.0",
 ]
 testing_deps = [
     "build~=0.8.0",
@@ -60,7 +60,7 @@ testing_deps = [
     "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.13", "pre-commit~=2.19", "invoke~=1.7"]
+    ["pylint~=2.14", "pre-commit~=2.19", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -103,11 +103,11 @@ setup(
     ],
     python_requires=">=3.7,<3.11",
     install_requires=[
-        "lark-parser~=0.12",
-        "fastapi~=0.65",
+        "lark~=1.1",
+        "fastapi~=0.78",
         "pydantic~=1.9",
         "email_validator~=1.2",
-        "requests~=2.27",
+        "requests~=2.28",
         "typing-extensions~=4.0;python_version<'3.8'",
     ],
     extras_require={

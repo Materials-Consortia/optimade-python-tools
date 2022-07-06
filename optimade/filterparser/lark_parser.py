@@ -76,7 +76,7 @@ class LarkParser:
         self.variant = variant
 
         with open(AVAILABLE_PARSERS[version][variant]) as f:
-            self.lark = Lark(f)
+            self.lark = Lark(f, maybe_placeholders=False)
 
         self.tree = None
         self.filter = None

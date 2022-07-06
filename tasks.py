@@ -211,7 +211,7 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
     pages_template = 'title: "{name}"\n'
     md_template = "# {name}\n\n::: {py_path}\n"
     models_template = (
-        md_template + f"{' ' * 4}rendering:\n{' ' * 6}show_if_no_docstring: true\n"
+        md_template + f"{' ' * 4}options:\n{' ' * 6}show_if_no_docstring: true\n"
     )
 
     if docs_dir.exists() and pre_clean:
@@ -255,7 +255,13 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
             md_filename = filename.replace(".py", ".md")
 
             # For models we want to include EVERYTHING, even if it doesn't have a doc-string
-            template = models_template if str(relpath) == "models" else md_template
+            # Also for `server.config`
+            template = (
+                models_template
+                if str(relpath) == "models"
+                or (str(relpath) == "server" and basename == "config")
+                else md_template
+            )
 
             write_file(
                 full_path=docs_sub_dir.joinpath(md_filename),
