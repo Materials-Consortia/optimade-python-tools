@@ -134,13 +134,16 @@ def handle_response_fields(
             if field not in new_entry["attributes"]:
                 new_entry["attributes"][field] = None
 
-        if (
-            new_entry["type"] == "trajectories"
-        ):  # TODO For now we only have trajectories with large properties but it would be nice if this could apply to other endpoints in the future as well.
+        # TODO For now we only have trajectories with large properties but it would be nice if this could apply to other endpoints in the future as well.
+        if new_entry["type"] == "trajectories":
             last_frame = getattr(params, "last_frame", None)
-            first_frame = (
-                getattr(params, "first_frame") - 1
-            )  # Originaly we started counting the frames from 0 now we count from one so we subtract 1 so the old code can be used
+            # Originaly we started counting the frames from 0, now we count from one so we subtract 1 from first_frame and later also from last frame, so the old code can be used
+            first_frame = getattr(params, "first_frame") - 1
+            if last_frame is None or last_frame > new_entry["attributes"]["nframes"]:
+                last_frame = new_entry["attributes"]["nframes"] - 1
+            else:
+                last_frame = last_frame - 1
+
             frame_step = getattr(params, "frame_step")
             if continue_from_frame:
                 first_frame = continue_from_frame
@@ -151,14 +154,6 @@ def handle_response_fields(
                 frame_step = 1
             else:
                 frame_step_set = True
-
-            if last_frame is None or last_frame > new_entry["attributes"]["nframes"]:
-                last_frame = new_entry["attributes"]["nframes"] - 1
-                # The frames are counted starting from 0 so if nframes = 10 the last frame is frame 9.
-            else:
-                last_frame = (
-                    last_frame - 1
-                )  # Originaly we started counting the frames from 0 now we count from one so we subtract 1 so the old code can be used
 
             # We make a rough estimate of the amount of data expected.
             sum_item_size = 0
