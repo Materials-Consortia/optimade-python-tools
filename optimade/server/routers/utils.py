@@ -194,7 +194,7 @@ def handle_response_fields(
 
             for field in include_fields:
                 storage_method = getattr(
-                    getattr(one_doc.attributes, field, None), "_storage_location", None
+                    getattr(one_doc.attributes, field, None), "_storage_method", None
                 )
                 if storage_method is not None:
                     frame_serialization_format = new_entry["attributes"][field][
@@ -206,19 +206,8 @@ def handle_response_fields(
                     new_entry["attributes"][field]["frame_step"] = frame_step
                     new_entry["attributes"][field]["last_frame"] = last_frame + 1
 
-                    # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
-                    if storage_method == "file":
-                        path = getattr(
-                            one_doc.attributes, "_hdf5file_path", None
-                        )  # TODO perhaps hdf5file is not such a good name and we should be more generic like datalocation
-                        if path is None:
-                            raise InternalServerError(
-                                f"The property{field} is supposed to be stored in a file yet no filepath is specified in hdf5file_path."
-                            )
-                        values = get_values_from_file(field, path, new_entry)
-
                     # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step
-                    elif storage_method == "mongo":
+                    if storage_method == "mongo":
                         if (
                             frame_serialization_format == "constant"
                             or frame_serialization_format == "linear"
@@ -351,10 +340,15 @@ def handle_response_fields(
                                         f"For property {field} of entry {new_entry['id']} the frame_serialization_format is 'explicit_custom_sparse'. If the frame_step parameter has also been set, null values will be returned if there is no value for a frame."
                                     )
                                 )
-
+                    # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
                     else:
-                        raise InternalServerError(
-                            f"Unknown value for the _storage_location field:{new_entry['attributes'][field]['_storage_location']}"
+                        path = getattr(one_doc.attributes, "_storage_path", None)
+                        if path is None:
+                            raise InternalServerError(
+                                f"The property{field} is supposed to be stored in a file yet no filepath is specified in _storage_path."
+                            )
+                        values = get_values_from_file(
+                            field, path, new_entry, storage_method
                         )
 
                     new_entry["attributes"][field]["values"] = values
@@ -374,27 +368,42 @@ def handle_response_fields(
         return new_results, traj_trunc, last_frame
 
 
-def get_values_from_file(field: str, path: str, new_entry: Dict):
-    import h5py
+def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: str):
     from pathlib import Path
 
-    if (
-        path[0] != "/"
-    ):  # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
+    # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
+    if path[0] != "/":
         path = Path(__file__).parent.parent / "data" / path
     frame_serialization_format = new_entry["attributes"][field][
         "frame_serialization_format"
     ]
+    if frame_serialization_format != "explicit":
+        raise InternalServerError(
+            "Loading data from a file is not implemented yet for frame serialization methods other than 'explicit'."
+        )  # TODO implement this for the other frame_serialization_methods
+
+    if storagemethod == "hdf5":
+        return get_hdf5_value(field, path, new_entry)
+    elif storagemethod == "binary":
+        return get_binary_value(field, path, new_entry)
+    else:
+        raise InternalServerError(
+            f"Unknown value for the _storage_method field:{new_entry['attributes'][field]['_storage_method']}"
+        )
+
+
+def get_hdf5_value(field: str, path: str, new_entry: Dict):
+    import h5py
+
     first_frame = new_entry["attributes"][field]["first_frame"] - 1
     last_frame = new_entry["attributes"][field]["last_frame"]
     frame_step = new_entry["attributes"][field]["frame_step"]
     file = h5py.File(path, "r")
-    if frame_serialization_format == "explicit":
-        return file[field]["values"][first_frame:last_frame:frame_step].tolist()
-    else:
-        raise InternalServerError(
-            "Loading data from a file is not implemented yet for frame serialization methods other than 'explicit'."
-        )  # TODO implement this for the other frame_serialization_methods
+    return file[field]["values"][first_frame:last_frame:frame_step].tolist()
+
+
+def get_binary_value(field: str, path: str, new_entry: Dict):
+    pass
 
 
 def get_included_relationships(

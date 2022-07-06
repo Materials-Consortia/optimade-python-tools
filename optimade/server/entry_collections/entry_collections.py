@@ -331,7 +331,7 @@ class EntryCollection(ABC):
             response_fields = set(params.response_fields.split(","))
             response_fields |= self.resource_mapper.get_required_fields()
             if self.resource_mapper.ENDPOINT == "trajectories":
-                cursor_kwargs["projection"]["_hdf5file_path"] = True
+                cursor_kwargs["projection"]["_storage_path"] = True
         else:
             response_fields = getattr(
                 self.resource_mapper, "STANDARD_FIELDS", self.all_fields.copy()

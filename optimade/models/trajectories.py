@@ -430,7 +430,7 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
-    _hdf5file_path: Optional[str] = OptimadeField(
+    _storage_path: Optional[str] = OptimadeField(
         None,
         description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
         support=SupportLevel.OPTIONAL,
