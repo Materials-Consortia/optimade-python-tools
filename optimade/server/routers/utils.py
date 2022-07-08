@@ -3,7 +3,7 @@ import re
 import sys
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Set, Union
+from typing import Any, Dict, List, Set, Union, TextIO
 import warnings
 from fastapi import Request
 from fastapi.responses import JSONResponse
@@ -374,10 +374,7 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: 
     # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
     if path[0] != "/":
         path = Path(__file__).parent.parent / "data" / path
-    frame_serialization_format = new_entry["attributes"][field][
-        "frame_serialization_format"
-    ]
-    if frame_serialization_format != "explicit":
+    if new_entry["attributes"][field]["frame_serialization_format"] != "explicit":
         raise InternalServerError(
             "Loading data from a file is not implemented yet for frame serialization methods other than 'explicit'."
         )  # TODO implement this for the other frame_serialization_methods
@@ -385,7 +382,18 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: 
     if storagemethod == "hdf5":
         return get_hdf5_value(field, path, new_entry)
     elif storagemethod == "binary":
-        return get_binary_value(field, path, new_entry)
+        binary_file = open(path, "r")
+        values = get_binary_value(field, binary_file, new_entry)
+        binary_file.close()
+        return values
+    elif (
+        storagemethod == "gridfs"
+    ):  # TODO: This code for gridfs has not been tested yet
+        import gridfs
+
+        fs = gridfs.GridFS(CONFIG.mongo_database)
+        bytestream = fs.get(file_id=path)
+        return get_binary_value(field, bytestream, new_entry)
     else:
         raise InternalServerError(
             f"Unknown value for the _storage_method field:{new_entry['attributes'][field]['_storage_method']}"
@@ -402,8 +410,40 @@ def get_hdf5_value(field: str, path: str, new_entry: Dict):
     return file[field]["values"][first_frame:last_frame:frame_step].tolist()
 
 
-def get_binary_value(field: str, path: str, new_entry: Dict):
-    pass
+def get_binary_value(field: str, binary_file: TextIO, new_entry: Dict):
+    import numpy
+
+    first_frame = new_entry["attributes"][field]["first_frame"] - 1
+    last_frame = new_entry["attributes"][field]["last_frame"]
+    frame_step = new_entry["attributes"][field]["frame_step"]
+    nsites = new_entry["attributes"]["reference_structure"][
+        "nsites"
+    ]  # TODO Add support for a varying number of sites per frame.
+    nframes_to_return = (last_frame - first_frame + 1) // frame_step
+    if frame_step == 1:
+        values = numpy.fromfile(
+            binary_file,
+            dtype="<f",
+            count=(last_frame - first_frame + 1) * nsites * 3,
+            sep="",
+            offset=(first_frame) * nsites * 3 * 4,
+        )
+    else:
+        values = numpy.array([])
+        for i in range(nframes_to_return):
+            values = numpy.concatenate(
+                [
+                    values,
+                    numpy.fromfile(
+                        binary_file,
+                        dtype="<f",
+                        count=nsites * 3,
+                        sep="",
+                        offset=(first_frame + i * frame_step) * nsites * 3 * 4,
+                    ),
+                ]
+            )
+    return values.reshape(nframes_to_return, nsites, 3).tolist()
 
 
 def get_included_relationships(

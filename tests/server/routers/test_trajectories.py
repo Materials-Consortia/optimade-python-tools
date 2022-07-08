@@ -7,8 +7,13 @@ def test_trajectories(
         "622b548fe73216ae229b188b",
         "62696ac7eef0323c842f9f51",
         "traj001",
+        "62c5ba5b9f61194d3ec44335",
     ]
     request = "/trajectories"
+    check_response(request, expected_ids)
+
+    request = "/trajectories?page_limit=4&response_fields=nframes,cartesian_site_positions,dimension_types,immutable_id,last_modified,reference_frame,species,species_at_sites,available_properties,lattice_vectors,reference_structure&page_offset=3&continue_from_frame=25"
+    expected_ids = ["62696ac7eef0323c842f9f51", "traj001", "62c5ba5b9f61194d3ec44335"]
     check_response(request, expected_ids)
 
     request = "/trajectories?filter=nelements<6&response_fields=cartesian_site_positions,_exmpl_time&last_frame=40&first_frame=5"
@@ -16,6 +21,7 @@ def test_trajectories(
         "622a07fa8544a62c55ef087a",
         "622a29c4087ac20730106f33",
         "622b548fe73216ae229b188b",
+        "62c5ba5b9f61194d3ec44335",
     ]
     check_response(request, expected_ids=expected_ids)
 
