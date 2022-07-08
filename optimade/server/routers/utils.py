@@ -384,8 +384,6 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: 
 
     if storagemethod == "hdf5":
         return get_hdf5_value(field, path, new_entry)
-    elif storagemethod == "binary":
-        return get_binary_value(field, path, new_entry)
     else:
         raise InternalServerError(
             f"Unknown value for the _storage_method field:{new_entry['attributes'][field]['_storage_method']}"
@@ -400,10 +398,6 @@ def get_hdf5_value(field: str, path: str, new_entry: Dict):
     frame_step = new_entry["attributes"][field]["frame_step"]
     file = h5py.File(path, "r")
     return file[field]["values"][first_frame:last_frame:frame_step].tolist()
-
-
-def get_binary_value(field: str, path: str, new_entry: Dict):
-    pass
 
 
 def get_included_relationships(
