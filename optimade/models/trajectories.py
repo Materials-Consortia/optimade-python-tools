@@ -190,10 +190,10 @@ class AvailablePropertyAttributes(BaseModel):
 class TrajectoryDataAttributes(AvailablePropertySubfields):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if "_storage_location" in kwargs:
-            self._storage_location = kwargs["_storage_location"]
+        if "_storage_method" in kwargs:
+            self._storage_method = kwargs["_storage_method"]
 
-    _storage_location: str = OptimadeField(
+    _storage_method: str = OptimadeField(
         ...,
         description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
         support=SupportLevel.MUST,
