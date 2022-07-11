@@ -22,13 +22,12 @@ mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.0"]
 traj_deps = ["h5py>=3.6.0"]
 server_deps = (
     [
-        "uvicorn~=0.17",
+        "uvicorn~=0.18",
         "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
     ]
     + mongo_deps
     + traj_deps
 )
-
 
 # Client minded
 aiida_deps = [
