@@ -368,7 +368,7 @@ def handle_response_fields(
         return new_results, traj_trunc, last_frame
 
 
-def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: str):
+def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method: str):
     from pathlib import Path
 
     # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
@@ -382,11 +382,11 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: 
             "Loading data from a file is not implemented yet for frame serialization methods other than 'explicit'."
         )  # TODO implement this for the other frame_serialization_methods
 
-    if storagemethod == "hdf5":
+    if storage_method == "hdf5":
         return get_hdf5_value(field, path, new_entry)
     else:
         raise InternalServerError(
-            f"Unknown value for the _storage_method field:{new_entry['attributes'][field]['_storage_method']}"
+            f"Unknown value for the _storage_method field:{storage_method}"
         )
 
 
@@ -397,7 +397,7 @@ def get_hdf5_value(field: str, path: str, new_entry: Dict):
     last_frame = new_entry["attributes"][field]["last_frame"]
     frame_step = new_entry["attributes"][field]["frame_step"]
     file = h5py.File(path, "r")
-    return file[field]["values"][first_frame:last_frame:frame_step].tolist()
+    return file[field]["values"][first_frame:last_frame:frame_step]
 
 
 def get_included_relationships(

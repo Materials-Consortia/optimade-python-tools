@@ -2,6 +2,7 @@
 # pylint: disable=no-self-argument
 from typing import Optional, Union, List, Dict, Any, Type
 from datetime import datetime, timezone
+import numpy
 from pydantic import (  # pylint: disable=no-name-in-module
     BaseModel,
     AnyUrl,
@@ -365,4 +366,6 @@ class Response(BaseModel):
             datetime: lambda v: v.astimezone(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
             ),
+            numpy.ndarray: lambda v: v.tolist()
+            # float: lambda v: "%.4f" % v, TODO The fewer digits that need to be returned for a floating point number the faster the conversion to a json file is. so it would be good to have a config option. enabling this line reduces the processing time by about 15%.
         }
