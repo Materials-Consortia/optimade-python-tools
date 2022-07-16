@@ -3410,7 +3410,32 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 <span class="normal">1478</span>
 <span class="normal">1479</span>
 <span class="normal">1480</span>
-<span class="normal">1481</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationValidator</span><span class="p">:</span>
+<span class="normal">1481</span>
+<span class="normal">1482</span>
+<span class="normal">1483</span>
+<span class="normal">1484</span>
+<span class="normal">1485</span>
+<span class="normal">1486</span>
+<span class="normal">1487</span>
+<span class="normal">1488</span>
+<span class="normal">1489</span>
+<span class="normal">1490</span>
+<span class="normal">1491</span>
+<span class="normal">1492</span>
+<span class="normal">1493</span>
+<span class="normal">1494</span>
+<span class="normal">1495</span>
+<span class="normal">1496</span>
+<span class="normal">1497</span>
+<span class="normal">1498</span>
+<span class="normal">1499</span>
+<span class="normal">1500</span>
+<span class="normal">1501</span>
+<span class="normal">1502</span>
+<span class="normal">1503</span>
+<span class="normal">1504</span>
+<span class="normal">1505</span>
+<span class="normal">1506</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationValidator</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class used to make a series of checks against a particular</span>
 <span class="sd">    OPTIMADE implementation over HTTP.</span>
 
@@ -4371,6 +4396,8 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
             <span class="k">if</span> <span class="n">response_fields</span><span class="p">:</span>
                 <span class="n">request_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;?response_fields=</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">response</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span><span class="n">request_str</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_test_meta_schema_reporting</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">request_str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_deserialize_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request_str</span><span class="p">)</span>
 
@@ -4406,6 +4433,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
         <span class="n">response</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span><span class="n">request_str</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_meta_schema_reporting</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">request_str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_test_page_limit</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
         <span class="n">deserialized</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deserialize_response</span><span class="p">(</span>
@@ -4602,6 +4630,28 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span>
             <span class="s2">&quot;v123123&quot;</span><span class="p">,</span> <span class="n">expected_status_code</span><span class="o">=</span><span class="n">expected_status_code</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="nd">@test_case</span>
+    <span class="k">def</span> <span class="nf">_test_meta_schema_reporting</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span>
+        <span class="n">request_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tests that the endpoint responds with a `meta-&gt;schema`.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema&quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Query </span><span class="si">{</span><span class="n">request_str</span><span class="si">}</span><span class="s2"> did not report a schema in `meta-&gt;schema` field.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unable to test presence of `meta-&gt;schema`: could not decode response as JSON.</span><span class="se">\n</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Query </span><span class="si">{</span><span class="n">request_str</span><span class="si">}</span><span class="s2"> successfully reported a schema in `meta-&gt;schema`.&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="nd">@test_case</span>
