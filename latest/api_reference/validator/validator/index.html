@@ -3405,7 +3405,12 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 <span class="normal">1473</span>
 <span class="normal">1474</span>
 <span class="normal">1475</span>
-<span class="normal">1476</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationValidator</span><span class="p">:</span>
+<span class="normal">1476</span>
+<span class="normal">1477</span>
+<span class="normal">1478</span>
+<span class="normal">1479</span>
+<span class="normal">1480</span>
+<span class="normal">1481</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationValidator</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class used to make a series of checks against a particular</span>
 <span class="sd">    OPTIMADE implementation over HTTP.</span>
 
@@ -3892,6 +3897,11 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
             <span class="n">archetypal_entry</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span>
                 <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_returned</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">archetypal_entry</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Chosen archetypal entry did not have an ID, cannot proceed: </span><span class="si">{</span><span class="n">archetypal_entry</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
             <span class="k">return</span> <span class="p">(</span>
                 <span class="n">archetypal_entry</span><span class="p">,</span>
                 <span class="sa">f</span><span class="s2">&quot;set archetypal entry for </span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2"> with ID </span><span class="si">{</span><span class="n">archetypal_entry</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
@@ -3975,10 +3985,10 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">chosen_entry</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">endp</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">chosen_entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">endp</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Successfully validated </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Chosen entry of endpoint &#39;</span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2">&#39; had unexpected type </span><span class="si">{</span><span class="n">chosen_entry</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Chosen entry of endpoint &#39;</span><span class="si">{</span><span class="n">endp</span><span class="si">}</span><span class="s2">&#39; had unexpected or missing type: </span><span class="si">{</span><span class="n">chosen_entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span><span class="si">!r}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
         <span class="n">prop_type</span> <span class="o">=</span> <span class="p">(</span>
@@ -4198,9 +4208,9 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
             <span class="n">excluded</span> <span class="o">=</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">exclusive_operators</span>
             <span class="c1"># if we have all results on this page, check that the blessed ID is in the response</span>
-            <span class="c1"># if not response[&quot;meta&quot;][&quot;more_data_available&quot;]:</span>
             <span class="k">if</span> <span class="n">excluded</span> <span class="ow">and</span> <span class="p">(</span>
-                <span class="n">chosen_entry</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+                <span class="n">chosen_entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
             <span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Entry </span><span class="si">{</span><span class="n">chosen_entry</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> with value </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">test_value</span><span class="si">}</span><span class="s2"> was not excluded by </span><span class="si">{</span><span class="n">query</span><span class="si">!r}</span><span class="s2">&quot;</span>
@@ -4219,7 +4229,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
             <span class="c1"># check that the filter returned no entries that had a null or missing value for the filtered property</span>
             <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span>
                 <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
             <span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
@@ -4297,7 +4307,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
                 <span class="c1"># check that the filter returned no entries that had a null or missing value for the filtered property</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                    <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span>
                     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">reversed_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
                 <span class="p">):</span>
                     <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>

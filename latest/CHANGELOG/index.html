@@ -513,8 +513,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2022-07-08" class="md-nav__link">
-    Unreleased (2022-07-08)
+  <a href="#unreleased-2022-07-16" class="md-nav__link">
+    Unreleased (2022-07-16)
   </a>
   
 </li>
@@ -2266,8 +2266,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2022-07-08" class="md-nav__link">
-    Unreleased (2022-07-08)
+  <a href="#unreleased-2022-07-16" class="md-nav__link">
+    Unreleased (2022-07-16)
   </a>
   
 </li>
@@ -2742,7 +2742,7 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased-2022-07-08"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2022-07-08)<a class="headerlink" href="#unreleased-2022-07-08" title="Permanent link">&para;</a></h2>
+<h2 id="unreleased-2022-07-16"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2022-07-16)<a class="headerlink" href="#unreleased-2022-07-16" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.18.0...Unreleased">Full Changelog</a></p>
 <p><strong>Implemented enhancements:</strong></p>
 <ul>
@@ -2756,12 +2756,14 @@
 </ul>
 <p><strong>Closed issues:</strong></p>
 <ul>
+<li>Internal validator failures <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1272">#1272</a></li>
 <li>Use versioned Dockerfiles for CI services to allow dependabot to update them <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1241">#1241</a></li>
 <li>Wrong links to available endpoints <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1214">#1214</a></li>
 <li>Add configurable <code>meta-&gt;schemas</code> field to reference server <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1208">#1208</a></li>
 </ul>
 <p><strong>Merged pull requests:</strong></p>
 <ul>
+<li>Prevent internal validator errors when entries are missing ID/type  <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1273">#1273</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Bump providers from <code>fb05359</code> to <code>a92e5bc</code> <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1267">#1267</a> (<a href="https://github.com/apps/dependabot">dependabot[bot]</a>)</li>
 <li>Add schema parameter when calling meta_values in landing.py <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1257">#1257</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
 <li>Update <code>lark</code> dependency to new name <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1231">#1231</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
@@ -3070,7 +3072,7 @@ Previously, APIs that did not support filtering, pagination or limiting response
 </ul>
 <p><strong>Closed issues:</strong></p>
 <ul>
-<li>Remove CI psycopg2-binary install when aiida-core>1.6.3 <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/855">#855</a></li>
+<li>Remove CI psycopg2-binary install when aiida-core&gt;1.6.3 <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/855">#855</a></li>
 <li>Pytest fails at Setup environment for AiiDA <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/853">#853</a></li>
 <li>Add timeout parameter to validator <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/681">#681</a></li>
 <li>Add note in installation instructions about pulling submodule for providers <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/370">#370</a></li>
@@ -3233,7 +3235,7 @@ Previously, APIs that did not support filtering, pagination or limiting response
 </ul>
 <p><strong>Merged pull requests:</strong></p>
 <ul>
-<li>Update species->mass field following specification change <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/631">#631</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Update species-&gt;mass field following specification change <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/631">#631</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 </ul>
 <h2 id="v0129-2021-02-10"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.9">v0.12.9</a> (2021-02-10)<a class="headerlink" href="#v0129-2021-02-10" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.12.8...v0.12.9">Full Changelog</a></p>
@@ -3381,7 +3383,7 @@ Previously, APIs that did not support filtering, pagination or limiting response
 <p><strong>Closed issues:</strong></p>
 <ul>
 <li>Chemical symbols D and T <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/570">#570</a></li>
-<li>Spurious validation errors in Structure->Species <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/559">#559</a></li>
+<li>Spurious validation errors in Structure-&gt;Species <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/559">#559</a></li>
 <li>Chemical formulae are not properly validated on model creation <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/546">#546</a></li>
 </ul>
 <p><strong>Merged pull requests:</strong></p>
@@ -3409,7 +3411,7 @@ Previously, APIs that did not support filtering, pagination or limiting response
 <li>This should ensure requirements*.txt are tested <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/527">#527</a> (<a href="https://github.com/CasperWA">CasperWA</a>)</li>
 <li>Update dependencies <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/526">#526</a> (<a href="https://github.com/CasperWA">CasperWA</a>)</li>
 <li>Fix landing page URL <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/519">#519</a> (<a href="https://github.com/shyamd">shyamd</a>)</li>
-<li>Fixing typo <code>validatated</code> -> <code>validated</code> <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/506">#506</a> (<a href="https://github.com/merkys">merkys</a>)</li>
+<li>Fixing typo <code>validatated</code> -&gt; <code>validated</code> <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/506">#506</a> (<a href="https://github.com/merkys">merkys</a>)</li>
 <li>Make validator respond to KeyboardInterrupts <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/505">#505</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Add support levels to validator config <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/503">#503</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Enable JSON response from the validator <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/502">#502</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
@@ -3418,7 +3420,7 @@ Previously, APIs that did not support filtering, pagination or limiting response
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.11.0...v0.12.0">Full Changelog</a></p>
 <p><strong>Fixed bugs:</strong></p>
 <ul>
-<li>Missing field descriptions in schema for Species->name and Person->name <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/492">#492</a></li>
+<li>Missing field descriptions in schema for Species-&gt;name and Person-&gt;name <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/492">#492</a></li>
 <li>"type" field not marked as required for derived entry resource models <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/479">#479</a></li>
 <li>OpenAPI validations fails due to incorrect type of "dimension_types" <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/478">#478</a></li>
 <li>Have fallbacks for retrieving providers list <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/450">#450</a></li>
@@ -3597,7 +3599,7 @@ Previously, APIs that did not support filtering, pagination or limiting response
 <li>Update links resources <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/299">#299</a></li>
 <li>Need to set up mkdocs <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/289">#289</a></li>
 <li>Need to add custom schema entries for unit/sortable (and eventually type) <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/278">#278</a></li>
-<li>/info/\&lt;entry-endpoint> missing <code>sortable</code> key under each property <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/273">#273</a></li>
+<li>/info/\&lt;entry-endpoint&gt; missing <code>sortable</code> key under each property <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/273">#273</a></li>
 <li>Make CI linting more useful <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/269">#269</a></li>
 <li>[PR SPECIFIC] Reminder: Validator test pinned to specific commit <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/268">#268</a></li>
 <li>Validator does not check that pagination links work <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/265">#265</a></li>
@@ -3620,7 +3622,7 @@ Previously, APIs that did not support filtering, pagination or limiting response
 <li>Remove test publish action <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/338">#338</a> (<a href="https://github.com/shyamd">shyamd</a>)</li>
 <li>Fix 'publish_TestPyPI' CI job <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/337">#337</a> (<a href="https://github.com/CasperWA">CasperWA</a>)</li>
 <li>Represent the datetime objects as UTC in RFC3339 format <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/333">#333</a> (<a href="https://github.com/fekad">fekad</a>)</li>
-<li>dependamat: Bump \&lt;package_name> v x.y.z to vx.y.(z+1) <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/330">#330</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>dependamat: Bump \&lt;package_name&gt; v x.y.z to vx.y.(z+1) <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/330">#330</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Update links resources <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/306">#306</a> (<a href="https://github.com/CasperWA">CasperWA</a>)</li>
 <li>Add special species for adapters testing <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/305">#305</a> (<a href="https://github.com/CasperWA">CasperWA</a>)</li>
 <li>Clean Up Build Environment <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/301">#301</a> (<a href="https://github.com/shyamd">shyamd</a>)</li>
@@ -3635,8 +3637,8 @@ Previously, APIs that did not support filtering, pagination or limiting response
 <li>Add <code>sortable=True</code> to all properties <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/274">#274</a> (<a href="https://github.com/CasperWA">CasperWA</a>)</li>
 <li>Make _atom_site_label unique in CIF generation <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/272">#272</a> (<a href="https://github.com/CasperWA">CasperWA</a>)</li>
 <li>Not so quick fix to allow "/" at end of validator URL, plus fixes and tests for --as_type <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/267">#267</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
-<li>Check pagination links->next with validator <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/266">#266</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
-<li>Relax HTTP URL constraints on meta->implementation->source_url field. <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/262">#262</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Check pagination links-&gt;next with validator <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/266">#266</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Relax HTTP URL constraints on meta-&gt;implementation-&gt;source_url field. <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/262">#262</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Validate lattice_vectors for all null or all float <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/171">#171</a> (<a href="https://github.com/CasperWA">CasperWA</a>)</li>
 </ul>
 <h2 id="v081-2020-04-25"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.8.1">v0.8.1</a> (2020-04-25)<a class="headerlink" href="#v081-2020-04-25" title="Permanent link">&para;</a></h2>
@@ -3895,7 +3897,7 @@ Previously, APIs that did not support filtering, pagination or limiting response
 <ul>
 <li>info endpoint duplicated? <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/120">#120</a></li>
 <li>Commented-out validator <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/111">#111</a></li>
-<li>FastAPI v0.44.0 supports pydantic > 1.0.0 <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/101">#101</a></li>
+<li>FastAPI v0.44.0 supports pydantic &gt; 1.0.0 <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/101">#101</a></li>
 <li>Server is missing /links endpoint <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/89">#89</a></li>
 <li>Make sure all validators are tested <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/87">#87</a></li>
 <li>The <code>sortable</code> field must be added to models <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/84">#84</a></li>
