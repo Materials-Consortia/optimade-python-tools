@@ -3,8 +3,10 @@ with OPTIMADE providers that can be used in server or client code.
 
 """
 
-from typing import List
+import json
+from typing import List, Iterable
 
+from pydantic import ValidationError
 from optimade.models.links import LinksResource
 
 PROVIDER_LIST_URLS = (
@@ -37,7 +39,8 @@ def get_providers(add_mongo_id: bool = False) -> list:
        `/links`-endpoint.
 
     Arguments:
-        Whether to populate the `_id` field of the provider with MongoDB ObjectID.
+        add_mongo_id: Whether to populate the `_id` field of the provider with MongoDB
+            ObjectID.
 
     Returns:
         List of raw JSON-decoded providers including MongoDB object IDs.
@@ -99,7 +102,9 @@ def get_providers(add_mongo_id: bool = False) -> list:
     return providers_list
 
 
-def get_child_database_links(provider: LinksResource) -> List[LinksResource]:
+def get_child_database_links(
+    provider: LinksResource, obey_aggregate=True
+) -> List[LinksResource]:
     """For a provider, return a list of available child databases.
 
     Arguments:
@@ -109,27 +114,53 @@ def get_child_database_links(provider: LinksResource) -> List[LinksResource]:
         A list of the valid links entries from this provider that
         have `link_type` `"child"`.
 
+    Raises:
+        RuntimeError: If the provider's index meta-database is down,
+        invalid, or the request otherwise fails.
+
     """
     import requests
     from optimade.models.responses import LinksResponse
-    from optimade.models.links import LinkType
+    from optimade.models.links import LinkType, Aggregate
 
     base_url = provider.pop("base_url")
     if base_url is None:
         raise RuntimeError(f"Provider {provider['id']} provides no base URL.")
 
     links_endp = base_url + "/v1/links"
-    links = requests.get(links_endp)
+    try:
+        links = requests.get(links_endp, timeout=10)
+    except (requests.ConnectionError, requests.Timeout) as exc:
+        raise RuntimeError(f"Unable to connect to provider {provider['id']}") from exc
 
     if links.status_code != 200:
         raise RuntimeError(
             f"Invalid response from {links_endp} for provider {provider['id']}: {links.content}."
         )
 
-    links = LinksResponse(**links.json())
+    try:
+        links = LinksResponse(**links.json())
+    except (ValidationError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            f"Did not understand response from {provider['id']}: {links.content}"
+        ) from exc
+
     return [
         link
         for link in links.data
-        if link.attributes.link_type == LinkType.child
+        if link.attributes.link_type == LinkType.CHILD
         and link.attributes.base_url is not None
+        and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
     ]
+
+
+def get_all_databases() -> Iterable[str]:
+    """Iterate through all databases reported by registered OPTIMADE providers."""
+    for provider in get_providers():
+        try:
+            links = get_child_database_links(provider)
+            for link in links:
+                if link.attributes.base_url:
+                    yield str(link.attributes.base_url)
+        except RuntimeError:
+            pass

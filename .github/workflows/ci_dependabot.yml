@@ -25,7 +25,7 @@ jobs:
         ref: ${{ env.DEFAULT_REPO_BRANCH }}
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
 
@@ -73,7 +73,7 @@ jobs:
 
     - name: Fetch PR body
       id: pr_body
-      uses: chuhlomin/render-template@v1.4
+      uses: chuhlomin/render-template@v1.5
       with:
         template: .github/utils/single_dependency_pr_body.txt
 

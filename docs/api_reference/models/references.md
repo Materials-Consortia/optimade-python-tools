@@ -1,5 +1,5 @@
 # references
 
 ::: optimade.models.references
-    rendering:
+    options:
       show_if_no_docstring: true

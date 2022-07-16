@@ -1,4 +1,5 @@
 title: "Getting started"
 nav:
+    - client.md
     - setting_up_an_api.md
     - use_cases.md

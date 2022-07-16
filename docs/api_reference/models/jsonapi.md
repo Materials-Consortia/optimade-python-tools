@@ -1,5 +1,5 @@
 # jsonapi
 
 ::: optimade.models.jsonapi
-    rendering:
+    options:
       show_if_no_docstring: true

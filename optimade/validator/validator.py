@@ -12,7 +12,7 @@ import logging
 import random
 import urllib.parse
 import dataclasses
-from typing import Union, Tuple, Any, List, Dict, Optional
+from typing import Union, Tuple, Any, List, Dict, Optional, Set
 
 try:
     import simplejson as json
@@ -70,7 +70,7 @@ class ImplementationValidator:
         base_url: str = None,
         verbosity: int = 0,
         respond_json: bool = False,
-        page_limit: int = 5,
+        page_limit: int = 4,
         max_retries: int = 5,
         run_optional_tests: bool = True,
         fail_fast: bool = False,
@@ -380,6 +380,7 @@ class ImplementationValidator:
         prop_list = list(_impl_properties.keys())
 
         self._check_response_fields(endp, prop_list)
+
         chosen_entry, _ = self._get_archetypal_entry(endp, prop_list)
 
         if not chosen_entry:
@@ -524,19 +525,21 @@ class ImplementationValidator:
             if data_returned < 1:
                 return (
                     None,
-                    "Endpoint {endp!r} returned no entries, cannot get archetypal entry.",
+                    "Endpoint {endp!r} returned no entries, cannot get archetypal entry or test filtering.",
                 )
 
-            response, message = self._get_endpoint(
-                f"{endp}?page_offset={random.randint(0, data_returned-1)}&response_fields={','.join(properties)}",
-                multistage=True,
-            )
-            if response:
-                archetypal_entry = response.json()["data"][0]
-                return (
-                    archetypal_entry,
-                    f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
+            archetypal_entry = response.json()["data"][
+                random.randint(0, data_returned - 1)
+            ]
+            if "id" not in archetypal_entry:
+                raise ResponseError(
+                    f"Chosen archetypal entry did not have an ID, cannot proceed: {archetypal_entry!r}"
                 )
+
+            return (
+                archetypal_entry,
+                f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
+            )
 
         raise ResponseError(f"Failed to get archetypal entry. Details: {message}")
 
@@ -557,7 +560,7 @@ class ImplementationValidator:
         test_query = f"{endp}?response_fields={','.join(subset_fields)}&page_limit=1"
         response, _ = self._get_endpoint(test_query, multistage=True)
 
-        if response and len(response.json()["data"]) == 1:
+        if response and len(response.json()["data"]) >= 0:
             doc = response.json()["data"][0]
             expected_fields = set(subset_fields)
             expected_fields -= CONF.top_level_non_attribute_fields
@@ -616,10 +619,10 @@ class ImplementationValidator:
             )
 
         if prop == "type":
-            if chosen_entry["type"] == endp:
+            if chosen_entry.get("type") == endp:
                 return True, f"Successfully validated {prop}"
             raise ResponseError(
-                f"Chosen entry of endpoint '{endp}' had unexpected type {chosen_entry['type']!r}."
+                f"Chosen entry of endpoint '{endp}' had unexpected or missing type: {chosen_entry.get('type')!r}."
             )
 
         prop_type = (
@@ -825,7 +828,47 @@ class ImplementationValidator:
             else:
                 num_data_returned[operator] = response["meta"].get("data_returned")
 
+            if prop in CONF.unique_properties and operator == "=":
+                if num_data_returned["="] is not None and num_data_returned["="] == 0:
+                    raise ResponseError(
+                        f"Unable to filter field 'id' for equality, no data was returned for {query}."
+                    )
+                if num_data_returned["="] is not None and num_data_returned["="] > 1:
+                    raise ResponseError(
+                        f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
+                    )
+
             num_response = num_data_returned[operator]
+
+            excluded = operator in exclusive_operators
+            # if we have all results on this page, check that the blessed ID is in the response
+            if excluded and (
+                chosen_entry.get("id", "")
+                in set(entry.get("id") for entry in response["data"])
+            ):
+                raise ResponseError(
+                    f"Entry {chosen_entry['id']} with value {prop!r}: {test_value} was not excluded by {query!r}"
+                )
+
+            # check that at least the archetypal structure was returned, unless we are using a fallback value
+            if not excluded and not using_fallback:
+                if (
+                    num_data_returned[operator] is not None
+                    and num_data_returned[operator] < 1
+                ):
+                    raise ResponseError(
+                        f"Supposedly inclusive query {query!r} did not include original entry ID {chosen_entry['id']!r} "
+                        f"(with field {prop!r} = {test_value}) potentially indicating a problem with filtering on this field."
+                    )
+
+            # check that the filter returned no entries that had a null or missing value for the filtered property
+            if any(
+                entry.get("attributes", {}).get(prop, entry.get(prop, None)) is None
+                for entry in response.get("data", [])
+            ):
+                raise ResponseError(
+                    f"Filter {query!r} on field {prop!r} returned entries that had null or missing values for the field."
+                )
 
             # Numeric and string comparisons must work both ways...
             if prop_type in (
@@ -898,52 +941,12 @@ class ImplementationValidator:
 
                 # check that the filter returned no entries that had a null or missing value for the filtered property
                 if any(
-                    entry["attributes"].get(prop, entry.get(prop, None)) is None
+                    entry.get("attributes", {}).get(prop, entry.get(prop, None)) is None
                     for entry in reversed_response.get("data", [])
                 ):
                     raise ResponseError(
                         f"Filter {reversed_query!r} on field {prop!r} returned entries that had null or missing values for the field."
                     )
-
-            excluded = operator in exclusive_operators
-            # if we have all results on this page, check that the blessed ID is in the response
-            if not response["meta"]["more_data_available"]:
-                if excluded and (
-                    chosen_entry["id"] in set(entry["id"] for entry in response["data"])
-                ):
-                    raise ResponseError(
-                        f"Object {chosen_entry['id']} with value {test_value} was not excluded by {query}"
-                    )
-
-            # check that at least the archetypal structure was returned, unless we are using a fallback value
-            if not excluded and not using_fallback:
-                if (
-                    num_data_returned[operator] is not None
-                    and num_data_returned[operator] < 1
-                ):
-                    raise ResponseError(
-                        f"Supposedly inclusive query '{query}' did not include original object ID {chosen_entry['id']} "
-                        f"(with field '{prop} = {test_value}') potentially indicating a problem with filtering on this field."
-                    )
-
-            # check that the filter returned no entries that had a null or missing value for the filtered property
-            if any(
-                entry["attributes"].get(prop, entry.get(prop, None)) is None
-                for entry in response.get("data", [])
-            ):
-                raise ResponseError(
-                    f"Filter {query!r} on field {prop!r} returned entries that had null or missing values for the field."
-                )
-
-        if prop in CONF.unique_properties:
-            if num_data_returned["="] is not None and num_data_returned["="] == 0:
-                raise ResponseError(
-                    f"Unable to filter field 'id' for equality, no data was returned for {query}."
-                )
-            if num_data_returned["="] is not None and num_data_returned["="] > 1:
-                raise ResponseError(
-                    f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
-                )
 
         return True, f"{prop} passed filter tests"
 
@@ -1002,6 +1005,8 @@ class ImplementationValidator:
             if response_fields:
                 request_str += f"?response_fields={','.join(response_fields)}"
             response, _ = self._get_endpoint(request_str)
+            self._test_meta_schema_reporting(response, request_str, optional=True)
+
             if response:
                 self._deserialize_response(response, response_cls, request=request_str)
 
@@ -1037,6 +1042,7 @@ class ImplementationValidator:
 
         response, _ = self._get_endpoint(request_str)
 
+        self._test_meta_schema_reporting(response, request_str, optional=True)
         self._test_page_limit(response)
 
         deserialized, _ = self._deserialize_response(
@@ -1236,8 +1242,33 @@ class ImplementationValidator:
         )
 
     @test_case
+    def _test_meta_schema_reporting(
+        self,
+        response: requests.models.Response,
+        request_str: str,
+    ):
+        """Tests that the endpoint responds with a `meta->schema`."""
+        try:
+            if not response.json().get("meta", {}).get("schema"):
+                raise ResponseError(
+                    f"Query {request_str} did not report a schema in `meta->schema` field."
+                )
+        except json.JSONDecodeError:
+            raise ResponseError(
+                f"Unable to test presence of `meta->schema`: could not decode response as JSON.\n{str(response.content)}"
+            )
+
+        return (
+            True,
+            f"Query {request_str} successfully reported a schema in `meta->schema`.",
+        )
+
+    @test_case
     def _test_page_limit(
-        self, response: requests.models.Response, check_next_link: int = 5
+        self,
+        response: requests.models.Response,
+        check_next_link: int = 5,
+        previous_links: Optional[Set[str]] = None,
     ) -> Tuple[Optional[bool], str]:
         """Test that a multi-entry endpoint obeys the page limit by
         following pagination links up to a depth of `check_next_link`.
@@ -1247,12 +1278,16 @@ class ImplementationValidator:
                 compliance.
             check_next_link: Maximum recursion depth for following
                 pagination links.
+            previous_links: A set of previous links that will be used
+                to check that the `next` link is actually new.
 
         Returns:
             `True` if the test was successful and `None` if not, with a
             string summary.
 
         """
+        if previous_links is None:
+            previous_links = set()
         try:
             response = response.json()
         except (AttributeError, json.JSONDecodeError):
@@ -1285,6 +1320,12 @@ class ImplementationValidator:
                     "Endpoint suggested more data was available but provided no valid links->next link."
                 )
 
+            if next_link in previous_links:
+                raise ResponseError(
+                    f"The next link {next_link} has been provided already for a previous page."
+                )
+            previous_links.add(next_link)
+
             if not isinstance(next_link, str):
                 raise ResponseError(
                     f"Unable to parse links->next {next_link!r} as a link."
@@ -1302,6 +1343,7 @@ class ImplementationValidator:
                 next_response,
                 check_next_link=check_next_link,
                 multistage=check_next_link,
+                previous_links=previous_links,
             )
 
         return (

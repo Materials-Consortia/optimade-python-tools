@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -47,7 +47,7 @@ jobs:
         submodules: true
 
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -72,7 +72,7 @@ jobs:
         submodules: true
 
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -162,12 +162,13 @@ jobs:
         ports:
         - 5432:5432
       elasticsearch:
-        image: elasticsearch:6.8.23
+        image: elasticsearch:7.17.1
         ports:
           - 9200:9200
           - 9300:9300
         env:
           discovery.type: single-node
+          xpack.security.enabled: 'false'
 
 
     steps:
@@ -177,7 +178,7 @@ jobs:
         fetch-depth: 2
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -188,6 +189,7 @@ jobs:
         pip install -e .
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
+        pip install -r requirements-http-client.txt
 
     - name: Run all tests (using `mongomock`)
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/
@@ -238,6 +240,34 @@ jobs:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
         OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
 
+    - name: Run the OPTIMADE Client CLI
+      if: matrix.python-version == 3.8
+      run: |
+        coverage run --append --source optimade optimade/client/cli.py \
+           --filter 'nsites = 1' \
+           --output-file test_get_async.json \
+           https://optimade.herokuapp.com
+        test test_get_async.json
+
+        coverage run --append --source optimade optimade/client/cli.py \
+          --filter 'nsites = 1' \
+          --count \
+          --output-file test_count.json \
+          https://optimade.herokuapp.com
+        test test_count.json
+
+        coverage run --append --source optimade optimade/client/cli.py \
+          --no-async \
+          --filter 'nsites = 1' \
+          --count \
+          --output-file test_count_no_async.json \
+          https://optimade.herokuapp.com
+        test test_count_no_async.json
+
+        diff test_count_no_async.json test_count.json
+
+        coverage xml
+
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v3
@@ -262,7 +292,7 @@ jobs:
       with:
         submodules: true
 
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -273,6 +303,7 @@ jobs:
         pip install -e .
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
+        pip install -r requirements-http-client.txt
         pip install -r requirements-docs.txt
 
     # NOTE: While we're now using `mike`, this is still useful
@@ -290,7 +321,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 

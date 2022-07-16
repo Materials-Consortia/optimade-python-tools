@@ -814,7 +814,8 @@ The properties of the species are found in the property `species`.
             nullable_props = (
                 prop
                 for prop in schema["required"]
-                if schema["properties"][prop].get("support") == SupportLevel.SHOULD
+                if schema["properties"][prop].get("x-optimade-support")
+                == SupportLevel.SHOULD
             )
             for prop in nullable_props:
                 schema["properties"][prop]["nullable"] = True
@@ -1106,7 +1107,6 @@ class StructureResource(EntryResource):
 
     type: str = StrictField(
         "structures",
-        const="structures",
         description="""The name of the type of an entry.
 
 - **Type**: string.
@@ -1120,7 +1120,7 @@ class StructureResource(EntryResource):
 
 - **Examples**:
     - `"structures"`""",
-        pattern="^structures$",
+        regex="^structures$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )

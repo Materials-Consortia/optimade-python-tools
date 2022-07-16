@@ -67,6 +67,7 @@ def general_exception(
             data_returned=0,
             data_available=0,
             more_data_available=False,
+            schema=CONFIG.schema_url,
             **debug_info,
         ),
         errors=errors,
