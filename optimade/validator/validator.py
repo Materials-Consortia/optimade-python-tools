@@ -1005,6 +1005,8 @@ class ImplementationValidator:
             if response_fields:
                 request_str += f"?response_fields={','.join(response_fields)}"
             response, _ = self._get_endpoint(request_str)
+            self._test_meta_schema_reporting(response, request_str, optional=True)
+
             if response:
                 self._deserialize_response(response, response_cls, request=request_str)
 
@@ -1040,6 +1042,7 @@ class ImplementationValidator:
 
         response, _ = self._get_endpoint(request_str)
 
+        self._test_meta_schema_reporting(response, request_str, optional=True)
         self._test_page_limit(response)
 
         deserialized, _ = self._deserialize_response(
@@ -1236,6 +1239,28 @@ class ImplementationValidator:
 
         self._get_endpoint(
             "v123123", expected_status_code=expected_status_code, optional=True
+        )
+
+    @test_case
+    def _test_meta_schema_reporting(
+        self,
+        response: requests.models.Response,
+        request_str: str,
+    ):
+        """Tests that the endpoint responds with a `meta->schema`."""
+        try:
+            if not response.json().get("meta", {}).get("schema"):
+                raise ResponseError(
+                    f"Query {request_str} did not report a schema in `meta->schema` field."
+                )
+        except json.JSONDecodeError:
+            raise ResponseError(
+                f"Unable to test presence of `meta->schema`: could not decode response as JSON.\n{str(response.content)}"
+            )
+
+        return (
+            True,
+            f"Query {request_str} successfully reported a schema in `meta->schema`.",
         )
 
     @test_case
