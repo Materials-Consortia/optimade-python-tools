@@ -20,10 +20,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
@@ -46,10 +46,10 @@ jobs:
       with:
         submodules: true
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
@@ -71,10 +71,10 @@ jobs:
       with:
         submodules: true
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: '3.10'
 
     - name: Install tools
       run: |
@@ -142,7 +142,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9', '3.10']
 
     services:
       mongo:
@@ -211,16 +211,7 @@ jobs:
       run: |
         pip install -r requirements-client.txt
 
-    - name: Setup environment for AiiDA v1 (Python 3.7)
-      if: matrix.python-version == 3.7
-      env:
-        AIIDA_TEST_BACKEND: django
-      run: |
-        reentry scan
-        .github/aiida/setup_aiida.sh
-
-    - name: Setup environment for AiiDA v2 (Python 3.8+)
-      if: matrix.python-version != 3.7
+    - name: Setup environment for AiiDA
       env:
         AIIDA_TEST_BACKEND: psql_dos
       run: |
@@ -230,20 +221,20 @@ jobs:
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
     - name: Run tests for validator only to assess coverage (mongomock)
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.10
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run tests for validator only to assess coverage (Elasticsearch)
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.10
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
         OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
 
     - name: Run tests for validator only to assess coverage (MongoDB)
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.10
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
@@ -278,7 +269,7 @@ jobs:
         coverage xml
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
+      if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v3
       with:
         name: project
@@ -286,7 +277,7 @@ jobs:
         flags: project
 
     - name: Upload validator coverage to Codecov
-      if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-python-tools'
+      if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v3
       with:
         name: validator
@@ -303,7 +294,7 @@ jobs:
 
     - uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: '3.10'
 
     - name: Install dependencies
       run: |
@@ -329,10 +320,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: '3.10'
 
     - name: Install Python dependencies
       run: |

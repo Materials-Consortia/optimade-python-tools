@@ -27,8 +27,7 @@ server_deps = [
 
 # Client minded
 aiida_deps = [
-    "aiida-core~=1.6,>=1.6.4;python_version<'3.8'",
-    "aiida-core~=2.0;python_version>='3.8'",
+    "aiida-core~=2.0",
 ]
 http_client_deps = [
     "httpx~=0.23",
@@ -92,7 +91,6 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -101,14 +99,14 @@ setup(
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.7,<3.11",
+    python_requires=">=3.8,<3.11",
     install_requires=[
         "lark~=1.1",
         "fastapi~=0.78",
         "pydantic~=1.9",
         "email_validator~=1.2",
         "requests~=2.28",
-        "typing-extensions~=4.0;python_version<'3.8'",
+        "requests~=2.28",
     ],
     extras_require={
         "all": all_deps,
