@@ -531,6 +531,11 @@ class ImplementationValidator:
             archetypal_entry = response.json()["data"][
                 random.randint(0, data_returned - 1)
             ]
+            if "id" not in archetypal_entry:
+                raise ResponseError(
+                    f"Chosen archetypal entry did not have an ID, cannot proceed: {archetypal_entry!r}"
+                )
+
             return (
                 archetypal_entry,
                 f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
@@ -614,10 +619,10 @@ class ImplementationValidator:
             )
 
         if prop == "type":
-            if chosen_entry["type"] == endp:
+            if chosen_entry.get("type") == endp:
                 return True, f"Successfully validated {prop}"
             raise ResponseError(
-                f"Chosen entry of endpoint '{endp}' had unexpected type {chosen_entry['type']!r}."
+                f"Chosen entry of endpoint '{endp}' had unexpected or missing type: {chosen_entry.get('type')!r}."
             )
 
         prop_type = (
@@ -837,9 +842,9 @@ class ImplementationValidator:
 
             excluded = operator in exclusive_operators
             # if we have all results on this page, check that the blessed ID is in the response
-            # if not response["meta"]["more_data_available"]:
             if excluded and (
-                chosen_entry["id"] in set(entry["id"] for entry in response["data"])
+                chosen_entry.get("id", "")
+                in set(entry.get("id") for entry in response["data"])
             ):
                 raise ResponseError(
                     f"Entry {chosen_entry['id']} with value {prop!r}: {test_value} was not excluded by {query!r}"
@@ -858,7 +863,7 @@ class ImplementationValidator:
 
             # check that the filter returned no entries that had a null or missing value for the filtered property
             if any(
-                entry["attributes"].get(prop, entry.get(prop, None)) is None
+                entry.get("attributes", {}).get(prop, entry.get(prop, None)) is None
                 for entry in response.get("data", [])
             ):
                 raise ResponseError(
@@ -936,7 +941,7 @@ class ImplementationValidator:
 
                 # check that the filter returned no entries that had a null or missing value for the filtered property
                 if any(
-                    entry["attributes"].get(prop, entry.get(prop, None)) is None
+                    entry.get("attributes", {}).get(prop, entry.get(prop, None)) is None
                     for entry in reversed_response.get("data", [])
                 ):
                     raise ResponseError(
