@@ -18,7 +18,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Dependencies
 # Server minded
 elastic_deps = ["elasticsearch-dsl~=7.4,<8.0"]
-mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.0"]
+mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
 server_deps = [
     "uvicorn~=0.18",
     "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
@@ -31,7 +31,7 @@ aiida_deps = [
 ]
 http_client_deps = [
     "httpx~=0.23",
-    "rich~=12.4",
+    "rich~=12.5",
     "click~=8.1",
 ]
 ase_deps = ["ase~=3.22"]
@@ -59,7 +59,7 @@ testing_deps = [
     "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.14", "pre-commit~=2.19", "invoke~=1.7"]
+    ["pylint~=2.14", "pre-commit~=2.20", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -102,10 +102,9 @@ setup(
     python_requires=">=3.8,<3.11",
     install_requires=[
         "lark~=1.1",
-        "fastapi~=0.78",
+        "fastapi~=0.79",
         "pydantic~=1.9",
         "email_validator~=1.2",
-        "requests~=2.28",
         "requests~=2.28",
     ],
     extras_require={
