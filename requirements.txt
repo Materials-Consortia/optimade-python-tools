@@ -1,10 +1,10 @@
 elasticsearch-dsl==7.4.0
 email_validator==1.2.1
-fastapi==0.78.0
+fastapi==0.79.0
 lark==1.1.2
-mongomock==4.0.0
+mongomock==4.1.2
 pydantic==1.9.1
 pymongo==4.1.1
 pyyaml==5.4
-requests==2.28.0
-uvicorn==0.18.1
+requests==2.28.1
+uvicorn==0.18.2
