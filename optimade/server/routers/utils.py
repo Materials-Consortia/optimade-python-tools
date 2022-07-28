@@ -4,7 +4,7 @@ import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union
 
-from fastapi import Request
+from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
@@ -22,6 +22,7 @@ from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
+from optimade.adapters.hdf5 import generate_hdf5_file_content
 
 __all__ = (
     "BASE_URL_PREFIXES",
@@ -265,7 +266,7 @@ def get_entries(
     if fields or include_fields:
         results = handle_response_fields(results, fields, include_fields)
 
-    return response(
+    response_object = response(
         links=links,
         data=results,
         meta=meta_values(
@@ -277,6 +278,14 @@ def get_entries(
         ),
         included=included,
     )
+    if params.response_format == "json":
+        return response_object
+    elif params.response_format == "hdf5":
+        return Response(
+            content=generate_hdf5_file_content(response_object),
+            media_type="application/x-hdf5",
+            headers={"Content-Disposition": "attachment"},
+        )
 
 
 def get_single_entry(
@@ -313,7 +322,7 @@ def get_single_entry(
     if fields or include_fields and results is not None:
         results = handle_response_fields(results, fields, include_fields)[0]
 
-    return response(
+    response_object = response(
         links=links,
         data=results,
         meta=meta_values(
@@ -325,3 +334,11 @@ def get_single_entry(
         ),
         included=included,
     )
+    if params.response_format == "json":
+        return response_object
+    elif params.response_format == "hdf5":
+        return Response(
+            content=generate_hdf5_file_content(response_object),
+            media_type="application/x-hdf5",
+            headers={"Content-Disposition": "attachment"},
+        )

@@ -299,12 +299,12 @@ class EntryCollection(ABC):
             cursor_kwargs["filter"] = {}
 
         # response_format
-        if (
-            getattr(params, "response_format", False)
-            and params.response_format != "json"
+        if getattr(params, "response_format", False) and params.response_format not in (
+            "json",
+            "hdf5",
         ):
             raise BadRequest(
-                detail=f"Response format {params.response_format} is not supported, please use response_format='json'"
+                detail=f"Response format {params.response_format} is not supported, please use response_format='json' or response_format='hdf5'"
             )
 
         # page_limit

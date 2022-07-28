@@ -8,6 +8,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
     parse_obj_as,
     root_validator,
 )
+import numpy
 from optimade.models.utils import StrictField
 
 
@@ -365,4 +366,10 @@ class Response(BaseModel):
             datetime: lambda v: v.astimezone(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
             ),
+            numpy.int32: lambda v: int(v),
+            numpy.float32: lambda v: float(v),
+            numpy.int64: lambda v: int(v),
+            numpy.float64: lambda v: float(v),
+            numpy.bool_: lambda v: bool(v),
+            numpy.ndarray: lambda v: v.tolist(),
         }
