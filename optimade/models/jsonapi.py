@@ -366,6 +366,11 @@ class Response(BaseModel):
             datetime: lambda v: v.astimezone(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
             ),
-            numpy.ndarray: lambda v: v.tolist()
             # float: lambda v: "%.4f" % v, TODO The fewer digits that need to be returned for a floating point number the faster the conversion to a json file is. so it would be good to have a config option. enabling this line reduces the processing time by about 15%.
+            numpy.int32: lambda v: int(v),
+            numpy.float32: lambda v: float(v),
+            numpy.int64: lambda v: int(v),
+            numpy.float64: lambda v: float(v),
+            numpy.bool_: lambda v: bool(v),
+            numpy.ndarray: lambda v: v.tolist(),
         }

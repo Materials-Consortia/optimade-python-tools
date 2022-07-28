@@ -5,7 +5,7 @@ import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union
 import warnings
-from fastapi import Request
+from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
@@ -24,6 +24,7 @@ from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import IncompatibleFrameStep
 from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
+from optimade.adapters.hdf5 import generate_hdf5_file_content
 
 __all__ = (
     "BASE_URL_PREFIXES",
@@ -116,7 +117,7 @@ def handle_response_fields(
         single_entry = True
         results = [results]
 
-    data_limit = 1000000  # For now we limit the product of the number of sites times the number of frames.
+    data_limit = 20000000  # For now we limit the product of the number of sites times the number of frames.
     sum_entry_size = 0
     continue_from_frame = getattr(params, "continue_from_frame", None)
     new_results = []
@@ -543,7 +544,7 @@ def get_entries(
     else:
         links = ToplevelLinks(next=None)
 
-    return response(
+    response_object = response(
         links=links,
         data=results,
         meta=meta_values(
@@ -555,6 +556,14 @@ def get_entries(
         ),
         included=included,
     )
+    if params.response_format == "json":
+        return response_object
+    elif params.response_format == "hdf5":
+        return Response(
+            content=generate_hdf5_file_content(response_object),
+            media_type="application/x-hdf5",
+            headers={"Content-Disposition": "attachment"},
+        )
 
 
 def get_single_entry(
@@ -605,7 +614,7 @@ def get_single_entry(
     else:
         links = ToplevelLinks(next=None)
 
-    return response(
+    response_object = response(
         links=links,
         data=results,
         meta=meta_values(
@@ -617,3 +626,11 @@ def get_single_entry(
         ),
         included=included,
     )
+    if params.response_format == "json":
+        return response_object
+    elif params.response_format == "hdf5":
+        return Response(
+            content=generate_hdf5_file_content(response_object),
+            media_type="application/x-hdf5",
+            headers={"Content-Disposition": "attachment"},
+        )
