@@ -14,12 +14,16 @@ from optimade.server.config import CONFIG
 
 
 def test_response_format(check_response):
-    request = '/structures?filter=_exmpl_chemsys="Ac"&response_format=json'
+    request = (
+        '/structures?filter=chemical_formula_descriptive="Ac"&response_format=json'
+    )
     expected_ids = ["mpf_1"]
     check_response(request, expected_ids)
 
     if "hdf5" in CONFIG.enabled_response_formats:
-        request = '/structures?filter=_exmpl_chemsys="Ac"&response_format=hdf5'
+        request = (
+            '/structures?filter=chemical_formula_descriptive="Ac"&response_format=hdf5'
+        )
         check_response(request, expected_ids)
 
 
