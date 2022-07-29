@@ -122,6 +122,7 @@ setup(
         "client": client_deps,
         "elastic": elastic_deps,
         "mongo": mongo_deps,
+        "hdf5": hdf5_deps,
         "aiida": aiida_deps,
         "ase": ase_deps,
         "cif": cif_deps,
