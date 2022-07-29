@@ -19,7 +19,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Server minded
 elastic_deps = ["elasticsearch-dsl~=7.4,<8.0"]
 mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
-hdf5_deps = ["h5py==3.7.0", "numpy==1.23.0"]
+hdf5_deps = ["h5py==3.7.0", "numpy~=1.23"]
 server_deps = (
     [
         "uvicorn~=0.18",
@@ -40,7 +40,7 @@ http_client_deps = [
     "click~=8.1",
 ]
 ase_deps = ["ase~=3.22"]
-cif_deps = ["numpy~=1.21"]
+cif_deps = ["numpy~=1.23"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen==2022.0.16"]
 jarvis_deps = ["jarvis-tools==2022.5.20"]
