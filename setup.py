@@ -111,6 +111,8 @@ setup(
         "pydantic~=1.9",
         "email_validator~=1.2",
         "requests~=2.28",
+        "numpy~=1.23",
+        "h5py~=3.7",
     ],
     extras_require={
         "all": all_deps,
