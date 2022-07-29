@@ -280,6 +280,10 @@ class ServerConfig(BaseSettings):
         True,
         description="If True, the server will check whether the query parameters given in the request are correct.",
     )
+    enabled_response_formats: Optional[List[str]] = Field(
+        ["json"],
+        description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
+    )
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):

@@ -1,5 +1,5 @@
 from io import BytesIO
-from typing import Union
+from typing import Union, Any
 from pydantic import AnyUrl
 from datetime import datetime, timezone
 from optimade.models import EntryResponseMany, EntryResponseOne
@@ -7,11 +7,33 @@ import h5py
 import numpy as np
 
 
+"""This adaptor class can be used to generate a hdf5 response instead of a json response and to convert the hdf5 response back into an python dictionary.
+It can handle numeric data in a binary format compatible with numpy.
+It is therefore more efficient than the JSON format at returning large amounts of numeric data.
+It however also has more overhead resulting in a larger response for entries with little numeric data.
+To enable support for your server the parameter "enabled_response_formats" can be specified in the config file.
+It is a list of the supported response_formats. To support the hdf5 return format it should be set to: ["json", "hdf5"]
+(support for the JSON format is mandatory)
+
+Unfortunately, h5py does not support storing objects with the numpy.object type.
+It is therefore not possible to directly store a list of dictionaries in a hdf5 file with h5py.
+As a workaround, the index of a value in a list is used as a dictionary key so a list can be stored as a dictionary if neccesary.
+"""
+
+
 def generate_hdf5_file_content(
     response_object: Union[EntryResponseMany, EntryResponseOne, dict, list, tuple]
 ) -> bytes:
     """This function generates the content of a hdf5 file from an EntryResponse object.
-    It should also be able to handle python dictionaries lists and tuples."""
+    It should also be able to handle python dictionaries lists and tuples.
+
+    Parameters:
+        response_object: an OPTIMADE response object. This can be of any OPTIMADE entry type, such as structure,
+        reference etc.
+
+    Returns:
+        A binary object containing the contents of the hdf5 file.
+    """
 
     temp_file = BytesIO()
     hdf5_file = h5py.File(temp_file, "w")
@@ -27,12 +49,20 @@ def generate_hdf5_file_content(
 def store_hdf5_dict(hdf5_file, iterable: Union[dict, list, tuple], group: str = ""):
     """This function stores a python list, dictionary or tuple in a hdf5 file.
     the currently supported datatypes are str, int, float, list, dict, tuple, bool, AnyUrl,
-    None ,datetime or any numpy type or numpy array as long as it does not contain a numpy object.
+    None ,datetime or any numpy type or numpy array.
+
+    Unfortunately, h5py does not support storing objects with the numpy.object type.
+    It is therefore not possible to directly store a list of dictionaries in a hdf5 file with h5py.
+    As a workaround, the index of a value in a list is used as a dictionary key so a list can be stored as a dictionary if neccesary.
 
     Parameters:
         hdf5_file: An hdf5 file like object.
         iterable: The object to be stored in the hdf5 file.
         group: This indicates to group in the hdf5 file the list, tuple or dictionary should be added.
+
+    Raises:
+        ValueError: If this function encounters an object with a type that it cannot convert to the hdf5 format
+                    a ValueError is raised.
     """
     if isinstance(iterable, (list, tuple)):
         iterable = enumerate(iterable)
@@ -110,7 +140,17 @@ def store_hdf5_dict(hdf5_file, iterable: Union[dict, list, tuple], group: str = 
             raise ValueError(f"Do not know how to store a value of {type(value)}")
 
 
-def get_recursive_type(obj):
+def get_recursive_type(obj: Any) -> type:
+    """If obj is a list or tuple this function returns the type of the first object in the list/tuple that is not a list
+    or tuple. If the list or tuple is empty it returns None.
+    Finally if the object is not a list or tuple it returns the type of the object.
+
+    Parameters:
+        obj: any python object
+
+    Returns:
+        The type of the objects that the object contains or the type of the object itself when it does not contain other objects."""
+
     if isinstance(obj, (list, tuple)):
         if len(obj) == 0:
             return None
@@ -122,54 +162,66 @@ def get_recursive_type(obj):
     return type(obj)
 
 
-def generate_response_from_hdf5(response):
-    temp_file = BytesIO(response)
+def generate_response_from_hdf5(hdf5_content: bytes) -> dict:
+    """Generates a response_dict from a HDF5 file like object.
+    It is similar to the response_dict generated from the JSON response, except that the numerical data will have numpy
+    types.
+
+    Parameters:
+         hdf5_content(bytes): the content of a hdf5 file.
+
+    Returns:
+         A dictionary containing the data of the hdf5 file."""
+
+    temp_file = BytesIO(hdf5_content)
     hdf5_file = h5py.File(temp_file, "r")
-    response_dict = generate_dict_from_hdf5(hdf5_file, "dict")
+    response_dict = generate_dict_from_hdf5(hdf5_file)
     return response_dict
 
 
-def generate_dict_from_hdf5(hdf5_file, value_type, dict_tree="/"):
-    if value_type == "dict":
-        return_value = {}
-        for key, value in hdf5_file[dict_tree].items():
+def generate_dict_from_hdf5(
+    hdf5_file: h5py._hl.files.File, group: str = "/"
+) -> Union[dict, list]:
+    """This function returns the content of a hdf5 group.
+    Because of the workaround described under the store_hdf5_dict function, groups which have numbers as keys will be turned to lists(No guartee that the order is the same as in th eoriginal list).
+    Otherwise, the group will be turned into a dict.
+
+    Parameters:
+        hdf5_file: An HDF5_object containing the data that should be converted to a dictionary or list.
+        group: The hdf5 group for which the dictionary should be created. The default is "/" which will return all the data in the hdf5_object
+
+    Returns:
+        A dict or list containing the content of the hdf5 group.
+    """
+
+    return_value = None
+    for key, value in hdf5_file[group].items():
+        if key.isdigit():
+            if return_value is None:
+                return_value = []
             if isinstance(value, h5py._hl.group.Group):
-                if list(value.keys())[0].isdigit():
-                    new_value_type = "list"
-                else:
-                    new_value_type = "dict"
-                return_value[key] = generate_dict_from_hdf5(
-                    hdf5_file, new_value_type, dict_tree=dict_tree + key + "/"
-                )
-            else:
-                if isinstance(value[()], h5py._hl.base.Empty):
-                    return_value[key] = None
-                elif isinstance(value[()], bytes):
-                    return_value[key] = value[()].decode()
-                else:
-                    return_value[key] = value[
-                        ()
-                    ]  # I still have to check which other types I could get.
-    if value_type == "list":
-        return_value = []
-        for key, value in hdf5_file[dict_tree].items():
-            if isinstance(value, h5py._hl.group.Group):
-                if list(value.keys())[0].isdigit():
-                    new_value_type = "list"
-                else:
-                    new_value_type = "dict"
                 return_value.append(
-                    generate_dict_from_hdf5(
-                        hdf5_file, new_value_type, dict_tree=dict_tree + key + "/"
-                    )
+                    generate_dict_from_hdf5(hdf5_file, group=group + key + "/")
                 )
+            elif isinstance(value[()], h5py._hl.base.Empty):
+                return_value.append(None)
+            elif isinstance(value[()], bytes):
+                return_value.append(value[()].decode())
             else:
-                if isinstance(value[()], h5py._hl.base.Empty):
-                    return_value.append(None)
-                elif isinstance(value[()], bytes):
-                    return_value.append(value[()].decode())
-                else:
-                    return_value.append(
-                        value[()]
-                    )  # I still have to check which other types I could get.
+                return_value.append(value[()])
+
+        else:  # Case dictionary
+            if return_value is None:
+                return_value = {}
+            if isinstance(value, h5py._hl.group.Group):
+                return_value[key] = generate_dict_from_hdf5(
+                    hdf5_file, group=group + key + "/"
+                )
+            elif isinstance(value[()], h5py._hl.base.Empty):
+                return_value[key] = None
+            elif isinstance(value[()], bytes):
+                return_value[key] = value[()].decode()
+            else:
+                return_value[key] = value[()]
+
     return return_value
