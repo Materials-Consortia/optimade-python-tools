@@ -43,7 +43,7 @@ if "hdf5" in CONFIG.enabled_response_formats:
             "float": 5.26,
             "string": "str",
             "datetime": datetime.now(),
-            "list": [[2.3, 4.5], [8.9, 5.6]],
+            "list": [[[2.3, 6.3], [8.6, 4.5]], [[8.9, 9.4], [5.6, 3.5]]],
             "dict": {"a key": "a value", "another key": 7.33},
             "tuple": (95, 63),
             "bool": False,
@@ -66,3 +66,14 @@ if "hdf5" in CONFIG.enabled_response_formats:
             returned_dict, custom_encoder=Response.Config.json_encoders
         )
         assert reference_dict == returned_dict
+
+
+def test_unsupported_response_format(check_error_response):
+    request = '/structures?filter=chemical_formula_descriptive="Ac"&response_format=png'
+    error_detail = f"Response format png is not supported, please use one of the supported response_formats: {','.join(CONFIG.enabled_response_formats)}"
+    check_error_response(
+        request,
+        expected_status=400,
+        expected_title="Bad Request",
+        expected_detail=error_detail,
+    )

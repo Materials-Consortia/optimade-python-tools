@@ -61,7 +61,7 @@ def store_hdf5_dict(hdf5_file, iterable: Union[dict, list, tuple], group: str = 
         group: This indicates to group in the hdf5 file the list, tuple or dictionary should be added.
 
     Raises:
-        ValueError: If this function encounters an object with a type that it cannot convert to the hdf5 format
+        TypeError: If this function encounters an object with a type that it cannot convert to the hdf5 format
                     a ValueError is raised.
     """
     if isinstance(iterable, (list, tuple)):
@@ -82,11 +82,12 @@ def store_hdf5_dict(hdf5_file, iterable: Union[dict, list, tuple], group: str = 
                 hdf5_file.create_group(group + "/" + key)
                 store_hdf5_dict(hdf5_file, value, group + "/" + key)
             elif val_type.__module__ == np.__name__:
-                if val_type.dtype != object:
+                try:
                     hdf5_file[group + "/" + key] = value
-                else:
-                    raise ValueError(
-                        "Cannot store numpy arrays with dtype: 'object' in hdf5."
+                except (TypeError) as hdf5_error:
+                    raise TypeError(
+                        "Unfortunatly more complex numpy types like object can not yet be stored in hdf5. Error from hdf5:"
+                        + hdf5_error
                     )
             elif isinstance(value[0], (int, float)):
                 hdf5_file[group + "/" + key] = np.asarray(value)
@@ -110,7 +111,7 @@ def store_hdf5_dict(hdf5_file, iterable: Union[dict, list, tuple], group: str = 
             hdf5_file[group + "/" + key] = np.bool_(value)
         elif isinstance(
             value, AnyUrl
-        ):  # This case hat to be placed above the str case as AnyUrl inherits from the string class, but cannot be handled directly by h5py.
+        ):  # This case had to be placed above the str case as AnyUrl inherits from the string class, but cannot be handled directly by h5py.
             hdf5_file[group + "/" + key] = str(value)
         elif isinstance(
             value,
@@ -122,22 +123,23 @@ def store_hdf5_dict(hdf5_file, iterable: Union[dict, list, tuple], group: str = 
         ):
             hdf5_file[group + "/" + key] = value
         elif type(value).__module__ == np.__name__:
-            if value.dtype != object:
+            try:
                 hdf5_file[group + "/" + key] = value
-            else:
-                raise ValueError(
-                    "Cannot store numpy arrays with dtype: 'object' in hdf5."
+            except (TypeError) as hdf5_error:
+                raise TypeError(
+                    "Unfortunatly more complex numpy types like object can not yet be stored in hdf5. Error from hdf5:"
+                    + hdf5_error
                 )
         elif isinstance(value, datetime):
             hdf5_file[group + "/" + key] = value.astimezone(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
             )
         elif value is None:
-            hdf5_file[group + "/" + key] = h5py.Empty(
-                "f"
-            )  # hdf5 does not seem to have a proper null or None type.
+            hdf5_file[group + "/" + key] = h5py.Empty("f")
         else:
-            raise ValueError(f"Do not know how to store a value of {type(value)}")
+            raise ValueError(
+                f"Unable to store a value of type: {type(value)} in hdf5 format."
+            )
 
 
 def get_recursive_type(obj: Any) -> type:

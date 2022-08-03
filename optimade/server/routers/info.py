@@ -40,7 +40,7 @@ def get_info(request: Request) -> InfoResponse:
                         "version": __api_version__,
                     }
                 ],
-                formats=["json"],
+                formats=CONFIG.enabled_response_formats,
                 available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS.keys()),
                 entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
                 is_index=False,
@@ -71,8 +71,9 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
     properties = retrieve_queryable_properties(
         schema, queryable_properties, entry_type=entry
     )
-
-    output_fields_by_format = {"json": list(properties.keys())}
+    output_fields_by_format = {}
+    for outputformat in CONFIG.enabled_response_formats:
+        output_fields_by_format[outputformat] = list(properties.keys())
 
     return EntryInfoResponse(
         meta=meta_values(
