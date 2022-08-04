@@ -28,8 +28,7 @@ def generate_hdf5_file_content(
     It should also be able to handle python dictionaries lists and tuples.
 
     Parameters:
-        response_object: an OPTIMADE response object. This can be of any OPTIMADE entry type, such as structure,
-        reference etc.
+        response_object: an OPTIMADE response object. This can be of any OPTIMADE entry type, such as structure, reference etc.
 
     Returns:
         A binary object containing the contents of the hdf5 file.
@@ -46,7 +45,9 @@ def generate_hdf5_file_content(
     return file_content
 
 
-def store_hdf5_dict(hdf5_file, iterable: Union[dict, list, tuple], group: str = ""):
+def store_hdf5_dict(
+    hdf5_file: h5py._hl.files.File, iterable: Union[dict, list, tuple], group: str = ""
+):
     """This function stores a python list, dictionary or tuple in a hdf5 file.
     the currently supported datatypes are str, int, float, list, dict, tuple, bool, AnyUrl,
     None ,datetime or any numpy type or numpy array.
@@ -170,7 +171,7 @@ def generate_response_from_hdf5(hdf5_content: bytes) -> dict:
     types.
 
     Parameters:
-         hdf5_content(bytes): the content of a hdf5 file.
+         hdf5_content: the content of a hdf5 file.
 
     Returns:
          A dictionary containing the data of the hdf5 file."""
