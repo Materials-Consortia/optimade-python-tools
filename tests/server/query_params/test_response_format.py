@@ -2,8 +2,6 @@ import numpy
 from pydantic import AnyUrl
 from pydantic.tools import parse_obj_as
 from datetime import datetime
-from optimade.models import ReferenceResponseOne
-from tests.server.utils import RegularEndpointTests
 from optimade.adapters.hdf5 import (
     generate_hdf5_file_content,
     generate_response_from_hdf5,
@@ -29,13 +27,11 @@ def test_response_format(check_response):
 
 if "hdf5" in CONFIG.enabled_response_formats:
 
-    class TestSingleReferenceEndpoint(RegularEndpointTests):
-        test_id = "dijkstra1968"
-        request_str = f"/references/{test_id}&response_format=hdf5"
-        response_cls = ReferenceResponseOne
-
-
-if "hdf5" in CONFIG.enabled_response_formats:
+    def test_single_entry(check_response):
+        """For single entry. Default value for `include` is 'references'"""
+        request = "/structures/mpf_1?response_format=hdf5"
+        expected_ids = "mpf_1"
+        check_response(request, expected_ids)
 
     def test_convert_to_hdf5_and_back():
         test_dict = {
