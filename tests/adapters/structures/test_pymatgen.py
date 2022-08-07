@@ -58,6 +58,8 @@ def test_null_species(null_species_structure):
 
 
 def test_successful_ingestion(RAW_STRUCTURES):
+    import numpy as np
+
     lossy_keys = (
         "chemical_formula_descriptive",
         "chemical_formula_hill",
@@ -68,8 +70,14 @@ def test_successful_ingestion(RAW_STRUCTURES):
         "species",
         "fractional_site_positions",
     )
+    array_keys = ("cartesian_site_positions", "lattice_vectors")
     for structure in RAW_STRUCTURES:
         converted = from_pymatgen(get_pymatgen(Structure(structure))).dict()
         for k in converted:
             if k not in lossy_keys:
-                assert converted[k] == structure["attributes"][k]
+                if k in array_keys:
+                    np.testing.assert_almost_equal(
+                        converted[k], structure["attributes"][k]
+                    )
+                else:
+                    assert converted[k] == structure["attributes"][k]

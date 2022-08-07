@@ -204,9 +204,10 @@ def _pymatgen_anonymized_formula_to_optimade(composition: Composition) -> str:
 
 def _pymatgen_reduced_formula_to_optimade(composition: Composition) -> str:
     """Construct an OPTIMADE `chemical_formula_reduced` from a pymatgen `Composition`."""
-    import math
+    import numpy
 
-    gcd = math.gcd(*[int(_) for _ in composition.to_reduced_dict.values()])
+    numbers = [int(_) for _ in composition.to_reduced_dict.values()]
+    gcd = numpy.gcd.reduce(numbers)
     return "".join(
         _
         + f"{int(composition.to_reduced_dict[_]) // gcd if composition.to_reduced_dict[_] // gcd > 1 else ''}"
