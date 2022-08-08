@@ -43,7 +43,6 @@ client_deps = cif_deps
 
 # General
 docs_deps = [
-    "markupsafe==2.0.1",  # Can be removed once aiida supports Jinja2>=3, see pallets/markupsafe#284
     "mike~=1.1",
     "mkdocs~=1.3",
     "mkdocs-awesome-pages-plugin~=2.8",
