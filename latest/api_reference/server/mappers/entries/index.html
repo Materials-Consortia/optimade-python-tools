@@ -2186,8 +2186,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 28</span>
-<span class="normal"> 29</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 29</span>
 <span class="normal"> 30</span>
 <span class="normal"> 31</span>
 <span class="normal"> 32</span>
@@ -2517,7 +2516,18 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 <span class="normal">356</span>
 <span class="normal">357</span>
 <span class="normal">358</span>
-<span class="normal">359</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResourceMapper</span><span class="p">:</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResourceMapper</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic Resource Mapper that defines and performs the mapping</span>
 <span class="sd">    between objects in the database and the resource objects defined by</span>
@@ -2568,7 +2578,8 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="n">ENDPOINT</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
 <span class="sd">        including those defined by the server config. The first member</span>
 <span class="sd">        of each tuple is the OPTIMADE-compliant field name, the second</span>
@@ -2600,6 +2611,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="p">)</span>
 
     <span class="nd">@classproperty</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">SUPPORTED_PREFIXES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;A set of prefixes handled by this entry type.</span>
 
@@ -2642,6 +2654,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="k">return</span> <span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="o">.</span><span class="n">schema</span><span class="p">())</span>
 
     <span class="nd">@classproperty</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">ENDPOINT</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the expected endpoint for this mapper, corresponding</span>
 <span class="sd">        to the `type` property of the resource class.</span>
@@ -2655,7 +2668,8 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
 <span class="sd">        including those defined by the server config.</span>
 
@@ -2670,6 +2684,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">length_alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns the length alias for the particular field,</span>
 <span class="sd">        or `None` if no such alias is found.</span>
@@ -2684,6 +2699,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_backend_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">optimade_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return the field name configured for the particular</span>
 <span class="sd">        underlying database for the passed OPTIMADE field name, that would</span>
@@ -2718,6 +2734,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="k">return</span> <span class="n">optimade_field</span>
 
     <span class="nd">@classmethod</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return aliased field name.</span>
 
@@ -2739,6 +2756,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_optimade_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return the corresponding OPTIMADE field name for the underlying database field,</span>
 <span class="sd">        ready to be used to construct the OPTIMADE-compliant JSON response.</span>
@@ -2766,6 +2784,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">alias_of</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return de-aliased field name, if it exists,</span>
 <span class="sd">        otherwise return the input field name.</span>
@@ -2788,6 +2807,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_required_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
 
@@ -2880,10 +2900,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">128</span>
 <span class="normal">129</span>
 <span class="normal">130</span>
 <span class="normal">131</span>
@@ -2898,7 +2915,10 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
-<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classproperty</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classproperty</span>
 <span class="k">def</span> <span class="nf">ALL_ATTRIBUTES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns all attributes served by this entry.&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">optimade.server.config</span> <span class="kn">import</span> <span class="n">CONFIG</span>
@@ -2929,6 +2949,10 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ENDPOINT</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -2940,10 +2964,7 @@ to the <code>type</code> property of the resource class.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
 <span class="normal">158</span>
@@ -2951,7 +2972,12 @@ to the <code>type</code> property of the resource class.</p>
 <span class="normal">160</span>
 <span class="normal">161</span>
 <span class="normal">162</span>
-<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classproperty</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classproperty</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">ENDPOINT</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Returns the expected endpoint for this mapper, corresponding</span>
 <span class="sd">    to the `type` property of the resource class.</span>
@@ -2985,12 +3011,12 @@ to the <code>type</code> property of the resource class.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
 <span class="normal">149</span>
-<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classproperty</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classproperty</span>
 <span class="k">def</span> <span class="nf">ENTRY_RESOURCE_ATTRIBUTES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns the dictionary of attributes defined by the underlying entry resource class.&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">optimade.server.schemas</span> <span class="kn">import</span> <span class="n">retrieve_queryable_properties</span>
@@ -3008,6 +3034,10 @@ to the <code>type</code> property of the resource class.</p>
 
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">SUPPORTED_PREFIXES</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
+  </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3025,9 +3055,7 @@ domain-specific terms).</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
@@ -3038,7 +3066,11 @@ domain-specific terms).</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classproperty</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classproperty</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">SUPPORTED_PREFIXES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;A set of prefixes handled by this entry type.</span>
 
@@ -3067,6 +3099,7 @@ domain-specific terms).</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.alias_for" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3125,14 +3158,7 @@ domain-specific terms).</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">235</span>
 <span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span>
@@ -3144,7 +3170,16 @@ domain-specific terms).</p>
 <span class="normal">244</span>
 <span class="normal">245</span>
 <span class="normal">246</span>
-<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return aliased field name.</span>
 
@@ -3179,6 +3214,7 @@ domain-specific terms).</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.alias_of" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3238,16 +3274,7 @@ otherwise return the input field name.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">285</span>
 <span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span>
@@ -3258,7 +3285,18 @@ otherwise return the input field name.</p>
 <span class="normal">293</span>
 <span class="normal">294</span>
 <span class="normal">295</span>
-<span class="normal">296</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">alias_of</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return de-aliased field name, if it exists,</span>
 <span class="sd">    otherwise return the input field name.</span>
@@ -3294,6 +3332,7 @@ otherwise return the input field name.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3317,7 +3356,7 @@ is the backend-specific field name.</p>
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.Tuple">Tuple</span>[<span title="typing.Tuple">Tuple</span>[str, str]]</code>
+                <code><span title="typing.Iterable">Iterable</span>[<span title="typing.Tuple">Tuple</span>[str, str]]</code>
           </td>
           <td><p>A tuple of alias tuples.</p></td>
         </tr>
@@ -3326,8 +3365,7 @@ is the backend-specific field name.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 78</span>
-<span class="normal"> 79</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 79</span>
 <span class="normal"> 80</span>
 <span class="normal"> 81</span>
 <span class="normal"> 82</span>
@@ -3356,8 +3394,11 @@ is the backend-specific field name.</p>
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
-<span class="normal">108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
 <span class="sd">    including those defined by the server config. The first member</span>
 <span class="sd">    of each tuple is the OPTIMADE-compliant field name, the second</span>
@@ -3402,6 +3443,7 @@ is the backend-specific field name.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3423,7 +3465,7 @@ including those defined by the server config.</p>
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.Tuple">Tuple</span>[<span title="typing.Tuple">Tuple</span>[str, str]]</code>
+                <code><span title="typing.Iterable">Iterable</span>[<span title="typing.Tuple">Tuple</span>[str, str]]</code>
           </td>
           <td><p>A tuple of length alias tuples.</p></td>
         </tr>
@@ -3432,11 +3474,7 @@ including those defined by the server config.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">169</span>
 <span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
@@ -3445,8 +3483,14 @@ including those defined by the server config.</p>
 <span class="normal">175</span>
 <span class="normal">176</span>
 <span class="normal">177</span>
-<span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
 <span class="sd">    including those defined by the server config.</span>
 
@@ -3474,6 +3518,7 @@ including those defined by the server config.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.get_backend_field" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3543,13 +3588,7 @@ will return <code>kinds.mass</code>.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">200</span>
 <span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
@@ -3575,7 +3614,15 @@ will return <code>kinds.mass</code>.</p>
 <span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
-<span class="normal">226</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_backend_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">optimade_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return the field name configured for the particular</span>
 <span class="sd">    underlying database for the passed OPTIMADE field name, that would</span>
@@ -3623,6 +3670,7 @@ will return <code>kinds.mass</code>.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.get_optimade_field" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3688,15 +3736,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">257</span>
 <span class="normal">258</span>
 <span class="normal">259</span>
 <span class="normal">260</span>
@@ -3713,7 +3753,17 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 <span class="normal">271</span>
 <span class="normal">272</span>
 <span class="normal">273</span>
-<span class="normal">274</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_optimade_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return the corresponding OPTIMADE field name for the underlying database field,</span>
 <span class="sd">    ready to be used to construct the OPTIMADE-compliant JSON response.</span>
@@ -3754,6 +3804,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.get_required_fields" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3783,15 +3834,17 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_required_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
 
@@ -3815,6 +3868,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.length_alias_for" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3869,19 +3923,21 @@ or <code>None</code> if no such alias is found.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">185</span>
 <span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
-<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">length_alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns the length alias for the particular field,</span>
 <span class="sd">    or `None` if no such alias is found.</span>
@@ -3967,18 +4023,7 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">319</span>
 <span class="normal">320</span>
 <span class="normal">321</span>
 <span class="normal">322</span>
@@ -4009,7 +4054,18 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
 <span class="normal">347</span>
 <span class="normal">348</span>
 <span class="normal">349</span>
-<span class="normal">350</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE.</span>
 
@@ -4088,8 +4144,7 @@ with some tweaks to allow mkdocstrings to do its thing.</p>
 
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
-<span class="normal">10</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
@@ -4104,7 +4159,8 @@ with some tweaks to allow mkdocstrings to do its thing.</p>
 <span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
-<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">classproperty</span><span class="p">(</span><span class="nb">property</span><span class="p">):</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">classproperty</span><span class="p">(</span><span class="nb">property</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A simple extension of the property decorator that binds to types</span>
 <span class="sd">    rather than instances.</span>
 
