@@ -180,7 +180,6 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
 
     attributes["last_modified"] = None
     attributes["immutable_id"] = None
-    attributes["chemical_formula_descriptive"] = None
     attributes["structure_features"] = []
 
     return StructureResourceAttributes(**attributes)
