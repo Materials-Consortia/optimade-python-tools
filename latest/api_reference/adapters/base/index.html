@@ -1981,7 +1981,7 @@ and <a class="autorefs autorefs-internal" href="../../models/structures/#optimad
         <tr>
           <td><code>ENTRY_RESOURCE</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a></code>
+                <code><span title="typing.Type">Type</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
           </td>
           <td><p>Entry resource to store entry as.</p></td>
         </tr>
@@ -1998,6 +1998,13 @@ and <a class="autorefs autorefs-internal" href="../../models/structures/#optimad
                 <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
           </td>
           <td><p>Convert entry to a type listed in <code>_type_converters</code>.</p></td>
+        </tr>
+        <tr>
+          <td><code>from_&lt;_type_converters&gt;</code></td>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
+          </td>
+          <td><p>Convert an external type to the corresponding OPTIMADE model.</p></td>
         </tr>
     </tbody>
   </table>
@@ -2160,19 +2167,23 @@ and <a class="autorefs autorefs-internal" href="../../models/structures/#optimad
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
-<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryAdapter</span><span class="p">:</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryAdapter</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for lazy resource entry adapters.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        ENTRY_RESOURCE (EntryResource): Entry resource to store entry as.</span>
-<span class="sd">        _type_converters (Dict[str, Callable]): Dictionary of valid conversion types for entry.</span>
+<span class="sd">        ENTRY_RESOURCE: Entry resource to store entry as.</span>
+<span class="sd">        _type_converters: Dictionary of valid conversion types for entry.</span>
 <span class="sd">        as_&lt;_type_converters&gt;: Convert entry to a type listed in `_type_converters`.</span>
+<span class="sd">        from_&lt;_type_converters&gt;: Convert an external type to the corresponding OPTIMADE model.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">=</span> <span class="n">EntryResource</span>
+    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
     <span class="n">_type_converters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_type_ingesters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2405,9 +2416,7 @@ See above for the description of the order in which an attribute is tested for v
 
       <details class="quote">
         <summary>Source code in <code>optimade/adapters/base.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
@@ -2458,7 +2467,9 @@ See above for the description of the order in which an attribute is tested for v
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
-<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get converted entry or attribute from OPTIMADE entry.</span>
 
 <span class="sd">    Support any level of &quot;.&quot;-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,</span>
@@ -2557,9 +2568,7 @@ See above for the description of the order in which an attribute is tested for v
 
       <details class="quote">
         <summary>Source code in <code>optimade/adapters/base.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
@@ -2571,7 +2580,9 @@ See above for the description of the order in which an attribute is tested for v
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
-<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters:</span>
 <span class="sd">        entry (dict): A JSON OPTIMADE single resource entry.</span>
@@ -2668,9 +2679,7 @@ See above for the description of the order in which an attribute is tested for v
 
       <details class="quote">
         <summary>Source code in <code>optimade/adapters/base.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
 <span class="normal"> 89</span>
 <span class="normal"> 90</span>
 <span class="normal"> 91</span>
@@ -2696,7 +2705,9 @@ See above for the description of the order in which an attribute is tested for v
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Convert OPTIMADE entry to desired format.</span>
 
 <span class="sd">    Parameters:</span>
@@ -2770,15 +2781,15 @@ See above for the description of the order in which an attribute is tested for v
 
       <details class="quote">
         <summary>Source code in <code>optimade/adapters/base.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">63</span>
 <span class="normal">64</span>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
-<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@property</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@property</span>
 <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResource</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get OPTIMADE entry.</span>
 

@@ -1902,7 +1902,7 @@ and properties.</p>
         <tr>
           <td><code>ENTRY_RESOURCE</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.StructureResource" href="../../../models/structures/#optimade.models.structures.StructureResource">StructureResource</a></code>
+                <code><span title="typing.Type">Type</span>[<a class="autorefs autorefs-internal" title="optimade.models.StructureResource" href="../../../models/structures/#optimade.models.structures.StructureResource">StructureResource</a>]</code>
           </td>
           <td><p>This adapter stores entry resources as
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResource"><code>StructureResource</code></a>s.</p></td>
@@ -1910,7 +1910,7 @@ and properties.</p>
         <tr>
           <td><code>_type_converters</code></td>
           <td>
-                <code>Dict[str, Callable]</code>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
           </td>
           <td><p>Dictionary of valid conversion types for entry.</p>
 <p>Currently available types:</p>
@@ -1925,11 +1925,27 @@ and properties.</p>
 </ul></td>
         </tr>
         <tr>
+          <td><code>_type_ingesters</code></td>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
+          </td>
+          <td><p>Dictionary of valid ingesters.</p></td>
+        </tr>
+        <tr>
           <td><code>as_&lt;_type_converters&gt;</code></td>
           <td>
-                <code>Dict[str, Callable]</code>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
           </td>
           <td><p>Convert entry to a type listed in <code>_type_converters</code>.</p></td>
+        </tr>
+        <tr>
+          <td><code>from_&lt;_type_converters&gt;</code></td>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
+          </td>
+          <td><p>Convert an external type to an OPTIMADE
+<a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes"><code>StructureResourceAttributes</code></a>
+model.</p></td>
         </tr>
     </tbody>
   </table>
@@ -1937,8 +1953,7 @@ and properties.</p>
 
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/adapter.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
-<span class="normal">13</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
@@ -1972,7 +1987,17 @@ and properties.</p>
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
-<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Structure</span><span class="p">(</span><span class="n">EntryAdapter</span><span class="p">):</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Structure</span><span class="p">(</span><span class="n">EntryAdapter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Lazy structure resource converter.</span>
 
@@ -1980,9 +2005,9 @@ and properties.</p>
 <span class="sd">    and properties.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        ENTRY_RESOURCE (StructureResource): This adapter stores entry resources as</span>
+<span class="sd">        ENTRY_RESOURCE: This adapter stores entry resources as</span>
 <span class="sd">            [`StructureResource`][optimade.models.structures.StructureResource]s.</span>
-<span class="sd">        _type_converters (Dict[str, Callable]): Dictionary of valid conversion types for entry.</span>
+<span class="sd">        _type_converters: Dictionary of valid conversion types for entry.</span>
 
 <span class="sd">            Currently available types:</span>
 
@@ -1994,12 +2019,17 @@ and properties.</p>
 <span class="sd">            - `pymatgen`</span>
 <span class="sd">            - `jarvis`</span>
 
+<span class="sd">        _type_ingesters: Dictionary of valid ingesters.</span>
+
 <span class="sd">        as_&lt;_type_converters&gt;: Convert entry to a type listed in `_type_converters`.</span>
+<span class="sd">        from_&lt;_type_converters&gt;: Convert an external type to an OPTIMADE</span>
+<span class="sd">            [`StructureResourceAttributes`][optimade.models.structures.StructureResourceAttributes]</span>
+<span class="sd">            model.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">StructureResource</span> <span class="o">=</span> <span class="n">StructureResource</span>
-    <span class="n">_type_converters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StructureResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">StructureResource</span>
+    <span class="n">_type_converters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;aiida_structuredata&quot;</span><span class="p">:</span> <span class="n">get_aiida_structure_data</span><span class="p">,</span>
         <span class="s2">&quot;ase&quot;</span><span class="p">:</span> <span class="n">get_ase_atoms</span><span class="p">,</span>
         <span class="s2">&quot;cif&quot;</span><span class="p">:</span> <span class="n">get_cif</span><span class="p">,</span>
@@ -2007,6 +2037,10 @@ and properties.</p>
         <span class="s2">&quot;pdbx_mmcif&quot;</span><span class="p">:</span> <span class="n">get_pdbx_mmcif</span><span class="p">,</span>
         <span class="s2">&quot;pymatgen&quot;</span><span class="p">:</span> <span class="n">get_pymatgen</span><span class="p">,</span>
         <span class="s2">&quot;jarvis&quot;</span><span class="p">:</span> <span class="n">get_jarvis_atoms</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">_type_ingesters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;pymatgen&quot;</span><span class="p">:</span> <span class="n">from_pymatgen</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
         </details>
