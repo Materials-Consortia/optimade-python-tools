@@ -160,8 +160,8 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
         {"name": _.symbol, "chemical_symbols": [_.symbol], "concentration": [1]}
         for _ in set(pmg_structure.composition.elements)
     ]
-    attributes["dimension_types"] = [1, 1, 1]
-    attributes["nperiodic_dimensions"] = 3
+    attributes["dimension_types"] = [int(_) for _ in pmg_structure.lattice.pbc]
+    attributes["nperiodic_dimensions"] = sum(attributes["dimension_types"])
     attributes["nelements"] = len(pmg_structure.composition.elements)
     attributes["chemical_formula_anonymous"] = _pymatgen_anonymized_formula_to_optimade(
         pmg_structure.composition
