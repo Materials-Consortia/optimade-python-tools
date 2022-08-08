@@ -38,7 +38,7 @@ ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2022.7"]
-jarvis_deps = ["jarvis-tools==2022.5.20"]
+jarvis_deps = ["jarvis-tools==2022.7.17"]
 client_deps = cif_deps
 
 # General
@@ -46,7 +46,7 @@ docs_deps = [
     "markupsafe==2.0.1",  # Can be removed once aiida supports Jinja2>=3, see pallets/markupsafe#284
     "mike~=1.1",
     "mkdocs~=1.3",
-    "mkdocs-awesome-pages-plugin~=2.7",
+    "mkdocs-awesome-pages-plugin~=2.8",
     "mkdocs-material~=8.3",
     "mkdocstrings[python]~=0.19.0",
 ]
