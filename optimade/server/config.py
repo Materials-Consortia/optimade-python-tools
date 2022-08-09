@@ -68,6 +68,18 @@ class SupportedBackend(Enum):
     MONGOMOCK = "mongomock"
 
 
+class SupportedResponseFormats(Enum):
+    """Enumeration of supported database backends
+
+    - 'JSON': [JSON](https://www.json.org/json-en.html)
+    - 'HDF5': [HDF5](https://portal.hdfgroup.org/display/HDF5/HDF5)
+
+    """
+
+    HDF5 = "hdf5"
+    JSON = "json"
+
+
 def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
     """Configuration file settings source.
 
@@ -280,7 +292,7 @@ class ServerConfig(BaseSettings):
         True,
         description="If True, the server will check whether the query parameters given in the request are correct.",
     )
-    enabled_response_formats: Optional[List[str]] = Field(
+    enabled_response_formats: Optional[List[SupportedResponseFormats]] = Field(
         ["json"],
         description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
     )
@@ -310,6 +322,9 @@ class ServerConfig(BaseSettings):
                 values["database_backend"] = SupportedBackend.MONGODB
 
         return values
+
+    def get_enabled_response_formats(self):
+        return [e.value for e in self.enabled_response_formats]
 
     class Config:
         """

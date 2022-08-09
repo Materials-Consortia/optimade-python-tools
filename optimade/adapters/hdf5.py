@@ -7,7 +7,7 @@ import h5py
 import numpy as np
 
 
-"""This adaptor class can be used to generate a hdf5 response instead of a json response and to convert the hdf5 response back into an python dictionary.
+"""This adaptor can be used to generate a hdf5 response instead of a json response and to convert the hdf5 response back into an python dictionary.
 It can handle numeric data in a binary format compatible with numpy.
 It is therefore more efficient than the JSON format at returning large amounts of numeric data.
 It however also has more overhead resulting in a larger response for entries with little numeric data.

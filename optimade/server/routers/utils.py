@@ -286,6 +286,10 @@ def get_entries(
             media_type="application/x-hdf5",
             headers={"Content-Disposition": "attachment"},
         )
+    else:
+        raise BadRequest(
+            detail=f"The response_format {params.response_format} is not supported by this server. Use one of the supported formats: {','.join(CONFIG.get_enabled_response_formats())} instead "
+        )
 
 
 def get_single_entry(
@@ -341,4 +345,8 @@ def get_single_entry(
             content=generate_hdf5_file_content(response_object),
             media_type="application/x-hdf5",
             headers={"Content-Disposition": "attachment"},
+        )
+    else:
+        raise BadRequest(
+            detail=f"The response_format {params.response_format} is not supported by this server. Use one of the supported formats: {','.join(CONFIG.get_enabled_response_formats())} instead "
         )

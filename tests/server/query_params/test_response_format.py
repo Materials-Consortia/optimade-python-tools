@@ -66,7 +66,7 @@ if "hdf5" in CONFIG.enabled_response_formats:
 
 def test_unsupported_response_format(check_error_response):
     request = '/structures?filter=chemical_formula_descriptive="Ac"&response_format=png'
-    error_detail = f"Response format png is not supported, please use one of the supported response_formats: {','.join(CONFIG.enabled_response_formats)}"
+    error_detail = f"Response format png is not supported, please use one of the supported response_formats: {','.join(CONFIG.get_enabled_response_formats())}"
     check_error_response(
         request,
         expected_status=400,

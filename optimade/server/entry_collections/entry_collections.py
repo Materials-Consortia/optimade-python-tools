@@ -301,10 +301,10 @@ class EntryCollection(ABC):
         # response_format
         if (
             getattr(params, "response_format", False)
-            and params.response_format not in CONFIG.enabled_response_formats
+            and params.response_format not in CONFIG.get_enabled_response_formats()
         ):
             raise BadRequest(
-                detail=f"Response format {params.response_format} is not supported, please use one of the supported response_formats: {','.join(CONFIG.enabled_response_formats)}"
+                detail=f"Response format {params.response_format} is not supported, please use one of the supported response_formats: {','.join(CONFIG.get_enabled_response_formats())}"
             )
 
         # page_limit
