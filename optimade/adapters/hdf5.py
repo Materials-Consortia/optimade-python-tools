@@ -18,6 +18,8 @@ It is a list of the supported response_formats. To support the hdf5 return forma
 Unfortunately, h5py does not support storing objects with the numpy.object type.
 It is therefore not possible to directly store a list of dictionaries in a hdf5 file with h5py.
 As a workaround, the index of a value in a list is used as a dictionary key so a list can be stored as a dictionary if neccesary.
+
+It also assumes that all the elements of a list, tuple or numpy array are of the same type.
 """
 
 
@@ -79,7 +81,7 @@ def store_hdf5_dict(
                 hdf5_file[group + "/" + key] = []
                 continue
             val_type = type(value[0])
-            if val_type == dict:
+            if isinstance(value[0], dict):
                 hdf5_file.create_group(group + "/" + key)
                 store_hdf5_dict(hdf5_file, value, group + "/" + key)
             elif val_type.__module__ == np.__name__:
@@ -93,18 +95,23 @@ def store_hdf5_dict(
             elif isinstance(value[0], (int, float)):
                 hdf5_file[group + "/" + key] = np.asarray(value)
             elif isinstance(value[0], str):
-                hdf5_file[group + "/" + key] = value
+                hdf5_file[
+                    group + "/" + key
+                ] = value  # here I can pass a list of strings to hdf5 which is stored as a numpy object.
             elif isinstance(value[0], (list, tuple)):
                 list_type = get_recursive_type(value[0])
-                if list_type in (int, float):
+                if list_type in (
+                    int,
+                    float,
+                ):
                     hdf5_file[group + "/" + key] = np.asarray(value)
                 else:
                     hdf5_file.create_group(group + "/" + key)
                     store_hdf5_dict(hdf5_file, value, group + "/" + key)
             else:
-                raise ValueError(
-                    f"The list with type :{val_type} cannot be converted to hdf5."
-                )
+                hdf5_file.create_group(group + "/" + key)
+                store_hdf5_dict(hdf5_file, value, group + "/" + key)
+
         elif isinstance(value, dict):
             hdf5_file.create_group(group + "/" + key)
             store_hdf5_dict(hdf5_file, value, group + "/" + key)

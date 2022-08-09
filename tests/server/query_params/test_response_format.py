@@ -40,6 +40,12 @@ if "hdf5" in CONFIG.get_enabled_response_formats():
             "string": "str",
             "datetime": datetime.now(),
             "list": [[[2.3, 6.3], [8.6, 4.5]], [[8.9, 9.4], [5.6, 3.5]]],
+            "list_of_str": [
+                ["string 1", "string 2"],
+                ["another string"],
+                "less nested string",
+            ],
+            "None_list": [None, None],
             "dict": {"a key": "a value", "another key": 7.33},
             "tuple": (95, 63),
             "bool": False,

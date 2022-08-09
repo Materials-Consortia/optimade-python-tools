@@ -320,6 +320,13 @@ describing relationships between the resource and other JSON API resources.""",
     )
 
 
+def process_ndarray(arg):
+    if arg.dtype == object:
+        return arg.astype(str).tolist()
+    else:
+        return arg.tolist()
+
+
 class Response(BaseModel):
     """A top-level response"""
 
@@ -371,5 +378,5 @@ class Response(BaseModel):
             numpy.int64: lambda v: int(v),
             numpy.float64: lambda v: float(v),
             numpy.bool_: lambda v: bool(v),
-            numpy.ndarray: lambda v: v.tolist(),
+            numpy.ndarray: process_ndarray,
         }
