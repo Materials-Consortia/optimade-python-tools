@@ -18,14 +18,14 @@ def test_response_format(check_response):
     expected_ids = ["mpf_1"]
     check_response(request, expected_ids)
 
-    if "hdf5" in CONFIG.enabled_response_formats:
+    if "hdf5" in CONFIG.get_enabled_response_formats():
         request = (
             '/structures?filter=chemical_formula_descriptive="Ac"&response_format=hdf5'
         )
         check_response(request, expected_ids)
 
 
-if "hdf5" in CONFIG.enabled_response_formats:
+if "hdf5" in CONFIG.get_enabled_response_formats():
 
     def test_single_entry(check_response):
         """For single entry. Default value for `include` is 'references'"""

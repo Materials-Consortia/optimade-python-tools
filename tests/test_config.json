@@ -35,5 +35,5 @@
             "chemsys": "nelements"
         }
     },
-    "enabled_response_formats": ["json","hdf5"]
+    "enabled_response_formats": ["json", "hdf5"]
 }
