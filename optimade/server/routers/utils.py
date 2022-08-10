@@ -278,14 +278,15 @@ def get_entries(
         ),
         included=included,
     )
-    if params.response_format == "json":
-        return response_object
-    elif params.response_format == "hdf5":
-        return Response(
-            content=generate_hdf5_file_content(response_object),
-            media_type="application/x-hdf5",
-            headers={"Content-Disposition": "attachment"},
-        )
+    if params.response_format in CONFIG.get_enabled_response_formats():
+        if params.response_format == "json":
+            return response_object
+        elif params.response_format == "hdf5":
+            return Response(
+                content=generate_hdf5_file_content(response_object),
+                media_type="application/x-hdf5",
+                headers={"Content-Disposition": "attachment"},
+            )
     else:
         raise BadRequest(
             detail=f"The response_format {params.response_format} is not supported by this server. Use one of the supported formats: {','.join(CONFIG.get_enabled_response_formats())} instead "
@@ -338,14 +339,15 @@ def get_single_entry(
         ),
         included=included,
     )
-    if params.response_format == "json":
-        return response_object
-    elif params.response_format == "hdf5":
-        return Response(
-            content=generate_hdf5_file_content(response_object),
-            media_type="application/x-hdf5",
-            headers={"Content-Disposition": "attachment"},
-        )
+    if params.response_format in CONFIG.get_enabled_response_formats():
+        if params.response_format == "json":
+            return response_object
+        elif params.response_format == "hdf5":
+            return Response(
+                content=generate_hdf5_file_content(response_object),
+                media_type="application/x-hdf5",
+                headers={"Content-Disposition": "attachment"},
+            )
     else:
         raise BadRequest(
             detail=f"The response_format {params.response_format} is not supported by this server. Use one of the supported formats: {','.join(CONFIG.get_enabled_response_formats())} instead "
