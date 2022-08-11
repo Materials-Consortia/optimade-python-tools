@@ -531,6 +531,11 @@ class ImplementationValidator:
             archetypal_entry = response.json()["data"][
                 random.randint(0, data_returned - 1)
             ]
+            if "id" not in archetypal_entry:
+                raise ResponseError(
+                    f"Chosen archetypal entry did not have an ID, cannot proceed: {archetypal_entry!r}"
+                )
+
             return (
                 archetypal_entry,
                 f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
@@ -614,10 +619,10 @@ class ImplementationValidator:
             )
 
         if prop == "type":
-            if chosen_entry["type"] == endp:
+            if chosen_entry.get("type") == endp:
                 return True, f"Successfully validated {prop}"
             raise ResponseError(
-                f"Chosen entry of endpoint '{endp}' had unexpected type {chosen_entry['type']!r}."
+                f"Chosen entry of endpoint '{endp}' had unexpected or missing type: {chosen_entry.get('type')!r}."
             )
 
         prop_type = (
@@ -837,9 +842,9 @@ class ImplementationValidator:
 
             excluded = operator in exclusive_operators
             # if we have all results on this page, check that the blessed ID is in the response
-            # if not response["meta"]["more_data_available"]:
             if excluded and (
-                chosen_entry["id"] in set(entry["id"] for entry in response["data"])
+                chosen_entry.get("id", "")
+                in set(entry.get("id") for entry in response["data"])
             ):
                 raise ResponseError(
                     f"Entry {chosen_entry['id']} with value {prop!r}: {test_value} was not excluded by {query!r}"
@@ -858,7 +863,7 @@ class ImplementationValidator:
 
             # check that the filter returned no entries that had a null or missing value for the filtered property
             if any(
-                entry["attributes"].get(prop, entry.get(prop, None)) is None
+                entry.get("attributes", {}).get(prop, entry.get(prop, None)) is None
                 for entry in response.get("data", [])
             ):
                 raise ResponseError(
@@ -936,7 +941,7 @@ class ImplementationValidator:
 
                 # check that the filter returned no entries that had a null or missing value for the filtered property
                 if any(
-                    entry["attributes"].get(prop, entry.get(prop, None)) is None
+                    entry.get("attributes", {}).get(prop, entry.get(prop, None)) is None
                     for entry in reversed_response.get("data", [])
                 ):
                     raise ResponseError(
@@ -1000,6 +1005,8 @@ class ImplementationValidator:
             if response_fields:
                 request_str += f"?response_fields={','.join(response_fields)}"
             response, _ = self._get_endpoint(request_str)
+            self._test_meta_schema_reporting(response, request_str, optional=True)
+
             if response:
                 self._deserialize_response(response, response_cls, request=request_str)
 
@@ -1035,6 +1042,7 @@ class ImplementationValidator:
 
         response, _ = self._get_endpoint(request_str)
 
+        self._test_meta_schema_reporting(response, request_str, optional=True)
         self._test_page_limit(response)
 
         deserialized, _ = self._deserialize_response(
@@ -1231,6 +1239,28 @@ class ImplementationValidator:
 
         self._get_endpoint(
             "v123123", expected_status_code=expected_status_code, optional=True
+        )
+
+    @test_case
+    def _test_meta_schema_reporting(
+        self,
+        response: requests.models.Response,
+        request_str: str,
+    ):
+        """Tests that the endpoint responds with a `meta->schema`."""
+        try:
+            if not response.json().get("meta", {}).get("schema"):
+                raise ResponseError(
+                    f"Query {request_str} did not report a schema in `meta->schema` field."
+                )
+        except json.JSONDecodeError:
+            raise ResponseError(
+                f"Unable to test presence of `meta->schema`: could not decode response as JSON.\n{str(response.content)}"
+            )
+
+        return (
+            True,
+            f"Query {request_str} successfully reported a schema in `meta->schema`.",
         )
 
     @test_case

@@ -5,7 +5,7 @@ import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union, TextIO
 import warnings
-from fastapi import Request
+from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
@@ -24,6 +24,7 @@ from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import IncompatibleFrameStep
 from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
+from optimade.adapters.hdf5 import generate_hdf5_file_content
 
 __all__ = (
     "BASE_URL_PREFIXES",
@@ -116,7 +117,7 @@ def handle_response_fields(
         single_entry = True
         results = [results]
 
-    data_limit = 1000000  # For now we limit the product of the number of sites times the number of frames.
+    data_limit = 20000000  # For now we limit the product of the number of sites times the number of frames.
     sum_entry_size = 0
     continue_from_frame = getattr(params, "continue_from_frame", None)
     new_results = []
@@ -368,7 +369,7 @@ def handle_response_fields(
         return new_results, traj_trunc, last_frame
 
 
-def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: str):
+def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method: str):
     from pathlib import Path
 
     # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
@@ -379,15 +380,15 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: 
             "Loading data from a file is not implemented yet for frame serialization methods other than 'explicit'."
         )  # TODO implement this for the other frame_serialization_methods
 
-    if storagemethod == "hdf5":
+    if storage_method == "hdf5":
         return get_hdf5_value(field, path, new_entry)
-    elif storagemethod == "binary":
+    elif storage_method == "binary":
         binary_file = open(path, "r")
         values = get_binary_value(field, binary_file, new_entry)
         binary_file.close()
         return values
     elif (
-        storagemethod == "gridfs"
+        storage_method == "gridfs"
     ):  # TODO: This code for gridfs has not been tested yet
         import gridfs
 
@@ -396,7 +397,7 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storagemethod: 
         return get_binary_value(field, bytestream, new_entry)
     else:
         raise InternalServerError(
-            f"Unknown value for the _storage_method field:{new_entry['attributes'][field]['_storage_method']}"
+            f"Unknown value for the _storage_method field:{storage_method}"
         )
 
 
@@ -407,7 +408,7 @@ def get_hdf5_value(field: str, path: str, new_entry: Dict):
     last_frame = new_entry["attributes"][field]["last_frame"]
     frame_step = new_entry["attributes"][field]["frame_step"]
     file = h5py.File(path, "r")
-    return file[field]["values"][first_frame:last_frame:frame_step].tolist()
+    return file[field]["values"][first_frame:last_frame:frame_step]
 
 
 def get_binary_value(field: str, binary_file: TextIO, new_entry: Dict):
@@ -589,7 +590,7 @@ def get_entries(
     else:
         links = ToplevelLinks(next=None)
 
-    return response(
+    response_object = response(
         links=links,
         data=results,
         meta=meta_values(
@@ -601,6 +602,20 @@ def get_entries(
         ),
         included=included,
     )
+
+    if params.response_format in CONFIG.get_enabled_response_formats():
+        if params.response_format == "json":
+            return response_object
+        elif params.response_format == "hdf5":
+            return Response(
+                content=generate_hdf5_file_content(response_object),
+                media_type="application/x-hdf5",
+                headers={"Content-Disposition": "attachment"},
+            )
+    else:
+        raise BadRequest(
+            detail=f"The response_format {params.response_format} is not supported by this server. Use one of the supported formats: {','.join(CONFIG.get_enabled_response_formats())} instead "
+        )
 
 
 def get_single_entry(
@@ -651,7 +666,7 @@ def get_single_entry(
     else:
         links = ToplevelLinks(next=None)
 
-    return response(
+    response_object = response(
         links=links,
         data=results,
         meta=meta_values(
@@ -663,3 +678,16 @@ def get_single_entry(
         ),
         included=included,
     )
+    if params.response_format in CONFIG.get_enabled_response_formats():
+        if params.response_format == "json":
+            return response_object
+        elif params.response_format == "hdf5":
+            return Response(
+                content=generate_hdf5_file_content(response_object),
+                media_type="application/x-hdf5",
+                headers={"Content-Disposition": "attachment"},
+            )
+    else:
+        raise BadRequest(
+            detail=f"The response_format {params.response_format} is not supported by this server. Use one of the supported formats: {','.join(CONFIG.get_enabled_response_formats())} instead "
+        )

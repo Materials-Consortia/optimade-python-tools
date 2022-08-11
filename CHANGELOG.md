@@ -1,5 +1,49 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.0...HEAD)
+
+This minor release includes several usability improvements for the server and client arising from the OPTIMADE workshop.
+This release also drops support for Python 3.7, which should allow us to streamline our dependencies going forward.
+
+## [v0.19.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.0) (2022-07-18)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.18.0...v0.19.0)
+
+This minor release includes several usability improvements for the server and client arising from the OPTIMADE workshop.
+This release also drops support for Python 3.7, which should allow us to streamline our dependencies going forward.
+
+**Implemented enhancements:**
+
+- Support for Elasticsearch v7 [\#1216](https://github.com/Materials-Consortia/optimade-python-tools/pull/1216) ([markus1978](https://github.com/markus1978))
+
+**Fixed bugs:**
+
+- Landing page not loading  [\#1256](https://github.com/Materials-Consortia/optimade-python-tools/issues/1256)
+- Config values are not cached by `@classproperty` [\#1219](https://github.com/Materials-Consortia/optimade-python-tools/issues/1219)
+- Prevent internal validator errors when entries are missing ID/type  [\#1273](https://github.com/Materials-Consortia/optimade-python-tools/pull/1273) ([ml-evs](https://github.com/ml-evs))
+- Improve error handling for client when updating provider list [\#1222](https://github.com/Materials-Consortia/optimade-python-tools/pull/1222) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Internal validator failures [\#1272](https://github.com/Materials-Consortia/optimade-python-tools/issues/1272)
+- Use versioned Dockerfiles for CI services to allow dependabot to update them [\#1241](https://github.com/Materials-Consortia/optimade-python-tools/issues/1241)
+- Wrong links to available endpoints [\#1214](https://github.com/Materials-Consortia/optimade-python-tools/issues/1214)
+- The validator should check for `meta->schema` [\#1209](https://github.com/Materials-Consortia/optimade-python-tools/issues/1209)
+- Add configurable `meta->schemas` field to reference server [\#1208](https://github.com/Materials-Consortia/optimade-python-tools/issues/1208)
+
+**Merged pull requests:**
+
+- Bump providers from `fb05359` to `a92e5bc` [\#1267](https://github.com/Materials-Consortia/optimade-python-tools/pull/1267) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Add schema parameter when calling meta\_values in landing.py [\#1257](https://github.com/Materials-Consortia/optimade-python-tools/pull/1257) ([JPBergsma](https://github.com/JPBergsma))
+- Update `lark` dependency to new name [\#1231](https://github.com/Materials-Consortia/optimade-python-tools/pull/1231) ([ml-evs](https://github.com/ml-evs))
+- Use Python 3.10 instead of 3.7 in installation instructions [\#1229](https://github.com/Materials-Consortia/optimade-python-tools/pull/1229) ([JPBergsma](https://github.com/JPBergsma))
+- Optimisation: do not re-access mapper properties inside the request loop [\#1223](https://github.com/Materials-Consortia/optimade-python-tools/pull/1223) ([ml-evs](https://github.com/ml-evs))
+- Add meta-\>schema validation warning [\#1211](https://github.com/Materials-Consortia/optimade-python-tools/pull/1211) ([ml-evs](https://github.com/ml-evs))
+- Add configurable `schema_url` and `index_schema_url` options [\#1210](https://github.com/Materials-Consortia/optimade-python-tools/pull/1210) ([ml-evs](https://github.com/ml-evs))
+- Drop support for Python 3.7 [\#1179](https://github.com/Materials-Consortia/optimade-python-tools/pull/1179) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.18.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.18.0) (2022-05-29)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.17.2...v0.18.0)
