@@ -37,7 +37,7 @@ http_client_deps = [
 ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2022.0.16"]
+pymatgen_deps = ["pymatgen==2022.7"]
 jarvis_deps = ["jarvis-tools==2022.5.20"]
 client_deps = cif_deps
 
