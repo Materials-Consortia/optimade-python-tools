@@ -38,5 +38,6 @@
         "structures": {
             "chemsys": "nelements"
         }
-    }
+    },
+    "enabled_response_formats": ["json", "hdf5"]
 }

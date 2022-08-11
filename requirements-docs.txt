@@ -1,7 +1,6 @@
 griffe==0.21 # Currently mkdocstrings-python does not pin a griffe version, but it is quite flaky...
-markupsafe==2.0.1 # Can be removed once aiida supports Jinja2>=3, see pallets/markupsafe#284
 mike==1.1.2
-mkdocs==1.3.0
-mkdocs-awesome-pages-plugin==2.7.0
-mkdocs-material==8.3.8
+mkdocs==1.3.1
+mkdocs-awesome-pages-plugin==2.8.0
+mkdocs-material==8.3.9
 mkdocstrings[python]==0.19.0

@@ -2,12 +2,7 @@
 from enum import Enum
 from pathlib import Path
 import warnings
-from typing import Any, Dict, List, Optional, Tuple, Union
-
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
+from typing import Any, Dict, List, Optional, Tuple, Union, Literal
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
@@ -71,6 +66,18 @@ class SupportedBackend(Enum):
     ELASTIC = "elastic"
     MONGODB = "mongodb"
     MONGOMOCK = "mongomock"
+
+
+class SupportedResponseFormats(Enum):
+    """Enumeration of supported database backends
+
+    - 'JSON': [JSON](https://www.json.org/json-en.html)
+    - 'HDF5': [HDF5](https://portal.hdfgroup.org/display/HDF5/HDF5)
+
+    """
+
+    HDF5 = "hdf5"
+    JSON = "json"
 
 
 def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
@@ -291,6 +298,10 @@ class ServerConfig(BaseSettings):
         True,
         description="If True, the server will check whether the query parameters given in the request are correct.",
     )
+    enabled_response_formats: Optional[List[SupportedResponseFormats]] = Field(
+        ["json"],
+        description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
+    )
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):
@@ -317,6 +328,9 @@ class ServerConfig(BaseSettings):
                 values["database_backend"] = SupportedBackend.MONGODB
 
         return values
+
+    def get_enabled_response_formats(self):
+        return [e.value for e in self.enabled_response_formats]
 
     class Config:
         """

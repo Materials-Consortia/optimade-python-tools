@@ -447,8 +447,7 @@ class AddWarnings(BaseHTTPMiddleware):
             if not isinstance(chunk, bytes):
                 chunk = chunk.encode(charset)
             body += chunk
-        if response.raw_headers[1][1] == b"application/vnd.api+json":
-            body = body.decode(charset)
+        body = body.decode(charset)
 
         if self._warnings:
             response = json.loads(body)

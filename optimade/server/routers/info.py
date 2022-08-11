@@ -25,6 +25,9 @@ router = APIRouter(redirect_slashes=True)
 def get_info(request: Request) -> InfoResponse:
     from optimade.models import BaseInfoResource, BaseInfoAttributes
 
+    entry_types_by_format_dict = {}
+    for _ in CONFIG.get_enabled_response_formats():
+        entry_types_by_format_dict[_] = list(ENTRY_INFO_SCHEMAS)
     return InfoResponse(
         meta=meta_values(
             request.url, 1, 1, more_data_available=False, schema=CONFIG.schema_url
@@ -40,9 +43,9 @@ def get_info(request: Request) -> InfoResponse:
                         "version": __api_version__,
                     }
                 ],
-                formats=["json"],
-                available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS.keys()),
-                entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
+                formats=CONFIG.get_enabled_response_formats(),
+                available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS),
+                entry_types_by_format=entry_types_by_format_dict,
                 is_index=False,
             ),
         ),
@@ -71,8 +74,9 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
     properties = retrieve_queryable_properties(
         schema, queryable_properties, entry_type=entry
     )
-
-    output_fields_by_format = {"json": list(properties.keys())}
+    output_fields_by_format = {}
+    for outputformat in CONFIG.get_enabled_response_formats():
+        output_fields_by_format[outputformat] = list(properties)
 
     return EntryInfoResponse(
         meta=meta_values(

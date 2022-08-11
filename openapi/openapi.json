@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "OPTIMADE API",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.18.0) v0.18.0.",
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.0) v0.19.0.",
     "version": "1.1.0"
   },
   "paths": {
@@ -2183,8 +2183,8 @@
                 "$ref": "#/components/schemas/AvailablePropertySubfields"
               }
             ],
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "lattice_vectors": {
             "title": "Lattice Vectors",
@@ -2193,8 +2193,8 @@
                 "$ref": "#/components/schemas/AvailablePropertySubfields"
               }
             ],
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "species": {
             "title": "Species",
@@ -2203,8 +2203,8 @@
                 "$ref": "#/components/schemas/AvailablePropertySubfields"
               }
             ],
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "dimension_types": {
             "title": "Dimension Types",
@@ -2213,8 +2213,8 @@
                 "$ref": "#/components/schemas/AvailablePropertySubfields"
               }
             ],
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "species_at_sites": {
             "title": "Species At Sites",
@@ -2223,8 +2223,8 @@
                 "$ref": "#/components/schemas/AvailablePropertySubfields"
               }
             ],
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           }
         }
       },
