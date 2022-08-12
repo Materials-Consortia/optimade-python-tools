@@ -3,7 +3,7 @@ import re
 import sys
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Set, Union, TextIO
+from typing import Any, Dict, List, Set, Union
 import warnings
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
@@ -18,7 +18,7 @@ from optimade.models import (
     ToplevelLinks,
 )
 
-from optimade.server.config import CONFIG
+from optimade.server.config import CONFIG, SupportedResponseFormats
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -46,6 +46,8 @@ BASE_URL_PREFIXES = {
     "minor": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:2])}",
     "patch": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:3])}",
 }
+
+FORMAT_SIZE_FACTORS = {"hdf5": 1.0, "json": 4.7}
 
 
 class JSONAPIResponse(JSONResponse):
@@ -116,13 +118,23 @@ def handle_response_fields(
     if not isinstance(results, list):
         single_entry = True
         results = [results]
-
-    data_limit = 20000000  # For now we limit the product of the number of sites times the number of frames.
     sum_entry_size = 0
     continue_from_frame = getattr(params, "continue_from_frame", None)
     new_results = []
     traj_trunc = False
     last_frame = None
+    # TODO the code below only needs to be executed if there is a trajectory endpoint
+    if params.response_format in [_.value for _ in CONFIG.max_response_size]:
+        data_limit = CONFIG.max_response_size[
+            SupportedResponseFormats(params.response_format)
+        ]
+    elif "json" in [_.value for _ in CONFIG.max_response_size]:
+        data_limit = CONFIG.max_response_size[SupportedResponseFormats("json")]
+    else:
+        data_limit = 10
+    # When the data is encoded in the json format the numerical data may take up more space to take this into account we use a format dependend conversion factor.
+    data_limit = int(data_limit * 1000000 / FORMAT_SIZE_FACTORS[params.response_format])
+
     while results:
         one_doc = results.pop(0)
         if one_doc:
@@ -134,7 +146,7 @@ def handle_response_fields(
         for field in include_fields:
             if field not in new_entry["attributes"]:
                 new_entry["attributes"][field] = None
-
+        # TODO This function has become very large. It would be good to split it up.
         # TODO For now we only have trajectories with large properties but it would be nice if this could apply to other endpoints in the future as well.
         if new_entry["type"] == "trajectories":
             last_frame = getattr(params, "last_frame", None)
@@ -383,9 +395,7 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method:
     if storage_method == "hdf5":
         return get_hdf5_value(field, path, new_entry)
     elif storage_method == "binary":
-        binary_file = open(path, "r")
-        values = get_binary_value(field, binary_file, new_entry)
-        binary_file.close()
+        values = get_binary_value(field, path, new_entry)
         return values
     elif (
         storage_method == "gridfs"
@@ -411,40 +421,41 @@ def get_hdf5_value(field: str, path: str, new_entry: Dict):
     return file[field]["values"][first_frame:last_frame:frame_step]
 
 
-def get_binary_value(field: str, binary_file: TextIO, new_entry: Dict):
+def get_binary_value(field: str, path: str, new_entry: Dict):
     import numpy
 
-    first_frame = new_entry["attributes"][field]["first_frame"] - 1
-    last_frame = new_entry["attributes"][field]["last_frame"]
-    frame_step = new_entry["attributes"][field]["frame_step"]
-    nsites = new_entry["attributes"]["reference_structure"][
-        "nsites"
-    ]  # TODO Add support for a varying number of sites per frame.
-    nframes_to_return = (last_frame - first_frame + 1) // frame_step
-    if frame_step == 1:
-        values = numpy.fromfile(
-            binary_file,
-            dtype="<f",
-            count=(last_frame - first_frame + 1) * nsites * 3,
-            sep="",
-            offset=(first_frame) * nsites * 3 * 4,
-        )
-    else:
-        values = numpy.array([])
-        for i in range(nframes_to_return):
-            values = numpy.concatenate(
-                [
-                    values,
-                    numpy.fromfile(
-                        binary_file,
-                        dtype="<f",
-                        count=nsites * 3,
-                        sep="",
-                        offset=(first_frame + i * frame_step) * nsites * 3 * 4,
-                    ),
-                ]
+    with open(path, "r") as binary_file:
+        first_frame = new_entry["attributes"][field]["first_frame"] - 1
+        last_frame = new_entry["attributes"][field]["last_frame"]
+        frame_step = new_entry["attributes"][field]["frame_step"]
+        nsites = new_entry["attributes"]["reference_structure"][
+            "nsites"
+        ]  # TODO Add support for a varying number of sites per frame.
+        nframes_to_return = (last_frame - first_frame + 1) // frame_step
+        if frame_step == 1:
+            values = numpy.fromfile(
+                binary_file,
+                dtype="<f",
+                count=(last_frame - first_frame + 1) * nsites * 3,
+                sep="",
+                offset=(first_frame) * nsites * 3 * 4,
             )
-    return values.reshape(nframes_to_return, nsites, 3).tolist()
+        else:
+            values = numpy.array([])
+            for i in range(nframes_to_return):
+                values = numpy.concatenate(
+                    [
+                        values,
+                        numpy.fromfile(
+                            binary_file,
+                            dtype="<f",
+                            count=nsites * 3,
+                            sep="",
+                            offset=(first_frame + i * frame_step) * nsites * 3 * 4,
+                        ),
+                    ]
+                )
+    return values.reshape(nframes_to_return, nsites, 3)
 
 
 def get_included_relationships(
