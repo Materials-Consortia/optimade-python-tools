@@ -18,7 +18,7 @@ from optimade.models import (
     ToplevelLinks,
 )
 
-from optimade.server.config import CONFIG
+from optimade.server.config import CONFIG, SupportedResponseFormats
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -46,6 +46,8 @@ BASE_URL_PREFIXES = {
     "minor": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:2])}",
     "patch": f"/v{'.'.join(__api_version__.split('-')[0].split('+')[0].split('.')[:3])}",
 }
+
+FORMAT_SIZE_FACTORS = {"hdf5": 1.0, "json": 4.7}
 
 
 class JSONAPIResponse(JSONResponse):
@@ -116,13 +118,23 @@ def handle_response_fields(
     if not isinstance(results, list):
         single_entry = True
         results = [results]
-
-    data_limit = 20000000  # For now we limit the product of the number of sites times the number of frames.
     sum_entry_size = 0
     continue_from_frame = getattr(params, "continue_from_frame", None)
     new_results = []
     traj_trunc = False
     last_frame = None
+    # TODO the code below only needs to be executed if there is a trajectory endpoint
+    if params.response_format in [_.value for _ in CONFIG.max_response_size]:
+        data_limit = CONFIG.max_response_size[
+            SupportedResponseFormats(params.response_format)
+        ]
+    elif "json" in [_.value for _ in CONFIG.max_response_size]:
+        data_limit = CONFIG.max_response_size[SupportedResponseFormats("json")]
+    else:
+        data_limit = 10
+    # When the data is encoded in the json format the numerical data may take up more space to take this into account we use a format dependend conversion factor.
+    data_limit = int(data_limit * 1000000 / FORMAT_SIZE_FACTORS[params.response_format])
+
     while results:
         one_doc = results.pop(0)
         if one_doc:
@@ -134,7 +146,7 @@ def handle_response_fields(
         for field in include_fields:
             if field not in new_entry["attributes"]:
                 new_entry["attributes"][field] = None
-
+        # TODO This function has become very large. It would be good to split it up.
         # TODO For now we only have trajectories with large properties but it would be nice if this could apply to other endpoints in the future as well.
         if new_entry["type"] == "trajectories":
             last_frame = getattr(params, "last_frame", None)
