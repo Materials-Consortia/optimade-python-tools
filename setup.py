@@ -18,7 +18,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Dependencies
 # Server minded
 elastic_deps = ["elasticsearch-dsl~=7.4,<8.0"]
-mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.0"]
+mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
 server_deps = [
     "uvicorn~=0.18",
     "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
@@ -27,27 +27,25 @@ server_deps = [
 
 # Client minded
 aiida_deps = [
-    "aiida-core~=1.6,>=1.6.4;python_version<'3.8'",
-    "aiida-core~=2.0;python_version>='3.8'",
+    "aiida-core~=2.0",
 ]
 http_client_deps = [
     "httpx~=0.23",
-    "rich~=12.4",
+    "rich~=12.5",
     "click~=8.1",
 ]
 ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2022.0.16"]
-jarvis_deps = ["jarvis-tools==2022.5.20"]
+pymatgen_deps = ["pymatgen~=2022.7"]
+jarvis_deps = ["jarvis-tools==2022.7.17"]
 client_deps = cif_deps
 
 # General
 docs_deps = [
-    "markupsafe==2.0.1",  # Can be removed once aiida supports Jinja2>=3, see pallets/markupsafe#284
     "mike~=1.1",
     "mkdocs~=1.3",
-    "mkdocs-awesome-pages-plugin~=2.7",
+    "mkdocs-awesome-pages-plugin~=2.8",
     "mkdocs-material~=8.3",
     "mkdocstrings[python]~=0.19.0",
 ]
@@ -60,7 +58,7 @@ testing_deps = [
     "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.14", "pre-commit~=2.19", "invoke~=1.7"]
+    ["pylint~=2.14", "pre-commit~=2.20", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -92,7 +90,6 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -101,14 +98,13 @@ setup(
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.7,<3.11",
+    python_requires=">=3.8,<3.11",
     install_requires=[
         "lark~=1.1",
-        "fastapi~=0.78",
+        "fastapi~=0.79",
         "pydantic~=1.9",
         "email_validator~=1.2",
         "requests~=2.28",
-        "typing-extensions~=4.0;python_version<'3.8'",
     ],
     extras_require={
         "all": all_deps,

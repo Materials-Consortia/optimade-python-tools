@@ -101,7 +101,7 @@ optimade-get --filter 'nsites = 1' --output-file results.json https://optimade.h
 cat results.json
 ```
 
-has the followng (truncated) output:
+has the following (truncated) output:
 
 ```json
 {  

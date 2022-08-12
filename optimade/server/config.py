@@ -2,12 +2,7 @@
 from enum import Enum
 from pathlib import Path
 import warnings
-from typing import Any, Dict, List, Optional, Tuple, Union
-
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
+from typing import Any, Dict, List, Optional, Tuple, Union, Literal
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,

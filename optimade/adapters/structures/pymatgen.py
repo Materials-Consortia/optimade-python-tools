@@ -15,9 +15,11 @@ from optimade.adapters.structures.utils import (
     species_from_species_at_sites,
     valid_lattice_vector,
 )
+from optimade.models import StructureResourceAttributes
+
 
 try:
-    from pymatgen.core import Structure, Molecule
+    from pymatgen.core import Structure, Molecule, Composition
 
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
@@ -25,10 +27,14 @@ except (ImportError, ModuleNotFoundError):
 
     Structure = type("Structure", (), {})
     Molecule = type("Molecule", (), {})
+    Composition = type("Composition", (), {})
     PYMATGEN_NOT_FOUND = "Pymatgen not found, cannot convert structure to a pymatgen Structure or Molecule"
 
 
-__all__ = ("get_pymatgen",)
+__all__ = (
+    "get_pymatgen",
+    "from_pymatgen",
+)
 
 
 def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Molecule]:
@@ -130,3 +136,84 @@ def _pymatgen_species(
         pymatgen_species.append(dict(zip(chemical_symbols, concentration)))
 
     return pymatgen_species
+
+
+def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
+    """Convert a pymatgen `Structure` (3D) into an OPTIMADE `StructureResourceAttributes` model.
+
+    Parameters:
+        pmg_structure: The pymatgen `Structure` to convert.
+
+    Returns:
+        An OPTIMADE `StructureResourceAttributes` model, which can be converted to a raw Python
+            dictionary with `.dict()` or to JSON with `.json()`.
+
+    """
+
+    if not isinstance(pmg_structure, Structure):
+        raise RuntimeError(
+            f"Cannot convert type {type(pmg_structure)} into an OPTIMADE `StructureResourceAttributes` model."
+        )
+
+    attributes = {}
+    attributes["cartesian_site_positions"] = pmg_structure.lattice.get_cartesian_coords(
+        pmg_structure.frac_coords
+    ).tolist()
+    attributes["lattice_vectors"] = pmg_structure.lattice.matrix.tolist()
+    attributes["species_at_sites"] = [_.symbol for _ in pmg_structure.species]
+    attributes["species"] = [
+        {"name": _.symbol, "chemical_symbols": [_.symbol], "concentration": [1]}
+        for _ in set(pmg_structure.composition.elements)
+    ]
+    attributes["dimension_types"] = [int(_) for _ in pmg_structure.lattice.pbc]
+    attributes["nperiodic_dimensions"] = sum(attributes["dimension_types"])
+    attributes["nelements"] = len(pmg_structure.composition.elements)
+    attributes["chemical_formula_anonymous"] = _pymatgen_anonymized_formula_to_optimade(
+        pmg_structure.composition
+    )
+    attributes["elements"] = sorted(
+        [_.symbol for _ in pmg_structure.composition.elements]
+    )
+    attributes["chemical_formula_reduced"] = _pymatgen_reduced_formula_to_optimade(
+        pmg_structure.composition
+    )
+    attributes["chemical_formula_descriptive"] = pmg_structure.composition.formula
+    attributes["elements_ratios"] = [
+        pmg_structure.composition.get_atomic_fraction(e) for e in attributes["elements"]
+    ]
+    attributes["nsites"] = len(attributes["species_at_sites"])
+
+    attributes["last_modified"] = None
+    attributes["immutable_id"] = None
+    attributes["structure_features"] = []
+
+    return StructureResourceAttributes(**attributes)
+
+
+def _pymatgen_anonymized_formula_to_optimade(composition: Composition) -> str:
+    """Construct an OPTIMADE `chemical_formula_anonymous` from a pymatgen `Composition`."""
+    import re
+    from optimade.models.utils import anonymous_element_generator
+
+    return "".join(
+        [
+            "".join(x)
+            for x in zip(
+                anonymous_element_generator(),
+                reversed(re.split("[A-Z]", composition.anonymized_formula)[1:]),
+            )
+        ]
+    )
+
+
+def _pymatgen_reduced_formula_to_optimade(composition: Composition) -> str:
+    """Construct an OPTIMADE `chemical_formula_reduced` from a pymatgen `Composition`."""
+    import numpy
+
+    numbers = [int(_) for _ in composition.to_reduced_dict.values()]
+    gcd = numpy.gcd.reduce(numbers)
+    return "".join(
+        _
+        + f"{int(composition.to_reduced_dict[_]) // gcd if composition.to_reduced_dict[_] // gcd > 1 else ''}"
+        for _ in sorted([_.symbol for _ in composition.elements])
+    )
