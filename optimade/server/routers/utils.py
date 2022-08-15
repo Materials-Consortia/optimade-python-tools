@@ -621,7 +621,9 @@ def get_entries(
             return Response(
                 content=generate_hdf5_file_content(response_object),
                 media_type="application/x-hdf5",
-                headers={"Content-Disposition": "attachment"},
+                headers={
+                    "Content-disposition": f"attachment; filename={collection.collection.name}.hdf5"
+                },
             )
     else:
         raise BadRequest(
@@ -696,7 +698,9 @@ def get_single_entry(
             return Response(
                 content=generate_hdf5_file_content(response_object),
                 media_type="application/x-hdf5",
-                headers={"Content-Disposition": "attachment"},
+                headers={
+                    "Content-disposition": f"attachment; filename={entry_id}.hdf5"
+                },
             )
     else:
         raise BadRequest(
