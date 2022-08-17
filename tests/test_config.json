@@ -27,7 +27,8 @@
             "immutable_id": "_id",
             "chemical_formula_descriptive": "pretty_formula",
             "chemical_formula_reduced": "pretty_formula",
-            "chemical_formula_anonymous": "formula_anonymous"
+            "chemical_formula_anonymous": "formula_anonymous",
+            "chemical_formula_hill": "fancy_formulas.hill"
         }
     },
     "length_aliases": {

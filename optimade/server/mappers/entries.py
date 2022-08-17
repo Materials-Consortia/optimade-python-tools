@@ -7,6 +7,15 @@ from optimade.models.entries import EntryResource
 __all__ = ("BaseResourceMapper",)
 
 
+def get_value(dict, real):
+    split_real = real.split(".", 1)
+    if not split_real[0] in dict:
+        return None, False
+    if len(split_real) == 1:
+        return dict[split_real[0]], True
+    return get_value(dict[split_real[0]], split_real[1])
+
+
 class classproperty(property):
     """A simple extension of the property decorator that binds to types
     rather than instances.
@@ -335,13 +344,14 @@ class BaseResourceMapper:
         """
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}
-        reals = {real for alias, real in cls.all_aliases()}
+        reals = {real.split(".", 1)[0] for alias, real in cls.all_aliases()}
         for key in doc:
             if key not in reals:
                 newdoc[key] = doc[key]
         for real, alias in mapping:
-            if real in doc:
-                newdoc[alias] = doc[real]
+            value, found = get_value(doc, real)
+            if found:
+                newdoc[alias] = value
 
         if "attributes" in newdoc:
             raise Exception("Will overwrite doc field!")
