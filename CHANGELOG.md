@@ -1,11 +1,17 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.19.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.1) (2022-08-08)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.0...v0.19.1)
 
-This minor release includes several usability improvements for the server and client arising from the OPTIMADE workshop.
-This release also drops support for Python 3.7, which should allow us to streamline our dependencies going forward.
+**Implemented enhancements:**
+
+- Add `from_pymatgen` structure adapter method and concept of ingesters [\#1296](https://github.com/Materials-Consortia/optimade-python-tools/pull/1296) ([ml-evs](https://github.com/ml-evs))
+- Add `lru_cache` to many mapper properties [\#1245](https://github.com/Materials-Consortia/optimade-python-tools/pull/1245) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Use animated SVG logo for optimade-python-tools landing page [\#1297](https://github.com/Materials-Consortia/optimade-python-tools/pull/1297) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.19.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.0) (2022-07-18)
 
