@@ -371,10 +371,9 @@ class BaseResourceMapper:
             if key not in reals:
                 newdoc[key] = doc[key]
         for alias, real in aliases:
-            if real.split(".", 1)[0] in doc:
-                value, found = get_value(doc, real)
-                if found:
-                    newdoc[alias] = value
+            value, found = get_value(doc, real)
+            if found:
+                newdoc[alias] = value
 
         return newdoc
 
