@@ -63,3 +63,19 @@ def test_property_aliases(mapper):
         mapper.get_backend_field("_exmpl_dft_parameters_dft_parameters.nested.property")
         == "_exmpl_dft_parameters_dft_parameters.nested.property"
     )
+
+
+def test_map_back_nested_field(mapper):
+    class MyMapper(mapper(MAPPER)):
+        ALIASES = (("some_field", "main_field.nested_field.field_we_need"),)
+
+    mapper = MyMapper()
+    input_dict = {
+        "main_field": {
+            "nested_field": {"field_we_need": 42, "other_field": 78},
+            "another_nested_field": 89,
+        },
+        "secondary_field": 52,
+    }
+    output_dict = mapper.map_back(input_dict)
+    assert output_dict["attributes"]["some_field"] == 42
