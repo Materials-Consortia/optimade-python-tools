@@ -11,6 +11,7 @@ from optimade.models.links import LinksResource
 from optimade.models.optimade_json import OptimadeError, ResponseMeta, Success
 from optimade.models.references import ReferenceResource
 from optimade.models.structures import StructureResource
+from optimade.models.files import FileResource
 from optimade.models.utils import StrictField
 
 __all__ = (
@@ -23,6 +24,8 @@ __all__ = (
     "EntryResponseMany",
     "StructureResponseOne",
     "StructureResponseMany",
+    "FileResponseOne",
+    "FileResponseMany",
     "ReferenceResponseOne",
     "ReferenceResponseMany",
 )
@@ -99,6 +102,20 @@ class StructureResponseMany(EntryResponseMany):
     data: Union[List[StructureResource], List[Dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE structures entry resource objects.",
+        uniqueItems=True,
+    )
+
+
+class FileResponseOne(EntryResponseOne):
+    data: Union[FileResource, Dict[str, Any], None] = StrictField(
+        ..., description="A single files entry resource."
+    )
+
+
+class FileResponseMany(EntryResponseMany):
+    data: Union[List[FileResource], List[Dict[str, Any]]] = StrictField(
+        ...,
+        description="List of unique OPTIMADE files entry resource objects.",
         uniqueItems=True,
     )
 
