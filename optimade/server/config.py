@@ -178,6 +178,10 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         "structures",
         description="Mongo collection name for /structures endpoint resources",
     )
+    files_collection: str = Field(
+        "files",
+        description="Mongo collection name for /files endpoint resources",
+    )
     page_limit: int = Field(20, description="Default number of resources per page")
     page_limit_max: int = Field(
         500, description="Max allowed number of resources per page"
