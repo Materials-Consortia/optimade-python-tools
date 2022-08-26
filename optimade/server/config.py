@@ -281,6 +281,13 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         ),
     ] = None
 
+    files_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for /files endpoint resources",
+        ),
+    ] = "files"
+
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")
     ] = "links"
