@@ -19,7 +19,7 @@ from optimade.models import StructureResourceAttributes
 
 
 try:
-    from pymatgen.core import Structure, Molecule, Composition
+    from pymatgen.core import Structure, Molecule, Composition, Lattice
 
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
@@ -76,7 +76,7 @@ def _get_structure(optimade_structure: OptimadeStructure) -> Structure:
     attributes = optimade_structure.attributes
 
     return Structure(
-        lattice=attributes.lattice_vectors,
+        lattice=Lattice(attributes.lattice_vectors, attributes.dimension_types),
         species=_pymatgen_species(
             nsites=attributes.nsites,
             species=attributes.species,
