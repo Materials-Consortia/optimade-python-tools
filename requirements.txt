@@ -3,7 +3,7 @@ email_validator==1.2.1
 fastapi==0.81.0
 lark==1.1.2
 mongomock==4.1.2
-pydantic==1.9.2
+pydantic==1.10.0
 pymongo==4.2.0
 pyyaml==5.4
 requests==2.28.1
