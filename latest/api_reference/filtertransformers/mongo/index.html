@@ -3157,7 +3157,6 @@ replacement to the dictionary.</p>
         <tr>
           <td><code>filter_</code></td>
           <td>
-                <code>list/dict</code>
           </td>
           <td><p>the filter_ to process.</p></td>
           <td>
@@ -3261,14 +3260,14 @@ another, the following functions could be used:</p>
 <span class="normal">617</span>
 <span class="normal">618</span>
 <span class="normal">619</span>
-<span class="normal">620</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">recursive_postprocessing</span><span class="p">(</span><span class="n">filter_</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
+<span class="normal">620</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">recursive_postprocessing</span><span class="p">(</span><span class="n">filter_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">],</span> <span class="n">condition</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Recursively descend into the query, checking each dictionary</span>
 <span class="sd">    (contained in a list, or as an entry in another dictionary) for</span>
 <span class="sd">    the condition passed. If the condition is true, apply the</span>
 <span class="sd">    replacement to the dictionary.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        filter_ (list/dict): the filter_ to process.</span>
+<span class="sd">        filter_ : the filter_ to process.</span>
 <span class="sd">        condition (callable): a function that returns True if the</span>
 <span class="sd">            replacement function should be applied. It should take</span>
 <span class="sd">            as arguments the property and expression from the filter_,</span>
