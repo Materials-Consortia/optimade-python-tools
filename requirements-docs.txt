@@ -1,4 +1,3 @@
-griffe==0.22.0 # Currently mkdocstrings-python does not pin a griffe version, but it is quite flaky...
 mike==1.1.2
 mkdocs==1.3.1
 mkdocs-awesome-pages-plugin==2.8.0
