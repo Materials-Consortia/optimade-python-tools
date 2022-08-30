@@ -8,12 +8,13 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Copy repo contents
-COPY setup.py setup.cfg LICENSE MANIFEST.in README.md .docker/run.sh ./
+COPY setup.py setup.cfg requirements.txt LICENSE MANIFEST.in README.md .docker/run.sh ./
 COPY optimade ./optimade
 COPY providers/src/links/v1/providers.json ./optimade/server/data/
 RUN apt-get purge -y --auto-remove \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir --trusted-host pypi.org --trusted-host files.pythonhosted.org -U pip setuptools wheel flit \
+    && pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt \
     && pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org .[server]
 
 # Setup server configuration
