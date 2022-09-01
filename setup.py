@@ -35,10 +35,10 @@ http_client_deps = [
     "click~=8.1",
 ]
 ase_deps = ["ase~=3.22"]
-cif_deps = ["numpy~=1.21"]
+cif_deps = ["numpy~=1.23"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2022.7"]
-jarvis_deps = ["jarvis-tools==2022.7.17"]
+jarvis_deps = ["jarvis-tools==2022.8.27"]
 client_deps = cif_deps
 
 # General
@@ -46,7 +46,7 @@ docs_deps = [
     "mike~=1.1",
     "mkdocs~=1.3",
     "mkdocs-awesome-pages-plugin~=2.8",
-    "mkdocs-material~=8.3",
+    "mkdocs-material~=8.4",
     "mkdocstrings[python]~=0.19.0",
 ]
 testing_deps = [
@@ -58,7 +58,7 @@ testing_deps = [
     "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.14", "pre-commit~=2.20", "invoke~=1.7"]
+    ["pylint~=2.15", "pre-commit~=2.20", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
@@ -101,8 +101,8 @@ setup(
     python_requires=">=3.8,<3.11",
     install_requires=[
         "lark~=1.1",
-        "fastapi~=0.79",
-        "pydantic~=1.9",
+        "fastapi~=0.81",
+        "pydantic~=1.10",
         "email_validator~=1.2",
         "requests~=2.28",
     ],
