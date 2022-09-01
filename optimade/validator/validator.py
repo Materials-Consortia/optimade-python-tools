@@ -1342,6 +1342,7 @@ class ImplementationValidator:
             self._test_page_limit(
                 next_response,
                 check_next_link=check_next_link,
+                multistage=bool(check_next_link),
                 previous_links=previous_links,
             )
 
