@@ -4727,11 +4727,11 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                     <span class="sa">f</span><span class="s2">&quot;Error when testing pagination: the response from `links-&gt;next` </span><span class="si">{</span><span class="n">next_link</span><span class="si">!r}</span><span class="s2"> failed the previous test.&quot;</span>
                 <span class="p">)</span>
 
-            <span class="n">check_next_link</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">check_next_link</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">check_next_link</span> <span class="o">=</span> <span class="n">check_next_link</span> <span class="o">-</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_test_page_limit</span><span class="p">(</span>
                 <span class="n">next_response</span><span class="p">,</span>
                 <span class="n">check_next_link</span><span class="o">=</span><span class="n">check_next_link</span><span class="p">,</span>
-                <span class="n">multistage</span><span class="o">=</span><span class="n">check_next_link</span><span class="p">,</span>
+                <span class="n">multistage</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">check_next_link</span><span class="p">),</span>
                 <span class="n">previous_links</span><span class="o">=</span><span class="n">previous_links</span><span class="p">,</span>
             <span class="p">)</span>
 
