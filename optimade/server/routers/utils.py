@@ -228,6 +228,10 @@ def get_base_url(
     )
 
 
+def dummy_quote(string: str, arg1, arg2, arg3):
+    return string.replace(" ", "+")
+
+
 def get_entries(
     collection: EntryCollection,
     response: EntryResponseMany,
@@ -255,7 +259,9 @@ def get_entries(
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
         query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
-        urlencoded = urllib.parse.urlencode(query, doseq=True)
+        urlencoded = urllib.parse.urlencode(
+            query, doseq=True, quote_via=dummy_quote
+        )  # it seems the url is also quoted at a later stage so we should not quote it here, hence the dummy_quote.
         base_url = get_base_url(request.url)
 
         links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")

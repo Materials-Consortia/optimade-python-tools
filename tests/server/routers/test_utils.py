@@ -6,6 +6,22 @@ from requests.exceptions import ConnectionError
 
 import pytest
 
+import re
+from ..utils import RegularEndpointTests
+from optimade.models import StructureResponseMany
+
+
+class TestUrlEncoding(RegularEndpointTests):
+    """test that the special characters, like a comma, are not escaped at this stage."""
+
+    request_str = '/structures?filter=nelements>1 AND nsites <= 42 AND chemical_formula_descriptive != "SIO2" &page_limit=4&response_fields=assemblies,_other_provider_field,chemical_formula_anonymous'
+    response_cls = StructureResponseMany
+
+    def test_no_escapes_in_next_link(self):
+        assert (
+            re.search("%[2-7][02-7A-F]", self.json_response["links"]["next"])
+        ) is None  # The regex should cover all url escape codes.
+
 
 def mocked_providers_list_response(
     url: Union[str, bytes] = "",
