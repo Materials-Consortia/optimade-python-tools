@@ -1338,11 +1338,10 @@ class ImplementationValidator:
                     f"Error when testing pagination: the response from `links->next` {next_link!r} failed the previous test."
                 )
 
-            check_next_link = bool(check_next_link - 1)
+            check_next_link = check_next_link - 1
             self._test_page_limit(
                 next_response,
                 check_next_link=check_next_link,
-                multistage=check_next_link,
                 previous_links=previous_links,
             )
 
