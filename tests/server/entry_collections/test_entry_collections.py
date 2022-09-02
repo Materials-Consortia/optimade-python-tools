@@ -7,6 +7,7 @@ def test_get_attribute_fields():
         LinksResourceAttributes,
         ReferenceResourceAttributes,
         StructureResourceAttributes,
+        FileResourceAttributes,
     )
     from optimade.server.config import ServerConfig
     from optimade.server.entry_collections import create_entry_collections
@@ -19,6 +20,7 @@ def test_get_attribute_fields():
         "links": LinksResourceAttributes,
         "references": ReferenceResourceAttributes,
         "structures": StructureResourceAttributes,
+        "files": FileResourceAttributes,
     }
 
     # Make sure we're hitting all collections
