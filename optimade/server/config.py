@@ -232,7 +232,9 @@ class ServerConfig(BaseSettings):
             "broken down by endpoint."
         ),
     )
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
+    aliases: Dict[
+        Literal["links", "references", "structures", "files"], Dict[str, str]
+    ] = Field(
         {},
         description=(
             "A mapping between field names in the database with their corresponding OPTIMADE field"
