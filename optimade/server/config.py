@@ -238,7 +238,9 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             "broken down by endpoint."
         ),
     )
-    aliases: dict[Literal["links", "references", "structures"], dict[str, str]] = Field(
+    aliases: dict[
+        Literal["links", "references", "structures", "files"], dict[str, str]
+    ] = Field(
         {},
         description=(
             "A mapping between field names in the database with their corresponding OPTIMADE field"
