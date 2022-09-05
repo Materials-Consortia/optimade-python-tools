@@ -38,7 +38,7 @@ ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2022.7"]
-jarvis_deps = ["jarvis-tools==2022.7.17"]
+jarvis_deps = ["jarvis-tools==2022.8.27"]
 client_deps = cif_deps
 
 # General
@@ -102,7 +102,7 @@ setup(
     install_requires=[
         "lark~=1.1",
         "fastapi~=0.79",
-        "pydantic~=1.9",
+        "pydantic~=1.10,>=1.10.2",
         "email_validator~=1.2",
         "requests~=2.28",
     ],
