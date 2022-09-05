@@ -40,6 +40,7 @@ from optimade.adapters.structures.utils import (
     cellpar_to_cell,
     fractional_coordinates,
     scaled_cell,
+    valid_lattice_vector,
 )
 
 
@@ -82,7 +83,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     attributes = optimade_structure.attributes
 
     # Do this only if there's three non-zero lattice vectors
-    if all(attributes.dimension_types):
+    if valid_lattice_vector(attributes.lattice_vectors):
         a_vector, b_vector, c_vector, alpha, beta, gamma = cell_to_cellpar(
             attributes.lattice_vectors
         )
@@ -218,7 +219,7 @@ def get_pdb(  # pylint: disable=too-many-locals
     attributes = optimade_structure.attributes
 
     rotation = None
-    if all(attributes.dimension_types):
+    if valid_lattice_vector(attributes.lattice_vectors):
         currentcell = np.asarray(attributes.lattice_vectors)
         cellpar = cell_to_cellpar(currentcell)
         exportedcell = cellpar_to_cell(cellpar)

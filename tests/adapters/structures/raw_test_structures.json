@@ -74,6 +74,84 @@
     }
   },
   {
+    "id": "19889",
+    "type": "structures",
+    "attributes": {
+      "immutable_id": "015b55ae-5657-4441-bc5e-0eef090ecf97",
+      "last_modified": "2021-09-13T14:26:29Z",
+      "elements": [
+        "C"
+      ],
+      "nelements": 1,
+      "elements_ratios": [
+        1.0
+      ],
+      "chemical_formula_descriptive": "C2",
+      "chemical_formula_reduced": "C",
+      "chemical_formula_hill": "C2",
+      "chemical_formula_anonymous": "A",
+      "dimension_types": [
+        1,
+        1,
+        0
+      ],
+      "nperiodic_dimensions": 2,
+      "lattice_vectors": [
+        [
+          2.46484131245562,
+          0.0,
+          0.0
+        ],
+        [
+          -1.23242065622219,
+          -2.13461519293843,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20.0000002075
+        ]
+      ],
+      "cartesian_site_positions": [
+        [
+          0.0,
+          -1.42307679521789,
+          19.8345042867
+        ],
+        [
+          0.0,
+          0.0,
+          19.8345044942
+        ]
+      ],
+      "nsites": 2,
+      "species": [
+        {
+          "name": "C",
+          "chemical_symbols": [
+            "C"
+          ],
+          "concentration": [
+            1.0
+          ],
+          "mass": [
+            12.011
+          ],
+          "original_name": "C"
+        }
+      ],
+      "species_at_sites": [
+        "C",
+        "C"
+      ],
+      "assemblies": null,
+      "structure_features": [],
+      "_mcloud_ctime": "2016-02-27T22:41:09Z"
+    },
+    "relationships": null
+  },
+  {
     "id": "mpf_2",
     "type": "structures",
     "attributes": {

@@ -82,7 +82,7 @@ def test_scaled_cell_and_fractional_coordinates(structures):
         scale = scaled_cell(structure.lattice_vectors)
         scale = numpy.asarray(scale)
         cartesian_positions = numpy.asarray(structure.cartesian_site_positions)
-        scaled_fractional_positions = (scale.T @ cartesian_positions.T).T
+        scaled_fractional_positions = (scale @ cartesian_positions.T).T
         for i in range(3):
             scaled_fractional_positions[:, i] %= 1.0
             scaled_fractional_positions[:, i] %= 1.0
