@@ -9,6 +9,7 @@ from .optimade_json import *  # noqa: F403
 from .references import *  # noqa: F403
 from .responses import *  # noqa: F403
 from .structures import *  # noqa: F403
+from .files import *  # noqa: F403
 
 __all__ = (
     jsonapi.__all__  # noqa: F405
@@ -21,4 +22,5 @@ __all__ = (
     + references.__all__  # noqa: F405
     + responses.__all__  # noqa: F405
     + structures.__all__  # noqa: F405
+    + files.__all__  # noqa: F405
 )

@@ -3362,9 +3362,9 @@
               "type": "number"
             },
             "description": "If present MUST be a list of floats expressed in a.m.u.\nElements denoting vacancies MUST have masses equal to 0.",
+            "x-optimade-unit": "a.m.u.",
             "x-optimade-queryable": "optional",
-            "x-optimade-support": "optional",
-            "x-optimade-unit": "a.m.u."
+            "x-optimade-support": "optional"
           },
           "original_name": {
             "title": "Original Name",
@@ -3642,9 +3642,9 @@
             },
             "description": "The three lattice vectors in Cartesian coordinates, in \u00e5ngstr\u00f6m (\u00c5).\n\n- **Type**: list of list of floats or unknown values.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, filters MAY support only a subset of comparison operators.\n    - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates.\n      (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).\n    - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.\n    - MUST always contain three vectors of three coordinates each, independently of the elements of property `dimension_types`.\n      The vectors SHOULD by convention be chosen so the determinant of the `lattice_vectors` matrix is different from zero.\n      The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.\n    - The coordinates of the lattice vectors of non-periodic dimensions (i.e., those dimensions for which `dimension_types` is `0`) MAY be given as a list of all `null` values.\n        If a lattice vector contains the value `null`, all coordinates of that lattice vector MUST be `null`.\n\n- **Examples**:\n    - `[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is `(4, 0, 0)`, i.e., a vector aligned along the `x` axis of length 4 \u00c5; the second vector is `(0, 4, 0)`; and the third vector is `(0, 1, 4)`.",
             "nullable": true,
+            "x-optimade-unit": "\u00c5",
             "x-optimade-queryable": "optional",
-            "x-optimade-support": "should",
-            "x-optimade-unit": "\u00c5"
+            "x-optimade-support": "should"
           },
           "cartesian_site_positions": {
             "title": "Cartesian Site Positions",
@@ -3659,9 +3659,9 @@
             },
             "description": "Cartesian positions of each site in the structure.\nA site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.\n\n- **Type**: list of list of floats\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, filters MAY support only a subset of comparison operators.\n    - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three Cartesian coordinates of a site expressed as float values in the unit angstrom (\u00c5).\n    - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`).\n\n- **Examples**:\n    - `[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin.",
             "nullable": true,
+            "x-optimade-unit": "\u00c5",
             "x-optimade-queryable": "optional",
-            "x-optimade-support": "should",
-            "x-optimade-unit": "\u00c5"
+            "x-optimade-support": "should"
           },
           "nsites": {
             "title": "Nsites",
