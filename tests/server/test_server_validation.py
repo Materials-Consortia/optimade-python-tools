@@ -123,3 +123,43 @@ def test_versioned_base_urls(client, index_client, server: str):
                 f"Mandatory 'meta' top-level field not found in request to {response.url} for "
                 f"server {server!r}. Response: {json.dumps(json_response, indent=2)}"
             )
+
+
+@pytest.mark.parametrize("server", ["regular", "index"])
+def test_meta_schema_value_obeys_index(client, index_client, server: str):
+    """Test that the reported `meta->schema` is correct for index/non-index
+    servers.
+    """
+    try:
+        import simplejson as json
+    except ImportError:
+        import json
+
+    from optimade.server.routers.utils import BASE_URL_PREFIXES
+    from optimade.server.config import CONFIG
+
+    clients = {
+        "regular": client,
+        "index": index_client,
+    }
+
+    for version in BASE_URL_PREFIXES.values():
+
+        # Mimic the effect of the relevant server's startup
+        CONFIG.is_index = server == "index"
+        response = clients[server].get(url=version + "/links")
+        json_response = response.json()
+
+        assert response.status_code == 200, (
+            f"Request to {response.url} failed for server {server!r}: "
+            f"{json.dumps(json_response, indent=2)}"
+        )
+        assert "meta" in json_response, (
+            f"Mandatory 'meta' top-level field not found in request to {response.url} for "
+            f"server {server!r}. Response: {json.dumps(json_response, indent=2)}"
+        )
+
+        if server == "regular":
+            assert json_response["meta"].get("schema") == CONFIG.schema_url
+        else:
+            assert json_response["meta"].get("schema") == CONFIG.index_schema_url
