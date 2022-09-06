@@ -2041,10 +2041,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
@@ -2059,7 +2056,10 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
-<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_base_url</span><span class="p">(</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_base_url</span><span class="p">(</span>
     <span class="n">parsed_url_request</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
         <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span><span class="p">,</span> <span class="n">StarletteURL</span><span class="p">,</span> <span class="nb">str</span>
     <span class="p">]</span>
@@ -2100,10 +2100,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">234</span>
 <span class="normal">235</span>
 <span class="normal">236</span>
 <span class="normal">237</span>
@@ -2148,7 +2145,12 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 <span class="normal">276</span>
 <span class="normal">277</span>
 <span class="normal">278</span>
-<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
     <span class="n">collection</span><span class="p">:</span> <span class="n">EntryCollection</span><span class="p">,</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">EntryResponseMany</span><span class="p">,</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
@@ -2193,7 +2195,9 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
             <span class="n">data_returned</span><span class="o">=</span><span class="n">data_returned</span><span class="p">,</span>
             <span class="n">data_available</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">collection</span><span class="p">),</span>
             <span class="n">more_data_available</span><span class="o">=</span><span class="n">more_data_available</span><span class="p">,</span>
-            <span class="n">schema</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span><span class="p">,</span>
+            <span class="n">schema</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">is_index</span>
+            <span class="k">else</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">index_schema_url</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">included</span><span class="o">=</span><span class="n">included</span><span class="p">,</span>
     <span class="p">)</span>
@@ -2285,10 +2289,7 @@ of resource objects for that entry type.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
 <span class="normal">139</span>
@@ -2359,7 +2360,10 @@ of resource objects for that entry type.</p></td>
 <span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
-<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_included_relationships</span><span class="p">(</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_included_relationships</span><span class="p">(</span>
     <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]],</span>
     <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
     <span class="n">include_param</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -2732,10 +2736,7 @@ set to null if missing in the entry.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
 <span class="normal"> 95</span>
 <span class="normal"> 96</span>
 <span class="normal"> 97</span>
@@ -2771,7 +2772,10 @@ set to null if missing in the entry.</p></td>
 <span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span>
-<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">handle_response_fields</span><span class="p">(</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">handle_response_fields</span><span class="p">(</span>
     <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">],</span>
     <span class="n">exclude_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">include_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -2822,7 +2826,7 @@ set to null if missing in the entry.</p></td>
 
 
 <h2 id="optimade.server.routers.utils.meta_values" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">meta_values</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">data_available</span><span class="p">,</span> <span class="n">more_data_available</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">meta_values</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">data_available</span><span class="p">,</span> <span class="n">more_data_available</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.meta_values" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -2864,12 +2868,15 @@ set to null if missing in the entry.</p></td>
 <span class="normal">85</span>
 <span class="normal">86</span>
 <span class="normal">87</span>
-<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">meta_values</span><span class="p">(</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">meta_values</span><span class="p">(</span>
     <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span><span class="p">,</span> <span class="n">StarletteURL</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">data_returned</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">data_available</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">more_data_available</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseMeta</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Helper to initialize the meta values&quot;&quot;&quot;</span>
@@ -2883,6 +2890,9 @@ set to null if missing in the entry.</p></td>
         <span class="n">url_path</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v[0-9]+(\.[0-9]+){,2}/&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">url_path</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">path</span>
+
+    <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">is_index</span> <span class="k">else</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">index_schema_url</span>
 
     <span class="k">return</span> <span class="n">ResponseMeta</span><span class="p">(</span>
         <span class="n">query</span><span class="o">=</span><span class="n">ResponseMetaQuery</span><span class="p">(</span><span class="n">representation</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url_path</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
