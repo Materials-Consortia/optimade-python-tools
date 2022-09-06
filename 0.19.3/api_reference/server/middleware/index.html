@@ -1,0 +1,4355 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the OPTIMADE Python tools">
+      
+      
+      
+        <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/0.19.3/api_reference/server/middleware/">
+      
+      <link rel="icon" href="../../../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.4.2">
+    
+    
+      
+        <title>middleware - OPTIMADE Python tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.69437709.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#000000">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../css/reference.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#middleware" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="OPTIMADE Python tools" class="md-header__button md-logo" aria-label="OPTIMADE Python tools" data-md-component="logo">
+      
+  <img src="../../../images/optimade_logo_180x180.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OPTIMADE Python tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              middleware
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Materials-Consortia/optimade-python-tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    optimade-python-tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="OPTIMADE Python tools" class="md-nav__button md-logo" aria-label="OPTIMADE Python tools" data-md-component="logo">
+      
+  <img src="../../../images/optimade_logo_180x180.svg" alt="logo">
+
+    </a>
+    OPTIMADE Python tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Materials-Consortia/optimade-python-tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    optimade-python-tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../INSTALL/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../configuration/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Getting started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Getting started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting_started/client/" class="md-nav__link">
+        Using the OPTIMADE client
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting_started/setting_up_an_api/" class="md-nav__link">
+        Setting up an OPTIMADE API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting_started/use_cases/" class="md-nav__link">
+        Example use cases
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Deployment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Deployment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/integrated/" class="md-nav__link">
+        Integrate OPTIMADE with an existing web application
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/container/" class="md-nav__link">
+        Run in a container (Docker)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Concepts
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Concepts" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Concepts
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../concepts/validation/" class="md-nav__link">
+        Validation of OPTIMADE APIs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../concepts/filtering/" class="md-nav__link">
+        Filter parsing and transforming
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CONTRIBUTING/" class="md-nav__link">
+        Contributing and getting help
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../all_models/" class="md-nav__link">
+        OPTIMADE Data Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_1" type="checkbox" id="__nav_10_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_1">
+          adapters
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="adapters" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_1">
+          <span class="md-nav__icon md-icon"></span>
+          adapters
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/base/" class="md-nav__link">
+        base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/logger/" class="md-nav__link">
+        logger
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/warnings/" class="md-nav__link">
+        warnings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_1_5" type="checkbox" id="__nav_10_1_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_1_5">
+          references
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="references" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          references
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/references/adapter/" class="md-nav__link">
+        adapter
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_1_6" type="checkbox" id="__nav_10_1_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_1_6">
+          structures
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="structures" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_1_6">
+          <span class="md-nav__icon md-icon"></span>
+          structures
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/adapter/" class="md-nav__link">
+        adapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/aiida/" class="md-nav__link">
+        aiida
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/ase/" class="md-nav__link">
+        ase
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/cif/" class="md-nav__link">
+        cif
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/jarvis/" class="md-nav__link">
+        jarvis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/proteindatabank/" class="md-nav__link">
+        proteindatabank
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/pymatgen/" class="md-nav__link">
+        pymatgen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_2" type="checkbox" id="__nav_10_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_2">
+          client
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="client" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_2">
+          <span class="md-nav__icon md-icon"></span>
+          client
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../client/cli/" class="md-nav__link">
+        cli
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../client/client/" class="md-nav__link">
+        client
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../client/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_3" type="checkbox" id="__nav_10_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_3">
+          filterparser
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="filterparser" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_3">
+          <span class="md-nav__icon md-icon"></span>
+          filterparser
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filterparser/lark_parser/" class="md-nav__link">
+        lark_parser
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_4" type="checkbox" id="__nav_10_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_4">
+          filtertransformers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="filtertransformers" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_4">
+          <span class="md-nav__icon md-icon"></span>
+          filtertransformers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/base_transformer/" class="md-nav__link">
+        base_transformer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/elasticsearch/" class="md-nav__link">
+        elasticsearch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtertransformers/mongo/" class="md-nav__link">
+        mongo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_5" type="checkbox" id="__nav_10_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_5">
+          models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_5">
+          <span class="md-nav__icon md-icon"></span>
+          models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/baseinfo/" class="md-nav__link">
+        baseinfo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/entries/" class="md-nav__link">
+        entries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/index_metadb/" class="md-nav__link">
+        index_metadb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/jsonapi/" class="md-nav__link">
+        jsonapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/optimade_json/" class="md-nav__link">
+        optimade_json
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/references/" class="md-nav__link">
+        references
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/responses/" class="md-nav__link">
+        responses
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/structures/" class="md-nav__link">
+        structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_6" type="checkbox" id="__nav_10_6" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_6">
+          server
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="server" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_6">
+          <span class="md-nav__icon md-icon"></span>
+          server
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exception_handlers/" class="md-nav__link">
+        exception_handlers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logger/" class="md-nav__link">
+        logger
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main/" class="md-nav__link">
+        main
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main_index/" class="md-nav__link">
+        main_index
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          middleware
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        middleware
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware" class="md-nav__link">
+    optimade.server.middleware
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="md-nav__link">
+    OPTIMADE_MIDDLEWARE
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.AddWarnings" class="md-nav__link">
+    AddWarnings
+  </a>
+  
+    <nav class="md-nav" aria-label="AddWarnings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.AddWarnings.chunk_it_up" class="md-nav__link">
+    chunk_it_up()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.AddWarnings.showwarning" class="md-nav__link">
+    showwarning()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls" class="md-nav__link">
+    CheckWronglyVersionedBaseUrls
+  </a>
+  
+    <nav class="md-nav" aria-label="CheckWronglyVersionedBaseUrls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls.check_url" class="md-nav__link">
+    check_url()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.EnsureQueryParamIntegrity" class="md-nav__link">
+    EnsureQueryParamIntegrity
+  </a>
+  
+    <nav class="md-nav" aria-label="EnsureQueryParamIntegrity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.EnsureQueryParamIntegrity.check_url" class="md-nav__link">
+    check_url()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.HandleApiHint" class="md-nav__link">
+    HandleApiHint
+  </a>
+  
+    <nav class="md-nav" aria-label="HandleApiHint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.HandleApiHint.handle_api_hint" class="md-nav__link">
+    handle_api_hint()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="md-nav__link">
+    is_versioned_base_url()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../query_params/" class="md-nav__link">
+        query_params
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schemas/" class="md-nav__link">
+        schemas
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../warnings/" class="md-nav__link">
+        warnings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_6_11" type="checkbox" id="__nav_10_6_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_6_11">
+          entry_collections
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="entry_collections" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_6_11">
+          <span class="md-nav__icon md-icon"></span>
+          entry_collections
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entry_collections/elasticsearch/" class="md-nav__link">
+        elasticsearch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entry_collections/entry_collections/" class="md-nav__link">
+        entry_collections
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entry_collections/mongo/" class="md-nav__link">
+        mongo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_6_12" type="checkbox" id="__nav_10_6_12" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_6_12">
+          mappers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="mappers" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_6_12">
+          <span class="md-nav__icon md-icon"></span>
+          mappers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mappers/entries/" class="md-nav__link">
+        entries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mappers/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mappers/references/" class="md-nav__link">
+        references
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mappers/structures/" class="md-nav__link">
+        structures
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_6_13" type="checkbox" id="__nav_10_6_13" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_6_13">
+          routers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="routers" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_6_13">
+          <span class="md-nav__icon md-icon"></span>
+          routers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/index_info/" class="md-nav__link">
+        index_info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/info/" class="md-nav__link">
+        info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/landing/" class="md-nav__link">
+        landing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/references/" class="md-nav__link">
+        references
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/structures/" class="md-nav__link">
+        structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/versions/" class="md-nav__link">
+        versions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_7" type="checkbox" id="__nav_10_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_7">
+          validator
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="validator" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_7">
+          <span class="md-nav__icon md-icon"></span>
+          validator
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/config/" class="md-nav__link">
+        config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/validator/" class="md-nav__link">
+        validator
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware" class="md-nav__link">
+    optimade.server.middleware
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="md-nav__link">
+    OPTIMADE_MIDDLEWARE
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.AddWarnings" class="md-nav__link">
+    AddWarnings
+  </a>
+  
+    <nav class="md-nav" aria-label="AddWarnings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.AddWarnings.chunk_it_up" class="md-nav__link">
+    chunk_it_up()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.AddWarnings.showwarning" class="md-nav__link">
+    showwarning()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls" class="md-nav__link">
+    CheckWronglyVersionedBaseUrls
+  </a>
+  
+    <nav class="md-nav" aria-label="CheckWronglyVersionedBaseUrls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls.check_url" class="md-nav__link">
+    check_url()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.EnsureQueryParamIntegrity" class="md-nav__link">
+    EnsureQueryParamIntegrity
+  </a>
+  
+    <nav class="md-nav" aria-label="EnsureQueryParamIntegrity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.EnsureQueryParamIntegrity.check_url" class="md-nav__link">
+    check_url()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.middleware.HandleApiHint" class="md-nav__link">
+    HandleApiHint
+  </a>
+  
+    <nav class="md-nav" aria-label="HandleApiHint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.HandleApiHint.handle_api_hint" class="md-nav__link">
+    handle_api_hint()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="md-nav__link">
+    is_versioned_base_url()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="middleware">middleware<a class="headerlink" href="#middleware" title="Permanent link">&para;</a></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+<a id="optimade.server.middleware"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Custom ASGI app middleware.</p>
+<p>These middleware are based on <a href="https://www.starlette.io">Starlette</a>'s <code>BaseHTTPMiddleware</code>.
+See the specific Starlette <a href="https://www.starlette.io/middleware/">documentation page</a> for more
+information on it's middleware implementation.</p>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">BaseHTTPMiddleware</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">EnsureQueryParamIntegrity</span><span class="p">,</span> <span class="n">CheckWronglyVersionedBaseUrls</span><span class="p">,</span> <span class="n">HandleApiHint</span><span class="p">,</span> <span class="n">AddWarnings</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>A tuple of all the middleware classes that implement certain required
+features of the OPTIMADE specification, e.g. warnings and URL
+versioning.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The order in which middleware is added to an application matters.</p>
+<p>As discussed in the docstring of
+<a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings"><code>AddWarnings</code></a>, this
+middleware is the final entry to this list so that it is the first
+to be applied by the server.
+Any other middleware should therefore be added <em>before</em> iterating
+through this variable.
+This is the opposite way around to the example in the
+<a href="https://www.starlette.io/middleware/">Starlette documentation</a>
+which initialises the application with a pre-built middleware list
+in the <em>reverse</em> order to <code>OPTIMADE_MIDDLEWARE</code>.</p>
+</div>
+<p>To use this variable in FastAPI app code after initialisation:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">middleware</span> <span class="ow">in</span> <span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">middleware</span><span class="p">)</span>
+</code></pre></div>
+<p>Alternatively, to use this variable on initialisation:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span> <span class="nn">starlette.middleware</span> <span class="kn">import</span> <span class="n">Middleware</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">Middleware</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">)]</span>
+<span class="p">)</span>
+</code></pre></div>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.server.middleware.AddWarnings" class="doc doc-heading">
+        <code>AddWarnings</code>
+
+
+<a href="#optimade.server.middleware.AddWarnings" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Add <a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>s to the response.</p>
+<p>All sub-classes of <a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>
+will also be added to the response's
+<a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> list.</p>
+<p>By overriding the <code>warnings.showwarning()</code> function with the
+<a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code> method</a>,
+all usages of <code>warnings.warn()</code> will result in the regular printing of the
+warning message to <code>stderr</code>, but also its addition to an in-memory list of
+warnings.
+This middleware will, after the URL request has been handled, add the list of
+accumulated warnings to the JSON response under the
+<a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> field.</p>
+<p>To make sure the last part happens correctly and a Starlette <code>StreamingResponse</code>
+is returned, as is expected from a <code>BaseHTTPMiddleware</code> sub-class, one is
+instantiated with the updated <code>Content-Length</code> header, as well as making sure
+the response's body content is actually streamable, by breaking it down into
+chunks of the original response's chunk size.</p>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>It is <strong>recommended</strong> to add this middleware as the <em>last one</em> to your application.</p>
+<p>This is to ensure it is invoked <em>first</em>, updating <code>warnings.showwarning()</code> and
+catching all warnings that should be added to the response.</p>
+<p>This can be achieved by applying <code>AddWarnings</code> <em>after</em> all
+other middleware with the <code>.add_middleware()</code> method, or by
+initialising the app with a middleware list in which <code>AddWarnings</code>
+appears <em>first</em>. More information can be found in the docstring of
+<a class="autorefs autorefs-internal" href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE"><code>OPTIMADE_MIDDLEWARE</code></a>.</p>
+</div>
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>_warnings</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="optimade.models.Warnings" href="../../models/optimade_json/#optimade.models.optimade_json.Warnings">Warnings</a>]</code>
+          </td>
+          <td><p>List of <a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.Warnings"><code>Warnings</code></a>
+added through usages of <code>warnings.warn()</code> via <a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code></a>.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AddWarnings</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning]s to the response.</span>
+
+<span class="sd">    All sub-classes of [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning]</span>
+<span class="sd">    will also be added to the response&#39;s</span>
+<span class="sd">    [`meta.warnings`][optimade.models.optimade_json.ResponseMeta.warnings] list.</span>
+
+<span class="sd">    By overriding the `warnings.showwarning()` function with the</span>
+<span class="sd">    [`showwarning` method][optimade.server.middleware.AddWarnings.showwarning],</span>
+<span class="sd">    all usages of `warnings.warn()` will result in the regular printing of the</span>
+<span class="sd">    warning message to `stderr`, but also its addition to an in-memory list of</span>
+<span class="sd">    warnings.</span>
+<span class="sd">    This middleware will, after the URL request has been handled, add the list of</span>
+<span class="sd">    accumulated warnings to the JSON response under the</span>
+<span class="sd">    [`meta.warnings`][optimade.models.optimade_json.ResponseMeta.warnings] field.</span>
+
+<span class="sd">    To make sure the last part happens correctly and a Starlette `StreamingResponse`</span>
+<span class="sd">    is returned, as is expected from a `BaseHTTPMiddleware` sub-class, one is</span>
+<span class="sd">    instantiated with the updated `Content-Length` header, as well as making sure</span>
+<span class="sd">    the response&#39;s body content is actually streamable, by breaking it down into</span>
+<span class="sd">    chunks of the original response&#39;s chunk size.</span>
+
+<span class="sd">    !!! warning &quot;Important&quot;</span>
+<span class="sd">        It is **recommended** to add this middleware as the _last one_ to your application.</span>
+
+<span class="sd">        This is to ensure it is invoked _first_, updating `warnings.showwarning()` and</span>
+<span class="sd">        catching all warnings that should be added to the response.</span>
+
+<span class="sd">        This can be achieved by applying `AddWarnings` _after_ all</span>
+<span class="sd">        other middleware with the `.add_middleware()` method, or by</span>
+<span class="sd">        initialising the app with a middleware list in which `AddWarnings`</span>
+<span class="sd">        appears _first_. More information can be found in the docstring of</span>
+<span class="sd">        [`OPTIMADE_MIDDLEWARE`][optimade.server.middleware.OPTIMADE_MIDDLEWARE].</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _warnings (List[Warnings]): List of [`Warnings`][optimade.models.optimade_json.Warnings]</span>
+<span class="sd">            added through usages of `warnings.warn()` via [`showwarning`][optimade.server.middleware.AddWarnings.showwarning].</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">showwarning</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="ne">Warning</span><span class="p">,</span>
+        <span class="n">category</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
+        <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">lineno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">line</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hook to write a warning to a file using the built-in `warnings` lib.</span>
+
+<span class="sd">        In [the documentation](https://docs.python.org/3/library/warnings.html)</span>
+<span class="sd">        for the built-in `warnings` library, there are a few recommended ways of</span>
+<span class="sd">        customizing the printing of warning messages.</span>
+
+<span class="sd">        This method can override the `warnings.showwarning` function,</span>
+<span class="sd">        which is called as part of the `warnings` library&#39;s workflow to print</span>
+<span class="sd">        warning messages, e.g., when using `warnings.warn()`.</span>
+<span class="sd">        Originally, it prints warning messages to `stderr`.</span>
+<span class="sd">        This method will also print warning messages to `stderr` by calling</span>
+<span class="sd">        `warnings._showwarning_orig()` or `warnings._showwarnmsg_impl()`.</span>
+<span class="sd">        The first function will be called if the issued warning is not recognized</span>
+<span class="sd">        as an [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning].</span>
+<span class="sd">        This is equivalent to &quot;standard behaviour&quot;.</span>
+<span class="sd">        The second function will be called _after_ an</span>
+<span class="sd">        [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning] has been handled.</span>
+
+<span class="sd">        An [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning] will be</span>
+<span class="sd">        translated into an OPTIMADE Warnings JSON object in accordance with</span>
+<span class="sd">        [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#json-response-schema-common-fields).</span>
+<span class="sd">        This process is similar to the [Exception handlers][optimade.server.exception_handlers].</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            message: The `Warning` object to show and possibly handle.</span>
+<span class="sd">            category: `Warning` type being warned about. This amounts to `type(message)`.</span>
+<span class="sd">            filename: Name of the file, where the warning was issued.</span>
+<span class="sd">            lineno: Line number in the file, where the warning was issued.</span>
+<span class="sd">            file: A file-like object to which the warning should be written.</span>
+<span class="sd">            line: Source content of the line that issued the warning.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">message</span><span class="p">,</span> <span class="ne">Warning</span>
+        <span class="p">),</span> <span class="s2">&quot;&#39;message&#39; is expected to be a Warning or subclass thereof.&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">OptimadeWarning</span><span class="p">):</span>
+            <span class="c1"># If the Warning is not an OptimadeWarning or subclass thereof,</span>
+            <span class="c1"># use the regular &#39;showwarning&#39; function.</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Format warning</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">detail</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">detail</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">detail</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># All this is taken directly from the warnings library.</span>
+                <span class="c1"># See &#39;warnings._formatwarnmsg_impl()&#39; for the original code.</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="kn">import</span> <span class="nn">linecache</span>
+
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">linecache</span><span class="o">.</span><span class="n">getline</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="c1"># When a warning is logged during Python shutdown, linecache</span>
+                    <span class="c1"># and the import machinery don&#39;t work anymore</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">linecache</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="n">filename</span><span class="p">,</span>
+                <span class="s2">&quot;lineno&quot;</span><span class="p">:</span> <span class="n">lineno</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="n">new_warning</span> <span class="o">=</span> <span class="n">Warnings</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">detail</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_warning</span> <span class="o">=</span> <span class="n">Warnings</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">detail</span><span class="p">)</span>
+
+        <span class="c1"># Add new warning to self._warnings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_warning</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="c1"># Show warning message as normal in sys.stderr</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarnmsg_impl</span><span class="p">(</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">WarningMessage</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            content: String-content to separate into chunks.</span>
+<span class="sd">            chunk_size: The size of the chunks, i.e. the length of the string-chunks.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A Python generator to be converted later to an `asyncio` generator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">chunk_size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">chunk_size</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">),</span> <span class="n">chunk_size</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">OptimadeWarning</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">showwarning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">showwarning</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">media_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">media_type</span>
+        <span class="n">background</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">background</span>
+        <span class="n">charset</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">charset</span>
+
+        <span class="n">body</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+        <span class="n">first_run</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">body_iterator</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">first_run</span><span class="p">:</span>
+                <span class="n">first_run</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">chunk_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span>
+            <span class="n">body</span> <span class="o">+=</span> <span class="n">chunk</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">,</span> <span class="p">{})[</span><span class="s2">&quot;warnings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;content-length&quot;</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">:</span>
+                <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">))</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">StreamingResponse</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_it_up</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">),</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+            <span class="n">media_type</span><span class="o">=</span><span class="n">media_type</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade.server.middleware.AddWarnings.chunk_it_up" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#optimade.server.middleware.AddWarnings.chunk_it_up" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Return generator for string in chunks of size <code>chunk_size</code>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>content</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>String-content to separate into chunks.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>chunk_size</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>The size of the chunks, i.e. the length of the string-chunks.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Generator">Generator</span></code>
+          </td>
+          <td><p>A Python generator to be converted later to an <code>asyncio</code> generator.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        content: String-content to separate into chunks.</span>
+<span class="sd">        chunk_size: The size of the chunks, i.e. the length of the string-chunks.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A Python generator to be converted later to an `asyncio` generator.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">chunk_size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">chunk_size</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">),</span> <span class="n">chunk_size</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade.server.middleware.AddWarnings.showwarning" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">showwarning</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#optimade.server.middleware.AddWarnings.showwarning" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Hook to write a warning to a file using the built-in <code>warnings</code> lib.</p>
+<p>In <a href="https://docs.python.org/3/library/warnings.html">the documentation</a>
+for the built-in <code>warnings</code> library, there are a few recommended ways of
+customizing the printing of warning messages.</p>
+<p>This method can override the <code>warnings.showwarning</code> function,
+which is called as part of the <code>warnings</code> library's workflow to print
+warning messages, e.g., when using <code>warnings.warn()</code>.
+Originally, it prints warning messages to <code>stderr</code>.
+This method will also print warning messages to <code>stderr</code> by calling
+<code>warnings._showwarning_orig()</code> or <code>warnings._showwarnmsg_impl()</code>.
+The first function will be called if the issued warning is not recognized
+as an <a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>.
+This is equivalent to "standard behaviour".
+The second function will be called <em>after</em> an
+<a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a> has been handled.</p>
+<p>An <a class="autorefs autorefs-internal" href="../warnings/#optimade.server.warnings.OptimadeWarning"><code>OptimadeWarning</code></a> will be
+translated into an OPTIMADE Warnings JSON object in accordance with
+<a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#json-response-schema-common-fields">the specification</a>.
+This process is similar to the <a class="autorefs autorefs-internal" href="../exception_handlers/#optimade.server.exception_handlers">Exception handlers</a>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>message</code></td>
+          <td>
+                <code>Warning</code>
+          </td>
+          <td><p>The <code>Warning</code> object to show and possibly handle.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>category</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[Warning]</code>
+          </td>
+          <td><p><code>Warning</code> type being warned about. This amounts to <code>type(message)</code>.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>filename</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Name of the file, where the warning was issued.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>lineno</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Line number in the file, where the warning was issued.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>file</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.IO">IO</span>]</code>
+          </td>
+          <td><p>A file-like object to which the warning should be written.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>line</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>Source content of the line that issued the warning.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">showwarning</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">message</span><span class="p">:</span> <span class="ne">Warning</span><span class="p">,</span>
+    <span class="n">category</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">lineno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">line</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hook to write a warning to a file using the built-in `warnings` lib.</span>
+
+<span class="sd">    In [the documentation](https://docs.python.org/3/library/warnings.html)</span>
+<span class="sd">    for the built-in `warnings` library, there are a few recommended ways of</span>
+<span class="sd">    customizing the printing of warning messages.</span>
+
+<span class="sd">    This method can override the `warnings.showwarning` function,</span>
+<span class="sd">    which is called as part of the `warnings` library&#39;s workflow to print</span>
+<span class="sd">    warning messages, e.g., when using `warnings.warn()`.</span>
+<span class="sd">    Originally, it prints warning messages to `stderr`.</span>
+<span class="sd">    This method will also print warning messages to `stderr` by calling</span>
+<span class="sd">    `warnings._showwarning_orig()` or `warnings._showwarnmsg_impl()`.</span>
+<span class="sd">    The first function will be called if the issued warning is not recognized</span>
+<span class="sd">    as an [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning].</span>
+<span class="sd">    This is equivalent to &quot;standard behaviour&quot;.</span>
+<span class="sd">    The second function will be called _after_ an</span>
+<span class="sd">    [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning] has been handled.</span>
+
+<span class="sd">    An [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning] will be</span>
+<span class="sd">    translated into an OPTIMADE Warnings JSON object in accordance with</span>
+<span class="sd">    [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#json-response-schema-common-fields).</span>
+<span class="sd">    This process is similar to the [Exception handlers][optimade.server.exception_handlers].</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        message: The `Warning` object to show and possibly handle.</span>
+<span class="sd">        category: `Warning` type being warned about. This amounts to `type(message)`.</span>
+<span class="sd">        filename: Name of the file, where the warning was issued.</span>
+<span class="sd">        lineno: Line number in the file, where the warning was issued.</span>
+<span class="sd">        file: A file-like object to which the warning should be written.</span>
+<span class="sd">        line: Source content of the line that issued the warning.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">message</span><span class="p">,</span> <span class="ne">Warning</span>
+    <span class="p">),</span> <span class="s2">&quot;&#39;message&#39; is expected to be a Warning or subclass thereof.&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">OptimadeWarning</span><span class="p">):</span>
+        <span class="c1"># If the Warning is not an OptimadeWarning or subclass thereof,</span>
+        <span class="c1"># use the regular &#39;showwarning&#39; function.</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Format warning</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">detail</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">detail</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">detail</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># All this is taken directly from the warnings library.</span>
+            <span class="c1"># See &#39;warnings._formatwarnmsg_impl()&#39; for the original code.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">linecache</span>
+
+                <span class="n">line</span> <span class="o">=</span> <span class="n">linecache</span><span class="o">.</span><span class="n">getline</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="c1"># When a warning is logged during Python shutdown, linecache</span>
+                <span class="c1"># and the import machinery don&#39;t work anymore</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">linecache</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="s2">&quot;lineno&quot;</span><span class="p">:</span> <span class="n">lineno</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+        <span class="n">new_warning</span> <span class="o">=</span> <span class="n">Warnings</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">detail</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">new_warning</span> <span class="o">=</span> <span class="n">Warnings</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">detail</span><span class="p">)</span>
+
+    <span class="c1"># Add new warning to self._warnings</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_warning</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+    <span class="c1"># Show warning message as normal in sys.stderr</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarnmsg_impl</span><span class="p">(</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">WarningMessage</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.server.middleware.CheckWronglyVersionedBaseUrls" class="doc doc-heading">
+        <code>CheckWronglyVersionedBaseUrls</code>
+
+
+<a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>If a non-supported versioned base URL is supplied return <code>553 Version Not Supported</code>.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CheckWronglyVersionedBaseUrls</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;If a non-supported versioned base URL is supplied return `553 Version Not Supported`.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">StarletteURL</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check URL path for versioned part.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            url: A complete urllib-parsed raw URL.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            VersionNotSupported: If the URL represents an OPTIMADE versioned base URL</span>
+<span class="sd">                and the version part is not supported by the implementation.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">optimade_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">netloc</span><span class="si">}{</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span> <span class="p">:]</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;version&gt;/v[0-9]+(\.[0-9]+){0,2}).*&quot;</span><span class="p">,</span> <span class="n">optimade_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">VersionNotSupported</span><span class="p">(</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;The parsed versioned base URL </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> from &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> is not supported by this implementation. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Supported versioned base URLs are: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_url</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade.server.middleware.CheckWronglyVersionedBaseUrls.check_url" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">check_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls.check_url" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Check URL path for versioned part.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>url</code></td>
+          <td>
+                <code><span title="starlette.datastructures.URL">StarletteURL</span></code>
+          </td>
+          <td><p>A complete urllib-parsed raw URL.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="optimade.server.exceptions.VersionNotSupported" href="../exceptions/#optimade.server.exceptions.VersionNotSupported">VersionNotSupported</a></code>
+          </td>
+          <td><p>If the URL represents an OPTIMADE versioned base URL
+and the version part is not supported by the implementation.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">check_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">StarletteURL</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check URL path for versioned part.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        url: A complete urllib-parsed raw URL.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        VersionNotSupported: If the URL represents an OPTIMADE versioned base URL</span>
+<span class="sd">            and the version part is not supported by the implementation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">optimade_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">netloc</span><span class="si">}{</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span> <span class="p">:]</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;version&gt;/v[0-9]+(\.[0-9]+){0,2}).*&quot;</span><span class="p">,</span> <span class="n">optimade_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">VersionNotSupported</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The parsed versioned base URL </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> from &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> is not supported by this implementation. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Supported versioned base URLs are: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.server.middleware.EnsureQueryParamIntegrity" class="doc doc-heading">
+        <code>EnsureQueryParamIntegrity</code>
+
+
+<a href="#optimade.server.middleware.EnsureQueryParamIntegrity" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Ensure all query parameters are followed by an equal sign (<code>=</code>).</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EnsureQueryParamIntegrity</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Ensure all query parameters are followed by an equal sign (`=`).&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_url</span><span class="p">(</span><span class="n">url_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check parsed URL query part for parameters not followed by `=`.</span>
+
+<span class="sd">        URL query parameters are considered to be split by ampersand (`&amp;`)</span>
+<span class="sd">        and semi-colon (`;`).</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            url_query: The raw urllib-parsed query part.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            BadRequest: If a query parameter does not come with a value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The set of individual query parameters and their values.</span>
+
+<span class="sd">            This is mainly for testing and not actually neeeded by the middleware,</span>
+<span class="sd">            since if the URL exhibits an invalid query part a `400 Bad Request`</span>
+<span class="sd">            response will be returned.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">queries_amp</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">url_query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">))</span>
+        <span class="n">queries</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries_amp</span><span class="p">:</span>
+            <span class="n">queries</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">query</span> <span class="ow">and</span> <span class="n">query</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;A query parameter without an equal sign (=) is not supported by this server&quot;</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">queries</span>  <span class="c1"># Useful for testing</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
+        <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_url</span><span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade.server.middleware.EnsureQueryParamIntegrity.check_url" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">check_url</span><span class="p">(</span><span class="n">url_query</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#optimade.server.middleware.EnsureQueryParamIntegrity.check_url" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Check parsed URL query part for parameters not followed by <code>=</code>.</p>
+<p>URL query parameters are considered to be split by ampersand (<code>&amp;</code>)
+and semi-colon (<code>;</code>).</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>url_query</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The raw urllib-parsed query part.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="optimade.server.exceptions.BadRequest" href="../exceptions/#optimade.server.exceptions.BadRequest">BadRequest</a></code>
+          </td>
+          <td><p>If a query parameter does not come with a value.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>set</code>
+          </td>
+          <td><p>The set of individual query parameters and their values.</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>set</code>
+          </td>
+          <td><p>This is mainly for testing and not actually neeeded by the middleware,</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>set</code>
+          </td>
+          <td><p>since if the URL exhibits an invalid query part a <code>400 Bad Request</code></p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>set</code>
+          </td>
+          <td><p>response will be returned.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">check_url</span><span class="p">(</span><span class="n">url_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check parsed URL query part for parameters not followed by `=`.</span>
+
+<span class="sd">    URL query parameters are considered to be split by ampersand (`&amp;`)</span>
+<span class="sd">    and semi-colon (`;`).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        url_query: The raw urllib-parsed query part.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        BadRequest: If a query parameter does not come with a value.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The set of individual query parameters and their values.</span>
+
+<span class="sd">        This is mainly for testing and not actually neeeded by the middleware,</span>
+<span class="sd">        since if the URL exhibits an invalid query part a `400 Bad Request`</span>
+<span class="sd">        response will be returned.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">queries_amp</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">url_query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">))</span>
+    <span class="n">queries</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries_amp</span><span class="p">:</span>
+        <span class="n">queries</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">query</span> <span class="ow">and</span> <span class="n">query</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;A query parameter without an equal sign (=) is not supported by this server&quot;</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">queries</span>  <span class="c1"># Useful for testing</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.server.middleware.HandleApiHint" class="doc doc-heading">
+        <code>HandleApiHint</code>
+
+
+<a href="#optimade.server.middleware.HandleApiHint" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Handle <code>api_hint</code> query parameter.</p>
+
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HandleApiHint</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle `api_hint` query parameter.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
+
+<span class="sd">        There are several scenarios that can play out, when handling the `api_hint`</span>
+<span class="sd">        query parameter:</span>
+
+<span class="sd">        If several `api_hint` query parameters have been used, or a &quot;standard&quot; JSON</span>
+<span class="sd">        list (`,`-separated value) has been supplied, a warning will be added to the</span>
+<span class="sd">        response and the `api_hint` query parameter will not be applied.</span>
+
+<span class="sd">        If the passed value does not comply with the rules set out in</span>
+<span class="sd">        [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation),</span>
+<span class="sd">        a warning will be added to the response and the `api_hint` query parameter</span>
+<span class="sd">        will not be applied.</span>
+
+<span class="sd">        If the value is part of the implementation&#39;s accepted versioned base URLs,</span>
+<span class="sd">        it will be returned as is.</span>
+
+<span class="sd">        If the value represents a major version that is newer than what is supported</span>
+<span class="sd">        by the implementation, a `553 Version Not Supported` response will be returned,</span>
+<span class="sd">        as is stated by [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation).</span>
+
+<span class="sd">        On the other hand, if the value represents a major version equal to or lower</span>
+<span class="sd">        than the implementation&#39;s supported major version, then the implementation&#39;s</span>
+<span class="sd">        supported major version will be returned and tried for the request.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            api_hint: The urllib-parsed query parameter value for `api_hint`.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            VersionNotSupported: If the requested major version is newer than the</span>
+<span class="sd">                supported major version of the implementation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Either a valid `api_hint` value or `None`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Try to split by `,` if value is provided once, but in JSON-type &quot;list&quot; format</span>
+        <span class="n">_api_hint</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">api_hint</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">_api_hint</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">api_hint</span> <span class="o">=</span> <span class="n">_api_hint</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">api_hint</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="n">TooManyValues</span><span class="p">(</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;`api_hint` should only be supplied once, with a single value.&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">api_hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^/v[0-9]+(\.[0-9]+)?$&quot;</span><span class="p">,</span> <span class="n">api_hint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="n">FieldValueNotRecognized</span><span class="p">(</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2"> is not recognized as a valid `api_hint` value.&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">api_hint</span> <span class="ow">in</span> <span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">api_hint</span>
+
+        <span class="n">major_api_hint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v([0-9]+)&quot;</span><span class="p">,</span> <span class="n">api_hint</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">major_implementation</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;/v&quot;</span><span class="p">)</span> <span class="p">:])</span>
+
+        <span class="k">if</span> <span class="n">major_api_hint</span> <span class="o">&gt;</span> <span class="n">major_implementation</span><span class="p">:</span>
+            <span class="c1"># Let&#39;s not try to handle a request for a newer major version</span>
+            <span class="k">raise</span> <span class="n">VersionNotSupported</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The provided `api_hint` (</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2">) is not supported by this implementation. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Supported versions include: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">major_api_hint</span> <span class="o">&lt;=</span> <span class="n">major_implementation</span><span class="p">:</span>
+            <span class="c1"># If less than:</span>
+            <span class="c1"># Use the current implementation in hope that it can still handle older requests</span>
+            <span class="c1">#</span>
+            <span class="c1"># If equal:</span>
+            <span class="c1"># Go to /v&lt;MAJOR&gt;, since this should point to the latest available</span>
+            <span class="k">return</span> <span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Determine whether a request is for a versioned base URL.</span>
+
+<span class="sd">        First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.</span>
+<span class="sd">        If not, return `False`, else, remove unversioned base URL from the URL and check again.</span>
+<span class="sd">        Return `bool` of final result.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            url: The full URL to check.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Whether or not the full URL represents an OPTIMADE versioned base URL.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(/v[0-9]+(\.[0-9]+){0,2})&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(/v[0-9]+(\.[0-9]+){0,2})&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span> <span class="p">:]))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
+        <span class="n">parsed_query</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qs</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">keep_blank_values</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;api_hint&quot;</span> <span class="ow">in</span> <span class="n">parsed_query</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_versioned_base_url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="n">QueryParamNotUsed</span><span class="p">(</span>
+                        <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                            <span class="s2">&quot;`api_hint` provided with value</span><span class="si">{:s}</span><span class="s2"> &#39;</span><span class="si">{:s}</span><span class="s2">&#39; for a versioned base URL. &quot;</span>
+                            <span class="s2">&quot;In accordance with the specification, this will not be handled by &quot;</span>
+                            <span class="s2">&quot;the implementation.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="s2">&quot;s&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parsed_query</span><span class="p">[</span><span class="s2">&quot;api_hint&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parsed_query</span><span class="p">[</span><span class="s2">&quot;api_hint&quot;</span><span class="p">]),</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="n">get_base_url</span>
+
+                <span class="n">version_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_api_hint</span><span class="p">(</span><span class="n">parsed_query</span><span class="p">[</span><span class="s2">&quot;api_hint&quot;</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="n">version_path</span><span class="p">:</span>
+                    <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+                    <span class="n">new_request</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}{</span><span class="n">version_path</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">):]</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">new_request</span><span class="p">)</span>
+                    <span class="n">parsed_query</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qsl</span><span class="p">(</span>
+                        <span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">keep_blank_values</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="n">parsed_query</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="p">[</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parsed_query</span>
+                            <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">&quot;api_hint&quot;</span>
+                        <span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">parsed_query</span><span class="p">),</span>
+                        <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="c1"># This is the non-URL changing solution:</span>
+                    <span class="c1">#</span>
+                    <span class="c1"># scope = request.scope</span>
+                    <span class="c1"># scope[&quot;path&quot;] = path</span>
+                    <span class="c1"># request = Request(scope=scope, receive=request.receive, send=request._send)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade.server.middleware.HandleApiHint.handle_api_hint" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#optimade.server.middleware.HandleApiHint.handle_api_hint" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Handle <code>api_hint</code> parameter value.</p>
+<p>There are several scenarios that can play out, when handling the <code>api_hint</code>
+query parameter:</p>
+<p>If several <code>api_hint</code> query parameters have been used, or a "standard" JSON
+list (<code>,</code>-separated value) has been supplied, a warning will be added to the
+response and the <code>api_hint</code> query parameter will not be applied.</p>
+<p>If the passed value does not comply with the rules set out in
+<a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation">the specification</a>,
+a warning will be added to the response and the <code>api_hint</code> query parameter
+will not be applied.</p>
+<p>If the value is part of the implementation's accepted versioned base URLs,
+it will be returned as is.</p>
+<p>If the value represents a major version that is newer than what is supported
+by the implementation, a <code>553 Version Not Supported</code> response will be returned,
+as is stated by <a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation">the specification</a>.</p>
+<p>On the other hand, if the value represents a major version equal to or lower
+than the implementation's supported major version, then the implementation's
+supported major version will be returned and tried for the request.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>api_hint</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>The urllib-parsed query parameter value for <code>api_hint</code>.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="optimade.server.exceptions.VersionNotSupported" href="../exceptions/#optimade.server.exceptions.VersionNotSupported">VersionNotSupported</a></code>
+          </td>
+          <td><p>If the requested major version is newer than the
+supported major version of the implementation.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Union">Union</span>[None, str]</code>
+          </td>
+          <td><p>Either a valid <code>api_hint</code> value or <code>None</code>.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
+
+<span class="sd">    There are several scenarios that can play out, when handling the `api_hint`</span>
+<span class="sd">    query parameter:</span>
+
+<span class="sd">    If several `api_hint` query parameters have been used, or a &quot;standard&quot; JSON</span>
+<span class="sd">    list (`,`-separated value) has been supplied, a warning will be added to the</span>
+<span class="sd">    response and the `api_hint` query parameter will not be applied.</span>
+
+<span class="sd">    If the passed value does not comply with the rules set out in</span>
+<span class="sd">    [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation),</span>
+<span class="sd">    a warning will be added to the response and the `api_hint` query parameter</span>
+<span class="sd">    will not be applied.</span>
+
+<span class="sd">    If the value is part of the implementation&#39;s accepted versioned base URLs,</span>
+<span class="sd">    it will be returned as is.</span>
+
+<span class="sd">    If the value represents a major version that is newer than what is supported</span>
+<span class="sd">    by the implementation, a `553 Version Not Supported` response will be returned,</span>
+<span class="sd">    as is stated by [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#version-negotiation).</span>
+
+<span class="sd">    On the other hand, if the value represents a major version equal to or lower</span>
+<span class="sd">    than the implementation&#39;s supported major version, then the implementation&#39;s</span>
+<span class="sd">    supported major version will be returned and tried for the request.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        api_hint: The urllib-parsed query parameter value for `api_hint`.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        VersionNotSupported: If the requested major version is newer than the</span>
+<span class="sd">            supported major version of the implementation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Either a valid `api_hint` value or `None`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Try to split by `,` if value is provided once, but in JSON-type &quot;list&quot; format</span>
+    <span class="n">_api_hint</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">api_hint</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">_api_hint</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">api_hint</span> <span class="o">=</span> <span class="n">_api_hint</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">api_hint</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">TooManyValues</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;`api_hint` should only be supplied once, with a single value.&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">api_hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^/v[0-9]+(\.[0-9]+)?$&quot;</span><span class="p">,</span> <span class="n">api_hint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">FieldValueNotRecognized</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2"> is not recognized as a valid `api_hint` value.&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">api_hint</span> <span class="ow">in</span> <span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">api_hint</span>
+
+    <span class="n">major_api_hint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v([0-9]+)&quot;</span><span class="p">,</span> <span class="n">api_hint</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">major_implementation</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;/v&quot;</span><span class="p">)</span> <span class="p">:])</span>
+
+    <span class="k">if</span> <span class="n">major_api_hint</span> <span class="o">&gt;</span> <span class="n">major_implementation</span><span class="p">:</span>
+        <span class="c1"># Let&#39;s not try to handle a request for a newer major version</span>
+        <span class="k">raise</span> <span class="n">VersionNotSupported</span><span class="p">(</span>
+            <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The provided `api_hint` (</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2">) is not supported by this implementation. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Supported versions include: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">major_api_hint</span> <span class="o">&lt;=</span> <span class="n">major_implementation</span><span class="p">:</span>
+        <span class="c1"># If less than:</span>
+        <span class="c1"># Use the current implementation in hope that it can still handle older requests</span>
+        <span class="c1">#</span>
+        <span class="c1"># If equal:</span>
+        <span class="c1"># Go to /v&lt;MAJOR&gt;, since this should point to the latest available</span>
+        <span class="k">return</span> <span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Determine whether a request is for a versioned base URL.</p>
+<p>First, simply check whether a <code>/vMAJOR(.MINOR.PATCH)</code> part exists in the URL.
+If not, return <code>False</code>, else, remove unversioned base URL from the URL and check again.
+Return <code>bool</code> of final result.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>url</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The full URL to check.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether or not the full URL represents an OPTIMADE versioned base URL.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Determine whether a request is for a versioned base URL.</span>
+
+<span class="sd">    First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.</span>
+<span class="sd">    If not, return `False`, else, remove unversioned base URL from the URL and check again.</span>
+<span class="sd">    Return `bool` of final result.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        url: The full URL to check.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Whether or not the full URL represents an OPTIMADE versioned base URL.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(/v[0-9]+(\.[0-9]+){0,2})&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(/v[0-9]+(\.[0-9]+){0,2})&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span> <span class="p">:]))</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../main_index/" class="md-footer__link md-footer__link--prev" aria-label="Previous: main_index" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              main_index
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../query_params/" class="md-footer__link md-footer__link--next" aria-label="Next: query_params" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              query_params
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Built by the Materials-Consortia
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/Materials-Consortia" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.9c69f0bc.min.js"></script>
+      
+    
+  </body>
+</html>
