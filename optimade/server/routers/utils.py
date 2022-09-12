@@ -269,7 +269,12 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method:
     elif field == "cartesian_site_positions":
         if storage_method == "bioxl":
             return get_from_binary_gridfs(
-                new_entry["id"], path, first_frame, last_frame, frame_step, nsites
+                new_entry["attributes"]["_id"],
+                path,
+                first_frame,
+                last_frame,
+                frame_step,
+                nsites,
             )
         elif storage_method == "binary":
             values = get_binary_value(path, first_frame, last_frame, frame_step, nsites)
