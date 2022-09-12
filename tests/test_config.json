@@ -1,44 +1,116 @@
 {
-    "debug": false,
+    "database_backend": "mongodb",
+    "mongo_uri": "mongodb://localhost:27017",
+    "mongo_database": "bioexcel-cv19",
+    "structures_collection": "topologies",
+    "trajectories_collection": "projects",
+    "insert_test_data": false,
+    "debug": true,
     "default_db": "test_server",
-    "base_url": "http://example.org",
+    "base_url": "http://localhost:5000",
     "implementation": {
         "name": "Example implementation",
         "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
         "issue_tracker": "https://github.com/Materials-Consortia/optimade-python-tools/issues",
-        "maintainer": {"email": "test@test.org"}
+        "maintainer": {"email": "daniel.beltran@irbbarcelona.org"}
     },
     "provider": {
-        "name": "Example provider",
-        "description": "Provider used for examples, not to be assigned to a real database",
-        "prefix": "exmpl",
+        "name": "IRB Barcelona",
+        "description": "A database with simulations of proteins",
+        "prefix": "bioxl",
         "homepage": "https://example.com"
     },
-    "index_base_url": "http://localhost:5001",
     "provider_fields": {
-        "structures": [
-            "band_gap",
-            {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"}],
         "trajectories": [{
-                "name": "time",
-                "description": "The time belonging to each frame.",
+                "name": "metadata.TIMESTEP",
+                "description": "The timestep between frames of the trajectory.",
                 "unit": "ps",
-                "type": "dictionary"}]
+                "type": "float"
+            },{
+                "name": "metadata.LENGTH",
+                "description": "The duration of the trajectory",
+                "unit": "ns",
+                "type": "float"
+            },{
+                "name": "metadata.FF",
+                "description": "Forcefields used to model the molecular dynamics",
+                "type": "list"
+            },{
+                "name": "metadata.TEMP",
+                "description": "Temperature used to model the molecular dynamics",
+                "unit": "K",
+                "type": "float"
+            },{
+                "name": "metadata.PROGRAM",
+                "description": "Name of the software used to model the molecular dynamics",
+                "type": "string"
+            },{
+                "name": "metadata.VERSION",
+                "description": "Version of the software used to model the molecular dynamics",
+                "type": "string"
+            },{
+                "name": "metadata.LICENCE",
+                "description": "Use license for simulation data",
+                "type": "string"
+            },{
+                "name": "metadata.LINKCENSE",
+                "description": "Link to use license for simulation data",
+                "type": "string"
+            },{
+                "name": "metadata.CITATION",
+                "description": "Reference to cite the simulation data",
+                "type": "string"
+            },{
+                "name": "metadata.DESCRIPTION",
+                "description": "Description of the simulation",
+                "type": "string"
+            },{
+                "name": "metadata.GROUPS",
+                "description": "Groups involved in the modelling of the simulation",
+                "type": "string"
+            },{
+                "name": "metadata.CONTACT",
+                "description": "Reference to contact the simulation authors (e.g. mail)",
+                "type": "string"
+            },{
+                "name": "metadata.THANKS",
+                "description": "Acknowledgements from the authors",
+                "type": "string"
+            },{
+                "name": "metadata.PDBIDS",
+                "description": "PDB ids of structures used in the modelling of the simulation",
+                "type": "list"
+            },{
+                "name": "metadata.METHOD",
+                "description": "Method used in the modelling of the simulation (e.g. Classical MD, Enhanced sampling, etc.)",
+                "type": "string"
+            },{
+                "name": "metadata.TYPE",
+                "description": "Type of molecular dynamics ('trajectory' or 'ensemble')",
+                "type": "string"
+            },{
+                "name": "metadata.LINKS",
+                "description": "URL links to simulation related web sites",
+                "type": "list"
+            },{
+                "name": "metadata.AUTHORS",
+                "description": "Simulation authors",
+                "type": "string"
+	    }
+        ],
+        "references": ["orcid", "num_citations"]
     },
     "aliases": {
-        "structures": {
-            "id": "task_id",
-            "immutable_id": "_id",
-            "chemical_formula_descriptive": "pretty_formula",
-            "chemical_formula_reduced": "pretty_formula",
-            "chemical_formula_anonymous": "formula_anonymous",
-            "chemical_formula_hill": "fancy_formulas.hill"
+        "trajectories":{
+          "id": "accession",
+          "reference_structure.nsites": "metadata.atomCount",
+          "nframes": "metadata.SNAPSHOTS"
         }
     },
     "length_aliases": {
         "structures": {
-            "chemsys": "nelements"
         }
     },
-    "enabled_response_formats": ["json", "hdf5"]
+    "enabled_response_formats": ["json", "hdf5"],
+    "max_response_size": {"json": 40, "hdf5": 200}
 }

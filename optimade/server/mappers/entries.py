@@ -16,6 +16,16 @@ def get_value(dict, real):
     return get_value(dict[split_real[0]], split_real[1])
 
 
+def write_to_nested_dict(dictionary, alias, value):
+    if "." in alias:
+        split_alias = alias.split(".", 1)
+        if split_alias[0] not in dictionary:
+            dictionary[split_alias[0]] = {}
+        write_to_nested_dict(dictionary[split_alias[0]], split_alias[1], value)
+    else:
+        dictionary[alias] = value
+
+
 class classproperty(property):
     """A simple extension of the property decorator that binds to types
     rather than instances.
@@ -373,7 +383,7 @@ class BaseResourceMapper:
         for alias, real in aliases:
             value, found = get_value(doc, real)
             if found:
-                newdoc[alias] = value
+                write_to_nested_dict(newdoc, alias, value)
 
         return newdoc
 

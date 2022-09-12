@@ -1,9 +1,9 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
-import re
-import warnings
-import sys
-import math
-from functools import reduce
+# import re
+# import warnings
+# import sys
+# import math
+# from functools import reduce
 from enum import IntEnum, Enum
 from typing import List, Optional, Union
 
@@ -16,10 +16,10 @@ from optimade.models.utils import (
     OptimadeField,
     StrictField,
     SupportLevel,
-    ANONYMOUS_ELEMENTS,
-    CHEMICAL_FORMULA_REGEXP,
+    # ANONYMOUS_ELEMENTS,
 )
-from optimade.server.warnings import MissingExpectedField
+
+# from optimade.server.warnings import MissingExpectedField
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
@@ -314,7 +314,7 @@ class StructureAttributes(Attributes):
         queryable=SupportLevel.MUST,
     )
 
-    elements_ratios: Optional[List[float]] = OptimadeField(
+    elements_ratios: List[float] = OptimadeField(
         ...,
         description="""Relative proportions of different elements in the structure.
 
@@ -337,117 +337,6 @@ class StructureAttributes(Attributes):
     - OPTIONAL: a filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: `elements:elements_ratios HAS ALL "Al":>0.3333, "Al":<0.3334`.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
-    )
-
-    chemical_formula_descriptive: Optional[str] = OptimadeField(
-        ...,
-        description="""The chemical formula for a structure as a string in a form chosen by the API implementation.
-
-- **Type**: string
-
-- **Requirements/Conventions**:
-    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter features.
-    - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets `(`,`)`, `[`,`]`, `{`, `}`, commas, the `+`, `-`, `:` and `=` symbols. The parentheses are allowed to be followed by a number. Spaces are allowed anywhere except within chemical symbols. The order of elements and any groupings indicated by parentheses or brackets are chosen freely by the API implementation.
-    - The string SHOULD be arithmetically consistent with the element ratios in the `chemical_formula_reduced` property.
-    - It is RECOMMENDED, but not mandatory, that symbols, parentheses and brackets, if used, are used with the meanings prescribed by [IUPAC's Nomenclature of Organic Chemistry](https://www.qmul.ac.uk/sbcs/iupac/bibliog/blue.html).
-
-- **Examples**:
-    - `"(H2O)2 Na"`
-    - `"NaCl"`
-    - `"CaCO3"`
-    - `"CCaO3"`
-    - `"(CH3)3N+ - [CH2]2-OH = Me3N+ - CH2 - CH2OH"`
-
-- **Query examples**:
-    - Note: the free-form nature of this property is likely to make queries on it across different databases inconsistent.
-    - A filter that matches an exactly given formula: `chemical_formula_descriptive="(H2O)2 Na"`.
-    - A filter that does a partial match: `chemical_formula_descriptive CONTAINS "H2O"`.""",
-        support=SupportLevel.SHOULD,
-        queryable=SupportLevel.MUST,
-    )
-
-    chemical_formula_reduced: Optional[str] = OptimadeField(
-        ...,
-        description="""The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.
-The proportion number MUST be omitted if it is 1.
-
-- **Type**: string
-
-- **Requirements/Conventions**:
-    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
-    - **Query**: MUST be a queryable property.
-      However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
-      Intricate queries on formula components are instead suggested to be formulated using set-type filter operators on the multi valued `elements` and `elements_ratios` properties.
-    - Element symbols MUST have proper capitalization (e.g., `"Si"`, not `"SI"` for "silicon").
-    - Elements MUST be placed in alphabetical order, followed by their integer chemical proportion number.
-    - For structures with no partial occupation, the chemical proportion numbers are the smallest integers for which the chemical proportion is exactly correct.
-    - For structures with partial occupation, the chemical proportion numbers are integers that within reasonable approximation indicate the correct chemical proportions. The precise details of how to perform the rounding is chosen by the API implementation.
-    - No spaces or separators are allowed.
-
-- **Examples**:
-    - `"H2NaO"`
-    - `"ClNa"`
-    - `"CCaO3"`
-
-- **Query examples**:
-    - A filter that matches an exactly given formula is `chemical_formula_reduced="H2NaO"`.""",
-        support=SupportLevel.SHOULD,
-        queryable=SupportLevel.MUST,
-        regex=CHEMICAL_FORMULA_REGEXP,
-    )
-
-    chemical_formula_hill: Optional[str] = OptimadeField(
-        None,
-        description="""The chemical formula for a structure in [Hill form](https://dx.doi.org/10.1021/ja02046a005) with element symbols followed by integer chemical proportion numbers. The proportion number MUST be omitted if it is 1.
-
-- **Type**: string
-
-- **Requirements/Conventions**:
-    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
-    - **Query**: Support for queries on this property is OPTIONAL.
-      If supported, only a subset of the filter features MAY be supported.
-    - The overall scale factor of the chemical proportions is chosen such that the resulting values are integers that indicate the most chemically relevant unit of which the system is composed.
-      For example, if the structure is a repeating unit cell with four hydrogens and four oxygens that represents two hydroperoxide molecules, `chemical_formula_hill` is `"H2O2"` (i.e., not `"HO"`, nor `"H4O4"`).
-    - If the chemical insight needed to ascribe a Hill formula to the system is not present, the property MUST be handled as unset.
-    - Element symbols MUST have proper capitalization (e.g., `"Si"`, not `"SI"` for "silicon").
-    - Elements MUST be placed in [Hill order](https://dx.doi.org/10.1021/ja02046a005), followed by their integer chemical proportion number.
-      Hill order means: if carbon is present, it is placed first, and if also present, hydrogen is placed second.
-      After that, all other elements are ordered alphabetically.
-      If carbon is not present, all elements are ordered alphabetically.
-    - If the system has sites with partial occupation and the total occupations of each element do not all sum up to integers, then the Hill formula SHOULD be handled as unset.
-    - No spaces or separators are allowed.
-
-- **Examples**:
-    - `"H2O2"`
-
-- **Query examples**:
-    - A filter that matches an exactly given formula is `chemical_formula_hill="H2O2"`.""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-        regex=CHEMICAL_FORMULA_REGEXP,
-    )
-
-    chemical_formula_anonymous: Optional[str] = OptimadeField(
-        ...,
-        description="""The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
-
-- **Type**: string
-
-- **Requirements/Conventions**:
-    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
-    - **Query**: MUST be a queryable property.
-      However, support for filters using partial string matching with this property is OPTIONAL (i.e., BEGINS WITH, ENDS WITH, and CONTAINS).
-
-- **Examples**:
-    - `"A2B"`
-    - `"A42B42C16D12E10F9G5"`
-
-- **Querying**:
-    - A filter that matches an exactly given formula is `chemical_formula_anonymous="A2B"`.""",
-        support=SupportLevel.SHOULD,
-        queryable=SupportLevel.MUST,
-        regex=CHEMICAL_FORMULA_REGEXP,
     )
 
     dimension_types: Optional[
@@ -821,96 +710,96 @@ The properties of the species are found in the property `species`.
             for prop in nullable_props:
                 schema["properties"][prop]["nullable"] = True
 
-    @root_validator(pre=True)
-    def warn_on_missing_correlated_fields(cls, values):
-        """Emit warnings if a field takes a null value when a value
-        was expected based on the value/nullity of another field.
-        """
-        accumulated_warnings = []
-        for field_set in CORRELATED_STRUCTURE_FIELDS:
-            missing_fields = {f for f in field_set if values.get(f) is None}
-            if missing_fields and len(missing_fields) != len(field_set):
-                accumulated_warnings += [
-                    f"Structure with values {values} is missing fields {missing_fields} which are required if {field_set - missing_fields} are present."
-                ]
+    # @root_validator(pre=True)
+    # def warn_on_missing_correlated_fields(cls, values):
+    #     """Emit warnings if a field takes a null value when a value
+    #     was expected based on the value/nullity of another field.
+    #     """
+    #     accumulated_warnings = []
+    #     for field_set in CORRELATED_STRUCTURE_FIELDS:
+    #         missing_fields = {f for f in field_set if values.get(f) is None}
+    #         if missing_fields and len(missing_fields) != len(field_set):
+    #             accumulated_warnings += [
+    #                 f"Structure with values {values} is missing fields {missing_fields} which are required if {field_set - missing_fields} are present."
+    #             ]
+    #
+    #     for warn in accumulated_warnings:
+    #         warnings.warn(warn, MissingExpectedField)
+    #
+    #     return values
 
-        for warn in accumulated_warnings:
-            warnings.warn(warn, MissingExpectedField)
+    # @validator("chemical_formula_reduced", "chemical_formula_hill")
+    # def check_ordered_formula(cls, v, field):
+    #     if v is None:
+    #         return v
+    #
+    #     elements = re.findall(r"[A-Z][a-z]?", v)
+    #     expected_elements = sorted(elements)
+    #
+    #     if field.name == "chemical_formula_hill":
+    #         # Make sure C is first (and H is second, if present along with C).
+    #         if "C" in expected_elements:
+    #             expected_elements = sorted(
+    #                 expected_elements,
+    #                 key=lambda elem: {"C": "0", "H": "1"}.get(elem, elem),
+    #             )
+    #
+    #     if any(elem not in CHEMICAL_SYMBOLS for elem in elements):
+    #         raise ValueError(
+    #             f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {field.name!r}"
+    #         )
+    #
+    #     if expected_elements != elements:
+    #         order = "Hill" if field.name == "chemical_formula_hill" else "alphabetical"
+    #         raise ValueError(
+    #             f"Elements in {field.name!r} must appear in {order} order: {expected_elements} not {elements}."
+    #         )
+    #
+    #     return v
 
-        return values
+    # @validator("chemical_formula_anonymous")
+    # def check_anonymous_formula(cls, v):
+    #     if v is None:
+    #         return v
+    #
+    #     elements = tuple(re.findall(r"[A-Z][a-z]*", v))
+    #     numbers = re.split(r"[A-Z][a-z]*", v)[1:]
+    #     numbers = [int(i) if i else 1 for i in numbers]
+    #
+    #     expected_labels = ANONYMOUS_ELEMENTS[: len(elements)]
+    #     expected_numbers = sorted(numbers, reverse=True)
+    #
+    #     if expected_numbers != numbers:
+    #         raise ValueError(
+    #             f"'chemical_formula_anonymous' {v} has wrong order: elements with highest proportion should appear first: {numbers} vs expected {expected_numbers}"
+    #         )
+    #     if elements != expected_labels:
+    #         raise ValueError(
+    #             f"'chemical_formula_anonymous' {v} has wrong labels: {elements} vs expected {expected_labels}."
+    #         )
+    #
+    #     return v
 
-    @validator("chemical_formula_reduced", "chemical_formula_hill")
-    def check_ordered_formula(cls, v, field):
-        if v is None:
-            return v
-
-        elements = re.findall(r"[A-Z][a-z]?", v)
-        expected_elements = sorted(elements)
-
-        if field.name == "chemical_formula_hill":
-            # Make sure C is first (and H is second, if present along with C).
-            if "C" in expected_elements:
-                expected_elements = sorted(
-                    expected_elements,
-                    key=lambda elem: {"C": "0", "H": "1"}.get(elem, elem),
-                )
-
-        if any(elem not in CHEMICAL_SYMBOLS for elem in elements):
-            raise ValueError(
-                f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {field.name!r}"
-            )
-
-        if expected_elements != elements:
-            order = "Hill" if field.name == "chemical_formula_hill" else "alphabetical"
-            raise ValueError(
-                f"Elements in {field.name!r} must appear in {order} order: {expected_elements} not {elements}."
-            )
-
-        return v
-
-    @validator("chemical_formula_anonymous")
-    def check_anonymous_formula(cls, v):
-        if v is None:
-            return v
-
-        elements = tuple(re.findall(r"[A-Z][a-z]*", v))
-        numbers = re.split(r"[A-Z][a-z]*", v)[1:]
-        numbers = [int(i) if i else 1 for i in numbers]
-
-        expected_labels = ANONYMOUS_ELEMENTS[: len(elements)]
-        expected_numbers = sorted(numbers, reverse=True)
-
-        if expected_numbers != numbers:
-            raise ValueError(
-                f"'chemical_formula_anonymous' {v} has wrong order: elements with highest proportion should appear first: {numbers} vs expected {expected_numbers}"
-            )
-        if elements != expected_labels:
-            raise ValueError(
-                f"'chemical_formula_anonymous' {v} has wrong labels: {elements} vs expected {expected_labels}."
-            )
-
-        return v
-
-    @validator("chemical_formula_anonymous", "chemical_formula_reduced")
-    def check_reduced_formulae(cls, value, field):
-        if value is None:
-            return value
-
-        numbers = [n.strip() or 1 for n in re.split(r"[A-Z][a-z]*", value)]
-        # Need to remove leading 1 from split and convert to ints
-        numbers = [int(n) for n in numbers[1:]]
-
-        if sys.version_info[1] >= 9:
-            gcd = math.gcd(*numbers)
-        else:
-            gcd = reduce(math.gcd, numbers)
-
-        if gcd != 1:
-            raise ValueError(
-                f"{field.name} {value!r} is not properly reduced: greatest common divisor was {gcd}, expected 1."
-            )
-
-        return value
+    # @validator("chemical_formula_anonymous", "chemical_formula_reduced")
+    # def check_reduced_formulae(cls, value, field):
+    #     if value is None:
+    #         return value
+    #
+    #     numbers = [n.strip() or 1 for n in re.split(r"[A-Z][a-z]*", value)]
+    #     # Need to remove leading 1 from split and convert to ints
+    #     numbers = [int(n) for n in numbers[1:]]
+    #
+    #     if sys.version_info[1] >= 9:
+    #         gcd = math.gcd(*numbers)
+    #     else:
+    #         gcd = reduce(math.gcd, numbers)
+    #
+    #     if gcd != 1:
+    #         raise ValueError(
+    #             f"{field.name} {value!r} is not properly reduced: greatest common divisor was {gcd}, expected 1."
+    #         )
+    #
+    #     return value
 
     @validator("elements", each_item=True)
     def element_must_be_chemical_symbol(cls, v):
@@ -951,20 +840,20 @@ The properties of the species are found in the property `species`.
 
         return v
 
-    @validator("lattice_vectors", always=True)
-    def required_if_dimension_types_has_one(cls, v, values):
-        if v is None:
-            return v
-
-        if values.get("dimension_types"):
-            for dim_type, vector in zip(values.get("dimension_types", (None,) * 3), v):
-                if None in vector and dim_type == Periodicity.PERIODIC.value:
-                    raise ValueError(
-                        f"Null entries in lattice vectors are only permitted when the corresponding dimension type is {Periodicity.APERIODIC.value}. "
-                        f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in values.get('dimension_types', []))}, lattice_vectors = {v}"
-                    )
-
-        return v
+    # @validator("lattice_vectors", always=True)
+    # def required_if_dimension_types_has_one(cls, v, values):
+    #     if v is None:
+    #         return v
+    #
+    #     if values.get("dimension_types"):
+    #         for dim_type, vector in zip(values.get("dimension_types", (None,) * 3), v):
+    #             if None in vector and dim_type == Periodicity.PERIODIC.value:
+    #                 raise ValueError(
+    #                     f"Null entries in lattice vectors are only permitted when the corresponding dimension type is {Periodicity.APERIODIC.value}. "
+    #                     f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in values.get('dimension_types', []))}, lattice_vectors = {v}"
+    #                 )
+    #
+    #     return v
 
     @validator("lattice_vectors")
     def null_values_for_whole_vector(cls, v):

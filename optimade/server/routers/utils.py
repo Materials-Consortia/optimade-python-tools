@@ -1,13 +1,12 @@
 # pylint: disable=import-outside-toplevel,too-many-locals
 import re
-import sys
 import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union
-import warnings
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
+from bson.objectid import ObjectId
 
 from optimade import __api_version__
 from optimade.models import (
@@ -22,7 +21,6 @@ from optimade.server.config import CONFIG, SupportedResponseFormats
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.warnings import IncompatibleFrameStep
 from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
 from optimade.adapters.hdf5 import generate_hdf5_file_content
 
@@ -118,7 +116,7 @@ def handle_response_fields(
     if not isinstance(results, list):
         single_entry = True
         results = [results]
-    sum_entry_size = 0
+    #    sum_entry_size = 0
     continue_from_frame = getattr(params, "continue_from_frame", None)
     new_results = []
     traj_trunc = False
@@ -152,7 +150,9 @@ def handle_response_fields(
             last_frame = getattr(params, "last_frame", None)
             # Originaly we started counting the frames from 0, now we count from one so we subtract 1 from first_frame and later also from last frame, so the old code can be used
             first_frame = getattr(params, "first_frame") - 1
-            if last_frame is None or last_frame > new_entry["attributes"]["nframes"]:
+            if (
+                last_frame is None or last_frame > new_entry["attributes"]["nframes"]
+            ):  # In principple it is possible to retrieve multiple trajectories while the value of last_frame is set . Not all of these may have llast_frame frames. so we choose to lower the va;lue of last frame instead of throwing an error.
                 last_frame = new_entry["attributes"]["nframes"] - 1
             else:
                 last_frame = last_frame - 1
@@ -163,209 +163,76 @@ def handle_response_fields(
                 continue_from_frame = None
 
             if frame_step is None:
-                frame_step_set = False
+                # frame_step_set = False
                 frame_step = 1
-            else:
-                frame_step_set = True
+            # else:
+            # frame_step_set = True
 
             # We make a rough estimate of the amount of data expected.
-            sum_item_size = 0
-            for field_name in include_fields:
-                if field_name in new_entry["attributes"]["available_properties"].keys():
-                    if new_entry["attributes"]["available_properties"][field_name][
-                        "frame_serialization_format"
-                    ] in [
-                        "explicit",
-                        "explicit_custom_sparse",
-                        "explicit_regular_sparse",
-                    ]:
-                        if field_name in new_entry["attributes"]["reference_structure"]:
-                            item_size = sys.getsizeof(
-                                new_entry["attributes"]["reference_structure"][
-                                    field_name
-                                ]
-                            )
-                        else:
-                            item_size = (
-                                12
-                                * new_entry["attributes"]["reference_structure"][
-                                    "nsites"
-                                ]
-                            )  # make a conservative guess of the size of the item. # TODO add a field to the database entry specifying the average size of the item per frame.
-                        sum_item_size += item_size
-            data_size = sum_item_size * ((last_frame - first_frame + 1) // frame_step)
-            if (sum_entry_size + data_size) > data_limit:
-                data_left = data_limit - sum_entry_size
-                n_frames_to_read = max(
-                    data_left // sum_item_size, 1
-                )  # TODO take into account whether other trajectories have been returned previously if so this value may also be 0
-                traj_trunc = True
-                last_frame = first_frame + frame_step * (n_frames_to_read - 1)
-            sum_entry_size += sum_item_size * (
-                (last_frame - first_frame + 1) // frame_step
-            )
+            # sum_item_size = 0
+            # Todo add number of atoms*12 for sum_item_size and decide whether we want to split up response in small pieces.
 
-            for field in include_fields:
-                storage_method = getattr(
-                    getattr(one_doc.attributes, field, None), "_storage_method", None
+            # for field_name in include_fields:
+            #     if field_name in new_entry["attributes"]["available_properties"].keys():
+            #         if new_entry["attributes"]["available_properties"][field_name][
+            #             "frame_serialization_format"
+            #         ] in [
+            #             "explicit",
+            #             "explicit_custom_sparse",
+            #             "explicit_regular_sparse",
+            #         ]:
+            #             if field_name in new_entry["attributes"]["reference_structure"]:
+            #                 item_size = sys.getsizeof(
+            #                     new_entry["attributes"]["reference_structure"][
+            #                         field_name
+            #                     ]
+            #                 )
+            #             else:
+            #                 item_size = (
+            #                     12
+            #                     * new_entry["attributes"]["reference_structure"][
+            #                         "nsites"
+            #                     ]
+            #                 )  # make a conservative guess of the size of the item. # TODO add a field to the database entry specifying the average size of the item per frame.
+            #             sum_item_size += item_size
+            # data_size = sum_item_size * ((last_frame - first_frame + 1) // frame_step)
+            # if (sum_entry_size + data_size) > data_limit:
+            #     data_left = data_limit - sum_entry_size
+            #     n_frames_to_read = max(
+            #         data_left // sum_item_size, 1
+            #     )  # TODO take into account whether other trajectories have been returned previously if so this value may also be 0
+            #     traj_trunc = True
+            #     last_frame = first_frame + frame_step * (n_frames_to_read - 1)
+            # sum_entry_size += sum_item_size * (
+            #     (last_frame - first_frame + 1) // frame_step
+            # )
+
+            #
+            # # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step
+            # # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
+            #
+            #     path = getattr(one_doc.attributes, "_storage_path", None)
+            #     if path is None:
+            #         raise InternalServerError(
+            #             f"The property{field} is supposed to be stored in a file yet no filepath is specified in _storage_path."
+            #         )
+            if "cartesian_site_positions" in include_fields:
+                field = "cartesian_site_positions"
+                new_entry["attributes"][field] = {}
+                new_entry["attributes"][field]["first_frame"] = (
+                    first_frame + 1
+                )  # because OPTIMADE indexes from 1 we have to add 1 here
+                new_entry["attributes"][field]["frame_step"] = frame_step
+                new_entry["attributes"][field]["last_frame"] = last_frame + 1
+
+                new_entry["attributes"][field][
+                    "frame_serialization_format"
+                ] = "explicit"
+                values = get_values_from_file(
+                    field, "trajectory.bin", new_entry, "bioxl"
                 )
-                if storage_method is not None:
-                    frame_serialization_format = new_entry["attributes"][field][
-                        "frame_serialization_format"
-                    ]
-                    new_entry["attributes"][field]["first_frame"] = (
-                        first_frame + 1
-                    )  # because OPTIMADE indexes from 1 we have to add 1 here
-                    new_entry["attributes"][field]["frame_step"] = frame_step
-                    new_entry["attributes"][field]["last_frame"] = last_frame + 1
-
-                    # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step
-                    if storage_method == "mongo":
-                        if (
-                            frame_serialization_format == "constant"
-                            or frame_serialization_format == "linear"
-                        ):
-                            continue
-                        values = []
-                        if frame_serialization_format == "explicit":
-                            values = new_entry["attributes"][field]["values"][
-                                first_frame : last_frame + 1 : frame_step
-                            ]
-                        elif frame_serialization_format == "explicit_regular_sparse":
-                            step_size_sparse = new_entry["attributes"][field].get(
-                                "step_size_sparse"
-                            )
-                            offset = new_entry["attributes"][field].get(
-                                "offset_sparse", 0
-                            )
-
-                            if not frame_step_set:
-                                frame_step = step_size_sparse
-                                new_entry["attributes"][field][
-                                    "frame_step"
-                                ] = frame_step
-                                if first_frame % step_size_sparse != 0:
-                                    first_frame = (
-                                        first_frame
-                                        + step_size_sparse
-                                        - (first_frame % step_size_sparse)
-                                    )
-                                    new_entry["attributes"][field][
-                                        "first_frame"
-                                    ] = first_frame
-
-                            if (first_frame - offset) % step_size_sparse == 0:
-                                if frame_step % step_size_sparse == 0:
-                                    values = new_entry["attributes"][field]["values"][
-                                        (first_frame - offset)
-                                        // step_size_sparse : (
-                                            last_frame // step_size_sparse
-                                        )
-                                        + 1 : frame_step // step_size_sparse
-                                    ]
-                                else:
-                                    for frame in range(
-                                        first_frame, last_frame, frame_step
-                                    ):
-                                        if (frame - offset) % step_size_sparse == 0:
-                                            index = (frame - offset) // step_size_sparse
-                                            values.append(
-                                                new_entry["attributes"][field][
-                                                    "values"
-                                                ][index]
-                                            )
-                                        else:
-                                            values.append(None)
-                                    warnings.warn(
-                                        f"The frame_step value of {frame_step} is not a multiple of the step_size_sparse value of {step_size_sparse} for the field {field} in entry of entry {new_entry['id']}. As a result many of the returned values will be null.",
-                                        IncompatibleFrameStep,
-                                    )
-                            elif frame_step % step_size_sparse == 0:
-                                values = [None] * (
-                                    1 + (last_frame - first_frame) // frame_step
-                                )
-                                warnings.warn(
-                                    f"The difference between the value of first_frame {first_frame + 1} and offset_sparse {offset} is not a multiple of frame_step {frame_step} for the field {field} in entr of entry {new_entry['id']}. As a result all of the returned values will be null.",
-                                    IncompatibleFrameStep,
-                                )
-                            else:
-                                for frame in range(first_frame, last_frame, frame_step):
-                                    if (frame - offset) % step_size_sparse == 0:
-                                        index = (frame - offset) // step_size_sparse
-                                        values.append(
-                                            new_entry["attributes"][field]["values"][
-                                                index
-                                            ]
-                                        )
-                                    else:
-                                        values.append(None)
-                                warnings.warn(
-                                    f"The frame_step value of {frame_step} for entry of entry {new_entry['id']} is not a multiple of the step_size_sparse value of {step_size_sparse} for the field {field}. The difference between the value of first_frame {first_frame+1} and offset_sparse {offset} is not a multiple of frame_step {frame_step} for the field {field}. As a result many of the returned values will be null.",
-                                    IncompatibleFrameStep,
-                                )
-                            new_entry["attributes"][field]["last_frame"] = (
-                                first_frame + (len(values) - 1) * frame_step
-                            )
-                        elif frame_serialization_format == "explicit_custom_sparse":
-                            # TODO this algorithm does not seem very efficient in case frame_step has not been set. It should be possible to add a more efficient algorithm for this case.
-                            frames = new_entry["attributes"][field]["frames"]
-                            index = -1
-                            sparse_frame = -1
-                            null_value_added = False
-                            first_index = None
-                            last_included_index = 0
-                            for requested_frame in range(
-                                first_frame, last_frame + 1, frame_step
-                            ):
-                                found = False
-                                while sparse_frame <= requested_frame:
-                                    if sparse_frame == requested_frame:
-                                        found = True
-                                        break
-                                    index += 1
-                                    if index >= len(frames):
-                                        break
-                                    sparse_frame = frames[index]
-                                if found:
-                                    if first_index is None:
-                                        first_index = index
-                                    last_included_index = index
-                                    values.append(
-                                        new_entry["attributes"][field]["values"][index]
-                                    )
-                                else:
-                                    if frame_step_set:
-                                        null_value_added = True
-                                        values.append(None)
-                            if frame_step_set:
-                                new_entry["attributes"][field][
-                                    "frames"
-                                ] = list(  # TODO if framestep is specified it is not neccesary to also return the frames here.
-                                    range(first_frame, last_frame, frame_step)
-                                )
-                            else:
-                                new_entry["attributes"][field]["frames"] = frames[
-                                    first_index : last_included_index + 1
-                                ]
-                            if null_value_added:
-                                warnings.warn(
-                                    IncompatibleFrameStep(
-                                        f"For property {field} of entry {new_entry['id']} the frame_serialization_format is 'explicit_custom_sparse'. If the frame_step parameter has also been set, null values will be returned if there is no value for a frame."
-                                    )
-                                )
-                    # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
-                    else:
-                        path = getattr(one_doc.attributes, "_storage_path", None)
-                        if path is None:
-                            raise InternalServerError(
-                                f"The property{field} is supposed to be stored in a file yet no filepath is specified in _storage_path."
-                            )
-                        values = get_values_from_file(
-                            field, path, new_entry, storage_method
-                        )
-
-                    new_entry["attributes"][field]["values"] = values
-                    new_entry["attributes"][field]["nvalues"] = len(values)
+                new_entry["attributes"][field]["values"] = values
+                new_entry["attributes"][field]["nvalues"] = len(values)
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -382,55 +249,53 @@ def handle_response_fields(
 
 
 def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method: str):
-    from pathlib import Path
 
-    # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
-    if path[0] != "/":
-        path = Path(__file__).parent.parent / "data" / path
-    if new_entry["attributes"][field]["frame_serialization_format"] != "explicit":
+    if (
+        new_entry["attributes"]["available_properties"][field][
+            "frame_serialization_format"
+        ]
+        != "explicit"
+    ):
         raise InternalServerError(
             "Loading data from a file is not implemented yet for frame serialization methods other than 'explicit'."
         )  # TODO implement this for the other frame_serialization_methods
-
-    if storage_method == "hdf5":
-        return get_hdf5_value(field, path, new_entry)
-    elif storage_method == "binary":
-        values = get_binary_value(field, path, new_entry)
-        return values
-    elif (
-        storage_method == "gridfs"
-    ):  # TODO: This code for gridfs has not been tested yet
-        import gridfs
-
-        fs = gridfs.GridFS(CONFIG.mongo_database)
-        bytestream = fs.get(file_id=path)
-        return get_binary_value(field, bytestream, new_entry)
-    else:
-        raise InternalServerError(
-            f"Unknown value for the _storage_method field:{storage_method}"
-        )
-
-
-def get_hdf5_value(field: str, path: str, new_entry: Dict):
-    import h5py
-
     first_frame = new_entry["attributes"][field]["first_frame"] - 1
     last_frame = new_entry["attributes"][field]["last_frame"]
     frame_step = new_entry["attributes"][field]["frame_step"]
+    nsites = new_entry["attributes"]["reference_structure"]["nsites"]
+    # TODO Add support for a varying number of sites per frame.
+    if storage_method == "hdf5":
+        return get_hdf5_value(field, path, first_frame, last_frame, frame_step)
+    elif field == "cartesian_site_positions":
+        if storage_method == "bioxl":
+            return get_from_binary_gridfs(
+                new_entry["id"], path, first_frame, last_frame, frame_step, nsites
+            )
+        elif storage_method == "binary":
+            values = get_binary_value(path, first_frame, last_frame, frame_step, nsites)
+            return values
+    else:
+        raise InternalServerError(
+            f"Unable to retrieve data for the field {field} with _storage_method field:{storage_method}"
+        )
+
+
+def get_hdf5_value(
+    field: str, path: str, first_frame: int, last_frame: int, frame_step: int
+):
+    import h5py
+
     file = h5py.File(path, "r")
     return file[field]["values"][first_frame:last_frame:frame_step]
 
 
-def get_binary_value(field: str, path: str, new_entry: Dict):
+def get_binary_value(
+    path: str, first_frame: int, last_frame: int, frame_step: int, nsites: int
+):
     import numpy
 
     with open(path, "r") as binary_file:
-        first_frame = new_entry["attributes"][field]["first_frame"] - 1
-        last_frame = new_entry["attributes"][field]["last_frame"]
-        frame_step = new_entry["attributes"][field]["frame_step"]
-        nsites = new_entry["attributes"]["reference_structure"][
-            "nsites"
-        ]  # TODO Add support for a varying number of sites per frame.
+
         nframes_to_return = (last_frame - first_frame + 1) // frame_step
         if frame_step == 1:
             values = numpy.fromfile(
@@ -455,7 +320,48 @@ def get_binary_value(field: str, path: str, new_entry: Dict):
                         ),
                     ]
                 )
-    return values.reshape(nframes_to_return, nsites, 3)
+    return values.reshape((nframes_to_return, nsites, 3))
+
+
+def get_from_binary_gridfs(
+    id: Union[ObjectId, str],
+    filename: str,
+    first_frame: int,
+    last_frame: int,
+    frame_step: int,
+    nsites: int,
+):
+    import gridfs
+    import numpy
+    from optimade.server.entry_collections.mongo import (
+        CLIENT,
+    )  # Todo: Once there is a filles endpoint we should be able to use the files collection.
+
+    if isinstance(id, str):
+        id = ObjectId(id)
+    fs = gridfs.GridFS(CLIENT[CONFIG.mongo_database])
+    file = fs.find_one(
+        {"filename": filename, "metadata.project": id}
+    )  # Todo it may be more efficient to extract the file id from the project instead.
+    if file is None:
+        raise FileNotFoundError(
+            f"The file with {filename} and id: {id} was not found on the gridfs system in the {CONFIG.mongo_database} database."
+        )
+    # TODO Add support for a varying number of sites per frame.
+    frame_size = 12 * nsites
+    nframes = int(1 + ((last_frame - (first_frame + 1)) / frame_step))
+    if frame_step == 1:
+        file.seek(frame_size * first_frame, whence=0)
+        binary_data = file.read(frame_size * (last_frame - first_frame))
+    else:
+        binary_data = b""
+        start = first_frame * frame_size
+        for i in range(nframes):
+            file.seek(start)
+            binary_data += file.read(frame_size)
+            start += frame_size * frame_step
+
+    return numpy.frombuffer(binary_data, dtype="<f").reshape((nframes, nsites, 3))
 
 
 def get_included_relationships(

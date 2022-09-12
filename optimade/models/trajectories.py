@@ -158,30 +158,6 @@ class AvailablePropertyAttributes(BaseModel):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    lattice_vectors: Optional[AvailablePropertySubfields] = OptimadeField(
-        None,
-        description="""""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-    )
-    species: Optional[AvailablePropertySubfields] = OptimadeField(
-        None,
-        description="""""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-    )
-    dimension_types: Optional[AvailablePropertySubfields] = OptimadeField(
-        None,
-        description="""""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-    )
-    species_at_sites: Optional[AvailablePropertySubfields] = OptimadeField(
-        None,
-        description="""""",
-        support=SupportLevel.OPTIONAL,
-        queryable=SupportLevel.OPTIONAL,
-    )
 
     class Config:
         extra = "allow"
@@ -321,9 +297,9 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
     reference_frame: Optional[int] = OptimadeField(
         None,
         description="""The number of the frame at which the `reference_structure` was taken.
-  The first frame is frame 0.
+  The first frame is frame 1.
 - **Type**: integer
-- **Requirements/Conventions**: The value MUST be equal or larger than 0 and less than nframes.
+- **Requirements/Conventions**: The value MUST be equal or larger than 1 and less than nframes.
 
   - **Support**: MUST be supported if the `reference_structure`_ is taken from the trajectory.
     If the `reference_structure`_ is not in the trajectory, the value MUST NOT be present.
