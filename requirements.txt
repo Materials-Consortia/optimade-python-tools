@@ -1,6 +1,6 @@
 elasticsearch-dsl==7.4.0
 email_validator==1.2.1
-fastapi==0.82.0
+fastapi==0.83.0
 lark==1.1.2
 mongomock==4.1.2
 pydantic==1.10.2
