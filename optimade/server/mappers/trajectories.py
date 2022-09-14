@@ -44,13 +44,7 @@ class TrajectoryMapper(BaseResourceMapper):
             mapped_doc["attributes"]["reference_frame"] = mapped_doc["attributes"][
                 "nframes"
             ]  # Sometimes the trajectory starts with an unequilibrated structure so the last frame is more representative.
-        if "available_properties" not in mapped_doc["attributes"]:
-            mapped_doc["attributes"]["available_properties"] = {
-                "cartesian_site_positions": {
-                    "frame_serialization_format": "explicit",
-                    "nvalues": mapped_doc["attributes"]["nframes"],
-                }
-            }
+
         # get species from sites
         from optimade.server.entry_collections.mongo import CLIENT
         from optimade.server.routers.utils import get_from_binary_gridfs
@@ -109,4 +103,48 @@ class TrajectoryMapper(BaseResourceMapper):
             0
         ].tolist()  # TODO The conversion to a list here is redundant when the output format is hdf5. The pydantic model however does not seem to handle numpy arrays.
         mapped_doc["attributes"]["reference_structure"]["structure_features"] = []
+        mapped_doc["attributes"]["reference_structure"][
+            "_" + CONFIG.provider.prefix + "_residues_at_sites"
+        ] = topology["atom_residue_indices"]
+        residues = []
+        for i, name in enumerate(topology["residue_names"]):
+            number = topology["residue_numbers"][i]
+            if topology["residue_icodes"] is not None:
+                icode = topology["residue_icodes"][i]
+            else:
+                icode = None
+            residue = {"name": name, "number": number, "insertion_code": icode}
+            if topology["residue_chain_indices"] is not None:
+                residue["chain"] = topology["chain_names"][
+                    topology["residue_chain_indices"][i]
+                ]
+            residues.append(residue)
+        mapped_doc["attributes"]["reference_structure"][
+            "_" + CONFIG.provider.prefix + "_residues"
+        ] = residues
+
+        if "available_properties" not in mapped_doc["attributes"]:
+            mapped_doc["attributes"]["available_properties"] = {
+                "cartesian_site_positions": {
+                    "frame_serialization_format": "explicit",
+                    "nvalues": mapped_doc["attributes"]["nframes"],
+                }
+            }
+            mapped_doc["attributes"]["available_properties"]["lattice_vectors"] = {
+                "frame_serialization_format": "constant",
+                "nvalues": 1,
+            }
+            mapped_doc["attributes"]["available_properties"]["species"] = {
+                "frame_serialization_format": "constant",
+                "nvalues": 1,
+            }
+            mapped_doc["attributes"]["available_properties"]["dimension_types"] = {
+                "frame_serialization_format": "constant",
+                "nvalues": 1,
+            }
+            mapped_doc["attributes"]["available_properties"]["species_at_sites"] = {
+                "frame_serialization_format": "constant",
+                "nvalues": 1,
+            }
+
         return mapped_doc

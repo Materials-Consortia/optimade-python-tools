@@ -140,10 +140,6 @@ def handle_response_fields(
         else:
             new_results = [[]]
             break
-        # Add missing fields
-        for field in include_fields:
-            if field not in new_entry["attributes"]:
-                new_entry["attributes"][field] = None
         # TODO This function has become very large. It would be good to split it up.
         # TODO For now we only have trajectories with large properties but it would be nice if this could apply to other endpoints in the future as well.
         if new_entry["type"] == "trajectories":
@@ -216,23 +212,38 @@ def handle_response_fields(
             #         raise InternalServerError(
             #             f"The property{field} is supposed to be stored in a file yet no filepath is specified in _storage_path."
             #         )
-            if "cartesian_site_positions" in include_fields:
-                field = "cartesian_site_positions"
-                new_entry["attributes"][field] = {}
-                new_entry["attributes"][field]["first_frame"] = (
-                    first_frame + 1
-                )  # because OPTIMADE indexes from 1 we have to add 1 here
-                new_entry["attributes"][field]["frame_step"] = frame_step
-                new_entry["attributes"][field]["last_frame"] = last_frame + 1
+            for field in include_fields:
+                if field == "cartesian_site_positions":
+                    field = "cartesian_site_positions"
+                    new_entry["attributes"][field] = {}
+                    new_entry["attributes"][field]["first_frame"] = (
+                        first_frame + 1
+                    )  # because OPTIMADE indexes from 1 we have to add 1 here
+                    new_entry["attributes"][field]["frame_step"] = frame_step
+                    new_entry["attributes"][field]["last_frame"] = last_frame + 1
 
-                new_entry["attributes"][field][
-                    "frame_serialization_format"
-                ] = "explicit"
-                values = get_values_from_file(
-                    field, "trajectory.bin", new_entry, "bioxl"
-                )
-                new_entry["attributes"][field]["values"] = values
-                new_entry["attributes"][field]["nvalues"] = len(values)
+                    new_entry["attributes"][field][
+                        "frame_serialization_format"
+                    ] = "explicit"
+                    values = get_values_from_file(
+                        field, "trajectory.bin", new_entry, "bioxl"
+                    )
+                    new_entry["attributes"][field]["values"] = values
+                    new_entry["attributes"][field]["nvalues"] = len(values)
+                elif field in new_entry["attributes"]["available_properties"]:
+                    new_entry["attributes"][field] = {}
+                    new_entry["attributes"][field][
+                        "frame_serialization_format"
+                    ] = "constant"
+                    new_entry["attributes"][field]["values"] = new_entry["attributes"][
+                        "reference_structure"
+                    ][field]
+                    new_entry["attributes"][field]["nvalues"] = 1
+
+        # Add missing fields
+        for field in include_fields:
+            if field not in new_entry["attributes"]:
+                new_entry["attributes"][field] = None
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -552,7 +563,11 @@ def get_single_entry(
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
-    params.filter = f'id="{entry_id}"'
+    pattern = re.compile("^[0-9a-f]{24}$")
+    if pattern.match(entry_id):
+        params.filter = f'id="{entry_id}" OR _id="{entry_id}"'
+    else:
+        params.filter = f'id="{entry_id}"'
     (
         results,
         data_returned,
