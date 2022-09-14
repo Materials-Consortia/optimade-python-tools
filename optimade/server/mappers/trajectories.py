@@ -103,7 +103,7 @@ class TrajectoryMapper(BaseResourceMapper):
             0
         ].tolist()  # TODO The conversion to a list here is redundant when the output format is hdf5. The pydantic model however does not seem to handle numpy arrays.
         mapped_doc["attributes"]["reference_structure"]["structure_features"] = []
-        mapped_doc["attributes"]["reference_structure"][
+        mapped_doc["attributes"][
             "_" + CONFIG.provider.prefix + "_residues_at_sites"
         ] = topology["atom_residue_indices"]
         residues = []
@@ -113,15 +113,13 @@ class TrajectoryMapper(BaseResourceMapper):
                 icode = topology["residue_icodes"][i]
             else:
                 icode = None
-            residue = {"name": name, "number": number, "insertion_code": icode}
+            residue = {"name": name, "number": number, "icode": icode}
             if topology["residue_chain_indices"] is not None:
                 residue["chain"] = topology["chain_names"][
                     topology["residue_chain_indices"][i]
                 ]
             residues.append(residue)
-        mapped_doc["attributes"]["reference_structure"][
-            "_" + CONFIG.provider.prefix + "_residues"
-        ] = residues
+        mapped_doc["attributes"]["_" + CONFIG.provider.prefix + "_residues"] = residues
 
         if "available_properties" not in mapped_doc["attributes"]:
             mapped_doc["attributes"]["available_properties"] = {

@@ -2,7 +2,7 @@ from typing import Dict, Callable
 from optimade.models import (
     DataType,
     ErrorResponse,
-    StructureResource,
+    # StructureResource,
     TrajectoryResource,
     ReferenceResource,
 )
@@ -11,7 +11,7 @@ from optimade.server.exceptions import POSSIBLE_ERRORS
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
 ENTRY_INFO_SCHEMAS: Dict[str, Callable[[None], Dict]] = {
-    "structures": StructureResource.schema,
+    # "structures": StructureResource.schema,
     "references": ReferenceResource.schema,
     "trajectories": TrajectoryResource.schema,
 }

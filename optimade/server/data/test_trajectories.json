@@ -95904,7 +95904,7 @@
         {
           "name": "ASN",
           "number": 1,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             0,
             1,
@@ -95927,7 +95927,7 @@
         {
           "name": "LEU",
           "number": 2,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             16,
             17,
@@ -95953,7 +95953,7 @@
         {
           "name": "CYX",
           "number": 3,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             35,
             36,
@@ -95970,7 +95970,7 @@
         {
           "name": "PRO",
           "number": 4,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             45,
             46,
@@ -95991,7 +95991,7 @@
         {
           "name": "PHE",
           "number": 5,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             59,
             60,
@@ -96018,7 +96018,7 @@
         {
           "name": "GLY",
           "number": 6,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             79,
             80,
@@ -96032,7 +96032,7 @@
         {
           "name": "GLU",
           "number": 7,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             86,
             87,
@@ -96054,7 +96054,7 @@
         {
           "name": "VAL",
           "number": 8,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             101,
             102,
@@ -96077,7 +96077,7 @@
         {
           "name": "PHE",
           "number": 9,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             117,
             118,
@@ -96104,7 +96104,7 @@
         {
           "name": "ASN",
           "number": 10,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             137,
             138,
@@ -96125,7 +96125,7 @@
         {
           "name": "ALA",
           "number": 11,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             151,
             152,
@@ -96142,7 +96142,7 @@
         {
           "name": "THR",
           "number": 12,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             161,
             162,
@@ -96163,7 +96163,7 @@
         {
           "name": "THR",
           "number": 13,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             175,
             176,
@@ -96184,7 +96184,7 @@
         {
           "name": "PHE",
           "number": 14,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             189,
             190,
@@ -96211,7 +96211,7 @@
         {
           "name": "ALA",
           "number": 15,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             209,
             210,
@@ -96228,7 +96228,7 @@
         {
           "name": "SER",
           "number": 16,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             219,
             220,
@@ -96246,7 +96246,7 @@
         {
           "name": "VAL",
           "number": 17,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             230,
             231,
@@ -96269,7 +96269,7 @@
         {
           "name": "TYR",
           "number": 18,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             246,
             247,
@@ -96297,7 +96297,7 @@
         {
           "name": "ALA",
           "number": 19,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             267,
             268,
@@ -96314,7 +96314,7 @@
         {
           "name": "TRP",
           "number": 20,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             277,
             278,
@@ -96345,7 +96345,7 @@
         {
           "name": "ASN",
           "number": 21,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             301,
             302,
@@ -96366,7 +96366,7 @@
         {
           "name": "ARG",
           "number": 22,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             315,
             316,
@@ -96397,7 +96397,7 @@
         {
           "name": "LYS",
           "number": 23,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             339,
             340,
@@ -96426,7 +96426,7 @@
         {
           "name": "ARG",
           "number": 24,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             361,
             362,
@@ -96457,7 +96457,7 @@
         {
           "name": "ILE",
           "number": 25,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             385,
             386,
@@ -96483,7 +96483,7 @@
         {
           "name": "SER",
           "number": 26,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             404,
             405,
@@ -96501,7 +96501,7 @@
         {
           "name": "ASN",
           "number": 27,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             415,
             416,
@@ -96522,7 +96522,7 @@
         {
           "name": "CYX",
           "number": 28,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             429,
             430,
@@ -96539,7 +96539,7 @@
         {
           "name": "VAL",
           "number": 29,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             439,
             440,
@@ -96562,7 +96562,7 @@
         {
           "name": "ALA",
           "number": 30,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             455,
             456,
@@ -96579,7 +96579,7 @@
         {
           "name": "ASP",
           "number": 31,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             465,
             466,
@@ -96598,7 +96598,7 @@
         {
           "name": "TYR",
           "number": 32,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             477,
             478,
@@ -96626,7 +96626,7 @@
         {
           "name": "SER",
           "number": 33,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             498,
             499,
@@ -96644,7 +96644,7 @@
         {
           "name": "VAL",
           "number": 34,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             509,
             510,
@@ -96667,7 +96667,7 @@
         {
           "name": "LEU",
           "number": 35,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             525,
             526,
@@ -96693,7 +96693,7 @@
         {
           "name": "TYR",
           "number": 36,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             544,
             545,
@@ -96721,7 +96721,7 @@
         {
           "name": "ASN",
           "number": 37,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             565,
             566,
@@ -96742,7 +96742,7 @@
         {
           "name": "SER",
           "number": 38,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             579,
             580,
@@ -96760,7 +96760,7 @@
         {
           "name": "THR",
           "number": 39,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             590,
             591,
@@ -96781,7 +96781,7 @@
         {
           "name": "SER",
           "number": 40,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             604,
             605,
@@ -96799,7 +96799,7 @@
         {
           "name": "PHE",
           "number": 41,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             615,
             616,
@@ -96826,7 +96826,7 @@
         {
           "name": "SER",
           "number": 42,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             635,
             636,
@@ -96844,7 +96844,7 @@
         {
           "name": "THR",
           "number": 43,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             646,
             647,
@@ -96865,7 +96865,7 @@
         {
           "name": "PHE",
           "number": 44,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             660,
             661,
@@ -96892,7 +96892,7 @@
         {
           "name": "LYS",
           "number": 45,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             680,
             681,
@@ -96921,7 +96921,7 @@
         {
           "name": "CYX",
           "number": 46,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             702,
             703,
@@ -96938,7 +96938,7 @@
         {
           "name": "TYR",
           "number": 47,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             712,
             713,
@@ -96966,7 +96966,7 @@
         {
           "name": "GLY",
           "number": 48,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             733,
             734,
@@ -96980,7 +96980,7 @@
         {
           "name": "VAL",
           "number": 49,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             740,
             741,
@@ -97003,7 +97003,7 @@
         {
           "name": "SER",
           "number": 50,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             756,
             757,
@@ -97021,7 +97021,7 @@
         {
           "name": "PRO",
           "number": 51,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             767,
             768,
@@ -97042,7 +97042,7 @@
         {
           "name": "THR",
           "number": 52,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             781,
             782,
@@ -97063,7 +97063,7 @@
         {
           "name": "LYS",
           "number": 53,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             795,
             796,
@@ -97092,7 +97092,7 @@
         {
           "name": "LEU",
           "number": 54,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             817,
             818,
@@ -97118,7 +97118,7 @@
         {
           "name": "ASN",
           "number": 55,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             836,
             837,
@@ -97139,7 +97139,7 @@
         {
           "name": "ASP",
           "number": 56,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             850,
             851,
@@ -97158,7 +97158,7 @@
         {
           "name": "LEU",
           "number": 57,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             862,
             863,
@@ -97184,7 +97184,7 @@
         {
           "name": "CYX",
           "number": 58,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             881,
             882,
@@ -97201,7 +97201,7 @@
         {
           "name": "PHE",
           "number": 59,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             891,
             892,
@@ -97228,7 +97228,7 @@
         {
           "name": "THR",
           "number": 60,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             911,
             912,
@@ -97249,7 +97249,7 @@
         {
           "name": "ASN",
           "number": 61,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             925,
             926,
@@ -97270,7 +97270,7 @@
         {
           "name": "VAL",
           "number": 62,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             939,
             940,
@@ -97293,7 +97293,7 @@
         {
           "name": "TYR",
           "number": 63,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             955,
             956,
@@ -97321,7 +97321,7 @@
         {
           "name": "ALA",
           "number": 64,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             976,
             977,
@@ -97338,7 +97338,7 @@
         {
           "name": "ASP",
           "number": 65,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             986,
             987,
@@ -97357,7 +97357,7 @@
         {
           "name": "SER",
           "number": 66,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             998,
             999,
@@ -97375,7 +97375,7 @@
         {
           "name": "PHE",
           "number": 67,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1009,
             1010,
@@ -97402,7 +97402,7 @@
         {
           "name": "VAL",
           "number": 68,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1029,
             1030,
@@ -97425,7 +97425,7 @@
         {
           "name": "ILE",
           "number": 69,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1045,
             1046,
@@ -97451,7 +97451,7 @@
         {
           "name": "THR",
           "number": 70,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1064,
             1065,
@@ -97472,7 +97472,7 @@
         {
           "name": "GLY",
           "number": 71,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1078,
             1079,
@@ -97486,7 +97486,7 @@
         {
           "name": "ASP",
           "number": 72,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1085,
             1086,
@@ -97505,7 +97505,7 @@
         {
           "name": "GLU",
           "number": 73,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1097,
             1098,
@@ -97527,7 +97527,7 @@
         {
           "name": "VAL",
           "number": 74,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1112,
             1113,
@@ -97550,7 +97550,7 @@
         {
           "name": "ARG",
           "number": 75,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1128,
             1129,
@@ -97581,7 +97581,7 @@
         {
           "name": "GLN",
           "number": 76,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1152,
             1153,
@@ -97605,7 +97605,7 @@
         {
           "name": "ILE",
           "number": 77,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1169,
             1170,
@@ -97631,7 +97631,7 @@
         {
           "name": "ALA",
           "number": 78,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1188,
             1189,
@@ -97648,7 +97648,7 @@
         {
           "name": "PRO",
           "number": 79,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1198,
             1199,
@@ -97669,7 +97669,7 @@
         {
           "name": "GLY",
           "number": 80,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1212,
             1213,
@@ -97683,7 +97683,7 @@
         {
           "name": "GLN",
           "number": 81,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1219,
             1220,
@@ -97707,7 +97707,7 @@
         {
           "name": "THR",
           "number": 82,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1236,
             1237,
@@ -97728,7 +97728,7 @@
         {
           "name": "GLY",
           "number": 83,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1250,
             1251,
@@ -97742,7 +97742,7 @@
         {
           "name": "LYS",
           "number": 84,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1257,
             1258,
@@ -97771,7 +97771,7 @@
         {
           "name": "ILE",
           "number": 85,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1279,
             1280,
@@ -97797,7 +97797,7 @@
         {
           "name": "ALA",
           "number": 86,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1298,
             1299,
@@ -97814,7 +97814,7 @@
         {
           "name": "ASP",
           "number": 87,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1308,
             1309,
@@ -97833,7 +97833,7 @@
         {
           "name": "TYR",
           "number": 88,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1320,
             1321,
@@ -97861,7 +97861,7 @@
         {
           "name": "ASN",
           "number": 89,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1341,
             1342,
@@ -97882,7 +97882,7 @@
         {
           "name": "TYR",
           "number": 90,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1355,
             1356,
@@ -97910,7 +97910,7 @@
         {
           "name": "LYS",
           "number": 91,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1376,
             1377,
@@ -97939,7 +97939,7 @@
         {
           "name": "LEU",
           "number": 92,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1398,
             1399,
@@ -97965,7 +97965,7 @@
         {
           "name": "PRO",
           "number": 93,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1417,
             1418,
@@ -97986,7 +97986,7 @@
         {
           "name": "ASP",
           "number": 94,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1431,
             1432,
@@ -98005,7 +98005,7 @@
         {
           "name": "ASP",
           "number": 95,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1443,
             1444,
@@ -98024,7 +98024,7 @@
         {
           "name": "PHE",
           "number": 96,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1455,
             1456,
@@ -98051,7 +98051,7 @@
         {
           "name": "THR",
           "number": 97,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1475,
             1476,
@@ -98072,7 +98072,7 @@
         {
           "name": "GLY",
           "number": 98,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1489,
             1490,
@@ -98086,7 +98086,7 @@
         {
           "name": "CYX",
           "number": 99,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1496,
             1497,
@@ -98103,7 +98103,7 @@
         {
           "name": "VAL",
           "number": 100,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1506,
             1507,
@@ -98126,7 +98126,7 @@
         {
           "name": "ILE",
           "number": 101,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1522,
             1523,
@@ -98152,7 +98152,7 @@
         {
           "name": "ALA",
           "number": 102,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1541,
             1542,
@@ -98169,7 +98169,7 @@
         {
           "name": "TRP",
           "number": 103,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1551,
             1552,
@@ -98200,7 +98200,7 @@
         {
           "name": "ASN",
           "number": 104,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1575,
             1576,
@@ -98221,7 +98221,7 @@
         {
           "name": "SER",
           "number": 105,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1589,
             1590,
@@ -98239,7 +98239,7 @@
         {
           "name": "LYS",
           "number": 106,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1600,
             1601,
@@ -98268,7 +98268,7 @@
         {
           "name": "HIE",
           "number": 107,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1622,
             1623,
@@ -98292,7 +98292,7 @@
         {
           "name": "ILE",
           "number": 108,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1639,
             1640,
@@ -98318,7 +98318,7 @@
         {
           "name": "ASP",
           "number": 109,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1658,
             1659,
@@ -98337,7 +98337,7 @@
         {
           "name": "ALA",
           "number": 110,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1670,
             1671,
@@ -98354,7 +98354,7 @@
         {
           "name": "LYS",
           "number": 111,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1680,
             1681,
@@ -98383,7 +98383,7 @@
         {
           "name": "GLU",
           "number": 112,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1702,
             1703,
@@ -98405,7 +98405,7 @@
         {
           "name": "GLY",
           "number": 113,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1717,
             1718,
@@ -98419,7 +98419,7 @@
         {
           "name": "GLY",
           "number": 114,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1724,
             1725,
@@ -98433,7 +98433,7 @@
         {
           "name": "ASN",
           "number": 115,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1731,
             1732,
@@ -98454,7 +98454,7 @@
         {
           "name": "PHE",
           "number": 116,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1745,
             1746,
@@ -98481,7 +98481,7 @@
         {
           "name": "ASN",
           "number": 117,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1765,
             1766,
@@ -98502,7 +98502,7 @@
         {
           "name": "TYR",
           "number": 118,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1779,
             1780,
@@ -98530,7 +98530,7 @@
         {
           "name": "LEU",
           "number": 119,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1800,
             1801,
@@ -98556,7 +98556,7 @@
         {
           "name": "TYR",
           "number": 120,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1819,
             1820,
@@ -98584,7 +98584,7 @@
         {
           "name": "ARG",
           "number": 121,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1840,
             1841,
@@ -98615,7 +98615,7 @@
         {
           "name": "LEU",
           "number": 122,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1864,
             1865,
@@ -98641,7 +98641,7 @@
         {
           "name": "PHE",
           "number": 123,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1883,
             1884,
@@ -98668,7 +98668,7 @@
         {
           "name": "ARG",
           "number": 124,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1903,
             1904,
@@ -98699,7 +98699,7 @@
         {
           "name": "LYS",
           "number": 125,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1927,
             1928,
@@ -98728,7 +98728,7 @@
         {
           "name": "ALA",
           "number": 126,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1949,
             1950,
@@ -98745,7 +98745,7 @@
         {
           "name": "ASN",
           "number": 127,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1959,
             1960,
@@ -98766,7 +98766,7 @@
         {
           "name": "LEU",
           "number": 128,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1973,
             1974,
@@ -98792,7 +98792,7 @@
         {
           "name": "LYS",
           "number": 129,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             1992,
             1993,
@@ -98821,7 +98821,7 @@
         {
           "name": "PRO",
           "number": 130,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2014,
             2015,
@@ -98842,7 +98842,7 @@
         {
           "name": "PHE",
           "number": 131,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2028,
             2029,
@@ -98869,7 +98869,7 @@
         {
           "name": "GLU",
           "number": 132,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2048,
             2049,
@@ -98891,7 +98891,7 @@
         {
           "name": "ARG",
           "number": 133,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2063,
             2064,
@@ -98922,7 +98922,7 @@
         {
           "name": "ASP",
           "number": 134,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2087,
             2088,
@@ -98941,7 +98941,7 @@
         {
           "name": "ILE",
           "number": 135,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2099,
             2100,
@@ -98967,7 +98967,7 @@
         {
           "name": "SER",
           "number": 136,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2118,
             2119,
@@ -98985,7 +98985,7 @@
         {
           "name": "THR",
           "number": 137,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2129,
             2130,
@@ -99006,7 +99006,7 @@
         {
           "name": "GLU",
           "number": 138,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2143,
             2144,
@@ -99028,7 +99028,7 @@
         {
           "name": "ILE",
           "number": 139,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2158,
             2159,
@@ -99054,7 +99054,7 @@
         {
           "name": "TYR",
           "number": 140,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2177,
             2178,
@@ -99082,7 +99082,7 @@
         {
           "name": "GLN",
           "number": 141,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2198,
             2199,
@@ -99106,7 +99106,7 @@
         {
           "name": "ALA",
           "number": 142,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2215,
             2216,
@@ -99123,7 +99123,7 @@
         {
           "name": "GLY",
           "number": 143,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2225,
             2226,
@@ -99137,7 +99137,7 @@
         {
           "name": "SER",
           "number": 144,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2232,
             2233,
@@ -99155,7 +99155,7 @@
         {
           "name": "LYS",
           "number": 145,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2243,
             2244,
@@ -99184,7 +99184,7 @@
         {
           "name": "PRO",
           "number": 146,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2265,
             2266,
@@ -99205,7 +99205,7 @@
         {
           "name": "CYX",
           "number": 147,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2279,
             2280,
@@ -99222,7 +99222,7 @@
         {
           "name": "ASN",
           "number": 148,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2289,
             2290,
@@ -99243,7 +99243,7 @@
         {
           "name": "GLY",
           "number": 149,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2303,
             2304,
@@ -99257,7 +99257,7 @@
         {
           "name": "GLN",
           "number": 150,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2310,
             2311,
@@ -99281,7 +99281,7 @@
         {
           "name": "THR",
           "number": 151,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2327,
             2328,
@@ -99302,7 +99302,7 @@
         {
           "name": "GLY",
           "number": 152,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2341,
             2342,
@@ -99316,7 +99316,7 @@
         {
           "name": "LEU",
           "number": 153,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2348,
             2349,
@@ -99342,7 +99342,7 @@
         {
           "name": "ASN",
           "number": 154,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2367,
             2368,
@@ -99363,7 +99363,7 @@
         {
           "name": "CYX",
           "number": 155,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2381,
             2382,
@@ -99380,7 +99380,7 @@
         {
           "name": "TYR",
           "number": 156,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2391,
             2392,
@@ -99408,7 +99408,7 @@
         {
           "name": "TYR",
           "number": 157,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2412,
             2413,
@@ -99436,7 +99436,7 @@
         {
           "name": "PRO",
           "number": 158,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2433,
             2434,
@@ -99457,7 +99457,7 @@
         {
           "name": "LEU",
           "number": 159,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2447,
             2448,
@@ -99483,7 +99483,7 @@
         {
           "name": "TYR",
           "number": 160,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2466,
             2467,
@@ -99511,7 +99511,7 @@
         {
           "name": "ARG",
           "number": 161,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2487,
             2488,
@@ -99542,7 +99542,7 @@
         {
           "name": "TYR",
           "number": 162,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2511,
             2512,
@@ -99570,7 +99570,7 @@
         {
           "name": "GLY",
           "number": 163,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2532,
             2533,
@@ -99584,7 +99584,7 @@
         {
           "name": "PHE",
           "number": 164,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2539,
             2540,
@@ -99611,7 +99611,7 @@
         {
           "name": "TYR",
           "number": 165,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2559,
             2560,
@@ -99639,7 +99639,7 @@
         {
           "name": "PRO",
           "number": 166,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2580,
             2581,
@@ -99660,7 +99660,7 @@
         {
           "name": "THR",
           "number": 167,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2594,
             2595,
@@ -99681,7 +99681,7 @@
         {
           "name": "ASP",
           "number": 168,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2608,
             2609,
@@ -99700,7 +99700,7 @@
         {
           "name": "GLY",
           "number": 169,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2620,
             2621,
@@ -99714,7 +99714,7 @@
         {
           "name": "VAL",
           "number": 170,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2627,
             2628,
@@ -99737,7 +99737,7 @@
         {
           "name": "GLY",
           "number": 171,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2643,
             2644,
@@ -99751,7 +99751,7 @@
         {
           "name": "HIE",
           "number": 172,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2650,
             2651,
@@ -99775,7 +99775,7 @@
         {
           "name": "GLN",
           "number": 173,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2667,
             2668,
@@ -99799,7 +99799,7 @@
         {
           "name": "PRO",
           "number": 174,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2684,
             2685,
@@ -99820,7 +99820,7 @@
         {
           "name": "TYR",
           "number": 175,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2698,
             2699,
@@ -99848,7 +99848,7 @@
         {
           "name": "ARG",
           "number": 176,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2719,
             2720,
@@ -99879,7 +99879,7 @@
         {
           "name": "VAL",
           "number": 177,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2743,
             2744,
@@ -99902,7 +99902,7 @@
         {
           "name": "VAL",
           "number": 178,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2759,
             2760,
@@ -99925,7 +99925,7 @@
         {
           "name": "VAL",
           "number": 179,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2775,
             2776,
@@ -99948,7 +99948,7 @@
         {
           "name": "LEU",
           "number": 180,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2791,
             2792,
@@ -99974,7 +99974,7 @@
         {
           "name": "SER",
           "number": 181,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2810,
             2811,
@@ -99992,7 +99992,7 @@
         {
           "name": "PHE",
           "number": 182,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2821,
             2822,
@@ -100019,7 +100019,7 @@
         {
           "name": "GLU",
           "number": 183,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2841,
             2842,
@@ -100041,7 +100041,7 @@
         {
           "name": "LEU",
           "number": 184,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2856,
             2857,
@@ -100067,7 +100067,7 @@
         {
           "name": "LEU",
           "number": 185,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2875,
             2876,
@@ -100093,7 +100093,7 @@
         {
           "name": "ASN",
           "number": 186,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2894,
             2895,
@@ -100114,7 +100114,7 @@
         {
           "name": "ALA",
           "number": 187,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2908,
             2909,
@@ -100131,7 +100131,7 @@
         {
           "name": "PRO",
           "number": 188,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2918,
             2919,
@@ -100152,7 +100152,7 @@
         {
           "name": "ALA",
           "number": 189,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2932,
             2933,
@@ -100169,7 +100169,7 @@
         {
           "name": "THR",
           "number": 190,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2942,
             2943,
@@ -100190,7 +100190,7 @@
         {
           "name": "VAL",
           "number": 191,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2956,
             2957,
@@ -100213,7 +100213,7 @@
         {
           "name": "CYX",
           "number": 192,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2972,
             2973,
@@ -100230,7 +100230,7 @@
         {
           "name": "GLY",
           "number": 193,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2982,
             2983,
@@ -100244,7 +100244,7 @@
         {
           "name": "PRO",
           "number": 194,
-          "insertion_code": null,
+          "icode": null,
           "sites": [
             2989,
             2990,
