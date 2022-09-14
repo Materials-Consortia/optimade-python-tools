@@ -1,6 +1,16 @@
 def test_trajectories(
     check_response,
-):  # TODO check whether there is a better place to put these tests
+):
+    # TODO check whether there is a better place to put these tests
+    expected_ids = [
+        "6315fccf020663a5df695091",
+        "6315f867d017d7a2190865a9",
+        "6315e1cb84a0e586b3374284",
+    ]
+
+    request = "/trajectories/6315e1cb84a0e586b3374284"  # ?response_fields=cartesian_site_positions,species&first_frame=1&last_frame=2"
+    check_response(request, expected_ids)
+
     expected_ids = [
         "622a07fa8544a62c55ef087a",
         "622a29c4087ac20730106f33",
