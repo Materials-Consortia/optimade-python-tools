@@ -7,7 +7,7 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.
 import copy
 import warnings
 import itertools
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Union
 from lark import v_args, Token
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
 from optimade.server.exceptions import BadRequest
@@ -593,14 +593,14 @@ class MongoTransformer(BaseTransformer):
         )
 
 
-def recursive_postprocessing(filter_, condition, replacement):
+def recursive_postprocessing(filter_: Union[Dict, List], condition, replacement):
     """Recursively descend into the query, checking each dictionary
     (contained in a list, or as an entry in another dictionary) for
     the condition passed. If the condition is true, apply the
     replacement to the dictionary.
 
     Parameters:
-        filter_ (list/dict): the filter_ to process.
+        filter_ : the filter_ to process.
         condition (callable): a function that returns True if the
             replacement function should be applied. It should take
             as arguments the property and expression from the filter_,

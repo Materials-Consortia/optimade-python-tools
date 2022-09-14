@@ -24,6 +24,7 @@ from optimade.models import StructureResource as OptimadeStructure
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
     fractional_coordinates,
+    valid_lattice_vector,
 )
 
 try:
@@ -70,7 +71,7 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
 
     # Do this only if there's three non-zero lattice vectors
     # NOTE: This also negates handling of lattice_vectors with null/None values
-    if all(attributes.dimension_types):
+    if valid_lattice_vector(attributes.lattice_vectors):
         a_vector, b_vector, c_vector, alpha, beta, gamma = cell_to_cellpar(
             attributes.lattice_vectors
         )

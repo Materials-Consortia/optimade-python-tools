@@ -1,11 +1,48 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.19.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.3) (2022-09-06)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.2...v0.19.3)
 
-This minor release includes several usability improvements for the server and client arising from the OPTIMADE workshop.
-This release also drops support for Python 3.7, which should allow us to streamline our dependencies going forward.
+**Implemented enhancements:**
+
+- Set correct `meta->schema` value automatically [\#1323](https://github.com/Materials-Consortia/optimade-python-tools/pull/1323) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Pin requirements in CD release workflows [\#1324](https://github.com/Materials-Consortia/optimade-python-tools/pull/1324) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.19.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.2) (2022-09-05)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.1...v0.19.2)
+
+**Fixed bugs:**
+
+- Wrong fractional particle positions in test [\#1232](https://github.com/Materials-Consortia/optimade-python-tools/issues/1232)
+- Bugfix validator so next links are followed the correct number of times [\#1318](https://github.com/Materials-Consortia/optimade-python-tools/pull/1318) ([JPBergsma](https://github.com/JPBergsma))
+- Remove incorrect default value for `page_number` query parameter [\#1303](https://github.com/Materials-Consortia/optimade-python-tools/pull/1303) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- If nperiodic\_dimensions=2 the structure adapter can only properly convert it to ase [\#1212](https://github.com/Materials-Consortia/optimade-python-tools/issues/1212)
+
+**Merged pull requests:**
+
+- Use proper type hint for griffe 0.22 compatibility [\#1313](https://github.com/Materials-Consortia/optimade-python-tools/pull/1313) ([JPBergsma](https://github.com/JPBergsma))
+- Adapters now also return lattice information for structures that are periodic in 1 or 2 dimensions. [\#1233](https://github.com/Materials-Consortia/optimade-python-tools/pull/1233) ([JPBergsma](https://github.com/JPBergsma))
+
+## [v0.19.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.1) (2022-08-12)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.0...v0.19.1)
+
+**Implemented enhancements:**
+
+- Add `from_pymatgen` structure adapter method and concept of ingesters [\#1296](https://github.com/Materials-Consortia/optimade-python-tools/pull/1296) ([ml-evs](https://github.com/ml-evs))
+- Add `lru_cache` to many mapper properties [\#1245](https://github.com/Materials-Consortia/optimade-python-tools/pull/1245) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Use animated SVG logo for optimade-python-tools landing page [\#1297](https://github.com/Materials-Consortia/optimade-python-tools/pull/1297) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.19.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.0) (2022-07-18)
 
