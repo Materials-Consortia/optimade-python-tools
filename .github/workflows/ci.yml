@@ -241,7 +241,7 @@ jobs:
         OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
 
     - name: Run the OPTIMADE Client CLI
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.10
       run: |
         coverage run --append --source optimade optimade/client/cli.py \
            --filter 'nsites = 1' \
@@ -331,7 +331,9 @@ jobs:
         pip install --upgrade setuptools requests
 
     - name: Install package
-      run: pip install -U -e .[all]
+      run: |
+          pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
+          pip install -e .[all]
 
     - name: Build source distribution
       run: python ./setup.py sdist
