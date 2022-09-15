@@ -583,7 +583,7 @@ def get_entries(
                 content=generate_hdf5_file_content(response_object),
                 media_type="application/x-hdf5",
                 headers={
-                    "Content-disposition": f"attachment; filename={collection.collection.name}.hdf5"
+                    "Content-disposition": f"attachment; filename={results[0]['type']}.hdf5"
                 },
             )
     else:
