@@ -1,5 +1,6 @@
 # pylint: disable=import-outside-toplevel,too-many-locals
 import re
+import sys
 import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Set, Union
@@ -116,7 +117,7 @@ def handle_response_fields(
     if not isinstance(results, list):
         single_entry = True
         results = [results]
-    #    sum_entry_size = 0
+    sum_entry_size = 0
     continue_from_frame = getattr(params, "continue_from_frame", None)
     new_results = []
     traj_trunc = False
@@ -165,43 +166,43 @@ def handle_response_fields(
             # frame_step_set = True
 
             # We make a rough estimate of the amount of data expected.
-            # sum_item_size = 0
+            sum_item_size = 0
             # Todo add number of atoms*12 for sum_item_size and decide whether we want to split up response in small pieces.
 
-            # for field_name in include_fields:
-            #     if field_name in new_entry["attributes"]["available_properties"].keys():
-            #         if new_entry["attributes"]["available_properties"][field_name][
-            #             "frame_serialization_format"
-            #         ] in [
-            #             "explicit",
-            #             "explicit_custom_sparse",
-            #             "explicit_regular_sparse",
-            #         ]:
-            #             if field_name in new_entry["attributes"]["reference_structure"]:
-            #                 item_size = sys.getsizeof(
-            #                     new_entry["attributes"]["reference_structure"][
-            #                         field_name
-            #                     ]
-            #                 )
-            #             else:
-            #                 item_size = (
-            #                     12
-            #                     * new_entry["attributes"]["reference_structure"][
-            #                         "nsites"
-            #                     ]
-            #                 )  # make a conservative guess of the size of the item. # TODO add a field to the database entry specifying the average size of the item per frame.
-            #             sum_item_size += item_size
-            # data_size = sum_item_size * ((last_frame - first_frame + 1) // frame_step)
-            # if (sum_entry_size + data_size) > data_limit:
-            #     data_left = data_limit - sum_entry_size
-            #     n_frames_to_read = max(
-            #         data_left // sum_item_size, 1
-            #     )  # TODO take into account whether other trajectories have been returned previously if so this value may also be 0
-            #     traj_trunc = True
-            #     last_frame = first_frame + frame_step * (n_frames_to_read - 1)
-            # sum_entry_size += sum_item_size * (
-            #     (last_frame - first_frame + 1) // frame_step
-            # )
+            for field_name in include_fields:
+                if field_name in new_entry["attributes"]["available_properties"].keys():
+                    if new_entry["attributes"]["available_properties"][field_name][
+                        "frame_serialization_format"
+                    ] in [
+                        "explicit",
+                        "explicit_custom_sparse",
+                        "explicit_regular_sparse",
+                    ]:
+                        if field_name in new_entry["attributes"]["reference_structure"]:
+                            item_size = sys.getsizeof(
+                                new_entry["attributes"]["reference_structure"][
+                                    field_name
+                                ]
+                            )
+                        else:
+                            item_size = (
+                                12
+                                * new_entry["attributes"]["reference_structure"][
+                                    "nsites"
+                                ]
+                            )  # make a conservative guess of the size of the item. # TODO add a field to the database entry specifying the average size of the item per frame.
+                        sum_item_size += item_size
+            data_size = sum_item_size * ((last_frame - first_frame + 1) // frame_step)
+            if (sum_entry_size + data_size) > data_limit:
+                data_left = data_limit - sum_entry_size
+                n_frames_to_read = max(
+                    data_left // sum_item_size, 1
+                )  # TODO take into account whether other trajectories have been returned previously if so this value may also be 0
+                traj_trunc = True
+                last_frame = first_frame + frame_step * (n_frames_to_read - 1)
+            sum_entry_size += sum_item_size * (
+                (last_frame - first_frame + 1) // frame_step
+            )
 
             #
             # # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step

@@ -436,7 +436,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
         queryable=SupportLevel.OPTIONAL,
     )
 
-    nsites: Optional[int] = OptimadeField(
+    nsites: int = OptimadeField(
         ...,
         description="""An integer specifying the length of the `cartesian_site_positions` property.
 
