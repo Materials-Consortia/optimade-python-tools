@@ -2,7 +2,7 @@
 import re
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
@@ -60,7 +60,7 @@ def meta_values(
     data_returned: int,
     data_available: int,
     more_data_available: bool,
-    schema: str,
+    schema: Optional[str] = None,
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
@@ -74,6 +74,9 @@ def meta_values(
         url_path = re.sub(r"/v[0-9]+(\.[0-9]+){,2}/", "/", url.path)
     else:
         url_path = url.path
+
+    if schema is None:
+        schema = CONFIG.schema_url if not CONFIG.is_index else CONFIG.index_schema_url
 
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
@@ -274,7 +277,9 @@ def get_entries(
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
-            schema=CONFIG.schema_url,
+            schema=CONFIG.schema_url
+            if not CONFIG.is_index
+            else CONFIG.index_schema_url,
         ),
         included=included,
     )
@@ -337,7 +342,9 @@ def get_single_entry(
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
-            schema=CONFIG.schema_url,
+            schema=CONFIG.schema_url
+            if not CONFIG.is_index
+            else CONFIG.index_schema_url,
         ),
         included=included,
     )

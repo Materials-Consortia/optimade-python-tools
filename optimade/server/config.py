@@ -267,6 +267,17 @@ class ServerConfig(BaseSettings):
             "MongoDB-based backend."
         ),
     )
+
+    is_index: Optional[bool] = Field(
+        False,
+        description=(
+            "A runtime setting to dynamically switch between index meta-database and "
+            "normal OPTIMADE servers. Used for switching behaviour of e.g., `meta->optimade_schema` "
+            "values in the response. Any provided value may be overridden when used with the reference "
+            "server implementation."
+        ),
+    )
+
     schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
         f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade.json",
         description=(

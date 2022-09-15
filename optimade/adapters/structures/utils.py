@@ -4,7 +4,6 @@ Utility functions to help the conversion functions along.
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
 from typing import List, Optional, Tuple, Iterable
-
 from optimade.models.structures import Vector3D
 from optimade.models.structures import Species as OptimadeStructureSpecies
 
@@ -18,10 +17,22 @@ except ImportError:
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 
+def valid_lattice_vector(lattice_vec: Tuple[Vector3D, Vector3D, Vector3D]):
+    if len(lattice_vec) != 3:
+        return False
+    for vector in lattice_vec:
+        if (
+            (len(vector) != 3) or (None in vector) or (np.linalg.norm(vector) < 1e-15)
+        ):  # Due to rounding errors very small values instead of 0.0 may appear for the lattice vectors. therefore I check here whether the value is not too small. I am however not sure what the smallest value is that I can put here.
+            return False
+    return True
+
+
 def scaled_cell(
     cell: Tuple[Vector3D, Vector3D, Vector3D]
 ) -> Tuple[Vector3D, Vector3D, Vector3D]:
     """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).
+    This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.
 
     This is based on PDB's method of calculating SCALE from CRYST data.
     For more info, see [this site](https://www.wwpdb.org/documentation/file-format-content/format33/sect8.html#SCALEn).

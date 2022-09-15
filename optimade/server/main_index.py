@@ -133,6 +133,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
 
 @app.on_event("startup")
 async def startup_event():
+    CONFIG.is_index = True
     # Add API endpoints for MANDATORY base URL `/vMAJOR`
     add_major_version_base_url(app)
     # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
