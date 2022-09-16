@@ -306,6 +306,10 @@ class ServerConfig(BaseSettings):
         {"json": 10},
         description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
     )
+    exclude_from_reference_structure: Optional[List[str]] = Field(
+        [],
+        description="""A list of Optimade fields that should be excluded from the reference structure field of the response""",
+    )
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):

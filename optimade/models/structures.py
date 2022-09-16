@@ -267,7 +267,7 @@ class StructureAttributes(Attributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
     elements: Optional[List[str]] = OptimadeField(
-        ...,
+        None,
         description="""The chemical symbols of the different elements present in the structure.
 
 - **Type**: list of strings.
@@ -293,7 +293,7 @@ class StructureAttributes(Attributes):
     )
 
     nelements: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""Number of different elements in the structure as an integer.
 
 - **Type**: integer
@@ -314,8 +314,8 @@ class StructureAttributes(Attributes):
         queryable=SupportLevel.MUST,
     )
 
-    elements_ratios: List[float] = OptimadeField(
-        ...,
+    elements_ratios: Optional[List[float]] = OptimadeField(
+        None,
         description="""Relative proportions of different elements in the structure.
 
 - **Type**: list of floats
@@ -339,10 +339,8 @@ class StructureAttributes(Attributes):
         queryable=SupportLevel.MUST,
     )
 
-    dimension_types: Optional[
-        conlist(Periodicity, min_items=3, max_items=3)
-    ] = OptimadeField(
-        None,
+    dimension_types: conlist(Periodicity, min_items=3, max_items=3) = OptimadeField(
+        ...,
         title="Dimension Types",
         description="""List of three integers.
 For each of the three directions indicated by the three lattice vectors (see property `lattice_vectors`), this list indicates if the direction is periodic (value `1`) or non-periodic (value `0`).
@@ -366,7 +364,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     nperiodic_dimensions: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.
 
 - **Type**: integer
@@ -416,7 +414,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(
-        ...,
+        None,
         description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
 
@@ -436,8 +434,8 @@ A site is usually used to describe positions of atoms; what atoms can be encount
         queryable=SupportLevel.OPTIONAL,
     )
 
-    nsites: int = OptimadeField(
-        ...,
+    nsites: Optional[int] = OptimadeField(
+        None,
         description="""An integer specifying the length of the `cartesian_site_positions` property.
 
 - **Type**: integer
@@ -457,7 +455,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     )
 
     species: Optional[List[Species]] = OptimadeField(
-        ...,
+        None,
         description="""A list describing the species of the sites of this structure.
 Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
 
@@ -526,7 +524,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     )
 
     species_at_sites: Optional[List[str]] = OptimadeField(
-        ...,
+        None,
         description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).
 The properties of the species are found in the property `species`.
 
@@ -657,8 +655,8 @@ The properties of the species are found in the property `species`.
         queryable=SupportLevel.OPTIONAL,
     )
 
-    structure_features: List[StructureFeatures] = OptimadeField(
-        ...,
+    structure_features: Optional[List[StructureFeatures]] = OptimadeField(
+        None,
         title="Structure Features",
         description="""A list of strings that flag which special features are used by the structure.
 

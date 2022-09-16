@@ -4206,17 +4206,9 @@
       "StructureAttributes": {
         "title": "StructureAttributes",
         "required": [
-          "elements",
-          "nelements",
-          "elements_ratios",
-          "nperiodic_dimensions",
-          "cartesian_site_positions",
-          "nsites",
-          "species",
           "dimension_types",
-          "species_at_sites",
-          "lattice_vectors",
-          "structure_features"
+          "dimension_types",
+          "lattice_vectors"
         ],
         "type": "object",
         "properties": {
@@ -4227,7 +4219,6 @@
               "type": "string"
             },
             "description": "The chemical symbols of the different elements present in the structure.\n\n- **Type**: list of strings.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - The strings are the chemical symbols, i.e., either a single uppercase letter or an uppercase letter followed by a number of lowercase letters.\n    - The order MUST be alphabetical.\n    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements_ratios`, if the latter is provided.\n    - Note: This property SHOULD NOT contain the string \"X\" to indicate non-chemical elements or \"vacancy\" to indicate vacancies (in contrast to the field `chemical_symbols` for the `species` property).\n\n- **Examples**:\n    - `[\"Si\"]`\n    - `[\"Al\",\"O\",\"Si\"]`\n\n- **Query examples**:\n    - A filter that matches all records of structures that contain Si, Al **and** O, and possibly other elements: `elements HAS ALL \"Si\", \"Al\", \"O\"`.\n    - To match structures with exactly these three elements, use `elements HAS ALL \"Si\", \"Al\", \"O\" AND elements LENGTH 3`.\n    - Note: length queries on this property can be equivalently formulated by filtering on the `nelements`_ property directly.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4235,7 +4226,6 @@
             "title": "Nelements",
             "type": "integer",
             "description": "Number of different elements in the structure as an integer.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - MUST be equal to the lengths of the list properties `elements` and `elements_ratios`, if they are provided.\n\n- **Examples**:\n    - `3`\n\n- **Querying**:\n    - Note: queries on this property can equivalently be formulated using `elements LENGTH`.\n    - A filter that matches structures that have exactly 4 elements: `nelements=4`.\n    - A filter that matches structures that have between 2 and 7 elements: `nelements>=2 AND nelements<=7`.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4246,7 +4236,6 @@
               "type": "number"
             },
             "description": "Relative proportions of different elements in the structure.\n\n- **Type**: list of floats\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - Composed by the proportions of elements in the structure as a list of floating point numbers.\n    - The sum of the numbers MUST be 1.0 (within floating point accuracy)\n    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements`, if the latter is provided.\n\n- **Examples**:\n    - `[1.0]`\n    - `[0.3333333333333333, 0.2222222222222222, 0.4444444444444444]`\n\n- **Query examples**:\n    - Note: Useful filters can be formulated using the set operator syntax for correlated values.\n      However, since the values are floating point values, the use of equality comparisons is generally inadvisable.\n    - OPTIONAL: a filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: `elements:elements_ratios HAS ALL \"Al\":>0.3333, \"Al\":<0.3334`.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4267,7 +4256,6 @@
             "title": "Nperiodic Dimensions",
             "type": "integer",
             "description": "An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types` property.\n    - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.\n\n- **Examples**:\n    - `2` should be indicated in cases where `dimension_types` is any of `[1, 1, 0]`, `[1, 0, 1]`, `[0, 1, 1]`.\n\n- **Query examples**:\n    - Match only structures with exactly 3 periodic dimensions: `nperiodic_dimensions=3`\n    - Match all structures with 2 or fewer periodic dimensions: `nperiodic_dimensions<=2`",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4302,7 +4290,6 @@
               }
             },
             "description": "Cartesian positions of each site in the structure.\nA site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.\n\n- **Type**: list of list of floats\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, filters MAY support only a subset of comparison operators.\n    - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three Cartesian coordinates of a site expressed as float values in the unit angstrom (\u00c5).\n    - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`).\n\n- **Examples**:\n    - `[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin.",
-            "nullable": true,
             "x-optimade-unit": "\u00c5",
             "x-optimade-support": "should",
             "x-optimade-queryable": "optional"
@@ -4311,7 +4298,6 @@
             "title": "Nsites",
             "type": "integer",
             "description": "An integer specifying the length of the `cartesian_site_positions` property.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `42`\n\n- **Query examples**:\n    - Match only structures with exactly 4 sites: `nsites=4`\n    - Match structures that have between 2 and 7 sites: `nsites>=2 AND nsites<=7`",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4322,7 +4308,6 @@
               "$ref": "#/components/schemas/Species"
             },
             "description": "A list describing the species of the sites of this structure.\nSpecies can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).\n\n- **Type**: list of dictionary with keys:\n    - `name`: string (REQUIRED)\n    - `chemical_symbols`: list of strings (REQUIRED)\n    - `concentration`: list of float (REQUIRED)\n    - `attached`: list of strings (REQUIRED)\n    - `nattached`: list of integers (OPTIONAL)\n    - `mass`: list of floats (OPTIONAL)\n    - `original_name`: string (OPTIONAL).\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n        If supported, filters MAY support only a subset of comparison operators.\n    - Each list member MUST be a dictionary with the following keys:\n        - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the `species` list;\n        - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.\n          Each item of the list MUST be one of the following:\n            - a valid chemical-element symbol, or\n            - the special value `\"X\"` to represent a non-chemical element, or\n            - the special value `\"vacancy\"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).\n\n          If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.\n\n        - **concentration**: REQUIRED; MUST be a list of floats, with same length as `chemical_symbols`.\n          The numbers represent the relative concentration of the corresponding chemical symbol in this species.\n          The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:\n\n            - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations `1/3` and `2/3`, the concentration might look something like `[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.\n            - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.\n\n            Note that concentrations are uncorrelated between different sites (even of the same species).\n\n        - **attached**: OPTIONAL; if provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or \"X\" for a non-chemical element.\n\n        - **nattached**: OPTIONAL; if provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the `attached` key.\n\n          The implementation MUST include either both or none of the `attached` and `nattached` keys, and if they are provided, they MUST be of the same length.\n          Furthermore, if they are provided, the `structure_features` property MUST include the string `site_attachments`.\n\n        - **mass**: OPTIONAL. If present MUST be a list of floats, with the same length as `chemical_symbols`, providing element masses expressed in a.m.u.\n          Elements denoting vacancies MUST have masses equal to 0.\n\n        - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\n          Note: With regards to \"source database\", we refer to the immediate source being queried via the OPTIMADE API implementation.\n\n          The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`).\n\n    - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., `\"Ti\"` for titanium, `\"O\"` for oxygen, etc.)\n      However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.\n      This means that a species `{\"name\": \"C\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]}` is valid and represents a titanium species (and *not* a carbon species).\n    - It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.\n\n- **Examples**:\n    - `[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n    - `[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n    - `[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": [0.0, 137.327, 40.078]} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n    - `[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": [12.0]} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n    - `[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": [13.0]} ]`: any site with this species is occupied by a carbon isotope with mass 13.\n    - `[ {\"name\": \"CH3\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"attached\": [\"H\"], \"nattached\": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "optional"
           },
@@ -4333,7 +4318,6 @@
               "type": "string"
             },
             "description": "Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).\nThe properties of the species are found in the property `species`.\n\n- **Type**: list of strings.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, filters MAY support only a subset of comparison operators.\n    - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`).\n    - Each species name mentioned in the `species_at_sites` list MUST be described in the list property `species` (i.e. for each value in the `species_at_sites` list there MUST exist exactly one dictionary in the `species` list with the `name` attribute equal to the corresponding `species_at_sites` value).\n    - Each site MUST be associated only to a single species.\n      **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.\n      This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.\n\n- **Examples**:\n    - `[\"Ti\",\"O2\"]` indicates that the first site is hosting a species labeled `\"Ti\"` and the second a species labeled `\"O2\"`.\n    - `[\"Ac\", \"Ac\", \"Ag\", \"Ir\"]` indicating the first two sites contains the `\"Ac\"` species, while the third and fourth sites contain the `\"Ag\"` and `\"Ir\"` species, respectively.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "optional"
           },
@@ -4472,18 +4456,10 @@
       "StructureResourceAttributes": {
         "title": "StructureResourceAttributes",
         "required": [
-          "elements",
-          "nelements",
-          "elements_ratios",
-          "nperiodic_dimensions",
-          "cartesian_site_positions",
-          "nsites",
-          "species",
           "dimension_types",
-          "species_at_sites",
-          "lattice_vectors",
-          "structure_features",
-          "last_modified"
+          "last_modified",
+          "dimension_types",
+          "lattice_vectors"
         ],
         "type": "object",
         "properties": {
@@ -4494,7 +4470,6 @@
               "type": "string"
             },
             "description": "The chemical symbols of the different elements present in the structure.\n\n- **Type**: list of strings.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - The strings are the chemical symbols, i.e., either a single uppercase letter or an uppercase letter followed by a number of lowercase letters.\n    - The order MUST be alphabetical.\n    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements_ratios`, if the latter is provided.\n    - Note: This property SHOULD NOT contain the string \"X\" to indicate non-chemical elements or \"vacancy\" to indicate vacancies (in contrast to the field `chemical_symbols` for the `species` property).\n\n- **Examples**:\n    - `[\"Si\"]`\n    - `[\"Al\",\"O\",\"Si\"]`\n\n- **Query examples**:\n    - A filter that matches all records of structures that contain Si, Al **and** O, and possibly other elements: `elements HAS ALL \"Si\", \"Al\", \"O\"`.\n    - To match structures with exactly these three elements, use `elements HAS ALL \"Si\", \"Al\", \"O\" AND elements LENGTH 3`.\n    - Note: length queries on this property can be equivalently formulated by filtering on the `nelements`_ property directly.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4502,7 +4477,6 @@
             "title": "Nelements",
             "type": "integer",
             "description": "Number of different elements in the structure as an integer.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - MUST be equal to the lengths of the list properties `elements` and `elements_ratios`, if they are provided.\n\n- **Examples**:\n    - `3`\n\n- **Querying**:\n    - Note: queries on this property can equivalently be formulated using `elements LENGTH`.\n    - A filter that matches structures that have exactly 4 elements: `nelements=4`.\n    - A filter that matches structures that have between 2 and 7 elements: `nelements>=2 AND nelements<=7`.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4513,7 +4487,6 @@
               "type": "number"
             },
             "description": "Relative proportions of different elements in the structure.\n\n- **Type**: list of floats\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - Composed by the proportions of elements in the structure as a list of floating point numbers.\n    - The sum of the numbers MUST be 1.0 (within floating point accuracy)\n    - MUST refer to the same elements in the same order, and therefore be of the same length, as `elements`, if the latter is provided.\n\n- **Examples**:\n    - `[1.0]`\n    - `[0.3333333333333333, 0.2222222222222222, 0.4444444444444444]`\n\n- **Query examples**:\n    - Note: Useful filters can be formulated using the set operator syntax for correlated values.\n      However, since the values are floating point values, the use of equality comparisons is generally inadvisable.\n    - OPTIONAL: a filter that matches structures where approximately 1/3 of the atoms in the structure are the element Al is: `elements:elements_ratios HAS ALL \"Al\":>0.3333, \"Al\":<0.3334`.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4534,7 +4507,6 @@
             "title": "Nperiodic Dimensions",
             "type": "integer",
             "description": "An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types` property.\n    - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.\n\n- **Examples**:\n    - `2` should be indicated in cases where `dimension_types` is any of `[1, 1, 0]`, `[1, 0, 1]`, `[0, 1, 1]`.\n\n- **Query examples**:\n    - Match only structures with exactly 3 periodic dimensions: `nperiodic_dimensions=3`\n    - Match all structures with 2 or fewer periodic dimensions: `nperiodic_dimensions<=2`",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4569,7 +4541,6 @@
               }
             },
             "description": "Cartesian positions of each site in the structure.\nA site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.\n\n- **Type**: list of list of floats\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, filters MAY support only a subset of comparison operators.\n    - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three Cartesian coordinates of a site expressed as float values in the unit angstrom (\u00c5).\n    - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`).\n\n- **Examples**:\n    - `[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin.",
-            "nullable": true,
             "x-optimade-unit": "\u00c5",
             "x-optimade-support": "should",
             "x-optimade-queryable": "optional"
@@ -4578,7 +4549,6 @@
             "title": "Nsites",
             "type": "integer",
             "description": "An integer specifying the length of the `cartesian_site_positions` property.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `42`\n\n- **Query examples**:\n    - Match only structures with exactly 4 sites: `nsites=4`\n    - Match structures that have between 2 and 7 sites: `nsites>=2 AND nsites<=7`",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
@@ -4589,7 +4559,6 @@
               "$ref": "#/components/schemas/Species"
             },
             "description": "A list describing the species of the sites of this structure.\nSpecies can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).\n\n- **Type**: list of dictionary with keys:\n    - `name`: string (REQUIRED)\n    - `chemical_symbols`: list of strings (REQUIRED)\n    - `concentration`: list of float (REQUIRED)\n    - `attached`: list of strings (REQUIRED)\n    - `nattached`: list of integers (OPTIONAL)\n    - `mass`: list of floats (OPTIONAL)\n    - `original_name`: string (OPTIONAL).\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n        If supported, filters MAY support only a subset of comparison operators.\n    - Each list member MUST be a dictionary with the following keys:\n        - **name**: REQUIRED; gives the name of the species; the **name** value MUST be unique in the `species` list;\n        - **chemical_symbols**: REQUIRED; MUST be a list of strings of all chemical elements composing this species.\n          Each item of the list MUST be one of the following:\n            - a valid chemical-element symbol, or\n            - the special value `\"X\"` to represent a non-chemical element, or\n            - the special value `\"vacancy\"` to represent that this site has a non-zero probability of having a vacancy (the respective probability is indicated in the `concentration` list, see below).\n\n          If any one entry in the `species` list has a `chemical_symbols` list that is longer than 1 element, the correct flag MUST be set in the list `structure_features`.\n\n        - **concentration**: REQUIRED; MUST be a list of floats, with same length as `chemical_symbols`.\n          The numbers represent the relative concentration of the corresponding chemical symbol in this species.\n          The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:\n\n            - Numerical errors when representing float numbers in fixed precision, e.g. for two chemical symbols with concentrations `1/3` and `2/3`, the concentration might look something like `[0.33333333333, 0.66666666666]`. If the client is aware that the sum is not one because of numerical precision, it can renormalize the values so that the sum is exactly one.\n            - Experimental errors in the data present in the database. In this case, it is the responsibility of the client to decide how to process the data.\n\n            Note that concentrations are uncorrelated between different sites (even of the same species).\n\n        - **attached**: OPTIONAL; if provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or \"X\" for a non-chemical element.\n\n        - **nattached**: OPTIONAL; if provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the `attached` key.\n\n          The implementation MUST include either both or none of the `attached` and `nattached` keys, and if they are provided, they MUST be of the same length.\n          Furthermore, if they are provided, the `structure_features` property MUST include the string `site_attachments`.\n\n        - **mass**: OPTIONAL. If present MUST be a list of floats, with the same length as `chemical_symbols`, providing element masses expressed in a.m.u.\n          Elements denoting vacancies MUST have masses equal to 0.\n\n        - **original_name**: OPTIONAL. Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\n          Note: With regards to \"source database\", we refer to the immediate source being queried via the OPTIMADE API implementation.\n\n          The main use of this field is for source databases that use species names, containing characters that are not allowed (see description of the list property `species_at_sites`).\n\n    - For systems that have only species formed by a single chemical symbol, and that have at most one species per chemical symbol, SHOULD use the chemical symbol as species name (e.g., `\"Ti\"` for titanium, `\"O\"` for oxygen, etc.)\n      However, note that this is OPTIONAL, and client implementations MUST NOT assume that the key corresponds to a chemical symbol, nor assume that if the species name is a valid chemical symbol, that it represents a species with that chemical symbol.\n      This means that a species `{\"name\": \"C\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]}` is valid and represents a titanium species (and *not* a carbon species).\n    - It is NOT RECOMMENDED that a structure includes species that do not have at least one corresponding site.\n\n- **Examples**:\n    - `[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\"], \"concentration\": [1.0]} ]`: any site with this species is occupied by a Ti atom.\n    - `[ {\"name\": \"Ti\", \"chemical_symbols\": [\"Ti\", \"vacancy\"], \"concentration\": [0.9, 0.1]} ]`: any site with this species is occupied by a Ti atom with 90 % probability, and has a vacancy with 10 % probability.\n    - `[ {\"name\": \"BaCa\", \"chemical_symbols\": [\"vacancy\", \"Ba\", \"Ca\"], \"concentration\": [0.05, 0.45, 0.5], \"mass\": [0.0, 137.327, 40.078]} ]`: any site with this species is occupied by a Ba atom with 45 % probability, a Ca atom with 50 % probability, and by a vacancy with 5 % probability. The mass of this site is (on average) 88.5 a.m.u.\n    - `[ {\"name\": \"C12\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": [12.0]} ]`: any site with this species is occupied by a carbon isotope with mass 12.\n    - `[ {\"name\": \"C13\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"mass\": [13.0]} ]`: any site with this species is occupied by a carbon isotope with mass 13.\n    - `[ {\"name\": \"CH3\", \"chemical_symbols\": [\"C\"], \"concentration\": [1.0], \"attached\": [\"H\"], \"nattached\": [3]} ]`: any site with this species is occupied by a methyl group, -CH3, which is represented without specifying precise positions of the hydrogen atoms.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "optional"
           },
@@ -4600,7 +4569,6 @@
               "type": "string"
             },
             "description": "Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).\nThe properties of the species are found in the property `species`.\n\n- **Type**: list of strings.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, filters MAY support only a subset of comparison operators.\n    - MUST have length equal to the number of sites in the structure (first dimension of the list property `cartesian_site_positions`).\n    - Each species name mentioned in the `species_at_sites` list MUST be described in the list property `species` (i.e. for each value in the `species_at_sites` list there MUST exist exactly one dictionary in the `species` list with the `name` attribute equal to the corresponding `species_at_sites` value).\n    - Each site MUST be associated only to a single species.\n      **Note**: However, species can represent mixtures of atoms, and multiple species MAY be defined for the same chemical element.\n      This latter case is useful when different atoms of the same type need to be grouped or distinguished, for instance in simulation codes to assign different initial spin states.\n\n- **Examples**:\n    - `[\"Ti\",\"O2\"]` indicates that the first site is hosting a species labeled `\"Ti\"` and the second a species labeled `\"O2\"`.\n    - `[\"Ac\", \"Ac\", \"Ag\", \"Ir\"]` indicating the first two sites contains the `\"Ac\"` species, while the third and fourth sites contain the `\"Ag\"` and `\"Ir\"` species, respectively.",
-            "nullable": true,
             "x-optimade-support": "should",
             "x-optimade-queryable": "optional"
           },
@@ -5043,8 +5011,8 @@
             "type": "string",
             "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Examples**:\n    - `\"trajectories\"`",
             "default": "trajectories",
-            "const": "trajectories",
             "x-optimade-support": "must",
+            "const": "trajectories",
             "x-optimade-queryable": "must"
           },
           "links": {
