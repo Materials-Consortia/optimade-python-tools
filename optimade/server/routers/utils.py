@@ -243,8 +243,7 @@ def handle_response_fields(
 
         # Add missing fields
         for field in include_fields:
-            if field not in new_entry["attributes"]:
-                new_entry["attributes"][field] = None
+            set_field_to_none_if_missing_in_dict(field, new_entry["attributes"])
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -258,6 +257,22 @@ def handle_response_fields(
         return new_results[0], traj_trunc, last_frame
     else:
         return new_results, traj_trunc, last_frame
+
+
+def set_field_to_none_if_missing_in_dict(field: str, entry: dict):
+    split_field = field.split(".")
+
+    if split_field[0] in entry:
+        if len(split_field) > 1:
+            set_field_to_none_if_missing_in_dict(
+                "".join(split_field[1:]), entry[split_field[0]]
+            )
+    else:
+        if len(split_field) == 1:
+            entry[split_field[0]] = None
+        else:
+            entry[split_field[0]] = {}
+    return entry
 
 
 def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method: str):

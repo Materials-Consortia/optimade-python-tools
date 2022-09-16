@@ -156,12 +156,6 @@ class EntryCollection(ABC):
         exclude_fields = (
             self.all_fields.union(getattr(self.resource_mapper, "HIDDEN_FIELDS", []))
             - response_fields
-            - set(
-                [
-                    "_" + self.provider_prefix + "_" + field_name
-                    for field_name in self.provider_fields
-                ]
-            )
         )
         include_fields = (
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
@@ -328,25 +322,32 @@ class EntryCollection(ABC):
             cursor_kwargs["limit"] = CONFIG.page_limit
 
         # response_fields
-        cursor_kwargs["projection"] = {
-            f"{self.resource_mapper.get_backend_field(f)}": True
-            for f in self.all_fields
-        }
-        # TODO here I use a quick and dirty way to get some extra fields from the server it would be nice if there is a more systematic method for adding fields to the projection
-        for field in self.provider_fields:
-            cursor_kwargs["projection"][field] = True
-        cursor_kwargs["projection"]["metadata.atomCount"] = True
-        cursor_kwargs["projection"]["_id"] = True
-
         if getattr(params, "response_fields", False):
             response_fields = set(params.response_fields.split(","))
             response_fields |= self.resource_mapper.get_required_fields()
-            if self.resource_mapper.ENDPOINT == "trajectories":
-                cursor_kwargs["projection"]["_storage_path"] = True
+            cursor_kwargs["projection"] = {
+                f"{self.resource_mapper.get_backend_field(f)}": True
+                for f in response_fields  # self.all_fields
+            }
         else:
             response_fields = getattr(
                 self.resource_mapper, "STANDARD_FIELDS", self.all_fields.copy()
             )
+            cursor_kwargs["projection"] = {
+                f"{self.resource_mapper.get_backend_field(f)}": True
+                for f in self.all_fields
+            }
+            response_fields |= set(
+                [
+                    "_" + self.provider_prefix + "_" + field_name
+                    for field_name in self.provider_fields
+                ]
+            )
+
+        # TODO here I use a quick and dirty way to get some extra fields from the server it would be nice if there is a more systematic method for adding fields to the projection
+        cursor_kwargs["projection"]["metadata.atomCount"] = True
+        cursor_kwargs["projection"]["metadata.SNAPSHOTS"] = True
+        cursor_kwargs["projection"]["_id"] = True
 
         cursor_kwargs["fields"] = response_fields
 
