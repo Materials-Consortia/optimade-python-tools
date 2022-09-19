@@ -1,5 +1,23 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.4...HEAD)
+
+This is a hotfix release for #1335, a bug regarding chunked responses triggered when using the latest FastAPI version.
+
+**Fixed bugs:**
+
+- UnboundLocalError - `chunk_size` is not always set in middleware method [\#1335](https://github.com/Materials-Consortia/optimade-python-tools/issues/1335)
+
+## [v0.19.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.4) (2022-09-19)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.3...v0.19.4)
+
+**Fixed bugs:**
+
+- Ensure `chunk_size` is properly set when chunking responses [\#1336](https://github.com/Materials-Consortia/optimade-python-tools/pull/1336) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.19.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.3) (2022-09-06)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.2...v0.19.3)
