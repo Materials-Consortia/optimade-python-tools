@@ -2369,9 +2369,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 <span class="normal">462</span>
 <span class="normal">463</span>
 <span class="normal">464</span>
-<span class="normal">465</span>
-<span class="normal">466</span>
-<span class="normal">467</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AddWarnings</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
+<span class="normal">465</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AddWarnings</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning]s to the response.</span>
 
@@ -2539,11 +2537,9 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
         <span class="n">charset</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">charset</span>
 
         <span class="n">body</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
-        <span class="n">first_run</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">body_iterator</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">first_run</span><span class="p">:</span>
-                <span class="n">first_run</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">chunk_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="n">chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
                 <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span>
             <span class="n">body</span> <span class="o">+=</span> <span class="n">chunk</span>
