@@ -21,6 +21,16 @@ def index_client():
     return client_factory()(server="index")
 
 
+@pytest.fixture(scope="session", params=["regular"])
+def client_with_empty_extension_endpoint(request):
+    """Return TestClient for the regular OPTIMADE server with an additional
+    empty test endpoint added at `/extensions/test_empty_body`.
+    """
+    from .utils import client_factory
+
+    return client_factory()(server=request.param, add_empty_endpoint=True)
+
+
 @pytest.fixture(scope="session", params=["regular", "index"])
 def both_clients(request):
     """Return TestClient for both the regular and index OPTIMADE server"""
