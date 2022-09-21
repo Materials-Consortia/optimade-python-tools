@@ -439,11 +439,9 @@ class AddWarnings(BaseHTTPMiddleware):
         charset = response.charset
 
         body = b""
-        first_run = True
+        chunk_size = 0
         async for chunk in response.body_iterator:
-            if first_run:
-                first_run = False
-                chunk_size = len(chunk)
+            chunk_size = chunk_size or len(chunk)
             if not isinstance(chunk, bytes):
                 chunk = chunk.encode(charset)
             body += chunk
