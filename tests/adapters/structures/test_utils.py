@@ -101,24 +101,27 @@ def test_scaled_cell_and_fractional_coordinates(structures):
             assert scaled_position == pytest.approx(calculated_position)
 
 
-def test_scaled_cell_consistency(structure):
+def test_scaled_cell_consistency(structures):
     """Test scaled_cell's PDB-designated validation: inverse of det(SCALE) = Volume of cell"""
-    # Manual calculation of volume = |a_1 . (a_2 x a_3)|
-    a_1 = structure.lattice_vectors[0]
-    a_2 = structure.lattice_vectors[1]
-    a_3 = structure.lattice_vectors[2]
-    a_mid_0 = a_2[1] * a_3[2] - a_2[2] * a_3[1]
-    a_mid_1 = a_2[2] * a_3[0] - a_2[0] * a_3[2]
-    a_mid_2 = a_2[0] * a_3[1] - a_2[1] * a_3[0]
-    volume_from_cellpar = abs(a_1[0] * a_mid_0 + a_1[1] * a_mid_1 + a_1[2] * a_mid_2)
+    for structure in structures:
+        # Manual calculation of volume = |a_1 . (a_2 x a_3)|
+        a_1 = structure.lattice_vectors[0]
+        a_2 = structure.lattice_vectors[1]
+        a_3 = structure.lattice_vectors[2]
+        a_mid_0 = a_2[1] * a_3[2] - a_2[2] * a_3[1]
+        a_mid_1 = a_2[2] * a_3[0] - a_2[0] * a_3[2]
+        a_mid_2 = a_2[0] * a_3[1] - a_2[1] * a_3[0]
+        volume_from_cellpar = abs(
+            a_1[0] * a_mid_0 + a_1[1] * a_mid_1 + a_1[2] * a_mid_2
+        )
 
-    scale = scaled_cell(structure.lattice_vectors)
-    volume_from_scale = 1 / numpy.linalg.det(scale)
+        scale = scaled_cell(structure.lattice_vectors)
+        volume_from_scale = math.fabs(1 / numpy.linalg.det(scale))
 
-    assert volume_from_scale == pytest.approx(volume_from_cellpar)
+        assert volume_from_scale == pytest.approx(volume_from_cellpar)
 
 
-def test_species_from_species_at_sites(structure):
+def test_species_from_species_at_sites():
     """Test that species can be inferred from species_at_sites"""
     species_at_sites = ["Si"]
     assert [d.dict() for d in species_from_species_at_sites(species_at_sites)] == [
