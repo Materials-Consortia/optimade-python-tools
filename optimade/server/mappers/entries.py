@@ -245,10 +245,15 @@ class BaseResourceMapper:
             The mapped field name to be used in the query to the backend.
 
         """
+        from optimade.server.config import CONFIG
+
         split = optimade_field.split(".")
         alias = dict(cls.all_aliases()).get(split[0], None)
         if alias is not None:
             return alias + ("." + ".".join(split[1:]) if len(split) > 1 else "")
+        prefix = "_" + CONFIG.provider.prefix + "_"
+        if split[0].startswith(prefix):
+            return optimade_field.replace(prefix, "")
         return optimade_field
 
     @classmethod
