@@ -4,6 +4,7 @@ from pydantic import AnyUrl
 from datetime import datetime, timezone
 from optimade.models import EntryResponseMany, EntryResponseOne
 import h5py
+from sys import getsizeof
 import numpy as np
 
 
@@ -48,7 +49,7 @@ def generate_hdf5_file_content(
 
 
 def store_hdf5_dict(
-    hdf5_file: h5py._hl.files.File, iterable: Union[dict, list, tuple], group: str = ""
+    hdf5_file: h5py._hl.files.File, iterable: Union[dict, list, tuple], group: str = "/"
 ):
     """This function stores a python list, dictionary or tuple in a hdf5 file.
     the currently supported datatypes are str, int, float, list, dict, tuple, bool, AnyUrl,
@@ -78,7 +79,7 @@ def store_hdf5_dict(
             value, (list, tuple)
         ):  # For now, I assume that all values in the list have the same type.
             if len(value) < 1:  # case empty list
-                hdf5_file[group + "/" + key] = []
+                store_value_in_hdf5(key, value, group, hdf5_file)
                 continue
             val_type = type(value[0])
             if isinstance(value[0], dict):
@@ -86,25 +87,21 @@ def store_hdf5_dict(
                 store_hdf5_dict(hdf5_file, value, group + "/" + key)
             elif val_type.__module__ == np.__name__:
                 try:
-                    hdf5_file[group + "/" + key] = value
-                except (TypeError) as hdf5_error:
+                    store_value_in_hdf5(key, value, group, hdf5_file)
+                except TypeError as hdf5_error:
                     raise TypeError(
                         "Unfortunatly more complex numpy types like object can not yet be stored in hdf5. Error from hdf5:"
                         + hdf5_error
                     )
             elif isinstance(value[0], (int, float)):
-                hdf5_file[group + "/" + key] = np.asarray(value)
+                store_value_in_hdf5(key, np.asarray(value), group, hdf5_file)
             elif isinstance(value[0], str):
-                hdf5_file[
-                    group + "/" + key
-                ] = value  # here I can pass a list of strings to hdf5 which is stored as a numpy object.
+                # Here I can pass a list of strings to hdf5 which is stored as a numpy object.
+                store_value_in_hdf5(key, value, group, hdf5_file)
             elif isinstance(value[0], (list, tuple)):
                 list_type = get_recursive_type(value[0])
-                if list_type in (
-                    int,
-                    float,
-                ):
-                    hdf5_file[group + "/" + key] = np.asarray(value)
+                if list_type in (int, float):
+                    store_value_in_hdf5(key, np.asarray(value), group, hdf5_file)
                 else:
                     hdf5_file.create_group(group + "/" + key)
                     store_hdf5_dict(hdf5_file, value, group + "/" + key)
@@ -116,38 +113,53 @@ def store_hdf5_dict(
             hdf5_file.create_group(group + "/" + key)
             store_hdf5_dict(hdf5_file, value, group + "/" + key)
         elif isinstance(value, bool):
-            hdf5_file[group + "/" + key] = np.bool_(value)
-        elif isinstance(
-            value, AnyUrl
-        ):  # This case had to be placed above the str case as AnyUrl inherits from the string class, but cannot be handled directly by h5py.
-            hdf5_file[group + "/" + key] = str(value)
-        elif isinstance(
-            value,
-            (
-                int,
-                float,
-                str,
-            ),
-        ):
-            hdf5_file[group + "/" + key] = value
+            store_value_in_hdf5(key, np.bool_(value), group, hdf5_file)
+        elif isinstance(value, AnyUrl):
+            # This case had to be placed above the str case as AnyUrl inherits from the string class, but cannot be handled directly by h5py.
+            store_value_in_hdf5(key, str(value), group, hdf5_file)
+        elif isinstance(value, (int, float, str)):
+            store_value_in_hdf5(key, value, group, hdf5_file)
+
         elif type(value).__module__ == np.__name__:
             try:
-                hdf5_file[group + "/" + key] = value
-            except (TypeError) as hdf5_error:
+                store_value_in_hdf5(key, value, group, hdf5_file)
+            except TypeError as hdf5_error:
                 raise TypeError(
-                    "Unfortunatly more complex numpy types like object can not yet be stored in hdf5. Error from hdf5:"
-                    + hdf5_error
+                    f"Unfortunatly more complex numpy types like object can not yet be stored in hdf5. Error from hdf5:{hdf5_error}"
                 )
         elif isinstance(value, datetime):
-            hdf5_file[group + "/" + key] = value.astimezone(timezone.utc).strftime(
-                "%Y-%m-%dT%H:%M:%SZ"
+            store_value_in_hdf5(
+                key,
+                value.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                group,
+                hdf5_file,
             )
         elif value is None:
-            hdf5_file[group + "/" + key] = h5py.Empty("f")
+            store_value_in_hdf5(key, h5py.Empty("f"), group, hdf5_file)
         else:
             raise ValueError(
                 f"Unable to store a value of type: {type(value)} in hdf5 format."
             )
+
+
+def store_value_in_hdf5(key, value, group, hdf5_file):
+    compression_level = 1
+    if (
+        getsizeof(value) < 4096
+    ):  # small properties can be sored as attributes the value of 4096 is rather arbitrary. The total of all the properties should however not exceed 64 kb.
+        if (
+            group
+        ):  # if a group is already present we can store small properties as attributes. (It seems that for each group /dataset a 64kb header is made causing the files to become very large.)
+            hdf5_file[group].attrs[key] = value
+        else:
+            hdf5_file[group + "/" + key] = value
+    else:
+        hdf5_file.create_dataset(
+            group + "/" + key,
+            data=value,
+            compression="gzip",
+            compression_opts=compression_level,
+        )
 
 
 def get_recursive_type(obj: Any) -> type:
@@ -206,32 +218,51 @@ def generate_dict_from_hdf5(
 
     return_value = None
     for key, value in hdf5_file[group].items():
-        if key.isdigit():
-            if return_value is None:
-                return_value = []
-            if isinstance(value, h5py._hl.group.Group):
-                return_value.append(
-                    generate_dict_from_hdf5(hdf5_file, group=group + key + "/")
-                )
-            elif isinstance(value[()], h5py._hl.base.Empty):
-                return_value.append(None)
-            elif isinstance(value[()], bytes):
-                return_value.append(value[()].decode())
-            else:
-                return_value.append(value[()])
+        return_value = inside_generate_dict_from_hdf5(
+            key, value, return_value, group, hdf5_file
+        )
+    for key, value in hdf5_file[group].attrs.items():
+        return_value = inside_generate_dict_from_hdf5(
+            key, value, return_value, group, hdf5_file
+        )
+    return return_value
 
-        else:  # Case dictionary
-            if return_value is None:
-                return_value = {}
-            if isinstance(value, h5py._hl.group.Group):
-                return_value[key] = generate_dict_from_hdf5(
-                    hdf5_file, group=group + key + "/"
-                )
-            elif isinstance(value[()], h5py._hl.base.Empty):
-                return_value[key] = None
-            elif isinstance(value[()], bytes):
-                return_value[key] = value[()].decode()
-            else:
-                return_value[key] = value[()]
+
+def inside_generate_dict_from_hdf5(key, value, return_value, group, hdf5_file):
+    if key.isdigit():
+        if return_value is None:
+            return_value = []
+        if isinstance(value, h5py._hl.group.Group):
+            return_value.append(
+                generate_dict_from_hdf5(hdf5_file, group=group + key + "/")
+            )
+        elif isinstance(value, h5py._hl.base.Empty):
+            return_value.append(None)
+        elif isinstance(value, str):
+            return_value.append(value)
+        elif isinstance(value[()], h5py._hl.base.Empty):
+            return_value.append(None)
+        elif isinstance(value[()], bytes):
+            return_value.append(value[()].decode())
+        else:
+            return_value.append(value[()])
+
+    else:  # Case dictionary
+        if return_value is None:
+            return_value = {}
+        if isinstance(value, h5py._hl.group.Group):
+            return_value[key] = generate_dict_from_hdf5(
+                hdf5_file, group=group + key + "/"
+            )
+        elif isinstance(value, h5py._hl.base.Empty):
+            return_value[key] = None
+        elif isinstance(value, str):
+            return_value[key] = value
+        elif isinstance(value[()], h5py._hl.base.Empty):
+            return_value[key] = None
+        elif isinstance(value[()], bytes):
+            return_value[key] = value[()].decode()
+        else:
+            return_value[key] = value[()]
 
     return return_value

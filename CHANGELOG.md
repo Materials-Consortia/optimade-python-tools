@@ -1,6 +1,55 @@
 # Changelog
 
-## [v0.19.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.1) (2022-08-08)
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.4...HEAD)
+
+This is a hotfix release for #1335, a bug regarding chunked responses triggered when using the latest FastAPI version.
+
+**Fixed bugs:**
+
+- UnboundLocalError - `chunk_size` is not always set in middleware method [\#1335](https://github.com/Materials-Consortia/optimade-python-tools/issues/1335)
+
+## [v0.19.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.4) (2022-09-19)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.3...v0.19.4)
+
+**Fixed bugs:**
+
+- Ensure `chunk_size` is properly set when chunking responses [\#1336](https://github.com/Materials-Consortia/optimade-python-tools/pull/1336) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.19.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.3) (2022-09-06)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.2...v0.19.3)
+
+**Implemented enhancements:**
+
+- Set correct `meta->schema` value automatically [\#1323](https://github.com/Materials-Consortia/optimade-python-tools/pull/1323) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Pin requirements in CD release workflows [\#1324](https://github.com/Materials-Consortia/optimade-python-tools/pull/1324) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.19.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.2) (2022-09-05)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.1...v0.19.2)
+
+**Fixed bugs:**
+
+- Wrong fractional particle positions in test [\#1232](https://github.com/Materials-Consortia/optimade-python-tools/issues/1232)
+- Bugfix validator so next links are followed the correct number of times [\#1318](https://github.com/Materials-Consortia/optimade-python-tools/pull/1318) ([JPBergsma](https://github.com/JPBergsma))
+- Remove incorrect default value for `page_number` query parameter [\#1303](https://github.com/Materials-Consortia/optimade-python-tools/pull/1303) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- If nperiodic\_dimensions=2 the structure adapter can only properly convert it to ase [\#1212](https://github.com/Materials-Consortia/optimade-python-tools/issues/1212)
+
+**Merged pull requests:**
+
+- Use proper type hint for griffe 0.22 compatibility [\#1313](https://github.com/Materials-Consortia/optimade-python-tools/pull/1313) ([JPBergsma](https://github.com/JPBergsma))
+- Adapters now also return lattice information for structures that are periodic in 1 or 2 dimensions. [\#1233](https://github.com/Materials-Consortia/optimade-python-tools/pull/1233) ([JPBergsma](https://github.com/JPBergsma))
+
+## [v0.19.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.1) (2022-08-12)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.0...v0.19.1)
 

@@ -56,6 +56,12 @@ if "hdf5" in CONFIG.get_enabled_response_formats():
             "numpy_float32": numpy.float32(0.88153),
             "numpy_bool": numpy.bool_(True),
             "numpy_array": numpy.array([(1, 2), (3, 4)]),
+            "list_of_numpy_int": [numpy.int64(42), numpy.int64(16), numpy.int64(23)],
+            "list_of_numpy_array": [
+                numpy.array([(1, 2), (3, 4)]),
+                numpy.array([(1.2, 2.3), (3.5, 4.1)]),
+                numpy.array([(1.8, 2.0), (3, 4)]),
+            ],
         }
 
         hdf5_file_content = generate_hdf5_file_content(test_dict)

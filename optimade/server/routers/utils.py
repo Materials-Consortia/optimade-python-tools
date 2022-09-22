@@ -3,8 +3,9 @@ import re
 import sys
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Set, Union
 from fastapi import Request, Response
+from typing import Any, Dict, List, Optional, Set, Union
+
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 from bson.objectid import ObjectId
@@ -63,7 +64,7 @@ def meta_values(
     data_returned: int,
     data_available: int,
     more_data_available: bool,
-    schema: str,
+    schema: Optional[str] = None,
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
@@ -77,6 +78,9 @@ def meta_values(
         url_path = re.sub(r"/v[0-9]+(\.[0-9]+){,2}/", "/", url.path)
     else:
         url_path = url.path
+
+    if schema is None:
+        schema = CONFIG.schema_url if not CONFIG.is_index else CONFIG.index_schema_url
 
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
@@ -147,9 +151,9 @@ def handle_response_fields(
             last_frame = getattr(params, "last_frame", None)
             # Originaly we started counting the frames from 0, now we count from one so we subtract 1 from first_frame and later also from last frame, so the old code can be used
             first_frame = getattr(params, "first_frame") - 1
-            if (
-                last_frame is None or last_frame > new_entry["attributes"]["nframes"]
-            ):  # In principple it is possible to retrieve multiple trajectories while the value of last_frame is set . Not all of these may have llast_frame frames. so we choose to lower the va;lue of last frame instead of throwing an error.
+
+            # In principple it is possible to retrieve multiple trajectories while the value of last_frame is set . Not all of these may have llast_frame frames. so we choose to lower the va;lue of last frame instead of throwing an error.
+            if last_frame is None or last_frame > new_entry["attributes"]["nframes"]:
                 last_frame = new_entry["attributes"]["nframes"] - 1
             else:
                 last_frame = last_frame - 1
@@ -215,7 +219,6 @@ def handle_response_fields(
             #         )
             for field in include_fields:
                 if field == "cartesian_site_positions":
-                    field = "cartesian_site_positions"
                     new_entry["attributes"][field] = {}
                     new_entry["attributes"][field]["first_frame"] = (
                         first_frame + 1
@@ -547,7 +550,9 @@ def get_entries(
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
-            schema=CONFIG.schema_url,
+            schema=CONFIG.schema_url
+            if not CONFIG.is_index
+            else CONFIG.index_schema_url,
         ),
         included=included,
     )
@@ -560,7 +565,7 @@ def get_entries(
                 content=generate_hdf5_file_content(response_object),
                 media_type="application/x-hdf5",
                 headers={
-                    "Content-disposition": f"attachment; filename={collection.collection.name}.hdf5"
+                    "Content-disposition": f"attachment; filename={results[0]['type']}.hdf5"
                 },
             )
     else:
@@ -629,7 +634,9 @@ def get_single_entry(
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
-            schema=CONFIG.schema_url,
+            schema=CONFIG.schema_url
+            if not CONFIG.is_index
+            else CONFIG.index_schema_url,
         ),
         included=included,
     )
