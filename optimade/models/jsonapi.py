@@ -8,6 +8,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
     parse_obj_as,
     root_validator,
 )
+import numpy
 from optimade.models.utils import StrictField
 
 
@@ -319,6 +320,13 @@ describing relationships between the resource and other JSON API resources.""",
     )
 
 
+def process_ndarray(arg):
+    if arg.dtype == object:
+        return arg.astype(str).tolist()
+    else:
+        return arg.tolist()
+
+
 class Response(BaseModel):
     """A top-level response"""
 
@@ -365,4 +373,10 @@ class Response(BaseModel):
             datetime: lambda v: v.astimezone(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
             ),
+            numpy.int32: lambda v: int(v),
+            numpy.float32: lambda v: float(v),
+            numpy.int64: lambda v: int(v),
+            numpy.float64: lambda v: float(v),
+            numpy.bool_: lambda v: bool(v),
+            numpy.ndarray: process_ndarray,
         }

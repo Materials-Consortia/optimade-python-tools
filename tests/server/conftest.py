@@ -1,8 +1,7 @@
+import pytest
 from typing import Union, Dict
 from optimade.server.warnings import OptimadeWarning
-
-
-import pytest
+from optimade.adapters.hdf5 import generate_response_from_hdf5
 
 
 @pytest.fixture(scope="session")
@@ -84,13 +83,17 @@ def get_good_response(client, index_client):
             pytest.fail("'server' must be either a string or an OptimadeTestClient.")
 
         try:
+            expected_mime_type = get_expeced_response_format(request)
             response = used_client.get(request, **kwargs)
-            response_json = response.json()
-            assert response.status_code == 200, f"Request failed: {response_json}"
-            expected_mime_type = "application/vnd.api+json"
             assert (
                 response.headers["content-type"] == expected_mime_type
             ), f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            if expected_mime_type == "application/vnd.api+json":
+                response_dict = response.json()
+            else:
+                response_dict = generate_response_from_hdf5(response.content)
+            assert response.status_code == 200, f"Request failed: {response_dict}"
+
         except json.JSONDecodeError:
             print(
                 f"Request attempted:\n{used_client.base_url}{used_client.version}"
@@ -106,10 +109,29 @@ def get_good_response(client, index_client):
             raise exc
         else:
             if return_json:
-                return response_json
+                return response_dict
             return response
 
     return inner
+
+
+def get_expeced_response_format(request: str) -> str:
+    """This function tries to extract the MIME type from the request string.
+    If it is unable to do so it returns the default json MIME type.
+
+    Parameters:
+        request: The request from which the mime type should be extracted.
+    """
+
+    expected_mime_type = "application/vnd.api+json"
+    response_format_start = request.find("response_format")
+    if response_format_start > -1 and len(request[response_format_start:]) > 15:
+        returntype = (
+            request[15 + response_format_start :].split("=")[1].split("&")[0].strip()
+        )
+        if returntype == "hdf5":
+            expected_mime_type = "application/x-hdf5"
+    return expected_mime_type
 
 
 @pytest.fixture
@@ -203,17 +225,20 @@ def check_error_response(client, index_client):
             pytest.fail("'server' must be either a string or an OptimadeTestClient.")
 
         try:
+            expected_mime_type = get_expeced_response_format(request)
             response = used_client.get(request)
             assert response.status_code == expected_status, (
                 f"Request should have been an error with status code {expected_status}, "
                 f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
             )
-            expected_mime_type = "application/vnd.api+json"
             assert (
                 response.headers["content-type"] == expected_mime_type
             ), f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
 
-            response = response.json()
+            if expected_mime_type == "application/vnd.api+json":
+                response = response.json()
+            else:
+                response = generate_response_from_hdf5(response.content)
             assert len(response["errors"]) == 1, response.get(
                 "errors", "'errors' not found in response"
             )
