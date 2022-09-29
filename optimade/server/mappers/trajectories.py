@@ -1,7 +1,6 @@
 from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.models.entries import EntryResourceAttributes
 from optimade.models.trajectories import TrajectoryResource
-from optimade.models.structures import StructureAttributes
 
 __all__ = ("TrajectoryMapper",)
 
@@ -16,7 +15,6 @@ class TrajectoryMapper(BaseResourceMapper):
     )
     HIDDEN_FIELDS = ["_storage_path"]
 
-    REFERENCE_STRUCTURE_FIELDS = list(StructureAttributes.__fields__.keys())
     STANDARD_FIELDS = (
         {"reference_structure", "reference_frame", "nframes", "available_properties"}
         .union(BaseResourceMapper.get_required_fields())

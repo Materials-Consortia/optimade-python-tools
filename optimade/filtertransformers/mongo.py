@@ -62,7 +62,6 @@ class MongoTransformer(BaseTransformer):
         query = self._apply_has_only_filter(query)
         query = self._apply_mongo_id_filter(query)
         query = self._apply_mongo_date_filter(query)
-        query = self._apply_reference_structure(query)
         return query
 
     def value_list(self, arg):
@@ -319,30 +318,6 @@ class MongoTransformer(BaseTransformer):
         if "#known" in expr:
             return filter_
         return {"$and": [filter_, {prop: {"$ne": None}}]}
-
-    def _apply_reference_structure(self, filter_: dict):
-        # TODO perhaps it would be good to define this method in a more universal manner so it can be applied to more nested fields.
-        # For the trajectory endpoint the queries should be performed on the fields of
-        # the reference structure. Therefore we prepend 'reference_structure.' to the
-        # property name if it is within the REFERENCE_STRUCTURE_FIELDS.
-
-        if not hasattr(self.mapper, "REFERENCE_STRUCTURE_FIELDS"):
-            return filter_
-
-        def check_for_reference_structure_fields(prop, _):
-            return prop in self.mapper.REFERENCE_STRUCTURE_FIELDS
-
-        def apply_reference_structure(subdict, prop, expr):
-            prop_ = "reference_structure." + prop
-            subdict.pop(prop)
-            subdict[prop_] = expr
-            return subdict
-
-        return recursive_postprocessing(
-            filter_,
-            check_for_reference_structure_fields,
-            apply_reference_structure,
-        )
 
     def _apply_length_operators(self, filter_: dict) -> dict:
         """Check for any invalid pymongo queries that involve applying a

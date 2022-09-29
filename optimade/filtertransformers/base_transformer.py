@@ -239,15 +239,11 @@ class BaseTransformer(Transformer, abc.ABC):
         quantity_name = str(args[0])
 
         # If the quantity name matches an entry type (indicating a relationship filter
-        # or that the property is in the reference structure) then simply return the
-        # quantity name; the inherited property must then handle any further nested
+        # ) then simply return the quantity name; the inherited property must then handle any further nested
         # identifiers.
         if self.mapper:
             if quantity_name in self.mapper.RELATIONSHIP_ENTRY_TYPES:
                 return quantity_name
-            if hasattr(self.mapper, "REFERENCE_STRUCTURE_FIELDS"):
-                if quantity_name in self.mapper.REFERENCE_STRUCTURE_FIELDS:
-                    return quantity_name  # TODO check whether we can not prepend the reference structure field here already.
 
         if self.quantities and quantity_name not in self.quantities:
             # If the quantity is provider-specific, but does not match this provider,

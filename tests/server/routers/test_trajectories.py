@@ -11,7 +11,7 @@ def test_trajectories(
     request = "/trajectories"
     check_response(request, expected_ids)
 
-    request = "/trajectories?filter=nelements<6&response_fields=cartesian_site_positions,_exmpl_time&last_frame=40&first_frame=5"
+    request = "/trajectories?filter=reference_structure.nelements<6&response_fields=cartesian_site_positions,_exmpl_time&last_frame=40&first_frame=5"
     expected_ids = [
         "622a07fa8544a62c55ef087a",
         "622a29c4087ac20730106f33",
