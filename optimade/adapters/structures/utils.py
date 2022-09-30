@@ -3,9 +3,9 @@ Utility functions to help the conversion functions along.
 
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
-from typing import List, Tuple, Iterable
-
+from typing import List, Optional, Tuple, Iterable
 from optimade.models.structures import Vector3D
+from optimade.models.structures import Species as OptimadeStructureSpecies
 
 try:
     import numpy as np
@@ -17,10 +17,22 @@ except ImportError:
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 
+def valid_lattice_vector(lattice_vec: Tuple[Vector3D, Vector3D, Vector3D]):
+    if len(lattice_vec) != 3:
+        return False
+    for vector in lattice_vec:
+        if (
+            (len(vector) != 3) or (None in vector) or (np.linalg.norm(vector) < 1e-15)
+        ):  # Due to rounding errors very small values instead of 0.0 may appear for the lattice vectors. therefore I check here whether the value is not too small. I am however not sure what the smallest value is that I can put here.
+            return False
+    return True
+
+
 def scaled_cell(
     cell: Tuple[Vector3D, Vector3D, Vector3D]
 ) -> Tuple[Vector3D, Vector3D, Vector3D]:
     """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).
+    This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.
 
     This is based on PDB's method of calculating SCALE from CRYST data.
     For more info, see [this site](https://www.wwpdb.org/documentation/file-format-content/format33/sect8.html#SCALEn).
@@ -262,9 +274,9 @@ def cellpar_to_cell(
 
 def _pad_iter_of_iters(
     iterable: Iterable[Iterable],
-    padding: float = None,
-    outer: Iterable = None,
-    inner: Iterable = None,
+    padding: Optional[float] = None,
+    outer: Optional[Iterable] = None,
+    inner: Optional[Iterable] = None,
 ) -> Tuple[Iterable[Iterable], bool]:
     """Turn any null/None values into a float in given iterable of iterables"""
     try:
@@ -292,8 +304,9 @@ def _pad_iter_of_iters(
 
 
 def pad_cell(
-    lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D], padding: float = None
-) -> Tuple[Tuple[Vector3D, Vector3D, Vector3D], bool]:
+    lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D],
+    padding: Optional[float] = None,
+) -> tuple:  # Setting this properly makes MkDocs fail.
     """Turn any `null`/`None` values into a `float` in given `tuple` of
     [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].
 
@@ -315,3 +328,28 @@ def pad_cell(
         outer=tuple,
         inner=tuple,
     )
+
+
+def species_from_species_at_sites(
+    species_at_sites: List[str],
+) -> List[OptimadeStructureSpecies]:
+    """When a list of species dictionaries is not provided, this function
+    can be used to infer the species from the provided species_at_sites.
+
+    In this use case, species_at_sites is assumed to provide a list of
+    element symbols, and refers to situations with no mixed occupancy, i.e.,
+    the constructed species list will contain all unique species with
+    concentration equal to 1 and the species_at_site tag will be used as
+    the chemical symbol.
+
+    Parameters:
+        species_at_sites: The list found under the species_at_sites field.
+
+    Returns:
+        An OPTIMADE species list.
+
+    """
+    return [
+        OptimadeStructureSpecies(name=_, concentration=[1.0], chemical_symbols=[_])
+        for _ in set(species_at_sites)
+    ]

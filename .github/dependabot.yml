@@ -3,16 +3,21 @@ updates:
 - package-ecosystem: pip
   directory: "/"
   schedule:
-    interval: monthly
+    interval: weekly
+    day: monday
+    time: "05:43"
   # Needs to be larger than the number of total requirements (currently 31)
   open-pull-requests-limit: 50
-  target-branch: master
+  target-branch: dependabot_updates
   labels:
   - dependency_updates
+  # Turn off automatic rebases so that auto-merge can work without needed N**2 CI runs
+  rebase-strategy: "disabled"
 - package-ecosystem: gitsubmodule
   directory: "/"
   schedule:
     interval: daily
+    time: "05:38"
   target-branch: master
   labels:
   - providers_updates
@@ -20,6 +25,7 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  target-branch: master
+    time: "05:33"
+  target-branch: dependabot_updates
   labels:
   - CI

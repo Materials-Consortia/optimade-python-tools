@@ -1,16 +1,23 @@
-from typing import Dict, Tuple, List, Any
+from typing import Dict, Tuple, List, Any, Union
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
-from optimade.server.config import CONFIG
+from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
+from optimade.server.query_params import SingleEntryQueryParams, EntryListingQueryParams
 
 
 if CONFIG.database_backend.value == "mongodb":
-    from pymongo import MongoClient
+    from pymongo import MongoClient, version_tuple
+
+    if version_tuple[0] < 4:
+        LOGGER.warning(
+            "Support for pymongo<=3 (and thus MongoDB v3) is deprecated and will be "
+            "removed in the next minor release."
+        )
 
     LOGGER.info("Using: Real MongoDB (pymongo)")
 
@@ -63,12 +70,12 @@ class MongoCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return self.collection.estimated_document_count()
 
-    def count(self, **kwargs) -> int:
+    def count(self, **kwargs: Any) -> int:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
         Parameters:
-            kwargs (dict): Query parameters as keyword arguments. The keys
+            **kwargs: Query parameters as keyword arguments. The keys
                 'filter', 'skip', 'limit', 'hint' and 'maxTimeMS' will be passed
                 to the `pymongo.collection.Collection.count_documents` method.
 
@@ -92,6 +99,39 @@ class MongoCollection(EntryCollection):
         """
         self.collection.insert_many(data)
 
+    def handle_query_params(
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+    ) -> Dict[str, Any]:
+        """Parse and interpret the backend-agnostic query parameter models into a dictionary
+        that can be used by MongoDB.
+
+        This Mongo-specific method calls the base `EntryCollection.handle_query_params` method
+        and adds additional handling of the MongoDB ObjectID type.
+
+        Parameters:
+            params: The initialized query parameter model from the server.
+
+        Raises:
+            Forbidden: If too large of a page limit is provided.
+            BadRequest: If an invalid request is made, e.g., with incorrect fields
+                or response format.
+
+        Returns:
+            A dictionary representation of the query parameters.
+
+        """
+        criteria = super().handle_query_params(params)
+        # Handle MongoDB ObjectIDs:
+        # - If they were not requested, then explicitly remove them
+        # - If they were requested, then cast them to strings in the response
+        if "_id" not in criteria.get("projection", {}):
+            criteria["projection"]["_id"] = False
+
+        if criteria.get("projection", {}).get("_id"):
+            criteria["projection"]["_id"] = {"$toString": "$_id"}
+
+        return criteria
+
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry: bool = False
     ) -> Tuple[List[Dict[str, Any]], int, bool]:
@@ -106,19 +146,22 @@ class MongoCollection(EntryCollection):
             entries matching the query and a boolean for whether or not there is more data available.
 
         """
+        results = list(self.collection.find(**criteria))
 
-        results = []
-        for doc in self.collection.find(**criteria):
-            if criteria.get("projection", {}).get("_id"):
-                doc["_id"] = str(doc["_id"])
-            results.append(doc)
+        if CONFIG.database_backend == SupportedBackend.MONGOMOCK and criteria.get(
+            "projection", {}
+        ).get("_id"):
+            # mongomock does not support `$toString`` in projection, so we have to do it manually
+            for ind, doc in enumerate(results):
+                results[ind]["_id"] = str(doc["_id"])
 
         nresults_now = len(results)
         if not single_entry:
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
+            skip = criteria_nolimit.pop("skip", 0)
             data_returned = self.count(**criteria_nolimit)
-            more_data_available = nresults_now < data_returned
+            more_data_available = nresults_now + skip < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = nresults_now

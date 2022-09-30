@@ -1,10 +1,11 @@
 # pylint: disable=import-outside-toplevel,too-many-locals
 import re
-import urllib
+import urllib.parse
 from datetime import datetime
-from typing import Union, List, Dict, Set
+from typing import Any, Dict, List, Optional, Set, Union
 
-from fastapi import HTTPException, Request
+from fastapi import Request
+from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
@@ -18,8 +19,22 @@ from optimade.models import (
 
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.exceptions import BadRequest
+from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
+
+__all__ = (
+    "BASE_URL_PREFIXES",
+    "meta_values",
+    "handle_response_fields",
+    "get_included_relationships",
+    "get_base_url",
+    "get_entries",
+    "get_single_entry",
+    "mongo_id_for_database",
+    "get_providers",
+    "PROVIDER_LIST_URLS",
+)
 
 # we need to get rid of any release tags (e.g. -rc.2) and any build metadata (e.g. +py36)
 # from the api_version before allowing the URL
@@ -30,11 +45,21 @@ BASE_URL_PREFIXES = {
 }
 
 
+class JSONAPIResponse(JSONResponse):
+    """This class simply patches `fastapi.responses.JSONResponse` to use the
+    JSON:API 'application/vnd.api+json' MIME type.
+
+    """
+
+    media_type = "application/vnd.api+json"
+
+
 def meta_values(
     url: Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str],
     data_returned: int,
     data_available: int,
     more_data_available: bool,
+    schema: Optional[str] = None,
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
@@ -49,6 +74,9 @@ def meta_values(
     else:
         url_path = url.path
 
+    if schema is None:
+        schema = CONFIG.schema_url if not CONFIG.is_index else CONFIG.index_schema_url
+
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
         api_version=__api_version__,
@@ -58,6 +86,7 @@ def meta_values(
         provider=CONFIG.provider,
         data_available=data_available,
         implementation=CONFIG.implementation,
+        schema=schema,
         **kwargs,
     )
 
@@ -66,7 +95,7 @@ def handle_response_fields(
     results: Union[List[EntryResource], EntryResource],
     exclude_fields: Set[str],
     include_fields: Set[str],
-) -> List[dict]:
+) -> List[Dict[str, Any]]:
     """Handle query parameter `response_fields`.
 
     It is assumed that all fields are under `attributes`.
@@ -87,7 +116,7 @@ def handle_response_fields(
 
     new_results = []
     while results:
-        new_entry = results.pop(0).dict(exclude_unset=True)
+        new_entry = results.pop(0).dict(exclude_unset=True, by_alias=True)
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -211,6 +240,7 @@ def get_entries(
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
+    params.check_params(request.query_params)
     (
         results,
         data_returned,
@@ -246,6 +276,9 @@ def get_entries(
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
+            schema=CONFIG.schema_url
+            if not CONFIG.is_index
+            else CONFIG.index_schema_url,
         ),
         included=included,
     )
@@ -260,6 +293,7 @@ def get_single_entry(
 ) -> EntryResponseOne:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
+    params.check_params(request.query_params)
     params.filter = f'id="{entry_id}"'
     (
         results,
@@ -275,8 +309,7 @@ def get_single_entry(
     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
-        raise HTTPException(
-            status_code=500,
+        raise InternalServerError(
             detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
         )
 
@@ -293,94 +326,9 @@ def get_single_entry(
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
+            schema=CONFIG.schema_url
+            if not CONFIG.is_index
+            else CONFIG.index_schema_url,
         ),
         included=included,
     )
-
-
-def mongo_id_for_database(database_id: str, database_type: str) -> str:
-    """Produce a MondoDB ObjectId for a database"""
-    from bson.objectid import ObjectId
-
-    oid = f"{database_id}{database_type}"
-    if len(oid) > 12:
-        oid = oid[:12]
-    elif len(oid) < 12:
-        oid = f"{oid}{'0' * (12 - len(oid))}"
-
-    return str(ObjectId(oid.encode("UTF-8")))
-
-
-def get_providers() -> list:
-    """Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).
-
-    Fallback order if providers.optimade.org is not available:
-
-    1. Try Materials-Consortia/providers on GitHub.
-    2. Try submodule `providers`' list of providers.
-    3. Log warning that providers list from Materials-Consortia is not included in the
-       `/links`-endpoint.
-
-    Returns:
-        List of raw JSON-decoded providers including MongoDB object IDs.
-
-    """
-    import requests
-
-    try:
-        import simplejson as json
-    except ImportError:
-        import json
-
-    provider_list_urls = [
-        "https://providers.optimade.org/v1/links",
-        "https://raw.githubusercontent.com/Materials-Consortia/providers",
-        "/master/src/links/v1/providers.json",
-    ]
-
-    for provider_list_url in provider_list_urls:
-        try:
-            providers = requests.get(provider_list_url).json()
-        except (
-            requests.exceptions.ConnectionError,
-            requests.exceptions.ConnectTimeout,
-            json.JSONDecodeError,
-        ):
-            pass
-        else:
-            break
-    else:
-        try:
-            from optimade.server.data import providers
-        except ImportError:
-            from optimade.server.logger import LOGGER
-
-            LOGGER.warning(
-                """Could not retrieve a list of providers!
-
-    Tried the following resources:
-
-{}
-    The list of providers will not be included in the `/links`-endpoint.
-""".format(
-                    "".join([f"    * {_}\n" for _ in provider_list_urls])
-                )
-            )
-            return []
-
-    providers_list = []
-    for provider in providers.get("data", []):
-        # Remove/skip "exmpl"
-        if provider["id"] == "exmpl":
-            continue
-
-        provider.update(provider.pop("attributes", {}))
-
-        # Add MongoDB ObjectId
-        provider["_id"] = {
-            "$oid": mongo_id_for_database(provider["id"], provider["type"])
-        }
-
-        providers_list.append(provider)
-
-    return providers_list

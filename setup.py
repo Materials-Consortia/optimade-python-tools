@@ -17,44 +17,62 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 
 # Dependencies
 # Server minded
-elastic_deps = ["elasticsearch-dsl~=6.4,<7.0"]
-mongo_deps = ["pymongo~=3.11", "mongomock~=3.23"]
+elastic_deps = ["elasticsearch-dsl~=7.4,<8.0"]
+mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
 server_deps = [
-    "uvicorn~=0.14.0",
-    "Jinja2>=2.10,<4.0",
-    "pyyaml~=5.1",  # Keep at pyyaml 5.1 for aiida-core support
+    "uvicorn~=0.18",
+    "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
 ] + mongo_deps
 
+
 # Client minded
-aiida_deps = ["aiida-core~=1.6,>=1.6.4"]
+aiida_deps = [
+    "aiida-core~=2.0",
+]
+http_client_deps = [
+    "httpx~=0.23",
+    "rich~=12.5",
+    "click~=8.1",
+]
 ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy~=1.21"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen==2021.3.9"]
-jarvis_deps = ["jarvis-tools==2021.6.18"]
+pymatgen_deps = ["pymatgen~=2022.7"]
+jarvis_deps = ["jarvis-tools==2022.8.27"]
 client_deps = cif_deps
 
 # General
 docs_deps = [
-    "mkdocs~=1.2",
-    "mkdocs-awesome-pages-plugin~=2.5",
-    "mkdocs-material~=7.1",
-    "mkdocs-minify-plugin~=0.4.0",
-    "mkdocstrings~=0.15.2",
+    "mike~=1.1",
+    "mkdocs~=1.3",
+    "mkdocs-awesome-pages-plugin~=2.8",
+    "mkdocs-material~=8.3",
+    "mkdocstrings[python]~=0.19.0",
 ]
 testing_deps = [
-    "pytest~=6.2",
-    "pytest-cov~=2.12",
+    "build~=0.8.0",
     "codecov~=2.1",
-    "jsondiff~=1.3",
+    "jsondiff~=2.0",
+    "pytest~=7.1",
+    "pytest-cov~=3.0",
+    "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.9", "pre-commit~=2.13", "invoke~=1.5"]
+    ["pylint~=2.14", "pre-commit~=2.20", "invoke~=1.7"]
     + docs_deps
     + testing_deps
     + client_deps
+    + http_client_deps
 )
-all_deps = dev_deps + elastic_deps + aiida_deps + ase_deps + pymatgen_deps + jarvis_deps
+all_deps = (
+    dev_deps
+    + elastic_deps
+    + aiida_deps
+    + ase_deps
+    + pymatgen_deps
+    + jarvis_deps
+    + http_client_deps
+)
 
 setup(
     name="optimade",
@@ -72,25 +90,26 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Intended Audience :: Developers",
         "Topic :: Database",
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.8,<3.11",
     install_requires=[
-        "lark-parser~=0.11.3",
-        "fastapi~=0.65.2",
-        "pydantic~=1.8,>=1.8.2",
-        "email_validator~=1.1",
-        "requests~=2.25",
+        "lark~=1.1",
+        "fastapi~=0.79",
+        "pydantic~=1.10,>=1.10.2",
+        "email_validator~=1.2",
+        "requests~=2.28",
     ],
     extras_require={
         "all": all_deps,
         "dev": dev_deps,
+        "http_client": http_client_deps,
         "docs": docs_deps,
         "testing": testing_deps,
         "server": server_deps,
@@ -105,6 +124,9 @@ setup(
         "jarvis": jarvis_deps,
     },
     entry_points={
-        "console_scripts": ["optimade-validator=optimade.validator:validate"]
+        "console_scripts": [
+            "optimade-validator=optimade.validator:validate",
+            "optimade-get=optimade.client.cli:get",
+        ]
     },
 )

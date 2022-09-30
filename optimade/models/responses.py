@@ -33,7 +33,7 @@ class ErrorResponse(Response):
     """errors MUST be present and data MUST be skipped"""
 
     meta: ResponseMeta = StrictField(
-        ..., description="A meta object containing non-standard information"
+        ..., description="A meta object containing non-standard information."
     )
     errors: List[OptimadeError] = StrictField(
         ...,
@@ -43,26 +43,26 @@ class ErrorResponse(Response):
 
     @root_validator(pre=True)
     def data_must_be_skipped(cls, values):
-        if values.get("data", None) is not None:
-            raise ValueError("data MUST be skipped for failures reporting errors")
+        if "data" in values:
+            raise ValueError("data MUST be skipped for failures reporting errors.")
         return values
 
 
 class IndexInfoResponse(Success):
     data: IndexInfoResource = StrictField(
-        ..., description="Index meta-database /info data"
+        ..., description="Index meta-database /info data."
     )
 
 
 class EntryInfoResponse(Success):
     data: EntryInfoResource = StrictField(
-        ..., description="OPTIMADE information for an entry endpoint"
+        ..., description="OPTIMADE information for an entry endpoint."
     )
 
 
 class InfoResponse(Success):
     data: BaseInfoResource = StrictField(
-        ..., description="The implementations /info data"
+        ..., description="The implementations /info data."
     )
 
 
@@ -85,34 +85,34 @@ class EntryResponseMany(Success):
 class LinksResponse(EntryResponseMany):
     data: Union[List[LinksResource], List[Dict[str, Any]]] = StrictField(
         ...,
-        description="List of unique OPTIMADE links resource objects",
+        description="List of unique OPTIMADE links resource objects.",
         uniqueItems=True,
     )
 
 
 class StructureResponseOne(EntryResponseOne):
     data: Union[StructureResource, Dict[str, Any], None] = StrictField(
-        ..., description="A single structures entry resource"
+        ..., description="A single structures entry resource."
     )
 
 
 class StructureResponseMany(EntryResponseMany):
     data: Union[List[StructureResource], List[Dict[str, Any]]] = StrictField(
         ...,
-        description="List of unique OPTIMADE structures entry resource objects",
+        description="List of unique OPTIMADE structures entry resource objects.",
         uniqueItems=True,
     )
 
 
 class ReferenceResponseOne(EntryResponseOne):
     data: Union[ReferenceResource, Dict[str, Any], None] = StrictField(
-        ..., description="A single references entry resource"
+        ..., description="A single references entry resource."
     )
 
 
 class ReferenceResponseMany(EntryResponseMany):
     data: Union[List[ReferenceResource], List[Dict[str, Any]]] = StrictField(
         ...,
-        description="List of unique OPTIMADE references entry resource objects",
+        description="List of unique OPTIMADE references entry resource objects.",
         uniqueItems=True,
     )

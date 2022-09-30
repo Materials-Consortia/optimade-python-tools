@@ -75,3 +75,15 @@ def test_chunk_it_up():
 
     generator = AddWarnings.chunk_it_up(content, chunk_size)
     assert "".join(generator) == content
+
+
+def test_empty_response_chunk_it_up(client_with_empty_extension_endpoint):
+    """Test that the chunking induced by the warnings middleware can handle
+    responses with empty bodies."""
+    from optimade.server.middleware import AddWarnings
+
+    add_warning_middleware = AddWarnings(client_with_empty_extension_endpoint.app)
+
+    response = client_with_empty_extension_endpoint.get("/extensions/test_empty_body")
+    add_warning_middleware._warnings = []
+    assert response.content == b""

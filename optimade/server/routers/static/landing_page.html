@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        {% block head %}
-        <title>{{ optimade_title }}</title>
+        <title>{{ provider.name }}</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="keywords" content="optimade,materials,crystals,database">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        {% endblock %}
 
     <style>
         html { margin: 2em; }
@@ -16,7 +14,7 @@
     </style>
     </head>
     <body>
-        <img id="logo" width="100" src="https://avatars0.githubusercontent.com/u/23107754?s=400&u=e1580af496ac195a3ac4c445a66a5699efb0c3d3"></img>
+        <img id="logo" width="100" src="https://matsci.org/uploads/default/original/2X/b/bd2f59b3bf14fb046b74538750699d7da4c19ac1.svg"></img>
         <h3>This is an <a href="https://www.optimade.org">OPTIMADE</a> base URL which can be queried with an OPTIMADE client.</h3>
         <h3>OPTIMADE version:</h3>
         <h3><span class="version">{{ api_version }}</span></h3>
@@ -31,14 +29,9 @@
         <p><a href={{ implementation.source_url }}>{{ implementation.source_url }}</a></p>
         <h3>Available endpoints:</h3>
         <ul>
-        {% for endpoint in endpoints %}
-        {{ '<li><a href="{}{}">{}{}</a></li>'.format(versioned_url, endpoint, versioned_url, endpoint) | safe }}
-        {% endfor %}
+        {% ENDPOINTS %}
         </ul>
-        {% if index_base_url != None %}
-            <h3>Index base URL:</h3>
-            <p><a href={{ index_base_url }}>{{ index_base_url }}</a></p>
-        {% endif %}
+        {% INDEX_BASE_URL %}
     </body>
     <footer>
         <div class="footer_text">

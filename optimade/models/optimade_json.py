@@ -146,9 +146,8 @@ class Warnings(OptimadeError):
 
     type: str = StrictField(
         "warning",
-        const="warning",
         description='Warnings must be of type "warning"',
-        pattern="^warning$",
+        regex="^warning$",
     )
 
     @root_validator(pre=True)
@@ -340,16 +339,16 @@ class Success(jsonapi.Response):
 
     @root_validator(pre=True)
     def either_data_meta_or_errors_must_be_set(cls, values):
-        """Overwriting the existing validation function, since 'errors' MUST NOT be set"""
+        """Overwriting the existing validation function, since 'errors' MUST NOT be set."""
         required_fields = ("data", "meta")
-        if not any(values.get(field) for field in required_fields):
+        if not any(field in values for field in required_fields):
             raise ValueError(
-                f"At least one of {required_fields} MUST be specified in the top-level response"
+                f"At least one of {required_fields} MUST be specified in the top-level response."
             )
 
         # errors MUST be skipped
-        if values.get("errors", None) is not None:
-            raise ValueError("'errors' MUST be skipped for a successful response")
+        if "errors" in values:
+            raise ValueError("'errors' MUST be skipped for a successful response.")
 
         return values
 
@@ -358,7 +357,7 @@ class BaseRelationshipMeta(jsonapi.Meta):
     """Specific meta field for base relationship resource"""
 
     description: str = StrictField(
-        ..., description="OPTIONAL human-readable description of the relationship"
+        ..., description="OPTIONAL human-readable description of the relationship."
     )
 
 
@@ -372,7 +371,7 @@ class BaseRelationshipResource(jsonapi.BaseResource):
 
 
 class Relationship(jsonapi.Relationship):
-    """Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource"""
+    """Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."""
 
     data: Optional[
         Union[BaseRelationshipResource, List[BaseRelationshipResource]]

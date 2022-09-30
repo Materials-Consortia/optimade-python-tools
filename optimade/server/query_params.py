@@ -1,10 +1,88 @@
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
-
+from typing import Iterable, List
 from optimade.server.config import CONFIG
+from warnings import warn
+from optimade.server.mappers import BaseResourceMapper
+from optimade.server.exceptions import BadRequest
+from optimade.server.warnings import UnknownProviderQueryParameter, QueryParamNotUsed
+from abc import ABC
 
 
-class EntryListingQueryParams:
+class BaseQueryParams(ABC):
+    """A base class for query parameters that provides validation via the `check_params` method.
+
+    Attributes:
+        unsupported_params: Any string parameter listed here will raise a warning when passed to
+            the check_params methods. Useful for disabling optional OPTIMADE query parameters that
+            are not implemented by the server, e.g., cursor-based pagination.
+
+    """
+
+    unsupported_params: List[str] = []
+
+    def check_params(self, query_params: Iterable[str]) -> None:
+        """This method checks whether all the query parameters that are specified
+        in the URL string are implemented in the relevant `*QueryParams` class.
+
+        This method handles four cases:
+
+        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,
+          and it is not prefixed with a known provider prefix, then a `BadRequest` is raised.
+        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,
+          that is prefixed with a known provider prefix, then the parameter is silently ignored
+        * If a query parameter is passed that is not defined in the relevant `*QueryParams` class,
+          that is prefixed with an unknown provider prefix, then a `UnknownProviderQueryParameter`
+          warning is emitted.
+        * If a query parameter is passed that is on the `unsupported_params` list for the inherited
+          class, then a `QueryParamNotUsed` warning is emitted.
+
+        Arguments:
+            query_params: An iterable of the request's string query parameters.
+
+        Raises:
+            `BadRequest`: if the query parameter was not found in the relevant class, or if it
+                does not have a valid prefix.
+
+        """
+        if not getattr(CONFIG, "validate_query_parameters", False):
+            return
+        errors = []
+        warnings = []
+        unsupported_warnings = []
+        for param in query_params:
+            if param in self.unsupported_params:
+                unsupported_warnings.append(param)
+            if not hasattr(self, param):
+                split_param = param.split("_")
+                if param.startswith("_") and len(split_param) > 2:
+                    prefix = split_param[1]
+                    if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
+                        errors.append(param)
+                    elif prefix not in BaseResourceMapper.KNOWN_PROVIDER_PREFIXES:
+                        warnings.append(param)
+                else:
+                    errors.append(param)
+
+        if warnings:
+            warn(
+                f"The query parameter(s) '{warnings}' are unrecognised and have been ignored.",
+                UnknownProviderQueryParameter,
+            )
+
+        if unsupported_warnings:
+            warn(
+                f"The query parameter(s) '{unsupported_warnings}' are not supported by this server and have been ignored.",
+                QueryParamNotUsed,
+            )
+
+        if errors:
+            raise BadRequest(
+                f"The query parameter(s) '{errors}' are not recognised by this endpoint."
+            )
+
+
+class EntryListingQueryParams(BaseQueryParams):
     """
     Common query params for all Entry listing endpoints.
 
@@ -92,6 +170,13 @@ class EntryListingQueryParams:
 
     """
 
+    # The reference server implementation only supports offset-based pagination
+    unsupported_params: List[str] = [
+        "page_cursor",
+        "page_below",
+        "page_above",
+    ]
+
     def __init__(
         self,
         *,
@@ -128,9 +213,9 @@ class EntryListingQueryParams:
             ge=0,
         ),
         page_number: int = Query(
-            0,
+            None,
             description="RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
-            ge=0,
+            ge=1,
         ),
         page_cursor: int = Query(
             0,
@@ -169,9 +254,10 @@ class EntryListingQueryParams:
         self.page_above = page_above
         self.page_below = page_below
         self.include = include
+        self.api_hint = api_hint
 
 
-class SingleEntryQueryParams:
+class SingleEntryQueryParams(BaseQueryParams):
     """
     Common query params for single entry endpoints.
 
@@ -244,3 +330,4 @@ class SingleEntryQueryParams:
         self.email_address = email_address
         self.response_fields = response_fields
         self.include = include
+        self.api_hint = api_hint

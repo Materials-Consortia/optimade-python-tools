@@ -1,7 +1,7 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
 from typing import Optional, Dict, List
-from pydantic import BaseModel, Field, validator  # pylint: disable=no-name-in-module
+from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
 
 from optimade.models.jsonapi import Relationships, Attributes, Resource
 from optimade.models.optimade_json import Relationship, DataType
@@ -91,6 +91,14 @@ class EntryResourceAttributes(Attributes):
         queryable=SupportLevel.MUST,
     )
 
+    @validator("immutable_id", pre=True)
+    def cast_immutable_id_to_str(cls, value):
+        """Convenience validator for casting `immutable_id` to a string."""
+        if value is not None and not isinstance(value, str):
+            value = str(value)
+
+        return value
+
 
 class EntryResource(Resource):
     """The base model for an entry resource."""
@@ -116,7 +124,7 @@ class EntryResource(Resource):
         queryable=SupportLevel.MUST,
     )
 
-    type: str = Field(
+    type: str = OptimadeField(
         description="""The name of the type of an entry.
 
 - **Type**: string.

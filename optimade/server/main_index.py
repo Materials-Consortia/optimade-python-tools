@@ -13,7 +13,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 with warnings.catch_warnings(record=True) as w:
-    from optimade.server.config import CONFIG
+    from optimade.server.config import CONFIG, DEFAULT_CONFIG_FILE_PATH
 
     config_warnings = w
 
@@ -22,15 +22,18 @@ from optimade.server.logger import LOGGER
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers import index_info, links, versions
-from optimade.server.routers.utils import BASE_URL_PREFIXES
+from optimade.server.routers.utils import BASE_URL_PREFIXES, JSONAPIResponse
 
-if os.getenv("OPTIMADE_CONFIG_FILE") is None:
+if config_warnings:
     LOGGER.warn(
         f"Invalid config file or no config file provided, running server with default settings. Errors: "
         f"{[warnings.formatwarning(w.message, w.category, w.filename, w.lineno, '') for w in config_warnings]}"
     )
 else:
-    LOGGER.info(f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE')}.")
+    LOGGER.info(
+        f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE', DEFAULT_CONFIG_FILE_PATH)}."
+    )
+
 
 if CONFIG.debug:  # pragma: no cover
     LOGGER.info("DEBUG MODE")
@@ -49,6 +52,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
     docs_url=f"{BASE_URL_PREFIXES['major']}/extensions/docs",
     redoc_url=f"{BASE_URL_PREFIXES['major']}/extensions/redoc",
     openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
+    default_response_class=JSONAPIResponse,
 )
 
 
@@ -77,7 +81,7 @@ if CONFIG.insert_test_data and CONFIG.index_links_path.exists():
         LOGGER.debug(
             "Adding Materials-Consortia providers to links from optimade.org..."
         )
-        providers = get_providers()
+        providers = get_providers(add_mongo_id=True)
         for doc in providers:
             links_coll.collection.replace_one(
                 filter={"_id": ObjectId(doc["_id"]["$oid"])},
@@ -129,6 +133,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
 
 @app.on_event("startup")
 async def startup_event():
+    CONFIG.is_index = True
     # Add API endpoints for MANDATORY base URL `/vMAJOR`
     add_major_version_base_url(app)
     # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`

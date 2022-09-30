@@ -8,11 +8,13 @@ For more information on the AiiDA code see [their website](http://www.aiida.net)
 This conversion function relies on the [`aiida-core`](https://github.com/aiidateam/aiida-core) package.
 """
 from warnings import warn
+from typing import List, Optional
 
 from optimade.models import StructureResource as OptimadeStructure
+from optimade.models import Species as OptimadeStructureSpecies
 
 from optimade.adapters.warnings import AdapterPackageNotFound, ConversionWarning
-from optimade.adapters.structures.utils import pad_cell
+from optimade.adapters.structures.utils import pad_cell, species_from_species_at_sites
 
 try:
     from aiida.orm.nodes.data.structure import StructureData, Kind, Site
@@ -46,8 +48,13 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
     lattice_vectors, adjust_cell = pad_cell(attributes.lattice_vectors)
     structure = StructureData(cell=lattice_vectors)
 
+    # If species not provided, infer data from species_at_sites
+    species: Optional[List[OptimadeStructureSpecies]] = attributes.species
+    if not species:
+        species = species_from_species_at_sites(attributes.species_at_sites)
+
     # Add Kinds
-    for kind in attributes.species:
+    for kind in species:
         symbols = []
         concentration = []
         mass = 0.0

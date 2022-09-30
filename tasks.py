@@ -1,7 +1,7 @@
 import os
 import re
 import sys
-from typing import Tuple
+from typing import TYPE_CHECKING
 from pathlib import Path
 import json
 
@@ -9,11 +9,16 @@ from invoke import task
 
 from jsondiff import diff
 
+if TYPE_CHECKING:
+    from typing import Tuple
+
+    from invoke import Context, Result
+
 
 TOP_DIR = Path(__file__).parent.resolve()
 
 
-def update_file(filename: str, sub_line: Tuple[str, str], strip: str = None):
+def update_file(filename: str, sub_line: "Tuple[str, str]", strip: str = None):
     """Utility function for tasks to read, update, and write files"""
     with open(filename, "r") as handle:
         lines = [
@@ -182,7 +187,7 @@ def get_markdown_spec(ctx):
         "pre-clean": "Remove the 'api_reference' sub directory prior to (re)creation."
     }
 )
-def create_api_reference_docs(_, pre_clean=False):
+def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
     """Create the API Reference in the documentation"""
     import shutil
 
@@ -206,7 +211,7 @@ def create_api_reference_docs(_, pre_clean=False):
     pages_template = 'title: "{name}"\n'
     md_template = "# {name}\n\n::: {py_path}\n"
     models_template = (
-        md_template + f"{' ' * 4}rendering:\n{' ' * 6}show_if_no_docstring: true\n"
+        md_template + f"{' ' * 4}options:\n{' ' * 6}show_if_no_docstring: true\n"
     )
 
     if docs_dir.exists() and pre_clean:
@@ -250,11 +255,36 @@ def create_api_reference_docs(_, pre_clean=False):
             md_filename = filename.replace(".py", ".md")
 
             # For models we want to include EVERYTHING, even if it doesn't have a doc-string
-            template = models_template if str(relpath) == "models" else md_template
+            # Also for `server.config`
+            template = (
+                models_template
+                if str(relpath) == "models"
+                or (str(relpath) == "server" and basename == "config")
+                else md_template
+            )
 
             write_file(
                 full_path=docs_sub_dir.joinpath(md_filename),
                 content=template.format(name=basename, py_path=py_path),
+            )
+
+    if pre_commit:
+        # Check if there have been any changes.
+        # List changes if yes.
+        if TYPE_CHECKING:
+            context: "Context" = context
+
+        # NOTE: grep returns an exit code of 1 if it doesn't find anything
+        # (which will be good in this case).
+        # Concerning the weird last grep command see:
+        # http://manpages.ubuntu.com/manpages/precise/en/man1/git-status.1.html
+        result: "Result" = context.run(
+            "git status --porcelain docs/api_reference | grep -E '^[? MARC][?MD]' || exit 0",
+            hide=True,
+        )
+        if result.stdout:
+            sys.exit(
+                f"The following files have been changed/added, please stage them:\n\n{result.stdout}"
             )
 
 

@@ -1,4 +1,4 @@
-"""This submodule implements the [`LarkParser`][optimade.filterparser.LarkParser] class,
+"""This submodule implements the [`LarkParser`][optimade.filterparser.lark_parser.LarkParser] class,
 which uses the lark library to parse filter strings with a defined OPTIMADE filter grammar
 into `Lark.Tree` objects for use by the filter transformers.
 
@@ -61,7 +61,10 @@ class LarkParser:
 
         """
 
-        version = version if version else max(AVAILABLE_PARSERS.keys())
+        if not version:
+            version = max(
+                _ for _ in AVAILABLE_PARSERS if AVAILABLE_PARSERS[_].get("default")
+            )
 
         if version not in AVAILABLE_PARSERS:
             raise ParserError(f"Unknown parser grammar version: {version}")
@@ -73,7 +76,7 @@ class LarkParser:
         self.variant = variant
 
         with open(AVAILABLE_PARSERS[version][variant]) as f:
-            self.lark = Lark(f)
+            self.lark = Lark(f, maybe_placeholders=False)
 
         self.tree = None
         self.filter = None

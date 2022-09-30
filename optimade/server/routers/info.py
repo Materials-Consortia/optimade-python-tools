@@ -4,6 +4,7 @@ from fastapi.exceptions import StarletteHTTPException
 from optimade import __api_version__
 from optimade.models import InfoResponse, EntryInfoResponse
 from optimade.server.routers.utils import meta_values, get_base_url
+from optimade.server.config import CONFIG
 from optimade.server.schemas import (
     ENTRY_INFO_SCHEMAS,
     ERROR_RESPONSES,
@@ -25,10 +26,12 @@ def get_info(request: Request) -> InfoResponse:
     from optimade.models import BaseInfoResource, BaseInfoAttributes
 
     return InfoResponse(
-        meta=meta_values(request.url, 1, 1, more_data_available=False),
+        meta=meta_values(
+            request.url, 1, 1, more_data_available=False, schema=CONFIG.schema_url
+        ),
         data=BaseInfoResource(
-            id=BaseInfoResource.schema()["properties"]["id"]["const"],
-            type=BaseInfoResource.schema()["properties"]["type"]["const"],
+            id=BaseInfoResource.schema()["properties"]["id"]["default"],
+            type=BaseInfoResource.schema()["properties"]["type"]["default"],
             attributes=BaseInfoAttributes(
                 api_version=__api_version__,
                 available_api_versions=[
@@ -65,16 +68,21 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
 
     schema = ENTRY_INFO_SCHEMAS[entry]()
     queryable_properties = {"id", "type", "attributes"}
-    properties = retrieve_queryable_properties(schema, queryable_properties)
+    properties = retrieve_queryable_properties(
+        schema, queryable_properties, entry_type=entry
+    )
 
     output_fields_by_format = {"json": list(properties.keys())}
 
     return EntryInfoResponse(
-        meta=meta_values(request.url, 1, 1, more_data_available=False),
+        meta=meta_values(
+            request.url, 1, 1, more_data_available=False, schema=CONFIG.schema_url
+        ),
         data=EntryInfoResource(
             formats=list(output_fields_by_format.keys()),
             description=schema.get("description", "Entry Resources"),
             properties=properties,
             output_fields_by_format=output_fields_by_format,
+            schema=CONFIG.schema_url,
         ),
     )

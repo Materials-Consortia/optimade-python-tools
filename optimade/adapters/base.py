@@ -19,7 +19,7 @@ resources can be converted to for [`ReferenceResource`][optimade.models.referenc
 and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
 """
 import re
-from typing import Union, Dict, Callable, Any, Tuple, List
+from typing import Union, Dict, Callable, Any, Tuple, List, Type
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
@@ -33,14 +33,16 @@ class EntryAdapter:
     Base class for lazy resource entry adapters.
 
     Attributes:
-        ENTRY_RESOURCE (EntryResource): Entry resource to store entry as.
-        _type_converters (Dict[str, Callable]): Dictionary of valid conversion types for entry.
+        ENTRY_RESOURCE: Entry resource to store entry as.
+        _type_converters: Dictionary of valid conversion types for entry.
         as_<_type_converters>: Convert entry to a type listed in `_type_converters`.
+        from_<_type_converters>: Convert an external type to the corresponding OPTIMADE model.
 
     """
 
-    ENTRY_RESOURCE: EntryResource = EntryResource
+    ENTRY_RESOURCE: Type[EntryResource] = EntryResource
     _type_converters: Dict[str, Callable] = {}
+    _type_ingesters: Dict[str, Callable] = {}
 
     def __init__(self, entry: dict) -> None:
         """
@@ -115,7 +117,7 @@ class EntryAdapter:
 
     @staticmethod
     def _get_model_attributes(
-        starting_instances: Union[Tuple[BaseModel], List[BaseModel]], name: str
+        starting_instances: Union[Tuple[BaseModel, ...], List[BaseModel]], name: str
     ) -> Any:
         """Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""
         for res in starting_instances:

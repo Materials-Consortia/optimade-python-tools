@@ -100,6 +100,6 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
 
 
 class BaseInfoResource(Resource):
-    id: str = Field("/", const="/", pattern="^/$")
-    type: str = Field("info", const="info", pattern="^info$")
+    id: str = Field("/", regex="^/$")
+    type: str = Field("info", regex="^info$")
     attributes: BaseInfoAttributes = Field(...)

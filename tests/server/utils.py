@@ -136,9 +136,9 @@ class BaseEndpointTests:
             "provider",
             "data_available",
             "implementation",
+            "schema",
             # TODO: These keys are not implemented in the example server implementations
             # Add them in when they are.
-            # "schema",
             # "last_id",
             # "response_message",
             # "warnings",
@@ -196,7 +196,19 @@ def client_factory():
         version: str = None,
         server: str = "regular",
         raise_server_exceptions: bool = True,
+        add_empty_endpoint: bool = False,
     ) -> OptimadeTestClient:
+        """Create a test client for the reference servers parameterised by:
+
+        - `version` (to be prepended to all requests),
+        - `server` type ("regular" or "index"),
+        - whether to raise exceptions from the server to the client
+          (`raise_server_exceptions`),
+        - whether to create an endpoint that returns an empty response
+          at `/extensions/test_empty_body` used for testing streaming
+          responses (`add_empty_endpoint`)
+
+        """
         if server == "regular":
             from optimade.server.main import (
                 app,
@@ -216,6 +228,19 @@ def client_factory():
 
         add_major_version_base_url(app)
         add_optional_versioned_base_urls(app)
+
+        if add_empty_endpoint:
+
+            from starlette.routing import Router, Route
+            from fastapi.responses import PlainTextResponse
+
+            async def empty(_):
+                return PlainTextResponse(b"", 200)
+
+            empty_router = Router(
+                routes=[Route("/extensions/test_empty_body", endpoint=empty)]
+            )
+            app.include_router(empty_router)
 
         if version:
             return OptimadeTestClient(

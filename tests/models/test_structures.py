@@ -84,11 +84,11 @@ deformities = (
     ),
     (
         {"chemical_formula_anonymous": "A1B1"},
-        "'chemical_formula_anonymous' A1B1 must omit proportion '1'",
+        "string does not match regex",
     ),
     (
         {"chemical_formula_anonymous": "BC1"},
-        "'chemical_formula_anonymous' BC1 must omit proportion '1'",
+        "string does not match regex",
     ),
     (
         {"chemical_formula_anonymous": "A9C"},
@@ -103,8 +103,8 @@ deformities = (
         "'chemical_formula_anonymous' A2B90 has wrong order: elements with highest proportion should appear first: [2, 90] vs expected [90, 2]",
     ),
     (
-        {"chemical_formula_anonymous": "A2B10"},
-        "'chemical_formula_anonymous' A2B10 has wrong order: elements with highest proportion should appear first: [2, 10] vs expected [10, 2]",
+        {"chemical_formula_anonymous": "AB10"},
+        "'chemical_formula_anonymous' AB10 has wrong order: elements with highest proportion should appear first: [1, 10] vs expected [10, 1]",
     ),
     (
         {"chemical_formula_hill": "SiGe"},
@@ -136,11 +136,11 @@ deformities = (
     ),
     (
         {"chemical_formula_reduced": "Ge1Si"},
-        "Must omit proportion '1' from formula Ge1Si in 'chemical_formula_reduced'",
+        "string does not match regex",
     ),
     (
         {"chemical_formula_reduced": "GeSi1"},
-        "Must omit proportion '1' from formula GeSi1 in 'chemical_formula_reduced'",
+        "string does not match regex",
     ),
     (
         {"chemical_formula_reduced": "SiGe2"},
@@ -166,6 +166,22 @@ deformities = (
         {"chemical_formula_reduced": "Ag6 Cl2"},
         "chemical_formula_reduced\n  string does not match regex",
     ),
+    (
+        {"chemical_formula_reduced": "Ge2Si2"},
+        "chemical_formula_reduced 'Ge2Si2' is not properly reduced: greatest common divisor was 2, expected 1.",
+    ),
+    (
+        {"chemical_formula_reduced": "Ge144Si60V24"},
+        "chemical_formula_reduced 'Ge144Si60V24' is not properly reduced: greatest common divisor was 12, expected 1.",
+    ),
+    (
+        {"chemical_formula_anonymous": "A10B5C5"},
+        "chemical_formula_anonymous 'A10B5C5' is not properly reduced: greatest common divisor was 5, expected 1.",
+    ),
+    (
+        {"chemical_formula_anonymous": "A44B15C9D4E3F2GHI0J0K0L0"},
+        "string does not match regex",
+    ),
 )
 
 
@@ -182,7 +198,7 @@ def test_structure_fatal_deformities(good_structure, deformity):
 
     deformity, message = deformity
     good_structure["attributes"].update(deformity)
-    with pytest.raises(ValidationError, match=fr".*{re.escape(message)}.*"):
+    with pytest.raises(ValidationError, match=rf".*{re.escape(message)}.*"):
         StructureResource(**good_structure)
 
 

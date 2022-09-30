@@ -5,7 +5,7 @@ from .utils import get_min_ver
 
 min_ver = get_min_ver("pymatgen")
 pymatgen = pytest.importorskip(
-    "pymatgen",
+    "pymatgen.core",
     minversion=min_ver,
     reason=f"pymatgen must be installed with minimum version {min_ver} for these tests to"
     " be able to run",
@@ -18,6 +18,7 @@ from optimade.adapters.structures.pymatgen import (
     get_pymatgen,
     _get_structure,
     _get_molecule,
+    from_pymatgen,
 )
 
 
@@ -49,3 +50,34 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
     for special_structure in SPECIAL_SPECIES_STRUCTURES:
         structure = Structure(special_structure)
         assert isinstance(get_pymatgen(structure), PymatgenStructure)
+
+
+def test_null_species(null_species_structure):
+    """Make sure null species are handled"""
+    assert isinstance(get_pymatgen(null_species_structure), PymatgenStructure)
+
+
+def test_successful_ingestion(RAW_STRUCTURES):
+    import numpy as np
+
+    lossy_keys = (
+        "chemical_formula_descriptive",
+        "chemical_formula_hill",
+        "last_modified",
+        "assemblies",
+        "attached",
+        "immutable_id",
+        "species",
+        "fractional_site_positions",
+    )
+    array_keys = ("cartesian_site_positions", "lattice_vectors")
+    for structure in RAW_STRUCTURES:
+        converted = from_pymatgen(get_pymatgen(Structure(structure))).dict()
+        for k in converted:
+            if k not in lossy_keys:
+                if k in array_keys:
+                    np.testing.assert_almost_equal(
+                        converted[k], structure["attributes"][k]
+                    )
+                else:
+                    assert converted[k] == structure["attributes"][k]

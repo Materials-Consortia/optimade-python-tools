@@ -66,11 +66,12 @@ class ElasticCollection(EntryCollection):
             )
 
         properties = {}
-        for field in list(body["mappings"]["doc"]["properties"].keys()):
+        for field in list(body["mappings"]["properties"].keys()):
             properties[self.resource_mapper.get_backend_field(field)] = body[
                 "mappings"
-            ]["doc"]["properties"].pop(field)
-        body["mappings"]["doc"]["properties"] = properties
+            ]["properties"].pop(field)
+        properties["id"] = {"type": "keyword"}
+        body["mappings"]["properties"] = properties
         self.client.indices.create(index=self.name, body=body, ignore=400)
 
         LOGGER.debug(f"Created Elastic index for {self.name!r} with body {body}")
@@ -96,20 +97,16 @@ class ElasticCollection(EntryCollection):
             The `body` parameter to pass to `client.indices.create(..., body=...)`.
 
         """
-        return {
-            "mappings": {
-                "doc": {
-                    "properties": {
-                        resource_mapper.get_optimade_field(field): {"type": "keyword"}
-                        for field in fields
-                    }
-                }
-            }
+        properties = {
+            resource_mapper.get_optimade_field(field): {"type": "keyword"}
+            for field in fields
         }
+        properties["id"] = {"type": "keyword"}
+        return {"mappings": {"properties": properties}}
 
     def __len__(self):
         """Returns the total number of entries in the collection."""
-        return Search(using=self.client, index=self.name).execute().hits.total
+        return Search(using=self.client, index=self.name).execute().hits.total.value
 
     def insert(self, data: List[EntryResource]) -> None:
         """Add the given entries to the underlying database.
@@ -142,7 +139,7 @@ class ElasticCollection(EntryCollection):
                 {
                     "_index": self.name,
                     "_id": get_id(item),
-                    "_type": "doc",
+                    "_type": "_doc",
                     "_source": item,
                 }
                 for item in data
@@ -189,12 +186,13 @@ class ElasticCollection(EntryCollection):
         search = search.sort(*elastic_sort)
 
         search = search[page_offset : page_offset + limit]
+        search = search.extra(track_total_hits=True)
         response = search.execute()
 
         results = [hit.to_dict() for hit in response.hits]
 
         if not single_entry:
-            data_returned = response.hits.total
+            data_returned = response.hits.total.value
             more_data_available = page_offset + limit < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}

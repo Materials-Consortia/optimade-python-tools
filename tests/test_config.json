@@ -18,12 +18,13 @@
     "provider_fields": {
         "structures": [
             "band_gap",
-            "chemsys"
+            {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"}
         ]
     },
     "aliases": {
         "structures": {
             "id": "task_id",
+            "immutable_id": "_id",
             "chemical_formula_descriptive": "pretty_formula",
             "chemical_formula_reduced": "pretty_formula",
             "chemical_formula_anonymous": "formula_anonymous"

@@ -1,5 +1,5 @@
-import os
-from glob import glob
+import abc
+from typing import Tuple
 
 import pytest
 
@@ -8,49 +8,35 @@ from lark import Tree
 from optimade.filterparser import LarkParser
 from optimade.server.exceptions import BadRequest
 
-testfile_dir = os.path.join(os.path.dirname(__file__), "testfiles")
 
+class BaseTestFilterParser(abc.ABC):
+    """Base class for parsing different versions of the grammar using `LarkParser`."""
 
-class TestParserV0_9_5:
-    @pytest.fixture(autouse=True)
-    def set_up(self):
-        self.test_filters = []
-        for fn in sorted(glob(os.path.join(testfile_dir, "*.inp"))):
-            with open(fn) as f:
-                self.test_filters.append(f.read().strip())
-        self.parser = LarkParser(version=(0, 9, 5))
-
-    def test_inputs(self):
-        for tf in self.test_filters:
-            if tf == "filter=number=0.0.1":
-                with pytest.raises(BadRequest):
-                    self.parser.parse(tf)
-            else:
-                tree = self.parser.parse(tf)
-                assert isinstance(tree, Tree)
-
-    def test_parser_version(self):
-        v = (0, 9, 5)
-        p = LarkParser(version=v)
-        assert isinstance(p.parse(self.test_filters[0]), Tree)
-        assert p.version == v
-
-    def test_repr(self):
-        assert repr(self.parser) is not None
-        self.parser.parse(self.test_filters[0])
-        assert repr(self.parser) is not None
-
-
-class TestParserV1_0_0:
-    version = (1, 0, 0)
-    variant = "default"
+    version: Tuple[int, int, int]
+    variant: str = "default"
 
     @pytest.fixture(autouse=True)
     def set_up(self):
         self.parser = LarkParser(version=self.version, variant=self.variant)
 
+    def test_repr(self):
+        assert repr(self.parser) is not None
+        self.parse("band_gap = 1")
+        assert repr(self.parser) is not None
+
     def parse(self, inp):
         return self.parser.parse(inp)
+
+    def test_parser_version(self):
+        assert self.parser.version == self.version
+        assert self.parser.variant == self.variant
+
+
+class TestParserV1_0_0(BaseTestFilterParser):
+    """Test cases for the v1.0.0 stable release grammar."""
+
+    version = (1, 0, 0)
+    variant = "default"
 
     def test_empty(self):
         assert isinstance(self.parse(" "), Tree)
@@ -276,11 +262,34 @@ class TestParserV1_0_0:
         with pytest.raises(BadRequest):
             self.parse("NOTICE=val")  # not valid property or value (NOTICE)
 
-    def test_parser_version(self):
-        assert self.parser.version == self.version
-        assert self.parser.variant == self.variant
 
-    def test_repr(self):
-        assert repr(self.parser) is not None
-        self.parser.parse('key="value"')
-        assert repr(self.parser) is not None
+class TestParserV1_2_0(TestParserV1_0_0):
+    """Additional tests for the v1.2.0 development grammar.
+
+    Should additionally pass all v1.0.0 tests.
+
+    """
+
+    version = (1, 2, 0)
+    variant = "develop"
+
+    def test_boolean_values(self):
+        assert isinstance(
+            self.parse("_exmpl_element_counts = TRUE"),
+            Tree,
+        )
+
+        assert isinstance(
+            self.parse("_exmpl_element_counts = FALSE"),
+            Tree,
+        )
+
+        assert isinstance(
+            self.parse("_exmpl_element_counts != FALSE"),
+            Tree,
+        )
+
+        assert isinstance(
+            self.parse("NOT _exmpl_element_counts = TRUE"),
+            Tree,
+        )

@@ -185,7 +185,11 @@ def test_list_length_comparisons_unaliased(check_response, check_error_response)
 def test_list_has_only(check_response):
     """Test HAS ONLY query on elements."""
     request = '/structures?filter=elements HAS ONLY "Ac", "Mg"'
-    expected_ids = ["mpf_23"]
+    expected_ids = ["mpf_1", "mpf_23"]
+    check_response(request, expected_ids)
+
+    request = '/structures?filter=elements HAS ONLY "Ac", "Ag"'
+    expected_ids = ["mpf_1", "mpf_200"]
     check_response(request, expected_ids)
 
     request = '/structures?filter=elements HAS ONLY "Ac"'
@@ -508,6 +512,10 @@ def test_filter_on_relationships(check_response, check_error_response):
 
     request = '/structures?filter=references.id HAS ONLY "dijkstra1968"'
     expected_ids = ["mpf_1", "mpf_2"]
+    check_response(request, expected_ids)
+
+    request = '/structures?filter=references.id HAS ONLY "dijkstra1968", "dummy/2019"'
+    expected_ids = ["mpf_1", "mpf_2", "mpf_3819"]
     check_response(request, expected_ids)
 
     request = '/structures?filter=references.doi HAS ONLY "10/123"'

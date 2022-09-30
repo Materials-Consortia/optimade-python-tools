@@ -12,7 +12,8 @@ import logging
 import random
 import urllib.parse
 import warnings
-from typing import Union, Tuple, Any, List, Dict, Optional
+import dataclasses
+from typing import Union, Tuple, Any, List, Dict, Optional, Set
 
 try:
     import simplejson as json
@@ -24,6 +25,7 @@ import requests
 from optimade.models import DataType, EntryInfoResponse, SupportLevel
 from optimade.validator.utils import (
     DEFAULT_CONN_TIMEOUT,
+    DEFAULT_READ_TIMEOUT,
     Client,
     test_case,
     print_failure,
@@ -67,7 +69,7 @@ class ImplementationValidator:
         base_url: str = None,
         verbosity: int = 0,
         respond_json: bool = False,
-        page_limit: int = 5,
+        page_limit: int = 4,
         max_retries: int = 5,
         run_optional_tests: bool = True,
         fail_fast: bool = False,
@@ -76,6 +78,7 @@ class ImplementationValidator:
         minimal: bool = False,
         http_headers: Dict[str, str] = None,
         timeout: float = DEFAULT_CONN_TIMEOUT,
+        read_timeout: float = DEFAULT_READ_TIMEOUT,
     ):
         """Set up the tests to run, based on constants in this module
         for required endpoints.
@@ -105,6 +108,7 @@ class ImplementationValidator:
             minimal: Whether or not to run only a minimal test set.
             http_headers: Dictionary of additional headers to add to every request.
             timeout: The connection timeout to use for all requests (in seconds).
+            read_timeout: The read timeout to use for all requests (in seconds).
 
         """
         self.verbosity = verbosity
@@ -156,6 +160,7 @@ class ImplementationValidator:
                 max_retries=self.max_retries,
                 headers=http_headers,
                 timeout=timeout,
+                read_timeout=read_timeout,
             )
 
         self._setup_log()
@@ -270,12 +275,6 @@ class ImplementationValidator:
                 entry_info_endpoint
             )
 
-        # Use the _entry_info_by_type to construct filters on the relevant endpoints
-        if not self.minimal:
-            for endp in self.available_json_endpoints:
-                self._log.debug("Testing queries on JSON entry endpoint of %s", endp)
-                self._recurse_through_endpoint(endp)
-
         # Test that the results from multi-entry-endpoints obey, e.g. page limits,
         # and that all entries can be deserialized with the patched models.
         # These methods also set the test_ids for each type of entry, which are validated
@@ -288,6 +287,12 @@ class ImplementationValidator:
         for endp in self.available_json_endpoints:
             self._log.debug("Testing single entry request of type %s", endp)
             self._test_single_entry_endpoint(endp)
+
+        # Use the _entry_info_by_type to construct filters on the relevant endpoints
+        if not self.minimal:
+            for endp in self.available_json_endpoints:
+                self._log.debug("Testing queries on JSON entry endpoint of %s", endp)
+                self._recurse_through_endpoint(endp)
 
         # Test that the links endpoint can be serialized correctly
         self._log.debug("Testing %s endpoint", CONF.links_endpoint)
@@ -354,6 +359,7 @@ class ImplementationValidator:
         prop_list = list(_impl_properties.keys())
 
         self._check_response_fields(endp, prop_list)
+
         chosen_entry, _ = self._get_archetypal_entry(endp, prop_list)
 
         if not chosen_entry:
@@ -499,19 +505,21 @@ class ImplementationValidator:
             if data_returned < 1:
                 return (
                     None,
-                    "Endpoint {endp!r} returned no entries, cannot get archetypal entry.",
+                    "Endpoint {endp!r} returned no entries, cannot get archetypal entry or test filtering.",
                 )
 
-            response, message = self._get_endpoint(
-                f"{endp}?page_offset={random.randint(0, data_returned-1)}&response_fields={','.join(properties)}",
-                multistage=True,
-            )
-            if response:
-                archetypal_entry = response.json()["data"][0]
-                return (
-                    archetypal_entry,
-                    f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
+            archetypal_entry = response.json()["data"][
+                random.randint(0, data_returned - 1)
+            ]
+            if "id" not in archetypal_entry:
+                raise ResponseError(
+                    f"Chosen archetypal entry did not have an ID, cannot proceed: {archetypal_entry!r}"
                 )
+
+            return (
+                archetypal_entry,
+                f"set archetypal entry for {endp} with ID {archetypal_entry['id']}.",
+            )
 
         raise ResponseError(f"Failed to get archetypal entry. Details: {message}")
 
@@ -532,7 +540,7 @@ class ImplementationValidator:
         test_query = f"{endp}?response_fields={','.join(subset_fields)}&page_limit=1"
         response, _ = self._get_endpoint(test_query, multistage=True)
 
-        if response and len(response.json()["data"]) == 1:
+        if response and len(response.json()["data"]) >= 0:
             doc = response.json()["data"][0]
             expected_fields = set(subset_fields)
             expected_fields -= CONF.top_level_non_attribute_fields
@@ -591,10 +599,10 @@ class ImplementationValidator:
             )
 
         if prop == "type":
-            if chosen_entry["type"] == endp:
+            if chosen_entry.get("type") == endp:
                 return True, f"Successfully validated {prop}"
             raise ResponseError(
-                f"Chosen entry of endpoint '{endp}' had unexpected type {chosen_entry['type']!r}."
+                f"Chosen entry of endpoint '{endp}' had unexpected or missing type: {chosen_entry.get('type')!r}."
             )
 
         prop_type = (
@@ -756,10 +764,17 @@ class ImplementationValidator:
 
         inclusive_operators = CONF.inclusive_operators[prop_type]
         exclusive_operators = CONF.exclusive_operators[prop_type]
+        field_specific_support_overrides = CONF.field_specific_overrides.get(prop, {})
 
         for operator in inclusive_operators | exclusive_operators:
             # Need to pre-format list and string test values for the query
             _test_value = self._format_test_value(test_value, prop_type, operator)
+
+            query_optional = (
+                query_optional
+                or operator
+                in field_specific_support_overrides.get(SupportLevel.OPTIONAL, [])
+            )
 
             query = f"{prop} {operator} {_test_value}"
             request = f"{endp}?filter={query}"
@@ -792,7 +807,47 @@ class ImplementationValidator:
             else:
                 num_data_returned[operator] = response["meta"].get("data_returned")
 
+            if prop in CONF.unique_properties and operator == "=":
+                if num_data_returned["="] is not None and num_data_returned["="] == 0:
+                    raise ResponseError(
+                        f"Unable to filter field 'id' for equality, no data was returned for {query}."
+                    )
+                if num_data_returned["="] is not None and num_data_returned["="] > 1:
+                    raise ResponseError(
+                        f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
+                    )
+
             num_response = num_data_returned[operator]
+
+            excluded = operator in exclusive_operators
+            # if we have all results on this page, check that the blessed ID is in the response
+            if excluded and (
+                chosen_entry.get("id", "")
+                in set(entry.get("id") for entry in response["data"])
+            ):
+                raise ResponseError(
+                    f"Entry {chosen_entry['id']} with value {prop!r}: {test_value} was not excluded by {query!r}"
+                )
+
+            # check that at least the archetypal structure was returned, unless we are using a fallback value
+            if not excluded and not using_fallback:
+                if (
+                    num_data_returned[operator] is not None
+                    and num_data_returned[operator] < 1
+                ):
+                    raise ResponseError(
+                        f"Supposedly inclusive query {query!r} did not include original entry ID {chosen_entry['id']!r} "
+                        f"(with field {prop!r} = {test_value}) potentially indicating a problem with filtering on this field."
+                    )
+
+            # check that the filter returned no entries that had a null or missing value for the filtered property
+            if any(
+                entry.get("attributes", {}).get(prop, entry.get(prop, None)) is None
+                for entry in response.get("data", [])
+            ):
+                raise ResponseError(
+                    f"Filter {query!r} on field {prop!r} returned entries that had null or missing values for the field."
+                )
 
             # Numeric and string comparisons must work both ways...
             if prop_type in (
@@ -865,52 +920,12 @@ class ImplementationValidator:
 
                 # check that the filter returned no entries that had a null or missing value for the filtered property
                 if any(
-                    entry["attributes"].get(prop, entry.get(prop, None)) is None
+                    entry.get("attributes", {}).get(prop, entry.get(prop, None)) is None
                     for entry in reversed_response.get("data", [])
                 ):
                     raise ResponseError(
                         f"Filter {reversed_query!r} on field {prop!r} returned entries that had null or missing values for the field."
                     )
-
-            excluded = operator in exclusive_operators
-            # if we have all results on this page, check that the blessed ID is in the response
-            if not response["meta"]["more_data_available"]:
-                if excluded and (
-                    chosen_entry["id"] in set(entry["id"] for entry in response["data"])
-                ):
-                    raise ResponseError(
-                        f"Object {chosen_entry['id']} with value {test_value} was not excluded by {query}"
-                    )
-
-            # check that at least the archetypal structure was returned, unless we are using a fallback value
-            if not excluded and not using_fallback:
-                if (
-                    num_data_returned[operator] is not None
-                    and num_data_returned[operator] < 1
-                ):
-                    raise ResponseError(
-                        f"Supposedly inclusive query '{query}' did not include original object ID {chosen_entry['id']} "
-                        f"(with field '{prop} = {test_value}') potentially indicating a problem with filtering on this field."
-                    )
-
-            # check that the filter returned no entries that had a null or missing value for the filtered property
-            if any(
-                entry["attributes"].get(prop, entry.get(prop, None)) is None
-                for entry in response.get("data", [])
-            ):
-                raise ResponseError(
-                    f"Filter {query!r} on field {prop!r} returned entries that had null or missing values for the field."
-                )
-
-        if prop in CONF.unique_properties:
-            if num_data_returned["="] is not None and num_data_returned["="] == 0:
-                raise ResponseError(
-                    f"Unable to filter field 'id' for equality, no data was returned for {query}."
-                )
-            if num_data_returned["="] is not None and num_data_returned["="] > 1:
-                raise ResponseError(
-                    f"Filter for an individual 'id' returned {num_data_returned['=']} results, when only 1 was expected."
-                )
 
         return True, f"{prop} passed filter tests"
 
@@ -969,15 +984,14 @@ class ImplementationValidator:
             if response_fields:
                 request_str += f"?response_fields={','.join(response_fields)}"
             response, _ = self._get_endpoint(request_str)
+            self._test_meta_schema_reporting(response, request_str, optional=True)
+
             if response:
                 self._deserialize_response(response, response_cls, request=request_str)
 
     def _test_multi_entry_endpoint(self, endp: str) -> None:
         """Requests and deserializes a multi-entry endpoint with the
         appropriate model.
-
-        TODO: deserialization is currently classed as an optional
-        test until our models are robust to support levels.
 
         Parameters:
             request_str: The multi-entry request to make, e.g.,
@@ -1007,6 +1021,7 @@ class ImplementationValidator:
 
         response, _ = self._get_endpoint(request_str)
 
+        self._test_meta_schema_reporting(response, request_str, optional=True)
         self._test_page_limit(response)
 
         deserialized, _ = self._deserialize_response(
@@ -1206,8 +1221,33 @@ class ImplementationValidator:
         )
 
     @test_case
+    def _test_meta_schema_reporting(
+        self,
+        response: requests.models.Response,
+        request_str: str,
+    ):
+        """Tests that the endpoint responds with a `meta->schema`."""
+        try:
+            if not response.json().get("meta", {}).get("schema"):
+                raise ResponseError(
+                    f"Query {request_str} did not report a schema in `meta->schema` field."
+                )
+        except json.JSONDecodeError:
+            raise ResponseError(
+                f"Unable to test presence of `meta->schema`: could not decode response as JSON.\n{str(response.content)}"
+            )
+
+        return (
+            True,
+            f"Query {request_str} successfully reported a schema in `meta->schema`.",
+        )
+
+    @test_case
     def _test_page_limit(
-        self, response: requests.models.Response, check_next_link: int = 5
+        self,
+        response: requests.models.Response,
+        check_next_link: int = 5,
+        previous_links: Optional[Set[str]] = None,
     ) -> Tuple[Optional[bool], str]:
         """Test that a multi-entry endpoint obeys the page limit by
         following pagination links up to a depth of `check_next_link`.
@@ -1217,12 +1257,16 @@ class ImplementationValidator:
                 compliance.
             check_next_link: Maximum recursion depth for following
                 pagination links.
+            previous_links: A set of previous links that will be used
+                to check that the `next` link is actually new.
 
         Returns:
             `True` if the test was successful and `None` if not, with a
             string summary.
 
         """
+        if previous_links is None:
+            previous_links = set()
         try:
             response = response.json()
         except (AttributeError, json.JSONDecodeError):
@@ -1255,6 +1299,12 @@ class ImplementationValidator:
                     "Endpoint suggested more data was available but provided no valid links->next link."
                 )
 
+            if next_link in previous_links:
+                raise ResponseError(
+                    f"The next link {next_link} has been provided already for a previous page."
+                )
+            previous_links.add(next_link)
+
             if not isinstance(next_link, str):
                 raise ResponseError(
                     f"Unable to parse links->next {next_link!r} as a link."
@@ -1267,11 +1317,12 @@ class ImplementationValidator:
                     f"Error when testing pagination: the response from `links->next` {next_link!r} failed the previous test."
                 )
 
-            check_next_link = bool(check_next_link - 1)
+            check_next_link = check_next_link - 1
             self._test_page_limit(
                 next_response,
                 check_next_link=check_next_link,
-                multistage=check_next_link,
+                multistage=bool(check_next_link),
+                previous_links=previous_links,
             )
 
         return (
@@ -1417,14 +1468,18 @@ class ImplementationValidator:
         if isinstance(expected_status_code, int):
             expected_status_code = [expected_status_code]
 
-        if response.status_code not in expected_status_code:
-            message = f"Request to '{request_str}' returned HTTP code {response.status_code} and not the allowed {expected_status_code}."
-            message += "\nAdditional details:"
+        message = f"received expected response: {response}."
+
+        if response.status_code != 200:
+            message = f"Request to '{request_str}' returned HTTP status code {response.status_code}."
+            message += "\nAdditional details from implementation:"
             try:
                 for error in response.json().get("errors", []):
                     message += f'\n  {error.get("title", "N/A")}: {error.get("detail", "N/A")} ({error.get("source", {}).get("pointer", "N/A")})'
             except json.JSONDecodeError:
                 message += f"\n  Could not parse response as JSON. Content type was {response.headers.get('content-type')!r}."
-            raise ResponseError(message)
 
-        return response, f"received expected response: {response}."
+            if response.status_code not in expected_status_code:
+                raise ResponseError(message)
+
+        return response, message

@@ -25,10 +25,16 @@ router = APIRouter(redirect_slashes=True)
 )
 def get_info(request: Request) -> IndexInfoResponse:
     return IndexInfoResponse(
-        meta=meta_values(request.url, 1, 1, more_data_available=False),
+        meta=meta_values(
+            request.url,
+            1,
+            1,
+            more_data_available=False,
+            schema=CONFIG.index_schema_url,
+        ),
         data=IndexInfoResource(
-            id=IndexInfoResource.schema()["properties"]["id"]["const"],
-            type=IndexInfoResource.schema()["properties"]["type"]["const"],
+            id=IndexInfoResource.schema()["properties"]["id"]["default"],
+            type=IndexInfoResource.schema()["properties"]["type"]["default"],
             attributes=IndexInfoAttributes(
                 api_version=f"{__api_version__}",
                 available_api_versions=[
@@ -46,7 +52,7 @@ def get_info(request: Request) -> IndexInfoResponse:
                 "default": IndexRelationship(
                     data={
                         "type": RelatedLinksResource.schema()["properties"]["type"][
-                            "const"
+                            "default"
                         ],
                         "id": CONFIG.default_db,
                     }

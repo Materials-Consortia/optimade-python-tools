@@ -1,8 +1,10 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 import re
 import warnings
+import sys
+import math
+from functools import reduce
 from enum import IntEnum, Enum
-from sys import float_info
 from typing import List, Optional, Union
 
 from pydantic import BaseModel, validator, root_validator, conlist
@@ -19,7 +21,7 @@ from optimade.models.utils import (
 )
 from optimade.server.warnings import MissingExpectedField
 
-EXTENDED_CHEMICAL_SYMBOLS = CHEMICAL_SYMBOLS + EXTRA_SYMBOLS
+EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
 
 __all__ = (
@@ -33,7 +35,8 @@ __all__ = (
 )
 
 
-EPS = float_info.epsilon
+# Use machine epsilon for single point floating precision
+EPS = 2**-23
 
 
 Vector3D = conlist(float, min_items=3, max_items=3)
@@ -142,8 +145,10 @@ Note: With regards to "source database", we refer to the immediate source being 
 
     @validator("chemical_symbols", each_item=True)
     def validate_chemical_symbols(cls, v):
-        if not (v in EXTENDED_CHEMICAL_SYMBOLS):
-            raise ValueError(f"{v} MUST be in {EXTENDED_CHEMICAL_SYMBOLS}")
+        if v not in EXTENDED_CHEMICAL_SYMBOLS:
+            raise ValueError(
+                f'{v!r} MUST be an element symbol, e.g., "C", "He", or a special symbol from {EXTRA_SYMBOLS}.'
+            )
         return v
 
     @validator("concentration", "mass")
@@ -159,7 +164,7 @@ Note: With regards to "source database", we refer to the immediate source being 
             return v
 
         raise ValueError(
-            "Could not validate {field.name} as 'chemical_symbols' is missing/invalid."
+            f"Could not validate {field.name!r} as 'chemical_symbols' is missing/invalid."
         )
 
     @validator("attached", "nattached")
@@ -809,7 +814,8 @@ The properties of the species are found in the property `species`.
             nullable_props = (
                 prop
                 for prop in schema["required"]
-                if schema["properties"][prop].get("support") == SupportLevel.SHOULD
+                if schema["properties"][prop].get("x-optimade-support")
+                == SupportLevel.SHOULD
             )
             for prop in nullable_props:
                 schema["properties"][prop]["nullable"] = True
@@ -837,7 +843,6 @@ The properties of the species are found in the property `species`.
         if v is None:
             return v
 
-        numbers = re.findall(r"(\d+\.?)+", v)
         elements = re.findall(r"[A-Z][a-z]?", v)
         expected_elements = sorted(elements)
 
@@ -854,10 +859,6 @@ The properties of the species are found in the property `species`.
                 f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {field.name!r}"
             )
 
-        if "1" in numbers:
-            raise ValueError(
-                f"Must omit proportion '1' from formula {v} in {field.name!r}"
-            )
         if expected_elements != elements:
             order = "Hill" if field.name == "chemical_formula_hill" else "alphabetical"
             raise ValueError(
@@ -872,12 +873,8 @@ The properties of the species are found in the property `species`.
             return v
 
         elements = tuple(re.findall(r"[A-Z][a-z]*", v))
-        numbers = [int(n.strip()) for n in re.split(r"[A-Z][a-z]*", v) if n.strip()]
-
-        if any(n == 1 for n in numbers):
-            raise ValueError(
-                f"'chemical_formula_anonymous' {v} must omit proportion '1'"
-            )
+        numbers = re.split(r"[A-Z][a-z]*", v)[1:]
+        numbers = [int(i) if i else 1 for i in numbers]
 
         expected_labels = ANONYMOUS_ELEMENTS[: len(elements)]
         expected_numbers = sorted(numbers, reverse=True)
@@ -892,6 +889,27 @@ The properties of the species are found in the property `species`.
             )
 
         return v
+
+    @validator("chemical_formula_anonymous", "chemical_formula_reduced")
+    def check_reduced_formulae(cls, value, field):
+        if value is None:
+            return value
+
+        numbers = [n.strip() or 1 for n in re.split(r"[A-Z][a-z]*", value)]
+        # Need to remove leading 1 from split and convert to ints
+        numbers = [int(n) for n in numbers[1:]]
+
+        if sys.version_info[1] >= 9:
+            gcd = math.gcd(*numbers)
+        else:
+            gcd = reduce(math.gcd, numbers)
+
+        if gcd != 1:
+            raise ValueError(
+                f"{field.name} {value!r} is not properly reduced: greatest common divisor was {gcd}, expected 1."
+            )
+
+        return value
 
     @validator("elements", each_item=True)
     def element_must_be_chemical_symbol(cls, v):
@@ -915,7 +933,7 @@ The properties of the species are found in the property `species`.
 
         if abs(sum(v) - 1) > EPS:
             raise ValueError(
-                f"elements_ratios MUST sum to 1 within floating point accuracy. It sums to: {sum(v)}"
+                f"elements_ratios MUST sum to 1 within (at least single precision) floating point accuracy. It sums to: {sum(v)}"
             )
         return v
 
@@ -1089,7 +1107,6 @@ class StructureResource(EntryResource):
 
     type: str = StrictField(
         "structures",
-        const="structures",
         description="""The name of the type of an entry.
 
 - **Type**: string.
@@ -1103,7 +1120,7 @@ class StructureResource(EntryResource):
 
 - **Examples**:
     - `"structures"`""",
-        pattern="^structures$",
+        regex="^structures$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )

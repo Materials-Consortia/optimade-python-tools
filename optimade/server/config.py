@@ -2,12 +2,7 @@
 from enum import Enum
 from pathlib import Path
 import warnings
-from typing import Any, Dict, List, Optional, Tuple
-
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
+from typing import Any, Dict, List, Optional, Tuple, Union, Literal
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
@@ -18,7 +13,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
 )
 from pydantic.env_settings import SettingsSourceCallable
 
-from optimade import __version__
+from optimade import __version__, __api_version__
 from optimade.models import Implementation, Provider
 
 
@@ -224,7 +219,8 @@ class ServerConfig(BaseSettings):
         description="General information about the provider of this OPTIMADE implementation",
     )
     provider_fields: Dict[
-        Literal["links", "references", "structures"], List[str]
+        Literal["links", "references", "structures"],
+        List[Union[str, Dict[Literal["name", "type", "unit", "description"], str]]],
     ] = Field(
         {},
         description=(
@@ -259,12 +255,41 @@ class ServerConfig(BaseSettings):
             "MongoDB-based backend."
         ),
     )
+
+    is_index: Optional[bool] = Field(
+        False,
+        description=(
+            "A runtime setting to dynamically switch between index meta-database and "
+            "normal OPTIMADE servers. Used for switching behaviour of e.g., `meta->optimade_schema` "
+            "values in the response. Any provided value may be overridden when used with the reference "
+            "server implementation."
+        ),
+    )
+
+    schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
+        f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade.json",
+        description=(
+            "A URL that will be provided in the `meta->schema` field for every response"
+        ),
+    )
+
+    index_schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
+        f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade_index.json",
+        description=(
+            "A URL that will be provided in the `meta->schema` field for every response from the index meta-database."
+        ),
+    )
+
     log_level: LogLevel = Field(
         LogLevel.INFO, description="Logging level for the OPTIMADE server."
     )
     log_dir: Path = Field(
         Path("/var/log/optimade/"),
         description="Folder in which log files will be saved.",
+    )
+    validate_query_parameters: Optional[bool] = Field(
+        True,
+        description="If True, the server will check whether the query parameters given in the request are correct.",
     )
 
     @validator("implementation", pre=True)
@@ -338,4 +363,8 @@ class ServerConfig(BaseSettings):
             )
 
 
-CONFIG = ServerConfig()
+CONFIG: ServerConfig = ServerConfig()
+"""This singleton loads the config from a hierarchy of sources (see
+[`customise_sources`][optimade.server.config.ServerConfig.Config.customise_sources])
+and makes it importable in the server code.
+"""

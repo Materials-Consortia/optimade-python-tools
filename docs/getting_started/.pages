@@ -1,6 +1,5 @@
 title: "Getting started"
-arrange:
-    - single_db.md
-    - multi_db.md
-    - validation.md
-    - filtering.md
+nav:
+    - client.md
+    - setting_up_an_api.md
+    - use_cases.md

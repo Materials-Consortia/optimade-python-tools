@@ -12,7 +12,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 with warnings.catch_warnings(record=True) as w:
-    from optimade.server.config import CONFIG
+    from optimade.server.config import CONFIG, DEFAULT_CONFIG_FILE_PATH
 
     config_warnings = w
 
@@ -30,16 +30,17 @@ from optimade.server.routers import (
     structures,
     versions,
 )
-from optimade.server.routers.utils import BASE_URL_PREFIXES
+from optimade.server.routers.utils import BASE_URL_PREFIXES, JSONAPIResponse
 
-
-if os.getenv("OPTIMADE_CONFIG_FILE") is None:
+if config_warnings:
     LOGGER.warn(
         f"Invalid config file or no config file provided, running server with default settings. Errors: "
         f"{[warnings.formatwarning(w.message, w.category, w.filename, w.lineno, '') for w in config_warnings]}"
     )
 else:
-    LOGGER.info(f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE')}.")
+    LOGGER.info(
+        f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE', DEFAULT_CONFIG_FILE_PATH)}."
+    )
 
 if CONFIG.debug:  # pragma: no cover
     LOGGER.info("DEBUG MODE")
@@ -56,6 +57,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
     docs_url=f"{BASE_URL_PREFIXES['major']}/extensions/docs",
     redoc_url=f"{BASE_URL_PREFIXES['major']}/extensions/redoc",
     openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
+    default_response_class=JSONAPIResponse,
 )
 
 
@@ -77,7 +79,7 @@ if CONFIG.insert_test_data:
             LOGGER.debug(
                 "Adding Materials-Consortia providers to links from optimade.org"
             )
-            providers = get_providers()
+            providers = get_providers(add_mongo_id=True)
             for doc in providers:
                 endpoint_collection.collection.replace_one(
                     filter={"_id": ObjectId(doc["_id"]["$oid"])},
