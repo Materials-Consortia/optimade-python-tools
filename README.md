@@ -8,7 +8,11 @@
 <code>optimade-python-tools</code>
 </h1>
 
+
 <div align="center">
+
+[![JOSS DOI](https://joss.theoj.org/papers/10.21105/joss.03458/status.svg)](https://doi.org/10.21105/joss.03458)
+
 <table>
 <thead align="center">
 <tr><th align="center">Latest release</th><th align="center">Build status</th><th align="center">Activity</th></tr>
