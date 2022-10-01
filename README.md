@@ -1,17 +1,39 @@
 <!-- markdownlint-disable MD033 -->
 <!-- markdownlint-disable-next-line MD041 -->
-<div align="center">
-<img width="10%" align="center" src="images/optimade_logo_180x180.svg">
+<div align="center" style="padding-bottom: 1em;">
+<img width="100px" align="center" src="https://matsci.org/uploads/default/original/2X/b/bd2f59b3bf14fb046b74538750699d7da4c19ac1.svg">
 </div>
 
 <h1 align="center">
-OPTIMADE Python tools</h1>
+<code>optimade-python-tools</code>
+</h1>
 
 <div align="center">
+<table>
+<thead align="center">
+<tr><th align="center">Latest release</th><th align="center">Build status</th><th align="center">Activity</th></tr>
+</thead>
 
-| Latest release | Build status | Activity |
-|:--------------:|:------------:|:--------:|
-| [![PyPI Version](https://img.shields.io/pypi/v/optimade?logo=pypi&logoColor=white)](https://pypi.org/project/optimade/)<br>[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/optimade?logo=python&logoColor=white)](https://pypi.org/project/optimade/)<br>[![OPTIMADE](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/optimade-version.json)](https://github.com/Materials-Consortia/OPTIMADE/) | [![Build Status](https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/CI%20tests?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+)<br>[![codecov](https://img.shields.io/codecov/c/github/Materials-Consortia/optimade-python-tools?logo=codecov&logoColor=white&token=UJAtmqkZZO)](https://codecov.io/gh/Materials-Consortia/optimade-python-tools)<br>[![Heroku App Status](https://heroku-shields.herokuapp.com/optimade??logo=heroku)](https://optimade.herokuapp.com) | [![Commit Activity](https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/pulse)<br>[![Last Commit](https://img.shields.io/github/last-commit/Materials-Consortia/optimade-python-tools/master?logo=github)](https://github.com/Materials-Consortia/optimade-python-tools/commits/master)<br>[![Contributors](https://badgen.net/github/contributors/Materials-Consortia/optimade-python-tools?icon=github)](https://github.com/Materials-Consortia/optimade-python-tools/graphs/contributors) |
+<tbody>
+<tr>
+  <td align="center">
+    <a href="https://pypi.org/project/optimade"><img alt="PyPI version" src="https://img.shields.io/pypi/v/optimade?logo=pypi&logoColor=white"></a><br>
+    <a href="https://pypi.org/project/optimade"><img alt="PyPI - Python Version"  src="https://img.shields.io/pypi/pyversions/optimade?logo=python&logoColor=white"></a><br>
+    <a href="https://github.com/Materials-Consortia/OPTIMADE"><img alt="OPTIMADE version" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/optimade-version.json">
+  </td>
+  <td align="center">
+    <a href="https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+"><img alt="Build Status" src="https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/CI%20tests?logo=github"></a><br>
+    <a href="https://codecov.io/gh/Materials-Consortia/optimade-python-tools"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/Materials-Consortia/optimade-python-tools?logo=codecov&logoColor=white&token=UJAtmqkZZO"></a><br>
+    <a href="https://optimade.herokuapp.com"><img alt="Heroku App Status"  src="https://heroku-shields.herokuapp.com/optimade??logo=heroku"></a>
+  </td>
+  <td align="center">
+    <a href="https://github.com/Materials-Consortia/optimade-python-tools/pulse"><img alt="Commit Activity" src="https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github"></a><br>
+    <a href="https://github.com/Materials-Consortia/optimade-python-tools/commits/master"><img alt="Last Commit" src="https://img.shields.io/github/last-commit/Materials-Consortia/optimade-python-tools/master?logo=github"></a><br>
+    <a href="https://github.com/Materials-Consortia/optimade-python-tools/graphs/contributors"><img alt="Contributors" src="https://badgen.net/github/contributors/Materials-Consortia/optimade-python-tools?icon=github"></a>
+  </td>
+</tr>
+</tbody>
+</table>
 
 </div>
 
@@ -42,11 +64,26 @@ Each release of the `optimade` package from this repository only targets one ver
 
 <div align="center">
 
-| OPTIMADE API version | `optimade` version |
-|:--------------------:|:------------------:|
-| [v1.0.0](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst) | [v0.12.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.9) |
-| [v1.1.0](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.1.0/optimade.rst) | [v0.16.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.0) |
+<table>
 
+<thead>
+    <tr>
+        <th align="center">OPTIMADE API version</th>
+        <th align="center"><code>optimade</code> version</th>
+    </tr>
+</thead>
+
+<tbody>
+    <tr>
+        <td align="center"><a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst">v1.0.0</a></td>
+        <td align="center"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.9">v0.12.9</a></td>
+    </tr>
+    <tr>
+        <td align="center"><a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.1.0/optimade.rst">v1.1.0</a></td>
+        <td align="center"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.0">v0.16.0+</a></td>
+    </tr>
+</tbody>
+</table>
 </div>
 
 ## Contributing and Getting Help
