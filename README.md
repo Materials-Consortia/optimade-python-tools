@@ -5,7 +5,7 @@
 </div>
 
 <h1 align="center">
-<code>optimade-python-tools</code>
+OPTIMADE Python tools
 </h1>
 
 
@@ -41,26 +41,29 @@
 
 </div>
 
-The aim of OPTIMADE is to develop a common API, compliant with the [JSON:API 1.0](http://jsonapi.org/format/1.0/) specification.
-This is to enable interoperability among databases that contain calculated properties of existing and hypothetical materials.
+The aim of [OPTIMADE](https://optimade.org) is to develop a common API, compliant with the [JSON:API 1.0](http://jsonapi.org/format/1.0/) specification.
+This is to enable interoperability among databases that serve crystal structures and calculated properties of existing and hypothetical materials.
 
-This repository contains a library of tools for implementing and consuming [OPTIMADE](https://www.optimade.org) APIs using Python.
-Server implementations can make use of the supported MongoDB (v4) and Elasticsearch (v6) database backends, or plug in a custom backend implementation.
-The package also contains a server validator tool, which may be called from the shell (`optimade-validator`) or used as a GitHub Action from [optimade-validator-action](https://github.com/Materials-Consortia/optimade-validator-action).
+This repository contains a library of tools for implementing and consuming [OPTIMADE APIs](https://www.optimade.org) using Python:
+1. [pydantic](https://github.com/pydantic/pydantic) data models for all [OPTIMADE entry types](https://www.optimade.org/optimade-python-tools/latest/all_models/) and endpoint responses, and a [Lark](https://github.com/lark-parser/lark) [EBNF grammar](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) implementation for the OPTIMADE filter language.
+1. A configurable reference server implementation that can make use of either MongoDB or Elasticsearch database backends out-of-the-box, and is readily extensible to other backends. Try it out on the [demo site](https://optimade.herokuapp.com)! The OpenAPI schemas of the server are used to construct the [OPTIMADE schemas](https://schemas.optimade.org/) site.
+1. An [OPTIMADE client](https://www.optimade.org/optimade-python-tools/latest/getting_started/client/) (`optimade-get`) that can query multiple [OPTIMADE providers](https://optimade.org/providers-dashboard) concurrently with a given filter, at the command-line or from Python code.
+1. A fuzzy API validator tool, which may be called from the shell (`optimade-validator`) or used as a GitHub Action from [optimade-validator-action](https://github.com/Materials-Consortia/optimade-validator-action); this validator is used to construct the [providers dashboard](https://optimade.org/providers-dashboard).
 
-The release history and changelog can be found in [the changelog](CHANGELOG.md).
 
 ## Documentation
 
 This document, guides, and the full module API documentation can be found online at [https://optimade.org/optimade-python-tools](https://optimade.org/optimade-python-tools).
-In particular, documentation of the OPTIMADE API response data models (implemented here with [pydantic](https://github.com/samuelcolvin/pydantic)) can be found online under [OPTIMADE Data Models](https://optimade.org/optimade-python-tools/all_models).
+In particular, documentation of the OPTIMADE API response data models (implemented here with [pydantic](https://github.com/pydantic/pydantic)) can be found online under [OPTIMADE Data Models](https://optimade.org/optimade-python-tools/latest/all_models).
+
+The release history and changelog can be found in [the changelog](CHANGELOG.md).
 
 ## Installation
 
 Detailed installation instructions for different use cases (e.g., using the library or running a server) can be found in [the installation documentation](INSTALL.md).
 
 The latest stable version of this package can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade`.
-The latest development version of this package can be installed from the master branch of this repository `git clone https://github.com/Materials-Consortia/optimade-python-tools`.
+The latest development version of this package can be obtained from the master branch of this repository `git clone https://github.com/Materials-Consortia/optimade-python-tools`.
 
 ## Supported OPTIMADE versions
 
@@ -110,4 +113,4 @@ If you use this package to access or serve OPTIMADE data, we kindly request that
 - [Interactive documentation](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/openapi/openapi.json) generated from [`openapi.json`](openapi/openapi.json) (see also [interactive JSON editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/openapi/openapi.json)).
 - [pydantic](https://pydantic-docs.helpmanual.io/), the library used for generating the OpenAPI schema from [Python models](https://www.optimade.org/optimade-python-tools/all_models/).
 - [FastAPI](https://fastapi.tiangolo.com/), the framework used for generating the reference implementation expressed by the [`openapi.json`](openapi/openapi.json) specification.
-- [lark](https://github.com/lark-parser/lark), the library used to parse the filter language in OPTIMADE queries.
+- [Lark](https://github.com/lark-parser/lark), the library used to parse the filter language in OPTIMADE queries.
