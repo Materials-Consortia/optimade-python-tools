@@ -1,6 +1,6 @@
 build==0.8.0
 codecov==2.1.12
-invoke==1.7.1
+invoke==1.7.3
 jsondiff==2.0.0
 pre-commit==2.20.0
 pylint==2.15.3
