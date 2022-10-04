@@ -11,7 +11,10 @@ OPTIMADE Python tools
 
 <div align="center">
 
-[![JOSS DOI](https://joss.theoj.org/papers/10.21105/joss.03458/status.svg)](https://doi.org/10.21105/joss.03458)
+<a href="https://doi.org/10.21105/joss.03458"><img alt="JOSS DOI" src="https://joss.theoj.org/papers/10.21105/joss.03458/status.svg"></a>
+</div>
+
+<div align="center">
 
 <table>
 <thead align="center">
