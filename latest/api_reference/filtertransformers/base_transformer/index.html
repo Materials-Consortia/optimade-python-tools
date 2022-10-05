@@ -1017,6 +1017,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="md-nav__link">
+    backend_mapping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="md-nav__link">
+    quantities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.__default__" class="md-nav__link">
     __default__()
   </a>
@@ -1026,13 +1040,6 @@
           <li class="md-nav__item">
   <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.__init__" class="md-nav__link">
     __init__()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="md-nav__link">
-    backend_mapping()
   </a>
   
 </li>
@@ -1152,13 +1159,6 @@
           <li class="md-nav__item">
   <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.property_zip_addon" class="md-nav__link">
     property_zip_addon()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="md-nav__link">
-    quantities()
   </a>
   
 </li>
@@ -2080,6 +2080,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="md-nav__link">
+    backend_mapping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="md-nav__link">
+    quantities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.__default__" class="md-nav__link">
     __default__()
   </a>
@@ -2089,13 +2103,6 @@
           <li class="md-nav__item">
   <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.__init__" class="md-nav__link">
     __init__()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="md-nav__link">
-    backend_mapping()
   </a>
   
 </li>
@@ -2220,13 +2227,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="md-nav__link">
-    quantities()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.set_op_rhs" class="md-nav__link">
     set_op_rhs()
   </a>
@@ -2339,18 +2339,17 @@
 <h1 id="base_transformer">base_transformer<a class="headerlink" href="#base_transformer" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade.filtertransformers.base_transformer"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>This submodule implements the
 <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.BaseTransformer"><code>BaseTransformer</code></a>
 and <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> classes
 for turning filters parsed by lark into backend-specific queries.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2360,346 +2359,51 @@ for turning filters parsed by lark into backend-specific queries.</p>
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.filtertransformers.base_transformer.BaseTransformer" class="doc doc-heading">
-        <code>BaseTransformer</code>
+        <code>
+BaseTransformer        </code>
+
 
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>Generic filter transformer that handles various
 parts of the grammar in a backend non-specific way.</p>
 
-  <p><strong>Attributes:</strong></p>
-  <table>
-    <thead>
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>operator_map</code></td>
-          <td>
-                <code><span title="typing.Dict">Dict</span>[str, str]</code>
-          </td>
-          <td><p>A map from comparison operators
+        <td><code>operator_map</code></td>
+        <td><code>Dict[str, str]</code></td>
+        <td><p>A map from comparison operators
 to their backend-specific versions.</p></td>
-        </tr>
-        <tr>
-          <td><code>mapper</code></td>
-          <td>
-          </td>
-          <td><p>A resource mapper object that defines the
+      </tr>
+      <tr>
+        <td><code>mapper</code></td>
+        <td><code>Optional[optimade.server.mappers.entries.BaseResourceMapper]</code></td>
+        <td><p>A resource mapper object that defines the
 expected fields and acts as a container for
 various field-related configuration.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-
+      </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span>
-<span class="normal">344</span>
-<span class="normal">345</span>
-<span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span>
-<span class="normal">355</span>
-<span class="normal">356</span>
-<span class="normal">357</span>
-<span class="normal">358</span>
-<span class="normal">359</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseTransformer</span><span class="p">(</span><span class="n">Transformer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseTransformer</span><span class="p">(</span><span class="n">Transformer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generic filter transformer that handles various</span>
 <span class="sd">    parts of the grammar in a backend non-specific way.</span>
 
@@ -2989,10 +2693,10 @@ various field-related configuration.</p></td>
 
     <span class="k">def</span> <span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;property_zip_addon: &quot;:&quot; property (&quot;:&quot; property)*&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3001,65 +2705,112 @@ various field-related configuration.</p></td>
 
 
 
+  <div class="doc doc-object doc-attribute">
 
 
 
-<div class="doc doc-object doc-function">
+<h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">backend_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">filtertransformers</span><span class="o">.</span><span class="n">base_transformer</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+<a href="#optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A mapping between backend field names (aliases) and the corresponding
+<a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> object.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">quantities</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">filtertransformers</span><span class="o">.</span><span class="n">base_transformer</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-writable"><code>writable</code></small>
+  </span>
+
+<a href="#optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A mapping from the OPTIMADE field name to the corresponding
+<a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> objects.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.__default__" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">__default__</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.__default__" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>The default rule to call when no definition is found for a particular construct.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">meta</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">meta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The default rule to call when no definition is found for a particular construct.&quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Calling __default__, i.e., unknown grammar concept. data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">, children: </span><span class="si">{</span><span class="n">children</span><span class="si">}</span><span class="s2">, meta: </span><span class="si">{</span><span class="n">meta</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Initialise the transformer object, optionally loading in a
 resource mapper for use when post-processing.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>  <span class="c1"># pylint: disable=super-init-not-called</span>
     <span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
@@ -3067,394 +2818,343 @@ resource mapper for use when post-processing.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="o">=</span> <span class="n">mapper</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
-
-<div class="doc doc-object doc-function">
 
 
-
-<h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">backend_mapping</span><span class="p">()</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-<a href="#optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>A mapping between backend field names (aliases) and the corresponding
-<a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> object.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@property</span>
-<span class="k">def</span> <span class="nf">backend_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;A mapping between backend field names (aliases) and the corresponding</span>
-<span class="sd">    [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="n">quantity</span><span class="o">.</span><span class="n">backend_field</span><span class="p">:</span> <span class="n">quantity</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">quantity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="p">}</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.comparison" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">comparison</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.comparison" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>comparison: constant_first_comparison | property_first_comparison</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;comparison: constant_first_comparison | property_first_comparison&quot;&quot;&quot;</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.constant" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">constant</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.constant" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>constant: string | number</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;constant: string | number&quot;&quot;&quot;</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.constant_first_comparison" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">constant_first_comparison</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.constant_first_comparison" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">331</span>
-<span class="normal">332</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.expression" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">expression</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.expression" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>expression: expression_clause ( OR expression_clause )</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">311</span>
-<span class="normal">312</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;expression: expression_clause ( OR expression_clause )&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.expression_clause" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">expression_clause</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.expression_clause" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>expression_clause: expression_phrase ( AND expression_phrase )*</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">314</span>
-<span class="normal">315</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;expression_clause: expression_phrase ( AND expression_phrase )*&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.expression_phrase" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">expression_phrase</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.expression_phrase" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>expression_phrase: [ NOT ] ( comparison | "(" expression ")" )</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">317</span>
-<span class="normal">318</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;expression_phrase: [ NOT ] ( comparison | &quot;(&quot; expression &quot;)&quot; )&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.filter" class="doc doc-heading">
-<code class="highlight language-python"><span class="nb">filter</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="nb">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.filter" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>filter: expression*</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;filter: expression*&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">arg</span> <span class="k">else</span> <span class="kc">None</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.fuzzy_string_op_rhs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">fuzzy_string_op_rhs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.fuzzy_string_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">341</span>
-<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.known_op_rhs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">known_op_rhs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">known_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.known_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>known_op_rhs: IS ( KNOWN | UNKNOWN )</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">338</span>
-<span class="normal">339</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">known_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">known_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;known_op_rhs: IS ( KNOWN | UNKNOWN )&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.length_op_rhs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">length_op_rhs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.length_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>length_op_rhs: LENGTH [ OPERATOR ] value</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">347</span>
-<span class="normal">348</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;length_op_rhs: LENGTH [ OPERATOR ] value&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.non_string_value" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">non_string_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">non_string_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.non_string_value" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>non_string_value: number | property</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">non_string_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;non_string_value: number | property&quot;&quot;&quot;</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.not_implemented_string" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">not_implemented_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">not_implemented_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.not_implemented_string" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>not_implemented_string: value</p>
 
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>NotImplementedError</code>
-          </td>
-          <td><p>For further information, see Materials-Consortia/OPTIMADE issue 157:
+        <td><code>NotImplementedError</code></td>
+        <td><p>For further information, see Materials-Consortia/OPTIMADE issue 157:
 https://github.com/Materials-Consortia/OPTIMADE/issues/157</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">not_implemented_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;not_implemented_string: value</span>
 
@@ -3464,36 +3164,31 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Comparing strings is not yet implemented.&quot;</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.number" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">number</span><span class="p">(</span><span class="n">number</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.number" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>number: SIGNED_INT | SIGNED_FLOAT</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;number: SIGNED_INT | SIGNED_FLOAT&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_INT&quot;</span><span class="p">:</span>
@@ -3501,58 +3196,57 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p></td>
     <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_FLOAT&quot;</span><span class="p">:</span>
         <span class="n">type_</span> <span class="o">=</span> <span class="nb">float</span>
     <span class="k">return</span> <span class="n">type_</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.postprocess" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">postprocess</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.postprocess" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Post-process the query according to the rules defined for
 the backend, returning the backend-specific query.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Post-process the query according to the rules defined for</span>
 <span class="sd">    the backend, returning the backend-specific query.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">query</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.property" class="doc doc-heading">
-<code class="highlight language-python"><span class="nb">property</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="nb">property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.property" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>property: IDENTIFIER ( "." IDENTIFIER )*</p>
 <p>If this transformer has an associated mapper, the property
 will be compared to possible relationship entry types and
@@ -3560,77 +3254,25 @@ for any supported provider prefixes. If there is a match,
 this rule will return a string and not a dereferenced
 <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a>.</p>
 
-  <p><strong>Raises:</strong></p>
-  <table>
-    <thead>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.server.exceptions.BadRequest" href="../../server/exceptions/#optimade.server.exceptions.BadRequest">BadRequest</a></code>
-          </td>
-          <td><p>If the property does not match any
+        <td><code>BadRequest</code></td>
+        <td><p>If the property does not match any
 of the above rules.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;property: IDENTIFIER ( &quot;.&quot; IDENTIFIER )*</span>
 
 <span class="sd">    If this transformer has an associated mapper, the property</span>
@@ -3680,24 +3322,26 @@ of the above rules.</p></td>
         <span class="n">quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantity_type</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">quantity_name</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">quantity</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.property_first_comparison" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">property_first_comparison</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">property_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.property_first_comparison" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>property_first_comparison:
 property ( value_op_rhs
          | known_op_rhs
@@ -3706,18 +3350,9 @@ property ( value_op_rhs
          | set_zip_op_rhs
          | length_op_rhs )</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">property_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">property_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;property_first_comparison:</span>
 <span class="sd">    property ( value_op_rhs</span>
 <span class="sd">             | known_op_rhs</span>
@@ -3727,394 +3362,346 @@ property ( value_op_rhs
 <span class="sd">             | length_op_rhs )</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.property_zip_addon" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">property_zip_addon</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.property_zip_addon" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>property_zip_addon: ":" property (":" property)*</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">358</span>
-<span class="normal">359</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;property_zip_addon: &quot;:&quot; property (&quot;:&quot; property)*&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
-
-<div class="doc doc-object doc-function">
 
 
-
-<h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">quantities</span><span class="p">()</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
-  </span>
-
-<a href="#optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>A mapping from the OPTIMADE field name to the corresponding
-<a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> objects.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@property</span>
-<span class="k">def</span> <span class="nf">quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;A mapping from the OPTIMADE field name to the corresponding</span>
-<span class="sd">    [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantities</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_quantities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_quantities</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantities</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.set_op_rhs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">set_op_rhs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.set_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">344</span>
-<span class="normal">345</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.set_zip_op_rhs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">set_zip_op_rhs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.set_zip_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>set_zip_op_rhs: property_zip_addon HAS ( value_zip
 | ONLY value_zip_list
 | ALL value_zip_list
 | ANY value_zip_list )</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span>
-<span class="normal">355</span>
-<span class="normal">356</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;set_zip_op_rhs: property_zip_addon HAS ( value_zip</span>
 <span class="sd">    | ONLY value_zip_list</span>
 <span class="sd">    | ALL value_zip_list</span>
 <span class="sd">    | ANY value_zip_list )</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.signed_int" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">signed_int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">signed_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.signed_int" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>signed_int : SIGNED_INT</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">signed_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;signed_int : SIGNED_INT&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.string" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">string</span><span class="p">(</span><span class="n">string</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.string" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>string: ESCAPED_STRING</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;string: ESCAPED_STRING&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.transform" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.transform" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Transform the query using the Lark <code>Transformer</code> then run the
 backend-specific post-processing methods.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Transform the query using the Lark `Transformer` then run the</span>
 <span class="sd">    backend-specific post-processing methods.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.value" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.value" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>value: string | number | property</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;value: string | number | property&quot;&quot;&quot;</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.value_list" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">value_list</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.value_list" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">301</span>
-<span class="normal">302</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;value_list: [ OPERATOR ] value ( &quot;,&quot; [ OPERATOR ] value )*&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.value_op_rhs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">value_op_rhs</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">value_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.value_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>value_op_rhs: OPERATOR value</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">value_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;value_op_rhs: OPERATOR value&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.value_zip" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">value_zip</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.value_zip" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;value_zip: [ OPERATOR ] value &quot;:&quot; [ OPERATOR ] value (&quot;:&quot; [ OPERATOR ] value)*&quot;&quot;&quot;</span>
     <span class="k">pass</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.value_zip_list" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">value_zip_list</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span></code>
+
 
 <a href="#optimade.filtertransformers.base_transformer.BaseTransformer.value_zip_list" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>value_zip_list: value_zip ( "," value_zip )*</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">308</span>
-<span class="normal">309</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;value_zip_list: value_zip ( &quot;,&quot; value_zip )*&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.filtertransformers.base_transformer.Quantity" class="doc doc-heading">
-        <code>Quantity</code>
+        <code>
+Quantity        </code>
+
 
 
 <a href="#optimade.filtertransformers.base_transformer.Quantity" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>Class to provide information about available quantities to the transformer.</p>
 <p>The transformer can use <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a>'s to</p>
 <ul>
@@ -4122,86 +3709,39 @@ backend-specific post-processing methods.</p>
 <li>map quantities to the underlying backend field name.</li>
 </ul>
 
-  <p><strong>Attributes:</strong></p>
-  <table>
-    <thead>
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the quantity as used in the filter expressions.</p></td>
       </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>name</code></td>
-          <td>
-          </td>
-          <td><p>The name of the quantity as used in the filter expressions.</p></td>
-        </tr>
-        <tr>
-          <td><code>backend_field</code></td>
-          <td>
-          </td>
-          <td><p>The name of the field for this quantity in the backend database, will be
+      <tr>
+        <td><code>backend_field</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>The name of the field for this quantity in the backend database, will be
 <code>name</code> by default.</p></td>
-        </tr>
-        <tr>
-          <td><code>length_quantity</code></td>
-          <td>
-          </td>
-          <td><p>Another (typically integer) <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a>
+      </tr>
+      <tr>
+        <td><code>length_quantity</code></td>
+        <td><code>Optional[optimade.filtertransformers.base_transformer.Quantity]</code></td>
+        <td><p>Another (typically integer) <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a>
 that can be queried as the length of this quantity, e.g. <code>elements</code> and <code>nelements</code>. Backends
 can then decide whether to use this for all "LENGTH" queries.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-
+      </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Quantity</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Quantity</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class to provide information about available quantities to the transformer.</span>
 
 <span class="sd">    The transformer can use [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]&#39;s to</span>
@@ -4244,10 +3784,10 @@ can then decide whether to use this for all "LENGTH" queries.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend_field</span> <span class="o">=</span> <span class="n">backend_field</span> <span class="k">if</span> <span class="n">backend_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">length_quantity</span> <span class="o">=</span> <span class="n">length_quantity</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -4259,90 +3799,60 @@ can then decide whether to use this for all "LENGTH" queries.</p></td>
 
 
 
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.filtertransformers.base_transformer.Quantity.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">length_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">length_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
 
 <a href="#optimade.filtertransformers.base_transformer.Quantity.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Initialise the <code>quantity</code> from it's name and aliases.</p>
 
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the quantity as used in the filter expressions.</p></td>
+        <td><em>required</em></td>
       </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>name</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td><p>The name of the quantity as used in the filter expressions.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>backend_field</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td><p>The name of the field for this quantity in the backend database, will be
+      <tr>
+        <td><code>backend_field</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the field for this quantity in the backend database, will be
 <code>name</code> by default.</p></td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>length_quantity</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.filtertransformers.base_transformer.Quantity" href="#optimade.filtertransformers.base_transformer.Quantity">Quantity</a></code>
-          </td>
-          <td><p>Another (typically integer) <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>length_quantity</code></td>
+        <td><code>Quantity</code></td>
+        <td><p>Another (typically integer) <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a>
 that can be queried as the length of this quantity, e.g. <code>elements</code> and <code>nelements</code>. Backends
 can then decide whether to use this for all "LENGTH" queries.</p></td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4363,28 +3873,33 @@ can then decide whether to use this for all "LENGTH" queries.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">backend_field</span> <span class="o">=</span> <span class="n">backend_field</span> <span class="k">if</span> <span class="n">backend_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">name</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">length_quantity</span> <span class="o">=</span> <span class="n">length_quantity</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
-  </div>
-
-</div>
 
 
 
 
   </div>
 
+    </div>
+
   </div>
 
-</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 

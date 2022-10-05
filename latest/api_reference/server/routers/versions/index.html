@@ -1855,13 +1855,13 @@
 <h1 id="versions">versions<a class="headerlink" href="#versions" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade.server.routers.versions"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
+
 
   <div class="doc doc-children">
 
@@ -1873,32 +1873,24 @@
 
 
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.server.routers.versions.get_versions" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_versions</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></code>
 
+
 <a href="#optimade.server.routers.versions.get_versions" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Respond with the text/csv representation for the served versions.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/server/routers/versions.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/routers/versions.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/versions&quot;</span><span class="p">,</span>
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Versions&quot;</span><span class="p">],</span>
     <span class="n">response_class</span><span class="o">=</span><span class="n">CsvResponse</span><span class="p">,</span>
@@ -1908,19 +1900,22 @@
     <span class="n">version</span> <span class="o">=</span> <span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/v&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;version</span><span class="se">\n</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">CsvResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
+
   </div>
 
-</div>
+    </div>
+
+  </div>
 
 
 

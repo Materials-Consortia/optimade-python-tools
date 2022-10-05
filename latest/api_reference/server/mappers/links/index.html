@@ -1522,6 +1522,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#optimade.server.mappers.links.LinksMapper.ENTRY_RESOURCE_CLASS" class="md-nav__link">
+    ENTRY_RESOURCE_CLASS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.mappers.links.LinksMapper.map_back" class="md-nav__link">
     map_back()
   </a>
@@ -1852,6 +1859,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#optimade.server.mappers.links.LinksMapper.ENTRY_RESOURCE_CLASS" class="md-nav__link">
+    ENTRY_RESOURCE_CLASS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.mappers.links.LinksMapper.map_back" class="md-nav__link">
     map_back()
   </a>
@@ -1881,13 +1895,13 @@
 <h1 id="links">links<a class="headerlink" href="#links" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade.server.mappers.links"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
+
 
   <div class="doc doc-children">
 
@@ -1897,44 +1911,24 @@
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.mappers.links.LinksMapper" class="doc doc-heading">
-        <code>LinksMapper</code>
+        <code>
+LinksMapper        </code>
+
 
 
 <a href="#optimade.server.mappers.links.LinksMapper" class="headerlink" title="Permanent link">&para;</a></h2>
 
-
-  <div class="doc doc-contents ">
-
+    <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/links.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LinksMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LinksMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
 
     <span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s2">&quot;links&quot;</span>
 
@@ -1954,10 +1948,64 @@
         <span class="n">newdoc</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
         <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span>
         <span class="k">return</span> <span class="n">newdoc</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="optimade.server.mappers.links.LinksMapper.ENTRY_RESOURCE_CLASS" class="doc doc-heading">
+        <code>
+ENTRY_RESOURCE_CLASS        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.server.mappers.links.LinksMapper.ENTRY_RESOURCE_CLASS" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A Links endpoint resource object</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/mappers/links.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LinksResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Links endpoint resource object&quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="s2">&quot;links&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;These objects are described in detail in the section Links Endpoint&quot;</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^links$&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">LinksResourceAttributes</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dictionary containing key-value pairs representing the Links resource&#39;s properties.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">relationships_must_not_be_present</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;relationships&quot; is not allowed for links resources&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
+
+
 
   <div class="doc doc-children">
 
@@ -1969,44 +2017,43 @@
 
 
 
-<div class="doc doc-object doc-function">
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.server.mappers.links.LinksMapper.map_back" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
   </span>
 
 <a href="#optimade.server.mappers.links.LinksMapper.map_back" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Map properties from MongoDB to OPTIMADE</p>
 <p>:param doc: A resource object in MongoDB format
 :type doc: dict</p>
 <p>:return: A resource object in OPTIMADE format
 :rtype: dict</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/server/mappers/links.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/mappers/links.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE</span>
 
@@ -2020,28 +2067,33 @@
     <span class="n">newdoc</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
     <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span>
     <span class="k">return</span> <span class="n">newdoc</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
-  </div>
-
-</div>
 
 
 
 
   </div>
 
+    </div>
+
   </div>
 
-</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 

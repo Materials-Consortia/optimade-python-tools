@@ -1210,20 +1210,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#optimade.models.references.ReferenceResource.attributes" class="md-nav__link">
-    attributes
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade.models.references.ReferenceResource.type" class="md-nav__link">
-    type
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#optimade.models.references.ReferenceResource.validate_attributes" class="md-nav__link">
     validate_attributes()
   </a>
@@ -2127,20 +2113,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#optimade.models.references.ReferenceResource.attributes" class="md-nav__link">
-    attributes
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade.models.references.ReferenceResource.type" class="md-nav__link">
-    type
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#optimade.models.references.ReferenceResource.validate_attributes" class="md-nav__link">
     validate_attributes()
   </a>
@@ -2365,13 +2337,13 @@
 <h1 id="references">references<a class="headerlink" href="#references" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade.models.references"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
+
 
   <div class="doc doc-children">
 
@@ -2381,49 +2353,28 @@
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.references.Person" class="doc doc-heading">
-        <code>Person</code>
+        <code>
+Person        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.references.Person" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A person, i.e., an author, editor or other.</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/references.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A person, i.e., an author, editor or other.&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
@@ -2446,10 +2397,10 @@
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2458,88 +2409,103 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.Person.firstname" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">firstname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;First name of the person.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">firstname</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.Person.firstname" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>First name of the person.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.Person.lastname" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lastname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Last name of the person.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">lastname</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.Person.lastname" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Last name of the person.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.Person.name" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Full name of the person, REQUIRED.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
   </span>
 
 <a href="#optimade.models.references.Person.name" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+      <p>Full name of the person, REQUIRED.</p>
+    </div>
 
   </div>
 
+
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.references.ReferenceResource" class="doc doc-heading">
-        <code>ReferenceResource</code>
+        <code>
+ReferenceResource        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.references.ReferenceResource" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>The <code>references</code> entries describe bibliographic references.</p>
 <p>The following properties are used to provide the bibliographic details:</p>
 <ul>
@@ -2560,50 +2526,9 @@
 </li>
 </ul>
 
-
         <details class="quote">
           <summary>Source code in <code>optimade/models/references.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The `references` entries describe bibliographic references.</span>
 
 <span class="sd">    The following properties are used to provide the bibliographic details:</span>
@@ -2644,10 +2569,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;reference object must have at least one field defined&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2657,293 +2582,73 @@
 
 
 
-<div class="doc doc-object doc-attribute">
 
 
-
-<h3 id="optimade.models.references.ReferenceResource.attributes" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">ReferenceResourceAttributes</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-  </span>
-
-<a href="#optimade.models.references.ReferenceResource.attributes" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="optimade.models.references.ReferenceResource.type" class="doc doc-heading">
-<code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="s1">&#39;references&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The name of the type of an entry.</span><span class="se">\n</span><span class="s1">- **Type**: string.</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n</span><span class="s1">    - **Response**: REQUIRED in the response.</span><span class="se">\n</span><span class="s1">    - MUST be an existing entry type.</span><span class="se">\n</span><span class="s1">    - The entry of type &lt;type&gt; and ID &lt;id&gt; MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span><span class="se">\n</span><span class="s1">- **Example**: `&quot;structures&quot;`&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="s1">&#39;^references$&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-  </span>
-
-<a href="#optimade.models.references.ReferenceResource.type" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.models.references.ReferenceResource.validate_attributes" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate_attributes</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
 <a href="#optimade.models.references.ReferenceResource.validate_attributes" class="headerlink" title="Permanent link">&para;</a></h3>
 
-
-  <div class="doc doc-contents ">
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/references.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">validate_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;reference object must have at least one field defined&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">v</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="optimade.models.references.ReferenceResourceAttributes" class="doc doc-heading">
-        <code>ReferenceResourceAttributes</code>
-
-
-<a href="#optimade.models.references.ReferenceResourceAttributes" class="headerlink" title="Permanent link">&para;</a></h2>
-
-
-  <div class="doc doc-contents ">
-
-  
-      <p>Model that stores the attributes of a reference.</p>
-<p>Many properties match the meaning described in the
-<a href="http://bibtexml.sourceforge.net/btxdoc.pdf">BibTeX specification</a>.</p>
+    <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/references.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">validate_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;reference object must have at least one field defined&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.models.references.ReferenceResourceAttributes" class="doc doc-heading">
+        <code>
+ReferenceResourceAttributes        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.models.references.ReferenceResourceAttributes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Model that stores the attributes of a reference.</p>
+<p>Many properties match the meaning described in the
+<a href="http://bibtexml.sourceforge.net/btxdoc.pdf">BibTeX specification</a>.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/references.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Model that stores the attributes of a reference.</span>
 
 <span class="sd">    Many properties match the meaning described in the</span>
@@ -3132,10 +2837,10 @@
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3144,519 +2849,600 @@
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.address" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">address</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">address</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.address" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.annote" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">annote</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">annote</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.annote" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.authors" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">authors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Person</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of person objects containing the authors of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">authors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">Person</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.authors" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>List of person objects containing the authors of the reference.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.bib_type" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">bib_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Type of the reference, corresponding to the **type** property in the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">bib_type</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.bib_type" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Type of the reference, corresponding to the <strong>type</strong> property in the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.booktitle" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">booktitle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">booktitle</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.booktitle" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.chapter" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">chapter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">chapter</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.chapter" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.crossref" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">crossref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">crossref</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.crossref" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.doi" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">doi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The digital object identifier of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">doi</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.doi" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>The digital object identifier of the reference.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.edition" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">edition</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">edition</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.edition" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.editors" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">editors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Person</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of person objects containing the editors of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">editors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">Person</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.editors" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>List of person objects containing the editors of the reference.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.howpublished" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">howpublished</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">howpublished</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.howpublished" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.institution" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">institution</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">institution</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.institution" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.journal" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">journal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">journal</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.journal" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.key" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">key</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.key" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.month" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">month</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">month</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.month" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.note" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">note</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">note</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.note" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.number" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">number</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">number</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.number" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.organization" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">organization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">organization</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.organization" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.pages" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">pages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">pages</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.pages" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.publisher" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">publisher</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">publisher</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.publisher" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.school" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">school</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">school</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.school" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.series" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">series</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">series</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.series" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.title" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.title" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.url" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The URL of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="n">AnyUrl</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.url" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>The URL of the reference.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.volume" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">volume</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">volume</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.volume" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.year" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">year</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">year</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.references.ReferenceResourceAttributes.year" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+      <p>Meaning of property matches the BiBTeX specification.</p>
+    </div>
 
   </div>
 
-  </div>
 
-</div>
+
+
 
 
 
 
   </div>
 
+    </div>
+
   </div>
 
-</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 

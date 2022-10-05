@@ -1138,19 +1138,6 @@
     Config
   </a>
   
-    <nav class="md-nav" aria-label="Config">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.models.jsonapi.Attributes.Config.extra" class="md-nav__link">
-    extra
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
         
           <li class="md-nav__item">
@@ -1401,19 +1388,6 @@
   <a href="#optimade.models.jsonapi.Meta.Config" class="md-nav__link">
     Config
   </a>
-  
-    <nav class="md-nav" aria-label="Config">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.models.jsonapi.Meta.Config.extra" class="md-nav__link">
-    extra
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -1714,19 +1688,6 @@
   <a href="#optimade.models.jsonapi.ToplevelLinks.Config" class="md-nav__link">
     Config
   </a>
-  
-    <nav class="md-nav" aria-label="Config">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.models.jsonapi.ToplevelLinks.Config.extra" class="md-nav__link">
-    extra
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -2451,19 +2412,6 @@
     Config
   </a>
   
-    <nav class="md-nav" aria-label="Config">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.models.jsonapi.Attributes.Config.extra" class="md-nav__link">
-    extra
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
         
           <li class="md-nav__item">
@@ -2714,19 +2662,6 @@
   <a href="#optimade.models.jsonapi.Meta.Config" class="md-nav__link">
     Config
   </a>
-  
-    <nav class="md-nav" aria-label="Config">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.models.jsonapi.Meta.Config.extra" class="md-nav__link">
-    extra
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -3028,19 +2963,6 @@
     Config
   </a>
   
-    <nav class="md-nav" aria-label="Config">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.models.jsonapi.ToplevelLinks.Config.extra" class="md-nav__link">
-    extra
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
         
           <li class="md-nav__item">
@@ -3073,15 +2995,14 @@
 <h1 id="jsonapi">jsonapi<a class="headerlink" href="#jsonapi" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade.models.jsonapi"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3091,55 +3012,33 @@
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.Attributes" class="doc doc-heading">
-        <code>Attributes</code>
+        <code>
+Attributes        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Attributes" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
-      <p>Members of the attributes object ("attributes") represent information about the resource object in which it's defined.</p>
-
-<details class="the-keys-for-attributes-must-not-be">
-  <summary>The keys for Attributes MUST NOT be</summary>
-  <p>relationships
-links
-id
-type</p>
-</details>
+      <p>Members of the attributes object ("attributes") represent information about the resource object in which it's defined.
+The keys for Attributes MUST NOT be:
+    relationships
+    links
+    id
+    type</p>
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Attributes</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Attributes</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Members of the attributes object (&quot;attributes\&quot;) represent information about the resource object in which it&#39;s defined.</span>
 <span class="sd">    The keys for Attributes MUST NOT be:</span>
@@ -3161,10 +3060,10 @@ type</p>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Attributes&quot;</span>
                 <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3174,93 +3073,56 @@ type</p>
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h3 id="optimade.models.jsonapi.Attributes.Config" class="doc doc-heading">
-        <code>Config</code>
+        <code>
+Config        </code>
+
 
 
 <a href="#optimade.models.jsonapi.Attributes.Config" class="headerlink" title="Permanent link">&para;</a></h3>
 
-
-  <div class="doc doc-contents ">
-
+    <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">287</span>
-<span class="normal">288</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
 
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="optimade.models.jsonapi.Attributes.Config.extra" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;allow&#39;</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-  </span>
-
-<a href="#optimade.models.jsonapi.Attributes.Config.extra" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+    </div>
 
   </div>
 
-  </div>
-
-</div>
 
 
-<div class="doc doc-object doc-function">
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.models.jsonapi.Attributes.check_illegal_attributes_fields" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_illegal_attributes_fields</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
 <a href="#optimade.models.jsonapi.Attributes.check_illegal_attributes_fields" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">illegal_fields</span><span class="p">:</span>
@@ -3269,66 +3131,46 @@ type</p>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Attributes&quot;</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.BaseResource" class="doc doc-heading">
-        <code>BaseResource</code>
+        <code>
+BaseResource        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.BaseResource" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>Minimum requirements to represent a Resource</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Minimum requirements to represent a Resource&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Resource ID&quot;</span><span class="p">)</span>
@@ -3355,10 +3197,10 @@ type</p>
                         <span class="c1"># this ensures &quot;type&quot; is added immediately after &quot;id&quot;.</span>
                         <span class="n">required</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
                 <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">required</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3367,84 +3209,71 @@ type</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.BaseResource.id" class="doc doc-heading">
-<code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource ID&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.BaseResource.id" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Resource ID</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.BaseResource.type" class="doc doc-heading">
-<code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource type&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.BaseResource.type" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Resource type</p>
+    </div>
+
   </div>
 
-</div>
 
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h3 id="optimade.models.jsonapi.BaseResource.Config" class="doc doc-heading">
-        <code>Config</code>
+        <code>
+Config        </code>
+
 
 
 <a href="#optimade.models.jsonapi.BaseResource.Config" class="headerlink" title="Permanent link">&para;</a></h3>
 
-
-  <div class="doc doc-contents ">
-
+    <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
@@ -3465,10 +3294,10 @@ type</p>
                     <span class="c1"># this ensures &quot;type&quot; is added immediately after &quot;id&quot;.</span>
                     <span class="n">required</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
             <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">required</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3480,51 +3309,31 @@ type</p>
 
 
 
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
 <h4 id="optimade.models.jsonapi.BaseResource.Config.schema_extra" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.BaseResource.Config.schema_extra" class="headerlink" title="Permanent link">&para;</a></h4>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Ensure <code>id</code> and <code>type</code> are the first two entries in the list required properties.</p>
-
-<details class="note">
-  <summary>Note</summary>
-  <p>This <em>requires</em> that <code>id</code> and <code>type</code> are the <em>first</em> model fields defined
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This <em>requires</em> that <code>id</code> and <code>type</code> are the <em>first</em> model fields defined
 for all sub-models of <code>BaseResource</code>.</p>
-</details>
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+</div>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
@@ -3544,85 +3353,58 @@ for all sub-models of <code>BaseResource</code>.</p>
                 <span class="c1"># this ensures &quot;type&quot; is added immediately after &quot;id&quot;.</span>
                 <span class="n">required</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
         <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">required</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
-  </div>
-
-</div>
 
 
 
 
   </div>
 
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-class">
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.Error" class="doc doc-heading">
-        <code>Error</code>
+        <code>
+Error        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Error" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>An error response</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An error response&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -3659,10 +3441,10 @@ for all sub-models of <code>BaseResource</code>.</p>
 
     <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3671,228 +3453,256 @@ for all sub-models of <code>BaseResource</code>.</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.code" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;an application-specific error code, expressed as a string value.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">code</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Error.code" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>an application-specific error code, expressed as a string value.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.detail" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">detail</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A human-readable explanation specific to this occurrence of the problem.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">detail</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Error.detail" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A human-readable explanation specific to this occurrence of the problem.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.id" class="doc doc-heading">
-<code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique identifier for this particular occurrence of the problem.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Error.id" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A unique identifier for this particular occurrence of the problem.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.links" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ErrorLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A links object storing about&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">ErrorLinks</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Error.links" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A links object storing about</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.meta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about the error.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Error.meta" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>a meta object containing non-standard meta-information about the error.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.source" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ErrorSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;An object containing references to the source of the error&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">source</span><span class="p">:</span> <span class="n">ErrorSource</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Error.source" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>An object containing references to the source of the error</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.status" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;the HTTP status code applicable to this problem, expressed as a string value.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">status</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Error.status" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>the HTTP status code applicable to this problem, expressed as a string value.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.title" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Error.title" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A short, human-readable summary of the problem. It <strong>SHOULD NOT</strong> change from occurrence to occurrence of the problem, except for purposes of localization.</p>
+    </div>
+
   </div>
 
-</div>
 
 
 
-<div class="doc doc-object doc-function">
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.models.jsonapi.Error.__hash__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__hash__</span><span class="p">()</span></code>
+<code class="highlight language-python"><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Error.__hash__" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Return hash(self).</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
-<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.ErrorLinks" class="doc doc-heading">
-        <code>ErrorLinks</code>
+        <code>
+ErrorLinks        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.ErrorLinks" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A Links object specific to Error objects</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Links object specific to Error objects&quot;&quot;&quot;</span>
 
     <span class="n">about</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A link that leads to further details about this particular occurrence of the problem.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3901,67 +3711,63 @@ for all sub-models of <code>BaseResource</code>.</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ErrorLinks.about" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">about</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A link that leads to further details about this particular occurrence of the problem.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">about</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ErrorLinks.about" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+      <p>A link that leads to further details about this particular occurrence of the problem.</p>
+    </div>
 
   </div>
 
+
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.ErrorSource" class="doc doc-heading">
-        <code>ErrorSource</code>
+        <code>
+ErrorSource        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.ErrorSource" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>an object containing references to the source of the error</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorSource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorSource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;an object containing references to the source of the error&quot;&quot;&quot;</span>
 
     <span class="n">pointer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -3973,10 +3779,10 @@ for all sub-models of <code>BaseResource</code>.</p>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a string indicating which URI query parameter caused the error.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3985,83 +3791,85 @@ for all sub-models of <code>BaseResource</code>.</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ErrorSource.parameter" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">parameter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a string indicating which URI query parameter caused the error.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">parameter</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ErrorSource.parameter" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>a string indicating which URI query parameter caused the error.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ErrorSource.pointer" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">pointer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. &quot;/data&quot; for a primary data object, or &quot;/data/attributes/title&quot; for a specific attribute].&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">pointer</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ErrorSource.pointer" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+      <p>a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].</p>
+    </div>
 
   </div>
 
+
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.JsonApi" class="doc doc-heading">
-        <code>JsonApi</code>
+        <code>
+JsonApi        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.JsonApi" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>An object describing the server's implementation</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">JsonApi</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">JsonApi</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An object describing the server&#39;s implementation&quot;&quot;&quot;</span>
 
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -4070,10 +3878,10 @@ for all sub-models of <code>BaseResource</code>.</p>
     <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Non-standard meta information&quot;</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -4082,82 +3890,85 @@ for all sub-models of <code>BaseResource</code>.</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.JsonApi.meta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Non-standard meta information&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.JsonApi.meta" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Non-standard meta information</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.JsonApi.version" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Version of the json API used&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">version</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.JsonApi.version" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+      <p>Version of the json API used</p>
+    </div>
 
   </div>
 
+
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.Link" class="doc doc-heading">
-        <code>Link</code>
+        <code>
+Link        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Link" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A link <strong>MUST</strong> be represented as either: a string containing the link's URL or a link object.</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A link **MUST** be represented as either: a string containing the link&#39;s URL or a link object.&quot;&quot;&quot;</span>
 
     <span class="n">href</span><span class="p">:</span> <span class="n">AnyUrl</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a string containing the link’s URL.&quot;</span><span class="p">)</span>
@@ -4165,10 +3976,10 @@ for all sub-models of <code>BaseResource</code>.</p>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a meta object containing non-standard meta-information about the link.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -4177,87 +3988,94 @@ for all sub-models of <code>BaseResource</code>.</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Link.href" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">href</span><span class="p">:</span> <span class="n">AnyUrl</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a string containing the link’s URL.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">href</span><span class="p">:</span> <span class="n">AnyUrl</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Link.href" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>a string containing the link’s URL.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Link.meta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about the link.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Link.meta" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+      <p>a meta object containing non-standard meta-information about the link.</p>
+    </div>
 
   </div>
 
+
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.Meta" class="doc doc-heading">
-        <code>Meta</code>
+        <code>
+Meta        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Meta" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>Non-standard meta-information that can not be represented as an attribute or relationship.</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Non-standard meta-information that can not be represented as an attribute or relationship.&quot;&quot;&quot;</span>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -4267,58 +4085,34 @@ for all sub-models of <code>BaseResource</code>.</p>
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h3 id="optimade.models.jsonapi.Meta.Config" class="doc doc-heading">
-        <code>Config</code>
+        <code>
+Config        </code>
+
 
 
 <a href="#optimade.models.jsonapi.Meta.Config" class="headerlink" title="Permanent link">&para;</a></h3>
 
-
-  <div class="doc doc-contents ">
-
+    <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
-<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
 
-  <div class="doc doc-children">
+    </div>
 
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="optimade.models.jsonapi.Meta.Config.extra" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;allow&#39;</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-  </span>
-
-<a href="#optimade.models.jsonapi.Meta.Config.extra" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-  <div class="doc doc-contents ">
   </div>
 
-</div>
+
 
 
 
@@ -4326,63 +4120,34 @@ for all sub-models of <code>BaseResource</code>.</p>
 
   </div>
 
-  </div>
-
-</div>
-
-
-
+    </div>
 
   </div>
 
-  </div>
 
-</div>
 
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.Relationship" class="doc doc-heading">
-        <code>Relationship</code>
+        <code>
+Relationship        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Relationship" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>Representation references from the resource object in which it’s defined to other resource objects.</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Representation references from the resource object in which it’s defined to other resource objects.&quot;&quot;&quot;</span>
 
     <span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RelationshipLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -4407,10 +4172,10 @@ for all sub-models of <code>BaseResource</code>.</p>
                 <span class="s2">&quot;Either &#39;links&#39;, &#39;data&#39;, or &#39;meta&#39; MUST be specified for Relationship&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -4419,90 +4184,94 @@ for all sub-models of <code>BaseResource</code>.</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Relationship.data" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">BaseResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseResource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource linkage&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">]]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Relationship.data" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Resource linkage</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Relationship.links" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RelationshipLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing at least one of the following: self, related&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">RelationshipLinks</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Relationship.links" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>a links object containing at least one of the following: self, related</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Relationship.meta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object that contains non-standard meta-information about the relationship.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Relationship.meta" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>a meta object that contains non-standard meta-information about the relationship.</p>
+    </div>
+
   </div>
 
-</div>
 
 
 
-<div class="doc doc-object doc-function">
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.models.jsonapi.Relationship.at_least_one_relationship_key_must_be_set" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
 <a href="#optimade.models.jsonapi.Relationship.at_least_one_relationship_key_must_be_set" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -4512,70 +4281,48 @@ for all sub-models of <code>BaseResource</code>.</p>
             <span class="s2">&quot;Either &#39;links&#39;, &#39;data&#39;, or &#39;meta&#39; MUST be specified for Relationship&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.RelationshipLinks" class="doc doc-heading">
-        <code>RelationshipLinks</code>
+        <code>
+RelationshipLinks        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.RelationshipLinks" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A resource object <strong>MAY</strong> contain references to other resource objects ("relationships").
 Relationships may be to-one or to-many.
 Relationships can be specified by including a member in a resource's links object.</p>
 
-
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RelationshipLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RelationshipLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A resource object **MAY** contain references to other resource objects (&quot;relationships&quot;).</span>
 <span class="sd">    Relationships may be to-one or to-many.</span>
 <span class="sd">    Relationships can be specified by including a member in a resource&#39;s links object.</span>
@@ -4604,10 +4351,10 @@ Relationships can be specified by including a member in a resource's links objec
                 <span class="s2">&quot;Either &#39;self&#39; or &#39;related&#39; MUST be specified for RelationshipLinks&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -4616,71 +4363,75 @@ Relationships can be specified by including a member in a resource's links objec
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.RelationshipLinks.related" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">related</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links).&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">related</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.RelationshipLinks.related" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A <a href="https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links">related resource link</a>.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.RelationshipLinks.self" class="doc doc-heading">
-<code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A link for the relationship itself (a &#39;relationship link&#39;).</span><span class="se">\n</span><span class="s2">This link allows the client to directly manipulate the relationship.</span><span class="se">\n</span><span class="s2">When fetched successfully, this link returns the [linkage](https://jsonapi.org/format/1.0/#document-resource-object-linkage) for the related resources as its primary data.</span><span class="se">\n</span><span class="s2">(See [Fetching Relationships](https://jsonapi.org/format/1.0/#fetching-relationships).)&quot;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.RelationshipLinks.self" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A link for the relationship itself (a 'relationship link').
+This link allows the client to directly manipulate the relationship.
+When fetched successfully, this link returns the <a href="https://jsonapi.org/format/1.0/#document-resource-object-linkage">linkage</a> for the related resources as its primary data.
+(See <a href="https://jsonapi.org/format/1.0/#fetching-relationships">Fetching Relationships</a>.)</p>
+    </div>
+
   </div>
 
-</div>
 
 
 
-<div class="doc doc-object doc-function">
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.models.jsonapi.RelationshipLinks.either_self_or_related_must_be_specified" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">either_self_or_related_must_be_specified</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
 <a href="#optimade.models.jsonapi.RelationshipLinks.either_self_or_related_must_be_specified" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">either_self_or_related_must_be_specified</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -4690,61 +4441,49 @@ Relationships can be specified by including a member in a resource's links objec
             <span class="s2">&quot;Either &#39;self&#39; or &#39;related&#39; MUST be specified for RelationshipLinks&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.Relationships" class="doc doc-heading">
-        <code>Relationships</code>
+        <code>
+Relationships        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Relationships" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
-      <p>Members of the relationships object ("relationships") represent references from the resource object in which it's defined to other resource objects.</p>
-
-<details class="keys-must-not-be">
-  <summary>Keys MUST NOT be</summary>
-  <p>type
-id</p>
-</details>
+      <p>Members of the relationships object ("relationships") represent references from the resource object in which it's defined to other resource objects.
+Keys MUST NOT be:
+    type
+    id</p>
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Relationships</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationships</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Members of the relationships object (\&quot;relationships\&quot;) represent references from the resource object in which it&#39;s defined to other resource objects.</span>
 <span class="sd">    Keys MUST NOT be:</span>
@@ -4761,10 +4500,10 @@ id</p>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Relationships&quot;</span>
                 <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -4776,29 +4515,25 @@ id</p>
 
 
 
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.models.jsonapi.Relationships.check_illegal_relationships_fields" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_illegal_relationships_fields</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
 <a href="#optimade.models.jsonapi.Relationships.check_illegal_relationships_fields" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_illegal_relationships_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">illegal_fields</span><span class="p">:</span>
@@ -4807,58 +4542,46 @@ id</p>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Relationships&quot;</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.Resource" class="doc doc-heading">
-        <code>Resource</code>
+        <code>
+Resource        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Resource" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>Resource objects appear in a JSON API document to represent resources.</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Resource</span><span class="p">(</span><span class="n">BaseResource</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Resource</span><span class="p">(</span><span class="n">BaseResource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Resource objects appear in a JSON API document to represent resources.&quot;&quot;&quot;</span>
 
     <span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ResourceLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -4877,10 +4600,10 @@ id</p>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)</span>
 <span class="s2">describing relationships between the resource and other JSON API resources.&quot;&quot;&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -4889,129 +4612,140 @@ id</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Resource.attributes" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Attributes</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;an attributes object representing some of the resource’s data.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">Attributes</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Resource.attributes" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>an attributes object representing some of the resource’s data.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Resource.links" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ResourceLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">ResourceLinks</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Resource.links" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>a links object containing links related to the resource.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Resource.meta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Resource.meta" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Resource.relationships" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Relationships</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)</span><span class="se">\n</span><span class="s1">describing relationships between the resource and other JSON API resources.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Relationships</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Resource.relationships" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+      <p><a href="https://jsonapi.org/format/1.0/#document-resource-object-relationships">Relationships object</a>
+describing relationships between the resource and other JSON API resources.</p>
+    </div>
 
   </div>
 
+
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.ResourceLinks" class="doc doc-heading">
-        <code>ResourceLinks</code>
+        <code>
+ResourceLinks        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.ResourceLinks" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A Resource Links object</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ResourceLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResourceLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Resource Links object&quot;&quot;&quot;</span>
 
     <span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A link that identifies the resource represented by the resource object.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -5020,102 +4754,63 @@ id</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ResourceLinks.self" class="doc doc-heading">
-<code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A link that identifies the resource represented by the resource object.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ResourceLinks.self" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+      <p>A link that identifies the resource represented by the resource object.</p>
+    </div>
 
   </div>
 
+
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.Response" class="doc doc-heading">
-        <code>Response</code>
+        <code>
+Response        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.Response" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A top-level response</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span>
-<span class="normal">344</span>
-<span class="normal">345</span>
-<span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span>
-<span class="normal">355</span>
-<span class="normal">356</span>
-<span class="normal">357</span>
-<span class="normal">358</span>
-<span class="normal">359</span>
-<span class="normal">360</span>
-<span class="normal">361</span>
-<span class="normal">362</span>
-<span class="normal">363</span>
-<span class="normal">364</span>
-<span class="normal">365</span>
-<span class="normal">366</span>
-<span class="normal">367</span>
-<span class="normal">368</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Response</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Response</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A top-level response&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -5162,10 +4857,10 @@ id</p>
                 <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%SZ&quot;</span>
             <span class="p">),</span>
         <span class="p">}</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -5174,158 +4869,162 @@ id</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Response.data" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Outputted Data&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NoneType</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">]]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Response.data" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Outputted Data</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Response.errors" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Error</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Error</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Response.errors" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A list of unique errors</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Response.included" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included resources&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Response.included" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A list of unique included resources</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Response.jsonapi" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">JsonApi</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">JsonApi</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Response.jsonapi" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Information about the JSON API used</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Response.links" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ToplevelLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">ToplevelLinks</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Response.links" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>Links associated with the primary data or errors</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.Response.meta" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information related to the Success&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Meta</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.Response.meta" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A meta object containing non-standard information related to the Success</p>
+    </div>
+
   </div>
 
-</div>
 
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h3 id="optimade.models.jsonapi.Response.Config" class="doc doc-heading">
-        <code>Config</code>
+        <code>
+Config        </code>
+
 
 
 <a href="#optimade.models.jsonapi.Response.Config" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>The specification mandates that datetimes must be encoded following
 <a href="https://tools.ietf.org/html/rfc3339">RFC3339</a>, which does not support
 fractional seconds, thus they must be stripped in the response. This can
 cause issues when the underlying database contains fields that do include
 microseconds, as filters may return unexpected results.</p>
 
-
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">356</span>
-<span class="normal">357</span>
-<span class="normal">358</span>
-<span class="normal">359</span>
-<span class="normal">360</span>
-<span class="normal">361</span>
-<span class="normal">362</span>
-<span class="normal">363</span>
-<span class="normal">364</span>
-<span class="normal">365</span>
-<span class="normal">366</span>
-<span class="normal">367</span>
-<span class="normal">368</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
 <span class="sd">    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support</span>
 <span class="sd">    fractional seconds, thus they must be stripped in the response. This can</span>
@@ -5338,10 +5037,10 @@ microseconds, as filters may return unexpected results.</p>
             <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%SZ&quot;</span>
         <span class="p">),</span>
     <span class="p">}</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -5350,61 +5049,58 @@ microseconds, as filters may return unexpected results.</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h4 id="optimade.models.jsonapi.Response.Config.json_encoders" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">json_encoders</span> <span class="o">=</span> <span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)}</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-  </span>
+<code class="highlight language-python"><span class="n">json_encoders</span></code>
+
 
 <a href="#optimade.models.jsonapi.Response.Config.json_encoders" class="headerlink" title="Permanent link">&para;</a></h4>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+    </div>
 
   </div>
 
+
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
+
+  </div>
 
 
-<div class="doc doc-object doc-function">
+
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.models.jsonapi.Response.either_data_meta_or_errors_must_be_set" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
 <a href="#optimade.models.jsonapi.Response.either_data_meta_or_errors_must_be_set" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">345</span>
-<span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">,</span> <span class="s2">&quot;errors&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
@@ -5414,77 +5110,46 @@ microseconds, as filters may return unexpected results.</p>
     <span class="k">if</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">values</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errors&quot;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Errors MUST NOT be an empty or &#39;null&#39; value.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.models.jsonapi.ToplevelLinks" class="doc doc-heading">
-        <code>ToplevelLinks</code>
+        <code>
+ToplevelLinks        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade.models.jsonapi.ToplevelLinks" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A set of Links objects, possibly including pagination</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span>
-<span class="normal">94</span>
-<span class="normal">95</span>
-<span class="normal">96</span>
-<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ToplevelLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ToplevelLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A set of Links objects, possibly including pagination&quot;&quot;&quot;</span>
 
     <span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -5522,10 +5187,10 @@ microseconds, as filters may return unexpected results.</p>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -5534,213 +5199,191 @@ microseconds, as filters may return unexpected results.</p>
 
 
 
-
-<div class="doc doc-object doc-attribute">
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.first" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">first</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The first page of data&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">first</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ToplevelLinks.first" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>The first page of data</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.last" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">last</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The last page of data&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">last</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ToplevelLinks.last" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>The last page of data</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.next" class="doc doc-heading">
-<code class="highlight language-python"><span class="nb">next</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The next page of data&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="nb">next</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ToplevelLinks.next" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>The next page of data</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.prev" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">prev</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The previous page of data&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">prev</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ToplevelLinks.prev" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>The previous page of data</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.related" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">related</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A related resource link&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="n">related</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ToplevelLinks.related" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A related resource link</p>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-attribute">
+
+  <div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.self" class="doc doc-heading">
-<code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A link to itself&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+<code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Link</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
 <a href="#optimade.models.jsonapi.ToplevelLinks.self" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
+      <p>A link to itself</p>
+    </div>
+
   </div>
 
-</div>
 
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.Config" class="doc doc-heading">
-        <code>Config</code>
+        <code>
+Config        </code>
+
 
 
 <a href="#optimade.models.jsonapi.ToplevelLinks.Config" class="headerlink" title="Permanent link">&para;</a></h3>
 
-
-  <div class="doc doc-contents ">
-
+    <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">96</span>
-<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
 
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="optimade.models.jsonapi.ToplevelLinks.Config.extra" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;allow&#39;</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-  </span>
-
-<a href="#optimade.models.jsonapi.ToplevelLinks.Config.extra" class="headerlink" title="Permanent link">&para;</a></h4>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-
+    </div>
 
   </div>
 
-  </div>
-
-</div>
 
 
-<div class="doc doc-object doc-function">
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.check_additional_keys_are_links" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">check_additional_keys_are_links</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
 <a href="#optimade.models.jsonapi.ToplevelLinks.check_additional_keys_are_links" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>The <code>ToplevelLinks</code> class allows any additional keys, as long as
 they are also Links or Urls themselves.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span>
-<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_additional_keys_are_links</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
 <span class="sd">    they are also Links or Urls themselves.</span>
@@ -5751,28 +5394,33 @@ they are also Links or Urls themselves.</p>
             <span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">parse_obj_as</span><span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]],</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">values</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
-  </div>
-
-</div>
 
 
 
 
   </div>
 
+    </div>
+
   </div>
 
-</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 

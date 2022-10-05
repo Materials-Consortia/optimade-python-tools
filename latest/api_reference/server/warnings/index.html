@@ -1951,13 +1951,13 @@
 <h1 id="warnings">warnings<a class="headerlink" href="#warnings" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade.server.warnings"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
+
 
   <div class="doc doc-children">
 
@@ -1967,111 +1967,87 @@
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.warnings.FieldValueNotRecognized" class="doc doc-heading">
-        <code>FieldValueNotRecognized</code>
+        <code>
+FieldValueNotRecognized        </code>
+
 
 
 <a href="#optimade.server.warnings.FieldValueNotRecognized" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A field or value used in the request is not recognised by this implementation.</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
-<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">FieldValueNotRecognized</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">FieldValueNotRecognized</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A field or value used in the request is not recognised by this implementation.&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
+
+
+    </div>
 
   </div>
 
-</div>
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.warnings.MissingExpectedField" class="doc doc-heading">
-        <code>MissingExpectedField</code>
+        <code>
+MissingExpectedField        </code>
+
 
 
 <a href="#optimade.server.warnings.MissingExpectedField" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A field was provided with a null value when a related field was provided
 with a value.</p>
 
-
         <details class="quote">
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MissingExpectedField</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MissingExpectedField</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A field was provided with a null value when a related field was provided</span>
 <span class="sd">    with a value.&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
+
+
+    </div>
 
   </div>
 
-</div>
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.warnings.OptimadeWarning" class="doc doc-heading">
-        <code>OptimadeWarning</code>
+        <code>
+OptimadeWarning        </code>
+
 
 
 <a href="#optimade.server.warnings.OptimadeWarning" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>Base Warning for the <code>optimade</code> package</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base Warning for the `optimade` package&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2095,10 +2071,10 @@ with a value.</p>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2112,186 +2088,188 @@ with a value.</p>
 
 
 
-  </div>
+
+
 
   </div>
 
-</div>
+    </div>
 
-<div class="doc doc-object doc-class">
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.warnings.QueryParamNotUsed" class="doc doc-heading">
-        <code>QueryParamNotUsed</code>
+        <code>
+QueryParamNotUsed        </code>
+
 
 
 <a href="#optimade.server.warnings.QueryParamNotUsed" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A query parameter is not used in this request.</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
-<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueryParamNotUsed</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryParamNotUsed</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A query parameter is not used in this request.&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
+
+
+    </div>
 
   </div>
 
-</div>
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.warnings.TimestampNotRFCCompliant" class="doc doc-heading">
-        <code>TimestampNotRFCCompliant</code>
+        <code>
+TimestampNotRFCCompliant        </code>
+
 
 
 <a href="#optimade.server.warnings.TimestampNotRFCCompliant" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A timestamp has been used in a filter that contains microseconds and is thus not
 RFC 3339 compliant. This may cause undefined behaviour in the query results.</p>
 
-
         <details class="quote">
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TimestampNotRFCCompliant</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TimestampNotRFCCompliant</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A timestamp has been used in a filter that contains microseconds and is thus not</span>
 <span class="sd">    RFC 3339 compliant. This may cause undefined behaviour in the query results.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
+
+
+    </div>
 
   </div>
 
-</div>
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.warnings.TooManyValues" class="doc doc-heading">
-        <code>TooManyValues</code>
+        <code>
+TooManyValues        </code>
+
 
 
 <a href="#optimade.server.warnings.TooManyValues" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A field or query parameter has too many values to be handled by this implementation.</p>
-
 
         <details class="quote">
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
-<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TooManyValues</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TooManyValues</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A field or query parameter has too many values to be handled by this implementation.&quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
+
+
+    </div>
 
   </div>
 
-</div>
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.warnings.UnknownProviderProperty" class="doc doc-heading">
-        <code>UnknownProviderProperty</code>
+        <code>
+UnknownProviderProperty        </code>
+
 
 
 <a href="#optimade.server.warnings.UnknownProviderProperty" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A provider-specific property has been requested via <code>response_fields</code> or as in a <code>filter</code> that is not
 recognised by this implementation.</p>
 
-
         <details class="quote">
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderProperty</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderProperty</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A provider-specific property has been requested via `response_fields` or as in a `filter` that is not</span>
 <span class="sd">    recognised by this implementation.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
+
+
+    </div>
 
   </div>
 
-</div>
 
-<div class="doc doc-object doc-class">
+
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.warnings.UnknownProviderQueryParameter" class="doc doc-heading">
-        <code>UnknownProviderQueryParameter</code>
+        <code>
+UnknownProviderQueryParameter        </code>
+
 
 
 <a href="#optimade.server.warnings.UnknownProviderQueryParameter" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>A provider-specific query parameter has been requested in the query with a prefix not
 recognised by this implementation.</p>
 
-
         <details class="quote">
           <summary>Source code in <code>optimade/server/warnings.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderQueryParameter</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderQueryParameter</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A provider-specific query parameter has been requested in the query with a prefix not</span>
 <span class="sd">    recognised by this implementation.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  </div>
 
-</div>
-
-
-
+    </div>
 
   </div>
 
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
+
+  </div>
 
 
 

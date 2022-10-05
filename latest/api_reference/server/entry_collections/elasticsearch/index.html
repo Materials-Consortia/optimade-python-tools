@@ -1433,6 +1433,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="md-nav__link">
+    predefined_index
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.__init__" class="md-nav__link">
     __init__()
   </a>
@@ -1440,8 +1447,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.__len__" class="md-nav__link">
-    __len__()
+  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.count" class="md-nav__link">
+    count()
   </a>
   
 </li>
@@ -1463,13 +1470,6 @@
           <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.insert" class="md-nav__link">
     insert()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="md-nav__link">
-    predefined_index()
   </a>
   
 </li>
@@ -1887,6 +1887,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="md-nav__link">
+    predefined_index
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.__init__" class="md-nav__link">
     __init__()
   </a>
@@ -1894,8 +1901,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.__len__" class="md-nav__link">
-    __len__()
+  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.count" class="md-nav__link">
+    count()
   </a>
   
 </li>
@@ -1917,13 +1924,6 @@
           <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.insert" class="md-nav__link">
     insert()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="md-nav__link">
-    predefined_index()
   </a>
   
 </li>
@@ -1951,13 +1951,13 @@
 <h1 id="elasticsearch">elasticsearch<a class="headerlink" href="#elasticsearch" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade.server.entry_collections.elasticsearch"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
+
 
   <div class="doc doc-children">
 
@@ -1967,205 +1967,24 @@
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.server.entry_collections.elasticsearch.ElasticCollection" class="doc doc-heading">
-        <code>ElasticCollection</code>
+        <code>
+ElasticCollection        </code>
+
 
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection" class="headerlink" title="Permanent link">&para;</a></h2>
 
-
-  <div class="doc doc-contents ">
-
+    <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
-<span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ElasticCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ElasticCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2346,10 +2165,10 @@
             <span class="n">more_data_available</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2358,110 +2177,90 @@
 
 
 
+  <div class="doc doc-object doc-attribute">
 
 
 
-<div class="doc doc-object doc-function">
+<h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predefined_index</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+<a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Loads and returns the default pre-defined index.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">resource_cls</span><span class="p">,</span> <span class="n">resource_mapper</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">resource_cls</span><span class="p">,</span> <span class="n">resource_mapper</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Initialize the ElasticCollection for the given parameters.</p>
 
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the collection.</p></td>
+        <td><em>required</em></td>
       </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>name</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td><p>The name of the collection.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>resource_cls</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a></code>
-          </td>
-          <td><p>The type of entry resource that is stored by the collection.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>resource_mapper</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a></code>
-          </td>
-          <td><p>A resource mapper object that handles aliases and
+      <tr>
+        <td><code>resource_cls</code></td>
+        <td><code>EntryResource</code></td>
+        <td><p>The type of entry resource that is stored by the collection.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>resource_mapper</code></td>
+        <td><code>BaseResourceMapper</code></td>
+        <td><p>A resource mapper object that handles aliases and
 format changes between deserialization and response.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>client</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch.Elasticsearch">Elasticsearch</span>]</code>
-          </td>
-          <td><p>A preconfigured Elasticsearch client.</p></td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>client</code></td>
+        <td><code>Optional[Elasticsearch]</code></td>
+        <td><p>A preconfigured Elasticsearch client.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">resource_cls</span><span class="p">:</span> <span class="n">EntryResource</span><span class="p">,</span>
@@ -2491,131 +2290,121 @@ format changes between deserialization and response.</p></td>
     <span class="c1"># otherwise assume it has already been created externally</span>
     <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">insert_test_data</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_optimade_index</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
-
-<div class="doc doc-object doc-function">
 
 
 
-<h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.__len__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__len__</span><span class="p">()</span></code>
-
-<a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.__len__" class="headerlink" title="Permanent link">&para;</a></h3>
+  <div class="doc doc-object doc-method">
 
 
-  <div class="doc doc-contents ">
-  
-      <p>Returns the total number of entries in the collection.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">Search</span><span class="p">(</span><span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">total</span><span class="o">.</span><span class="n">value</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+<h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.count" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.count" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the number of entries matching the query specified
+by the keyword arguments.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td></td>
+        <td><p>Query parameters as keyword arguments.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.create_elastic_index_from_mapper" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">create_elastic_index_from_mapper</span><span class="p">(</span><span class="n">resource_mapper</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
   </span>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.create_elastic_index_from_mapper" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Create a fallback elastic index based on a resource mapper.</p>
 
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
+        <td><code>resource_mapper</code></td>
+        <td><code>BaseResourceMapper</code></td>
+        <td><p>The resource mapper to create the index for.</p></td>
+        <td><em>required</em></td>
       </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>resource_mapper</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a></code>
-          </td>
-          <td><p>The resource mapper to create the index for.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>fields</code></td>
-          <td>
-                <code><span title="typing.Iterable">Iterable</span>[str]</code>
-          </td>
-          <td><p>The list of fields to use in the index.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
       <tr>
-        <th>Type</th>
-        <th>Description</th>
+        <td><code>fields</code></td>
+        <td><code>Iterable[str]</code></td>
+        <td><p>The list of fields to use in the index.</p></td>
+        <td><em>required</em></td>
       </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
-          </td>
-          <td><p>The <code>body</code> parameter to pass to <code>client.indices.create(..., body=...)</code>.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Dict[str, Any]</code></td>
+      <td><p>The <code>body</code> parameter to pass to <code>client.indices.create(..., body=...)</code>.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">create_elastic_index_from_mapper</span><span class="p">(</span>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -2635,50 +2424,32 @@ format changes between deserialization and response.</p></td>
     <span class="p">}</span>
     <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.create_optimade_index" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_optimade_index</span><span class="p">()</span></code>
+<code class="highlight language-python"><span class="n">create_optimade_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.create_optimade_index" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Load or create an index that can handle aliased OPTIMADE fields and attach it
 to the current client.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create_optimade_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_optimade_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
 <span class="sd">    to the current client.</span>
 
@@ -2699,93 +2470,54 @@ to the current client.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with body </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.insert" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">insert</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.insert" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Add the given entries to the underlying database.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>No validation is performed on the incoming data.</p>
+</div>
 
-<details class="warning">
-  <summary>Warning</summary>
-  <p>No validation is performed on the incoming data.</p>
-</details>
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
+        <td><code>data</code></td>
+        <td><code>List[optimade.models.entries.EntryResource]</code></td>
+        <td><p>The entry resource objects to add to the database.</p></td>
+        <td><em>required</em></td>
       </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>data</code></td>
-          <td>
-                <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
-          </td>
-          <td><p>The entry resource objects to add to the database.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">    Warning:</span>
@@ -2822,65 +2554,33 @@ to the current client.</p>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span>
         <span class="p">],</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">predefined_index</span><span class="p">()</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-<a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Loads and returns the default pre-defined index.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@property</span>
-<span class="k">def</span> <span class="nf">predefined_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Loads and returns the default pre-defined index.&quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;elastic_indexes.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">index</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">index</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
-  </div>
-
-</div>
 
 
 
 
   </div>
 
+    </div>
+
   </div>
 
-</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 

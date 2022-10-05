@@ -741,6 +741,19 @@
     Structure
   </a>
   
+    <nav class="md-nav" aria-label="Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.adapters.structures.adapter.Structure.ENTRY_RESOURCE" class="md-nav__link">
+    ENTRY_RESOURCE
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1835,6 +1848,19 @@
     Structure
   </a>
   
+    <nav class="md-nav" aria-label="Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.adapters.structures.adapter.Structure.ENTRY_RESOURCE" class="md-nav__link">
+    ENTRY_RESOURCE
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1855,13 +1881,13 @@
 <h1 id="adapter">adapter<a class="headerlink" href="#adapter" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade.adapters.structures.adapter"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
+
 
   <div class="doc doc-children">
 
@@ -1871,49 +1897,44 @@
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade.adapters.structures.adapter.Structure" class="doc doc-heading">
-        <code>Structure</code>
+        <code>
+Structure        </code>
+
 
 
 <a href="#optimade.adapters.structures.adapter.Structure" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-
-  
       <p>Lazy structure resource converter.</p>
 <p>Go to <a class="autorefs autorefs-internal" href="../../base/#optimade.adapters.base.EntryAdapter"><code>EntryAdapter</code></a> to see the full list of methods
 and properties.</p>
 
-  <p><strong>Attributes:</strong></p>
-  <table>
-    <thead>
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>ENTRY_RESOURCE</code></td>
-          <td>
-                <code><span title="typing.Type">Type</span>[<a class="autorefs autorefs-internal" title="optimade.models.StructureResource" href="../../../models/structures/#optimade.models.structures.StructureResource">StructureResource</a>]</code>
-          </td>
-          <td><p>This adapter stores entry resources as
+        <td><code>ENTRY_RESOURCE</code></td>
+        <td><code>Type[optimade.models.structures.StructureResource]</code></td>
+        <td><p>This adapter stores entry resources as
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResource"><code>StructureResource</code></a>s.</p></td>
-        </tr>
-        <tr>
-          <td><code>_type_converters</code></td>
-          <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
-          </td>
-          <td><p>Dictionary of valid conversion types for entry.</p>
+      </tr>
+      <tr>
+        <td><code>_type_converters</code></td>
+        <td><code>Dict[str, Callable]</code></td>
+        <td><p>Dictionary of valid conversion types for entry.</p>
 <p>Currently available types:</p>
 <ul>
 <li><code>aiida_structuredata</code></li>
@@ -1924,81 +1945,29 @@ and properties.</p>
 <li><code>pymatgen</code></li>
 <li><code>jarvis</code></li>
 </ul></td>
-        </tr>
-        <tr>
-          <td><code>_type_ingesters</code></td>
-          <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
-          </td>
-          <td><p>Dictionary of valid ingesters.</p></td>
-        </tr>
-        <tr>
-          <td><code>as_&lt;_type_converters&gt;</code></td>
-          <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
-          </td>
-          <td><p>Convert entry to a type listed in <code>_type_converters</code>.</p></td>
-        </tr>
-        <tr>
-          <td><code>from_&lt;_type_converters&gt;</code></td>
-          <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Callable">Callable</span>]</code>
-          </td>
-          <td><p>Convert an external type to an OPTIMADE
+      </tr>
+      <tr>
+        <td><code>_type_ingesters</code></td>
+        <td><code>Dict[str, Callable]</code></td>
+        <td><p>Dictionary of valid ingesters.</p></td>
+      </tr>
+      <tr>
+        <td><code>as_&lt;_type_converters&gt;</code></td>
+        <td></td>
+        <td><p>Convert entry to a type listed in <code>_type_converters</code>.</p></td>
+      </tr>
+      <tr>
+        <td><code>from_&lt;_type_converters&gt;</code></td>
+        <td></td>
+        <td><p>Convert an external type to an OPTIMADE
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes"><code>StructureResourceAttributes</code></a>
 model.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-
+      </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/adapter.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Structure</span><span class="p">(</span><span class="n">EntryAdapter</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Structure</span><span class="p">(</span><span class="n">EntryAdapter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Lazy structure resource converter.</span>
 
@@ -2043,10 +2012,10 @@ model.</p></td>
     <span class="n">_type_ingesters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;pymatgen&quot;</span><span class="p">:</span> <span class="n">from_pymatgen</span><span class="p">,</span>
     <span class="p">}</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2056,24 +2025,82 @@ model.</p></td>
 
 
 
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="optimade.adapters.structures.adapter.Structure.ENTRY_RESOURCE" class="doc doc-heading">
+        <code>
+ENTRY_RESOURCE        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade.adapters.structures.adapter.Structure.ENTRY_RESOURCE" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Representing a structure.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/structures/adapter.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - MUST be an existing entry type.</span>
+<span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^structures$&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">StructureResourceAttributes</span>
+</code></pre></div>
+        </details>
+
+
+    </div>
+
+  </div>
+
+
+
 
 
 
 
   </div>
 
-  </div>
-
-</div>
-
-
-
+    </div>
 
   </div>
 
+
+
+
+
+
+
   </div>
 
-</div>
+    </div>
+
+  </div>
 
 
 
