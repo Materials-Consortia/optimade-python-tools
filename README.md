@@ -26,7 +26,7 @@ OPTIMADE Python tools
   <td align="center">
     <a href="https://pypi.org/project/optimade"><img alt="PyPI version" src="https://img.shields.io/pypi/v/optimade?logo=pypi&logoColor=white"></a><br>
     <a href="https://pypi.org/project/optimade"><img alt="PyPI - Python Version"  src="https://img.shields.io/pypi/pyversions/optimade?logo=python&logoColor=white"></a><br>
-    <a href="https://github.com/Materials-Consortia/OPTIMADE"><img alt="OPTIMADE version" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/optimade-version.json">
+    <a href="https://github.com/Materials-Consortia/OPTIMADE"><img alt="OPTIMADE version" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/optimade-version.json"></a>
   </td>
   <td align="center">
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+"><img alt="Build Status" src="https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/CI%20tests?logo=github"></a><br>
