@@ -23,8 +23,8 @@ You can find it at the base URL: <http://localhost:5001/v1>.
 Here is an example of how it may look to start your server:
 
 ```sh
-:~$ export OPTIMADE_CONFIG_FILE=/home/optimade_server/config.json
-:~$ ./path/to/optimade/run.sh index
+export OPTIMADE_CONFIG_FILE=/home/optimade_server/config.json
+./path/to/optimade/run.sh index
 ```
 
 ## Full development installation
