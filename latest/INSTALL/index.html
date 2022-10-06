@@ -1933,8 +1933,8 @@ The location of that <code>json</code> file is controllable using the <code>inde
 <p>Running the index meta-database is then as simple as writing <code>./run.sh index</code> in a terminal from the root of this package.
 You can find it at the base URL: <a href="http://localhost:5001/v1">http://localhost:5001/v1</a>.</p>
 <p>Here is an example of how it may look to start your server:</p>
-<div class="highlight"><pre><span></span><code>:~$ <span class="nb">export</span> <span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span>/home/optimade_server/config.json
-:~$ ./path/to/optimade/run.sh index
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span>/home/optimade_server/config.json
+./path/to/optimade/run.sh index
 </code></pre></div>
 <h2 id="full-development-installation">Full development installation<a class="headerlink" href="#full-development-installation" title="Permanent link">&para;</a></h2>
 <p>The dependencies of this package can be found in <code>setup.py</code> with their latest supported versions.
