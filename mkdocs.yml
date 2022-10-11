@@ -59,7 +59,7 @@ plugins:
             show_category_heading: false
             show_if_no_docstring: false
             show_source: true
-            show_bases: false
+            show_bases: true
             group_by_category: true
             heading_level: 2
             filters:
@@ -68,8 +68,8 @@ plugins:
               - "!__all__$"
               - "!__config__$"
               - "!ValidatorResults$"
-            members: null
-            # inherited_members: false  # not yet supported
+            members: true
+            inherited_members: true
             docstring_style: google
             enable_inventory: true
   - awesome-pages
