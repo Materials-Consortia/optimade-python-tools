@@ -27,7 +27,7 @@ server_deps = [
 
 
 # Client minded
-aiida_deps = ["aiida-core~=2.0", "wrapt~=2.14;python_version >= '3.11'"]
+aiida_deps = ["aiida-core~=2.0"]
 http_client_deps = [
     "httpx~=0.23",
     "rich~=12.5",
