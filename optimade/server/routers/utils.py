@@ -241,6 +241,7 @@ def get_entries(
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
+
     (
         results,
         data_returned,
