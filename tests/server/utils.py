@@ -1,18 +1,13 @@
+import json
 import re
 import typing
-from urllib.parse import urlparse
 import warnings
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+from urllib.parse import urlparse
 
 import pytest
-from requests import Response
-
-from pydantic import BaseModel  # pylint: disable=no-name-in-module
 from fastapi.testclient import TestClient
+from pydantic import BaseModel  # pylint: disable=no-name-in-module
+from requests import Response
 from starlette import testclient
 
 from optimade import __api_version__
@@ -211,15 +206,15 @@ def client_factory():
         """
         if server == "regular":
             from optimade.server.main import (
-                app,
                 add_major_version_base_url,
                 add_optional_versioned_base_urls,
+                app,
             )
         elif server == "index":
             from optimade.server.main_index import (
-                app,
                 add_major_version_base_url,
                 add_optional_versioned_base_urls,
+                app,
             )
         else:
             pytest.fail(
@@ -231,8 +226,8 @@ def client_factory():
 
         if add_empty_endpoint:
 
-            from starlette.routing import Router, Route
             from fastapi.responses import PlainTextResponse
+            from starlette.routing import Route, Router
 
             async def empty(_):
                 return PlainTextResponse(b"", 200)

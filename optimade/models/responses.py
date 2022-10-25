@@ -1,18 +1,17 @@
 # pylint: disable=no-self-argument
-from typing import Union, List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import Field, root_validator
 
-from optimade.models.jsonapi import Response
 from optimade.models.baseinfo import BaseInfoResource
 from optimade.models.entries import EntryInfoResource, EntryResource
 from optimade.models.index_metadb import IndexInfoResource
+from optimade.models.jsonapi import Response
 from optimade.models.links import LinksResource
-from optimade.models.optimade_json import Success, ResponseMeta, OptimadeError
+from optimade.models.optimade_json import OptimadeError, ResponseMeta, Success
 from optimade.models.references import ReferenceResource
 from optimade.models.structures import StructureResource
 from optimade.models.utils import StrictField
-
 
 __all__ = (
     "ErrorResponse",

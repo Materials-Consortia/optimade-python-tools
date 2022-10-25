@@ -3,7 +3,6 @@ import pytest
 
 from optimade.models.links import LinksResource
 
-
 MAPPER = "LinksMapper"
 
 

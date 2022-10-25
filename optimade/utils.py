@@ -4,9 +4,10 @@ with OPTIMADE providers that can be used in server or client code.
 """
 
 import json
-from typing import List, Iterable
+from typing import Iterable, List
 
 from pydantic import ValidationError
+
 from optimade.models.links import LinksResource
 
 PROVIDER_LIST_URLS = (
@@ -46,12 +47,9 @@ def get_providers(add_mongo_id: bool = False) -> list:
         List of raw JSON-decoded providers including MongoDB object IDs.
 
     """
-    import requests
+    import json
 
-    try:
-        import simplejson as json
-    except ImportError:
-        import json
+    import requests
 
     for provider_list_url in PROVIDER_LIST_URLS:
         try:
@@ -120,8 +118,9 @@ def get_child_database_links(
 
     """
     import requests
+
+    from optimade.models.links import Aggregate, LinkType
     from optimade.models.responses import LinksResponse
-    from optimade.models.links import LinkType, Aggregate
 
     base_url = provider.pop("base_url")
     if base_url is None:

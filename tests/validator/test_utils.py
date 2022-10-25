@@ -1,12 +1,10 @@
-import pytest
-from optimade.validator.utils import test_case as validator_test_case
-from optimade.validator.utils import ResponseError
-from optimade.validator.validator import ImplementationValidator
+import json
 
-try:
-    import simplejson as json
-except ImportError:
-    import json
+import pytest
+
+from optimade.validator.utils import ResponseError
+from optimade.validator.utils import test_case as validator_test_case
+from optimade.validator.validator import ImplementationValidator
 
 
 @validator_test_case
@@ -371,8 +369,9 @@ def test_that_system_exit_is_fatal_in_test_case():
 
 def test_versions_test_cases():
     """Check the `/versions` test cases."""
-    from requests import Response
     from functools import partial
+
+    from requests import Response
 
     unversioned_base_url = "https://example.org"
     versioned_base_url = unversioned_base_url + "/v1"

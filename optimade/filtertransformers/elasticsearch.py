@@ -1,6 +1,7 @@
-from typing import Dict, Union, Type, Optional
+from typing import Dict, Optional, Type, Union
+
+from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
-from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
 
 from optimade.filtertransformers import BaseTransformer, Quantity
 from optimade.server.mappers import BaseResourceMapper

@@ -1,17 +1,17 @@
-from dataclasses import dataclass, field, asdict
-from contextlib import contextmanager
-from typing import List, Dict, Set, Union
 import sys
+from contextlib import contextmanager
+from dataclasses import asdict, dataclass, field
+from typing import Dict, List, Set, Union
 
+from rich.console import Console
 from rich.progress import (
+    BarColumn,
     Progress,
     SpinnerColumn,
-    TimeElapsedColumn,
     TaskProgressColumn,
-    BarColumn,
     TextColumn,
+    TimeElapsedColumn,
 )
-from rich.console import Console
 
 __all__ = (
     "RecoverableHTTPError",

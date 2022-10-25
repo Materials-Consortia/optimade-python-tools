@@ -5,10 +5,12 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.
 
 
 import copy
-import warnings
 import itertools
-from typing import Dict, List, Any, Union
-from lark import v_args, Token
+import warnings
+from typing import Any, Dict, List, Union
+
+from lark import Token, v_args
+
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
 from optimade.server.exceptions import BadRequest
 from optimade.server.warnings import TimestampNotRFCCompliant

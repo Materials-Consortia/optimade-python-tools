@@ -10,18 +10,17 @@ from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
 from optimade.models import (
-    ResponseMeta,
     EntryResource,
     EntryResponseMany,
     EntryResponseOne,
+    ResponseMeta,
     ToplevelLinks,
 )
-
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
+from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_database
 
 __all__ = (
     "BASE_URL_PREFIXES",

@@ -7,22 +7,22 @@ This conversion function relies on the [pymatgen](https://github.com/materialspr
 
 For more information on the pymatgen code see [their documentation](https://pymatgen.org).
 """
-from typing import Union, Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
-from optimade.models import Species as OptimadeStructureSpecies
-from optimade.models import StructureResource as OptimadeStructure
 from optimade.adapters.structures.utils import (
     species_from_species_at_sites,
     valid_lattice_vector,
 )
+from optimade.models import Species as OptimadeStructureSpecies
+from optimade.models import StructureResource as OptimadeStructure
 from optimade.models import StructureResourceAttributes
 
-
 try:
-    from pymatgen.core import Structure, Molecule, Composition, Lattice
+    from pymatgen.core import Composition, Lattice, Molecule, Structure
 
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     Structure = type("Structure", (), {})
@@ -193,6 +193,7 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
 def _pymatgen_anonymized_formula_to_optimade(composition: Composition) -> str:
     """Construct an OPTIMADE `chemical_formula_anonymous` from a pymatgen `Composition`."""
     import re
+
     from optimade.models.utils import anonymous_element_generator
 
     return "".join(

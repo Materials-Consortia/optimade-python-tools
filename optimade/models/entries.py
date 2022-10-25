@@ -1,12 +1,12 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
+
 from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
 
-from optimade.models.jsonapi import Relationships, Attributes, Resource
-from optimade.models.optimade_json import Relationship, DataType
-from optimade.models.utils import StrictField, OptimadeField, SupportLevel
-
+from optimade.models.jsonapi import Attributes, Relationships, Resource
+from optimade.models.optimade_json import DataType, Relationship
+from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
 __all__ = (
     "EntryRelationships",

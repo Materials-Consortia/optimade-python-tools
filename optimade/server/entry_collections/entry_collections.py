@@ -1,7 +1,7 @@
-from abc import abstractmethod, ABC
-from typing import Tuple, List, Union, Dict, Any, Set
-import warnings
 import re
+import warnings
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Set, Tuple, Union
 
 from lark import Transformer
 
@@ -13,8 +13,8 @@ from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import (
     FieldValueNotRecognized,
-    UnknownProviderProperty,
     QueryParamNotUsed,
+    UnknownProviderProperty,
 )
 
 

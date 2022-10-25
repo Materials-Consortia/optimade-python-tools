@@ -1,5 +1,4 @@
 import pytest
-
 from lark.exceptions import VisitError
 
 from optimade.filterparser import LarkParser
@@ -523,7 +522,9 @@ class TestMongoTransformer:
 
     def test_suspected_timestamp_fields(self, mapper):
         import datetime
+
         import bson.tz_util
+
         from optimade.filtertransformers.mongo import MongoTransformer
         from optimade.server.warnings import TimestampNotRFCCompliant
 
@@ -589,8 +590,9 @@ class TestMongoTransformer:
 
     def test_mongo_special_id(self, mapper):
 
-        from optimade.filtertransformers.mongo import MongoTransformer
         from bson import ObjectId
+
+        from optimade.filtertransformers.mongo import MongoTransformer
 
         class MyMapper(mapper("StructureMapper")):
             ALIASES = (("immutable_id", "_id"),)

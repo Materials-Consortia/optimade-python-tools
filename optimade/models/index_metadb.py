@@ -1,13 +1,12 @@
 # pylint: disable=no-self-argument
 from enum import Enum
+from typing import Dict, Union
 
-from pydantic import Field, BaseModel  # pylint: disable=no-name-in-module
-from typing import Union, Dict
+from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
 
-from optimade.models.jsonapi import BaseResource
 from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource
+from optimade.models.jsonapi import BaseResource
 from optimade.models.utils import StrictField
-
 
 __all__ = (
     "IndexInfoAttributes",

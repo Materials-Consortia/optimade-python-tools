@@ -1,14 +1,13 @@
 import json
 from pathlib import Path
-from typing import Tuple, List, Optional, Dict, Any, Iterable, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
-from optimade.server.config import CONFIG
-from optimade.server.logger import LOGGER
 from optimade.models import EntryResource
-from optimade.server.mappers import BaseResourceMapper
+from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
-
+from optimade.server.logger import LOGGER
+from optimade.server.mappers import BaseResourceMapper
 
 if CONFIG.database_backend.value == "elastic":
     from elasticsearch import Elasticsearch

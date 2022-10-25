@@ -1,4 +1,4 @@
-from typing import Dict, Tuple, List, Any, Union
+from typing import Any, Dict, List, Tuple, Union
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
@@ -7,8 +7,7 @@ from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.query_params import SingleEntryQueryParams, EntryListingQueryParams
-
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 if CONFIG.database_backend.value == "mongodb":
     from pymongo import MongoClient, version_tuple

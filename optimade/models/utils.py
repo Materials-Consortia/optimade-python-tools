@@ -1,9 +1,9 @@
 import inspect
-import warnings
-import re
 import itertools
+import re
+import warnings
 from enum import Enum
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from pydantic import Field
 from pydantic.fields import FieldInfo

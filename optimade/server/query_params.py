@@ -1,12 +1,14 @@
+from abc import ABC
+from typing import Iterable, List
+from warnings import warn
+
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
-from typing import Iterable, List
+
 from optimade.server.config import CONFIG
-from warnings import warn
-from optimade.server.mappers import BaseResourceMapper
 from optimade.server.exceptions import BadRequest
-from optimade.server.warnings import UnknownProviderQueryParameter, QueryParamNotUsed
-from abc import ABC
+from optimade.server.mappers import BaseResourceMapper
+from optimade.server.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
 
 
 class BaseQueryParams(ABC):

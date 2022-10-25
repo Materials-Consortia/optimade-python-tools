@@ -12,7 +12,6 @@ from optimade.server.query_params import EntryListingQueryParams, SingleEntryQue
 from optimade.server.routers.utils import get_entries, get_single_entry
 from optimade.server.schemas import ERROR_RESPONSES
 
-
 router = APIRouter(redirect_slashes=True)
 
 references_coll = create_collection(

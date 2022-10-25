@@ -7,17 +7,16 @@ For more information on the AiiDA code see [their website](http://www.aiida.net)
 
 This conversion function relies on the [`aiida-core`](https://github.com/aiidateam/aiida-core) package.
 """
-from warnings import warn
 from typing import List, Optional
+from warnings import warn
 
-from optimade.models import StructureResource as OptimadeStructure
-from optimade.models import Species as OptimadeStructureSpecies
-
-from optimade.adapters.warnings import AdapterPackageNotFound, ConversionWarning
 from optimade.adapters.structures.utils import pad_cell, species_from_species_at_sites
+from optimade.adapters.warnings import AdapterPackageNotFound, ConversionWarning
+from optimade.models import Species as OptimadeStructureSpecies
+from optimade.models import StructureResource as OptimadeStructure
 
 try:
-    from aiida.orm.nodes.data.structure import StructureData, Kind, Site
+    from aiida.orm.nodes.data.structure import Kind, Site, StructureData
 except (ImportError, ModuleNotFoundError):
     StructureData = type("StructureData", (), {})
     AIIDA_NOT_FOUND = (

@@ -2,7 +2,6 @@ import abc
 from typing import Tuple
 
 import pytest
-
 from lark import Tree
 
 from optimade.filterparser import LarkParser

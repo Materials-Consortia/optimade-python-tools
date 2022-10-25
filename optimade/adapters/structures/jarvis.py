@@ -10,14 +10,15 @@ This conversion function relies on the [jarvis-tools](https://github.com/usnistg
 !!! success "Contributing author"
     This conversion function was contributed by Kamal Choudhary ([@knc6](https://github.com/knc6)).
 """
-from optimade.models import StructureResource as OptimadeStructure
-from optimade.models import StructureFeatures
 from optimade.adapters.exceptions import ConversionError
+from optimade.models import StructureFeatures
+from optimade.models import StructureResource as OptimadeStructure
 
 try:
     from jarvis.core.atoms import Atoms
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     Atoms = type("Atoms", (), {})

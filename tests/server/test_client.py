@@ -2,8 +2,8 @@ import json
 from functools import partial
 from pathlib import Path
 
-
 import pytest
+
 from optimade.server.warnings import MissingExpectedField
 
 try:

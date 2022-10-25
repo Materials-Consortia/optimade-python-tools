@@ -4,9 +4,9 @@ into `Lark.Tree` objects for use by the filter transformers.
 
 """
 
+from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Tuple
-from collections import defaultdict
 
 from lark import Lark, Tree
 

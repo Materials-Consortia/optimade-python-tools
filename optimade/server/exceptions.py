@@ -1,4 +1,5 @@
 from abc import ABC
+
 from fastapi import HTTPException as FastAPIHTTPException
 
 __all__ = (
