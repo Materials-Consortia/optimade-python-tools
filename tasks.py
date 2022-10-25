@@ -1,12 +1,11 @@
+import json
 import os
 import re
 import sys
-from typing import TYPE_CHECKING
 from pathlib import Path
-import json
+from typing import TYPE_CHECKING
 
 from invoke import task
-
 from jsondiff import diff
 
 if TYPE_CHECKING:
@@ -320,6 +319,7 @@ def swagger_validator(_, fname):
         sys.exit(1)
 
     if json_response:
-        print_error(f"Schema file {fname} did not pass validation.\n")
-        print_error(json.dumps(response.json(), indent=2))
-        sys.exit(1)
+        if any(json_response[k] for k in json_response):
+            print_error(f"Schema file {fname} did not pass validation.\n")
+            print_error(json.dumps(response.json(), indent=2))
+            sys.exit(1)
