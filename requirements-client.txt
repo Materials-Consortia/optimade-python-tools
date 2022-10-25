@@ -3,4 +3,3 @@ ase==3.22.1
 jarvis-tools==2022.9.16
 numpy==1.23.3
 pymatgen==2022.7.25
-wrapt==1.14.1;python_version>='3.11'
