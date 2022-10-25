@@ -12,30 +12,26 @@ used by the validator. The two main features being:
 
 """
 
-import time
-import sys
-import urllib.parse
 import dataclasses
+import json
+import sys
+import time
 import traceback as tb
-from typing import List, Optional, Dict, Any, Callable, Tuple
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+import urllib.parse
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import requests
 from pydantic import Field, ValidationError
 
 from optimade import __version__
-from optimade.models.optimade_json import Success
 from optimade.models import (
-    ResponseMeta,
     EntryResource,
     LinksResource,
     ReferenceResource,
+    ResponseMeta,
     StructureResource,
 )
+from optimade.models.optimade_json import Success
 
 # Default connection timeout allows for one default-sized TCP retransmission window
 # (see https://docs.python-requests.org/en/latest/user/advanced/#timeouts)

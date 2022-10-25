@@ -5,15 +5,11 @@ These middleware are based on [Starlette](https://www.starlette.io)'s `BaseHTTPM
 See the specific Starlette [documentation page](https://www.starlette.io/middleware/) for more
 information on it's middleware implementation.
 """
+import json
 import re
-from typing import Optional, IO, Type, Generator, List, Union, Tuple
 import urllib.parse
 import warnings
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+from typing import IO, Generator, List, Optional, Tuple, Type, Union
 
 from starlette.datastructures import URL as StarletteURL
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -23,13 +19,13 @@ from starlette.responses import RedirectResponse, StreamingResponse
 from optimade.models import Warnings
 from optimade.server.config import CONFIG
 from optimade.server.exceptions import BadRequest, VersionNotSupported
+from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
 from optimade.server.warnings import (
     FieldValueNotRecognized,
     OptimadeWarning,
     QueryParamNotUsed,
     TooManyValues,
 )
-from optimade.server.routers.utils import get_base_url, BASE_URL_PREFIXES
 
 
 class EnsureQueryParamIntegrity(BaseHTTPMiddleware):

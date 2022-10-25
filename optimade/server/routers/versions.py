@@ -1,4 +1,4 @@
-from fastapi import Request, APIRouter
+from fastapi import APIRouter, Request
 from fastapi.responses import Response
 
 from optimade.server.routers.utils import BASE_URL_PREFIXES

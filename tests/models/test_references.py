@@ -3,7 +3,6 @@ import pytest
 
 from optimade.models.references import ReferenceResource
 
-
 MAPPER = "ReferenceMapper"
 
 

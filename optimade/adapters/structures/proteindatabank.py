@@ -27,13 +27,11 @@ try:
     import numpy as np
 except ImportError:
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     np = None
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
-
-from optimade.models import Species as OptimadeStructureSpecies
-from optimade.models import StructureResource as OptimadeStructure
 
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
@@ -42,7 +40,8 @@ from optimade.adapters.structures.utils import (
     scaled_cell,
     valid_lattice_vector,
 )
-
+from optimade.models import Species as OptimadeStructureSpecies
+from optimade.models import StructureResource as OptimadeStructure
 
 __all__ = ("get_pdb", "get_pdbx_mmcif")
 

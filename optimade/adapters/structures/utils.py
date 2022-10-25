@@ -3,14 +3,16 @@ Utility functions to help the conversion functions along.
 
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
-from typing import List, Optional, Tuple, Iterable
-from optimade.models.structures import Vector3D
+from typing import Iterable, List, Optional, Tuple
+
 from optimade.models.structures import Species as OptimadeStructureSpecies
+from optimade.models.structures import Vector3D
 
 try:
     import numpy as np
 except ImportError:
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     np = None

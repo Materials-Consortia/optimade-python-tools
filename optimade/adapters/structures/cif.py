@@ -18,19 +18,19 @@ This conversion function relies on the [NumPy](https://numpy.org/) library.
 """
 from typing import Dict
 
-from optimade.models import Species as OptimadeStructureSpecies
-from optimade.models import StructureResource as OptimadeStructure
-
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
     fractional_coordinates,
     valid_lattice_vector,
 )
+from optimade.models import Species as OptimadeStructureSpecies
+from optimade.models import StructureResource as OptimadeStructure
 
 try:
     import numpy as np
 except ImportError:
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     np = None

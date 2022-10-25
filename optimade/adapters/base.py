@@ -19,13 +19,12 @@ resources can be converted to for [`ReferenceResource`][optimade.models.referenc
 and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
 """
 import re
-from typing import Union, Dict, Callable, Any, Tuple, List, Type
+from typing import Any, Callable, Dict, List, Tuple, Type, Union
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
-from optimade.models import EntryResource
-
 from optimade.adapters.logger import LOGGER
+from optimade.models import EntryResource
 
 
 class EntryAdapter:

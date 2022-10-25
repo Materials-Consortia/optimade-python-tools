@@ -1,6 +1,6 @@
-from typing import Tuple, Optional, Type, Set, Dict, Any, Union, List, Iterable
-from functools import lru_cache
 import warnings
+from functools import lru_cache
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
 
 from optimade.models.entries import EntryResource
 
@@ -57,8 +57,8 @@ class BaseResourceMapper:
 
     try:
         from optimade.server.data import (
-            providers as PROVIDERS,
-        )  # pylint: disable=no-name-in-module
+            providers as PROVIDERS,  # pylint: disable=no-name-in-module
+        )
     except (ImportError, ModuleNotFoundError):
         PROVIDERS = {}
 

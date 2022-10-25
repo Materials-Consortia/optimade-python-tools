@@ -5,21 +5,21 @@
 
 """
 
-from typing import Dict, List, Union, Iterable, Optional, Any, Tuple
-from urllib.parse import urlparse
-from collections import defaultdict
 import asyncio
-import time
-import json
 import functools
+import json
+import time
+from collections import defaultdict
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
+from urllib.parse import urlparse
 
 from pydantic import AnyUrl
 
 # External deps that are only used in the client code
 try:
     import httpx
-    from rich.progress import TaskID
     from rich.panel import Panel
+    from rich.progress import TaskID
 except ImportError as exc:
     raise ImportError(
         "Could not find dependencies required for the `OptimadeClient`. "
@@ -28,17 +28,17 @@ except ImportError as exc:
     ) from exc
 
 
-from optimade.utils import get_all_databases
-from optimade.filterparser import LarkParser
 from optimade import __api_version__, __version__
 from optimade.client.utils import (
     OptimadeClientProgress,
-    TooManyRequestsException,
     QueryResults,
     RecoverableHTTPError,
+    TooManyRequestsException,
     silent_raise,
 )
+from optimade.filterparser import LarkParser
 from optimade.server.exceptions import BadRequest
+from optimade.utils import get_all_databases
 
 ENDPOINTS = ("structures", "references", "calculations", "info", "extensions")
 

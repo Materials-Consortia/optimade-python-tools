@@ -6,15 +6,14 @@ for turning filters parsed by lark into backend-specific queries.
 """
 
 import abc
-from typing import Dict, Any, Type, Optional
 import warnings
+from typing import Any, Dict, Optional, Type
 
-from lark import Transformer, v_args, Tree
+from lark import Transformer, Tree, v_args
 
-from optimade.server.mappers import BaseResourceMapper
 from optimade.server.exceptions import BadRequest
+from optimade.server.mappers import BaseResourceMapper
 from optimade.server.warnings import UnknownProviderProperty
-
 
 __all__ = (
     "BaseTransformer",

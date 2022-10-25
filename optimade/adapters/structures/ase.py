@@ -9,17 +9,17 @@ For more information on the ASE code see [their documentation](https://wiki.fysi
 """
 from typing import Dict
 
-from optimade.models import Species as OptimadeStructureSpecies
-from optimade.models import StructureResource as OptimadeStructure
-from optimade.models import StructureFeatures
-
 from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.utils import species_from_species_at_sites
+from optimade.models import Species as OptimadeStructureSpecies
+from optimade.models import StructureFeatures
+from optimade.models import StructureResource as OptimadeStructure
 
 try:
-    from ase import Atoms, Atom
+    from ase import Atom, Atoms
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     Atoms = type("Atoms", (), {})

@@ -1,23 +1,23 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
-import re
-import warnings
-import sys
 import math
+import re
+import sys
+import warnings
+from enum import Enum, IntEnum
 from functools import reduce
-from enum import IntEnum, Enum
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, validator, root_validator, conlist
+from pydantic import BaseModel, conlist, root_validator, validator
 
-from optimade.models.entries import EntryResourceAttributes, EntryResource
+from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.utils import (
+    ANONYMOUS_ELEMENTS,
+    CHEMICAL_FORMULA_REGEXP,
     CHEMICAL_SYMBOLS,
     EXTRA_SYMBOLS,
     OptimadeField,
     StrictField,
     SupportLevel,
-    ANONYMOUS_ELEMENTS,
-    CHEMICAL_FORMULA_REGEXP,
 )
 from optimade.server.warnings import MissingExpectedField
 

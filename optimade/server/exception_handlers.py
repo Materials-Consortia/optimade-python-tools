@@ -1,19 +1,17 @@
 import traceback
-from typing import List, Tuple, Callable
+from typing import Callable, List, Tuple
 
-from lark.exceptions import VisitError
-
-from pydantic import ValidationError
+from fastapi import Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
-from fastapi import Request
+from lark.exceptions import VisitError
+from pydantic import ValidationError
 
-from optimade.models import OptimadeError, ErrorResponse, ErrorSource
-
+from optimade.models import ErrorResponse, ErrorSource, OptimadeError
 from optimade.server.config import CONFIG
 from optimade.server.exceptions import BadRequest
 from optimade.server.logger import LOGGER
-from optimade.server.routers.utils import meta_values, JSONAPIResponse
+from optimade.server.routers.utils import JSONAPIResponse, meta_values
 
 
 def general_exception(

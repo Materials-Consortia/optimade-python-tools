@@ -6,38 +6,33 @@ against the specification via the pydantic models implemented in this package.
 """
 # pylint: disable=import-outside-toplevel
 
-import re
-import sys
+import dataclasses
+import json
 import logging
 import random
+import re
+import sys
 import urllib.parse
-import dataclasses
-from typing import Union, Tuple, Any, List, Dict, Optional, Set
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import requests
 
 from optimade.models import DataType, EntryInfoResponse, SupportLevel
+from optimade.validator.config import VALIDATOR_CONFIG as CONF
 from optimade.validator.utils import (
     DEFAULT_CONN_TIMEOUT,
     DEFAULT_READ_TIMEOUT,
     Client,
-    test_case,
+    ResponseError,
+    ValidatorEntryResponseMany,
+    ValidatorEntryResponseOne,
+    ValidatorResults,
     print_failure,
     print_notify,
     print_success,
     print_warning,
-    ResponseError,
-    ValidatorEntryResponseOne,
-    ValidatorEntryResponseMany,
-    ValidatorResults,
+    test_case,
 )
-
-from optimade.validator.config import VALIDATOR_CONFIG as CONF
 
 VERSIONS_REGEXP = r".*/v[0-9]+(\.[0-9]+){,2}$"
 

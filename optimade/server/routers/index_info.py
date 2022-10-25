@@ -2,16 +2,15 @@ from fastapi import APIRouter, Request
 
 from optimade import __api_version__
 from optimade.models import (
-    IndexInfoResponse,
     IndexInfoAttributes,
     IndexInfoResource,
+    IndexInfoResponse,
     IndexRelationship,
     RelatedLinksResource,
 )
 from optimade.server.config import CONFIG
-from optimade.server.routers.utils import meta_values, get_base_url
+from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import ERROR_RESPONSES
-
 
 router = APIRouter(redirect_slashes=True)
 

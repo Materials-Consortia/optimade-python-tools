@@ -2,9 +2,8 @@
 from typing import Mapping, Optional, Tuple, Union
 from unittest import mock
 
-from requests.exceptions import ConnectionError
-
 import pytest
+from requests.exceptions import ConnectionError
 
 
 def mocked_providers_list_response(
@@ -76,7 +75,8 @@ def test_get_providers():
 def test_get_providers_warning(caplog, top_dir):
     """Make sure a warning is logged as a last resort."""
     import copy
-    from optimade.server.routers.utils import get_providers, PROVIDER_LIST_URLS
+
+    from optimade.server.routers.utils import PROVIDER_LIST_URLS, get_providers
 
     providers_cache = False
     try:

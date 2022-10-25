@@ -1,9 +1,8 @@
 """Logging to both file and terminal"""
 import logging
 import os
-from pathlib import Path
 import sys
-
+from pathlib import Path
 
 # Instantiate LOGGER
 LOGGER = logging.getLogger("optimade")
