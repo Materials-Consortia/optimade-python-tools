@@ -97,7 +97,7 @@ setup(
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.8,<3.12",
+    python_requires=">=3.8",
     install_requires=[
         "lark~=1.1",
         "fastapi~=0.79",
