@@ -62,7 +62,6 @@ test_queries = [
     ("nelements > 1 OR elements LENGTH = 1 AND nelements = 2", 4),
     ("(nelements > 1 OR elements LENGTH = 1) AND nelements = 2", 3),
     ("NOT elements LENGTH = 1", 3),
-    ("_exmpl2_field = 2", 1),
 ]
 
 

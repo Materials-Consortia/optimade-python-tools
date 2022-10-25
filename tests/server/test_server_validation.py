@@ -5,6 +5,8 @@ import pytest
 
 from optimade.validator import ImplementationValidator
 
+pytestmark = pytest.mark.filterwarnings("ignore")
+
 
 def test_with_validator(both_fake_remote_clients):
     from optimade.server.main_index import app

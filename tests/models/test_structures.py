@@ -1,12 +1,10 @@
 # pylint: disable=no-member
-import pytest
 import itertools
 
-from pydantic import ValidationError
-
-from optimade.models.structures import StructureResource, CORRELATED_STRUCTURE_FIELDS
+import pytest
+from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS, StructureResource
 from optimade.server.warnings import MissingExpectedField
-
+from pydantic import ValidationError
 
 MAPPER = "StructureMapper"
 
@@ -63,13 +61,14 @@ def test_more_good_structures(good_structures, mapper):
 
 def test_bad_structures(bad_structures, mapper):
     """Check badly formed structures"""
-    for index, structure in enumerate(bad_structures):
-        # This is for helping devs finding any errors that may occur
-        print(
-            f"Trying structure number {index}/{len(bad_structures)} from 'test_bad_structures.json'"
-        )
-        with pytest.raises(ValidationError):
-            StructureResource(**mapper(MAPPER).map_back(structure))
+    with pytest.warns(MissingExpectedField):
+        for index, structure in enumerate(bad_structures):
+            # This is for helping devs finding any errors that may occur
+            print(
+                f"Trying structure number {index}/{len(bad_structures)} from 'test_bad_structures.json'"
+            )
+            with pytest.raises(ValidationError):
+                StructureResource(**mapper(MAPPER).map_back(structure))
 
 
 deformities = (
@@ -194,7 +193,8 @@ def test_structure_fatal_deformities(good_structure, deformity):
     import re
 
     if deformity is None:
-        return StructureResource(**good_structure)
+        StructureResource(**good_structure)
+        return
 
     deformity, message = deformity
     good_structure["attributes"].update(deformity)

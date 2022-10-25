@@ -1,14 +1,15 @@
-from pathlib import Path
 import json
+from functools import partial
+from pathlib import Path
+
 
 import pytest
-import httpx
-from functools import partial
-from pytest_httpx import HTTPXMock
+from optimade.server.warnings import MissingExpectedField
 
-from optimade.client import OptimadeClient
-from optimade.client.cli import _get
-
+try:
+    from optimade.client import OptimadeClient
+except ImportError as exc:
+    pytest.skip(str(exc), allow_module_level=True)
 
 TEST_URLS = [
     "https://example.com",
@@ -20,6 +21,8 @@ TEST_URL = TEST_URLS[0]
 
 @pytest.fixture(scope="function")
 def httpx_mocked_response(httpx_mock, client):
+    import httpx
+
     def httpx_mock_response(client, request: httpx.Request):
         response = client.get(str(request.url))
         return httpx.Response(status_code=response.status_code, json=response.json())
@@ -29,7 +32,7 @@ def httpx_mocked_response(httpx_mock, client):
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_client_endpoints(httpx_mocked_response: HTTPXMock, use_async):
+def test_client_endpoints(httpx_mocked_response, use_async):
 
     filter = ""
 
@@ -76,19 +79,20 @@ def test_filter_validation(use_async):
 
 @pytest.mark.parametrize("use_async", [False])
 def test_client_response_fields(httpx_mocked_response, use_async):
-    cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
-    results = cli.get(response_fields=["chemical_formula_reduced"])
-    for d in results["structures"][""][TEST_URL]["data"]:
-        assert "chemical_formula_reduced" in d["attributes"]
-        assert len(d["attributes"]) == 1
+    with pytest.warns(MissingExpectedField):
+        cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
+        results = cli.get(response_fields=["chemical_formula_reduced"])
+        for d in results["structures"][""][TEST_URL]["data"]:
+            assert "chemical_formula_reduced" in d["attributes"]
+            assert len(d["attributes"]) == 1
 
-    results = cli.get(
-        response_fields=["chemical_formula_reduced", "cartesian_site_positions"]
-    )
-    for d in results["structures"][""][TEST_URL]["data"]:
-        assert "chemical_formula_reduced" in d["attributes"]
-        assert "cartesian_site_positions" in d["attributes"]
-        assert len(d["attributes"]) == 2
+        results = cli.get(
+            response_fields=["chemical_formula_reduced", "cartesian_site_positions"]
+        )
+        for d in results["structures"][""][TEST_URL]["data"]:
+            assert "chemical_formula_reduced" in d["attributes"]
+            assert "cartesian_site_positions" in d["attributes"]
+            assert len(d["attributes"]) == 2
 
 
 @pytest.mark.parametrize("use_async", [False])
@@ -113,6 +117,8 @@ def test_client_sort(httpx_mocked_response, use_async):
 
 @pytest.mark.parametrize("use_async", [False])
 def test_command_line_client(httpx_mocked_response, use_async, capsys):
+    from optimade.client.cli import _get
+
     args = dict(
         use_async=use_async,
         filter=['elements HAS "Ag"'],
