@@ -1,6 +1,7 @@
-from pathlib import Path
 import re
-from setuptools import setup, find_packages
+from pathlib import Path
+
+from setuptools import find_packages, setup
 
 module_dir = Path(__file__).resolve().parent
 
@@ -26,9 +27,7 @@ server_deps = [
 
 
 # Client minded
-aiida_deps = [
-    "aiida-core~=2.0",
-]
+aiida_deps = ["aiida-core~=2.0", "wrapt~=2.14;python_version >= '3.11'"]
 http_client_deps = [
     "httpx~=0.23",
     "rich~=12.5",
