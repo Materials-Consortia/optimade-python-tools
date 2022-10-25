@@ -7,6 +7,9 @@ on:
     - master
     - 'push-action/**'
 
+env:
+  PYTEST_ADDOPTS: "--color=yes"
+
 # Cancel running workflows when additional changes are pushed
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
 concurrency:

@@ -4,6 +4,7 @@ from lark.exceptions import VisitError
 
 from optimade.filterparser import LarkParser
 from optimade.server.exceptions import BadRequest
+from optimade.server.warnings import UnknownProviderProperty
 
 
 class TestMongoTransformer:
@@ -442,9 +443,10 @@ class TestMongoTransformer:
 
         t = MongoTransformer(mapper=mapper("StructureMapper"))
         p = LarkParser(version=self.version, variant=self.variant)
-        assert t.transform(p.parse("_other_provider_field > 1")) == {
-            "_other_provider_field": {"$gt": 1}
-        }
+        with pytest.warns(UnknownProviderProperty):
+            assert t.transform(p.parse("_other_provider_field > 1")) == {
+                "_other_provider_field": {"$gt": 1}
+            }
 
     def test_not_implemented(self):
         """Test that list properties that are currently not implemented
