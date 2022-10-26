@@ -336,7 +336,7 @@ class EntryCollection(ABC):
         if getattr(params, "sort", False):
             cursor_kwargs["sort"] = self.parse_sort_params(params.sort)
 
-        # page_offset and page_number
+        # warn if both page_offset and page_number are given
         if getattr(params, "page_offset", False):
             if getattr(params, "page_number", False):
                 warnings.warn(
@@ -345,11 +345,18 @@ class EntryCollection(ABC):
                 )
 
             cursor_kwargs["skip"] = params.page_offset
-        elif getattr(params, "page_number", False):
-            if isinstance(params.page_number, int):
-                cursor_kwargs["skip"] = (params.page_number - 1) * cursor_kwargs[
-                    "limit"
-                ]
+
+        # validate page_number
+        elif isinstance(getattr(params, "page_number", None), int):
+            if params.page_number < 1:
+                warnings.warn(
+                    message=f"'page_number' is 1-based, using 'page_number=1' instead of {params.page_number}",
+                    category=QueryParamNotUsed,
+                )
+                page_number = 1
+            else:
+                page_number = params.page_number
+            cursor_kwargs["skip"] = (page_number - 1) * cursor_kwargs["limit"]
 
         return cursor_kwargs
 
