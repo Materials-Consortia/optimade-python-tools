@@ -161,3 +161,17 @@ def test_page_number_and_offset_both_set(check_response):
     check_response(
         request, expected_ids=expected_ids, expected_warnings=expected_warnings
     )
+
+
+def test_page_number_less_than_one(check_response):
+    request = "/structures?page_number=0&page_limit=1"
+    expected_ids = ["mpf_1"]
+    expected_warnings = [
+        {
+            "title": "QueryParamNotUsed",
+            "detail": "'page_number' is 1-based, using 'page_number=1' instead of 0",
+        }
+    ]
+    check_response(
+        request, expected_ids=expected_ids, expected_warnings=expected_warnings
+    )
