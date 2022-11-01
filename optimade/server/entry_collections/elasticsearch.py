@@ -72,9 +72,9 @@ class ElasticCollection(EntryCollection):
             ]["properties"].pop(field)
         properties["id"] = {"type": "keyword"}
         body["mappings"]["properties"] = properties
-        self.client.indices.create(index=self.name, body=body, ignore=400)
+        self.client.indices.create(index=self.name, ignore=400, **body)
 
-        LOGGER.debug(f"Created Elastic index for {self.name!r} with body {body}")
+        LOGGER.debug(f"Created Elastic index for {self.name!r} with parameters {body}")
 
     @property
     def predefined_index(self) -> Dict[str, Any]:
@@ -94,7 +94,8 @@ class ElasticCollection(EntryCollection):
             fields: The list of fields to use in the index.
 
         Returns:
-            The `body` parameter to pass to `client.indices.create(..., body=...)`.
+            The parameters to pass to `client.indices.create(...)` (previously
+                the 'body' parameters).
 
         """
         properties = {
@@ -135,15 +136,14 @@ class ElasticCollection(EntryCollection):
 
         bulk(
             self.client,
-            [
+            (
                 {
                     "_index": self.name,
                     "_id": get_id(item),
-                    "_type": "_doc",
                     "_source": item,
                 }
                 for item in data
-            ],
+            ),
         )
 
     def _run_db_query(
@@ -179,9 +179,9 @@ class ElasticCollection(EntryCollection):
             for field, sort_dir in criteria.get("sort", {})
         ]
         if not elastic_sort:
-            elastic_sort = {
-                self.resource_mapper.get_backend_field("id"): {"order": "asc"}
-            }
+            elastic_sort = [
+                {self.resource_mapper.get_backend_field("id"): {"order": "asc"}}
+            ]
 
         search = search.sort(*elastic_sort)
 
