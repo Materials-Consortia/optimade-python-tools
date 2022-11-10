@@ -213,7 +213,7 @@ jobs:
 
     - name: Setup environment for AiiDA
       env:
-        AIIDA_TEST_BACKEND: psql_dos
+        AIIDA_TEST_BACKEND: core.psql_dos
       run: |
         .github/aiida/setup_aiida.sh
 
