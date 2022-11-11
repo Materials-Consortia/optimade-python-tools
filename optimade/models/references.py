@@ -2,7 +2,6 @@
 from pydantic import (  # pylint: disable=no-name-in-module
     BaseModel,
     AnyUrl,
-    validator,
 )
 from typing import List, Optional
 
@@ -264,9 +263,3 @@ class ReferenceResource(EntryResource):
         queryable=SupportLevel.MUST,
     )
     attributes: ReferenceResourceAttributes
-
-    @validator("attributes")
-    def validate_attributes(cls, v):
-        if not any(prop[1] is not None for prop in v):
-            raise ValueError("reference object must have at least one field defined")
-        return v

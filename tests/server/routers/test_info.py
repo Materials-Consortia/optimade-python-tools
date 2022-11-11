@@ -86,7 +86,10 @@ class TestInfoStructuresEndpoint(RegularEndpointTests):
             if field in unit_fields:
                 assert "unit" in info_keys, f"Field: {field}"
             else:
-                assert "unit" not in info_keys, f"Field: {field}"
+                if not field.startswith(
+                    "_"
+                ):  # database specific properties can also have units
+                    assert "unit" not in info_keys, f"Field: {field}"
 
     def test_provider_fields(self):
         """Check the presence of provider-specific fields"""

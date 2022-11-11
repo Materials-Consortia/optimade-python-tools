@@ -4,7 +4,7 @@ import warnings
 import re
 
 from lark import Transformer
-
+from functools import lru_cache
 from optimade.filterparser import LarkParser
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
@@ -117,11 +117,32 @@ class EntryCollection(ABC):
 
         """
 
+    def set_field_to_none_if_missing_in_dict(self, entry: dict, field: str):
+
+        split_field = field.split(".", 1)
+        if split_field[0] in entry:
+            if len(split_field) > 1:
+                self.set_field_to_none_if_missing_in_dict(
+                    entry[split_field[0]], split_field[1]
+                )
+        else:
+            if len(split_field) == 1:
+                if (
+                    split_field[0] == "structure_features"
+                ):  # It would be nice if there would be a more universal way to handle special cases like this.
+                    entry[split_field[0]] = []
+                else:
+                    entry[split_field[0]] = None
+            else:
+                entry[split_field[0]] = {}
+                self.set_field_to_none_if_missing_in_dict(
+                    entry[split_field[0]], split_field[1]
+                )
+        return entry
+
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[
-        Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]
-    ]:
+    ) -> Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str]]:
         """
         Fetches results and indicates if more data is available.
 
@@ -145,6 +166,14 @@ class EntryCollection(ABC):
             criteria, single_entry
         )
 
+        exclude_fields = self.all_fields - response_fields
+
+        results = [self.resource_mapper.map_back(doc) for doc in results]
+        self.check_and_add_missing_fields(results, response_fields)
+
+        if results:
+            results = self.resource_mapper.deserialize(results)
+
         if single_entry:
             results = results[0] if results else None
 
@@ -153,10 +182,20 @@ class EntryCollection(ABC):
                     detail=f"Instead of a single entry, {data_returned} entries were found",
                 )
 
-        exclude_fields = self.all_fields - response_fields
+        return (results, data_returned, more_data_available, exclude_fields)
+
+    def check_and_add_missing_fields(self, results: dict, response_fields: set):
+        """Checks whether the response_fields and mandatory fields are present.
+        If they are not present the values are set to None, so the deserialization works correctly.
+        It also checks whether all fields in the response have been defined either in the model or in the config file.
+        If not it raises an appropriate error or warning."""
         include_fields = (
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
-        )
+        ) | set(self.get_non_optional_fields())
+        # Include missing fields
+        for result in results:
+            for field in include_fields:
+                self.set_field_to_none_if_missing_in_dict(result["attributes"], field)
 
         bad_optimade_fields = set()
         bad_provider_fields = set()
@@ -182,17 +221,6 @@ class EntryCollection(ABC):
             raise BadRequest(
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
-
-        if results:
-            results = self.resource_mapper.deserialize(results)
-
-        return (
-            results,
-            data_returned,
-            more_data_available,
-            exclude_fields,
-            include_fields,
-        )
 
     @abstractmethod
     def _run_db_query(
@@ -236,6 +264,29 @@ class EntryCollection(ABC):
 
         return self._all_fields
 
+    @lru_cache(maxsize=4)
+    def get_non_optional_fields(self) -> List[str]:
+        """
+        Returns those fields that should be set before a response class can be initialized.
+
+        Returns:
+            Property names.
+        """
+
+        schema = self.get_schema()
+        attributes = schema["properties"]["attributes"]
+        if "$ref" in attributes:
+            path = attributes["$ref"].split("/")[1:]
+            attributes = schema.copy()
+            while path:
+                next_key = path.pop(0)
+                if next_key not in attributes:
+                    return []
+                attributes = attributes[next_key]
+
+            return attributes["required"]
+
+    @lru_cache(maxsize=4)
     def get_attribute_fields(self) -> Set[str]:
         """Get the set of attribute fields
 
@@ -252,7 +303,7 @@ class EntryCollection(ABC):
 
         """
 
-        schema = self.resource_cls.schema()
+        schema = self.get_schema()
         attributes = schema["properties"]["attributes"]
         if "allOf" in attributes:
             allOf = attributes.pop("allOf")
@@ -265,6 +316,10 @@ class EntryCollection(ABC):
                 next_key = path.pop(0)
                 attributes = attributes[next_key]
         return set(attributes["properties"].keys())
+
+    @lru_cache(maxsize=4)
+    def get_schema(self):
+        return self.resource_cls.schema()
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
@@ -319,16 +374,15 @@ class EntryCollection(ABC):
             cursor_kwargs["limit"] = CONFIG.page_limit
 
         # response_fields
-        cursor_kwargs["projection"] = {
-            f"{self.resource_mapper.get_backend_field(f)}": True
-            for f in self.all_fields
-        }
-
         if getattr(params, "response_fields", False):
             response_fields = set(params.response_fields.split(","))
             response_fields |= self.resource_mapper.get_required_fields()
         else:
             response_fields = self.all_fields.copy()
+        cursor_kwargs["projection"] = {
+            f"{self.resource_mapper.get_backend_field(f)}": True
+            for f in response_fields
+        }
 
         cursor_kwargs["fields"] = response_fields
 

@@ -67,6 +67,16 @@ class TestSingleStructureEndpoint(RegularEndpointTests):
         assert self.json_response["data"]["type"] == "structures"
         assert "attributes" in self.json_response["data"]
         assert "_exmpl_chemsys" in self.json_response["data"]["attributes"]
+        assert (
+            "density"
+            in self.json_response["data"]["attributes"]["_exmpl_physical_properties"]
+        )
+        assert (
+            self.json_response["data"]["attributes"]["_exmpl_physical_properties"][
+                "density"
+            ]
+            == 10.07
+        )
 
 
 def test_check_response_single_structure(check_response):
