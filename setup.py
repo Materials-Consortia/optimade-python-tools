@@ -28,7 +28,7 @@ server_deps = [
 
 # Client minded
 aiida_deps = ["aiida-core~=2.1"]
-   
+
 http_client_deps = [
     "httpx~=0.23",
     "rich~=12.6",
