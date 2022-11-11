@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Type, Union
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
@@ -38,8 +38,8 @@ class MongoCollection(EntryCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
+        resource_cls: Type[EntryResource],
+        resource_mapper: Type[BaseResourceMapper],
         database: str = CONFIG.mongo_database,
     ):
         """Initialize the MongoCollection for the given parameters.

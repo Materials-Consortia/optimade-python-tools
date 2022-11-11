@@ -60,7 +60,7 @@ def StrictPydanticField(*args, **kwargs):
 
 def StrictField(
     *args: "Any",
-    description: str = None,
+    description: Optional[str] = None,
     **kwargs: "Any",
 ) -> StrictFieldInfo:
     """A wrapper around `pydantic.Field` that does the following:

@@ -19,7 +19,7 @@ def mocked_providers_list_response(
         https://stackoverflow.com/questions/15753390/how-can-i-mock-requests-and-the-response
     """
     try:
-        from optimade.server.data import providers
+        from optimade.server.data import providers  # type: ignore[attr-defined]
     except ImportError:
         pytest.fail(
             "Cannot import providers from optimade.server.data, "

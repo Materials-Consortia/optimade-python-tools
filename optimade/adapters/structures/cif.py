@@ -33,7 +33,7 @@ except ImportError:
 
     from optimade.adapters.warnings import AdapterPackageNotFound
 
-    np = None
+    np = None  # type: ignore[assignment]
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to CIF"
 
 
@@ -55,7 +55,7 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
     # NumPy is needed for calculations
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     cif = """#
 # Created from an OPTIMADE structure.
@@ -71,9 +71,9 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
 
     # Do this only if there's three non-zero lattice vectors
     # NOTE: This also negates handling of lattice_vectors with null/None values
-    if valid_lattice_vector(attributes.lattice_vectors):
+    if valid_lattice_vector(attributes.lattice_vectors):  # type:ignore[arg-type]
         a_vector, b_vector, c_vector, alpha, beta, gamma = cell_to_cellpar(
-            attributes.lattice_vectors
+            attributes.lattice_vectors  # type: ignore[arg-type]
         )
 
         cif += (
@@ -96,8 +96,8 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         # we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.
         if not hasattr(attributes, "fractional_site_positions"):
             attributes.fractional_site_positions = fractional_coordinates(
-                cell=attributes.lattice_vectors,
-                cartesian_positions=attributes.cartesian_site_positions,
+                cell=attributes.lattice_vectors,  # type:ignore[arg-type]
+                cartesian_positions=attributes.cartesian_site_positions,  # type:ignore[arg-type]
             )
 
     # NOTE: This is otherwise a bit ahead of its time, since this OPTIMADE property is part of an open PR.
@@ -124,12 +124,12 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         sites = attributes.cartesian_site_positions
 
     species: Dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species
+        species.name: species for species in attributes.species  # type: ignore[union-attr]
     }
 
-    symbol_occurences = {}
-    for site_number in range(attributes.nsites):
-        species_name = attributes.species_at_sites[site_number]
+    symbol_occurences: Dict[str, int] = {}
+    for site_number in range(attributes.nsites):  # type: ignore[arg-type]
+        species_name = attributes.species_at_sites[site_number]  # type: ignore[index]
         site = sites[site_number]
 
         current_species = species[species_name]

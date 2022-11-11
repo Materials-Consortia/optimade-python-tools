@@ -19,12 +19,12 @@ resources can be converted to for [`ReferenceResource`][optimade.models.referenc
 and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
 """
 import re
-from typing import Any, Callable, Dict, List, Tuple, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 from optimade.adapters.logger import LOGGER
-from optimade.models import EntryResource
+from optimade.models.entries import EntryResource
 
 
 class EntryAdapter:
@@ -48,15 +48,17 @@ class EntryAdapter:
         Parameters:
             entry (dict): A JSON OPTIMADE single resource entry.
         """
-        self._entry = None
-        self._converted = {}
+        self._entry: Optional[EntryResource] = None
+        self._converted: Dict[str, Any] = {}
 
-        self.entry = entry
+        self.entry: EntryResource = entry  # type: ignore[assignment]
 
         # Note that these return also the default values for otherwise non-provided properties.
         self._common_converters = {
-            "json": self.entry.json,  # Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson
-            "dict": self.entry.dict,  # Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict
+            # Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson
+            "json": self.entry.json,  # type: ignore[attr-defined]
+            # Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict
+            "dict": self.entry.dict,  # type: ignore[attr-defined]
         }
 
     @property
@@ -67,7 +69,7 @@ class EntryAdapter:
             The entry resource.
 
         """
-        return self._entry
+        return self._entry  # type: ignore[return-value]
 
     @entry.setter
     def entry(self, value: dict) -> None:
@@ -171,12 +173,12 @@ class EntryAdapter:
             return res
 
         # Non-valid attribute
-        entry_resource_name = re.match(
+        _entry_resource_name = re.match(
             r"(<class ')([a-zA-Z_]+\.)*([a-zA-Z_]+)('>)", str(self.ENTRY_RESOURCE)
         )
         entry_resource_name = (
-            entry_resource_name.group(3)
-            if entry_resource_name is not None
+            _entry_resource_name.group(3)
+            if _entry_resource_name is not None
             else "UNKNOWN RESOURCE"
         )
         raise AttributeError(

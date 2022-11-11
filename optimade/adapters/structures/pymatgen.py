@@ -61,9 +61,9 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
         warn(PYMATGEN_NOT_FOUND, AdapterPackageNotFound)
         return None
 
-    if valid_lattice_vector(optimade_structure.attributes.lattice_vectors) and (
-        optimade_structure.attributes.nperiodic_dimensions > 0
-        or any(optimade_structure.attributes.dimension_types)
+    if valid_lattice_vector(optimade_structure.attributes.lattice_vectors) and (  # type: ignore[arg-type]
+        optimade_structure.attributes.nperiodic_dimensions > 0  # type: ignore[operator]
+        or any(optimade_structure.attributes.dimension_types)  # type: ignore[arg-type]
     ):
         return _get_structure(optimade_structure)
 
@@ -78,9 +78,9 @@ def _get_structure(optimade_structure: OptimadeStructure) -> Structure:
     return Structure(
         lattice=Lattice(attributes.lattice_vectors, attributes.dimension_types),
         species=_pymatgen_species(
-            nsites=attributes.nsites,
+            nsites=attributes.nsites,  # type: ignore[arg-type]
             species=attributes.species,
-            species_at_sites=attributes.species_at_sites,
+            species_at_sites=attributes.species_at_sites,  # type: ignore[arg-type]
         ),
         coords=attributes.cartesian_site_positions,
         coords_are_cartesian=True,
@@ -94,9 +94,9 @@ def _get_molecule(optimade_structure: OptimadeStructure) -> Molecule:
 
     return Molecule(
         species=_pymatgen_species(
-            nsites=attributes.nsites,
-            species=attributes.species,
-            species_at_sites=attributes.species_at_sites,
+            nsites=attributes.nsites,  # type: ignore[arg-type]
+            species=attributes.species,  # type: ignore[arg-type]
+            species_at_sites=attributes.species_at_sites,  # type: ignore[arg-type]
         ),
         coords=attributes.cartesian_site_positions,
     )

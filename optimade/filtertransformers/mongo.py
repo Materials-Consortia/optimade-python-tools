@@ -313,7 +313,7 @@ class MongoTransformer(BaseTransformer):
         if operator in self.inverse_operator_map:
             filter_ = {prop: {self.inverse_operator_map[operator]: value}}
             if operator in ("$in", "$eq"):
-                filter_ = {"$and": [filter_, {prop: {"$ne": None}}]}
+                filter_ = {"$and": [filter_, {prop: {"$ne": None}}]}  # type: ignore[dict-item]
             return filter_
 
         filter_ = {prop: {"$not": expr}}

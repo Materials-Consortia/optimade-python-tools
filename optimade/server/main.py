@@ -81,7 +81,7 @@ if CONFIG.insert_test_data:
             )
             providers = get_providers(add_mongo_id=True)
             for doc in providers:
-                endpoint_collection.collection.replace_one(
+                endpoint_collection.collection.replace_one(  # type: ignore[attr-defined]
                     filter={"_id": ObjectId(doc["_id"]["$oid"])},
                     replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
                     upsert=True,

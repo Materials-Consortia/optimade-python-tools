@@ -13,8 +13,6 @@ from collections import defaultdict
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
-from pydantic import AnyUrl
-
 # External deps that are only used in the client code
 try:
     import httpx
@@ -57,7 +55,7 @@ class OptimadeClient:
 
     """
 
-    base_urls: Union[AnyUrl, Iterable[AnyUrl]]
+    base_urls: Union[str, Iterable[str]]
     """A list (or any iterable) of OPTIMADE base URLs to query."""
 
     all_results: Dict[str, Dict[str, Dict[str, QueryResults]]] = defaultdict(dict)
@@ -93,7 +91,7 @@ class OptimadeClient:
 
     def __init__(
         self,
-        base_urls: Union[None, AnyUrl, List[AnyUrl]] = None,
+        base_urls: Optional[Union[str, List[str]]] = None,
         max_results_per_provider: int = 1000,
         headers: Optional[Dict] = None,
         http_timeout: int = 10,
@@ -114,13 +112,13 @@ class OptimadeClient:
         """
 
         if not base_urls:
-            base_urls = get_all_databases()
+            base_urls = get_all_databases()  # type: ignore[assignment]
 
         self.max_results_per_provider = max_results_per_provider
         if self.max_results_per_provider in (-1, 0):
             self.max_results_per_provider = None
 
-        self.base_urls = base_urls
+        self.base_urls = base_urls  # type: ignore[assignment]
         if isinstance(self.base_urls, str):
             self.base_urls = [self.base_urls]
         self.base_urls = list(self.base_urls)
@@ -170,7 +168,7 @@ class OptimadeClient:
 
     def get(
         self,
-        filter: str = None,
+        filter: Optional[str] = None,
         endpoint: Optional[str] = None,
         response_fields: Optional[List[str]] = None,
         sort: Optional[str] = None,
@@ -226,7 +224,7 @@ class OptimadeClient:
             return {endpoint: {filter: {k: results[k].dict() for k in results}}}
 
     def count(
-        self, filter: str = None, endpoint: Optional[str] = None
+        self, filter: Optional[str] = None, endpoint: Optional[str] = None
     ) -> Dict[str, Dict[str, Dict[str, Optional[int]]]]:
         """Counts the number of results for the filter, requiring
         only 1 request per provider by making use of the `meta->data_returned`
@@ -325,7 +323,7 @@ class OptimadeClient:
                 event_loop = None
 
         if self.use_async and not event_loop:
-            results = asyncio.run(
+            return asyncio.run(
                 self._get_all_async(
                     endpoint,
                     filter,
@@ -335,17 +333,15 @@ class OptimadeClient:
                     sort=sort,
                 )
             )
-        else:
-            results = self._get_all(
-                endpoint,
-                filter,
-                page_limit=page_limit,
-                paginate=paginate,
-                response_fields=response_fields,
-                sort=sort,
-            )
 
-        return results
+        return self._get_all(
+            endpoint,
+            filter,
+            page_limit=page_limit,
+            paginate=paginate,
+            response_fields=response_fields,
+            sort=sort,
+        )
 
     def get_one(
         self,
@@ -477,7 +473,8 @@ class OptimadeClient:
         ]
         if results:
             return functools.reduce(lambda r1, r2: {**r1, **r2}, results)
-        return None
+
+        return {}
 
     async def get_one_async(
         self,
@@ -731,8 +728,9 @@ class OptimadeClient:
         if sort:
             _sort = f"sort={sort}"
 
-        params = (_filter, _response_fields, _page_limit, _sort)
-        params = "&".join(p for p in params if p)
+        params = "&".join(
+            p for p in (_filter, _response_fields, _page_limit, _sort) if p
+        )
         if params:
             url += f"?{params}"
 

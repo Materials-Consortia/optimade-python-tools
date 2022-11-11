@@ -39,8 +39,8 @@ __all__ = (
 EPS = 2**-23
 
 
-Vector3D = conlist(float, min_items=3, max_items=3)
-Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
+Vector3D = conlist(float, min_items=3, max_items=3)  # type: ignore[valid-type]
+Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)  # type: ignore[valid-type]
 
 
 class Periodicity(IntEnum):
@@ -449,7 +449,7 @@ The proportion number MUST be omitted if it is 1.
         regex=CHEMICAL_FORMULA_REGEXP,
     )
 
-    dimension_types: Optional[
+    dimension_types: Optional[  # type: ignore[valid-type]
         conlist(Periodicity, min_items=3, max_items=3)
     ] = OptimadeField(
         None,
@@ -497,7 +497,7 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.MUST,
     )
 
-    lattice_vectors: Optional[
+    lattice_vectors: Optional[  # type: ignore[valid-type]
         conlist(Vector3D_unknown, min_items=3, max_items=3)
     ] = OptimadeField(
         None,
@@ -525,7 +525,7 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.OPTIONAL,
     )
 
-    cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(
+    cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(  # type: ignore[valid-type]
         ...,
         description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.

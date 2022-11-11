@@ -1,7 +1,12 @@
+from typing import Optional
+
+
 class OptimadeWarning(Warning):
     """Base Warning for the `optimade` package"""
 
-    def __init__(self, detail: str = None, title: str = None, *args) -> None:
+    def __init__(
+        self, detail: Optional[str] = None, title: Optional[str] = None, *args
+    ) -> None:
         detail = detail if detail else self.__doc__
         super().__init__(detail, *args)
         self.detail = detail

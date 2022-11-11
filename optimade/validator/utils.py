@@ -51,22 +51,22 @@ class InternalError(Exception):
     """
 
 
-def print_warning(string, **kwargs):
+def print_warning(string: str, **kwargs) -> None:
     """Print but angry."""
     print(f"\033[93m{string}\033[0m", **kwargs)
 
 
-def print_notify(string, **kwargs):
+def print_notify(string: str, **kwargs) -> None:
     """Print but louder."""
     print(f"\033[94m\033[1m{string}\033[0m", **kwargs)
 
 
-def print_failure(string, **kwargs):
+def print_failure(string: str, **kwargs) -> None:
     """Print but sad."""
     print(f"\033[91m\033[1m{string}\033[0m", **kwargs)
 
 
-def print_success(string, **kwargs):
+def print_success(string: str, **kwargs) -> None:
     """Print but happy."""
     print(f"\033[92m\033[1m{string}\033[0m", **kwargs)
 
@@ -113,9 +113,9 @@ class ValidatorResults:
         pretty_print = print if success_type == "optional" else print_success
 
         if self.verbosity > 0:
-            pretty_print(message)
+            pretty_print(message)  # type: ignore[operator]
         elif self.verbosity == 0:
-            pretty_print(".", end="", flush=True)
+            pretty_print(".", end="", flush=True)  # type: ignore[operator]
 
     def add_failure(
         self, summary: str, message: str, failure_type: Optional[str] = None
@@ -146,12 +146,12 @@ class ValidatorResults:
             self.optional_failure_count += 1
             self.optional_failure_messages.append((summary, message))
 
-        pprint_types = {
+        pprint_types: Dict[str, Tuple[Callable, Callable]] = {
             "internal": (print_notify, print_warning),
             "optional": (print, print),
         }
         pprint, warning_pprint = pprint_types.get(
-            failure_type, (print_failure, print_warning)
+            str(failure_type), (print_failure, print_warning)
         )
 
         symbol = "!" if failure_type == "internal" else "✖"
@@ -168,7 +168,7 @@ class Client:  # pragma: no cover
         self,
         base_url: str,
         max_retries: int = 5,
-        headers: Dict[str, str] = None,
+        headers: Optional[Dict[str, str]] = None,
         timeout: Optional[float] = DEFAULT_CONN_TIMEOUT,
         read_timeout: Optional[float] = DEFAULT_READ_TIMEOUT,
     ) -> None:
@@ -192,9 +192,9 @@ class Client:  # pragma: no cover
             read_timeout: Read timeout in seconds.
 
         """
-        self.base_url = base_url
-        self.last_request = None
-        self.response = None
+        self.base_url: str = base_url
+        self.last_request: Optional[str] = None
+        self.response: Optional[requests.Response] = None
         self.max_retries = max_retries
         self.headers = headers or {}
         if "User-Agent" not in self.headers:
@@ -232,13 +232,13 @@ class Client:  # pragma: no cover
         while retries < self.max_retries:
             retries += 1
             try:
-                self.response = requests.get(
-                    self.last_request,
+                self.response = requests.get(  # type: ignore[assignment]
+                    self.last_request,  # type: ignore[arg-type]
                     headers=self.headers,
                     timeout=(self.timeout, self.read_timeout),
                 )
 
-                status_code = self.response.status_code
+                status_code = self.response.status_code  # type: ignore[attr-defined]
                 # If we hit a 429 Too Many Requests status, then try again in 1 second
                 if status_code != 429:
                     return self.response
@@ -267,7 +267,7 @@ class Client:  # pragma: no cover
             raise ResponseError(message)
 
 
-def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
+def test_case(test_fn: Callable[..., Tuple[Any, str]]):
     """Wrapper for test case functions, which pretty-prints any errors
     depending on verbosity level, collates the number and severity of
     test failures, returns the response and summary string to the caller.
@@ -290,7 +290,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
     def wrapper(
         validator,
         *args,
-        request: str = None,
+        request: Optional[str] = None,
         optional: bool = False,
         multistage: bool = False,
         **kwargs,
@@ -361,7 +361,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                     success_type = "optional" if optional else None
                     validator.results.add_success(f"{request} - {msg}", success_type)
             else:
-                request = request.replace("\n", "")
+                request = request.replace("\n", "")  # type: ignore[union-attr]
                 message = msg.split("\n")
                 if validator.verbosity > 1:
                     # ValidationErrors from pydantic already include very detailed errors
@@ -369,7 +369,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                     if not isinstance(result, ValidationError):
                         message += traceback.split("\n")
 
-                message = "\n".join(message)
+                message = "\n".join(message)  # type: ignore[assignment]
 
                 if isinstance(result, InternalError):
                     summary = (
@@ -378,7 +378,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                     failure_type = "internal"
                 else:
                     summary = f"{request} - {test_fn.__name__} - failed with error"
-                    failure_type = "optional" if optional else None
+                    failure_type = "optional" if optional else None  # type: ignore[assignment]
 
                 validator.results.add_failure(
                     summary, message, failure_type=failure_type
@@ -409,13 +409,13 @@ class ValidatorLinksResponse(Success):
 class ValidatorEntryResponseOne(Success):
     meta: ResponseMeta = Field(...)
     data: EntryResource = Field(...)
-    included: Optional[List[Dict[str, Any]]] = Field(None)
+    included: Optional[List[Dict[str, Any]]] = Field(None)  # type: ignore[assignment]
 
 
 class ValidatorEntryResponseMany(Success):
     meta: ResponseMeta = Field(...)
     data: List[EntryResource] = Field(...)
-    included: Optional[List[Dict[str, Any]]] = Field(None)
+    included: Optional[List[Dict[str, Any]]] = Field(None)  # type: ignore[assignment]
 
 
 class ValidatorReferenceResponseOne(ValidatorEntryResponseOne):

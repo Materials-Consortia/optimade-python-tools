@@ -37,34 +37,42 @@ def test_client_endpoints(httpx_mocked_response, use_async):
     filter = ""
 
     cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
-    results = cli.get()
-    assert results["structures"][filter][TEST_URL]["data"]
-    assert results["structures"][filter][TEST_URL]["data"][0]["type"] == "structures"
+    get_results = cli.get()
+    assert get_results["structures"][filter][TEST_URL]["data"]
+    assert (
+        get_results["structures"][filter][TEST_URL]["data"][0]["type"] == "structures"
+    )
 
-    results = cli.structures.get()
-    assert results["structures"][filter][TEST_URL]["data"]
-    assert results["structures"][filter][TEST_URL]["data"][0]["type"] == "structures"
+    get_results = cli.structures.get()
+    assert get_results["structures"][filter][TEST_URL]["data"]
+    assert (
+        get_results["structures"][filter][TEST_URL]["data"][0]["type"] == "structures"
+    )
 
-    results = cli.references.get()
-    assert results["references"][filter][TEST_URL]["data"]
-    assert results["references"][filter][TEST_URL]["data"][0]["type"] == "references"
+    get_results = cli.references.get()
+    assert get_results["references"][filter][TEST_URL]["data"]
+    assert (
+        get_results["references"][filter][TEST_URL]["data"][0]["type"] == "references"
+    )
 
-    results = cli.get()
-    assert results["structures"][filter][TEST_URL]["data"]
-    assert results["structures"][filter][TEST_URL]["data"][0]["type"] == "structures"
+    get_results = cli.get()
+    assert get_results["structures"][filter][TEST_URL]["data"]
+    assert (
+        get_results["structures"][filter][TEST_URL]["data"][0]["type"] == "structures"
+    )
 
-    results = cli.references.count()
-    assert results["references"][filter][TEST_URL] > 0
+    count_results = cli.references.count()
+    assert count_results["references"][filter][TEST_URL] > 0
 
     filter = 'elements HAS "Ag"'
-    results = cli.count(filter)
-    assert results["structures"][filter][TEST_URL] > 0
+    count_results = cli.count(filter)
+    assert count_results["structures"][filter][TEST_URL] > 0
 
-    results = cli.info.get()
-    assert results["info"][""][TEST_URL]["data"]["type"] == "info"
+    count_results = cli.info.get()
+    assert count_results["info"][""][TEST_URL]["data"]["type"] == "info"
 
-    results = cli.info.structures.get()
-    assert "properties" in results["info/structures"][""][TEST_URL]["data"]
+    count_results = cli.info.structures.get()
+    assert "properties" in count_results["info/structures"][""][TEST_URL]["data"]
 
 
 @pytest.mark.parametrize("use_async", [False])

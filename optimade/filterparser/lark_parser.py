@@ -6,7 +6,7 @@ into `Lark.Tree` objects for use by the filter transformers.
 
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Optional, Tuple
 
 from lark import Lark, Tree
 
@@ -30,13 +30,13 @@ def get_versions() -> Dict[Tuple[int, int, int], Dict[str, str]]:
         A mapping from version, variant to grammar file name.
 
     """
-    dct = defaultdict(dict)
+    dct: Dict[Tuple[int, int, int], Dict[str, Path]] = defaultdict(dict)
     for filename in Path(__file__).parent.joinpath("../grammar").glob("*.lark"):
         tags = filename.stem.lstrip("v").split(".")
-        version = tuple(map(int, tags[:3]))
+        version = tuple(map(int, tags[:3]))  # ignore: type[index]
         variant = "default" if len(tags) == 3 else tags[-1]
-        dct[version][variant] = filename
-    return dict(dct)
+        dct[version][variant] = filename  # type: ignore[index]
+    return dict(dct)  # type: ignore[arg-type]
 
 
 AVAILABLE_PARSERS = get_versions()
@@ -48,7 +48,9 @@ class LarkParser:
 
     """
 
-    def __init__(self, version: Tuple[int, int, int] = None, variant: str = "default"):
+    def __init__(
+        self, version: Optional[Tuple[int, int, int]] = None, variant: str = "default"
+    ):
         """For a given version and variant, try to load the corresponding grammar.
 
         Parameters:
@@ -78,8 +80,8 @@ class LarkParser:
         with open(AVAILABLE_PARSERS[version][variant]) as f:
             self.lark = Lark(f, maybe_placeholders=False)
 
-        self.tree = None
-        self.filter = None
+        self.tree: Optional[Tree] = None
+        self.filter: Optional[str] = None
 
     def parse(self, filter_: str) -> Tree:
         """Parse a filter string into a `lark.Tree`.
@@ -96,7 +98,7 @@ class LarkParser:
         """
         try:
             self.tree = self.lark.parse(filter_)
-            self.filter = filter_
+            self.filter = filter_  # type: ignore[assignment]
             return self.tree
         except Exception as exc:
             raise BadRequest(
