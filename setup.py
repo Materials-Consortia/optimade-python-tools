@@ -59,7 +59,16 @@ testing_deps = [
     "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.15", "pre-commit~=2.20", "invoke~=1.7"]
+    [
+        "black~=22.10",
+        "flake8~=3.9",
+        "isort~=5.10",
+        "mypy~=0.981",
+        "pylint~=2.15",
+        "pre-commit~=2.20",
+        "invoke~=1.7",
+        "types-all==1.0.0",
+    ]
     + docs_deps
     + testing_deps
     + client_deps
