@@ -1,6 +1,7 @@
-from pathlib import Path
 import re
-from setuptools import setup, find_packages
+from pathlib import Path
+
+from setuptools import find_packages, setup
 
 module_dir = Path(__file__).resolve().parent
 
@@ -26,9 +27,8 @@ server_deps = [
 
 
 # Client minded
-aiida_deps = [
-    "aiida-core~=2.1",
-]
+aiida_deps = ["aiida-core~=2.1"]
+
 http_client_deps = [
     "httpx~=0.23",
     "rich~=12.6",
@@ -98,7 +98,7 @@ setup(
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.8,<3.11",
+    python_requires=">=3.8",
     install_requires=[
         "lark~=1.1",
         "fastapi~=0.86",
