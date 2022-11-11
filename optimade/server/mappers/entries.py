@@ -56,25 +56,19 @@ class BaseResourceMapper:
     """
 
     try:
-        from optimade.server.data import (
-            providers as PROVIDERS,  # pylint: disable=no-name-in-module
-        )
+        from optimade.server.data import providers as PROVIDERS  # type: ignore
     except (ImportError, ModuleNotFoundError):
         PROVIDERS = {}
 
     KNOWN_PROVIDER_PREFIXES: Set[str] = set(
         prov["id"] for prov in PROVIDERS.get("data", [])
     )
-    ALIASES: Tuple[Tuple[str, str]] = ()
-    LENGTH_ALIASES: Tuple[Tuple[str, str]] = ()
-    PROVIDER_FIELDS: Tuple[str] = ()
+    ALIASES: Tuple[Tuple[str, str], ...] = ()
+    LENGTH_ALIASES: Tuple[Tuple[str, str], ...] = ()
+    PROVIDER_FIELDS: Tuple[str, ...] = ()
     ENTRY_RESOURCE_CLASS: Type[EntryResource] = EntryResource
     RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {"id", "type", "relationships", "links"}
-    SUPPORTED_PREFIXES: Set[str]
-    ALL_ATTRIBUTES: Set[str]
-    ENTRY_RESOURCE_ATTRIBUTES: Dict[str, Any]
-    ENDPOINT: str
 
     @classmethod
     @lru_cache(maxsize=1)
@@ -168,7 +162,7 @@ class BaseResourceMapper:
 
     @classmethod
     @lru_cache(maxsize=1)
-    def all_length_aliases(cls) -> Iterable[Tuple[str, str]]:
+    def all_length_aliases(cls) -> Tuple[Tuple[str, str], ...]:
         """Returns all of the associated length aliases for this class,
         including those defined by the server config.
 
@@ -179,7 +173,7 @@ class BaseResourceMapper:
         from optimade.server.config import CONFIG
 
         return cls.LENGTH_ALIASES + tuple(
-            CONFIG.length_aliases.get(cls.ENDPOINT, {}).items()
+            CONFIG.length_aliases.get(cls.ENDPOINT, {}).items()  # type: ignore[call-overload]
         )
 
     @classmethod

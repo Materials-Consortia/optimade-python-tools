@@ -1,5 +1,6 @@
 """Logging to both file and terminal"""
 import logging
+import logging.handlers
 import os
 import sys
 from pathlib import Path

@@ -46,8 +46,8 @@ class Quantity:
     def __init__(
         self,
         name: str,
-        backend_field: str = None,
-        length_quantity: "Quantity" = None,
+        backend_field: Optional[str] = None,
+        length_quantity: Optional["Quantity"] = None,
     ):
         """Initialise the `quantity` from it's name and aliases.
 
@@ -79,8 +79,8 @@ class BaseTransformer(Transformer, abc.ABC):
 
     """
 
-    mapper: Optional[BaseResourceMapper] = None
-    operator_map: Dict[str, str] = {
+    mapper: Optional[Type[BaseResourceMapper]] = None
+    operator_map: Dict[str, Optional[str]] = {
         "<": None,
         "<=": None,
         ">": None,
@@ -104,7 +104,7 @@ class BaseTransformer(Transformer, abc.ABC):
     _quantities = None
 
     def __init__(
-        self, mapper: BaseResourceMapper = None
+        self, mapper: Optional[Type[BaseResourceMapper]] = None
     ):  # pylint: disable=super-init-not-called
         """Initialise the transformer object, optionally loading in a
         resource mapper for use when post-processing.
@@ -118,7 +118,7 @@ class BaseTransformer(Transformer, abc.ABC):
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] object.
         """
         return {
-            quantity.backend_field: quantity for _, quantity in self.quantities.items()
+            quantity.backend_field: quantity for _, quantity in self.quantities.items()  # type: ignore[misc]
         }
 
     @property

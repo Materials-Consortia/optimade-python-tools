@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
 
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
 from optimade.models import EntryResource
@@ -22,8 +22,8 @@ class ElasticCollection(EntryCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
+        resource_cls: Type[EntryResource],
+        resource_mapper: Type[BaseResourceMapper],
         client: Optional["Elasticsearch"] = None,
     ):
         """Initialize the ElasticCollection for the given parameters.
@@ -84,7 +84,7 @@ class ElasticCollection(EntryCollection):
 
     @staticmethod
     def create_elastic_index_from_mapper(
-        resource_mapper: BaseResourceMapper, fields: Iterable[str]
+        resource_mapper: Type[BaseResourceMapper], fields: Iterable[str]
     ) -> Dict[str, Any]:
         """Create a fallback elastic index based on a resource mapper.
 
@@ -147,7 +147,7 @@ class ElasticCollection(EntryCollection):
 
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry=False
-    ) -> Tuple[Union[List[Dict[str, Any]], Dict[str, Any]], int, bool]:
+    ) -> Tuple[List[Dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:

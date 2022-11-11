@@ -57,7 +57,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
     species = attributes.species
     # If species is missing, infer data from species_at_sites
     if not species:
-        species = species_from_species_at_sites(attributes.species_at_sites)
+        species = species_from_species_at_sites(attributes.species_at_sites)  # type: ignore[arg-type]
 
     optimade_species: Dict[str, OptimadeStructureSpecies] = {_.name: _ for _ in species}
 
@@ -69,9 +69,9 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         )
 
     atoms = []
-    for site_number in range(attributes.nsites):
-        species_name = attributes.species_at_sites[site_number]
-        site = attributes.cartesian_site_positions[site_number]
+    for site_number in range(attributes.nsites):  # type: ignore[arg-type]
+        species_name = attributes.species_at_sites[site_number]  # type: ignore[index]
+        site = attributes.cartesian_site_positions[site_number]  # type: ignore[index]
 
         current_species = optimade_species[species_name]
 

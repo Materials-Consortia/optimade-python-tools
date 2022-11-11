@@ -44,13 +44,13 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
     attributes = optimade_structure.attributes
 
     # Convert null/None values to float("nan")
-    lattice_vectors, adjust_cell = pad_cell(attributes.lattice_vectors)
+    lattice_vectors, adjust_cell = pad_cell(attributes.lattice_vectors)  # type: ignore[arg-type]
     structure = StructureData(cell=lattice_vectors)
 
     # If species not provided, infer data from species_at_sites
     species: Optional[List[OptimadeStructureSpecies]] = attributes.species
     if not species:
-        species = species_from_species_at_sites(attributes.species_at_sites)
+        species = species_from_species_at_sites(attributes.species_at_sites)  # type: ignore[arg-type]
 
     # Add Kinds
     for kind in species:
@@ -86,18 +86,18 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
         )
 
     # Add Sites
-    for index in range(attributes.nsites):
+    for index in range(attributes.nsites):  # type: ignore[arg-type]
         # range() to ensure 1-to-1 between kind and site
         structure.append_site(
             Site(
-                kind_name=attributes.species_at_sites[index],
-                position=attributes.cartesian_site_positions[index],
+                kind_name=attributes.species_at_sites[index],  # type: ignore[index]
+                position=attributes.cartesian_site_positions[index],  # type: ignore[index]
             )
         )
 
     if adjust_cell:
         structure._adjust_default_cell(
-            pbc=[bool(dim.value) for dim in attributes.dimension_types]
+            pbc=[bool(dim.value) for dim in attributes.dimension_types]  # type: ignore[union-attr]
         )
 
     return structure

@@ -3,7 +3,7 @@ Utility functions to help the conversion functions along.
 
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
-from typing import Iterable, List, Optional, Tuple
+from typing import Iterable, List, Optional, Tuple, Type
 
 from optimade.models.structures import Species as OptimadeStructureSpecies
 from optimade.models.structures import Vector3D
@@ -15,7 +15,7 @@ except ImportError:
 
     from optimade.adapters.warnings import AdapterPackageNotFound
 
-    np = None
+    np = None  # type: ignore[assignment]
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 
@@ -49,7 +49,7 @@ def scaled_cell(
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     cell = np.asarray(cell)
 
@@ -58,7 +58,7 @@ def scaled_cell(
     for i in range(3):
         vector = np.cross(cell[(i + 1) % 3], cell[(i + 2) % 3]) / volume
         scale.append(tuple(vector))
-    return tuple(scale)
+    return tuple(scale)  # type: ignore[return-value]
 
 
 def fractional_coordinates(
@@ -82,12 +82,12 @@ def fractional_coordinates(
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
-    cell = np.asarray(cell)
-    cartesian_positions = np.asarray(cartesian_positions)
+    cell_array = np.asarray(cell)
+    cartesian_positions_array = np.asarray(cartesian_positions)
 
-    fractional = np.linalg.solve(cell.T, cartesian_positions.T).T
+    fractional = np.linalg.solve(cell_array.T, cartesian_positions_array.T).T
 
     # Expecting a bulk 3D structure here, note, this may change in the future.
     # See `ase.atoms:Atoms.get_scaled_positions()` for ideas on how to handle lower dimensional structures.
@@ -121,7 +121,7 @@ def cell_to_cellpar(
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     cell = np.asarray(cell)
 
@@ -154,7 +154,7 @@ def unit_vector(x: Vector3D) -> Vector3D:
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     y = np.array(x, dtype="float")
     return y / np.linalg.norm(y)
@@ -163,7 +163,7 @@ def unit_vector(x: Vector3D) -> Vector3D:
 def cellpar_to_cell(
     cellpar: List[float],
     ab_normal: Tuple[int, int, int] = (0, 0, 1),
-    a_direction: Tuple[int, int, int] = None,
+    a_direction: Optional[Tuple[int, int, int]] = None,
 ) -> List[Vector3D]:
     """Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.
 
@@ -207,7 +207,7 @@ def cellpar_to_cell(
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     if a_direction is None:
         if np.linalg.norm(np.cross(ab_normal, (1, 0, 0))) < 1e-5:
@@ -277,12 +277,12 @@ def cellpar_to_cell(
 def _pad_iter_of_iters(
     iterable: Iterable[Iterable],
     padding: Optional[float] = None,
-    outer: Optional[Iterable] = None,
-    inner: Optional[Iterable] = None,
+    outer: Optional[Type] = None,
+    inner: Optional[Type] = None,
 ) -> Tuple[Iterable[Iterable], bool]:
     """Turn any null/None values into a float in given iterable of iterables"""
     try:
-        padding = float(padding)
+        padding = float(padding)  # type: ignore[arg-type]
     except (TypeError, ValueError):
         padding = float("nan")
 
@@ -296,7 +296,7 @@ def _pad_iter_of_iters(
     if padded_iterable:
         padded_iterable_of_iterables = []
         for inner_iterable in iterable:
-            new_inner_iterable = inner(
+            new_inner_iterable = inner(  # type: ignore[misc]
                 value if value is not None else padding for value in inner_iterable
             )
             padded_iterable_of_iterables.append(new_inner_iterable)

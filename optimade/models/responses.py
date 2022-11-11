@@ -66,17 +66,17 @@ class InfoResponse(Success):
 
 
 class EntryResponseOne(Success):
-    data: Union[EntryResource, Dict[str, Any], None] = Field(...)
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
+    data: Union[EntryResource, Dict[str, Any], None] = Field(...)  # type: ignore[assignment]
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
         None, uniqueItems=True
     )
 
 
 class EntryResponseMany(Success):
-    data: Union[List[EntryResource], List[Dict[str, Any]]] = Field(
+    data: Union[List[EntryResource], List[Dict[str, Any]]] = Field(  # type: ignore[assignment]
         ..., uniqueItems=True
     )
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
         None, uniqueItems=True
     )
 

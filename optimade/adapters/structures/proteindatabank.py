@@ -30,7 +30,7 @@ except ImportError:
 
     from optimade.adapters.warnings import AdapterPackageNotFound
 
-    np = None
+    np = None  # type: ignore[assignment]
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 from optimade.adapters.structures.utils import (
@@ -63,7 +63,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     cif = """#
 # Created from an OPTIMADE structure.
@@ -82,9 +82,9 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     attributes = optimade_structure.attributes
 
     # Do this only if there's three non-zero lattice vectors
-    if valid_lattice_vector(attributes.lattice_vectors):
+    if valid_lattice_vector(attributes.lattice_vectors):  # type: ignore[arg-type]
         a_vector, b_vector, c_vector, alpha, beta, gamma = cell_to_cellpar(
-            attributes.lattice_vectors
+            attributes.lattice_vectors  # type: ignore[arg-type]
         )
 
         cif += (
@@ -107,8 +107,8 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
         # we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.
         if not hasattr(attributes, "fractional_site_positions"):
             attributes.fractional_site_positions = fractional_coordinates(
-                cell=attributes.lattice_vectors,
-                cartesian_positions=attributes.cartesian_site_positions,
+                cell=attributes.lattice_vectors,  # type: ignore[arg-type]
+                cartesian_positions=attributes.cartesian_site_positions,  # type: ignore[arg-type]
             )
 
     # NOTE: The following lines are perhaps needed to create a "valid" PDBx/mmCIF file.
@@ -165,11 +165,11 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
         sites = attributes.cartesian_site_positions
 
     species: Dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species
+        species.name: species for species in attributes.species  # type: ignore[union-attr]
     }
 
-    for site_number in range(attributes.nsites):
-        species_name = attributes.species_at_sites[site_number]
+    for site_number in range(attributes.nsites):  # type: ignore[arg-type]
+        species_name = attributes.species_at_sites[site_number]  # type: ignore[index]
         site = sites[site_number]
 
         current_species = species[species_name]
@@ -211,14 +211,14 @@ def get_pdb(  # pylint: disable=too-many-locals
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     pdb = ""
 
     attributes = optimade_structure.attributes
 
     rotation = None
-    if valid_lattice_vector(attributes.lattice_vectors):
+    if valid_lattice_vector(attributes.lattice_vectors):  # type: ignore[arg-type]
         currentcell = np.asarray(attributes.lattice_vectors)
         cellpar = cell_to_cellpar(currentcell)
         exportedcell = cellpar_to_cell(cellpar)
@@ -241,15 +241,16 @@ def get_pdb(  # pylint: disable=too-many-locals
     pdb += "MODEL     1\n"
 
     species: Dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species
+        species.name: species
+        for species in attributes.species  # type:ignore[union-attr]
     }
 
     sites = np.asarray(attributes.cartesian_site_positions)
     if rotation is not None:
         sites = sites.dot(rotation)
 
-    for site_number in range(attributes.nsites):
-        species_name = attributes.species_at_sites[site_number]
+    for site_number in range(attributes.nsites):  # type: ignore[arg-type]
+        species_name = attributes.species_at_sites[site_number]  # type: ignore[index]
         site = sites[site_number]
 
         current_species = species[species_name]

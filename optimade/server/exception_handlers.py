@@ -1,5 +1,5 @@
 import traceback
-from typing import Callable, List, Tuple
+from typing import Callable, Iterable, List, Optional, Tuple, Type
 
 from fastapi import Request
 from fastapi.encoders import jsonable_encoder
@@ -18,7 +18,7 @@ def general_exception(
     request: Request,
     exc: Exception,
     status_code: int = 500,  # A status_code in `exc` will take precedence
-    errors: List[OptimadeError] = None,
+    errors: Optional[List[OptimadeError]] = None,
 ) -> JSONAPIResponse:
     """Handle an exception
 
@@ -42,17 +42,17 @@ def general_exception(
         debug_info[f"_{CONFIG.provider.prefix}_traceback"] = tb
 
     try:
-        http_response_code = int(exc.status_code)
+        http_response_code = int(exc.status_code)  # type: ignore[attr-defined]
     except AttributeError:
         http_response_code = int(status_code)
 
     try:
-        title = str(exc.title)
+        title = str(exc.title)  # type: ignore[attr-defined]
     except AttributeError:
         title = str(exc.__class__.__name__)
 
     try:
-        detail = str(exc.detail)
+        detail = str(exc.detail)  # type: ignore[attr-defined]
     except AttributeError:
         detail = str(exc)
 
@@ -219,16 +219,19 @@ def general_exception_handler(request: Request, exc: Exception) -> JSONAPIRespon
     return general_exception(request, exc)
 
 
-OPTIMADE_EXCEPTIONS: Tuple[
-    Exception, Callable[[Request, Exception], JSONAPIResponse]
-] = (
+OPTIMADE_EXCEPTIONS: Iterable[
+    Tuple[
+        Type[Exception],
+        Callable[[Request, Exception], JSONAPIResponse],
+    ]
+] = [
     (StarletteHTTPException, http_exception_handler),
     (RequestValidationError, request_validation_exception_handler),
     (ValidationError, validation_exception_handler),
     (VisitError, grammar_not_implemented_handler),
-    (NotImplementedError, not_implemented_handler),
+    (NotImplementedError, not_implemented_handler),  # type: ignore[list-item] # not entirely sure why this entry triggers mypy
     (Exception, general_exception_handler),
-)
+]
 """A tuple of all pairs of exceptions and handler functions that allow for
 appropriate responses to be returned in certain scenarios according to the
 OPTIMADE specification.

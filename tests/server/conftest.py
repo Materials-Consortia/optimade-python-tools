@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Dict, Optional, Union
 
 import pytest
 
@@ -134,9 +134,9 @@ def check_response(get_good_response):
         request: str,
         expected_ids: Union[str, List[str]],
         page_limit: int = CONFIG.page_limit,
-        expected_return: int = None,
+        expected_return: Optional[int] = None,
         expected_as_is: bool = False,
-        expected_warnings: List[Dict[str, str]] = None,
+        expected_warnings: Optional[List[Dict[str, str]]] = None,
         server: Union[str, OptimadeTestClient] = "regular",
     ):
         if expected_warnings:
@@ -181,9 +181,9 @@ def check_error_response(client, index_client):
 
     def inner(
         request: str,
-        expected_status: int = None,
-        expected_title: str = None,
-        expected_detail: str = None,
+        expected_status: Optional[int] = None,
+        expected_title: Optional[str] = None,
+        expected_detail: Optional[str] = None,
         server: Union[str, OptimadeTestClient] = "regular",
     ):
         response = None

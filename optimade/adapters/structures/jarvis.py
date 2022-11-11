@@ -55,7 +55,7 @@ def get_jarvis_atoms(optimade_structure: OptimadeStructure) -> Atoms:
 
     return Atoms(
         lattice_mat=attributes.lattice_vectors,
-        elements=[specie.name for specie in attributes.species],
+        elements=[specie.name for specie in attributes.species],  # type: ignore[union-attr]
         coords=attributes.cartesian_site_positions,
         cartesian=True,
     )
