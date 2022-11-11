@@ -142,7 +142,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9', '3.10', '3.11']
 
     services:
       mongo:
@@ -213,7 +213,7 @@ jobs:
 
     - name: Setup environment for AiiDA
       env:
-        AIIDA_TEST_BACKEND: psql_dos
+        AIIDA_TEST_BACKEND: core.psql_dos
       run: |
         .github/aiida/setup_aiida.sh
 
