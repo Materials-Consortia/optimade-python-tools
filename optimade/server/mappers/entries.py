@@ -327,7 +327,7 @@ class BaseResourceMapper:
         If the field is not found, the unmodified `optimade_field` is returned.
 
         This means for an (OPTIMADE, DB) alias of (`species`, `kinds`), `get_backend_fields("species.mass")`
-        will return `kinds.mass` as there is no specific entry for "species.mass" in the aliases
+        will return `kinds.mass` as there is no specific entry for "species.mass" in the aliases.
 
         Arguments:
             optimade_field: The OPTIMADE field to attempt to map to the backend-specific field.
