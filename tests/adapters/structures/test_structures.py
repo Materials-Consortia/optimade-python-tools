@@ -1,15 +1,14 @@
 """Test Structure adapter"""
 import pytest
-
 from optimade.adapters import Structure
 from optimade.models import StructureResource
 
 try:
     import aiida  # noqa: F401
     import ase  # noqa: F401
+    import jarvis  # noqa: F401
     import numpy  # noqa: F401
     import pymatgen  # noqa: F401
-    import jarvis  # noqa: F401
 except ImportError:
     all_modules_found = False
 else:
