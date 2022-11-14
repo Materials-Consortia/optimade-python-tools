@@ -475,7 +475,7 @@ class BaseResourceMapper:
         return newdoc
 
     @classmethod
-    def add_alias_and_prefix(cls, doc: dict):
+    def add_alias_and_prefix(cls, doc: dict) -> dict:
         """Converts a dictionary with field names that match the backend database with the field names that are presented in the OPTIMADE database.
         The way these fields are converted is read from:
         [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].
