@@ -106,7 +106,7 @@ setup(
         "pydantic~=1.10,>=1.10.2",
         "email_validator~=1.2",
         "requests~=2.28",
-        "pyyaml~=5.4",
+        "pyyaml>=5.4, <7",
     ],
     extras_require={
         "all": all_deps,
