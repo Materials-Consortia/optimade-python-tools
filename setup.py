@@ -93,6 +93,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Intended Audience :: Developers",
         "Topic :: Database",
         "Topic :: Database :: Database Engines/Servers",
@@ -105,6 +106,7 @@ setup(
         "pydantic~=1.10,>=1.10.2",
         "email_validator~=1.2",
         "requests~=2.28",
+        "pyyaml~=5.4",
     ],
     extras_require={
         "all": all_deps,
