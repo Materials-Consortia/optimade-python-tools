@@ -3,74 +3,13 @@ from functools import lru_cache
 import warnings
 from optimade.server.config import CONFIG
 from optimade.models.entries import EntryResource
+from optimade.utils import (
+    write_to_nested_dict,
+    read_from_nested_dict,
+    remove_from_nested_dict,
+)
 
 __all__ = ("BaseResourceMapper",)
-
-
-def write_to_nested_dict(dictionary: dict, composite_key: str, value: Any):
-    """Puts a value into an arbitrary position in a nested dict.
-
-    Arguments:
-        dictionary: the dictionary to which the value should be added under the composite_key.
-        composite_key: The key under which the value should be stored. The sub keys should be separated by a ".".
-            e.g. "outer_level_key.inner_level_key"
-        value: The value that should be stored in the dictionary.
-
-    """
-    if "." in composite_key:
-        split_key = composite_key.split(".", 1)
-        if split_key[0] not in dictionary:
-            dictionary[split_key[0]] = {}
-        write_to_nested_dict(dictionary[split_key[0]], split_key[1], value)
-    else:
-        dictionary[composite_key] = value
-
-
-def read_from_nested_dict(dictionary: dict, composite_key: str) -> Any:
-    """Reads a value from an arbitrary position in a nested dict.
-
-    Arguments:
-        dictionary: the dictionary from which the value under the composite_key should be read .
-        composite_key: The key under which the value should be read. The sub keys should be separated by a ".".
-            e.g. "outer_level_key.inner_level_key"
-
-    Returns:
-        The value as stored in the dictionary. If the value is not stored in the dictionary it returns None.
-        A boolean. True indicates that the composite_key was present in the dictionary, False that it is not present.
-
-    """
-    split_key = composite_key.split(".", 1)
-    if split_key[0] in dictionary:
-        if len(split_key) > 1:
-            return read_from_nested_dict(dictionary[split_key[0]], split_key[1])
-        else:
-            return dictionary[composite_key], True
-    return None, False
-
-
-def remove_from_nested_dict(dictionary: dict, composite_key: str):
-    """Removes an entry from an arbitrary position in a nested dict.
-
-    Arguments:
-        dictionary: the dictionary from which the composite key should be removed.
-        composite_key: The key that should be removed. The sub keys should be separated by a ".".
-            e.g. "outer_level_key.inner_level_key"
-            If the removal of key causes the dictionary one level up to be empty it is removed as well.
-    """
-    split_key = composite_key.split(".", 1)
-    if split_key[0] in dictionary:
-        if len(split_key) > 1:
-            empty = remove_from_nested_dict(dictionary[split_key[0]], split_key[1])
-            if empty:
-                return remove_from_nested_dict(dictionary, split_key[0])
-            else:
-                return False
-        else:
-            del dictionary[composite_key]
-            if not dictionary:
-                return True
-            else:
-                return False
 
 
 class classproperty(property):

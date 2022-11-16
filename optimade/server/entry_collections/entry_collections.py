@@ -16,24 +16,7 @@ from optimade.server.warnings import (
     UnknownProviderProperty,
     QueryParamNotUsed,
 )
-
-
-def set_field_to_none_if_missing_in_dict(entry: dict, field: str):
-    from optimade.server.mappers.entries import (
-        read_from_nested_dict,
-        write_to_nested_dict,
-    )
-
-    _, present = read_from_nested_dict(entry, field)
-    if not present:
-        split_field = field.split(".", 1)
-        # It would be nice if there would be a more universal way to handle special cases like this.
-        if split_field[0] == "structure_features":
-            value = []
-        else:
-            value = None
-        write_to_nested_dict(entry, field, value)
-    return entry
+from optimade.utils import set_field_to_none_if_missing_in_dict
 
 
 def create_collection(
@@ -179,7 +162,7 @@ class EntryCollection(ABC):
 
         return (results, data_returned, more_data_available, exclude_fields)
 
-    def check_and_add_missing_fields(self, results: dict, response_fields: set):
+    def check_and_add_missing_fields(self, results: List[dict], response_fields: set):
         """Checks whether the response_fields and mandatory fields are present.
         If they are not present the values are set to None, so the deserialization works correctly.
         It also checks whether all fields in the response have been defined either in the model or in the config file.
