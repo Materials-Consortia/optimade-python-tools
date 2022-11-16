@@ -160,7 +160,7 @@ class EntryCollection(ABC):
                     detail=f"Instead of a single entry, {data_returned} entries were found",
                 )
 
-        return (results, data_returned, more_data_available, exclude_fields)
+        return results, data_returned, more_data_available, exclude_fields
 
     def check_and_add_missing_fields(self, results: List[dict], response_fields: set):
         """Checks whether the response_fields and mandatory fields are present.

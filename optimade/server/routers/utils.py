@@ -95,12 +95,12 @@ def remove_exclude_fields(
     results: Union[List[EntryResource], EntryResource],
     exclude_fields: Set[str],
 ) -> List[Dict[str, Any]]:
-    """Handle query parameter `response_fields`.
+    """Removes the fields that are present in exclude_fields from the entries in the results.`.
 
-    It is assumed that all fields are under `attributes`.
-    This is due to all other top-level fields are REQUIRED in the response.
+    It is assumed that all fields are under `attributes`, because all top-level fields are REQUIRED in the response.
 
     Parameters:
+        results: A list with resources with dictionaries from which the fields in exclude_fields should be removed.
         exclude_fields: Fields under `attributes` to be excluded from the response.
 
     Returns:
