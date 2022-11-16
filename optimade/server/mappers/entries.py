@@ -21,7 +21,7 @@ def write_to_nested_dict(dictionary: dict, composite_key: str, value: Any):
 
     Arguments:
         dictionary: the dictionary to which the value should be added under the composite_key.
-        composite_key: The key under which the value should be stored. The sub_keys should be separated by a ".".
+        composite_key: The key under which the value should be stored. The sub keys should be separated by a ".".
             e.g. "outer_level_key.inner_level_key"
         value: The value that should be stored in the dictionary.
 
@@ -40,7 +40,7 @@ def read_from_nested_dict(dictionary: dict, composite_key: str) -> Any:
 
     Arguments:
         dictionary: the dictionary from which the value under the composite_key should be read .
-        composite_key: The key under which the value should be read. The sub_keys should be separated by a ".".
+        composite_key: The key under which the value should be read. The sub keys should be separated by a ".".
             e.g. "outer_level_key.inner_level_key"
 
     Returns:
@@ -62,7 +62,7 @@ def remove_from_nested_dict(dictionary: dict, composite_key: str):
 
     Arguments:
         dictionary: the dictionary from which the composite key should be removed.
-        composite_key: The key that should be removed. The sub_keys should be separated by a ".".
+        composite_key: The key that should be removed. The sub keys should be separated by a ".".
             e.g. "outer_level_key.inner_level_key"
             If the removal of key causes the dictionary one level up to be empty it is removed as well.
     """
