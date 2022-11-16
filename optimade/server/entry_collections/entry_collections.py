@@ -18,6 +18,24 @@ from optimade.server.warnings import (
 )
 
 
+def set_field_to_none_if_missing_in_dict(entry: dict, field: str):
+    from optimade.server.mappers.entries import (
+        read_from_nested_dict,
+        write_to_nested_dict,
+    )
+
+    _, present = read_from_nested_dict(entry, field)
+    if not present:
+        split_field = field.split(".", 1)
+        # It would be nice if there would be a more universal way to handle special cases like this.
+        if split_field[0] == "structure_features":
+            value = []
+        else:
+            value = None
+        write_to_nested_dict(entry, field, value)
+    return entry
+
+
 def create_collection(
     name: str, resource_cls: EntryResource, resource_mapper: BaseResourceMapper
 ) -> "EntryCollection":
@@ -117,29 +135,6 @@ class EntryCollection(ABC):
 
         """
 
-    def set_field_to_none_if_missing_in_dict(self, entry: dict, field: str):
-
-        split_field = field.split(".", 1)
-        if split_field[0] in entry:
-            if len(split_field) > 1:
-                self.set_field_to_none_if_missing_in_dict(
-                    entry[split_field[0]], split_field[1]
-                )
-        else:
-            if len(split_field) == 1:
-                if (
-                    split_field[0] == "structure_features"
-                ):  # It would be nice if there would be a more universal way to handle special cases like this.
-                    entry[split_field[0]] = []
-                else:
-                    entry[split_field[0]] = None
-            else:
-                entry[split_field[0]] = {}
-                self.set_field_to_none_if_missing_in_dict(
-                    entry[split_field[0]], split_field[1]
-                )
-        return entry
-
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str]]:
@@ -195,7 +190,7 @@ class EntryCollection(ABC):
         # Include missing fields
         for result in results:
             for field in include_fields:
-                self.set_field_to_none_if_missing_in_dict(result["attributes"], field)
+                set_field_to_none_if_missing_in_dict(result["attributes"], field)
 
         bad_optimade_fields = set()
         bad_provider_fields = set()
