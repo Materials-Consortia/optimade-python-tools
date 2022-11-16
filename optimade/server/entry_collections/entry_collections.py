@@ -280,10 +280,7 @@ class EntryCollection(ABC):
             attributes = schema.copy()
             while path:
                 next_key = path.pop(0)
-                if next_key not in attributes:
-                    return []
                 attributes = attributes[next_key]
-
             return attributes["required"]
 
     @lru_cache(maxsize=4)

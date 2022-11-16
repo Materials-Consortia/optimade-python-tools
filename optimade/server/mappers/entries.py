@@ -7,15 +7,6 @@ from optimade.models.entries import EntryResource
 __all__ = ("BaseResourceMapper",)
 
 
-def get_value(dict, real):
-    split_real = real.split(".", 1)
-    if not split_real[0] in dict:
-        return None, False
-    if len(split_real) == 1:
-        return dict[split_real[0]], True
-    return get_value(dict[split_real[0]], split_real[1])
-
-
 def write_to_nested_dict(dictionary: dict, composite_key: str, value: Any):
     """Puts a value into an arbitrary position in a nested dict.
 
