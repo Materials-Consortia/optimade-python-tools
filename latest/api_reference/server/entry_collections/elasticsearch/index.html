@@ -2038,9 +2038,9 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
             <span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
         <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
         <span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="o">**</span><span class="n">body</span><span class="p">)</span>
 
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with body </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with parameters </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">predefined_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -2060,7 +2060,8 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
 <span class="sd">            fields: The list of fields to use in the index.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            The `body` parameter to pass to `client.indices.create(..., body=...)`.</span>
+<span class="sd">            The parameters to pass to `client.indices.create(...)` (previously</span>
+<span class="sd">                the &#39;body&#39; parameters).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span>
@@ -2101,15 +2102,14 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
 
         <span class="n">bulk</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span>
-            <span class="p">[</span>
+            <span class="p">(</span>
                 <span class="p">{</span>
                     <span class="s2">&quot;_index&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                     <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">),</span>
-                    <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;_source&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span>
-            <span class="p">],</span>
+            <span class="p">),</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
@@ -2145,9 +2145,9 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
             <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">sort_dir</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">elastic_sort</span><span class="p">:</span>
-            <span class="n">elastic_sort</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="s2">&quot;asc&quot;</span><span class="p">}</span>
-            <span class="p">}</span>
+            <span class="n">elastic_sort</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="s2">&quot;asc&quot;</span><span class="p">}}</span>
+            <span class="p">]</span>
 
         <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">*</span><span class="n">elastic_sort</span><span class="p">)</span>
 
@@ -2399,7 +2399,8 @@ by the keyword arguments.</p>
   <tbody>
     <tr>
       <td><code>Dict[str, Any]</code></td>
-      <td><p>The <code>body</code> parameter to pass to <code>client.indices.create(..., body=...)</code>.</p></td>
+      <td><p>The parameters to pass to <code>client.indices.create(...)</code> (previously
+    the 'body' parameters).</p></td>
     </tr>
   </tbody>
 </table>
@@ -2416,7 +2417,8 @@ by the keyword arguments.</p>
 <span class="sd">        fields: The list of fields to use in the index.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        The `body` parameter to pass to `client.indices.create(..., body=...)`.</span>
+<span class="sd">        The parameters to pass to `client.indices.create(...)` (previously</span>
+<span class="sd">            the &#39;body&#39; parameters).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span>
@@ -2468,9 +2470,9 @@ to the current client.</p>
         <span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
     <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
     <span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="o">**</span><span class="n">body</span><span class="p">)</span>
 
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with body </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with parameters </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2545,15 +2547,14 @@ to the current client.</p>
 
     <span class="n">bulk</span><span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span>
-        <span class="p">[</span>
+        <span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;_index&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                 <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">),</span>
-                <span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;_source&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span>
-        <span class="p">],</span>
+        <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div>
         </details>

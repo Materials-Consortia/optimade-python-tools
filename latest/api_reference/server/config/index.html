@@ -2880,7 +2880,7 @@ can be easily extended for new config file types.</p>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Which database backend to use out of the supported backends.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Host settings to pass through to the `Elasticsearch` class.&quot;</span>
     <span class="p">)</span>
 
@@ -3215,7 +3215,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.elastic_hosts" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
