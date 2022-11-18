@@ -91,7 +91,7 @@ class OptimadeClient:
 
     def __init__(
         self,
-        base_urls: Optional[Union[str, List[str]]] = None,
+        base_urls: Optional[Union[str, Iterable[str]]] = None,
         max_results_per_provider: int = 1000,
         headers: Optional[Dict] = None,
         http_timeout: int = 10,
@@ -111,14 +111,15 @@ class OptimadeClient:
 
         """
 
-        if not base_urls:
-            base_urls = get_all_databases()  # type: ignore[assignment]
-
         self.max_results_per_provider = max_results_per_provider
         if self.max_results_per_provider in (-1, 0):
             self.max_results_per_provider = None
 
-        self.base_urls = base_urls  # type: ignore[assignment]
+        if not base_urls:
+            self.base_urls = get_all_databases()
+        else:
+            self.base_urls = base_urls
+
         if isinstance(self.base_urls, str):
             self.base_urls = [self.base_urls]
         self.base_urls = list(self.base_urls)

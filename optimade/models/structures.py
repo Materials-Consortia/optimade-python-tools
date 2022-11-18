@@ -39,8 +39,8 @@ __all__ = (
 EPS = 2**-23
 
 
-Vector3D = conlist(float, min_items=3, max_items=3)  # type: ignore[valid-type]
-Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)  # type: ignore[valid-type]
+Vector3D = conlist(float, min_items=3, max_items=3)
+Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
 
 
 class Periodicity(IntEnum):

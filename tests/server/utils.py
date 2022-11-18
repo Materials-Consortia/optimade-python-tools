@@ -49,7 +49,7 @@ class OptimadeTestClient(TestClient):
                 version = f"/v{__api_version__.split('.')[0]}"
         self.version = version
 
-    def request(  # type: ignore[override] # pylint: disable=too-many-locals
+    def request(  # pylint: disable=too-many-locals
         self,
         method: str,
         url: str,

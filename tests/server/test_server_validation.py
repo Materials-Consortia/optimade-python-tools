@@ -95,7 +95,6 @@ def test_versioned_base_urls(client, index_client, server: str):
 
     This depends on the routers for each kind of server.
     """
-    import json
 
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
@@ -129,7 +128,6 @@ def test_meta_schema_value_obeys_index(client, index_client, server: str):
     """Test that the reported `meta->schema` is correct for index/non-index
     servers.
     """
-    import json
 
     from optimade.server.config import CONFIG
     from optimade.server.routers.utils import BASE_URL_PREFIXES
