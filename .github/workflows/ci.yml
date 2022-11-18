@@ -7,6 +7,9 @@ on:
     - master
     - 'push-action/**'
 
+env:
+  PYTEST_ADDOPTS: "--color=yes"
+
 # Cancel running workflows when additional changes are pushed
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
 concurrency:
@@ -162,7 +165,7 @@ jobs:
         ports:
         - 5432:5432
       elasticsearch:
-        image: elasticsearch:7.17.1
+        image: elasticsearch:7.17.7
         ports:
           - 9200:9200
           - 9300:9300

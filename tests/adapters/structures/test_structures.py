@@ -1,15 +1,14 @@
 """Test Structure adapter"""
 import pytest
-
 from optimade.adapters import Structure
 from optimade.models import StructureResource
 
 try:
     import aiida  # noqa: F401
     import ase  # noqa: F401
+    import jarvis  # noqa: F401
     import numpy  # noqa: F401
     import pymatgen  # noqa: F401
-    import jarvis  # noqa: F401
 except ImportError:
     all_modules_found = False
 else:
@@ -34,6 +33,7 @@ def test_convert(structure):
     """Test convert() works
     Choose currently known entry type - must be updated if no longer available.
     """
+    pytest.importorskip("numpy")
     if not structure._type_converters:
         pytest.fail("_type_converters is seemingly empty. This should not be.")
 
@@ -102,6 +102,7 @@ def test_getattr_order(structure):
 def test_no_module_conversion(structure):
     """Make sure a warnings is raised and None is returned for conversions with non-existing modules"""
     import importlib
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     CONVERSION_MAPPING = {

@@ -1,14 +1,11 @@
 import pytest
 
-
 elasticsearch_dsl = pytest.importorskip(
     "elasticsearch_dsl", reason="No ElasticSearch installation, skipping tests..."
 )
 
 from optimade.filterparser import LarkParser
-from optimade.filtertransformers.elasticsearch import (
-    ElasticTransformer,
-)
+from optimade.filtertransformers.elasticsearch import ElasticTransformer
 
 
 @pytest.fixture

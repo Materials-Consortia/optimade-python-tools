@@ -153,7 +153,7 @@ class ServerConfig(BaseSettings):
         description="Which database backend to use out of the supported backends.",
     )
 
-    elastic_hosts: Optional[List[Dict]] = Field(
+    elastic_hosts: Optional[Union[str, List[str], Dict, List[Dict]]] = Field(
         None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
