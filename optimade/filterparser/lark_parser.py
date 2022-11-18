@@ -4,7 +4,6 @@ into `Lark.Tree` objects for use by the filter transformers.
 
 """
 
-from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Optional, Tuple
 
@@ -21,7 +20,7 @@ class ParserError(Exception):
     """
 
 
-def get_versions() -> Dict[Tuple[int, int, int], Dict[str, str]]:
+def get_versions() -> Dict[Tuple[int, int, int], Dict[str, Path]]:
     """Find grammar files within this package's grammar directory,
     returning a dictionary broken down by scraped grammar version
     (major, minor, patch) and variant (a string tag).
@@ -30,13 +29,15 @@ def get_versions() -> Dict[Tuple[int, int, int], Dict[str, str]]:
         A mapping from version, variant to grammar file name.
 
     """
-    dct: Dict[Tuple[int, int, int], Dict[str, Path]] = defaultdict(dict)
+    dct: Dict[Tuple[int, int, int], Dict[str, Path]] = {}
     for filename in Path(__file__).parent.joinpath("../grammar").glob("*.lark"):
         tags = filename.stem.lstrip("v").split(".")
-        version = tuple(map(int, tags[:3]))  # ignore: type[index]
-        variant = "default" if len(tags) == 3 else tags[-1]
-        dct[version][variant] = filename  # type: ignore[index]
-    return dict(dct)  # type: ignore[arg-type]
+        version: Tuple[int, int, int] = (int(tags[0]), int(tags[1]), int(tags[2]))
+        variant: str = "default" if len(tags) == 3 else str(tags[-1])
+        if version not in dct:
+            dct[version] = {}
+        dct[version][variant] = filename
+    return dct
 
 
 AVAILABLE_PARSERS = get_versions()
@@ -98,7 +99,7 @@ class LarkParser:
         """
         try:
             self.tree = self.lark.parse(filter_)
-            self.filter = filter_  # type: ignore[assignment]
+            self.filter = filter_
             return self.tree
         except Exception as exc:
             raise BadRequest(

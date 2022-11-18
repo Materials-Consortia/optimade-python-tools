@@ -91,7 +91,7 @@ class EntryCollection(ABC):
         self.provider_prefix = CONFIG.provider.prefix
         self.provider_fields = [
             field if isinstance(field, str) else field["name"]
-            for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])  # type: ignore[call-overload]
+            for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         ]
 
         self._all_fields: Set[str] = set()
@@ -376,7 +376,7 @@ class EntryCollection(ABC):
             BadRequest: if an invalid sort is requested.
 
         Returns:
-            A tuple of tuples containing the aliased field name and
+            A list of tuples containing the aliased field name and
             sort direction encoded as 1 (ascending) or -1 (descending).
 
         """

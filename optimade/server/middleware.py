@@ -176,14 +176,6 @@ class HandleApiHint(BaseHTTPMiddleware):
         major_api_hint = int(re.findall(r"/v([0-9]+)", api_hint_str)[0])
         major_implementation = int(BASE_URL_PREFIXES["major"][len("/v") :])
 
-        if major_api_hint > major_implementation:
-            # Let's not try to handle a request for a newer major version
-            raise VersionNotSupported(
-                detail=(
-                    f"The provided `api_hint` ({api_hint_str[1:]!r}) is not supported by this implementation. "
-                    f"Supported versions include: {', '.join(BASE_URL_PREFIXES.values())}"
-                )
-            )
         if major_api_hint <= major_implementation:
             # If less than:
             # Use the current implementation in hope that it can still handle older requests
@@ -192,7 +184,13 @@ class HandleApiHint(BaseHTTPMiddleware):
             # Go to /v<MAJOR>, since this should point to the latest available
             return BASE_URL_PREFIXES["major"]
 
-        return None
+        # Let's not try to handle a request for a newer major version
+        raise VersionNotSupported(
+            detail=(
+                f"The provided `api_hint` ({api_hint_str[1:]!r}) is not supported by this implementation. "
+                f"Supported versions include: {', '.join(BASE_URL_PREFIXES.values())}"
+            )
+        )
 
     @staticmethod
     def is_versioned_base_url(url: str) -> bool:

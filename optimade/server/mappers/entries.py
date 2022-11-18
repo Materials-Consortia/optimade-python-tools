@@ -173,7 +173,7 @@ class BaseResourceMapper:
         from optimade.server.config import CONFIG
 
         return cls.LENGTH_ALIASES + tuple(
-            CONFIG.length_aliases.get(cls.ENDPOINT, {}).items()  # type: ignore[call-overload]
+            CONFIG.length_aliases.get(cls.ENDPOINT, {}).items()
         )
 
     @classmethod

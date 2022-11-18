@@ -232,13 +232,13 @@ class Client:  # pragma: no cover
         while retries < self.max_retries:
             retries += 1
             try:
-                self.response = requests.get(  # type: ignore[assignment]
-                    self.last_request,  # type: ignore[arg-type]
+                self.response = requests.get(
+                    self.last_request,
                     headers=self.headers,
                     timeout=(self.timeout, self.read_timeout),
                 )
 
-                status_code = self.response.status_code  # type: ignore[attr-defined]
+                status_code = self.response.status_code
                 # If we hit a 429 Too Many Requests status, then try again in 1 second
                 if status_code != 429:
                     return self.response
@@ -369,8 +369,7 @@ def test_case(test_fn: Callable[..., Tuple[Any, str]]):
                     if not isinstance(result, ValidationError):
                         message += traceback.split("\n")
 
-                message = "\n".join(message)  # type: ignore[assignment]
-
+                failure_type = None
                 if isinstance(result, InternalError):
                     summary = (
                         f"{request} - {test_fn.__name__} - failed with internal error"
@@ -378,10 +377,10 @@ def test_case(test_fn: Callable[..., Tuple[Any, str]]):
                     failure_type = "internal"
                 else:
                     summary = f"{request} - {test_fn.__name__} - failed with error"
-                    failure_type = "optional" if optional else None  # type: ignore[assignment]
+                    failure_type = "optional" if optional else None
 
                 validator.results.add_failure(
-                    summary, message, failure_type=failure_type
+                    summary, "\n".join(message), failure_type=failure_type
                 )
 
                 # set failure result to None as this is expected by other functions
