@@ -153,6 +153,22 @@ jobs:
           HD_OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
           HD_OPTIMADE_BASE_URL: https://optimade.herokuapp.com
 
+  deploy-fly:
+    env:
+        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
+        OPTIMADE_BASE_URL: https://optimade.fly.dev
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Materials-Consortia'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Fly
+      uses: superfly/flyctl-actions/setup-flyctl@master
+    - name: Deploy to Fly
+      run: flyctl deploy --remote-only -a optimade
+
   publish_container_image:
     name: Publish container image
     needs: deploy_docs
