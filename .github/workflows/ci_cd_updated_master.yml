@@ -167,7 +167,7 @@ jobs:
     - name: Set up Fly
       uses: superfly/flyctl-actions/setup-flyctl@master
     - name: Deploy to Fly
-      run: flyctl deploy --remote-only
+      run: flyctl deploy --remote-only -a optimade
 
   publish_container_image:
     name: Publish container image
