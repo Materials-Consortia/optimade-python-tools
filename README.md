@@ -31,7 +31,6 @@ OPTIMADE Python tools
   <td align="center">
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+"><img alt="Build Status" src="https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/CI%20tests?logo=github"></a><br>
     <a href="https://codecov.io/gh/Materials-Consortia/optimade-python-tools"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/Materials-Consortia/optimade-python-tools?logo=codecov&logoColor=white&token=UJAtmqkZZO"></a><br>
-    <a href="https://optimade.herokuapp.com"><img alt="Heroku App Status"  src="https://heroku-shields.herokuapp.com/optimade??logo=heroku"></a>
   </td>
   <td align="center">
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/pulse"><img alt="Commit Activity" src="https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github"></a><br>
@@ -50,7 +49,7 @@ This is to enable interoperability among databases that serve crystal structures
 This repository contains a library of tools for implementing and consuming [OPTIMADE APIs](https://www.optimade.org) using Python:
 
 1. [pydantic](https://github.com/pydantic/pydantic) data models for all [OPTIMADE entry types](https://www.optimade.org/optimade-python-tools/latest/all_models/) and endpoint responses, and a [Lark](https://github.com/lark-parser/lark) [EBNF grammar](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) implementation for the OPTIMADE filter language.
-1. A configurable reference server implementation that can make use of either MongoDB or Elasticsearch database backends out-of-the-box, and is readily extensible to other backends. Try it out on the [demo site](https://optimade.herokuapp.com)! The OpenAPI schemas of the server are used to construct the [OPTIMADE schemas](https://schemas.optimade.org/) site.
+1. A configurable reference server implementation that can make use of either MongoDB or Elasticsearch database backends out-of-the-box, and is readily extensible to other backends. Try it out on the [demo site](https://optimade.fly.dev)! The OpenAPI schemas of the server are used to construct the [OPTIMADE schemas](https://schemas.optimade.org/) site.
 1. An [OPTIMADE client](https://www.optimade.org/optimade-python-tools/latest/getting_started/client/) (`optimade-get`) that can query multiple [OPTIMADE providers](https://optimade.org/providers-dashboard) concurrently with a given filter, at the command-line or from Python code.
 1. A fuzzy API validator tool, which may be called from the shell (`optimade-validator`) or used as a GitHub Action from [optimade-validator-action](https://github.com/Materials-Consortia/optimade-validator-action); this validator is used to construct the [providers dashboard](https://optimade.org/providers-dashboard).
 

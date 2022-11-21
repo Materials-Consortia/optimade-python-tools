@@ -14,7 +14,7 @@ except ImportError as exc:
 TEST_URLS = [
     "https://example.com",
     "https://example.org",
-    "https://optimade.herokuapp.com",
+    "https://optimade.fly.dev",
 ]
 TEST_URL = TEST_URLS[0]
 

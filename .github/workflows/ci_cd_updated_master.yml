@@ -135,24 +135,6 @@ jobs:
         sleep: 15
         force: ${{ env.FORCE_PUSH }}
 
-  deploy-heroku:
-    runs-on: ubuntu-latest
-    if: github.repository_owner == 'Materials-Consortia'
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Deploy to Heroku
-      uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "optimade"
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
-          branch: ${{env.DEFAULT_REPO_BRANCH}}
-      env:
-          HD_OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
-          HD_OPTIMADE_BASE_URL: https://optimade.herokuapp.com
-
   deploy-fly:
     env:
         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
