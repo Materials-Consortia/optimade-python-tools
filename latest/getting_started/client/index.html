@@ -1993,13 +1993,13 @@ optimade-get --filter <span class="s1">&#39;elements HAS &quot;Ag&quot;&#39;</sp
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Command line</label><label for="__tabbed_2_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>optimade-get --output-file results.json https://optimade.herokuapp.com https://optimade.odbx.science
+<div class="highlight"><pre><span></span><code>optimade-get --output-file results.json https://optimade.fly.dev https://optimade.odbx.science
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
-    <span class="n">base_urls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;https://optimade.herokuapp.com&quot;</span><span class="p">,</span> <span class="s2">&quot;https://optimade.odbx.science&quot;</span><span class="p">]</span>
+    <span class="n">base_urls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;https://optimade.fly.dev&quot;</span><span class="p">,</span> <span class="s2">&quot;https://optimade.odbx.science&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </code></pre></div>
@@ -2027,19 +2027,19 @@ You can specify your desired filter as follows (note the quotation marks):</p>
 <h3 id="accessing-the-results">Accessing the results<a class="headerlink" href="#accessing-the-results" title="Permanent link">&para;</a></h3>
 <p>At the command-line, the results of the query will be printed to <code>stdout</code>, ready to be redirected to a file or piped into another program.
 For example:</p>
-<div class="highlight"><pre><span></span><code>optimade-get --filter <span class="s1">&#39;nsites = 1&#39;</span> --output-file results.json https://optimade.herokuapp.com
+<div class="highlight"><pre><span></span><code>optimade-get --filter <span class="s1">&#39;nsites = 1&#39;</span> --output-file results.json https://optimade.fly.dev
 cat results.json
 </code></pre></div>
 <p>has the following (truncated) output:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w">  </span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="c1">// The endpoint that was queried</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="c1">// The filter applied to that endpointk</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;nsites = 1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">    </span><span class="nt">&quot;nsites = 1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">      </span><span class="c1">// The base URL of the OPTIMADE API</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;https://optimade.herokuapp.com&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">      </span><span class="nt">&quot;https://optimade.fly.dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="c1">// The OPTIMADE API response as if called with an infinite `page_limit`</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  </span>
+<span class="w">        </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 <span class="w">          </span><span class="p">{</span><span class="w"></span>
 <span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mpf_1&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;structures&quot;</span><span class="p">,</span><span class="w"></span>
@@ -2071,7 +2071,7 @@ cat results.json
 <p>The response is broken down by queried endpoint, filter and then base URL so that the query URL can be easily reconstructed.
 This is the same format as the cached results of the Python client:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="s2">&quot;https://optimade.herokuapp.com&quot;</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="s2">&quot;https://optimade.fly.dev&quot;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites = 1&#39;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites = 2&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">all_results</span><span class="p">)</span>
@@ -2080,10 +2080,10 @@ This is the same format as the cached results of the Python client:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="nt">&quot;nsites = 1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;https://optimade.herokuapp.com&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;https://optimade.fly.dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span><span class="w"></span>
 <span class="w">        </span><span class="p">},</span><span class="w"></span>
 <span class="w">        </span><span class="nt">&quot;nsites = 2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;https://optimade.herokuapp.com&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;https://optimade.fly.dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span><span class="w"></span>
 <span class="w">        </span><span class="p">}</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>

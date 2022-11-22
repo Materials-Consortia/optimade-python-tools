@@ -1928,7 +1928,6 @@ OPTIMADE Python tools
   <td align="center">
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+"><img alt="Build Status" src="https://img.shields.io/github/workflow/status/Materials-Consortia/optimade-python-tools/CI%20tests?logo=github"></a><br>
     <a href="https://codecov.io/gh/Materials-Consortia/optimade-python-tools"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/Materials-Consortia/optimade-python-tools?logo=codecov&logoColor=white&token=UJAtmqkZZO"></a><br>
-    <a href="https://optimade.herokuapp.com"><img alt="Heroku App Status"  src="https://heroku-shields.herokuapp.com/optimade??logo=heroku"></a>
   </td>
   <td align="center">
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/pulse"><img alt="Commit Activity" src="https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github"></a><br>
@@ -1946,7 +1945,7 @@ This is to enable interoperability among databases that serve crystal structures
 <p>This repository contains a library of tools for implementing and consuming <a href="https://www.optimade.org">OPTIMADE APIs</a> using Python:</p>
 <ol>
 <li><a href="https://github.com/pydantic/pydantic">pydantic</a> data models for all <a href="https://www.optimade.org/optimade-python-tools/latest/all_models/">OPTIMADE entry types</a> and endpoint responses, and a <a href="https://github.com/lark-parser/lark">Lark</a> <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF grammar</a> implementation for the OPTIMADE filter language.</li>
-<li>A configurable reference server implementation that can make use of either MongoDB or Elasticsearch database backends out-of-the-box, and is readily extensible to other backends. Try it out on the <a href="https://optimade.herokuapp.com">demo site</a>! The OpenAPI schemas of the server are used to construct the <a href="https://schemas.optimade.org/">OPTIMADE schemas</a> site.</li>
+<li>A configurable reference server implementation that can make use of either MongoDB or Elasticsearch database backends out-of-the-box, and is readily extensible to other backends. Try it out on the <a href="https://optimade.fly.dev">demo site</a>! The OpenAPI schemas of the server are used to construct the <a href="https://schemas.optimade.org/">OPTIMADE schemas</a> site.</li>
 <li>An <a href="https://www.optimade.org/optimade-python-tools/latest/getting_started/client/">OPTIMADE client</a> (<code>optimade-get</code>) that can query multiple <a href="https://optimade.org/providers-dashboard">OPTIMADE providers</a> concurrently with a given filter, at the command-line or from Python code.</li>
 <li>A fuzzy API validator tool, which may be called from the shell (<code>optimade-validator</code>) or used as a GitHub Action from <a href="https://github.com/Materials-Consortia/optimade-validator-action">optimade-validator-action</a>; this validator is used to construct the <a href="https://optimade.org/providers-dashboard">providers dashboard</a>.</li>
 </ol>
