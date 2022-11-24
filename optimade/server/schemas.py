@@ -1,11 +1,11 @@
-from typing import Dict, Callable
+from typing import Callable, Dict, Optional
+
 from optimade.models import (
     DataType,
     ErrorResponse,
-    StructureResource,
     ReferenceResource,
+    StructureResource,
 )
-from optimade.server.exceptions import POSSIBLE_ERRORS
 
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
@@ -15,10 +15,21 @@ ENTRY_INFO_SCHEMAS: Dict[str, Callable[[None], Dict]] = {
 }
 """This dictionary is used to define the `/info/<entry_type>` endpoints."""
 
-ERROR_RESPONSES: Dict[int, Dict] = {
-    err.status_code: {"model": ErrorResponse, "description": err.title}
-    for err in POSSIBLE_ERRORS
-}
+try:
+    """The possible errors list contains FastAPI/starlette exception objects
+    This dictionary is only used for constructing the OpenAPI schema, i.e.,
+    a development task, so can be safely nulled to allow other non-server
+    submodules (e.g., the validator) to access the other schemas
+    (that only require pydantic to construct).
+    """
+    from optimade.server.exceptions import POSSIBLE_ERRORS
+
+    ERROR_RESPONSES: Optional[Dict[int, Dict]] = {
+        err.status_code: {"model": ErrorResponse, "description": err.title}
+        for err in POSSIBLE_ERRORS
+    }
+except ModuleNotFoundError:
+    ERROR_RESPONSES = None
 
 
 def retrieve_queryable_properties(
