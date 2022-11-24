@@ -5,7 +5,7 @@ import pytest
 from pydantic import ValidationError
 
 from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS, StructureResource
-from optimade.server.warnings import MissingExpectedField
+from optimade.warnings import MissingExpectedField
 
 MAPPER = "StructureMapper"
 

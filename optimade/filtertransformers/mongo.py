@@ -13,7 +13,7 @@ from lark import Token, v_args
 
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
 from optimade.server.exceptions import BadRequest
-from optimade.server.warnings import TimestampNotRFCCompliant
+from optimade.warnings import TimestampNotRFCCompliant
 
 __all__ = ("MongoTransformer",)
 

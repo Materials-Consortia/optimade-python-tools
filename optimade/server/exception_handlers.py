@@ -1,5 +1,5 @@
 import traceback
-from typing import Callable, Iterable, List, Optional, Tuple, Type
+from typing import Callable, Iterable, List, Optional, Tuple, Type, Union
 
 from fastapi import Request
 from fastapi.encoders import jsonable_encoder
@@ -9,7 +9,7 @@ from pydantic import ValidationError
 
 from optimade.models import ErrorResponse, ErrorSource, OptimadeError
 from optimade.server.config import CONFIG
-from optimade.server.exceptions import BadRequest
+from optimade.server.exceptions import BadRequest, OptimadeHTTPException
 from optimade.server.logger import LOGGER
 from optimade.server.routers.utils import JSONAPIResponse, meta_values
 
@@ -78,7 +78,8 @@ def general_exception(
 
 
 def http_exception_handler(
-    request: Request, exc: StarletteHTTPException
+    request: Request,
+    exc: Union[StarletteHTTPException, OptimadeHTTPException],
 ) -> JSONAPIResponse:
     """Handle a general HTTP Exception from Starlette
 
@@ -226,6 +227,7 @@ OPTIMADE_EXCEPTIONS: Iterable[
     ]
 ] = [
     (StarletteHTTPException, http_exception_handler),
+    (OptimadeHTTPException, http_exception_handler),
     (RequestValidationError, request_validation_exception_handler),
     (ValidationError, validation_exception_handler),
     (VisitError, grammar_not_implemented_handler),

@@ -8,7 +8,7 @@ from pydantic import EmailStr  # pylint: disable=no-name-in-module
 from optimade.server.config import CONFIG
 from optimade.server.exceptions import BadRequest
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
+from optimade.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
 
 
 class BaseQueryParams(ABC):

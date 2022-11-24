@@ -13,7 +13,7 @@ from lark import Transformer, Tree, v_args
 
 from optimade.server.exceptions import BadRequest
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.warnings import UnknownProviderProperty
+from optimade.warnings import UnknownProviderProperty
 
 __all__ = (
     "BaseTransformer",

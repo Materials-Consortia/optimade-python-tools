@@ -11,7 +11,7 @@ from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.exceptions import BadRequest, Forbidden, NotFound
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.warnings import (
+from optimade.warnings import (
     FieldValueNotRecognized,
     QueryParamNotUsed,
     UnknownProviderProperty,
