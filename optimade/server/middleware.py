@@ -386,8 +386,7 @@ class AddWarnings(BaseHTTPMiddleware):
                 except Exception:
                     # When a warning is logged during Python shutdown, linecache
                     # and the import machinery don't work anymore
-                    line = None
-                    linecache = None
+                    pass
             meta = {
                 "filename": filename,
                 "lineno": lineno,
