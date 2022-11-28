@@ -9,17 +9,17 @@ For more information on the ASE code see [their documentation](https://wiki.fysi
 """
 from typing import Dict
 
-from optimade.models import Species as OptimadeStructureSpecies
-from optimade.models import StructureResource as OptimadeStructure
-from optimade.models import StructureFeatures
-
 from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.utils import species_from_species_at_sites
+from optimade.models import Species as OptimadeStructureSpecies
+from optimade.models import StructureFeatures
+from optimade.models import StructureResource as OptimadeStructure
 
 try:
-    from ase import Atoms, Atom
+    from ase import Atom, Atoms
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     Atoms = type("Atoms", (), {})
@@ -57,7 +57,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
     species = attributes.species
     # If species is missing, infer data from species_at_sites
     if not species:
-        species = species_from_species_at_sites(attributes.species_at_sites)
+        species = species_from_species_at_sites(attributes.species_at_sites)  # type: ignore[arg-type]
 
     optimade_species: Dict[str, OptimadeStructureSpecies] = {_.name: _ for _ in species}
 
@@ -69,9 +69,9 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         )
 
     atoms = []
-    for site_number in range(attributes.nsites):
-        species_name = attributes.species_at_sites[site_number]
-        site = attributes.cartesian_site_positions[site_number]
+    for site_number in range(attributes.nsites):  # type: ignore[arg-type]
+        species_name = attributes.species_at_sites[site_number]  # type: ignore[index]
+        site = attributes.cartesian_site_positions[site_number]  # type: ignore[index]
 
         current_species = optimade_species[species_name]
 

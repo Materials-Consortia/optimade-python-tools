@@ -1,4 +1,6 @@
 from abc import ABC
+from typing import Optional
+
 from fastapi import HTTPException as FastAPIHTTPException
 
 __all__ = (
@@ -26,10 +28,12 @@ class HTTPException(FastAPIHTTPException, ABC):
 
     """
 
-    status_code: int = None
+    status_code: int
     title: str
 
-    def __init__(self, detail: str = None, headers: dict = None) -> None:
+    def __init__(
+        self, detail: Optional[str] = None, headers: Optional[dict] = None
+    ) -> None:
         if self.status_code is None:
             raise AttributeError(
                 "HTTPException class {self.__class__.__name__} is missing required `status_code` attribute."

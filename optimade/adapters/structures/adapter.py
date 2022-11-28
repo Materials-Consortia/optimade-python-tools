@@ -1,13 +1,14 @@
 from typing import Callable, Dict, Type
-from optimade.models import StructureResource
+
 from optimade.adapters.base import EntryAdapter
+from optimade.models import StructureResource
 
 from .aiida import get_aiida_structure_data
 from .ase import get_ase_atoms
 from .cif import get_cif
-from .proteindatabank import get_pdb, get_pdbx_mmcif
-from .pymatgen import get_pymatgen, from_pymatgen
 from .jarvis import get_jarvis_atoms
+from .proteindatabank import get_pdb, get_pdbx_mmcif
+from .pymatgen import from_pymatgen, get_pymatgen
 
 
 class Structure(EntryAdapter):

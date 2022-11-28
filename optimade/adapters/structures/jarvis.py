@@ -10,14 +10,15 @@ This conversion function relies on the [jarvis-tools](https://github.com/usnistg
 !!! success "Contributing author"
     This conversion function was contributed by Kamal Choudhary ([@knc6](https://github.com/knc6)).
 """
-from optimade.models import StructureResource as OptimadeStructure
-from optimade.models import StructureFeatures
 from optimade.adapters.exceptions import ConversionError
+from optimade.models import StructureFeatures
+from optimade.models import StructureResource as OptimadeStructure
 
 try:
     from jarvis.core.atoms import Atoms
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     Atoms = type("Atoms", (), {})
@@ -54,7 +55,7 @@ def get_jarvis_atoms(optimade_structure: OptimadeStructure) -> Atoms:
 
     return Atoms(
         lattice_mat=attributes.lattice_vectors,
-        elements=[specie.name for specie in attributes.species],
+        elements=[specie.name for specie in attributes.species],  # type: ignore[union-attr]
         coords=attributes.cartesian_site_positions,
         cartesian=True,
     )

@@ -4,9 +4,10 @@ with OPTIMADE providers that can be used in server or client code.
 """
 
 import json
-from typing import List, Iterable
+from typing import Iterable, List
 
 from pydantic import ValidationError
+
 from optimade.models.links import LinksResource
 
 PROVIDER_LIST_URLS = (
@@ -46,12 +47,9 @@ def get_providers(add_mongo_id: bool = False) -> list:
         List of raw JSON-decoded providers including MongoDB object IDs.
 
     """
-    import requests
+    import json
 
-    try:
-        import simplejson as json
-    except ImportError:
-        import json
+    import requests
 
     for provider_list_url in PROVIDER_LIST_URLS:
         try:
@@ -66,7 +64,7 @@ def get_providers(add_mongo_id: bool = False) -> list:
             break
     else:
         try:
-            from optimade.server.data import providers
+            from optimade.server.data import providers  # type: ignore
         except ImportError:
             from optimade.server.logger import LOGGER
 
@@ -120,8 +118,9 @@ def get_child_database_links(
 
     """
     import requests
+
+    from optimade.models.links import Aggregate, LinkType
     from optimade.models.responses import LinksResponse
-    from optimade.models.links import LinkType, Aggregate
 
     base_url = provider.pop("base_url")
     if base_url is None:
@@ -135,23 +134,27 @@ def get_child_database_links(
 
     if links.status_code != 200:
         raise RuntimeError(
-            f"Invalid response from {links_endp} for provider {provider['id']}: {links.content}."
+            f"Invalid response from {links_endp} for provider {provider['id']}: {links.content!r}."
         )
 
     try:
-        links = LinksResponse(**links.json())
+        links_resp = LinksResponse(**links.json())
     except (ValidationError, json.JSONDecodeError) as exc:
         raise RuntimeError(
-            f"Did not understand response from {provider['id']}: {links.content}"
+            f"Did not understand response from {provider['id']}: {links.content!r}"
         ) from exc
 
-    return [
-        link
-        for link in links.data
-        if link.attributes.link_type == LinkType.CHILD
-        and link.attributes.base_url is not None
-        and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
-    ]
+    if isinstance(links_resp.data, LinksResource):
+        return [
+            link
+            for link in links_resp.data
+            if link.attributes.link_type == LinkType.CHILD
+            and link.attributes.base_url is not None
+            and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
+        ]
+
+    else:
+        raise RuntimeError("Invalid links responses received: {links.content!r")
 
 
 def get_all_databases() -> Iterable[str]:

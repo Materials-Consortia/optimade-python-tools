@@ -5,15 +5,11 @@ These middleware are based on [Starlette](https://www.starlette.io)'s `BaseHTTPM
 See the specific Starlette [documentation page](https://www.starlette.io/middleware/) for more
 information on it's middleware implementation.
 """
+import json
 import re
-from typing import Optional, IO, Type, Generator, List, Union, Tuple
 import urllib.parse
 import warnings
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+from typing import Generator, Iterable, List, Optional, TextIO, Type, Union
 
 from starlette.datastructures import URL as StarletteURL
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -23,13 +19,13 @@ from starlette.responses import RedirectResponse, StreamingResponse
 from optimade.models import Warnings
 from optimade.server.config import CONFIG
 from optimade.server.exceptions import BadRequest, VersionNotSupported
+from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
 from optimade.server.warnings import (
     FieldValueNotRecognized,
     OptimadeWarning,
     QueryParamNotUsed,
     TooManyValues,
 )
-from optimade.server.routers.utils import get_base_url, BASE_URL_PREFIXES
 
 
 class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
@@ -156,9 +152,8 @@ class HandleApiHint(BaseHTTPMiddleware):
         for value in api_hint:
             values = value.split(",")
             _api_hint.extend(values)
-        api_hint = _api_hint
 
-        if len(api_hint) > 1:
+        if len(_api_hint) > 1:
             warnings.warn(
                 TooManyValues(
                     detail="`api_hint` should only be supplied once, with a single value."
@@ -166,29 +161,21 @@ class HandleApiHint(BaseHTTPMiddleware):
             )
             return None
 
-        api_hint = f"/{api_hint[0]}"
-        if re.match(r"^/v[0-9]+(\.[0-9]+)?$", api_hint) is None:
+        api_hint_str: str = f"/{_api_hint[0]}"
+        if re.match(r"^/v[0-9]+(\.[0-9]+)?$", api_hint_str) is None:
             warnings.warn(
                 FieldValueNotRecognized(
-                    detail=f"{api_hint[1:]!r} is not recognized as a valid `api_hint` value."
+                    detail=f"{api_hint_str[1:]!r} is not recognized as a valid `api_hint` value."
                 )
             )
             return None
 
-        if api_hint in BASE_URL_PREFIXES.values():
-            return api_hint
+        if api_hint_str in BASE_URL_PREFIXES.values():
+            return api_hint_str
 
-        major_api_hint = int(re.findall(r"/v([0-9]+)", api_hint)[0])
+        major_api_hint = int(re.findall(r"/v([0-9]+)", api_hint_str)[0])
         major_implementation = int(BASE_URL_PREFIXES["major"][len("/v") :])
 
-        if major_api_hint > major_implementation:
-            # Let's not try to handle a request for a newer major version
-            raise VersionNotSupported(
-                detail=(
-                    f"The provided `api_hint` ({api_hint[1:]!r}) is not supported by this implementation. "
-                    f"Supported versions include: {', '.join(BASE_URL_PREFIXES.values())}"
-                )
-            )
         if major_api_hint <= major_implementation:
             # If less than:
             # Use the current implementation in hope that it can still handle older requests
@@ -196,6 +183,14 @@ class HandleApiHint(BaseHTTPMiddleware):
             # If equal:
             # Go to /v<MAJOR>, since this should point to the latest available
             return BASE_URL_PREFIXES["major"]
+
+        # Let's not try to handle a request for a newer major version
+        raise VersionNotSupported(
+            detail=(
+                f"The provided `api_hint` ({api_hint_str[1:]!r}) is not supported by this implementation. "
+                f"Supported versions include: {', '.join(BASE_URL_PREFIXES.values())}"
+            )
+        )
 
     @staticmethod
     def is_versioned_base_url(url: str) -> bool:
@@ -247,18 +242,18 @@ class HandleApiHint(BaseHTTPMiddleware):
                         f"{base_url}{version_path}{str(request.url)[len(base_url):]}"
                     )
                     url = urllib.parse.urlsplit(new_request)
-                    parsed_query = urllib.parse.parse_qsl(
-                        url.query, keep_blank_values=True
-                    )
-                    parsed_query = "&".join(
+                    q = "&".join(
                         [
                             f"{key}={value}"
-                            for key, value in parsed_query
+                            for key, value in urllib.parse.parse_qsl(
+                                url.query, keep_blank_values=True
+                            )
                             if key != "api_hint"
                         ]
                     )
+
                     return RedirectResponse(
-                        request.url.replace(path=url.path, query=parsed_query),
+                        request.url.replace(path=url.path, query=q),
                         headers=request.headers,
                     )
                     # This is the non-URL changing solution:
@@ -312,13 +307,15 @@ class AddWarnings(BaseHTTPMiddleware):
 
     """
 
+    _warnings: List[Warnings]
+
     def showwarning(
         self,
-        message: Warning,
+        message: Union[Warning, str],
         category: Type[Warning],
         filename: str,
         lineno: int,
-        file: Optional[IO] = None,
+        file: Optional[TextIO] = None,
         line: Optional[str] = None,
     ) -> None:
         """
@@ -361,7 +358,7 @@ class AddWarnings(BaseHTTPMiddleware):
         if not isinstance(message, OptimadeWarning):
             # If the Warning is not an OptimadeWarning or subclass thereof,
             # use the regular 'showwarning' function.
-            warnings._showwarning_orig(message, category, filename, lineno, file, line)
+            warnings._showwarning_orig(message, category, filename, lineno, file, line)  # type: ignore[attr-defined]
             return
 
         # Format warning
@@ -387,7 +384,7 @@ class AddWarnings(BaseHTTPMiddleware):
                     # When a warning is logged during Python shutdown, linecache
                     # and the import machinery don't work anymore
                     line = None
-                    linecache = None
+                    linecache = None  # type: ignore[assignment]
             meta = {
                 "filename": filename,
                 "lineno": lineno,
@@ -404,16 +401,16 @@ class AddWarnings(BaseHTTPMiddleware):
         self._warnings.append(new_warning.dict(exclude_unset=True))
 
         # Show warning message as normal in sys.stderr
-        warnings._showwarnmsg_impl(
+        warnings._showwarnmsg_impl(  # type: ignore[attr-defined]
             warnings.WarningMessage(message, category, filename, lineno, file, line)
         )
 
     @staticmethod
-    def chunk_it_up(content: str, chunk_size: int) -> Generator:
+    def chunk_it_up(content: Union[str, bytes], chunk_size: int) -> Generator:
         """Return generator for string in chunks of size `chunk_size`.
 
         Parameters:
-            content: String-content to separate into chunks.
+            content: String or bytes content to separate into chunks.
             chunk_size: The size of the chunks, i.e. the length of the string-chunks.
 
         Returns:
@@ -445,17 +442,17 @@ class AddWarnings(BaseHTTPMiddleware):
             if not isinstance(chunk, bytes):
                 chunk = chunk.encode(charset)
             body += chunk
-        body = body.decode(charset)
+        body_str = body.decode(charset)
 
         if self._warnings:
-            response = json.loads(body)
+            response = json.loads(body_str)
             response.get("meta", {})["warnings"] = self._warnings
-            body = json.dumps(response)
+            body_str = json.dumps(response)
             if "content-length" in headers:
-                headers["content-length"] = str(len(body))
+                headers["content-length"] = str(len(body_str))
 
         response = StreamingResponse(
-            content=self.chunk_it_up(body, chunk_size),
+            content=self.chunk_it_up(body_str, chunk_size),
             status_code=status,
             headers=headers,
             media_type=media_type,
@@ -465,7 +462,7 @@ class AddWarnings(BaseHTTPMiddleware):
         return response
 
 
-OPTIMADE_MIDDLEWARE: Tuple[BaseHTTPMiddleware] = (
+OPTIMADE_MIDDLEWARE: Iterable[BaseHTTPMiddleware] = (
     EnsureQueryParamIntegrity,
     CheckWronglyVersionedBaseUrls,
     HandleApiHint,

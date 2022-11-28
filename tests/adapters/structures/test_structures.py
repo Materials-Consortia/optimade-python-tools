@@ -1,5 +1,6 @@
 """Test Structure adapter"""
 import pytest
+
 from optimade.adapters import Structure
 from optimade.models import StructureResource
 

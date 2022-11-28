@@ -43,3 +43,16 @@ repos:
       pass_filenames: false
       files: ^optimade/.*\.py$
       description: Update the API Reference documentation whenever a Python file is touched in the code base.
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.991
+    hooks:
+      - id: mypy
+        name: "MyPy"
+        additional_dependencies: ["types-all", "pydantic~=1.10"]
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: "isort"

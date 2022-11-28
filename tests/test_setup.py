@@ -1,11 +1,6 @@
 """Distribution tests."""
-from typing import TYPE_CHECKING
 
 import pytest
-
-if TYPE_CHECKING:
-    from typing import List
-
 
 package_data = [
     ".lark",
@@ -38,7 +33,7 @@ def build_dist() -> str:
 
 
 @pytest.mark.parametrize("package_file", package_data)
-def test_distribution_package_data(package_file: "List[str]", build_dist: str) -> None:
+def test_distribution_package_data(package_file: str, build_dist: str) -> None:
     """Make sure a distribution has all the needed package data."""
     import re
 

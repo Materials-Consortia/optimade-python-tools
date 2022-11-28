@@ -1,8 +1,7 @@
 import pytest
 
-from optimade.server.config import CONFIG
 from optimade.models import StructureResource
-
+from optimade.server.config import CONFIG
 
 MAPPER = "BaseResourceMapper"
 

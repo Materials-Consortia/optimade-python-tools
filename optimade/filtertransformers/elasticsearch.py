@@ -1,6 +1,7 @@
-from typing import Dict, Union, Type, Optional
+from typing import Dict, Optional, Type, Union
+
+from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
-from elasticsearch_dsl import Q, Text, Keyword, Integer, Field
 
 from optimade.filtertransformers import BaseTransformer, Quantity
 from optimade.server.mappers import BaseResourceMapper
@@ -43,11 +44,11 @@ class ElasticsearchQuantity(Quantity):
     def __init__(
         self,
         name: str,
-        backend_field: str = None,
-        length_quantity: "ElasticsearchQuantity" = None,
-        elastic_mapping_type: Field = None,
-        has_only_quantity: "ElasticsearchQuantity" = None,
-        nested_quantity: "ElasticsearchQuantity" = None,
+        backend_field: Optional[str] = None,
+        length_quantity: Optional["ElasticsearchQuantity"] = None,
+        elastic_mapping_type: Optional[Field] = None,
+        has_only_quantity: Optional["ElasticsearchQuantity"] = None,
+        nested_quantity: Optional["ElasticsearchQuantity"] = None,
     ):
         """Initialise the quantity from its name, aliases and mapping type.
 
@@ -99,14 +100,18 @@ class ElasticTransformer(BaseTransformer):
     _quantity_type: Type[ElasticsearchQuantity] = ElasticsearchQuantity
 
     def __init__(
-        self, mapper: BaseResourceMapper = None, quantities: Dict[str, Quantity] = None
+        self,
+        mapper: Type[BaseResourceMapper],
+        quantities: Optional[Dict[str, Quantity]] = None,
     ):
         if quantities is not None:
             self.quantities = quantities
 
         super().__init__(mapper=mapper)
 
-    def _field(self, quantity: Union[str, Quantity], nested: Quantity = None) -> str:
+    def _field(
+        self, quantity: Union[str, Quantity], nested: Optional[Quantity] = None
+    ) -> str:
         """Used to unwrap from `property` to the string backend field name.
 
         If passed a `Quantity` (or a derived `ElasticsearchQuantity`), this method
@@ -126,7 +131,7 @@ class ElasticTransformer(BaseTransformer):
         """
 
         if isinstance(quantity, str):
-            if quantity in self.mapper.RELATIONSHIP_ENTRY_TYPES:
+            if quantity in self.mapper.RELATIONSHIP_ENTRY_TYPES:  # type: ignore[union-attr]
                 raise NotImplementedError(
                     f"Unable to filter on relationships with type {quantity!r}"
                 )
@@ -138,16 +143,16 @@ class ElasticTransformer(BaseTransformer):
                 return quantity
 
         if nested is not None:
-            return "%s.%s" % (nested.backend_field, quantity.name)
+            return "%s.%s" % (nested.backend_field, quantity.name)  # type: ignore[union-attr]
 
-        return quantity.backend_field
+        return quantity.backend_field  # type: ignore[union-attr, return-value]
 
     def _query_op(
         self,
         quantity: Union[ElasticsearchQuantity, str],
         op: str,
         value: Union[str, float, int],
-        nested: ElasticsearchQuantity = None,
+        nested: Optional[ElasticsearchQuantity] = None,
     ) -> Q:
         """Return a range, match, or term query for the given quantity, comparison
         operator, and value.

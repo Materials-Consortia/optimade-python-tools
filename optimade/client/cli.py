@@ -1,6 +1,6 @@
-import sys
 import json
 import pathlib
+import sys
 
 import click
 import rich
