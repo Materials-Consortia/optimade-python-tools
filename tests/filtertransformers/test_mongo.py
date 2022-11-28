@@ -5,6 +5,8 @@ from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
 from optimade.warnings import UnknownProviderProperty
 
+pytest.importorskip("bson")
+
 
 class TestMongoTransformer:
     version = (1, 0, 0)

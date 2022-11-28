@@ -7,6 +7,8 @@ elasticsearch_dsl = pytest.importorskip(
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
 
+pytest.importorskip("elasticsearch_dsl")
+
 
 @pytest.fixture
 def parser():
