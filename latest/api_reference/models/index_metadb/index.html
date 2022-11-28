@@ -2110,7 +2110,7 @@ IndexInfoResource            (<a class="autorefs autorefs-internal" title="optim
     <span class="n">attributes</span><span class="p">:</span> <span class="n">IndexInfoAttributes</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
     <span class="n">relationships</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">DefaultRelationship</span><span class="p">,</span> <span class="n">IndexRelationship</span><span class="p">]</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>  <span class="c1"># type: ignore[assignment]</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Relationships&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their &#39;default&#39; OPTIMADE API database.</span>

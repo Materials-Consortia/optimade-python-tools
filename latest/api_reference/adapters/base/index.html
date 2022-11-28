@@ -2036,15 +2036,17 @@ EntryAdapter        </code>
 <span class="sd">        Parameters:</span>
 <span class="sd">            entry (dict): A JSON OPTIMADE single resource entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">entry</span> <span class="o">=</span> <span class="n">entry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">=</span> <span class="n">entry</span>  <span class="c1"># type: ignore[assignment]</span>
 
         <span class="c1"># Note that these return also the default values for otherwise non-provided properties.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">json</span><span class="p">,</span>  <span class="c1"># Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson</span>
-            <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">dict</span><span class="p">,</span>  <span class="c1"># Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict</span>
+            <span class="c1"># Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson</span>
+            <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">json</span><span class="p">,</span>  <span class="c1"># type: ignore[attr-defined]</span>
+            <span class="c1"># Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict</span>
+            <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">dict</span><span class="p">,</span>  <span class="c1"># type: ignore[attr-defined]</span>
         <span class="p">}</span>
 
     <span class="nd">@property</span>
@@ -2055,7 +2057,7 @@ EntryAdapter        </code>
 <span class="sd">            The entry resource.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span>  <span class="c1"># type: ignore[return-value]</span>
 
     <span class="nd">@entry</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2159,12 +2161,12 @@ EntryAdapter        </code>
             <span class="k">return</span> <span class="n">res</span>
 
         <span class="c1"># Non-valid attribute</span>
-        <span class="n">entry_resource_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
+        <span class="n">_entry_resource_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
             <span class="sa">r</span><span class="s2">&quot;(&lt;class &#39;)([a-zA-Z_]+\.)*([a-zA-Z_]+)(&#39;&gt;)&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">entry_resource_name</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">entry_resource_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">entry_resource_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">_entry_resource_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_entry_resource_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="k">else</span> <span class="s2">&quot;UNKNOWN RESOURCE&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
@@ -2419,12 +2421,12 @@ See above for the description of the order in which an attribute is tested for v
         <span class="k">return</span> <span class="n">res</span>
 
     <span class="c1"># Non-valid attribute</span>
-    <span class="n">entry_resource_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
+    <span class="n">_entry_resource_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
         <span class="sa">r</span><span class="s2">&quot;(&lt;class &#39;)([a-zA-Z_]+\.)*([a-zA-Z_]+)(&#39;&gt;)&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">entry_resource_name</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">entry_resource_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">entry_resource_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">_entry_resource_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_entry_resource_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">else</span> <span class="s2">&quot;UNKNOWN RESOURCE&quot;</span>
     <span class="p">)</span>
     <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
@@ -2483,15 +2485,17 @@ See above for the description of the order in which an attribute is tested for v
 <span class="sd">    Parameters:</span>
 <span class="sd">        entry (dict): A JSON OPTIMADE single resource entry.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">entry</span> <span class="o">=</span> <span class="n">entry</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">=</span> <span class="n">entry</span>  <span class="c1"># type: ignore[assignment]</span>
 
     <span class="c1"># Note that these return also the default values for otherwise non-provided properties.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">json</span><span class="p">,</span>  <span class="c1"># Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson</span>
-        <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">dict</span><span class="p">,</span>  <span class="c1"># Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict</span>
+        <span class="c1"># Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson</span>
+        <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">json</span><span class="p">,</span>  <span class="c1"># type: ignore[attr-defined]</span>
+        <span class="c1"># Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict</span>
+        <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">dict</span><span class="p">,</span>  <span class="c1"># type: ignore[attr-defined]</span>
     <span class="p">}</span>
 </code></pre></div>
         </details>

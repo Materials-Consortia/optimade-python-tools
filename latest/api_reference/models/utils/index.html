@@ -3033,7 +3033,7 @@ of this field.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7fd86fc35cb0&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7fecd6299ff0&gt;</code></td>
       <td><p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" href="#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p></td>
     </tr>
   </tbody>
@@ -3125,7 +3125,7 @@ of this field.</p></td>
       </tr>
       <tr>
         <td><code>description</code></td>
-        <td><code>str</code></td>
+        <td><code>Optional[str]</code></td>
         <td><p>The description of the <code>Field</code>; if this is not
 specified then a <code>UserWarning</code> will be emitted.</p></td>
         <td><code>None</code></td>
@@ -3174,7 +3174,7 @@ by models in this package (see above).</p></td>
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">StrictField</span><span class="p">(</span>
     <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
-    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StrictFieldInfo</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that does the following:</span>

@@ -1887,7 +1887,7 @@
 
 
 <h2 id="optimade.server.schemas.ENTRY_INFO_SCHEMAS" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">NoneType</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Dict</span><span class="p">]]</span></code>
 
 
 <a href="#optimade.server.schemas.ENTRY_INFO_SCHEMAS" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1939,13 +1939,13 @@ OPTIMADE-queryable properties of that model.</p>
       </tr>
       <tr>
         <td><code>queryable_properties</code></td>
-        <td><code>list</code></td>
+        <td><code>Optional[Iterable[str]]</code></td>
         <td><p>The list of properties to find in the schema.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>entry_type</code></td>
-        <td><code>str</code></td>
+        <td><code>Optional[str]</code></td>
         <td><p>An optional entry type for the model. Will be used to
 lookup schemas for any config-defined fields.</p></td>
         <td><code>None</code></td>
@@ -1973,8 +1973,8 @@ and type, where provided.</p></td>
           <summary>Source code in <code>optimade/server/schemas.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">retrieve_queryable_properties</span><span class="p">(</span>
     <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-    <span class="n">queryable_properties</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">queryable_properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Recursively loops through the schema of a pydantic model and</span>
 <span class="sd">    resolves all references, returning a dictionary of all the</span>
@@ -2029,7 +2029,7 @@ and type, where provided.</p></td>
 
         <span class="n">described_provider_fields</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">field</span>
-            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># type: ignore[call-overload]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">described_provider_fields</span><span class="p">:</span>

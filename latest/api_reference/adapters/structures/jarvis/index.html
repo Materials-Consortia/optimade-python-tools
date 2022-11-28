@@ -1963,7 +1963,7 @@ to a JARVIS <code>Atoms</code> object.</p>
 
     <span class="k">return</span> <span class="n">Atoms</span><span class="p">(</span>
         <span class="n">lattice_mat</span><span class="o">=</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">,</span>
-        <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="n">specie</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">specie</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span><span class="p">],</span>
+        <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="n">specie</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">specie</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span><span class="p">],</span>  <span class="c1"># type: ignore[union-attr]</span>
         <span class="n">coords</span><span class="o">=</span><span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span><span class="p">,</span>
         <span class="n">cartesian</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>

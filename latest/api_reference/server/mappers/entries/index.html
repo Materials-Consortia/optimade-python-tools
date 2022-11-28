@@ -2067,14 +2067,14 @@ the specification.</p>
   <tbody>
       <tr>
         <td><code>ALIASES</code></td>
-        <td><code>Tuple[Tuple[str, str]]</code></td>
+        <td><code>Tuple[Tuple[str, str], ...]</code></td>
         <td><p>a tuple of aliases between
 OPTIMADE field names and the field names in the database ,
 e.g. <code>(("elements", "custom_elements_field"))</code>.</p></td>
       </tr>
       <tr>
         <td><code>LENGTH_ALIASES</code></td>
-        <td><code>Tuple[Tuple[str, str]]</code></td>
+        <td><code>Tuple[Tuple[str, str], ...]</code></td>
         <td><p>a tuple of aliases between
 a field name and another field that defines its length, to be used
 when querying, e.g. <code>(("elements", "nelements"))</code>.
@@ -2087,7 +2087,7 @@ e.g. <code>(("elements", "custom_elements_field"))</code>.</p></td>
       </tr>
       <tr>
         <td><code>PROVIDER_FIELDS</code></td>
-        <td><code>Tuple[str]</code></td>
+        <td><code>Tuple[str, ...]</code></td>
         <td><p>a tuple of extra field names that this
 mapper should support when querying with the database prefix.</p></td>
       </tr>
@@ -2099,24 +2099,24 @@ field names common to all endpoints.</p></td>
       </tr>
       <tr>
         <td><code>SUPPORTED_PREFIXES</code></td>
-        <td><code>Set[str]</code></td>
+        <td></td>
         <td><p>The set of prefixes registered by this mapper.</p></td>
       </tr>
       <tr>
         <td><code>ALL_ATTRIBUTES</code></td>
-        <td><code>Set[str]</code></td>
+        <td></td>
         <td><p>The set of attributes defined across the entry
 resource class and the server configuration.</p></td>
       </tr>
       <tr>
         <td><code>ENTRY_RESOURCE_ATTRIBUTES</code></td>
-        <td><code>Dict[str, Any]</code></td>
+        <td></td>
         <td><p>A dictionary of attributes and their definitions
 defined by the schema of the entry resource class.</p></td>
       </tr>
       <tr>
         <td><code>ENDPOINT</code></td>
-        <td><code>str</code></td>
+        <td></td>
         <td><p>The expected endpoint name for this resource, as defined by
 the <code>type</code> in the schema of the entry resource class.</p></td>
       </tr>
@@ -2154,25 +2154,19 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">optimade.server.data</span> <span class="kn">import</span> <span class="p">(</span>
-            <span class="n">providers</span> <span class="k">as</span> <span class="n">PROVIDERS</span><span class="p">,</span>
-        <span class="p">)</span>  <span class="c1"># pylint: disable=no-name-in-module</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.data</span> <span class="kn">import</span> <span class="n">providers</span> <span class="k">as</span> <span class="n">PROVIDERS</span>  <span class="c1"># type: ignore</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
         <span class="n">PROVIDERS</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
         <span class="n">prov</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">prov</span> <span class="ow">in</span> <span class="n">PROVIDERS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
     <span class="p">)</span>
-    <span class="n">ALIASES</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
-    <span class="n">LENGTH_ALIASES</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
-    <span class="n">PROVIDER_FIELDS</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">ALIASES</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">LENGTH_ALIASES</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">PROVIDER_FIELDS</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
     <span class="n">RELATIONSHIP_ENTRY_TYPES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">}</span>
     <span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">}</span>
-    <span class="n">SUPPORTED_PREFIXES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">ALL_ATTRIBUTES</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">ENTRY_RESOURCE_ATTRIBUTES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
-    <span class="n">ENDPOINT</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -2266,7 +2260,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
 <span class="sd">        including those defined by the server config.</span>
 
@@ -2472,10 +2466,6 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
 
   <div class="doc doc-children">
-
-
-
-
 
 
 
@@ -2856,7 +2846,7 @@ including those defined by the server config.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>Iterable[Tuple[str, str]]</code></td>
+      <td><code>Tuple[Tuple[str, str], ...]</code></td>
       <td><p>A tuple of length alias tuples.</p></td>
     </tr>
   </tbody>
@@ -2865,7 +2855,7 @@ including those defined by the server config.</p>
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
 <span class="sd">    including those defined by the server config.</span>
 

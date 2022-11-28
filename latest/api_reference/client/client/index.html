@@ -2063,7 +2063,7 @@ and provider.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">]]</span>
+    <span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
     <span class="sd">&quot;&quot;&quot;A list (or any iterable) of OPTIMADE base URLs to query.&quot;&quot;&quot;</span>
 
     <span class="n">all_results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
@@ -2099,7 +2099,7 @@ and provider.</p>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">AnyUrl</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">base_urls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_results_per_provider</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
         <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">http_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
@@ -2119,14 +2119,15 @@ and provider.</p>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
-            <span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="o">=</span> <span class="n">max_results_per_provider</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span>
@@ -2176,7 +2177,7 @@ and provider.</p>
 
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">response_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2232,7 +2233,7 @@ and provider.</p>
             <span class="k">return</span> <span class="p">{</span><span class="n">endpoint</span><span class="p">:</span> <span class="p">{</span><span class="nb">filter</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">results</span><span class="p">}}}</span>
 
     <span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
         <span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
 <span class="sd">        only 1 request per provider by making use of the `meta-&gt;data_returned`</span>
@@ -2331,7 +2332,7 @@ and provider.</p>
                 <span class="n">event_loop</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">event_loop</span><span class="p">:</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_async</span><span class="p">(</span>
                     <span class="n">endpoint</span><span class="p">,</span>
                     <span class="nb">filter</span><span class="p">,</span>
@@ -2341,17 +2342,15 @@ and provider.</p>
                     <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all</span><span class="p">(</span>
-                <span class="n">endpoint</span><span class="p">,</span>
-                <span class="nb">filter</span><span class="p">,</span>
-                <span class="n">page_limit</span><span class="o">=</span><span class="n">page_limit</span><span class="p">,</span>
-                <span class="n">paginate</span><span class="o">=</span><span class="n">paginate</span><span class="p">,</span>
-                <span class="n">response_fields</span><span class="o">=</span><span class="n">response_fields</span><span class="p">,</span>
-                <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
-            <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">results</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all</span><span class="p">(</span>
+            <span class="n">endpoint</span><span class="p">,</span>
+            <span class="nb">filter</span><span class="p">,</span>
+            <span class="n">page_limit</span><span class="o">=</span><span class="n">page_limit</span><span class="p">,</span>
+            <span class="n">paginate</span><span class="o">=</span><span class="n">paginate</span><span class="p">,</span>
+            <span class="n">response_fields</span><span class="o">=</span><span class="n">response_fields</span><span class="p">,</span>
+            <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2483,7 +2482,8 @@ and provider.</p>
         <span class="p">]</span>
         <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">r1</span><span class="p">,</span> <span class="o">**</span><span class="n">r2</span><span class="p">},</span> <span class="n">results</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="p">{}</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">get_one_async</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2737,8 +2737,9 @@ and provider.</p>
         <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
             <span class="n">_sort</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sort=</span><span class="si">{</span><span class="n">sort</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">_filter</span><span class="p">,</span> <span class="n">_response_fields</span><span class="p">,</span> <span class="n">_page_limit</span><span class="p">,</span> <span class="n">_sort</span><span class="p">)</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params</span> <span class="k">if</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_filter</span><span class="p">,</span> <span class="n">_response_fields</span><span class="p">,</span> <span class="n">_page_limit</span><span class="p">,</span> <span class="n">_sort</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
             <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;?</span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -3036,7 +3037,7 @@ original <code>__getattribute__</code>.</p>
   <tbody>
       <tr>
         <td><code>base_urls</code></td>
-        <td><code>Union[NoneType, pydantic.networks.AnyUrl, List[pydantic.networks.AnyUrl]]</code></td>
+        <td><code>Union[str, Iterable[str]]</code></td>
         <td><p>A list of OPTIMADE base URLs to query.</p></td>
         <td><code>None</code></td>
       </tr>
@@ -3077,7 +3078,7 @@ from each provider.</p></td>
           <summary>Source code in <code>optimade/client/client.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">AnyUrl</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">base_urls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">max_results_per_provider</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">http_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
@@ -3097,14 +3098,15 @@ from each provider.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
-        <span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">()</span>
-
     <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="o">=</span> <span class="n">max_results_per_provider</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
+
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span>
@@ -3178,7 +3180,7 @@ key.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/client/client.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
     <span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
 <span class="sd">    only 1 request per provider by making use of the `meta-&gt;data_returned`</span>
@@ -3270,7 +3272,7 @@ defined OPTIMADE APIs.</p>
   <tbody>
       <tr>
         <td><code>filter</code></td>
-        <td><code>str</code></td>
+        <td><code>Optional[str]</code></td>
         <td><p>The OPTIMADE filter string for the query.</p></td>
         <td><code>None</code></td>
       </tr>
@@ -3329,7 +3331,7 @@ from the server.</p></td>
           <summary>Source code in <code>optimade/client/client.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">response_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

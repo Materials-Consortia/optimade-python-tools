@@ -2140,7 +2140,7 @@ to handle some specific edge-cases for MongoDB.</p>
   <tbody>
       <tr>
         <td><code>operator_map</code></td>
-        <td><code>Dict[str, str]</code></td>
+        <td><code>Dict[str, Optional[str]]</code></td>
         <td><p>A map from comparison operators
 to the mongoDB specific versions.</p></td>
       </tr>
@@ -2152,7 +2152,7 @@ logical inverse.</p></td>
       </tr>
       <tr>
         <td><code>mapper</code></td>
-        <td><code>Optional[optimade.server.mappers.entries.BaseResourceMapper]</code></td>
+        <td><code>Optional[Type[optimade.server.mappers.entries.BaseResourceMapper]]</code></td>
         <td><p>A resource mapper object that defines the
 expected fields and acts as a container for
 various field-related configuration.</p></td>
@@ -2456,7 +2456,7 @@ various field-related configuration.</p></td>
         <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse_operator_map</span><span class="p">:</span>
             <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inverse_operator_map</span><span class="p">[</span><span class="n">operator</span><span class="p">]:</span> <span class="n">value</span><span class="p">}}</span>
             <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;$in&quot;</span><span class="p">,</span> <span class="s2">&quot;$eq&quot;</span><span class="p">):</span>
-                <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">filter_</span><span class="p">,</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$ne&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>
+                <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">filter_</span><span class="p">,</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$ne&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>  <span class="c1"># type: ignore[dict-item]</span>
             <span class="k">return</span> <span class="n">filter_</span>
 
         <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$not&quot;</span><span class="p">:</span> <span class="n">expr</span><span class="p">}}</span>

@@ -4150,7 +4150,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">regex</span><span class="o">=</span><span class="n">CHEMICAL_FORMULA_REGEXP</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">dimension_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+    <span class="n">dimension_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>  <span class="c1"># type: ignore[valid-type]</span>
         <span class="n">conlist</span><span class="p">(</span><span class="n">Periodicity</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -4198,7 +4198,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">lattice_vectors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+    <span class="n">lattice_vectors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>  <span class="c1"># type: ignore[valid-type]</span>
         <span class="n">conlist</span><span class="p">(</span><span class="n">Vector3D_unknown</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -4226,7 +4226,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>  <span class="c1"># type: ignore[valid-type]</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Cartesian positions of each site in the structure.</span>
 <span class="s2">A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.</span>

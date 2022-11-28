@@ -1960,7 +1960,7 @@ to an ASE <code>Atoms</code> object.</p>
     <span class="n">species</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>
     <span class="c1"># If species is missing, infer data from species_at_sites</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">species</span><span class="p">:</span>
-        <span class="n">species</span> <span class="o">=</span> <span class="n">species_from_species_at_sites</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">)</span>
+        <span class="n">species</span> <span class="o">=</span> <span class="n">species_from_species_at_sites</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
 
     <span class="n">optimade_species</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">species</span><span class="p">}</span>
 
@@ -1972,9 +1972,9 @@ to an ASE <code>Atoms</code> object.</p>
         <span class="p">)</span>
 
     <span class="n">atoms</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">site_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">nsites</span><span class="p">):</span>
-        <span class="n">species_name</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>
-        <span class="n">site</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">site_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">nsites</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
+        <span class="n">species_name</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>  <span class="c1"># type: ignore[index]</span>
+        <span class="n">site</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>  <span class="c1"># type: ignore[index]</span>
 
         <span class="n">current_species</span> <span class="o">=</span> <span class="n">optimade_species</span><span class="p">[</span><span class="n">species_name</span><span class="p">]</span>
 

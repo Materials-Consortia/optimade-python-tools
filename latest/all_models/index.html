@@ -7191,7 +7191,7 @@ IndexInfoResource            (<a class="autorefs autorefs-internal" title="optim
     <span class="n">attributes</span><span class="p">:</span> <span class="n">IndexInfoAttributes</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
     <span class="n">relationships</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">DefaultRelationship</span><span class="p">,</span> <span class="n">IndexRelationship</span><span class="p">]</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>  <span class="c1"># type: ignore[assignment]</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Relationships&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their &#39;default&#39; OPTIMADE API database.</span>
@@ -13837,7 +13837,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">regex</span><span class="o">=</span><span class="n">CHEMICAL_FORMULA_REGEXP</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">dimension_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+    <span class="n">dimension_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>  <span class="c1"># type: ignore[valid-type]</span>
         <span class="n">conlist</span><span class="p">(</span><span class="n">Periodicity</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -13885,7 +13885,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">lattice_vectors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+    <span class="n">lattice_vectors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>  <span class="c1"># type: ignore[valid-type]</span>
         <span class="n">conlist</span><span class="p">(</span><span class="n">Vector3D_unknown</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">max_items</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -13913,7 +13913,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>  <span class="c1"># type: ignore[valid-type]</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Cartesian positions of each site in the structure.</span>
 <span class="s2">A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.</span>
@@ -16191,7 +16191,7 @@ of this field.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7fd86fc35cb0&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7fecd6299ff0&gt;</code></td>
       <td><p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" href="../api_reference/models/utils/#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p></td>
     </tr>
   </tbody>
@@ -16283,7 +16283,7 @@ of this field.</p></td>
       </tr>
       <tr>
         <td><code>description</code></td>
-        <td><code>str</code></td>
+        <td><code>Optional[str]</code></td>
         <td><p>The description of the <code>Field</code>; if this is not
 specified then a <code>UserWarning</code> will be emitted.</p></td>
         <td><code>None</code></td>
@@ -16332,7 +16332,7 @@ by models in this package (see above).</p></td>
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">StrictField</span><span class="p">(</span>
     <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
-    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StrictFieldInfo</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that does the following:</span>

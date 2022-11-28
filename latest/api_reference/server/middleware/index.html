@@ -2065,7 +2065,7 @@ information on it's middleware implementation.</p>
 
 
 <h2 id="optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">starlette</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">BaseHTTPMiddleware</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">starlette</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">BaseHTTPMiddleware</span><span class="p">]</span></code>
 
 
 <a href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2215,13 +2215,15 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_warnings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Warnings</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="nf">showwarning</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">message</span><span class="p">:</span> <span class="ne">Warning</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="ne">Warning</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
         <span class="n">category</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
         <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">lineno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">line</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2264,7 +2266,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">OptimadeWarning</span><span class="p">):</span>
             <span class="c1"># If the Warning is not an OptimadeWarning or subclass thereof,</span>
             <span class="c1"># use the regular &#39;showwarning&#39; function.</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
             <span class="k">return</span>
 
         <span class="c1"># Format warning</span>
@@ -2290,7 +2292,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
                     <span class="c1"># When a warning is logged during Python shutdown, linecache</span>
                     <span class="c1"># and the import machinery don&#39;t work anymore</span>
                     <span class="n">line</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">linecache</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">linecache</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
             <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="n">filename</span><span class="p">,</span>
                 <span class="s2">&quot;lineno&quot;</span><span class="p">:</span> <span class="n">lineno</span><span class="p">,</span>
@@ -2307,16 +2309,16 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
         <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_warning</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
         <span class="c1"># Show warning message as normal in sys.stderr</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarnmsg_impl</span><span class="p">(</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarnmsg_impl</span><span class="p">(</span>  <span class="c1"># type: ignore[attr-defined]</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">WarningMessage</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
 
 <span class="sd">        Parameters:</span>
-<span class="sd">            content: String-content to separate into chunks.</span>
+<span class="sd">            content: String or bytes content to separate into chunks.</span>
 <span class="sd">            chunk_size: The size of the chunks, i.e. the length of the string-chunks.</span>
 
 <span class="sd">        Returns:</span>
@@ -2348,17 +2350,17 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
                 <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span>
             <span class="n">body</span> <span class="o">+=</span> <span class="n">chunk</span>
-        <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span>
+        <span class="n">body_str</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">body_str</span><span class="p">)</span>
             <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">,</span> <span class="p">{})[</span><span class="s2">&quot;warnings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span>
-            <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">body_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;content-length&quot;</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">:</span>
-                <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">))</span>
+                <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">body_str</span><span class="p">))</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="n">StreamingResponse</span><span class="p">(</span>
-            <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_it_up</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">),</span>
+            <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_it_up</span><span class="p">(</span><span class="n">body_str</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">),</span>
             <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="n">media_type</span><span class="o">=</span><span class="n">media_type</span><span class="p">,</span>
@@ -2411,8 +2413,8 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
   <tbody>
       <tr>
         <td><code>content</code></td>
-        <td><code>str</code></td>
-        <td><p>String-content to separate into chunks.</p></td>
+        <td><code>Union[str, bytes]</code></td>
+        <td><p>String or bytes content to separate into chunks.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
@@ -2441,11 +2443,11 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
         <details class="quote">
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        content: String-content to separate into chunks.</span>
+<span class="sd">        content: String or bytes content to separate into chunks.</span>
 <span class="sd">        chunk_size: The size of the chunks, i.e. the length of the string-chunks.</span>
 
 <span class="sd">    Returns:</span>
@@ -2509,7 +2511,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
   <tbody>
       <tr>
         <td><code>message</code></td>
-        <td><code>Warning</code></td>
+        <td><code>Union[Warning, str]</code></td>
         <td><p>The <code>Warning</code> object to show and possibly handle.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -2533,7 +2535,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
       </tr>
       <tr>
         <td><code>file</code></td>
-        <td><code>Optional[IO]</code></td>
+        <td><code>Optional[TextIO]</code></td>
         <td><p>A file-like object to which the warning should be written.</p></td>
         <td><code>None</code></td>
       </tr>
@@ -2549,11 +2551,11 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">showwarning</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">message</span><span class="p">:</span> <span class="ne">Warning</span><span class="p">,</span>
+    <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="ne">Warning</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">category</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">lineno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">line</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -2596,7 +2598,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">OptimadeWarning</span><span class="p">):</span>
         <span class="c1"># If the Warning is not an OptimadeWarning or subclass thereof,</span>
         <span class="c1"># use the regular &#39;showwarning&#39; function.</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
         <span class="k">return</span>
 
     <span class="c1"># Format warning</span>
@@ -2622,7 +2624,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
                 <span class="c1"># When a warning is logged during Python shutdown, linecache</span>
                 <span class="c1"># and the import machinery don&#39;t work anymore</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">linecache</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">linecache</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
         <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="n">filename</span><span class="p">,</span>
             <span class="s2">&quot;lineno&quot;</span><span class="p">:</span> <span class="n">lineno</span><span class="p">,</span>
@@ -2639,7 +2641,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
     <span class="bp">self</span><span class="o">.</span><span class="n">_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_warning</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
     <span class="c1"># Show warning message as normal in sys.stderr</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarnmsg_impl</span><span class="p">(</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarnmsg_impl</span><span class="p">(</span>  <span class="c1"># type: ignore[attr-defined]</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">WarningMessage</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
     <span class="p">)</span>
 </code></pre></div>
@@ -3087,9 +3089,8 @@ HandleApiHint            (<span title="starlette.middleware.base.BaseHTTPMiddlew
         <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">api_hint</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
             <span class="n">_api_hint</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-        <span class="n">api_hint</span> <span class="o">=</span> <span class="n">_api_hint</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">api_hint</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_api_hint</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                 <span class="n">TooManyValues</span><span class="p">(</span>
                     <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;`api_hint` should only be supplied once, with a single value.&quot;</span>
@@ -3097,29 +3098,21 @@ HandleApiHint            (<span title="starlette.middleware.base.BaseHTTPMiddlew
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="n">api_hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^/v[0-9]+(\.[0-9]+)?$&quot;</span><span class="p">,</span> <span class="n">api_hint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">api_hint_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">_api_hint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^/v[0-9]+(\.[0-9]+)?$&quot;</span><span class="p">,</span> <span class="n">api_hint_str</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                 <span class="n">FieldValueNotRecognized</span><span class="p">(</span>
-                    <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2"> is not recognized as a valid `api_hint` value.&quot;</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">api_hint_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2"> is not recognized as a valid `api_hint` value.&quot;</span>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="n">api_hint</span> <span class="ow">in</span> <span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">api_hint</span>
+        <span class="k">if</span> <span class="n">api_hint_str</span> <span class="ow">in</span> <span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">api_hint_str</span>
 
-        <span class="n">major_api_hint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v([0-9]+)&quot;</span><span class="p">,</span> <span class="n">api_hint</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">major_api_hint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v([0-9]+)&quot;</span><span class="p">,</span> <span class="n">api_hint_str</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">major_implementation</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;/v&quot;</span><span class="p">)</span> <span class="p">:])</span>
 
-        <span class="k">if</span> <span class="n">major_api_hint</span> <span class="o">&gt;</span> <span class="n">major_implementation</span><span class="p">:</span>
-            <span class="c1"># Let&#39;s not try to handle a request for a newer major version</span>
-            <span class="k">raise</span> <span class="n">VersionNotSupported</span><span class="p">(</span>
-                <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The provided `api_hint` (</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2">) is not supported by this implementation. &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;Supported versions include: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
         <span class="k">if</span> <span class="n">major_api_hint</span> <span class="o">&lt;=</span> <span class="n">major_implementation</span><span class="p">:</span>
             <span class="c1"># If less than:</span>
             <span class="c1"># Use the current implementation in hope that it can still handle older requests</span>
@@ -3127,6 +3120,14 @@ HandleApiHint            (<span title="starlette.middleware.base.BaseHTTPMiddlew
             <span class="c1"># If equal:</span>
             <span class="c1"># Go to /v&lt;MAJOR&gt;, since this should point to the latest available</span>
             <span class="k">return</span> <span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Let&#39;s not try to handle a request for a newer major version</span>
+        <span class="k">raise</span> <span class="n">VersionNotSupported</span><span class="p">(</span>
+            <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The provided `api_hint` (</span><span class="si">{</span><span class="n">api_hint_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2">) is not supported by this implementation. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Supported versions include: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -3178,18 +3179,18 @@ HandleApiHint            (<span title="starlette.middleware.base.BaseHTTPMiddlew
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}{</span><span class="n">version_path</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">):]</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
                     <span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">new_request</span><span class="p">)</span>
-                    <span class="n">parsed_query</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qsl</span><span class="p">(</span>
-                        <span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">keep_blank_values</span><span class="o">=</span><span class="kc">True</span>
-                    <span class="p">)</span>
-                    <span class="n">parsed_query</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                         <span class="p">[</span>
                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
-                            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parsed_query</span>
+                            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qsl</span><span class="p">(</span>
+                                <span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">keep_blank_values</span><span class="o">=</span><span class="kc">True</span>
+                            <span class="p">)</span>
                             <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">&quot;api_hint&quot;</span>
                         <span class="p">]</span>
                     <span class="p">)</span>
+
                     <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span>
-                        <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">parsed_query</span><span class="p">),</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">q</span><span class="p">),</span>
                         <span class="n">headers</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="c1"># This is the non-URL changing solution:</span>
@@ -3345,9 +3346,8 @@ supported major version of the implementation.</p></td>
     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">api_hint</span><span class="p">:</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
         <span class="n">_api_hint</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">api_hint</span> <span class="o">=</span> <span class="n">_api_hint</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">api_hint</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_api_hint</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="n">TooManyValues</span><span class="p">(</span>
                 <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;`api_hint` should only be supplied once, with a single value.&quot;</span>
@@ -3355,29 +3355,21 @@ supported major version of the implementation.</p></td>
         <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">api_hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^/v[0-9]+(\.[0-9]+)?$&quot;</span><span class="p">,</span> <span class="n">api_hint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">api_hint_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">_api_hint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^/v[0-9]+(\.[0-9]+)?$&quot;</span><span class="p">,</span> <span class="n">api_hint_str</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="n">FieldValueNotRecognized</span><span class="p">(</span>
-                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2"> is not recognized as a valid `api_hint` value.&quot;</span>
+                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">api_hint_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2"> is not recognized as a valid `api_hint` value.&quot;</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="n">api_hint</span> <span class="ow">in</span> <span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-        <span class="k">return</span> <span class="n">api_hint</span>
+    <span class="k">if</span> <span class="n">api_hint_str</span> <span class="ow">in</span> <span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">api_hint_str</span>
 
-    <span class="n">major_api_hint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v([0-9]+)&quot;</span><span class="p">,</span> <span class="n">api_hint</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">major_api_hint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v([0-9]+)&quot;</span><span class="p">,</span> <span class="n">api_hint_str</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">major_implementation</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;/v&quot;</span><span class="p">)</span> <span class="p">:])</span>
 
-    <span class="k">if</span> <span class="n">major_api_hint</span> <span class="o">&gt;</span> <span class="n">major_implementation</span><span class="p">:</span>
-        <span class="c1"># Let&#39;s not try to handle a request for a newer major version</span>
-        <span class="k">raise</span> <span class="n">VersionNotSupported</span><span class="p">(</span>
-            <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The provided `api_hint` (</span><span class="si">{</span><span class="n">api_hint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2">) is not supported by this implementation. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Supported versions include: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
     <span class="k">if</span> <span class="n">major_api_hint</span> <span class="o">&lt;=</span> <span class="n">major_implementation</span><span class="p">:</span>
         <span class="c1"># If less than:</span>
         <span class="c1"># Use the current implementation in hope that it can still handle older requests</span>
@@ -3385,6 +3377,14 @@ supported major version of the implementation.</p></td>
         <span class="c1"># If equal:</span>
         <span class="c1"># Go to /v&lt;MAJOR&gt;, since this should point to the latest available</span>
         <span class="k">return</span> <span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Let&#39;s not try to handle a request for a newer major version</span>
+    <span class="k">raise</span> <span class="n">VersionNotSupported</span><span class="p">(</span>
+        <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The provided `api_hint` (</span><span class="si">{</span><span class="n">api_hint_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">!r}</span><span class="s2">) is not supported by this implementation. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Supported versions include: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_URL_PREFIXES</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

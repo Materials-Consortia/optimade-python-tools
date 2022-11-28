@@ -1971,7 +1971,7 @@
 
 
 <h2 id="optimade.server.exception_handlers.OPTIMADE_EXCEPTIONS" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">OPTIMADE_EXCEPTIONS</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="ne">Exception</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">starlette</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">],</span> <span class="n">optimade</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">routers</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">JSONAPIResponse</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">OPTIMADE_EXCEPTIONS</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">starlette</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">],</span> <span class="n">optimade</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">routers</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">JSONAPIResponse</span><span class="p">]]]</span></code>
 
 
 <a href="#optimade.server.exception_handlers.OPTIMADE_EXCEPTIONS" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2040,7 +2040,7 @@ OPTIMADE specification.</p>
       </tr>
       <tr>
         <td><code>errors</code></td>
-        <td><code>List[optimade.models.optimade_json.OptimadeError]</code></td>
+        <td><code>Optional[List[optimade.models.optimade_json.OptimadeError]]</code></td>
         <td><p>List of error resources as defined in
 <a href="https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#json-response-schema-common-fields">the OPTIMADE specification</a>.</p></td>
         <td><code>None</code></td>
@@ -2068,7 +2068,7 @@ OPTIMADE specification.</p>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span>
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>  <span class="c1"># A status_code in `exc` will take precedence</span>
-    <span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Handle an exception</span>
 
@@ -2092,17 +2092,17 @@ OPTIMADE specification.</p>
         <span class="n">debug_info</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_traceback&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tb</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">http_response_code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+        <span class="n">http_response_code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="n">http_response_code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">status_code</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">detail</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">detail</span><span class="p">)</span>
+        <span class="n">detail</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">detail</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="n">detail</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
 

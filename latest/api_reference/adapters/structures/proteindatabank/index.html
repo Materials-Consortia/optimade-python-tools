@@ -1970,14 +1970,14 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">warn</span><span class="p">(</span><span class="n">NUMPY_NOT_FOUND</span><span class="p">,</span> <span class="n">AdapterPackageNotFound</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># type: ignore[return-value]</span>
 
     <span class="n">pdb</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">optimade_structure</span><span class="o">.</span><span class="n">attributes</span>
 
     <span class="n">rotation</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">valid_lattice_vector</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">valid_lattice_vector</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="n">currentcell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">)</span>
         <span class="n">cellpar</span> <span class="o">=</span> <span class="n">cell_to_cellpar</span><span class="p">(</span><span class="n">currentcell</span><span class="p">)</span>
         <span class="n">exportedcell</span> <span class="o">=</span> <span class="n">cellpar_to_cell</span><span class="p">(</span><span class="n">cellpar</span><span class="p">)</span>
@@ -2000,15 +2000,16 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
     <span class="n">pdb</span> <span class="o">+=</span> <span class="s2">&quot;MODEL     1</span><span class="se">\n</span><span class="s2">&quot;</span>
 
     <span class="n">species</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>
+        <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span>
+        <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>  <span class="c1"># type:ignore[union-attr]</span>
     <span class="p">}</span>
 
     <span class="n">sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">sites</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">site_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">nsites</span><span class="p">):</span>
-        <span class="n">species_name</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">site_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">nsites</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
+        <span class="n">species_name</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>  <span class="c1"># type: ignore[index]</span>
         <span class="n">site</span> <span class="o">=</span> <span class="n">sites</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>
 
         <span class="n">current_species</span> <span class="o">=</span> <span class="n">species</span><span class="p">[</span><span class="n">species_name</span><span class="p">]</span>
@@ -2115,7 +2116,7 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">warn</span><span class="p">(</span><span class="n">NUMPY_NOT_FOUND</span><span class="p">,</span> <span class="n">AdapterPackageNotFound</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># type: ignore[return-value]</span>
 
     <span class="n">cif</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;#</span>
 <span class="s2"># Created from an OPTIMADE structure.</span>
@@ -2134,9 +2135,9 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">optimade_structure</span><span class="o">.</span><span class="n">attributes</span>
 
     <span class="c1"># Do this only if there&#39;s three non-zero lattice vectors</span>
-    <span class="k">if</span> <span class="n">valid_lattice_vector</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">valid_lattice_vector</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="n">a_vector</span><span class="p">,</span> <span class="n">b_vector</span><span class="p">,</span> <span class="n">c_vector</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">cell_to_cellpar</span><span class="p">(</span>
-            <span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span>
+            <span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="p">)</span>
 
         <span class="n">cif</span> <span class="o">+=</span> <span class="p">(</span>
@@ -2159,8 +2160,8 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
         <span class="c1"># we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="s2">&quot;fractional_site_positions&quot;</span><span class="p">):</span>
             <span class="n">attributes</span><span class="o">.</span><span class="n">fractional_site_positions</span> <span class="o">=</span> <span class="n">fractional_coordinates</span><span class="p">(</span>
-                <span class="n">cell</span><span class="o">=</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">,</span>
-                <span class="n">cartesian_positions</span><span class="o">=</span><span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span><span class="p">,</span>
+                <span class="n">cell</span><span class="o">=</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
+                <span class="n">cartesian_positions</span><span class="o">=</span><span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
             <span class="p">)</span>
 
     <span class="c1"># NOTE: The following lines are perhaps needed to create a &quot;valid&quot; PDBx/mmCIF file.</span>
@@ -2217,11 +2218,11 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
         <span class="n">sites</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span>
 
     <span class="n">species</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>
+        <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>  <span class="c1"># type: ignore[union-attr]</span>
     <span class="p">}</span>
 
-    <span class="k">for</span> <span class="n">site_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">nsites</span><span class="p">):</span>
-        <span class="n">species_name</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">site_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">nsites</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
+        <span class="n">species_name</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>  <span class="c1"># type: ignore[index]</span>
         <span class="n">site</span> <span class="o">=</span> <span class="n">sites</span><span class="p">[</span><span class="n">site_number</span><span class="p">]</span>
 
         <span class="n">current_species</span> <span class="o">=</span> <span class="n">species</span><span class="p">[</span><span class="n">species_name</span><span class="p">]</span>

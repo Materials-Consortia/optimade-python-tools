@@ -1968,8 +1968,8 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">resource_cls</span><span class="p">:</span> <span class="n">EntryResource</span><span class="p">,</span>
-        <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span>
+        <span class="n">resource_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
+        <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
         <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
@@ -2155,13 +2155,13 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
       </tr>
       <tr>
         <td><code>resource_cls</code></td>
-        <td><code>EntryResource</code></td>
+        <td><code>Type[optimade.models.entries.EntryResource]</code></td>
         <td><p>The type of entry resource that is stored by the collection.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>resource_mapper</code></td>
-        <td><code>BaseResourceMapper</code></td>
+        <td><code>Type[optimade.server.mappers.entries.BaseResourceMapper]</code></td>
         <td><p>A resource mapper object that handles aliases and
 format changes between deserialization and response.</p></td>
         <td><em>required</em></td>
@@ -2179,8 +2179,8 @@ format changes between deserialization and response.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">resource_cls</span><span class="p">:</span> <span class="n">EntryResource</span><span class="p">,</span>
-    <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span>
+    <span class="n">resource_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
+    <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
     <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>

@@ -2058,7 +2058,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
           <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
     <span class="n">collection</span><span class="p">:</span> <span class="n">EntryCollection</span><span class="p">,</span>
-    <span class="n">response</span><span class="p">:</span> <span class="n">EntryResponseMany</span><span class="p">,</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResponseMany</span><span class="p">],</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResponseMany</span><span class="p">:</span>
@@ -2077,12 +2077,16 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
     <span class="n">include</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;include&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">include</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">include</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
-    <span class="n">included</span> <span class="o">=</span> <span class="n">get_included_relationships</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">ENTRY_COLLECTIONS</span><span class="p">,</span> <span class="n">include</span><span class="p">)</span>
+
+    <span class="n">included</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">included</span> <span class="o">=</span> <span class="n">get_included_relationships</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">ENTRY_COLLECTIONS</span><span class="p">,</span> <span class="n">include</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">more_data_available</span><span class="p">:</span>
         <span class="c1"># Deduce the `next` link from the current request</span>
         <span class="n">query</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qs</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
-        <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment,list-item]</span>
         <span class="n">urlencoded</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">doseq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
@@ -2090,8 +2094,8 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">links</span> <span class="o">=</span> <span class="n">ToplevelLinks</span><span class="p">(</span><span class="nb">next</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">fields</span> <span class="ow">or</span> <span class="n">include_fields</span><span class="p">:</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="n">handle_response_fields</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">include_fields</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">fields</span> <span class="ow">or</span> <span class="n">include_fields</span><span class="p">):</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">handle_response_fields</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">include_fields</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]</span>
 
     <span class="k">return</span> <span class="n">response</span><span class="p">(</span>
         <span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">,</span>
@@ -2173,7 +2177,7 @@ based on endpoint type.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>Dict[str, List[optimade.models.entries.EntryResource]]</code></td>
+      <td><code>List[Union[optimade.models.entries.EntryResource, Dict]]</code></td>
       <td><p>Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list
     of resource objects for that entry type.</p></td>
     </tr>
@@ -2185,7 +2189,7 @@ based on endpoint type.</p></td>
     <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]],</span>
     <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
     <span class="n">include_param</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Filters the included relationships and makes the appropriate compound request</span>
 <span class="sd">    to include them in the response.</span>
 
@@ -2213,7 +2217,7 @@ based on endpoint type.</p></td>
                 <span class="sa">f</span><span class="s2">&quot;Known relationship types: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ENTRY_COLLECTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-    <span class="n">endpoint_includes</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">endpoint_includes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
         <span class="c1"># convert list of references into dict by ID to only included unique IDs</span>
         <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2244,8 +2248,8 @@ based on endpoint type.</p></td>
         <span class="n">params</span> <span class="o">=</span> <span class="n">EntryListingQueryParams</span><span class="p">(</span>
             <span class="nb">filter</span><span class="o">=</span><span class="n">compound_filter</span><span class="p">,</span>
             <span class="n">response_format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
-            <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">response_fields</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">sort</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="n">page_limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">page_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>

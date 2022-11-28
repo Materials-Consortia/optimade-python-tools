@@ -2389,13 +2389,13 @@ parts of the grammar in a backend non-specific way.</p>
   <tbody>
       <tr>
         <td><code>operator_map</code></td>
-        <td><code>Dict[str, str]</code></td>
+        <td><code>Dict[str, Optional[str]]</code></td>
         <td><p>A map from comparison operators
 to their backend-specific versions.</p></td>
       </tr>
       <tr>
         <td><code>mapper</code></td>
-        <td><code>Optional[optimade.server.mappers.entries.BaseResourceMapper]</code></td>
+        <td><code>Optional[Type[optimade.server.mappers.entries.BaseResourceMapper]]</code></td>
         <td><p>A resource mapper object that defines the
 expected fields and acts as a container for
 various field-related configuration.</p></td>
@@ -2417,8 +2417,8 @@ various field-related configuration.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">operator_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">operator_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -2442,7 +2442,7 @@ various field-related configuration.</p></td>
     <span class="n">_quantities</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>  <span class="c1"># pylint: disable=super-init-not-called</span>
         <span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">        resource mapper for use when post-processing.</span>
@@ -2456,7 +2456,7 @@ various field-related configuration.</p></td>
 <span class="sd">        [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="n">quantity</span><span class="o">.</span><span class="n">backend_field</span><span class="p">:</span> <span class="n">quantity</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">quantity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="n">quantity</span><span class="o">.</span><span class="n">backend_field</span><span class="p">:</span> <span class="n">quantity</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">quantity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>  <span class="c1"># type: ignore[misc]</span>
         <span class="p">}</span>
 
     <span class="nd">@property</span>
@@ -2812,7 +2812,7 @@ resource mapper for use when post-processing.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>  <span class="c1"># pylint: disable=super-init-not-called</span>
     <span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">    resource mapper for use when post-processing.</span>
@@ -3767,8 +3767,8 @@ can then decide whether to use this for all "LENGTH" queries.</p></td>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">length_quantity</span><span class="p">:</span> <span class="s2">&quot;Quantity&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialise the `quantity` from it&#39;s name and aliases.</span>
 
@@ -3836,14 +3836,14 @@ can then decide whether to use this for all "LENGTH" queries.</p></td>
       </tr>
       <tr>
         <td><code>backend_field</code></td>
-        <td><code>str</code></td>
+        <td><code>Optional[str]</code></td>
         <td><p>The name of the field for this quantity in the backend database, will be
 <code>name</code> by default.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>length_quantity</code></td>
-        <td><code>Quantity</code></td>
+        <td><code>Optional[Quantity]</code></td>
         <td><p>Another (typically integer) <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a>
 that can be queried as the length of this quantity, e.g. <code>elements</code> and <code>nelements</code>. Backends
 can then decide whether to use this for all "LENGTH" queries.</p></td>
@@ -3856,8 +3856,8 @@ can then decide whether to use this for all "LENGTH" queries.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">length_quantity</span><span class="p">:</span> <span class="s2">&quot;Quantity&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">backend_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initialise the `quantity` from it&#39;s name and aliases.</span>
 
