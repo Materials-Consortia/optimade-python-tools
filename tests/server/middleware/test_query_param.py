@@ -1,7 +1,7 @@
 """Test EntryListingQueryParams middleware"""
 import pytest
 
-from optimade.server.exceptions import BadRequest
+from optimade.exceptions import BadRequest
 from optimade.server.middleware import EnsureQueryParamIntegrity
 from optimade.warnings import FieldValueNotRecognized
 

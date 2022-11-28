@@ -22,7 +22,7 @@ try:
     submodules (e.g., the validator) to access the other schemas
     (that only require pydantic to construct).
     """
-    from optimade.server.exceptions import POSSIBLE_ERRORS
+    from optimade.exceptions import POSSIBLE_ERRORS
 
     ERROR_RESPONSES: Optional[Dict[int, Dict]] = {
         err.status_code: {"model": ErrorResponse, "description": err.title}

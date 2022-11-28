@@ -16,9 +16,9 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, StreamingResponse
 
+from optimade.exceptions import BadRequest, VersionNotSupported
 from optimade.models import Warnings
 from optimade.server.config import CONFIG
-from optimade.server.exceptions import BadRequest, VersionNotSupported
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
 from optimade.warnings import (
     FieldValueNotRecognized,

@@ -1,8 +1,8 @@
 import pytest
 from lark.exceptions import VisitError
 
+from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
-from optimade.server.exceptions import BadRequest
 from optimade.warnings import UnknownProviderProperty
 
 

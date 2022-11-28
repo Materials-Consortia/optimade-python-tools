@@ -9,7 +9,7 @@ from typing import Dict, Optional, Tuple
 
 from lark import Lark, Tree
 
-from optimade.server.exceptions import BadRequest
+from optimade.exceptions import BadRequest
 
 __all__ = ("ParserError", "LarkParser")
 

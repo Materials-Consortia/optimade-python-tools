@@ -5,8 +5,8 @@ from warnings import warn
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
+from optimade.exceptions import BadRequest
 from optimade.server.config import CONFIG
-from optimade.server.exceptions import BadRequest
 from optimade.server.mappers import BaseResourceMapper
 from optimade.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
 

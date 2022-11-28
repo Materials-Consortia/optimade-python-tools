@@ -7,9 +7,9 @@ from fastapi.exceptions import RequestValidationError, StarletteHTTPException
 from lark.exceptions import VisitError
 from pydantic import ValidationError
 
+from optimade.exceptions import BadRequest, OptimadeHTTPException
 from optimade.models import ErrorResponse, ErrorSource, OptimadeError
 from optimade.server.config import CONFIG
-from optimade.server.exceptions import BadRequest, OptimadeHTTPException
 from optimade.server.logger import LOGGER
 from optimade.server.routers.utils import JSONAPIResponse, meta_values
 
@@ -153,7 +153,7 @@ def grammar_not_implemented_handler(
     All errors raised during filter transformation are wrapped in the Lark `VisitError`.
     According to the OPTIMADE specification, these errors are repurposed to be 501 NotImplementedErrors.
 
-    For special exceptions, like [`BadRequest`][optimade.server.exceptions.BadRequest], we pass-through to
+    For special exceptions, like [`BadRequest`][optimade.exceptions.BadRequest], we pass-through to
     [`general_exception()`][optimade.server.exception_handlers.general_exception], since they should not
     return a 501 NotImplementedError.
 

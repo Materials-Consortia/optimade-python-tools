@@ -5,6 +5,17 @@ OPTIMADE API.
 
 from typing import Optional
 
+__all__ = (
+    "OptimadeWarning",
+    "FieldValueNotRecognized",
+    "TooManyValues",
+    "QueryParamNotUsed",
+    "MissingExpectedField",
+    "TimestampNotRFCCompliant",
+    "UnknownProviderProperty",
+    "UnknownProviderQueryParameter",
+)
+
 
 class OptimadeWarning(Warning):
     """Base Warning for the `optimade` package"""
