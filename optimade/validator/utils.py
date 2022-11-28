@@ -379,7 +379,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                     summary = (
                         f"{request} - {test_fn.__name__} - failed with internal error"
                     )
-                    failure_type = "internal"
+                    failure_type: Optional[str] = "internal"
                 else:
                     summary = f"{request} - {test_fn.__name__} - failed with error"
                     failure_type = "optional" if optional else None
