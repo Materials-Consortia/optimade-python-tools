@@ -8,12 +8,6 @@ MAPPER = "LinksMapper"
 
 def test_good_links(starting_links, mapper):
     """Check well-formed links used as example data"""
-    import optimade.server.data
-
-    good_refs = optimade.server.data.links
-    for doc in good_refs:
-        LinksResource(**mapper(MAPPER).map_back(doc))
-
     # Test starting_links is a good links resource
     LinksResource(**mapper(MAPPER).map_back(starting_links))
 

@@ -10,16 +10,6 @@ from optimade.warnings import MissingExpectedField
 MAPPER = "StructureMapper"
 
 
-def test_good_structures(mapper):
-    """Check well-formed structures used as example data"""
-    import optimade.server.data
-
-    good_structures = optimade.server.data.structures
-
-    for structure in good_structures:
-        StructureResource(**mapper(MAPPER).map_back(structure))
-
-
 @pytest.mark.filterwarnings("ignore", category=MissingExpectedField)
 def test_good_structure_with_missing_data(mapper, good_structure):
     """Check deserialization of well-formed structure used
