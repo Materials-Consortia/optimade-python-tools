@@ -1,11 +1,15 @@
 import pytest
+
+_ = pytest.importorskip(
+    "bson",
+    reason="MongoDB dependency set (pymongo, bson) are required to run these tests.",
+)
+
 from lark.exceptions import VisitError
 
 from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
 from optimade.warnings import UnknownProviderProperty
-
-pytest.importorskip("bson")
 
 
 class TestMongoTransformer:
