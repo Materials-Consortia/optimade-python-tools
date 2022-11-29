@@ -7,7 +7,7 @@ isort==5.10.1
 jsondiff==2.0.0
 mypy==0.991
 pre-commit==2.20.0
-pylint==2.15.6
+pylint==2.15.7
 pytest==7.2.0
 pytest-cov==4.0.0
 pytest-httpx==0.21.2
