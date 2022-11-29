@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from optimade.server.warnings import MissingExpectedField
+from optimade.warnings import MissingExpectedField
 
 try:
     from optimade.client import OptimadeClient

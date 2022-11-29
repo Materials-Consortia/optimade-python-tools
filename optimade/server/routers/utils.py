@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
+from optimade.exceptions import BadRequest, InternalServerError
 from optimade.models import (
     EntryResource,
     EntryResponseMany,
@@ -18,7 +19,6 @@ from optimade.models import (
 )
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_database
 

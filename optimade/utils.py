@@ -114,7 +114,7 @@ def get_child_database_links(
 
     Raises:
         RuntimeError: If the provider's index meta-database is down,
-        invalid, or the request otherwise fails.
+            invalid, or the request otherwise fails.
 
     """
     import requests

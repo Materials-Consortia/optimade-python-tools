@@ -19,7 +19,7 @@ from optimade.models.utils import (
     StrictField,
     SupportLevel,
 )
-from optimade.server.warnings import MissingExpectedField
+from optimade.warnings import MissingExpectedField
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 

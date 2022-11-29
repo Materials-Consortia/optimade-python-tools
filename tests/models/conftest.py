@@ -49,6 +49,15 @@ def good_structures() -> list:
     return structures
 
 
+@pytest.fixture(scope="session")
+def good_references() -> list:
+    """Load and return list of good structures resources"""
+    filename = "test_good_references.json"
+    references = load_test_data(filename)
+    references = remove_mongo_date(references)
+    return references
+
+
 @pytest.fixture
 def starting_links() -> dict:
     """A good starting links resource"""

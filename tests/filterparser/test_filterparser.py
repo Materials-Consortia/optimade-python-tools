@@ -4,8 +4,8 @@ from typing import Tuple
 import pytest
 from lark import Tree
 
+from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
-from optimade.server.exceptions import BadRequest
 
 
 class BaseTestFilterParser(abc.ABC):

@@ -5,19 +5,9 @@ import pytest
 from pydantic import ValidationError
 
 from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS, StructureResource
-from optimade.server.warnings import MissingExpectedField
+from optimade.warnings import MissingExpectedField
 
 MAPPER = "StructureMapper"
-
-
-def test_good_structures(mapper):
-    """Check well-formed structures used as example data"""
-    import optimade.server.data
-
-    good_structures = optimade.server.data.structures
-
-    for structure in good_structures:
-        StructureResource(**mapper(MAPPER).map_back(structure))
 
 
 @pytest.mark.filterwarnings("ignore", category=MissingExpectedField)

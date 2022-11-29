@@ -231,14 +231,14 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
                 full_path=docs_dir.joinpath(".pages"),
                 content=pages_template.format(name="API Reference"),
             )
-            continue
 
         docs_sub_dir = docs_dir.joinpath(relpath)
         docs_sub_dir.mkdir(exist_ok=True)
-        write_file(
-            full_path=docs_sub_dir.joinpath(".pages"),
-            content=pages_template.format(name=str(relpath).split("/")[-1]),
-        )
+        if str(relpath) != ".":
+            write_file(
+                full_path=docs_sub_dir.joinpath(".pages"),
+                content=pages_template.format(name=str(relpath).split("/")[-1]),
+            )
 
         # Create markdown files
         for filename in filenames:
@@ -249,6 +249,10 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
 
             basename = filename[: -len(".py")]
             py_path = f"optimade/{relpath}/{basename}".replace("/", ".")
+            if str(relpath) == ".":
+                py_path = py_path.replace("...", ".")
+                print(filename, basename, py_path)
+
             md_filename = filename.replace(".py", ".md")
 
             # For models we want to include EVERYTHING, even if it doesn't have a doc-string
