@@ -61,9 +61,9 @@ testing_deps = [
 dev_deps = (
     [
         "black~=22.10",
-        "flake8~=3.9",
+        "flake8~=6.0",
         "isort~=5.10",
-        "mypy~=0.981",
+        "mypy~=0.991",
         "pylint~=2.15",
         "pre-commit~=2.20",
         "invoke~=1.7",
