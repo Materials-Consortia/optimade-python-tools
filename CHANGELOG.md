@@ -2,20 +2,60 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.4...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.0...HEAD)
+
+This release continues the modularisation of the package by moving the server exceptions and warnings out into top-level modules, and removing the core dependency on FastAPI (now a server dependency only). This should allow for easier use of the `optimade.models` and `optimade.client` modules within other packages.
+
+Aside from that, the package now supports Python 3.11, and our example server is now deployed at [Fly.io](https://optimade.fly.dev) rather than Heroku.
+
+## [v0.20.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.0) (2022-11-29)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.4...v0.20.0)
+
+This release continues the modularisation of the package by moving the server exceptions and warnings out into top-level modules, and removing the core dependency on FastAPI (now a server dependency only). This should allow for easier use of the `optimade.models` and `optimade.client` modules within other packages.
+
+Aside from that, the package now supports Python 3.11, and our example server is now deployed at [Fly.io](https://optimade.fly.dev) rather than Heroku.
+
+**Implemented enhancements:**
+
+- Add support for Python 3.11 [\#1361](https://github.com/Materials-Consortia/optimade-python-tools/issues/1361)
+- Improve test diagnostics and fix deprecated Elasticsearch calls [\#1373](https://github.com/Materials-Consortia/optimade-python-tools/pull/1373) ([ml-evs](https://github.com/ml-evs))
+- Support Python 3.11 [\#1362](https://github.com/Materials-Consortia/optimade-python-tools/pull/1362) ([ml-evs](https://github.com/ml-evs))
+
+**Fixed bugs:**
+
+- Elasticsearch pytest oneliner in the docs is no longer working [\#1377](https://github.com/Materials-Consortia/optimade-python-tools/issues/1377)
+- Remote swagger validator has changed output format [\#1370](https://github.com/Materials-Consortia/optimade-python-tools/issues/1370)
+
+**Closed issues:**
+
+- Fully isolate server code from other submodules [\#1403](https://github.com/Materials-Consortia/optimade-python-tools/issues/1403)
+- Replace https://gitlab.com/pycqa/flake8 with https://github.com/pycqa/flake8 [\#1388](https://github.com/Materials-Consortia/optimade-python-tools/issues/1388)
+- OpenAPI schema should not enforce recommended constraint on `page_number` [\#1372](https://github.com/Materials-Consortia/optimade-python-tools/issues/1372)
+- Pydantic models docs are broken on the mkdocs site with new renderer [\#1353](https://github.com/Materials-Consortia/optimade-python-tools/issues/1353)
+- Migrate away from Heroku for demo server [\#1307](https://github.com/Materials-Consortia/optimade-python-tools/issues/1307)
+- FastAPI should not be a core dependency [\#1198](https://github.com/Materials-Consortia/optimade-python-tools/issues/1198)
+
+**Merged pull requests:**
+
+- Move exceptions and warnings out of server code and separate deps [\#1405](https://github.com/Materials-Consortia/optimade-python-tools/pull/1405) ([ml-evs](https://github.com/ml-evs))
+- Complete migration from Heroku to Fly [\#1400](https://github.com/Materials-Consortia/optimade-python-tools/pull/1400) ([ml-evs](https://github.com/ml-evs))
+- Add GH actions for deploying example server to Fly [\#1396](https://github.com/Materials-Consortia/optimade-python-tools/pull/1396) ([ml-evs](https://github.com/ml-evs))
+- Support new remote swagger.io validator format [\#1371](https://github.com/Materials-Consortia/optimade-python-tools/pull/1371) ([ml-evs](https://github.com/ml-evs))
+- Do not enforce minimum value of `page_number` at model level [\#1369](https://github.com/Materials-Consortia/optimade-python-tools/pull/1369) ([ml-evs](https://github.com/ml-evs))
+- Enable `mypy` and `isort` in pre-commit & CI [\#1346](https://github.com/Materials-Consortia/optimade-python-tools/pull/1346) ([ml-evs](https://github.com/ml-evs))
+- Remove randomness from structure utils tests [\#1338](https://github.com/Materials-Consortia/optimade-python-tools/pull/1338) ([ml-evs](https://github.com/ml-evs))
+- Demote FastAPI to a server dep only [\#1199](https://github.com/Materials-Consortia/optimade-python-tools/pull/1199) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.19.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.4) (2022-09-19)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.3...v0.19.4)
 
 This is a hotfix release for #1335, a bug regarding chunked responses triggered when using the latest FastAPI version.
 
 **Fixed bugs:**
 
 - UnboundLocalError - `chunk_size` is not always set in middleware method [\#1335](https://github.com/Materials-Consortia/optimade-python-tools/issues/1335)
-
-## [v0.19.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.4) (2022-09-19)
-
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.3...v0.19.4)
-
-**Fixed bugs:**
-
 - Ensure `chunk_size` is properly set when chunking responses [\#1336](https://github.com/Materials-Consortia/optimade-python-tools/pull/1336) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.19.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.19.3) (2022-09-06)
