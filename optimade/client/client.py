@@ -34,8 +34,8 @@ from optimade.client.utils import (
     TooManyRequestsException,
     silent_raise,
 )
+from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
-from optimade.server.exceptions import BadRequest
 from optimade.utils import get_all_databases
 
 ENDPOINTS = ("structures", "references", "calculations", "info", "extensions")

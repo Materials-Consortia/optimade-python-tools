@@ -1,9 +1,9 @@
 """Test EntryListingQueryParams middleware"""
 import pytest
 
-from optimade.server.exceptions import BadRequest
+from optimade.exceptions import BadRequest
 from optimade.server.middleware import EnsureQueryParamIntegrity
-from optimade.server.warnings import FieldValueNotRecognized
+from optimade.warnings import FieldValueNotRecognized
 
 
 def test_wrong_html_form(check_error_response, both_clients):

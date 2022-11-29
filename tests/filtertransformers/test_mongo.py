@@ -1,9 +1,15 @@
 import pytest
+
+_ = pytest.importorskip(
+    "bson",
+    reason="MongoDB dependency set (pymongo, bson) are required to run these tests.",
+)
+
 from lark.exceptions import VisitError
 
+from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
-from optimade.server.exceptions import BadRequest
-from optimade.server.warnings import UnknownProviderProperty
+from optimade.warnings import UnknownProviderProperty
 
 
 class TestMongoTransformer:
@@ -526,7 +532,7 @@ class TestMongoTransformer:
         import bson.tz_util
 
         from optimade.filtertransformers.mongo import MongoTransformer
-        from optimade.server.warnings import TimestampNotRFCCompliant
+        from optimade.warnings import TimestampNotRFCCompliant
 
         example_RFC3339_date = "2019-06-08T04:13:37Z"
         example_RFC3339_date_2 = "2019-06-08T04:13:37"

@@ -16,11 +16,11 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, StreamingResponse
 
+from optimade.exceptions import BadRequest, VersionNotSupported
 from optimade.models import Warnings
 from optimade.server.config import CONFIG
-from optimade.server.exceptions import BadRequest, VersionNotSupported
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
-from optimade.server.warnings import (
+from optimade.warnings import (
     FieldValueNotRecognized,
     OptimadeWarning,
     QueryParamNotUsed,
@@ -268,9 +268,9 @@ class HandleApiHint(BaseHTTPMiddleware):
 
 class AddWarnings(BaseHTTPMiddleware):
     """
-    Add [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning]s to the response.
+    Add [`OptimadeWarning`][optimade.warnings.OptimadeWarning]s to the response.
 
-    All sub-classes of [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning]
+    All sub-classes of [`OptimadeWarning`][optimade.warnings.OptimadeWarning]
     will also be added to the response's
     [`meta.warnings`][optimade.models.optimade_json.ResponseMeta.warnings] list.
 
@@ -332,12 +332,12 @@ class AddWarnings(BaseHTTPMiddleware):
         This method will also print warning messages to `stderr` by calling
         `warnings._showwarning_orig()` or `warnings._showwarnmsg_impl()`.
         The first function will be called if the issued warning is not recognized
-        as an [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning].
+        as an [`OptimadeWarning`][optimade.warnings.OptimadeWarning].
         This is equivalent to "standard behaviour".
         The second function will be called _after_ an
-        [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning] has been handled.
+        [`OptimadeWarning`][optimade.warnings.OptimadeWarning] has been handled.
 
-        An [`OptimadeWarning`][optimade.server.warnings.OptimadeWarning] will be
+        An [`OptimadeWarning`][optimade.warnings.OptimadeWarning] will be
         translated into an OPTIMADE Warnings JSON object in accordance with
         [the specification](https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst#json-response-schema-common-fields).
         This process is similar to the [Exception handlers][optimade.server.exception_handlers].

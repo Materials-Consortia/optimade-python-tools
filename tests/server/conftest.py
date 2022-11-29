@@ -2,7 +2,7 @@ from typing import Dict, Optional, Union
 
 import pytest
 
-from optimade.server.warnings import OptimadeWarning
+from optimade.warnings import OptimadeWarning
 
 
 @pytest.fixture(scope="session")
