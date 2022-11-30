@@ -23,6 +23,12 @@ class TestSingleReferenceEndpointDifficult(RegularEndpointTests):
     response_cls = ReferenceResponseOne
 
 
+class TestResponseFields(RegularEndpointTests):
+
+    request_str = "references?response_fields=volume,month,organization&page_limit=1"
+    response_cls = ReferenceResponseMany
+
+
 class TestMissingSingleReferenceEndpoint(RegularEndpointTests):
     """Tests for /references/<entry_id> for unknown <entry_id>"""
 

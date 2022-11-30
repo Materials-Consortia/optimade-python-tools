@@ -1,6 +1,7 @@
 import re
 import warnings
 from abc import ABC, abstractmethod
+from functools import lru_cache
 from typing import Any, Dict, Iterable, List, Set, Tuple, Type, Union
 
 from lark import Transformer
@@ -11,6 +12,7 @@ from optimade.models.entries import EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.utils import set_field_to_none_if_missing_in_dict
 from optimade.warnings import (
     FieldValueNotRecognized,
     QueryParamNotUsed,
@@ -121,13 +123,7 @@ class EntryCollection(ABC):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[
-        Union[List[EntryResource], EntryResource],
-        int,
-        bool,
-        Set[str],
-        Set[str],
-    ]:
+    ) -> Tuple[Union[List[EntryResource], EntryResource], int, bool, Set[str]]:
         """
         Fetches results and indicates if more data is available.
 
@@ -146,23 +142,49 @@ class EntryCollection(ABC):
         criteria = self.handle_query_params(params)
         single_entry = isinstance(params, SingleEntryQueryParams)
         response_fields = criteria.pop("fields")
+        response_fields_set = criteria.pop("response_fields_set", False)
 
         raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
         )
 
+        exclude_fields = self.all_fields - response_fields
+
+        results: List = [self.resource_mapper.map_back(doc) for doc in raw_results]
+
+        self.check_and_add_missing_fields(results, response_fields, response_fields_set)
+
+        if results:
+            results = self.resource_mapper.deserialize(results)
+
         if single_entry:
-            raw_results = raw_results[0] if raw_results else None  # type: ignore[assignment]
+            results = results[0] if results else None  # type: ignore[assignment]
 
             if data_returned > 1:
                 raise NotFound(
                     detail=f"Instead of a single entry, {data_returned} entries were found",
                 )
 
-        exclude_fields = self.all_fields - response_fields
+        return results, data_returned, more_data_available, exclude_fields
+
+    def check_and_add_missing_fields(
+        self, results: List[dict], response_fields: set, response_fields_set: bool
+    ):
+        """Checks whether the response_fields and mandatory fields are present.
+        If they are not present the values are set to None, so the deserialization works correctly.
+        It also checks whether all fields in the response have been defined either in the model or in the config file.
+        If not it raises an appropriate error or warning."""
         include_fields = (
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
         )
+        # Include missing fields
+        for result in results:
+            for field in include_fields:
+                set_field_to_none_if_missing_in_dict(result["attributes"], field)
+
+        if response_fields_set:
+            for result in results:
+                result["attributes"]["set_missing_to_none"] = True
 
         bad_optimade_fields = set()
         bad_provider_fields = set()
@@ -188,19 +210,6 @@ class EntryCollection(ABC):
             raise BadRequest(
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
-
-        if raw_results is not None:
-            results = self.resource_mapper.deserialize(raw_results)
-        else:
-            results = None
-
-        return (
-            results,
-            data_returned,
-            more_data_available,
-            exclude_fields,
-            include_fields,
-        )
 
     @abstractmethod
     def _run_db_query(
@@ -244,6 +253,7 @@ class EntryCollection(ABC):
 
         return self._all_fields
 
+    @lru_cache(maxsize=4)
     def get_attribute_fields(self) -> Set[str]:
         """Get the set of attribute fields
 
@@ -327,16 +337,16 @@ class EntryCollection(ABC):
             cursor_kwargs["limit"] = CONFIG.page_limit
 
         # response_fields
-        cursor_kwargs["projection"] = {
-            f"{self.resource_mapper.get_backend_field(f)}": True
-            for f in self.all_fields
-        }
-
         if getattr(params, "response_fields", False):
+            cursor_kwargs["response_fields_set"] = True
             response_fields = set(params.response_fields.split(","))
             response_fields |= self.resource_mapper.get_required_fields()
         else:
             response_fields = self.all_fields.copy()
+        cursor_kwargs["projection"] = {
+            f"{self.resource_mapper.get_backend_field(f)}": True
+            for f in response_fields
+        }
 
         cursor_kwargs["fields"] = response_fields
 

@@ -168,9 +168,7 @@ class ElasticCollection(EntryCollection):
         page_offset = criteria.get("skip", 0)
         limit = criteria.get("limit", CONFIG.page_limit)
 
-        all_aliased_fields = [
-            self.resource_mapper.get_backend_field(field) for field in self.all_fields
-        ]
+        all_aliased_fields = [field for field in criteria.get("projection", [])]
         search = search.source(includes=all_aliased_fields)
 
         elastic_sort = [

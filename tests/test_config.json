@@ -18,7 +18,8 @@
     "provider_fields": {
         "structures": [
             "band_gap",
-            {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"}
+            {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"},
+            {"name":"physical_properties.density", "type": "float", "description": "The density of the material.", "unit": "kg/L"}
         ]
     },
     "aliases": {
@@ -27,7 +28,9 @@
             "immutable_id": "_id",
             "chemical_formula_descriptive": "pretty_formula",
             "chemical_formula_reduced": "pretty_formula",
-            "chemical_formula_anonymous": "formula_anonymous"
+            "chemical_formula_anonymous": "formula_anonymous",
+            "chemical_formula_hill": "fancy_formulas.hill",
+            "physical_properties.density": "dichtheid"
         }
     },
     "length_aliases": {

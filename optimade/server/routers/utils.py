@@ -25,7 +25,7 @@ from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_datab
 __all__ = (
     "BASE_URL_PREFIXES",
     "meta_values",
-    "handle_response_fields",
+    "remove_exclude_fields",
     "get_included_relationships",
     "get_base_url",
     "get_entries",
@@ -90,20 +90,17 @@ def meta_values(
     )
 
 
-def handle_response_fields(
+def remove_exclude_fields(
     results: Union[List[EntryResource], EntryResource],
     exclude_fields: Set[str],
-    include_fields: Set[str],
 ) -> List[Dict[str, Any]]:
-    """Handle query parameter `response_fields`.
+    """Removes the fields that are present in exclude_fields from the entries in the results.`.
 
-    It is assumed that all fields are under `attributes`.
-    This is due to all other top-level fields are REQUIRED in the response.
+    It is assumed that all fields are under `attributes`, because all top-level fields are REQUIRED in the response.
 
     Parameters:
+        results: A list with resources with dictionaries from which the fields in exclude_fields should be removed.
         exclude_fields: Fields under `attributes` to be excluded from the response.
-        include_fields: Fields under `attributes` that were requested that should be
-            set to null if missing in the entry.
 
     Returns:
         List of resulting resources as dictionaries after pruning according to
@@ -121,11 +118,6 @@ def handle_response_fields(
         for field in exclude_fields:
             if field in new_entry["attributes"]:
                 del new_entry["attributes"][field]
-
-        # Include missing fields that were requested in `response_fields`
-        for field in include_fields:
-            if field not in new_entry["attributes"]:
-                new_entry["attributes"][field] = None
 
         new_results.append(new_entry)
 
@@ -202,7 +194,7 @@ def get_included_relationships(
         )
 
         # still need to handle pagination
-        ref_results, _, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
+        ref_results, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
         included[entry_type] = ref_results
 
     # flatten dict by endpoint to list
@@ -244,8 +236,7 @@ def get_entries(
         results,
         data_returned,
         more_data_available,
-        fields,
-        include_fields,
+        exclude_fields,
     ) = collection.find(params)
 
     include = []
@@ -268,8 +259,8 @@ def get_entries(
     else:
         links = ToplevelLinks(next=None)
 
-    if results is not None and (fields or include_fields):
-        results = handle_response_fields(results, fields, include_fields)  # type: ignore[assignment]
+    if exclude_fields:
+        results = remove_exclude_fields(results, exclude_fields)  # type: ignore[assignment]
 
     return response(
         links=links,
@@ -302,8 +293,7 @@ def get_single_entry(
         results,
         data_returned,
         more_data_available,
-        fields,
-        include_fields,
+        exclude_fields,
     ) = collection.find(params)
 
     if more_data_available:
@@ -321,8 +311,8 @@ def get_single_entry(
 
     links = ToplevelLinks(next=None)
 
-    if results is not None and (fields or include_fields):
-        results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
+    if exclude_fields and results is not None:
+        results = remove_exclude_fields(results, exclude_fields)[0]  # type: ignore[assignment]
 
     return response(
         links=links,

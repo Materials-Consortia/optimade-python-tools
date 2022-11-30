@@ -558,6 +558,7 @@ class ImplementationValidator:
         subset_fields = random.sample(fields, min(len(fields) - 1, 3))
         test_query = f"{endp}?response_fields={','.join(subset_fields)}&page_limit=1"
         response, _ = self._get_endpoint(test_query, multistage=True)
+        subset_fields = [field.split(".")[0] for field in subset_fields]
 
         if response and len(response.json()["data"]) >= 0:
             doc = response.json()["data"][0]

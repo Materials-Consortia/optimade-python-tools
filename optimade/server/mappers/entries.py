@@ -1,8 +1,14 @@
 import warnings
 from functools import lru_cache
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type
 
 from optimade.models.entries import EntryResource
+from optimade.server.config import CONFIG
+from optimade.utils import (
+    read_from_nested_dict,
+    remove_from_nested_dict,
+    write_to_nested_dict,
+)
 
 __all__ = ("BaseResourceMapper",)
 
@@ -72,36 +78,61 @@ class BaseResourceMapper:
 
     @classmethod
     @lru_cache(maxsize=1)
+    def all_prefixed_fields(cls) -> Iterable[Tuple[str, str]]:
+        """Returns all of the prefixed, unprefixed field name pairs,
+        including those defined by the server config. The first member
+        of each tuple is the prefixed field name, the second
+        is the field name as presented in the optimade database without prefix.
+
+        Returns:
+            A list of alias tuples.
+
+        """
+        field_list = (
+            [
+                field
+                for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
+                if isinstance(field, str)
+            ]
+            + [
+                field["name"]
+                for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
+                if isinstance(field, dict)
+            ]
+            + list(cls.PROVIDER_FIELDS)
+        )
+        prefixed_field_pairs = []
+        for field in field_list:
+            split_field = field.split(
+                ".", 1
+            )  # For now I assume there are no nested dictionaries for the official Optimade fields
+            if split_field[0] in cls.ENTRY_RESOURCE_ATTRIBUTES:
+                prefixed_field_pairs.append(
+                    (
+                        f"{split_field[0]}._{CONFIG.provider.prefix}_{split_field[1]}",
+                        field,
+                    )
+                )
+            else:
+                prefixed_field_pairs.append(
+                    (f"_{CONFIG.provider.prefix}_{field}", field)
+                )
+        return prefixed_field_pairs
+
+    @classmethod
+    @lru_cache(maxsize=1)
     def all_aliases(cls) -> Iterable[Tuple[str, str]]:
         """Returns all of the associated aliases for this entry type,
         including those defined by the server config. The first member
-        of each tuple is the OPTIMADE-compliant field name, the second
+        of each tuple is the field name as presented in the optimade database without prefix, the second
         is the backend-specific field name.
 
         Returns:
             A tuple of alias tuples.
 
         """
-        from optimade.server.config import CONFIG
 
-        return (
-            tuple(
-                (f"_{CONFIG.provider.prefix}_{field}", field)
-                for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
-                if isinstance(field, str)
-            )
-            + tuple(
-                (f"_{CONFIG.provider.prefix}_{field['name']}", field["name"])
-                for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
-                if isinstance(field, dict)
-            )
-            + tuple(
-                (f"_{CONFIG.provider.prefix}_{field}", field)
-                for field in cls.PROVIDER_FIELDS
-            )
-            + tuple(CONFIG.aliases.get(cls.ENDPOINT, {}).items())
-            + cls.ALIASES
-        )
+        return tuple(CONFIG.aliases.get(cls.ENDPOINT, {}).items()) + cls.ALIASES
 
     @classproperty
     @lru_cache(maxsize=1)
@@ -115,14 +146,12 @@ class BaseResourceMapper:
             domain-specific terms).
 
         """
-        from optimade.server.config import CONFIG
 
         return {CONFIG.provider.prefix}
 
     @classproperty
     def ALL_ATTRIBUTES(cls) -> Set[str]:
         """Returns all attributes served by this entry."""
-        from optimade.server.config import CONFIG
 
         return (
             set(cls.ENTRY_RESOURCE_ATTRIBUTES)
@@ -170,7 +199,6 @@ class BaseResourceMapper:
             A tuple of length alias tuples.
 
         """
-        from optimade.server.config import CONFIG
 
         return cls.LENGTH_ALIASES + tuple(
             CONFIG.length_aliases.get(cls.ENDPOINT, {}).items()
@@ -192,6 +220,24 @@ class BaseResourceMapper:
         return dict(cls.all_length_aliases()).get(field, None)
 
     @classmethod
+    def get_map_field_from_dict(cls, field: str, aliases: dict):
+        """Replaces (part of) the field_name "field" with the matching field in the dictionary dict"
+        It first tries to find the entire field name(incl. subfields(which are separated by:".")) in the dictionary.
+        If it is not present it removes the deepest nesting level and checks again.
+        If the field occurs in the dictionary it is replaced by the value in the dictionary.
+        Any unmatched subfields are appended.
+        """
+        split = field.split(".")
+        for i in range(len(split), 0, -1):
+            field_path = ".".join(split[0:i])
+            if field_path in aliases:
+                field_alias = aliases[field_path]
+                if split[i:]:
+                    field_alias += "." + ".".join(split[i:])
+                return field_alias
+        return field
+
+    @classmethod
     @lru_cache(maxsize=128)
     def get_backend_field(cls, optimade_field: str) -> str:
         """Return the field name configured for the particular
@@ -201,9 +247,12 @@ class BaseResourceMapper:
         Aliases are read from
         [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].
 
-        If a dot-separated OPTIMADE field is provided, e.g., `species.mass`, only the first part will be mapped.
+        If a dot-separated field is provided, the mapper first looks for that field.
+        If it is not present in the aliases it repeats the search with one nesting level less untill the field is found.
+        If the field is not found, the unmodified `optimade_field` is returned.
+
         This means for an (OPTIMADE, DB) alias of (`species`, `kinds`), `get_backend_fields("species.mass")`
-        will return `kinds.mass`.
+        will return `kinds.mass` as there is no specific entry for "species.mass" in the aliases.
 
         Arguments:
             optimade_field: The OPTIMADE field to attempt to map to the backend-specific field.
@@ -220,11 +269,9 @@ class BaseResourceMapper:
             The mapped field name to be used in the query to the backend.
 
         """
-        split = optimade_field.split(".")
-        alias = dict(cls.all_aliases()).get(split[0], None)
-        if alias is not None:
-            return alias + ("." + ".".join(split[1:]) if len(split) > 1 else "")
-        return optimade_field
+        prefixed = dict(cls.all_prefixed_fields())
+        optimade_field = cls.get_map_field_from_dict(optimade_field, prefixed)
+        return cls.get_map_field_from_dict(optimade_field, dict(cls.all_aliases()))
 
     @classmethod
     @lru_cache(maxsize=128)
@@ -253,9 +300,11 @@ class BaseResourceMapper:
     def get_optimade_field(cls, backend_field: str) -> str:
         """Return the corresponding OPTIMADE field name for the underlying database field,
         ready to be used to construct the OPTIMADE-compliant JSON response.
+        !!Warning!! Incase a backend_field maps to multiple OPTIMADE fields, only one of the fields is returned.
 
         Aliases are read from
         [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].
+        [`all_prefixed_fields()`][optimade.server.mappers.entries.BaseResourceMapper.all_prefixed_fields]
 
         Arguments:
             backend_field: The backend field to attempt to map to an OPTIMADE field.
@@ -272,9 +321,13 @@ class BaseResourceMapper:
             The mapped field name to be used in an OPTIMADE-compliant response.
 
         """
-        return {alias: real for real, alias in cls.all_aliases()}.get(
-            backend_field, backend_field
+        # first map the property back to the field as presented in the optimade database.
+        inv_alias_dict = dict((real, alias) for alias, real in cls.all_aliases())
+        backend_field = cls.get_map_field_from_dict(backend_field, inv_alias_dict)
+        inv_prefix_dict = dict(
+            (real, alias) for alias, real in cls.all_prefixed_fields()
         )
+        return cls.get_map_field_from_dict(backend_field, inv_prefix_dict)
 
     @classmethod
     @lru_cache(maxsize=128)
@@ -312,30 +365,22 @@ class BaseResourceMapper:
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
-        """Map properties from MongoDB to OPTIMADE.
+        """Map properties in a dictionary to the OPTIMADE fields.
 
-        Starting from a MongoDB document `doc`, map the DB fields to the corresponding OPTIMADE fields.
+        Starting from a document `doc`, map the DB fields to the corresponding OPTIMADE fields.
         Then, the fields are all added to the top-level field "attributes",
         with the exception of other top-level fields, defined in `cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS`.
         All fields not in `cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS` + "attributes" will be removed.
         Finally, the `type` is given the value of the specified `cls.ENDPOINT`.
 
         Parameters:
-            doc: A resource object in MongoDB format.
+            doc: A resource object.
 
         Returns:
             A resource object in OPTIMADE format.
 
         """
-        mapping = ((real, alias) for alias, real in cls.all_aliases())
-        newdoc = {}
-        reals = {real for alias, real in cls.all_aliases()}
-        for key in doc:
-            if key not in reals:
-                newdoc[key] = doc[key]
-        for real, alias in mapping:
-            if real in doc:
-                newdoc[alias] = doc[real]
+        newdoc = cls.add_alias_and_prefix(doc)
 
         if "attributes" in newdoc:
             raise Exception("Will overwrite doc field!")
@@ -355,10 +400,41 @@ class BaseResourceMapper:
         return newdoc
 
     @classmethod
-    def deserialize(
-        cls, results: Union[dict, Iterable[dict]]
-    ) -> Union[List[EntryResource], EntryResource]:
-        if isinstance(results, dict):
-            return cls.ENTRY_RESOURCE_CLASS(**cls.map_back(results))
+    def add_alias_and_prefix(cls, doc: dict) -> dict:
+        """Converts a dictionary with field names that match the backend database with the field names that are presented in the OPTIMADE database.
+        The way these fields are converted is read from:
+        [`all_aliases()`][optimade.server.mappers.entries.BaseResourceMapper.all_aliases].
+        [`all_prefixed_fields()`][optimade.server.mappers.entries.BaseResourceMapper.all_prefixed_fields]
 
-        return [cls.ENTRY_RESOURCE_CLASS(**cls.map_back(doc)) for doc in results]
+        Parameters:
+            doc: A dictionary with the backend fields.
+
+        Returns:
+            A dictionary with the fieldnames as presented by OPTIMADE
+        """
+        newdoc: dict = {}
+        mod_doc = doc.copy()
+        # First apply all the aliases (They are sorted so the deepest nesting level occurs first.)
+        sorted_aliases = sorted(cls.all_aliases(), key=lambda ele: ele[0], reverse=True)
+        for alias, real in sorted_aliases:
+            value, found = read_from_nested_dict(mod_doc, real)
+            if not found:
+                # Some backend fields are used for more than one optimade field. As they are deleted from mod_doc the first time they are mapped we need a backup option to read the data.
+                value, found = read_from_nested_dict(doc, real)
+            if found:
+                write_to_nested_dict(newdoc, alias, value)
+                remove_from_nested_dict(mod_doc, real)
+        # move fields without alias to new doc
+        newdoc.update(mod_doc)
+        # apply prefixes
+        for prefixed_field, unprefixed_field in cls.all_prefixed_fields():
+            value, found = read_from_nested_dict(newdoc, unprefixed_field)
+            if found:
+                write_to_nested_dict(newdoc, prefixed_field, value)
+                remove_from_nested_dict(newdoc, unprefixed_field)
+
+        return newdoc
+
+    @classmethod
+    def deserialize(cls, results: Iterable[dict]) -> List[EntryResource]:
+        return [cls.ENTRY_RESOURCE_CLASS(**result) for result in results]

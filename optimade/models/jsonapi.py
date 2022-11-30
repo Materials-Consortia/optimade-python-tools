@@ -298,6 +298,19 @@ class Attributes(BaseModel):
                 )
         return values
 
+    @root_validator(pre=True)
+    def set_missing_to_none(cls, values):
+        if "set_missing_to_none" in values and values.pop("set_missing_to_none"):
+            for field in cls.schema()["required"]:
+                if field not in values:
+                    if (
+                        field == "structure_features"
+                    ):  # It would be nice if there would be a more universal way to handle special cases like this.
+                        values[field] = []
+                    else:
+                        values[field] = None
+        return values
+
 
 class Resource(BaseResource):
     """Resource objects appear in a JSON API document to represent resources."""

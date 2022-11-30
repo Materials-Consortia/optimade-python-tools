@@ -35,11 +35,11 @@ class Aggregate(Enum):
 class LinksResourceAttributes(Attributes):
     """Links endpoint resource object attributes"""
 
-    name: str = StrictField(
+    name: Optional[str] = StrictField(
         ...,
         description="Human-readable name for the OPTIMADE API implementation, e.g., for use in clients to show the name to the end-user.",
     )
-    description: str = StrictField(
+    description: Optional[str] = StrictField(
         ...,
         description="Human-readable description for the OPTIMADE API implementation, e.g., for use in clients to show a description to the end-user.",
     )

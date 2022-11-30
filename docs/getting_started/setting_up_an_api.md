@@ -37,6 +37,7 @@ Instead, if you are storing chemical formulae as an unreduced count per simulati
 This would then instead require option 2 above, namely either the addition of auxiliary fields that store the correct (or mappable) OPTIMADE format in the database, or the creation of a secondary database that returns the pre-converted structures.
 
 In the simplest case, the mapper classes can be used to define aliases between fields in the database and the OPTIMADE field name; these can be configured via the [`aliases`][optimade.server.config.ServerConfig.aliases] option as a dictionary mapping stored in a dictionary under the appropriate endpoint name, e.g. `"aliases": {"structures": {"chemical_formula_reduced": "my_chem_form"}}`, or defined as part of a custom mapper class.
+If the alias is a nested field (i.e., a field within a dictionary), the field names should be separated by `"."`, for example: `"aliases": { "structures": {"chemical_formula_reduced": "formulae.reduced"}}`.
 
 In either option, you should now be able to insert your data into the corresponding MongoDB (or otherwise) collection.
 

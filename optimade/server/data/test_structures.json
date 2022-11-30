@@ -5,6 +5,7 @@
     },
     "assemblies": null,
     "chemsys": "Ac",
+    "dichtheid": 10.07,
     "cartesian_site_positions": [
       [
         0.17570227444196573,
@@ -1222,6 +1223,7 @@
     "nelements": 5,
     "nsites": 24,
     "pretty_formula": "Ag2C6ClH12N3",
+    "fancy_formulas": {"hill": "C6H12Ag2ClN3"},
     "species": [
       {
         "chemical_symbols": [
@@ -1475,6 +1477,9 @@
     "nelements": 5,
     "nsites": 25,
     "pretty_formula": "Ag2C2H2N6O13",
+    "fancy_formulas" : {
+      "hill": "C2H2Ag2N6O13"
+    },
     "species": [
       {
         "chemical_symbols": [
@@ -1723,6 +1728,7 @@
     "nelements": 7,
     "nsites": 23,
     "pretty_formula": "Ag2C2ClH8N5O3S2",
+    "fancy_formulas": {"hill": "C2H8Ag2ClN5O3S2"},
     "species": [
       {
         "chemical_symbols": [
@@ -2467,6 +2473,7 @@
     "nelements": 8,
     "nsites": 74,
     "pretty_formula": "AgB10C15Cl2H40NO3P2",
+    "fancy_formulas": {"hill": "C15H40AgB10Cl2NO3P2"},
     "species": [
       {
         "chemical_symbols": [
@@ -2821,6 +2828,7 @@
     "nelements": 7,
     "nsites": 29,
     "pretty_formula": "AgC3ClH14N6OS3",
+    "fancy_formulas":{"hill": "C3H14AgClN6OS3"},
     "species": [
       {
         "chemical_symbols": [
