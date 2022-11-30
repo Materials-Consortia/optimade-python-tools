@@ -1,16 +1,12 @@
 # pylint: disable=no-self-argument
 from enum import Enum
+from typing import Optional, Union
 
-from pydantic import (  # pylint: disable=no-name-in-module
-    AnyUrl,
-    root_validator,
-)
-from typing import Union, Optional
+from pydantic import AnyUrl, root_validator  # pylint: disable=no-name-in-module
 
-from optimade.models.jsonapi import Link, Attributes
 from optimade.models.entries import EntryResource
+from optimade.models.jsonapi import Attributes, Link
 from optimade.models.utils import StrictField
-
 
 __all__ = (
     "LinksResourceAttributes",

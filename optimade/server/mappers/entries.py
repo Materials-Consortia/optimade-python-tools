@@ -1,12 +1,13 @@
-from typing import Tuple, Optional, Type, Set, Dict, Any, List, Iterable
-from functools import lru_cache
 import warnings
-from optimade.server.config import CONFIG
+from functools import lru_cache
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type
+
 from optimade.models.entries import EntryResource
+from optimade.server.config import CONFIG
 from optimade.utils import (
-    write_to_nested_dict,
     read_from_nested_dict,
     remove_from_nested_dict,
+    write_to_nested_dict,
 )
 
 __all__ = ("BaseResourceMapper",)
@@ -61,25 +62,19 @@ class BaseResourceMapper:
     """
 
     try:
-        from optimade.server.data import (
-            providers as PROVIDERS,
-        )  # pylint: disable=no-name-in-module
+        from optimade.server.data import providers as PROVIDERS  # type: ignore
     except (ImportError, ModuleNotFoundError):
         PROVIDERS = {}
 
     KNOWN_PROVIDER_PREFIXES: Set[str] = set(
         prov["id"] for prov in PROVIDERS.get("data", [])
     )
-    ALIASES: Tuple[Tuple[str, str]] = ()
-    LENGTH_ALIASES: Tuple[Tuple[str, str]] = ()
-    PROVIDER_FIELDS: Tuple[str] = ()
+    ALIASES: Tuple[Tuple[str, str], ...] = ()
+    LENGTH_ALIASES: Tuple[Tuple[str, str], ...] = ()
+    PROVIDER_FIELDS: Tuple[str, ...] = ()
     ENTRY_RESOURCE_CLASS: Type[EntryResource] = EntryResource
     RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {"id", "type", "relationships", "links"}
-    SUPPORTED_PREFIXES: Set[str]
-    ALL_ATTRIBUTES: Set[str]
-    ENTRY_RESOURCE_ATTRIBUTES: Dict[str, Any]
-    ENDPOINT: str
 
     @classmethod
     @lru_cache(maxsize=1)
@@ -196,7 +191,7 @@ class BaseResourceMapper:
 
     @classmethod
     @lru_cache(maxsize=1)
-    def all_length_aliases(cls) -> Iterable[Tuple[str, str]]:
+    def all_length_aliases(cls) -> Tuple[Tuple[str, str], ...]:
         """Returns all of the associated length aliases for this class,
         including those defined by the server config.
 
@@ -236,10 +231,10 @@ class BaseResourceMapper:
         for i in range(len(split), 0, -1):
             field_path = ".".join(split[0:i])
             if field_path in aliases:
-                field = aliases.get(field_path)
+                field_alias = aliases[field_path]
                 if split[i:]:
-                    field += "." + ".".join(split[i:])
-                break
+                    field_alias += "." + ".".join(split[i:])
+                return field_alias
         return field
 
     @classmethod
@@ -417,7 +412,7 @@ class BaseResourceMapper:
         Returns:
             A dictionary with the fieldnames as presented by OPTIMADE
         """
-        newdoc = {}
+        newdoc: dict = {}
         mod_doc = doc.copy()
         # First apply all the aliases (They are sorted so the deepest nesting level occurs first.)
         sorted_aliases = sorted(cls.all_aliases(), key=lambda ele: ele[0], reverse=True)

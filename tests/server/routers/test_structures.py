@@ -1,7 +1,7 @@
 from optimade.models import (
+    ReferenceResource,
     StructureResponseMany,
     StructureResponseOne,
-    ReferenceResource,
 )
 
 from ..utils import RegularEndpointTests

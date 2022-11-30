@@ -21,7 +21,7 @@ def mapper():
     """Mapper-factory to import a mapper from optimade.server.mappers"""
     from optimade.server import mappers
 
-    def _mapper(name: str) -> mappers.BaseResourceMapper:
+    def _mapper(name: str) -> mappers.BaseResourceMapper:  # type: ignore[return]
         """Return named resource mapper"""
         try:
             res = getattr(mappers, name)

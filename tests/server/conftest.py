@@ -1,8 +1,8 @@
-from typing import Union, Dict
-from optimade.server.warnings import OptimadeWarning
-
+from typing import Dict, Optional, Union
 
 import pytest
+
+from optimade.warnings import OptimadeWarning
 
 
 @pytest.fixture(scope="session")
@@ -54,10 +54,7 @@ def both_fake_remote_clients(request):
 @pytest.fixture
 def get_good_response(client, index_client):
     """Get response with some sanity checks, expecting '200 OK'"""
-    try:
-        import simplejson as json
-    except ImportError:
-        import json
+    import json
 
     from requests import Response
 
@@ -128,16 +125,18 @@ def check_response(get_good_response):
 
     """
     from typing import List
+
     from optimade.server.config import CONFIG
+
     from .utils import OptimadeTestClient
 
     def inner(
         request: str,
         expected_ids: Union[str, List[str]],
         page_limit: int = CONFIG.page_limit,
-        expected_return: int = None,
+        expected_return: Optional[int] = None,
         expected_as_is: bool = False,
-        expected_warnings: List[Dict[str, str]] = None,
+        expected_warnings: Optional[List[Dict[str, str]]] = None,
         server: Union[str, OptimadeTestClient] = "regular",
     ):
         if expected_warnings:
@@ -182,9 +181,9 @@ def check_error_response(client, index_client):
 
     def inner(
         request: str,
-        expected_status: int = None,
-        expected_title: str = None,
-        expected_detail: str = None,
+        expected_status: Optional[int] = None,
+        expected_title: Optional[str] = None,
+        expected_detail: Optional[str] = None,
         server: Union[str, OptimadeTestClient] = "regular",
     ):
         response = None

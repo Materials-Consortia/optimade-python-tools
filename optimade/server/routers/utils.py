@@ -2,26 +2,25 @@
 import re
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Type, Union
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
+from optimade.exceptions import BadRequest, InternalServerError
 from optimade.models import (
-    ResponseMeta,
     EntryResource,
     EntryResponseMany,
     EntryResponseOne,
+    ResponseMeta,
     ToplevelLinks,
 )
-
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
+from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_database
 
 __all__ = (
     "BASE_URL_PREFIXES",
@@ -129,7 +128,7 @@ def get_included_relationships(
     results: Union[EntryResource, List[EntryResource]],
     ENTRY_COLLECTIONS: Dict[str, EntryCollection],
     include_param: List[str],
-) -> Dict[str, List[EntryResource]]:
+) -> List[Union[EntryResource, Dict]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -157,7 +156,7 @@ def get_included_relationships(
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
             )
 
-    endpoint_includes = defaultdict(dict)
+    endpoint_includes: Dict[Any, Dict] = defaultdict(dict)
     for doc in results:
         # convert list of references into dict by ID to only included unique IDs
         if doc is None:
@@ -188,8 +187,8 @@ def get_included_relationships(
         params = EntryListingQueryParams(
             filter=compound_filter,
             response_format="json",
-            response_fields=None,
-            sort=None,
+            response_fields="",
+            sort="",
             page_limit=0,
             page_offset=0,
         )
@@ -225,7 +224,7 @@ def get_base_url(
 
 def get_entries(
     collection: EntryCollection,
-    response: EntryResponseMany,
+    response: Type[EntryResponseMany],
     request: Request,
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
@@ -243,12 +242,16 @@ def get_entries(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
-    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+
+    included = []
+    if results is not None:
+        included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
-        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
+        if isinstance(results, list):
+            query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)  # type: ignore[assignment,list-item]
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
 
@@ -278,14 +281,14 @@ def get_entries(
 def get_single_entry(
     collection: EntryCollection,
     entry_id: str,
-    response: EntryResponseOne,
+    response: Type[EntryResponseOne],
     request: Request,
     params: SingleEntryQueryParams,
 ) -> EntryResponseOne:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
-    params.filter = f'id="{entry_id}"'
+    params.filter = f'id="{entry_id}"'  # type: ignore[attr-defined]
     (
         results,
         data_returned,
@@ -293,15 +296,18 @@ def get_single_entry(
         exclude_fields,
     ) = collection.find(params)
 
-    include = []
-    if getattr(params, "include", False):
-        include.extend(params.include.split(","))
-    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
-
     if more_data_available:
         raise InternalServerError(
             detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
         )
+
+    include = []
+    if getattr(params, "include", False):
+        include.extend(params.include.split(","))
+
+    included = []
+    if results is not None:
+        included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     links = ToplevelLinks(next=None)
 

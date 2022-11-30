@@ -60,14 +60,14 @@ We can refine the search by manually specifying some URLs:
 
 === "Command line"
     ```shell
-    optimade-get --output-file results.json https://optimade.herokuapp.com https://optimade.odbx.science
+    optimade-get --output-file results.json https://optimade.fly.dev https://optimade.odbx.science
     ```
 
 === "Python"
     ```python
     from optimade.client import OptimadeClient
     client = OptimadeClient(
-        base_urls=["https://optimade.herokuapp.com", "https://optimade.odbx.science"]
+        base_urls=["https://optimade.fly.dev", "https://optimade.odbx.science"]
     )
     client.get()
     ```
@@ -97,22 +97,22 @@ At the command-line, the results of the query will be printed to `stdout`, ready
 For example:
 
 ```shell
-optimade-get --filter 'nsites = 1' --output-file results.json https://optimade.herokuapp.com
+optimade-get --filter 'nsites = 1' --output-file results.json https://optimade.fly.dev
 cat results.json
 ```
 
 has the following (truncated) output:
 
 ```json
-{  
+{
   // The endpoint that was queried
-  "structures": {  
+  "structures": {
     // The filter applied to that endpointk
-    "nsites = 1": {  
+    "nsites = 1": {
       // The base URL of the OPTIMADE API
-      "https://optimade.herokuapp.com": {  
+      "https://optimade.fly.dev": {
         // The OPTIMADE API response as if called with an infinite `page_limit`
-        "data": [  
+        "data": [
           {
             "id": "mpf_1",
             "type": "structures",
@@ -147,7 +147,7 @@ This is the same format as the cached results of the Python client:
 
 ```python
 from optimade.client import OptimadeClient
-client = OptimadeClient(base_urls="https://optimade.herokuapp.com")
+client = OptimadeClient(base_urls="https://optimade.fly.dev")
 client.get('nsites = 1')
 client.get('nsites = 2')
 print(client.all_results)
@@ -158,10 +158,10 @@ will return a dictionary with top-level keys:
 {
     "structures": {
         "nsites = 1": {
-            "https://optimade.herokuapp.com": {...}
+            "https://optimade.fly.dev": {...}
         },
         "nsites = 2": {
-            "https://optimade.herokuapp.com": {...}
+            "https://optimade.fly.dev": {...}
         }
     }
 }

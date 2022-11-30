@@ -1,26 +1,29 @@
-from abc import abstractmethod, ABC
-from typing import Tuple, List, Union, Dict, Any, Set
-import warnings
 import re
+import warnings
+from abc import ABC, abstractmethod
+from functools import lru_cache
+from typing import Any, Dict, Iterable, List, Set, Tuple, Type, Union
 
 from lark import Transformer
-from functools import lru_cache
+
+from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
-from optimade.models import EntryResource
+from optimade.models.entries import EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
-from optimade.server.exceptions import BadRequest, Forbidden, NotFound
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.warnings import (
-    FieldValueNotRecognized,
-    UnknownProviderProperty,
-    QueryParamNotUsed,
-)
 from optimade.utils import set_field_to_none_if_missing_in_dict
+from optimade.warnings import (
+    FieldValueNotRecognized,
+    QueryParamNotUsed,
+    UnknownProviderProperty,
+)
 
 
 def create_collection(
-    name: str, resource_cls: EntryResource, resource_mapper: BaseResourceMapper
+    name: str,
+    resource_cls: Type[EntryResource],
+    resource_mapper: Type[BaseResourceMapper],
 ) -> "EntryCollection":
     """Create an `EntryCollection` of the configured type, depending on the value of
     `CONFIG.database_backend`.
@@ -66,8 +69,8 @@ class EntryCollection(ABC):
 
     def __init__(
         self,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
+        resource_cls: Type[EntryResource],
+        resource_mapper: Type[BaseResourceMapper],
         transformer: Transformer,
     ):
         """Initialize the collection for the given parameters.
@@ -93,7 +96,7 @@ class EntryCollection(ABC):
             for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         ]
 
-        self._all_fields: Set[str] = None
+        self._all_fields: Set[str] = set()
 
     @abstractmethod
     def __len__(self) -> int:
@@ -120,7 +123,7 @@ class EntryCollection(ABC):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str]]:
+    ) -> Tuple[Union[List[EntryResource], EntryResource], int, bool, Set[str]]:
         """
         Fetches results and indicates if more data is available.
 
@@ -140,20 +143,20 @@ class EntryCollection(ABC):
         single_entry = isinstance(params, SingleEntryQueryParams)
         response_fields = criteria.pop("fields")
 
-        results, data_returned, more_data_available = self._run_db_query(
+        raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
         )
 
         exclude_fields = self.all_fields - response_fields
 
-        results = [self.resource_mapper.map_back(doc) for doc in results]
+        results = [self.resource_mapper.map_back(doc) for doc in raw_results]
         self.check_and_add_missing_fields(results, response_fields)
 
         if results:
             results = self.resource_mapper.deserialize(results)
 
         if single_entry:
-            results = results[0] if results else None
+            raw_results = raw_results[0] if raw_results else None  # type: ignore[assignment]
 
             if data_returned > 1:
                 raise NotFound(
@@ -260,6 +263,7 @@ class EntryCollection(ABC):
                 next_key = path.pop(0)
                 attributes = attributes[next_key]
             return attributes["required"]
+        return []
 
     @lru_cache(maxsize=4)
     def get_attribute_fields(self) -> Set[str]:
@@ -323,7 +327,7 @@ class EntryCollection(ABC):
         # filter
         if getattr(params, "filter", False):
             cursor_kwargs["filter"] = self.transformer.transform(
-                self.parser.parse(params.filter)
+                self.parser.parse(params.filter)  # type: ignore[union-attr]
             )
         else:
             cursor_kwargs["filter"] = {}
@@ -339,7 +343,7 @@ class EntryCollection(ABC):
 
         # page_limit
         if getattr(params, "page_limit", False):
-            limit = params.page_limit
+            limit = params.page_limit  # type: ignore[union-attr]
             if limit > CONFIG.page_limit_max:
                 raise Forbidden(
                     detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
@@ -363,7 +367,7 @@ class EntryCollection(ABC):
 
         # sort
         if getattr(params, "sort", False):
-            cursor_kwargs["sort"] = self.parse_sort_params(params.sort)
+            cursor_kwargs["sort"] = self.parse_sort_params(params.sort)  # type: ignore[union-attr]
 
         # warn if both page_offset and page_number are given
         if getattr(params, "page_offset", False):
@@ -373,23 +377,23 @@ class EntryCollection(ABC):
                     category=QueryParamNotUsed,
                 )
 
-            cursor_kwargs["skip"] = params.page_offset
+            cursor_kwargs["skip"] = params.page_offset  # type: ignore[union-attr]
 
         # validate page_number
         elif isinstance(getattr(params, "page_number", None), int):
-            if params.page_number < 1:
+            if params.page_number < 1:  # type: ignore[union-attr]
                 warnings.warn(
-                    message=f"'page_number' is 1-based, using 'page_number=1' instead of {params.page_number}",
+                    message=f"'page_number' is 1-based, using 'page_number=1' instead of {params.page_number}",  # type: ignore[union-attr]
                     category=QueryParamNotUsed,
                 )
                 page_number = 1
             else:
-                page_number = params.page_number
+                page_number = params.page_number  # type: ignore[union-attr]
             cursor_kwargs["skip"] = (page_number - 1) * cursor_kwargs["limit"]
 
         return cursor_kwargs
 
-    def parse_sort_params(self, sort_params: str) -> Tuple[Tuple[str, int]]:
+    def parse_sort_params(self, sort_params: str) -> Iterable[Tuple[str, int]]:
         """Handles any sort parameters passed to the collection,
         resolving aliases and dealing with any invalid fields.
 
@@ -397,11 +401,11 @@ class EntryCollection(ABC):
             BadRequest: if an invalid sort is requested.
 
         Returns:
-            A tuple of tuples containing the aliased field name and
+            A list of tuples containing the aliased field name and
             sort direction encoded as 1 (ascending) or -1 (descending).
 
         """
-        sort_spec = []
+        sort_spec: List[Tuple[str, int]] = []
         for field in sort_params.split(","):
             sort_dir = 1
             if field.startswith("-"):
@@ -438,10 +442,10 @@ class EntryCollection(ABC):
                 raise BadRequest(detail=error_detail)
 
         # If at least one valid field has been provided for sorting, then use that
-        sort_spec = tuple(
+        sort_spec = [
             (field, sort_dir)
             for field, sort_dir in sort_spec
             if field not in unknown_fields
-        )
+        ]
 
         return sort_spec

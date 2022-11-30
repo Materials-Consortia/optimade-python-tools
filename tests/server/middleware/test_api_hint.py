@@ -1,6 +1,7 @@
 """Test HandleApiHint middleware and the `api_hint` query parameter"""
-import pytest
 from urllib.parse import unquote
+
+import pytest
 
 from optimade.server.exceptions import VersionNotSupported
 from optimade.server.middleware import HandleApiHint

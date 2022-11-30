@@ -19,7 +19,6 @@ from optimade.adapters.structures.utils import (
     species_from_species_at_sites,
 )
 
-
 # TODO: Add tests for cell_to_cellpar, unit_vector, cellpar_to_cell
 
 

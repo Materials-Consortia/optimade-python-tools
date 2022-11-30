@@ -1,20 +1,15 @@
+import json
 import re
-import typing
-from urllib.parse import urlparse
 import warnings
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+from typing import Iterable, Optional, Type, Union
+from urllib.parse import urlparse
 
 import pytest
-from requests import Response
-
-from pydantic import BaseModel  # pylint: disable=no-name-in-module
 from fastapi.testclient import TestClient
+from requests import Response
 from starlette import testclient
 
+import optimade.models.jsonapi as jsonapi
 from optimade import __api_version__
 from optimade.models import ResponseMeta
 
@@ -29,7 +24,7 @@ class OptimadeTestClient(TestClient):
 
     def __init__(
         self,
-        app: typing.Union[testclient.ASGI2App, testclient.ASGI3App],
+        app: Union[testclient.ASGI2App, testclient.ASGI3App],
         base_url: str = "http://example.org",
         raise_server_exceptions: bool = True,
         root_path: str = "",
@@ -58,20 +53,7 @@ class OptimadeTestClient(TestClient):
         self,
         method: str,
         url: str,
-        params: testclient.Params = None,
-        data: testclient.DataType = None,
-        headers: typing.MutableMapping[str, str] = None,
-        cookies: testclient.Cookies = None,
-        files: testclient.FileType = None,
-        auth: testclient.AuthType = None,
-        timeout: testclient.TimeOut = None,
-        allow_redirects: bool = None,
-        proxies: typing.MutableMapping[str, str] = None,
-        hooks: typing.Any = None,
-        stream: bool = None,
-        verify: typing.Union[bool, str] = None,
-        cert: typing.Union[str, typing.Tuple[str, str]] = None,
-        json: typing.Any = None,  # pylint: disable=redefined-outer-name
+        **kwargs,
     ) -> Response:
         if (
             re.match(r"/?v[0-9](.[0-9]){0,2}/", url) is None
@@ -83,34 +65,21 @@ class OptimadeTestClient(TestClient):
         return super(OptimadeTestClient, self).request(
             method=method,
             url=url,
-            params=params,
-            data=data,
-            headers=headers,
-            cookies=cookies,
-            files=files,
-            auth=auth,
-            timeout=timeout,
-            allow_redirects=allow_redirects,
-            proxies=proxies,
-            hooks=hooks,
-            stream=stream,
-            verify=verify,
-            cert=cert,
-            json=json,
+            **kwargs,
         )
 
 
 class BaseEndpointTests:
     """Base class for common tests of endpoints"""
 
-    request_str: str = None
-    response_cls: BaseModel = None
+    request_str: Optional[str] = None
+    response_cls: Optional[Type[jsonapi.Response]] = None
 
-    response: Response = None
-    json_response: dict = None
+    response: Optional[Response] = None
+    json_response: Optional[dict] = None
 
     @staticmethod
-    def check_keys(keys: list, response_subset: typing.Iterable):
+    def check_keys(keys: list, response_subset: Iterable):
         for key in keys:
             assert (
                 key in response_subset
@@ -193,7 +162,7 @@ def client_factory():
     """Return TestClient for OPTIMADE server"""
 
     def inner(
-        version: str = None,
+        version: Optional[str] = None,
         server: str = "regular",
         raise_server_exceptions: bool = True,
         add_empty_endpoint: bool = False,
@@ -209,35 +178,26 @@ def client_factory():
           responses (`add_empty_endpoint`)
 
         """
-        if server == "regular":
-            from optimade.server.main import (
-                app,
-                add_major_version_base_url,
-                add_optional_versioned_base_urls,
-            )
-        elif server == "index":
-            from optimade.server.main_index import (
-                app,
-                add_major_version_base_url,
-                add_optional_versioned_base_urls,
-            )
-        else:
-            pytest.fail(
-                f"Wrong value for 'server': {server}. It must be either 'regular' or 'index'."
-            )
+        import importlib
 
-        add_major_version_base_url(app)
-        add_optional_versioned_base_urls(app)
+        module_name = "optimade.server.main"
+        if server == "index":
+            module_name += "_index"
+        server_module = importlib.import_module(module_name)
+        app = server_module.app
+        server_module.add_major_version_base_url(app)
+        server_module.add_optional_versioned_base_urls(app)
 
         if add_empty_endpoint:
 
-            from starlette.routing import Router, Route
+            from fastapi import APIRouter
             from fastapi.responses import PlainTextResponse
+            from starlette.routing import Route
 
             async def empty(_):
                 return PlainTextResponse(b"", 200)
 
-            empty_router = Router(
+            empty_router = APIRouter(
                 routes=[Route("/extensions/test_empty_body", endpoint=empty)]
             )
             app.include_router(empty_router)
@@ -261,10 +221,10 @@ def client_factory():
 class NoJsonEndpointTests:
     """A simplified mixin class for tests on non-JSON endpoints."""
 
-    request_str: str = None
-    response_cls: BaseModel = None
+    request_str: Optional[str] = None
+    response_cls: Optional[Type] = None
 
-    response: Response = None
+    response: Optional[Response] = None
 
     @pytest.fixture(autouse=True)
     def get_response(self, both_clients):

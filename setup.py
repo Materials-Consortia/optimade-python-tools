@@ -18,10 +18,11 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 
 # Dependencies
 # Server minded
-elastic_deps = ["elasticsearch-dsl~=7.4,<8.0"]
+elastic_deps = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
 mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
 server_deps = [
     "uvicorn~=0.19",
+    "fastapi~=0.86",
 ] + mongo_deps
 
 
@@ -57,7 +58,16 @@ testing_deps = [
     "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.15", "pre-commit~=2.20", "invoke~=1.7"]
+    [
+        "black~=22.10",
+        "flake8~=6.0",
+        "isort~=5.10",
+        "mypy~=0.991",
+        "pylint~=2.15",
+        "pre-commit~=2.20",
+        "invoke~=1.7",
+        "types-all==1.0.0",
+    ]
     + docs_deps
     + testing_deps
     + client_deps
@@ -101,7 +111,6 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "lark~=1.1",
-        "fastapi~=0.86",
         "pydantic~=1.10,>=1.10.2",
         "email_validator~=1.2",
         "requests~=2.28",

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request
 
-from optimade.models import LinksResponse, LinksResource
+from optimade.models import LinksResource, LinksResponse
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import create_collection
 from optimade.server.mappers import LinksMapper

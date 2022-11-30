@@ -1,16 +1,16 @@
 """ OPTIMADE landing page router. """
 
-from pathlib import Path
 from functools import lru_cache
+from pathlib import Path
 
 from fastapi import Request
 from fastapi.responses import HTMLResponse
-from starlette.routing import Router, Route
-from optimade import __api_version__
+from starlette.routing import Route, Router
 
-from optimade.server.routers import ENTRY_COLLECTIONS
-from optimade.server.routers.utils import meta_values, get_base_url
+from optimade import __api_version__
 from optimade.server.config import CONFIG
+from optimade.server.routers import ENTRY_COLLECTIONS
+from optimade.server.routers.utils import get_base_url, meta_values
 
 
 @lru_cache()

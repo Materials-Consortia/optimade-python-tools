@@ -6,38 +6,33 @@ against the specification via the pydantic models implemented in this package.
 """
 # pylint: disable=import-outside-toplevel
 
-import re
-import sys
+import dataclasses
+import json
 import logging
 import random
+import re
+import sys
 import urllib.parse
-import dataclasses
-from typing import Union, Tuple, Any, List, Dict, Optional, Set
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import requests
 
 from optimade.models import DataType, EntryInfoResponse, SupportLevel
+from optimade.validator.config import VALIDATOR_CONFIG as CONF
 from optimade.validator.utils import (
     DEFAULT_CONN_TIMEOUT,
     DEFAULT_READ_TIMEOUT,
     Client,
-    test_case,
+    ResponseError,
+    ValidatorEntryResponseMany,
+    ValidatorEntryResponseOne,
+    ValidatorResults,
     print_failure,
     print_notify,
     print_success,
     print_warning,
-    ResponseError,
-    ValidatorEntryResponseOne,
-    ValidatorEntryResponseMany,
-    ValidatorResults,
+    test_case,
 )
-
-from optimade.validator.config import VALIDATOR_CONFIG as CONF
 
 VERSIONS_REGEXP = r".*/v[0-9]+(\.[0-9]+){,2}$"
 
@@ -66,18 +61,18 @@ class ImplementationValidator:
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        client: Any = None,
-        base_url: str = None,
+        client: Optional[Any] = None,
+        base_url: Optional[str] = None,
         verbosity: int = 0,
         respond_json: bool = False,
         page_limit: int = 4,
         max_retries: int = 5,
         run_optional_tests: bool = True,
         fail_fast: bool = False,
-        as_type: str = None,
+        as_type: Optional[str] = None,
         index: bool = False,
         minimal: bool = False,
-        http_headers: Dict[str, str] = None,
+        http_headers: Optional[Dict[str, str]] = None,
         timeout: float = DEFAULT_CONN_TIMEOUT,
         read_timeout: float = DEFAULT_READ_TIMEOUT,
     ):
@@ -153,11 +148,11 @@ class ImplementationValidator:
                         f"Not using specified request headers {http_headers} with custom client {self.client}."
                     )
         else:
-            while base_url.endswith("/"):
-                base_url = base_url[:-1]
+            while base_url.endswith("/"):  # type: ignore[union-attr]
+                base_url = base_url[:-1]  # type: ignore[index]
             self.base_url = base_url
             self.client = Client(
-                base_url,
+                self.base_url,  # type: ignore[arg-type]
                 max_retries=self.max_retries,
                 headers=http_headers,
                 timeout=timeout,
@@ -178,8 +173,8 @@ class ImplementationValidator:
 
         self.valid = None
 
-        self._test_id_by_type = {}
-        self._entry_info_by_type = {}
+        self._test_id_by_type: Dict[str, Any] = {}
+        self._entry_info_by_type: Dict[str, Any] = {}
 
         self.results = ValidatorResults(verbosity=self.verbosity)
 
@@ -355,7 +350,7 @@ class ImplementationValidator:
         self.print_summary()
 
     @test_case
-    def _recurse_through_endpoint(self, endp: str) -> Tuple[bool, str]:
+    def _recurse_through_endpoint(self, endp: str) -> Tuple[Optional[bool], str]:
         """For a given endpoint (`endp`), get the entry type
         and supported fields, testing that all mandatory fields
         are supported, then test queries on every property according
@@ -452,7 +447,9 @@ class ImplementationValidator:
             "Failed to handle field from unknown provider; should return without affecting filter results"
         )
 
-    def _check_entry_info(self, entry_info: Dict[str, Any], endp: str) -> List[str]:
+    def _check_entry_info(
+        self, entry_info: Dict[str, Any], endp: str
+    ) -> Dict[str, Dict[str, Any]]:
         """Checks that `entry_info` contains all the required properties,
         and returns the property list for the endpoint.
 
@@ -505,7 +502,7 @@ class ImplementationValidator:
     @test_case
     def _get_archetypal_entry(
         self, endp: str, properties: List[str]
-    ) -> Tuple[Dict[str, Any], str]:
+    ) -> Tuple[Optional[Dict[str, Any]], str]:
         """Get a random entry from the first page of results for this
         endpoint.
 
@@ -544,7 +541,9 @@ class ImplementationValidator:
         raise ResponseError(f"Failed to get archetypal entry. Details: {message}")
 
     @test_case
-    def _check_response_fields(self, endp: str, fields: List[str]) -> Tuple[bool, str]:
+    def _check_response_fields(
+        self, endp: str, fields: List[str]
+    ) -> Tuple[Optional[bool], str]:
         """Check that the response field query parameter is obeyed.
 
         Parameters:
@@ -1059,7 +1058,7 @@ class ImplementationValidator:
     @test_case
     def _test_data_available_matches_data_returned(
         self, deserialized: Any
-    ) -> Tuple[bool, str]:
+    ) -> Tuple[Optional[bool], str]:
         """In the case where no query is requested, `data_available`
         must equal `data_returned` in the meta response, which is tested
         here.
@@ -1159,13 +1158,13 @@ class ImplementationValidator:
                     f"Version numbers reported by `/{CONF.versions_endpoint}` must be integers specifying the major version, not {text_content}."
                 )
 
-        content_type = response.headers.get("content-type")
-        if not content_type:
+        _content_type = response.headers.get("content-type")
+        if not _content_type:
             raise ResponseError(
                 "Missing 'Content-Type' in response header from `/versions`."
             )
 
-        content_type = [_.replace(" ", "") for _ in content_type.split(";")]
+        content_type = [_.replace(" ", "") for _ in _content_type.split(";")]
 
         self._test_versions_headers(
             content_type,
@@ -1234,7 +1233,7 @@ class ImplementationValidator:
         error code.
 
         """
-        expected_status_code = 553
+        expected_status_code = [553]
         if re.match(VERSIONS_REGEXP, self.base_url_parsed.path) is not None:
             expected_status_code = [404, 400]
 
@@ -1290,12 +1289,12 @@ class ImplementationValidator:
         if previous_links is None:
             previous_links = set()
         try:
-            response = response.json()
+            response_json = response.json()
         except (AttributeError, json.JSONDecodeError):
             raise ResponseError("Unable to test endpoint `page_limit` parameter.")
 
         try:
-            num_entries = len(response["data"])
+            num_entries = len(response_json["data"])
         except (KeyError, TypeError):
             raise ResponseError(
                 "Response under `data` field was missing or had wrong type."
@@ -1307,13 +1306,13 @@ class ImplementationValidator:
             )
 
         try:
-            more_data_available = response["meta"]["more_data_available"]
+            more_data_available = response_json["meta"]["more_data_available"]
         except KeyError:
             raise ResponseError("Field `meta->more_data_available` was missing.")
 
         if more_data_available and check_next_link:
             try:
-                next_link = response["links"]["next"]
+                next_link = response_json["links"]["next"]
                 if isinstance(next_link, dict):
                     next_link = next_link["href"]
             except KeyError:
@@ -1378,7 +1377,10 @@ class ImplementationValidator:
 
     @test_case
     def _deserialize_response(
-        self, response: requests.models.Response, response_cls: Any, request: str = None
+        self,
+        response: requests.models.Response,
+        response_cls: Any,
+        request: Optional[str] = None,
     ) -> Tuple[Any, str]:
         """Try to create the appropriate pydantic model from the response.
 

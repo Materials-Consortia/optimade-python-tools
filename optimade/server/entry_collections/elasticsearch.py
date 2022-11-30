@@ -1,14 +1,13 @@
 import json
 from pathlib import Path
-from typing import Tuple, List, Optional, Dict, Any, Iterable, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
 
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
-from optimade.server.config import CONFIG
-from optimade.server.logger import LOGGER
 from optimade.models import EntryResource
-from optimade.server.mappers import BaseResourceMapper
+from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
-
+from optimade.server.logger import LOGGER
+from optimade.server.mappers import BaseResourceMapper
 
 if CONFIG.database_backend.value == "elastic":
     from elasticsearch import Elasticsearch
@@ -23,8 +22,8 @@ class ElasticCollection(EntryCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
+        resource_cls: Type[EntryResource],
+        resource_mapper: Type[BaseResourceMapper],
         client: Optional["Elasticsearch"] = None,
     ):
         """Initialize the ElasticCollection for the given parameters.
@@ -72,9 +71,9 @@ class ElasticCollection(EntryCollection):
             ]["properties"].pop(field)
         properties["id"] = {"type": "keyword"}
         body["mappings"]["properties"] = properties
-        self.client.indices.create(index=self.name, body=body, ignore=400)
+        self.client.indices.create(index=self.name, ignore=400, **body)
 
-        LOGGER.debug(f"Created Elastic index for {self.name!r} with body {body}")
+        LOGGER.debug(f"Created Elastic index for {self.name!r} with parameters {body}")
 
     @property
     def predefined_index(self) -> Dict[str, Any]:
@@ -85,7 +84,7 @@ class ElasticCollection(EntryCollection):
 
     @staticmethod
     def create_elastic_index_from_mapper(
-        resource_mapper: BaseResourceMapper, fields: Iterable[str]
+        resource_mapper: Type[BaseResourceMapper], fields: Iterable[str]
     ) -> Dict[str, Any]:
         """Create a fallback elastic index based on a resource mapper.
 
@@ -94,7 +93,8 @@ class ElasticCollection(EntryCollection):
             fields: The list of fields to use in the index.
 
         Returns:
-            The `body` parameter to pass to `client.indices.create(..., body=...)`.
+            The parameters to pass to `client.indices.create(...)` (previously
+                the 'body' parameters).
 
         """
         properties = {
@@ -135,20 +135,19 @@ class ElasticCollection(EntryCollection):
 
         bulk(
             self.client,
-            [
+            (
                 {
                     "_index": self.name,
                     "_id": get_id(item),
-                    "_type": "_doc",
                     "_source": item,
                 }
                 for item in data
-            ],
+            ),
         )
 
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry=False
-    ) -> Tuple[Union[List[Dict[str, Any]], Dict[str, Any]], int, bool]:
+    ) -> Tuple[List[Dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -177,9 +176,9 @@ class ElasticCollection(EntryCollection):
             for field, sort_dir in criteria.get("sort", {})
         ]
         if not elastic_sort:
-            elastic_sort = {
-                self.resource_mapper.get_backend_field("id"): {"order": "asc"}
-            }
+            elastic_sort = [
+                {self.resource_mapper.get_backend_field("id"): {"order": "asc"}}
+            ]
 
         search = search.sort(*elastic_sort)
 

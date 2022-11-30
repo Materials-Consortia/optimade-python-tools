@@ -11,14 +11,15 @@ pymatgen = pytest.importorskip(
     " be able to run",
 )
 
-from pymatgen.core import Molecule, Structure as PymatgenStructure
+from pymatgen.core import Molecule
+from pymatgen.core import Structure as PymatgenStructure
 
 from optimade.adapters import Structure
 from optimade.adapters.structures.pymatgen import (
-    get_pymatgen,
-    _get_structure,
     _get_molecule,
+    _get_structure,
     from_pymatgen,
+    get_pymatgen,
 )
 
 

@@ -7,6 +7,9 @@ on:
     - master
     - 'push-action/**'
 
+env:
+  PYTEST_ADDOPTS: "--color=yes"
+
 # Cancel running workflows when additional changes are pushed
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
 concurrency:
@@ -57,6 +60,7 @@ jobs:
         pip install -U setuptools wheel
         pip install -e .
         pip install -r requirements.txt
+        pip install -r requirements-server.txt
         pip install -r requirements-dev.txt
 
     - name: Run pre-commit
@@ -82,6 +86,7 @@ jobs:
         pip install -U setuptools wheel
         pip install -e .
         pip install -r requirements.txt
+        pip install -r requirements-server.txt
         pip install -r requirements-dev.txt
 
     - name: Pass generated OpenAPI schemas through validator.swagger.io
@@ -162,7 +167,7 @@ jobs:
         ports:
         - 5432:5432
       elasticsearch:
-        image: elasticsearch:7.17.1
+        image: elasticsearch:7.17.7
         ports:
           - 9200:9200
           - 9300:9300
@@ -191,25 +196,29 @@ jobs:
         pip install -r requirements-dev.txt
         pip install -r requirements-http-client.txt
 
-    - name: Run all tests (using `mongomock`)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/
+    - name: Run non-server tests
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
+
+    - name: Install latest server dependencies
+      run: pip install -r requirements-server.txt
+
+    - name: Run server tests (using `mongomock`)
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
-
     - name: Run server tests (using a real MongoDB)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
 
     - name: Run server tests (using Elasticsearch)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
 
     - name: Install adapter conversion dependencies
-      run: |
-        pip install -r requirements-client.txt
+      run: pip install -r requirements-client.txt
 
     - name: Setup environment for AiiDA
       env:
@@ -246,14 +255,14 @@ jobs:
         coverage run --append --source optimade optimade/client/cli.py \
            --filter 'nsites = 1' \
            --output-file test_get_async.json \
-           https://optimade.herokuapp.com
+           https://optimade.fly.dev
         test test_get_async.json
 
         coverage run --append --source optimade optimade/client/cli.py \
           --filter 'nsites = 1' \
           --count \
           --output-file test_count.json \
-          https://optimade.herokuapp.com
+          https://optimade.fly.dev
         test test_count.json
 
         coverage run --append --source optimade optimade/client/cli.py \
@@ -261,7 +270,7 @@ jobs:
           --filter 'nsites = 1' \
           --count \
           --output-file test_count_no_async.json \
-          https://optimade.herokuapp.com
+          https://optimade.fly.dev
         test test_count_no_async.json
 
         diff test_count_no_async.json test_count.json
@@ -302,6 +311,7 @@ jobs:
         pip install -U setuptools wheel
         pip install -e .
         pip install -r requirements.txt
+        pip install -r requirements-server.txt
         pip install -r requirements-dev.txt
         pip install -r requirements-http-client.txt
         pip install -r requirements-docs.txt
