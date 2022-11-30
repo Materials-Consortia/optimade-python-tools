@@ -142,6 +142,7 @@ class EntryCollection(ABC):
         criteria = self.handle_query_params(params)
         single_entry = isinstance(params, SingleEntryQueryParams)
         response_fields = criteria.pop("fields")
+        response_fields_set = criteria.pop("response_fields_set", False)
 
         raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
@@ -150,7 +151,8 @@ class EntryCollection(ABC):
         exclude_fields = self.all_fields - response_fields
 
         results: List = [self.resource_mapper.map_back(doc) for doc in raw_results]
-        self.check_and_add_missing_fields(results, response_fields)
+
+        self.check_and_add_missing_fields(results, response_fields, response_fields_set)
 
         if results:
             results = self.resource_mapper.deserialize(results)
@@ -165,18 +167,24 @@ class EntryCollection(ABC):
 
         return results, data_returned, more_data_available, exclude_fields
 
-    def check_and_add_missing_fields(self, results: List[dict], response_fields: set):
+    def check_and_add_missing_fields(
+        self, results: List[dict], response_fields: set, response_fields_set: bool
+    ):
         """Checks whether the response_fields and mandatory fields are present.
         If they are not present the values are set to None, so the deserialization works correctly.
         It also checks whether all fields in the response have been defined either in the model or in the config file.
         If not it raises an appropriate error or warning."""
         include_fields = (
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
-        ) | set(self.get_non_optional_fields())
+        )
         # Include missing fields
         for result in results:
             for field in include_fields:
                 set_field_to_none_if_missing_in_dict(result["attributes"], field)
+
+        if response_fields_set:
+            for result in results:
+                result["attributes"]["set_missing_to_none"] = True
 
         bad_optimade_fields = set()
         bad_provider_fields = set()
@@ -354,6 +362,7 @@ class EntryCollection(ABC):
 
         # response_fields
         if getattr(params, "response_fields", False):
+            cursor_kwargs["response_fields_set"] = True
             response_fields = set(params.response_fields.split(","))
             response_fields |= self.resource_mapper.get_required_fields()
         else:
