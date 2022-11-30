@@ -254,26 +254,6 @@ class EntryCollection(ABC):
         return self._all_fields
 
     @lru_cache(maxsize=4)
-    def get_non_optional_fields(self) -> List[str]:
-        """
-        Returns those fields that should be set before a response class can be initialized.
-
-        Returns:
-            Property names.
-        """
-
-        schema = self.get_schema()
-        attributes = schema["properties"]["attributes"]
-        if "$ref" in attributes:
-            path = attributes["$ref"].split("/")[1:]
-            attributes = schema.copy()
-            while path:
-                next_key = path.pop(0)
-                attributes = attributes[next_key]
-            return attributes["required"]
-        return []
-
-    @lru_cache(maxsize=4)
     def get_attribute_fields(self) -> Set[str]:
         """Get the set of attribute fields
 
@@ -290,7 +270,7 @@ class EntryCollection(ABC):
 
         """
 
-        schema = self.get_schema()
+        schema = self.resource_cls.schema()
         attributes = schema["properties"]["attributes"]
         if "allOf" in attributes:
             allOf = attributes.pop("allOf")
@@ -303,10 +283,6 @@ class EntryCollection(ABC):
                 next_key = path.pop(0)
                 attributes = attributes[next_key]
         return set(attributes["properties"].keys())
-
-    @lru_cache(maxsize=4)
-    def get_schema(self):
-        return self.resource_cls.schema()
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
