@@ -149,7 +149,7 @@ class EntryCollection(ABC):
 
         exclude_fields = self.all_fields - response_fields
 
-        results = [self.resource_mapper.map_back(doc) for doc in raw_results]
+        results: List = [self.resource_mapper.map_back(doc) for doc in raw_results]
         self.check_and_add_missing_fields(results, response_fields)
 
         if results:

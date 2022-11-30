@@ -260,7 +260,7 @@ def get_entries(
         links = ToplevelLinks(next=None)
 
     if exclude_fields:
-        results = remove_exclude_fields(results, exclude_fields)
+        results = remove_exclude_fields(results, exclude_fields)  # type: ignore[assignment]
 
     return response(
         links=links,
@@ -312,7 +312,7 @@ def get_single_entry(
     links = ToplevelLinks(next=None)
 
     if exclude_fields and results is not None:
-        results = remove_exclude_fields(results, exclude_fields)[0]
+        results = remove_exclude_fields(results, exclude_fields)[0]  # type: ignore[assignment]
 
     return response(
         links=links,
