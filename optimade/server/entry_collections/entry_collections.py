@@ -156,7 +156,7 @@ class EntryCollection(ABC):
             results = self.resource_mapper.deserialize(results)
 
         if single_entry:
-            raw_results = raw_results[0] if raw_results else None  # type: ignore[assignment]
+            results = results[0] if results else None  # type: ignore[assignment]
 
             if data_returned > 1:
                 raise NotFound(
