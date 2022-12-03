@@ -2,11 +2,19 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.1...HEAD)
 
-This release continues the modularisation of the package by moving the server exceptions and warnings out into top-level modules, and removing the core dependency on FastAPI (now a server dependency only). This should allow for easier use of the `optimade.models` and `optimade.client` modules within other packages.
+**Fixed bugs:**
 
-Aside from that, the package now supports Python 3.11, and our example server is now deployed at [Fly.io](https://optimade.fly.dev) rather than Heroku.
+- Cannot retrieve child database links [\#1410](https://github.com/Materials-Consortia/optimade-python-tools/issues/1410)
+
+## [v0.20.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.1) (2022-12-03)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.0...v0.20.1)
+
+**Fixed bugs:**
+
+- Fix typo that breaks `get_child_databases` retriever [\#1411](https://github.com/Materials-Consortia/optimade-python-tools/pull/1411) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.20.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.0) (2022-11-29)
 
