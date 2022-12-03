@@ -513,8 +513,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased" class="md-nav__link">
-    Unreleased
+  <a href="#unreleased-2022-12-03" class="md-nav__link">
+    Unreleased (2022-12-03)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0201-2022-12-03" class="md-nav__link">
+    v0.20.1 (2022-12-03)
   </a>
   
 </li>
@@ -2350,8 +2357,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased" class="md-nav__link">
-    Unreleased
+  <a href="#unreleased-2022-12-03" class="md-nav__link">
+    Unreleased (2022-12-03)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0201-2022-12-03" class="md-nav__link">
+    v0.20.1 (2022-12-03)
   </a>
   
 </li>
@@ -2869,10 +2883,18 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD">Unreleased</a><a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.0...HEAD">Full Changelog</a></p>
-<p>This release continues the modularisation of the package by moving the server exceptions and warnings out into top-level modules, and removing the core dependency on FastAPI (now a server dependency only). This should allow for easier use of the <code>optimade.models</code> and <code>optimade.client</code> modules within other packages.</p>
-<p>Aside from that, the package now supports Python 3.11, and our example server is now deployed at <a href="https://optimade.fly.dev">Fly.io</a> rather than Heroku.</p>
+<h2 id="unreleased-2022-12-03"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2022-12-03)<a class="headerlink" href="#unreleased-2022-12-03" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.1...Unreleased">Full Changelog</a></p>
+<p><strong>Fixed bugs:</strong></p>
+<ul>
+<li>Cannot retrieve child database links <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1410">#1410</a></li>
+</ul>
+<h2 id="v0201-2022-12-03"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.1">v0.20.1</a> (2022-12-03)<a class="headerlink" href="#v0201-2022-12-03" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.0...v0.20.1">Full Changelog</a></p>
+<p><strong>Fixed bugs:</strong></p>
+<ul>
+<li>Fix typo that breaks <code>get_child_databases</code> retriever <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1411">#1411</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+</ul>
 <h2 id="v0200-2022-11-29"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.0">v0.20.0</a> (2022-11-29)<a class="headerlink" href="#v0200-2022-11-29" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.19.4...v0.20.0">Full Changelog</a></p>
 <p>This release continues the modularisation of the package by moving the server exceptions and warnings out into top-level modules, and removing the core dependency on FastAPI (now a server dependency only). This should allow for easier use of the <code>optimade.models</code> and <code>optimade.client</code> modules within other packages.</p>
