@@ -144,7 +144,7 @@ def get_child_database_links(
             f"Did not understand response from {provider['id']}: {links.content!r}"
         ) from exc
 
-    if isinstance(links_resp.data, LinksResource):
+    if isinstance(links_resp, LinksResponse):
         return [
             link
             for link in links_resp.data
