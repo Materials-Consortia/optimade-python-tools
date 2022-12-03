@@ -1,0 +1,3421 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the OPTIMADE Python tools">
+      
+      
+      
+        <link rel="canonical" href="https://www.optimade.org/optimade-python-tools/0.20.1/api_reference/filtertransformers/elasticsearch/">
+      
+      <link rel="icon" href="../../../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+    
+    
+      
+        <title>elasticsearch - OPTIMADE Python tools</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.472b142f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.08040f6c.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#000000">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../css/reference.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#elasticsearch" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="OPTIMADE Python tools" class="md-header__button md-logo" aria-label="OPTIMADE Python tools" data-md-component="logo">
+      
+  <img src="../../../images/optimade_logo_180x180.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OPTIMADE Python tools
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              elasticsearch
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Materials-Consortia/optimade-python-tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    optimade-python-tools
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="OPTIMADE Python tools" class="md-nav__button md-logo" aria-label="OPTIMADE Python tools" data-md-component="logo">
+      
+  <img src="../../../images/optimade_logo_180x180.svg" alt="logo">
+
+    </a>
+    OPTIMADE Python tools
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Materials-Consortia/optimade-python-tools" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    optimade-python-tools
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../INSTALL/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../configuration/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Getting started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Getting started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting_started/client/" class="md-nav__link">
+        Using the OPTIMADE client
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting_started/setting_up_an_api/" class="md-nav__link">
+        Setting up an OPTIMADE API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting_started/use_cases/" class="md-nav__link">
+        Example use cases
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Deployment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Deployment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/integrated/" class="md-nav__link">
+        Integrate OPTIMADE with an existing web application
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deployment/container/" class="md-nav__link">
+        Run in a container (Docker)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Concepts
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Concepts" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Concepts
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../concepts/validation/" class="md-nav__link">
+        Validation of OPTIMADE APIs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../concepts/filtering/" class="md-nav__link">
+        Filter parsing and transforming
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CONTRIBUTING/" class="md-nav__link">
+        Contributing and getting help
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../all_models/" class="md-nav__link">
+        OPTIMADE Data Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../warnings/" class="md-nav__link">
+        warnings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_4" type="checkbox" id="__nav_10_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_4">
+          adapters
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="adapters" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_4">
+          <span class="md-nav__icon md-icon"></span>
+          adapters
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/base/" class="md-nav__link">
+        base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/logger/" class="md-nav__link">
+        logger
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/warnings/" class="md-nav__link">
+        warnings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_4_5" type="checkbox" id="__nav_10_4_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_4_5">
+          references
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="references" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          references
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/references/adapter/" class="md-nav__link">
+        adapter
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_4_6" type="checkbox" id="__nav_10_4_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_4_6">
+          structures
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="structures" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          structures
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/adapter/" class="md-nav__link">
+        adapter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/aiida/" class="md-nav__link">
+        aiida
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/ase/" class="md-nav__link">
+        ase
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/cif/" class="md-nav__link">
+        cif
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/jarvis/" class="md-nav__link">
+        jarvis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/proteindatabank/" class="md-nav__link">
+        proteindatabank
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/pymatgen/" class="md-nav__link">
+        pymatgen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adapters/structures/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_5" type="checkbox" id="__nav_10_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_5">
+          client
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="client" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_5">
+          <span class="md-nav__icon md-icon"></span>
+          client
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../client/cli/" class="md-nav__link">
+        cli
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../client/client/" class="md-nav__link">
+        client
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../client/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_6" type="checkbox" id="__nav_10_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_6">
+          filterparser
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="filterparser" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_6">
+          <span class="md-nav__icon md-icon"></span>
+          filterparser
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filterparser/lark_parser/" class="md-nav__link">
+        lark_parser
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_7" type="checkbox" id="__nav_10_7" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_7">
+          filtertransformers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="filtertransformers" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_7">
+          <span class="md-nav__icon md-icon"></span>
+          filtertransformers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base_transformer/" class="md-nav__link">
+        base_transformer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          elasticsearch
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        elasticsearch
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch" class="md-nav__link">
+    optimade.filtertransformers.elasticsearch
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer" class="md-nav__link">
+    ElasticTransformer
+  </a>
+  
+    <nav class="md-nav" aria-label="ElasticTransformer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.__default__" class="md-nav__link">
+    __default__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression" class="md-nav__link">
+    expression()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression_clause" class="md-nav__link">
+    expression_clause()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression_phrase" class="md-nav__link">
+    expression_phrase()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.filter" class="md-nav__link">
+    filter()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.fuzzy_string_op_rhs" class="md-nav__link">
+    fuzzy_string_op_rhs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.length_op_rhs" class="md-nav__link">
+    length_op_rhs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.property_zip_addon" class="md-nav__link">
+    property_zip_addon()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.set_op_rhs" class="md-nav__link">
+    set_op_rhs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.set_zip_op_rhs" class="md-nav__link">
+    set_zip_op_rhs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_list" class="md-nav__link">
+    value_list()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_zip" class="md-nav__link">
+    value_zip()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_zip_list" class="md-nav__link">
+    value_zip_list()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" class="md-nav__link">
+    ElasticsearchQuantity
+  </a>
+  
+    <nav class="md-nav" aria-label="ElasticsearchQuantity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mongo/" class="md-nav__link">
+        mongo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_8" type="checkbox" id="__nav_10_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_8">
+          models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_8">
+          <span class="md-nav__icon md-icon"></span>
+          models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/baseinfo/" class="md-nav__link">
+        baseinfo
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/entries/" class="md-nav__link">
+        entries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/index_metadb/" class="md-nav__link">
+        index_metadb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/jsonapi/" class="md-nav__link">
+        jsonapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/optimade_json/" class="md-nav__link">
+        optimade_json
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/references/" class="md-nav__link">
+        references
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/responses/" class="md-nav__link">
+        responses
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/structures/" class="md-nav__link">
+        structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_9" type="checkbox" id="__nav_10_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_9">
+          server
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="server" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_9">
+          <span class="md-nav__icon md-icon"></span>
+          server
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/config/" class="md-nav__link">
+        config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/exception_handlers/" class="md-nav__link">
+        exception_handlers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/logger/" class="md-nav__link">
+        logger
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/main/" class="md-nav__link">
+        main
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/main_index/" class="md-nav__link">
+        main_index
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/middleware/" class="md-nav__link">
+        middleware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/query_params/" class="md-nav__link">
+        query_params
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/schemas/" class="md-nav__link">
+        schemas
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/warnings/" class="md-nav__link">
+        warnings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_9_11" type="checkbox" id="__nav_10_9_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_9_11">
+          entry_collections
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="entry_collections" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_9_11">
+          <span class="md-nav__icon md-icon"></span>
+          entry_collections
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/entry_collections/elasticsearch/" class="md-nav__link">
+        elasticsearch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/entry_collections/entry_collections/" class="md-nav__link">
+        entry_collections
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/entry_collections/mongo/" class="md-nav__link">
+        mongo
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_9_12" type="checkbox" id="__nav_10_9_12" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_9_12">
+          mappers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="mappers" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_9_12">
+          <span class="md-nav__icon md-icon"></span>
+          mappers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/entries/" class="md-nav__link">
+        entries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/references/" class="md-nav__link">
+        references
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/mappers/structures/" class="md-nav__link">
+        structures
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_9_13" type="checkbox" id="__nav_10_9_13" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_9_13">
+          routers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="routers" data-md-level="3">
+        <label class="md-nav__title" for="__nav_10_9_13">
+          <span class="md-nav__icon md-icon"></span>
+          routers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/index_info/" class="md-nav__link">
+        index_info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/info/" class="md-nav__link">
+        info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/landing/" class="md-nav__link">
+        landing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/references/" class="md-nav__link">
+        references
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/structures/" class="md-nav__link">
+        structures
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/routers/versions/" class="md-nav__link">
+        versions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_10" type="checkbox" id="__nav_10_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10_10">
+          validator
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="validator" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_10">
+          <span class="md-nav__icon md-icon"></span>
+          validator
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/config/" class="md-nav__link">
+        config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/validator/" class="md-nav__link">
+        validator
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch" class="md-nav__link">
+    optimade.filtertransformers.elasticsearch
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer" class="md-nav__link">
+    ElasticTransformer
+  </a>
+  
+    <nav class="md-nav" aria-label="ElasticTransformer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.__default__" class="md-nav__link">
+    __default__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression" class="md-nav__link">
+    expression()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression_clause" class="md-nav__link">
+    expression_clause()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression_phrase" class="md-nav__link">
+    expression_phrase()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.filter" class="md-nav__link">
+    filter()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.fuzzy_string_op_rhs" class="md-nav__link">
+    fuzzy_string_op_rhs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.length_op_rhs" class="md-nav__link">
+    length_op_rhs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.property_zip_addon" class="md-nav__link">
+    property_zip_addon()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.set_op_rhs" class="md-nav__link">
+    set_op_rhs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.set_zip_op_rhs" class="md-nav__link">
+    set_zip_op_rhs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_list" class="md-nav__link">
+    value_list()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_zip" class="md-nav__link">
+    value_zip()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_zip_list" class="md-nav__link">
+    value_zip_list()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" class="md-nav__link">
+    ElasticsearchQuantity
+  </a>
+  
+    <nav class="md-nav" aria-label="ElasticsearchQuantity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="elasticsearch">elasticsearch<a class="headerlink" href="#elasticsearch" title="Permanent link">&para;</a></h1>
+
+
+  <div class="doc doc-object doc-module">
+
+<a id="optimade.filtertransformers.elasticsearch"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.filtertransformers.elasticsearch.ElasticTransformer" class="doc doc-heading">
+        <code>
+ElasticTransformer            (<a class="autorefs autorefs-internal" title="optimade.filtertransformers.base_transformer.BaseTransformer" href="../base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer">BaseTransformer</a>)
+        </code>
+
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Transformer that transforms <code>v0.10.1</code>/<code>v1.0</code> grammar parse
+trees into Elasticsearch queries.</p>
+<p>Uses elasticsearch_dsl and will produce an <code>elasticsearch_dsl.Q</code> instance.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ElasticTransformer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transformer that transforms ``v0.10.1``/`v1.0` grammar parse</span>
+<span class="sd">    trees into Elasticsearch queries.</span>
+
+<span class="sd">    Uses elasticsearch_dsl and will produce an `elasticsearch_dsl.Q` instance.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">operator_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;lte&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;gt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;gte&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">_quantity_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">ElasticsearchQuantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">ElasticsearchQuantity</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
+        <span class="n">quantities</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">quantities</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span> <span class="o">=</span> <span class="n">quantities</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">mapper</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_field</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">],</span> <span class="n">nested</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Used to unwrap from `property` to the string backend field name.</span>
+
+<span class="sd">        If passed a `Quantity` (or a derived `ElasticsearchQuantity`), this method</span>
+<span class="sd">        returns the backend field name, modulo some handling of nested fields.</span>
+
+<span class="sd">        If passed a string quantity name:</span>
+<span class="sd">        - Check that the name does not match a relationship type,</span>
+<span class="sd">          raising a `NotImplementedError` if it does.</span>
+<span class="sd">        - If the string is prefixed by an underscore, assume this is a</span>
+<span class="sd">          provider-specific field from another provider and simply return it.</span>
+<span class="sd">          The original `property` rule would have already filtered out provider</span>
+<span class="sd">          fields for this backend appropriately as `Quantity` objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The field name to use for database queries.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">quantity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">RELATIONSHIP_ENTRY_TYPES</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr]</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Unable to filter on relationships with type </span><span class="si">{</span><span class="n">quantity</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># In this case, the property rule has already filtered out fields</span>
+            <span class="c1"># that do not match this provider, so this indicates an &quot;other provider&quot;</span>
+            <span class="c1"># field that should be passed over</span>
+            <span class="k">if</span> <span class="n">quantity</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">quantity</span>
+
+        <span class="k">if</span> <span class="n">nested</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nested</span><span class="o">.</span><span class="n">backend_field</span><span class="p">,</span> <span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+
+        <span class="k">return</span> <span class="n">quantity</span><span class="o">.</span><span class="n">backend_field</span>  <span class="c1"># type: ignore[union-attr, return-value]</span>
+
+    <span class="k">def</span> <span class="nf">_query_op</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">quantity</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ElasticsearchQuantity</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">op</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">nested</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ElasticsearchQuantity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Q</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return a range, match, or term query for the given quantity, comparison</span>
+<span class="sd">        operator, and value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An elasticsearch_dsl query.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            BadRequest: If the query is not well-defined or is not supported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">nested</span><span class="o">=</span><span class="n">nested</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;range&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="n">op</span><span class="p">]:</span> <span class="n">value</span><span class="p">}})</span>
+
+        <span class="c1"># If quantity is an &quot;other provider&quot; field then use Keyword as the default</span>
+        <span class="c1"># mapping type. These queries should not match on anything as the field</span>
+        <span class="c1"># is not present in the index.</span>
+        <span class="n">elastic_mapping_type</span> <span class="o">=</span> <span class="n">Keyword</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">ElasticsearchQuantity</span><span class="p">):</span>
+            <span class="n">elastic_mapping_type</span> <span class="o">=</span> <span class="n">quantity</span><span class="o">.</span><span class="n">elastic_mapping_type</span>
+
+        <span class="k">if</span> <span class="n">elastic_mapping_type</span> <span class="o">==</span> <span class="n">Text</span><span class="p">:</span>
+            <span class="n">query_type</span> <span class="o">=</span> <span class="s2">&quot;match&quot;</span>
+        <span class="k">elif</span> <span class="n">elastic_mapping_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Keyword</span><span class="p">,</span> <span class="n">Integer</span><span class="p">]:</span>
+            <span class="n">query_type</span> <span class="o">=</span> <span class="s2">&quot;term&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Quantity has unsupported ES field type&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="n">query_type</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;!=&quot;</span><span class="p">:</span>
+            <span class="c1"># != queries must also include an existence check</span>
+            <span class="c1"># Note that for MongoDB, `$exists` will include null-valued fields,</span>
+            <span class="c1"># where as in ES `exists` excludes them.</span>
+            <span class="c1"># pylint: disable=invalid-unary-operand-type</span>
+            <span class="k">return</span> <span class="o">~</span><span class="n">Q</span><span class="p">(</span><span class="n">query_type</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;exists&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_has_query_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">predicate_zip_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a bool query that combines the operator calls `_query_op`</span>
+<span class="sd">        for each predicate and zipped quantity predicate combination.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS&quot;</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;must&quot;</span>  <span class="c1"># in case of HAS we do a must over the &quot;list&quot; of the one given element</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS ALL&quot;</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;must&quot;</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS ANY&quot;</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;should&quot;</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS ONLY&quot;</span><span class="p">:</span>
+            <span class="c1"># HAS ONLY comes with heavy limitations, because there is no such thing</span>
+            <span class="c1"># in elastic search. Only supported for elements, where we can construct</span>
+            <span class="c1"># an anonymous &quot;formula&quot; based on elements sorted by order number and</span>
+            <span class="c1"># can do a = comparision to check if all elements are contained</span>
+
+            <span class="c1"># @ml-evs: Disabling this HAS ONLY workaround as tests are not passing</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;HAS ONLY queries are not currently supported by the Elasticsearch backend.&quot;</span>
+            <span class="p">)</span>
+
+            <span class="c1"># from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS</span>
+
+            <span class="c1"># if len(quantities) &gt; 1:</span>
+            <span class="c1">#     raise NotImplementedError(&quot;HAS ONLY is not supported with zip&quot;)</span>
+            <span class="c1"># quantity = quantities[0]</span>
+
+            <span class="c1"># if quantity.has_only_quantity is None:</span>
+            <span class="c1">#     raise NotImplementedError(</span>
+            <span class="c1">#         &quot;HAS ONLY is not supported by %s&quot; % quantity.name</span>
+            <span class="c1">#     )</span>
+
+            <span class="c1"># def values():</span>
+            <span class="c1">#     for predicates in predicate_zip_list:</span>
+            <span class="c1">#         if len(predicates) != 1:</span>
+            <span class="c1">#             raise NotImplementedError(&quot;Tuples not supported in HAS ONLY&quot;)</span>
+            <span class="c1">#         op, value = predicates[0]</span>
+            <span class="c1">#         if op != &quot;=&quot;:</span>
+            <span class="c1">#             raise NotImplementedError(</span>
+            <span class="c1">#                 &quot;Predicated not supported in HAS ONLY&quot;</span>
+            <span class="c1">#             )</span>
+            <span class="c1">#         if not isinstance(value, str):</span>
+            <span class="c1">#             raise NotImplementedError(&quot;Only strings supported in HAS ONLY&quot;)</span>
+            <span class="c1">#         yield value</span>
+
+            <span class="c1"># try:</span>
+            <span class="c1">#     order_numbers = list([ATOMIC_NUMBERS[element] for element in values()])</span>
+            <span class="c1">#     order_numbers.sort()</span>
+            <span class="c1">#     value = &quot;&quot;.join(</span>
+            <span class="c1">#         [CHEMICAL_SYMBOLS[number - 1] for number in order_numbers]</span>
+            <span class="c1">#     )</span>
+            <span class="c1"># except KeyError:</span>
+            <span class="c1">#     raise NotImplementedError(</span>
+            <span class="c1">#         &quot;HAS ONLY is only supported for chemical symbols&quot;</span>
+            <span class="c1">#     )</span>
+
+            <span class="c1"># return Q(&quot;term&quot;, **{quantity.has_only_quantity.name: value})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unrecognised operation </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+        <span class="n">queries</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_has_query</span><span class="p">(</span><span class="n">quantities</span><span class="p">,</span> <span class="n">predicates</span><span class="p">)</span> <span class="k">for</span> <span class="n">predicates</span> <span class="ow">in</span> <span class="n">predicate_zip_list</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">kind</span><span class="p">:</span> <span class="n">queries</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">_has_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">,</span> <span class="n">predicates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a bool query that combines the operator queries ():func:`_query_op`)</span>
+<span class="sd">        for quantity pericate combination.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">quantities</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">predicates</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Tuple length does not match: </span><span class="si">%s</span><span class="s2"> &lt;o&gt; </span><span class="si">%s</span><span class="s2"> &quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quantities</span><span class="p">),</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">predicates</span><span class="p">))</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">quantities</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">o</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">predicates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantities</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">o</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="n">nested_quantity</span> <span class="o">=</span> <span class="n">quantities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">nested_quantity</span>
+        <span class="n">same_nested_quantity</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="n">q</span><span class="o">.</span><span class="n">nested_quantity</span> <span class="o">!=</span> <span class="n">nested_quantity</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">quantities</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">nested_quantity</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">same_nested_quantity</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;Expression with tuples are only supported for </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quantities</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">queries</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">nested</span><span class="o">=</span><span class="n">nested_quantity</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">quantity</span><span class="p">,</span> <span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">quantities</span><span class="p">,</span> <span class="n">predicates</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">Q</span><span class="p">(</span>
+            <span class="s2">&quot;nested&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">nested_quantity</span><span class="p">),</span>
+            <span class="n">query</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">bool</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">must</span><span class="o">=</span><span class="n">queries</span><span class="p">)),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="c1"># filter: expression*</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s2">&quot;must&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="c1"># expression_clause: expression_phrase ( _AND expression_phrase )*</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">result</span> <span class="o">&amp;=</span> <span class="n">arg</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="c1"># expression: expression_clause ( _OR expression_clause )*</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">result</span> <span class="o">|=</span> <span class="n">arg</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="c1"># expression_phrase: [ NOT ] ( operator | &quot;(&quot; expression &quot;)&quot; )</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NOT&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">~</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">property_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="c1"># property_first_comparison: property *_rhs</span>
+        <span class="k">return</span> <span class="n">query</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span>
+
+    <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">quantity</span><span class="p">):</span>
+        <span class="c1"># constant_first_comparison: constant OPERATOR ( non_string_value | ...not_implemented_string )</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only quantities can be compared to constant values.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reversed_operator_map</span><span class="p">[</span><span class="n">op</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">value_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># value_op_rhs: OPERATOR value</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="c1"># length_op_rhs: LENGTH [ OPERATOR ] signed_int</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+
+        <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span>
+
+            <span class="c1"># This is only the case if quantity is an &quot;other&quot; provider&#39;s field,</span>
+            <span class="c1"># in which case, we should treat it as unknown and try to do a null query</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">quantity</span><span class="o">.</span><span class="n">length_quantity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;LENGTH is not supported for </span><span class="si">{</span><span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span><span class="o">.</span><span class="n">length_quantity</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">query</span>
+
+    <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">known_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># known_op_rhs: IS ( KNOWN | UNKNOWN )</span>
+
+        <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;exists&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;KNOWN&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">query</span>
+            <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="o">~</span><span class="n">query</span>  <span class="c1"># pylint: disable=invalid-unary-operand-type</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+        <span class="k">return</span> <span class="n">query</span>
+
+    <span class="k">def</span> <span class="nf">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="c1"># set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ... )</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">op</span><span class="p">,</span> <span class="n">values</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS &quot;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS&quot;</span>
+
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_query_op</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">quantity</span><span class="p">],</span> <span class="n">op</span><span class="p">,</span> <span class="p">[[</span><span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="c1"># set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list | ANY value_zip_list )</span>
+        <span class="n">add_on</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS &quot;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS&quot;</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_query_op</span><span class="p">([</span><span class="n">quantity</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_on</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
+
+    <span class="k">def</span> <span class="nf">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">args</span>
+
+    <span class="k">def</span> <span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">,</span> <span class="s2">&quot;!=&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">]:</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="n">op</span><span class="p">,</span>
+                        <span class="n">arg</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;CONTAINS&quot;</span><span class="p">:</span>
+            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;*</span><span class="si">%s</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;STARTS&quot;</span><span class="p">:</span>
+            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;ENDS&quot;</span><span class="p">:</span>
+            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;*</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">value</span>
+
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;wildcard&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span> <span class="n">wildcard</span><span class="p">})</span>
+
+    <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="c1"># string: ESCAPED_STRING</span>
+        <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+
+    <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">signed_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+        <span class="c1"># signed_int : SIGNED_INT</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+
+    <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+        <span class="c1"># number: SIGNED_INT | SIGNED_FLOAT</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_INT&quot;</span><span class="p">:</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="nb">int</span>
+        <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_FLOAT&quot;</span><span class="p">:</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="nb">float</span>
+        <span class="k">return</span> <span class="n">type_</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.__default__" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.__default__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Default behavior for rules that only replace one symbol with another</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.expression" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>expression: expression_clause ( OR expression_clause )</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c1"># expression: expression_clause ( _OR expression_clause )*</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">result</span> <span class="o">|=</span> <span class="n">arg</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.expression_clause" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression_clause" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>expression_clause: expression_phrase ( AND expression_phrase )*</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c1"># expression_clause: expression_phrase ( _AND expression_phrase )*</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">result</span> <span class="o">&amp;=</span> <span class="n">arg</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.expression_phrase" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.expression_phrase" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>expression_phrase: [ NOT ] ( comparison | "(" expression ")" )</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c1"># expression_phrase: [ NOT ] ( operator | &quot;(&quot; expression &quot;)&quot; )</span>
+    <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NOT&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">~</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.filter" class="doc doc-heading">
+<code class="highlight language-python"><span class="nb">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.filter" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>filter: expression*</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c1"># filter: expression*</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s2">&quot;must&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">})</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.fuzzy_string_op_rhs" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.fuzzy_string_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;CONTAINS&quot;</span><span class="p">:</span>
+        <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;*</span><span class="si">%s</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="n">value</span>
+    <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;STARTS&quot;</span><span class="p">:</span>
+        <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="n">value</span>
+    <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;ENDS&quot;</span><span class="p">:</span>
+        <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;*</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;wildcard&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span> <span class="n">wildcard</span><span class="p">})</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.length_op_rhs" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.length_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>length_op_rhs: LENGTH [ OPERATOR ] value</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c1"># length_op_rhs: LENGTH [ OPERATOR ] signed_int</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span>
+
+        <span class="c1"># This is only the case if quantity is an &quot;other&quot; provider&#39;s field,</span>
+        <span class="c1"># in which case, we should treat it as unknown and try to do a null query</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">quantity</span><span class="o">.</span><span class="n">length_quantity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;LENGTH is not supported for </span><span class="si">{</span><span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span><span class="o">.</span><span class="n">length_quantity</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">query</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.property_zip_addon" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.property_zip_addon" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>property_zip_addon: ":" property (":" property)*</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.set_op_rhs" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.set_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c1"># set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ... )</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">op</span><span class="p">,</span> <span class="n">values</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS &quot;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS&quot;</span>
+
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_query_op</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">quantity</span><span class="p">],</span> <span class="n">op</span><span class="p">,</span> <span class="p">[[</span><span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.set_zip_op_rhs" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.set_zip_op_rhs" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>set_zip_op_rhs: property_zip_addon HAS ( value_zip
+| ONLY value_zip_list
+| ALL value_zip_list
+| ANY value_zip_list )</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="c1"># set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list | ANY value_zip_list )</span>
+    <span class="n">add_on</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS &quot;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_query_op</span><span class="p">([</span><span class="n">quantity</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_on</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.value_list" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_list" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">,</span> <span class="s2">&quot;!=&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">]:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">arg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">op</span><span class="p">,</span>
+                    <span class="n">arg</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.value_zip" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_zip" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.value_zip_list" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></code>
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value_zip_list" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>value_zip_list: value_zip ( "," value_zip )*</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">args</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" class="doc doc-heading">
+        <code>
+ElasticsearchQuantity            (<a class="autorefs autorefs-internal" title="optimade.filtertransformers.base_transformer.Quantity" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity">Quantity</a>)
+        </code>
+
+
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Elasticsearch-specific extension of the underlying
+<a class="autorefs autorefs-internal" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> class.</p>
+
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the quantity as used in the filter expressions.</p></td>
+      </tr>
+      <tr>
+        <td><code>backend_field</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>The name of the field for this quantity in Elasticsearch, will be
+<code>name</code> by default.</p></td>
+      </tr>
+      <tr>
+        <td><code>elastic_mapping_type</code></td>
+        <td><code>Optional[elasticsearch_dsl.field.Field]</code></td>
+        <td><p>A decendent of an <code>elasticsearch_dsl.Field</code> that denotes which
+mapping type was used in the Elasticsearch index.</p></td>
+      </tr>
+      <tr>
+        <td><code>length_quantity</code></td>
+        <td><code>Optional[optimade.filtertransformers.elasticsearch.ElasticsearchQuantity]</code></td>
+        <td><p>Elasticsearch does not support length of arrays, but we can
+map fields with array to other fields with ints about the array length. The
+LENGTH operator will only be supported for quantities with this attribute.</p></td>
+      </tr>
+      <tr>
+        <td><code>has_only_quantity</code></td>
+        <td><code>Optional[optimade.filtertransformers.elasticsearch.ElasticsearchQuantity]</code></td>
+        <td><p>Elasticsearch does not support exclusive search on arrays, like
+a list of chemical elements. But, we can order all elements by atomic number
+and use a keyword field with all elements to perform this search. This only
+works for elements (i.e. labels in <code>CHEMICAL_SYMBOLS</code>) and quantities
+with this attribute.</p></td>
+      </tr>
+      <tr>
+        <td><code>nested_quantity</code></td>
+        <td><code>Optional[optimade.filtertransformers.elasticsearch.ElasticsearchQuantity]</code></td>
+        <td><p>To support optimade's 'zipped tuple' feature (e.g.
+'elements:elements_ratios HAS "H":&gt;0.33), we use elasticsearch nested objects
+and nested queries. This quantity will provide the field for the nested
+object that contains the quantity (and others). The zipped tuples will only
+work for quantities that share the same nested object quantity.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ElasticsearchQuantity</span><span class="p">(</span><span class="n">Quantity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Elasticsearch-specific extension of the underlying</span>
+<span class="sd">    [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] class.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        name: The name of the quantity as used in the filter expressions.</span>
+<span class="sd">        backend_field: The name of the field for this quantity in Elasticsearch, will be</span>
+<span class="sd">            ``name`` by default.</span>
+<span class="sd">        elastic_mapping_type: A decendent of an `elasticsearch_dsl.Field` that denotes which</span>
+<span class="sd">            mapping type was used in the Elasticsearch index.</span>
+<span class="sd">        length_quantity: Elasticsearch does not support length of arrays, but we can</span>
+<span class="sd">            map fields with array to other fields with ints about the array length. The</span>
+<span class="sd">            LENGTH operator will only be supported for quantities with this attribute.</span>
+<span class="sd">        has_only_quantity: Elasticsearch does not support exclusive search on arrays, like</span>
+<span class="sd">            a list of chemical elements. But, we can order all elements by atomic number</span>
+<span class="sd">            and use a keyword field with all elements to perform this search. This only</span>
+<span class="sd">            works for elements (i.e. labels in ``CHEMICAL_SYMBOLS``) and quantities</span>
+<span class="sd">            with this attribute.</span>
+<span class="sd">        nested_quantity: To support optimade&#39;s &#39;zipped tuple&#39; feature (e.g.</span>
+<span class="sd">            &#39;elements:elements_ratios HAS &quot;H&quot;:&gt;0.33), we use elasticsearch nested objects</span>
+<span class="sd">            and nested queries. This quantity will provide the field for the nested</span>
+<span class="sd">            object that contains the quantity (and others). The zipped tuples will only</span>
+<span class="sd">            work for quantities that share the same nested object quantity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">backend_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span>
+    <span class="n">elastic_mapping_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Field</span><span class="p">]</span>
+    <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span>
+    <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">backend_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">elastic_mapping_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Field</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialise the quantity from its name, aliases and mapping type.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            name: The name of the quantity as used in the filter expressions.</span>
+<span class="sd">            backend_field: The name of the field for this quantity in Elasticsearch, will be</span>
+<span class="sd">                ``name`` by default.</span>
+<span class="sd">            elastic_mapping_type: A decendent of an `elasticsearch_dsl.Field` that denotes which</span>
+<span class="sd">                mapping type was used in the Elasticsearch index.</span>
+<span class="sd">            length_quantity: Elasticsearch does not support length of arrays, but we can</span>
+<span class="sd">                map fields with array to other fields with ints about the array length. The</span>
+<span class="sd">                LENGTH operator will only be supported for quantities with this attribute.</span>
+<span class="sd">            has_only_quantity: Elasticsearch does not support exclusive search on arrays, like</span>
+<span class="sd">                a list of chemical elements. But, we can order all elements by atomic number</span>
+<span class="sd">                and use a keyword field with all elements to perform this search. This only</span>
+<span class="sd">                works for elements (i.e. labels in ``CHEMICAL_SYMBOLS``) and quantities</span>
+<span class="sd">                with this attribute.</span>
+<span class="sd">            nested_quantity: To support optimade&#39;s &#39;zipped tuple&#39; feature (e.g.</span>
+<span class="sd">                &#39;elements:elements_ratios HAS &quot;H&quot;:&gt;0.33), we use elasticsearch nested objects</span>
+<span class="sd">                and nested queries. This quantity will provide the field for the nested</span>
+<span class="sd">                object that contains the quantity (and others). The zipped tuples will only</span>
+<span class="sd">                work for quantities that share the same nested object quantity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">,</span> <span class="n">length_quantity</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">elastic_mapping_type</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">Keyword</span> <span class="k">if</span> <span class="n">elastic_mapping_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">elastic_mapping_type</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_only_quantity</span> <span class="o">=</span> <span class="n">has_only_quantity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nested_quantity</span> <span class="o">=</span> <span class="n">nested_quantity</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">length_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">elastic_mapping_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">has_only_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nested_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initialise the quantity from its name, aliases and mapping type.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the quantity as used in the filter expressions.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>backend_field</code></td>
+        <td><code>Optional[str]</code></td>
+        <td><p>The name of the field for this quantity in Elasticsearch, will be
+<code>name</code> by default.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>elastic_mapping_type</code></td>
+        <td><code>Optional[elasticsearch_dsl.field.Field]</code></td>
+        <td><p>A decendent of an <code>elasticsearch_dsl.Field</code> that denotes which
+mapping type was used in the Elasticsearch index.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>length_quantity</code></td>
+        <td><code>Optional[ElasticsearchQuantity]</code></td>
+        <td><p>Elasticsearch does not support length of arrays, but we can
+map fields with array to other fields with ints about the array length. The
+LENGTH operator will only be supported for quantities with this attribute.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>has_only_quantity</code></td>
+        <td><code>Optional[ElasticsearchQuantity]</code></td>
+        <td><p>Elasticsearch does not support exclusive search on arrays, like
+a list of chemical elements. But, we can order all elements by atomic number
+and use a keyword field with all elements to perform this search. This only
+works for elements (i.e. labels in <code>CHEMICAL_SYMBOLS</code>) and quantities
+with this attribute.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>nested_quantity</code></td>
+        <td><code>Optional[ElasticsearchQuantity]</code></td>
+        <td><p>To support optimade's 'zipped tuple' feature (e.g.
+'elements:elements_ratios HAS "H":&gt;0.33), we use elasticsearch nested objects
+and nested queries. This quantity will provide the field for the nested
+object that contains the quantity (and others). The zipped tuples will only
+work for quantities that share the same nested object quantity.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">backend_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">elastic_mapping_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Field</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initialise the quantity from its name, aliases and mapping type.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        name: The name of the quantity as used in the filter expressions.</span>
+<span class="sd">        backend_field: The name of the field for this quantity in Elasticsearch, will be</span>
+<span class="sd">            ``name`` by default.</span>
+<span class="sd">        elastic_mapping_type: A decendent of an `elasticsearch_dsl.Field` that denotes which</span>
+<span class="sd">            mapping type was used in the Elasticsearch index.</span>
+<span class="sd">        length_quantity: Elasticsearch does not support length of arrays, but we can</span>
+<span class="sd">            map fields with array to other fields with ints about the array length. The</span>
+<span class="sd">            LENGTH operator will only be supported for quantities with this attribute.</span>
+<span class="sd">        has_only_quantity: Elasticsearch does not support exclusive search on arrays, like</span>
+<span class="sd">            a list of chemical elements. But, we can order all elements by atomic number</span>
+<span class="sd">            and use a keyword field with all elements to perform this search. This only</span>
+<span class="sd">            works for elements (i.e. labels in ``CHEMICAL_SYMBOLS``) and quantities</span>
+<span class="sd">            with this attribute.</span>
+<span class="sd">        nested_quantity: To support optimade&#39;s &#39;zipped tuple&#39; feature (e.g.</span>
+<span class="sd">            &#39;elements:elements_ratios HAS &quot;H&quot;:&gt;0.33), we use elasticsearch nested objects</span>
+<span class="sd">            and nested queries. This quantity will provide the field for the nested</span>
+<span class="sd">            object that contains the quantity (and others). The zipped tuples will only</span>
+<span class="sd">            work for quantities that share the same nested object quantity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">,</span> <span class="n">length_quantity</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">elastic_mapping_type</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">Keyword</span> <span class="k">if</span> <span class="n">elastic_mapping_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">elastic_mapping_type</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">has_only_quantity</span> <span class="o">=</span> <span class="n">has_only_quantity</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">nested_quantity</span> <span class="o">=</span> <span class="n">nested_quantity</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../base_transformer/" class="md-footer__link md-footer__link--prev" aria-label="Previous: base_transformer" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              base_transformer
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../mongo/" class="md-footer__link md-footer__link--next" aria-label="Next: mongo" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              mongo
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Built by the Materials-Consortia
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/Materials-Consortia" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      
+    
+  </body>
+</html>
