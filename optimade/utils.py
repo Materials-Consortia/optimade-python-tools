@@ -139,22 +139,20 @@ def get_child_database_links(
 
     try:
         links_resp = LinksResponse(**links.json())
-    except (ValidationError, json.JSONDecodeError) as exc:
-        raise RuntimeError(
-            f"Did not understand response from {provider['id']}: {links.content!r}"
-        ) from exc
 
-    if isinstance(links_resp, LinksResponse):
         return [
             link
             for link in links_resp.data
-            if link.attributes.link_type == LinkType.CHILD
+            if isinstance(link, LinksResource)
+            and link.attributes.link_type == LinkType.CHILD
             and link.attributes.base_url is not None
             and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
         ]
 
-    else:
-        raise RuntimeError("Invalid links responses received: {links.content!r")
+    except (ValidationError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            f"Did not understand response from {provider['id']}: {links.content!r}"
+        ) from exc
 
 
 def get_all_databases() -> Iterable[str]:
