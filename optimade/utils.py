@@ -101,7 +101,7 @@ def get_providers(add_mongo_id: bool = False) -> list:
 
 
 def get_child_database_links(
-    provider: LinksResource, obey_aggregate=True
+    provider: LinksResource, obey_aggregate: bool = True
 ) -> List[LinksResource]:
     """For a provider, return a list of available child databases.
 
