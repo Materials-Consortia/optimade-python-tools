@@ -1960,7 +1960,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
 
 <h2 id="optimade.utils.get_all_databases" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">()</span></code>
+<code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 <a href="#optimade.utils.get_all_databases" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1969,15 +1969,85 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
       <p>Iterate through all databases reported by registered OPTIMADE providers.</p>
 
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>include_providers</code></td>
+        <td><code>Optional[Container[str]]</code></td>
+        <td><p>A set/container of provider IDs to include child databases for.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>exclude_providers</code></td>
+        <td><code>Optional[Container[str]]</code></td>
+        <td><p>A set/container of provider IDs to exclude child databases for.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>exclude_databases</code></td>
+        <td><code>Optional[Container[str]]</code></td>
+        <td><p>A set/container of specific database URLs to exclude.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Iterable[str]</code></td>
+      <td><p>A generator of child database links that obey the given parameters.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>optimade/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_databases</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Iterate through all databases reported by registered OPTIMADE providers.&quot;&quot;&quot;</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_databases</span><span class="p">(</span>
+    <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Iterate through all databases reported by registered OPTIMADE providers.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        include_providers: A set/container of provider IDs to include child databases for.</span>
+<span class="sd">        exclude_providers: A set/container of provider IDs to exclude child databases for.</span>
+<span class="sd">        exclude_databases: A set/container of specific database URLs to exclude.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A generator of child database links that obey the given parameters.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">get_providers</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">and</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">exclude_providers</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">include_providers</span> <span class="ow">and</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">include_providers</span><span class="p">:</span>
+            <span class="k">continue</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">links</span> <span class="o">=</span> <span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">exclude_databases</span>
+                        <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="ow">in</span> <span class="n">exclude_databases</span>
+                    <span class="p">):</span>
+                        <span class="k">continue</span>
                     <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
             <span class="k">pass</span>
@@ -2057,7 +2127,7 @@ invalid, or the request otherwise fails.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_child_database_links</span><span class="p">(</span>
-    <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;For a provider, return a list of available child databases.</span>
 

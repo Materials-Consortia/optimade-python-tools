@@ -2048,10 +2048,68 @@ optimade-get --filter <span class="s1">&#39;elements HAS &quot;Ag&quot;&#39;</sp
 </div>
 </div>
 </div>
+<p>or by including/excluding some providers by their registered IDs in the <a href="https://providers.optimade.org">Providers list</a>.</p>
+<p>Query only a list of included providers (after a lookup of the providers list):</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Command line</label><label for="__tabbed_3_2">Python</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># Only query databases served by the example providers</span>
+optimade-get --include-providers exmpl,optimade
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># Only query databases served by the example providers</span>
+<span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
+    <span class="n">include_providers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;exmpl&quot;</span><span class="p">,</span> <span class="s2">&quot;optimade&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Exclude certain providers:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Command line</label><label for="__tabbed_4_2">Python</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># Exclude example providers from global list</span>
+optimade-get --exclude-providers exmpl,optimade
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># Exclude example providers from global list</span>
+<span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
+    <span class="n">exclude_providers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;exmpl&quot;</span><span class="p">,</span> <span class="s2">&quot;optimade&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Exclude particular databases by URL:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Command line</label><label for="__tabbed_5_2">Python</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># Exclude specific example databases</span>
+optimade-get --exclude-databases https://example.org/optimade,https://optimade.org/example
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># Exclude specific example databases</span>
+<span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
+    <span class="n">exclude_databases</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;https://example.org/optimade&quot;</span><span class="p">,</span> <span class="s2">&quot;https://optimade.org/example&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 <h3 id="filtering">Filtering<a class="headerlink" href="#filtering" title="Permanent link">&para;</a></h3>
 <p>By default, an empty filter will be used (which will return all entries in a database).
 You can specify your desired filter as follows (note the quotation marks):</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Command line</label><label for="__tabbed_3_2">Python</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Command line</label><label for="__tabbed_6_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>optimade-get --filter <span class="s1">&#39;elements HAS &quot;Ag&quot; AND nsites &lt; 2&#39;</span> --output-file results.json
@@ -2140,7 +2198,7 @@ This is the same format as the cached results of the Python client:</p>
 This includes any provider-specific <code>extensions/&lt;example&gt;</code> endpoints that may be implemented at a given base URL, which can be found listed at the corresponding <code>/info</code> endpoint for that database.</p>
 <p>In the CLI, this is done with the <code>--endpoint</code> flag.
 In the Python interface, the different endpoints can be queried as attributes of the client class or equivalently as a paramter to <code>client.get()</code> or <code>client.count()</code> (see below).</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Command line</label><label for="__tabbed_4_2">Python</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Command line</label><label for="__tabbed_7_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>optimade-get --endpoint <span class="s2">&quot;structures&quot;</span>
@@ -2181,7 +2239,7 @@ In the CLI, this setting should be used alongside <code>--output-file</code> or 
 It is possible to just count the number of results before downloading the entries themselves, which only requires 1 request per database.
 This is achieved via the <code>--count</code> flag in the CLI, or the <code>.count()</code> method in the Python interface.
 We can use this to repeat the queries from the <a href="https://doi.org/10.1038/s41597-021-00974-z">OPTIMADE paper</a>:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Command line</label><label for="__tabbed_5_2">Python</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">Command line</label><label for="__tabbed_8_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>optimade-get <span class="se">\</span>

@@ -2135,6 +2135,15 @@ and provider.</p>
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="sd">&quot;&quot;&quot;Whether or not to make all requests asynchronously using asyncio.&quot;&quot;&quot;</span>
 
+    <span class="n">_excluded_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;A set of providers IDs excluded from future queries.&quot;&quot;&quot;</span>
+
+    <span class="n">_included_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;A set of providers IDs included from future queries.&quot;&quot;&quot;</span>
+
+    <span class="n">_excluded_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;A set of child database URLs excluded from future queries.&quot;&quot;&quot;</span>
+
     <span class="n">__current_endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="sd">&quot;&quot;&quot;Used internally when querying via `client.structures.get()` to set the</span>
 <span class="sd">    chosen endpoint. Should be reset to `None` outside of all `get()` calls.&quot;&quot;&quot;</span>
@@ -2147,6 +2156,9 @@ and provider.</p>
         <span class="n">http_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
         <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
 
@@ -2158,6 +2170,9 @@ and provider.</p>
 <span class="sd">            http_timeout: The HTTP timeout to use per request.</span>
 <span class="sd">            max_attempts: The maximum number of times to repeat a failing query.</span>
 <span class="sd">            use_async: Whether or not to make all requests asynchronously.</span>
+<span class="sd">            exclude_providers: A set or collection of provider IDs to exclude from queries.</span>
+<span class="sd">            include_providers: A set or collection of provider IDs to include in queries.</span>
+<span class="sd">            exclude_databases: A set or collection of child database URLs to exclude from queries.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -2165,9 +2180,22 @@ and provider.</p>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_excluded_providers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_providers</span><span class="p">)</span> <span class="k">if</span> <span class="n">exclude_providers</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">include_providers</span><span class="p">)</span> <span class="k">if</span> <span class="n">include_providers</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_databases</span><span class="p">)</span> <span class="k">if</span> <span class="n">exclude_databases</span> <span class="k">else</span> <span class="kc">None</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">(</span>
+                <span class="n">exclude_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_providers</span><span class="p">,</span>
+                <span class="n">include_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span><span class="p">,</span>
+                <span class="n">exclude_databases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">or</span> <span class="n">include_providers</span> <span class="ow">or</span> <span class="n">exclude_databases</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Cannot provide both a list of base URLs and included/excluded databases.&quot;</span>
+                <span class="p">)</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -3054,7 +3082,7 @@ original <code>__getattribute__</code>.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -3114,6 +3142,24 @@ from each provider.</p></td>
         <td><p>Whether or not to make all requests asynchronously.</p></td>
         <td><code>True</code></td>
       </tr>
+      <tr>
+        <td><code>exclude_providers</code></td>
+        <td><code>Optional[List[str]]</code></td>
+        <td><p>A set or collection of provider IDs to exclude from queries.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>include_providers</code></td>
+        <td><code>Optional[List[str]]</code></td>
+        <td><p>A set or collection of provider IDs to include in queries.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>exclude_databases</code></td>
+        <td><code>Optional[List[str]]</code></td>
+        <td><p>A set or collection of child database URLs to exclude from queries.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -3126,6 +3172,9 @@ from each provider.</p></td>
     <span class="n">http_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
 
@@ -3137,6 +3186,9 @@ from each provider.</p></td>
 <span class="sd">        http_timeout: The HTTP timeout to use per request.</span>
 <span class="sd">        max_attempts: The maximum number of times to repeat a failing query.</span>
 <span class="sd">        use_async: Whether or not to make all requests asynchronously.</span>
+<span class="sd">        exclude_providers: A set or collection of provider IDs to exclude from queries.</span>
+<span class="sd">        include_providers: A set or collection of provider IDs to include in queries.</span>
+<span class="sd">        exclude_databases: A set or collection of child database URLs to exclude from queries.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -3144,9 +3196,22 @@ from each provider.</p></td>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="bp">self</span><span class="o">.</span><span class="n">_excluded_providers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_providers</span><span class="p">)</span> <span class="k">if</span> <span class="n">exclude_providers</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">include_providers</span><span class="p">)</span> <span class="k">if</span> <span class="n">include_providers</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_databases</span><span class="p">)</span> <span class="k">if</span> <span class="n">exclude_databases</span> <span class="k">else</span> <span class="kc">None</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">(</span>
+            <span class="n">exclude_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_providers</span><span class="p">,</span>
+            <span class="n">include_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span><span class="p">,</span>
+            <span class="n">exclude_databases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">or</span> <span class="n">include_providers</span> <span class="ow">or</span> <span class="n">exclude_databases</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot provide both a list of base URLs and included/excluded databases.&quot;</span>
+            <span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
