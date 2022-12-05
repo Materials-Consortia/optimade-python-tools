@@ -117,6 +117,39 @@ def test_multiple_base_urls(httpx_mocked_response, use_async):
 
 
 @pytest.mark.parametrize("use_async", [False])
+def test_include_exclude_providers(use_async):
+    with pytest.raises(
+        SystemExit,
+        match="Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs.",
+    ):
+        OptimadeClient(
+            include_providers={"exmpl"},
+            exclude_providers={"exmpl"},
+            use_async=use_async,
+        )
+
+    with pytest.raises(
+        RuntimeError,
+        match="Cannot provide both a list of base URLs and included/excluded databases.",
+    ):
+        OptimadeClient(
+            base_urls=TEST_URLS,
+            include_providers={"exmpl"},
+            use_async=use_async,
+        )
+
+    with pytest.raises(
+        SystemExit,
+        match="Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs.",
+    ):
+        OptimadeClient(
+            include_providers={"exmpl"},
+            exclude_databases={"https://example.org/optimade"},
+            use_async=use_async,
+        )
+
+
+@pytest.mark.parametrize("use_async", [False])
 def test_client_sort(httpx_mocked_response, use_async):
     cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
     results = cli.get(sort="last_modified")
@@ -138,6 +171,9 @@ def test_command_line_client(httpx_mocked_response, use_async, capsys):
         sort=None,
         endpoint="structures",
         pretty_print=False,
+        include_providers=None,
+        exclude_providers=None,
+        exclude_databases=None,
     )
 
     # Test multi-provider query

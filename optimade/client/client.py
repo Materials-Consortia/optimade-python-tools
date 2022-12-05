@@ -10,7 +10,7 @@ import functools
 import json
 import time
 from collections import defaultdict
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 from urllib.parse import urlparse
 
 # External deps that are only used in the client code
@@ -85,6 +85,15 @@ class OptimadeClient:
     use_async: bool
     """Whether or not to make all requests asynchronously using asyncio."""
 
+    _excluded_providers: Optional[Set[str]] = None
+    """A set of providers IDs excluded from future queries."""
+
+    _included_providers: Optional[Set[str]] = None
+    """A set of providers IDs included from future queries."""
+
+    _excluded_databases: Optional[Set[str]] = None
+    """A set of child database URLs excluded from future queries."""
+
     __current_endpoint: Optional[str] = None
     """Used internally when querying via `client.structures.get()` to set the
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
@@ -97,6 +106,9 @@ class OptimadeClient:
         http_timeout: int = 10,
         max_attempts: int = 5,
         use_async: bool = True,
+        exclude_providers: Optional[List[str]] = None,
+        include_providers: Optional[List[str]] = None,
+        exclude_databases: Optional[List[str]] = None,
     ):
         """Create the OPTIMADE client object.
 
@@ -108,6 +120,9 @@ class OptimadeClient:
             http_timeout: The HTTP timeout to use per request.
             max_attempts: The maximum number of times to repeat a failing query.
             use_async: Whether or not to make all requests asynchronously.
+            exclude_providers: A set or collection of provider IDs to exclude from queries.
+            include_providers: A set or collection of provider IDs to include in queries.
+            exclude_databases: A set or collection of child database URLs to exclude from queries.
 
         """
 
@@ -115,9 +130,22 @@ class OptimadeClient:
         if self.max_results_per_provider in (-1, 0):
             self.max_results_per_provider = None
 
+        self._excluded_providers = set(exclude_providers) if exclude_providers else None
+        self._included_providers = set(include_providers) if include_providers else None
+        self._excluded_databases = set(exclude_databases) if exclude_databases else None
+
         if not base_urls:
-            self.base_urls = get_all_databases()
+            self.base_urls = get_all_databases(
+                exclude_providers=self._excluded_providers,
+                include_providers=self._included_providers,
+                exclude_databases=self._excluded_databases,
+            )
         else:
+            if exclude_providers or include_providers or exclude_databases:
+                raise RuntimeError(
+                    "Cannot provide both a list of base URLs and included/excluded databases."
+                )
+
             self.base_urls = base_urls
 
         if isinstance(self.base_urls, str):
