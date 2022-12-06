@@ -1,13 +1,9 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 from datetime import datetime
-from typing import Optional, Dict
-from optimade.models.entries import EntryResourceAttributes, EntryResource
-from optimade.models.utils import (
-    OptimadeField,
-    StrictField,
-    SupportLevel,
-)
+from typing import Dict, Optional, Set, Tuple
 
+from optimade.models.entries import EntryResource, EntryResourceAttributes
+from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
 __all__ = (
     "FileResourceAttributes",
@@ -15,10 +11,7 @@ __all__ = (
 )
 
 
-CORRELATED_FILE_FIELDS = (
-    {},
-    {},
-)
+CORRELATED_FILE_FIELDS: Tuple[Set[str], ...]
 
 
 class FileResourceAttributes(EntryResourceAttributes):

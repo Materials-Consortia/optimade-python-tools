@@ -5,13 +5,13 @@ from pydantic import Field, root_validator
 
 from optimade.models.baseinfo import BaseInfoResource
 from optimade.models.entries import EntryInfoResource, EntryResource
+from optimade.models.files import FileResource
 from optimade.models.index_metadb import IndexInfoResource
 from optimade.models.jsonapi import Response
 from optimade.models.links import LinksResource
 from optimade.models.optimade_json import OptimadeError, ResponseMeta, Success
 from optimade.models.references import ReferenceResource
 from optimade.models.structures import StructureResource
-from optimade.models.files import FileResource
 from optimade.models.utils import StrictField
 
 __all__ = (

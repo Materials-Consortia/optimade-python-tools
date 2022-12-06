@@ -1,10 +1,6 @@
 from fastapi import APIRouter, Depends, Request
 
-from optimade.models import (
-    FileResource,
-    FileResponseMany,
-    FileResponseOne,
-)
+from optimade.models import FileResource, FileResponseMany, FileResponseOne
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import create_collection
 from optimade.server.mappers import FileMapper
