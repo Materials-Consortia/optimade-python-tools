@@ -36,6 +36,13 @@ class SupportLevel(Enum):
     OPTIONAL = "optional"
 
 
+class QuerySupport(Enum):
+    ALL_MANDATORY = "all mandatory"
+    EQUALITY_ONLY = "equality only"
+    PARTIAL = "partial"
+    NONE = "none"
+
+
 class StrictFieldInfo(FieldInfo):
     """Wraps the standard pydantic `FieldInfo` in order
     to prefix any custom keys from `StrictField`.
