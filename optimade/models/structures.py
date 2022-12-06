@@ -7,7 +7,7 @@ from enum import Enum, IntEnum
 from functools import reduce
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, conlist, root_validator, validator
+from pydantic import BaseModel, conint, conlist, root_validator, validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.utils import (
@@ -525,6 +525,36 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.OPTIONAL,
     )
 
+    space_group_hall: Optional[str] = OptimadeField(
+        None,
+        description="""A Hall space group symbol representing the symmetry of the structure as defined in Hall, S. R. (1981), Acta Cryst. A37, 517-525 and erratum (1981), A37, 921.
+
+- **Type**: string
+
+- **Requirements/Conventions**:
+  - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+  - **Query**: Support for queries on this property is OPTIONAL.
+  - Each component of the Hall symbol MUST be separated by a single space symbol.
+  - If there exists a standard Hall symbol which represents the symmetry it SHOULD be used.
+  - MUST be null if `nperiodic_dimensions` is not equal to 3.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+
+    space_group_it_number: Optional[conint(ge=1, le=230)] = OptimadeField(  # type: ignore[valid-type]
+        None,
+        description="""Space group number for the structure assigned by the International Tables for Crystallography Vol. A.
+- **Type**: integer
+
+- **Requirements/Conventions**:
+  - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+  - **Query**: Support for queries on this property is OPTIONAL.
+  - The integer value MUST be between 1 and 230.
+  - MUST be null if `nperiodic_dimensions` is not equal to 3.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+
     cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(  # type: ignore[valid-type]
         ...,
         description="""Cartesian positions of each site in the structure.
@@ -948,6 +978,12 @@ The properties of the species are found in the property `species`.
                 f"from dimension_types ({values['dimension_types']})"
             )
 
+        return v
+
+    @validator("space_group_hall", "space_group_it_number")
+    def check_space_group_vs_nperiodic_dimensions(cls, v, values, field):
+        if v is not None and values.get("nperiodic_dimensions", 3) != 3:
+            raise ValueError(f"{field.name} provided but `nperiodic_dimensions!=3`")
         return v
 
     @validator("lattice_vectors", always=True)
