@@ -1,4 +1,11 @@
-[{"url":  "www.example.com/file001.pdb", "name": "file001.pdb", "size": 12536, "media_type": "chemical/x-pdb","modification_timestamp": {
-      "$date": "2022-08-26T13:09:37.945Z"
+[
+    {
+        "url":  "www.example.com/file001.pdb",
+        "name": "file001.pdb",
+        "size": 12536,
+        "media_type": "chemical/x-pdb",
+        "modification_timestamp": {
+            "$date": "2022-08-26T13:09:37.945Z"
+        }
     }
-}]
+]
