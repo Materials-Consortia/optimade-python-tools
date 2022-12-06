@@ -121,6 +121,17 @@ class DataType(Enum):
         return mapping.get(json_type, None)
 
 
+class AllowedJSONSchemaDataType(Enum):
+    """The allowed values for `type` in the Property Definition restricted JSON Schema syntax."""
+
+    BOOLEAN = "boolean"
+    OBJECT = "object"
+    ARRAY = "array"
+    NUMBER = "number"
+    STRING = "string"
+    INTEGER = "integer"
+
+
 class OptimadeError(jsonapi.Error):
     """detail MUST be present"""
 

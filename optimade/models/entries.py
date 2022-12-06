@@ -1,12 +1,13 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
-from typing import Dict, List, Optional
+from enum import Enum
+from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
 
 from optimade.models.jsonapi import Attributes, Relationships, Resource
-from optimade.models.optimade_json import DataType, Relationship
-from optimade.models.utils import OptimadeField, StrictField, SupportLevel
+from optimade.models.optimade_json import AllowedJSONSchemaDataType, Relationship
+from optimade.models.utils import OptimadeField, QuerySupport, StrictField, SupportLevel
 
 __all__ = (
     "EntryRelationships",
@@ -17,8 +18,194 @@ __all__ = (
 )
 
 
+class OptimadeAllowedUnitStandard(Enum):
+    GNU_UNITS = "gnu units"
+    UCUM = "ucum"
+    QUDT = "qudt"
+
+
+class UnitResourceURIs(BaseModel):
+    relation: str
+    uri: str
+
+
+class OptimadeUnitStandard(BaseModel):
+    name: OptimadeAllowedUnitStandard
+    version: str
+    symbol: str
+
+
+class OptimadeUnitDefinition(BaseModel):
+    symbol: str
+    title: str
+    description: str
+    standard: OptimadeUnitStandard
+    resource_uris: Optional[List[UnitResourceURIs]] = StrictField(
+        ..., alias="resource-uris"
+    )
+
+
+class JSONSchemaObject(BaseModel):
+
+    properties: Dict[str, "EntryInfoProperty"] = StrictField(
+        ...,
+        description="""Gives key-value pairs where each value is an inner Property Definition.
+The defined property is a dictionary that can only contain keys present in this dictionary, and, if so, the corresponding value is described by the respective inner Property Definition.
+(Or, if the `type` field is the list "object" and "null", it can also be `null`.)""",
+    )
+
+    required: Optional[List[str]] = StrictField(
+        ...,
+        description="""The list MUST only contain strings.
+
+The defined property MUST have keys that match all the strings in this list.
+Other keys present in the `properties` field are OPTIONAL in the defined property.
+If not present or empty, all keys in `properties` are regarded as OPTIONAL.""",
+    )
+    maxProperties: Optional[int]
+    minProperties: Optional[int]
+    dependentRequired: Optional[Dict]
+
+
+class JSONSchemaArray(BaseModel):
+    items: "EntryInfoProperty" = StrictField(...)
+    maxItems: Optional[int]
+    minItems: Optional[int]
+    uniqueItems: Optional[bool]
+
+
+class JSONSchemaInteger(BaseModel):
+    multipleOf: Optional[int]
+    maximum: Optional[int]
+    exclusiveMaximum: Optional[int]
+    minimum: Optional[int]
+    exclusiveMinimum: Optional[int]
+
+
+class JSONSchemaNumber(BaseModel):
+    multipleOf: Optional[float]
+    maximum: Optional[float]
+    exclusiveMaximum: Optional[float]
+    minimum: Optional[float]
+    exclusiveMinimum: Optional[float]
+
+
+class JSONSchemaStringFormat(Enum):
+    DATETIME = "date-time"
+    DATE = "date"
+    TIME = "time"
+    DURATION = "duration"
+    EMAIL = "email"
+    URI = "uri"
+
+
+class JSONSchemaString(BaseModel):
+    maxLength: Optional[int]
+    minLength: Optional[int]
+    format: Optional[JSONSchemaStringFormat]
+
+
+class PropertyImplementationInfo(BaseModel):
+
+    sortable: Optional[bool] = StrictField(
+        ...,
+        description="""If `TRUE`, specifies that results can be sorted on this property.
+    If `FALSE`, specifies that results cannot be sorted on this property.
+    Omitting the field is equivalent to `FALSE`.""",
+    )
+
+    query_support: Optional[QuerySupport] = StrictField(
+        ...,
+        alias="query-support",
+        description="""Defines a required level of support in formulating queries on this field.
+
+    The string MUST be one of the following:
+
+    - `all mandatory`: the defined property MUST be queryable using the OPTIMADE filter language with support for all mandatory filter features.
+    - `equality only`: the defined property MUST be queryable using the OPTIMADE filter language equality and inequality operators. Other filter language features do not need to be available.
+    - `partial`: the defined property MUST be queryable with support for a subset of the filter language operators as specified by the field `query-support-operators`.
+    - `none`: the defined property does not need to be queryable with any features of the filter language.""",
+    )
+
+    query_support_operators: Optional[List[str]] = StrictField(
+        ...,
+        alias="query-support-operators",
+        description="""Defines the filter language features supported on this property.
+
+Each string in the list MUST be one of `<`, `<=`, `>`, `>=`, `=`, `!=`, `CONTAINS`, `STARTS WITH`, `ENDS WITH`:, `HAS`, `HAS ALL`, `HAS ANY`, `HAS ONLY`, `IS KNOWN`, `IS UNKNOWN` with the following meanings:
+
+- `<`, `<=`, `>`, `>=`, `=`, `!=`: indicating support for filtering this property using the respective operator.
+  If the property is of Boolean type, support for `=` also designates support for boolean comparisons with the property being true that omit ":filter-fragment:`= TRUE`", e.g., specifying that filtering for "`is_yellow = TRUE`" is supported also implies support for "`is_yellow`" (which means the same thing).
+  Support for "`NOT is_yellow`" also follows.
+
+- `CONTAINS`, `STARTS WITH`, `ENDS WITH`: indicating support for substring filtering of this property using the respective operator. MUST NOT appear if the property is not of type String.
+
+- `HAS`, `HAS ALL`, `HAS ANY`: indicating support of the MANDATORY features for list property comparison using the respective operator. MUST NOT appear if the property is not of type List.
+
+- `HAS ONLY`: indicating support for list property comparison with all or a subset of the OPTIONAL constructs using this operator. MUST NOT appear if the property is not of type List.
+
+- `IS KNOWN`, `IS UNKNOWN`: indicating support for filtering this property on unknown values using the respective operator.""",
+    )
+
+
+class PropertyRequirementsInfo(PropertyImplementationInfo):
+    support: SupportLevel = StrictField(
+        ...,
+        description="""Describes the minimal required level of support for the Property by an implementation.
+
+    This field SHOULD only appear in a `x-optimade-requirements` that is at the outermost level of a Property Definition, as the meaning of its inclusion on other levels is not defined.
+    The string MUST be one of the following:
+
+    - `must`: the defined property MUST be recognized by the implementation (e.g., in filter strings) and MUST NOT be `null`.
+    - `should`: the defined property MUST be recognized by the implementation (e.g., in filter strings) and SHOULD NOT be `null`.
+    - `may`: it is OPTIONAL for the implementation to recognize the defined property and it MAY be equal to `null`.""",
+    )
+
+
+class PropertyRemoteResource(BaseModel):
+
+    relation: str = StrictField(
+        ...,
+        description="A human-readable description of the relationship between the property and the remote resource, e.g., a 'natural language description'.",
+    )
+
+    uri: str = StrictField(
+        ...,
+        description="A URI of the external resource (which MAY be a resolvable URL).",
+    )
+
+
+class OptimadePropertyDefinition(BaseModel):
+
+    property_uri: str = StrictField(
+        ...,
+        alias="property-uri",
+        description="""A static URI identifier that is a URN or URL representing the specific version of the property.
+It SHOULD NOT be changed as long as the property definition remains the same, and SHOULD be changed when the property definition changes.
+(If it is a URL, clients SHOULD NOT assign any interpretation to the response when resolving that URL.)""",
+    )
+
+    version: Optional[str] = StrictField(
+        ...,
+        description="""This string indicates the version of the property definition.
+The string SHOULD be in the format described by the [semantic versioning v2](https://semver.org/spec/v2.0.0.html) standard.""",
+    )
+
+    unit_definitions: Optional[List[OptimadeUnitDefinition]] = StrictField(
+        ...,
+        alias="unit-definitions",
+        description="""A list of definitions of the symbols used in the Property Definition (including its nested levels) for physical units given as values of the `x-optimade-unit` field.
+This field MUST be included if the defined property, at any level, includes an `x-optimade-unit` with a value that is not `dimensionless` or `inapplicable`.""",
+    )
+
+    resource_uris: Optional[List[PropertyRemoteResource]] = StrictField(
+        ...,
+        alias="resource-uris",
+        description="A list of dictionaries that references remote resources that describe the property.",
+    )
+
+
 class TypedRelationship(Relationship):
-    # This may be updated when moving to Python 3.8
     @validator("data")
     def check_rel_type(cls, data):
         if not isinstance(data, list):
@@ -156,32 +343,96 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
 
 class EntryInfoProperty(BaseModel):
 
+    title: str = StrictField(
+        ...,
+        description="A short single-line human-readable explanation of the defined property appropriate to show as part of a user interface.",
+    )
+
     description: str = StrictField(
-        ..., description="A human-readable description of the entry property"
+        ...,
+        description="""A human-readable multi-line description that explains the purpose, requirements, and conventions of the defined property.
+
+The format SHOULD be a one-line description, followed by a new paragraph (two newlines), followed by a more detailed description of all the requirements and conventions of the defined property.
+Formatting in the text SHOULD use Markdown in the CommonMark v0.3 format.""",
+    )
+
+    property: OptimadePropertyDefinition = StrictField(
+        ...,
+        alias="x-optimade-property",
+        description="Additional information to define the property that is not covered by fields in the JSON Schema standard.",
     )
 
     unit: Optional[str] = StrictField(
         None,
-        description="""The physical unit of the entry property.
-This MUST be a valid representation of units according to version 2.1 of [The Unified Code for Units of Measure](https://unitsofmeasure.org/ucum.html).
-It is RECOMMENDED that non-standard (non-SI) units are described in the description for the property.""",
+        alias="x-optimade-unit",
+        description="A (compound) symbol for the physical unit in which the value of the defined property is given or one of the strings `dimensionless` or `inapplicable`.",
     )
 
-    sortable: Optional[bool] = StrictField(
-        None,
-        description="""Defines whether the entry property can be used for sorting with the "sort" parameter.
-If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.""",
+    implementation: Optional[PropertyImplementationInfo] = StrictField(
+        ...,
+        alias="x-optimade-implementation",
+        description="""A dictionary describing the level of OPTIMADE API functionality provided by the present implementation.
+If an implementation omits this field in its response, a client interacting with that implementation SHOULD NOT make any assumptions about the availability of these features.""",
     )
 
-    type: Optional[DataType] = StrictField(
+    requirements: Optional[PropertyRequirementsInfo] = StrictField(
+        ...,
+        alias="x-optimade-requirements",
+        description="""A dictionary describing the level of OPTIMADE API functionality required by all implementations of this property.
+Omitting this field means the corresponding functionality is OPTIONAL.""",
+    )
+
+    type: Union[
+        AllowedJSONSchemaDataType, List[AllowedJSONSchemaDataType]
+    ] = StrictField(
         None,
         title="Type",
-        description="""The type of the property's value.
-This MUST be any of the types defined in the Data types section.
-For the purpose of compatibility with future versions of this specification, a client MUST accept values that are not `string` values specifying any of the OPTIMADE Data types, but MUST then also disregard the `type` field.
-Note, if the value is a nested type, only the outermost type should be reported.
-E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`.""",
+        description="""A string or list that specifies the type of the defined property.
+It MUST be one of:
+
+- One of the strings `"boolean"`, `"object"` (refers to an OPTIMADE dictionary), `"array"` (refers to an OPTIMADE list), `"number"` (refers to an OPTIMADE float), `"string"`, or `"integer"`.
+- A list where the first item MUST be one of the strings above, and the second item MUST be the string `"null"`.""",
     )
+
+    deprecated: Optional[bool] = StrictField(
+        ...,
+        description=""" If `TRUE`, implementations SHOULD not use the defined property, and it MAY be removed in the future.
+If `FALSE`, the defined property is not deprecated.
+The field not being present means `FALSE`.""",
+    )
+
+    enum: Optional[List] = StrictField(
+        ...,
+        description="""The defined property MUST take one of the values given in the provided list.
+The items in the list MUST all be of a data type that matches the `type` field and otherwise adhere to the rest of the Property Description.
+If this key is given, for `null` to be a valid value of the defined property, the list MUST contain a `null` value and the `type` MUST be a list where the second value is the string `"null"`.""",
+    )
+
+    examples: Optional[List] = StrictField(
+        ...,
+        description="""A list of example values that the defined property can have.
+These examples MUST all be of a data type that matches the `type` field and otherwise adhere to the rest of the Property Description.""",
+    )
+
+
+class EntryInfoPropertyObject(EntryInfoProperty, JSONSchemaObject):
+    ...
+
+
+class EntryInfoPropertyArray(EntryInfoProperty, JSONSchemaArray):
+    ...
+
+
+class EntryInfoPropertyNumber(EntryInfoProperty, JSONSchemaInteger):
+    ...
+
+
+class EntryInfoPropertyString(EntryInfoProperty, JSONSchemaString):
+    ...
+
+
+class EntryInfoPropertyInteger(EntryInfoProperty, JSONSchemaInteger):
+    ...
 
 
 class EntryInfoResource(BaseModel):
@@ -192,7 +443,17 @@ class EntryInfoResource(BaseModel):
 
     description: str = StrictField(..., description="Description of the entry.")
 
-    properties: Dict[str, EntryInfoProperty] = StrictField(
+    properties: Dict[
+        str,
+        Union[
+            EntryInfoProperty,
+            EntryInfoPropertyArray,
+            EntryInfoPropertyInteger,
+            EntryInfoPropertyNumber,
+            EntryInfoPropertyObject,
+            EntryInfoPropertyString,
+        ],
+    ] = StrictField(
         ...,
         description="A dictionary describing queryable properties for this entry type, where each key is a property name.",
     )
