@@ -1,5 +1,5 @@
-from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.models.files import FileResource
+from optimade.server.mappers.entries import BaseResourceMapper
 
 __all__ = ("FileMapper",)
 
