@@ -292,12 +292,26 @@ class ServerConfig(BaseSettings):
         description="If True, the server will check whether the query parameters given in the request are correct.",
     )
 
+    request_delay: Optional[float] = Field(
+        None,
+        description=(
+            "The value to use for the `meta->request_delay` field, which indicates to clients how long they should leave between success queries."
+        ),
+    )
+
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):
         """Set defaults and modify bypassed value(s)"""
         res = {"version": __version__}
         res.update(v)
         return res
+
+    @validator("request_delay", pre=True)
+    def check_request_delay(cls, v):
+        """Check `request_delay` is non-negative."""
+        if v is not None and v < 0:
+            raise ValueError("`request_delay` must be non-negative")
+        return v
 
     @root_validator(pre=True)
     def use_real_mongo_override(cls, values):
