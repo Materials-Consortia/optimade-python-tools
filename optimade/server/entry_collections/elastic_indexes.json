@@ -152,6 +152,60 @@
         },
         "lattice_vectors": {
           "type": "float"
+        },
+        "immutable_id": {
+          "type": "keyword"
+        },
+        "last_modified": {
+            "type": "date"
+        },
+        "species": {
+            "type": "object"
+        }
+      }
+    }
+  },
+  "files": {
+    "mappings": {
+      "properties": {
+        "url": {
+          "type": "keyword"
+        },
+        "url_stable_until": {
+          "type": "date"
+        },
+        "name": {
+          "type": "keyword"
+        },
+        "size": {
+          "type": "integer"
+        },
+        "media_type": {
+          "type": "str"
+        },
+        "version": {
+          "type": "keyword"
+        },
+        "modification_timestamp": {
+          "type": "date"
+        },
+        "checksums": {
+          "type": "object"
+        },
+        "id": {
+          "type": "keyword"
+        },
+        "description": {
+          "type": "integer"
+        },
+        "atime": {
+          "type": "date"
+        },
+        "ctime": {
+          "type": "date"
+        },
+        "mtime": {
+          "type": "date"
         }
       }
     }
