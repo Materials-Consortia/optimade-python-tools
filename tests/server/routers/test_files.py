@@ -1,8 +1,4 @@
-from optimade.models import (
-    FileResponseMany,
-    #    FileResponseOne,
-    #    FileResource,
-)
+from optimade.models import FileResponseMany  # FileResponseOne,; FileResource,
 
 from ..utils import RegularEndpointTests
 

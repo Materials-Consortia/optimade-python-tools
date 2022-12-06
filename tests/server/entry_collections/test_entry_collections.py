@@ -4,10 +4,10 @@
 def test_get_attribute_fields():
     """Test get_attribute_fields() method"""
     from optimade.models import (
+        FileResourceAttributes,
         LinksResourceAttributes,
         ReferenceResourceAttributes,
         StructureResourceAttributes,
-        FileResourceAttributes,
     )
     from optimade.server.config import ServerConfig
     from optimade.server.entry_collections import create_entry_collections
