@@ -239,6 +239,14 @@ class ServerConfig(BaseSettings):
         ),
     ] = "localhost:27017"
 
+    license: Annotated[
+        str,
+        Field(
+            description="""The SPDX license identifier that will be linked to by the server under the info field `license`.
+The `license` field value will be constructed from this identifier preprended with `https://spdx.org/licenses/CC-BY-4.0`, and the identifier will also be added to the `available_licenses` field directly.
+There is currently no support for providing a full list of identifiers to be served at `available_licenses`.""",
+        ),
+    ] = "CC-BY-4.0"
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")
     ] = "links"
