@@ -365,3 +365,9 @@ EXTENDED_CHEMICAL_SYMBOLS_PATTERN = (
 )
 
 ELEMENT_SYMBOLS_PATTERN = "(" + "|".join(CHEMICAL_SYMBOLS) + ")"
+
+translation = "1/2|[12]/3|[1-3]/4|[1-5]/6"
+translation_appended = f"[-+]? [xyz] ([-+][xyz])? ([-+] ({translation}) )?"
+translation_prepended = f"[-+]? ({translation}) ([-+] [xyz] ([-+][xyz])? )?"
+symop = f"({translation_appended}|{translation_prepended})".replace(" ", "")
+SPACE_GROUP_SYMMETRY_OPERATION_REGEX = f"^{symop},{symop},{symop}$"
