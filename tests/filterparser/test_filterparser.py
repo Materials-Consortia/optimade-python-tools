@@ -272,23 +272,26 @@ class TestParserV1_2_0(TestParserV1_0_0):
     version = (1, 2, 0)
     variant = "develop"
 
-    def test_boolean_values(self):
-        assert isinstance(
-            self.parse("_exmpl_element_counts = TRUE"),
-            Tree,
-        )
+    @pytest.mark.parametrize(
+        "case",
+        [
+            "_exmpl_element_counts = TRUE",
+            "_exmpl_element_counts = FALSE",
+            "_exmpl_element_counts != FALSE",
+            "_exmpl_element_counts != FALSE",
+            "NOT _exmpl_element_counts = TRUE",
+        ],
+    )
+    def test_good_boolean_value_queries(self, case):
+        assert isinstance(self.parse(case), Tree)
 
-        assert isinstance(
-            self.parse("_exmpl_element_counts = FALSE"),
-            Tree,
-        )
-
-        assert isinstance(
-            self.parse("_exmpl_element_counts != FALSE"),
-            Tree,
-        )
-
-        assert isinstance(
-            self.parse("NOT _exmpl_element_counts = TRUE"),
-            Tree,
-        )
+    @pytest.mark.parametrize(
+        "case",
+        [
+            'name:surname HAS STARTS WITH "J":CONTAINS "Doe"',
+            'title HAS ENDS WITH "MOF"',
+            'elements HAS ALL STARTS WITH "S"',
+        ],
+    )
+    def test_fuzzy_list_comparisons(self, case):
+        assert isinstance(self.parse(case), Tree)
