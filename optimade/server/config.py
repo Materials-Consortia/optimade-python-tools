@@ -103,7 +103,8 @@ def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
 
     encoding = settings.__config__.env_file_encoding
     config_file = Path(os.getenv("OPTIMADE_CONFIG_FILE", DEFAULT_CONFIG_FILE_PATH))
-
+    print("path =", os.path)
+    print("config_file_path=", DEFAULT_CONFIG_FILE_PATH)
     res = {}
     if config_file.is_file():
         config_file_content = config_file.read_text(encoding=encoding)
