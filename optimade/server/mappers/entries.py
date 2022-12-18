@@ -75,11 +75,6 @@ class BaseResourceMapper:
     RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {"id", "type", "relationships", "links"}
 
-    def __init__(self):
-        raise RuntimeError(
-            f"{self.__class__.__name__!r} should not be instantiated directly, instead use its functionality via the `@classmethods`"
-        )
-
     @classmethod
     @lru_cache(maxsize=NUM_ENTRY_TYPES)
     def all_aliases(cls) -> Iterable[Tuple[str, str]]:
