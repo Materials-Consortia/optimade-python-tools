@@ -1,4 +1,4 @@
-aiida-core==2.1.2
+aiida-core==2.2.0
 ase==3.22.1
 jarvis-tools==2022.12.11
 numpy==1.24.0
