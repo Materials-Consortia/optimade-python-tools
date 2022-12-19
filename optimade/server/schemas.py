@@ -6,6 +6,7 @@ from optimade.models import (
     ReferenceResource,
     StructureResource,
 )
+from optimade.models.utils import AllowedJSONSchemaDataType
 
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
@@ -46,6 +47,8 @@ def retrieve_queryable_properties(
         queryable_properties: The list of properties to find in the schema.
         entry_type: An optional entry type for the model. Will be used to
             lookup schemas for any config-defined fields.
+        new_style: If true, generate property definitions in the new JSONSchema 
+            style, otherwise use the pre-1.2 OPTIMADE format.
 
     Returns:
         A flat dictionary with properties as keys, containing the field
@@ -99,3 +102,28 @@ def retrieve_queryable_properties(
             properties[name]["sortable"] = field.get("sortable", True)
 
     return properties
+
+def retrieve_new_property_definitions(schema, queryable_properties=None, entry_type=None):
+    properties = retrieve_queryable_properties(schema, queryable_properties, entry_type)
+    return convert_property_definitions(properties)
+
+
+def convert_property_definitions(properties):
+    from optimade.models.entries import JSON_SCHEMA_MODEL_MAPPING
+    if not properties:
+        return {}
+    output_properties = {}
+    for property in properties:
+        print(property)
+        type = AllowedJSONSchemaDataType.from_optimade_type(properties[property]["type"])
+        model = JSON_SCHEMA_MODEL_MAPPING[type]
+        title = " ".join(property.split("_"))
+        description = properties[property]["description"]
+        implementation = {
+            "sortable": True,
+            "queryable": properties[property].get("queryable", None),
+            "support": properties[property].get("support", None),
+        }
+        output_properties[property] = {"title": title, "description": properties[property]["description"], "x-optimade-implementation": implementation}
+
+    return output_properties

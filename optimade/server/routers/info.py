@@ -8,7 +8,8 @@ from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import (
     ENTRY_INFO_SCHEMAS,
     ERROR_RESPONSES,
-    retrieve_queryable_properties,
+    # retrieve_queryable_properties,
+    retrieve_new_property_definitions,
 )
 
 router = APIRouter(redirect_slashes=True)
@@ -67,7 +68,7 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
 
     schema = ENTRY_INFO_SCHEMAS[entry]()
     queryable_properties = {"id", "type", "attributes"}
-    properties = retrieve_queryable_properties(
+    properties = retrieve_new_property_definitions(
         schema, queryable_properties, entry_type=entry
     )
 

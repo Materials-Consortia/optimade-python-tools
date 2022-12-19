@@ -6,7 +6,8 @@ from typing import Dict, List, Optional, Union
 from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
 
 from optimade.models.jsonapi import Attributes, Relationships, Resource
-from optimade.models.optimade_json import AllowedJSONSchemaDataType, Relationship
+from optimade.models.optimade_json import Relationship
+from optimade.models.utils import AllowedJSONSchemaDataType
 from optimade.models.utils import OptimadeField, QuerySupport, StrictField, SupportLevel
 
 __all__ = (
@@ -73,6 +74,9 @@ class JSONSchemaArray(BaseModel):
     minItems: Optional[int]
     uniqueItems: Optional[bool]
 
+class JSONSchemaBoolean(BaseModel):
+    pass
+
 
 class JSONSchemaInteger(BaseModel):
     multipleOf: Optional[int]
@@ -103,6 +107,18 @@ class JSONSchemaString(BaseModel):
     maxLength: Optional[int]
     minLength: Optional[int]
     format: Optional[JSONSchemaStringFormat]
+
+"""A mapping from the resricted JSON Schema data types to the expected
+models for validating and contraining their schemas.
+"""
+JSON_SCHEMA_MODEL_MAPPING: Dict[AllowedJSONSchemaDataType, BaseModel] = {
+    AllowedJSONSchemaDataType.STRING: JSONSchemaString,
+    AllowedJSONSchemaDataType.NUMBER: JSONSchemaNumber,
+    AllowedJSONSchemaDataType.ARRAY: JSONSchemaArray,
+    AllowedJSONSchemaDataType.BOOLEAN: JSONSchemaBoolean,
+    AllowedJSONSchemaDataType.INTEGER: JSONSchemaInteger,
+    AllowedJSONSchemaDataType.OBJECT: JSONSchemaObject,
+}
 
 
 class PropertyImplementationInfo(BaseModel):
