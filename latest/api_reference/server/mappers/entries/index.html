@@ -2079,6 +2079,7 @@
 
 
 
+
   <div class="doc doc-object doc-class">
 
 
@@ -2167,8 +2168,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResourceMapper</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generic Resource Mapper that defines and performs the mapping</span>
+    <span class="sd">&quot;&quot;&quot;Generic Resource Mapper that defines and performs the mapping</span>
 <span class="sd">    between objects in the database and the resource objects defined by</span>
 <span class="sd">    the specification.</span>
 
@@ -2211,7 +2211,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">}</span>
 
     <span class="nd">@classmethod</span>
-    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
 <span class="sd">        including those defined by the server config. The first member</span>
@@ -2287,7 +2287,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="k">return</span> <span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="o">.</span><span class="n">schema</span><span class="p">())</span>
 
     <span class="nd">@classproperty</span>
-    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">ENDPOINT</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns the expected endpoint for this mapper, corresponding</span>
 <span class="sd">        to the `type` property of the resource class.</span>
@@ -2301,7 +2301,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
 <span class="sd">        including those defined by the server config.</span>
@@ -2440,7 +2440,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_required_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
 
@@ -2821,7 +2821,7 @@ is the backend-specific field name.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
 <span class="sd">    including those defined by the server config. The first member</span>
@@ -2896,7 +2896,7 @@ including those defined by the server config.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
 <span class="sd">    including those defined by the server config.</span>
@@ -3165,7 +3165,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_required_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
 
