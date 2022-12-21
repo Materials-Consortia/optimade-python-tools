@@ -1,30 +1,5 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
-
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.2...HEAD)
-
-This release adds the ability to include or exclude particular providers from queries with the `OptimadeClient` class and `optimade-get` CLI, via the provider's registered prefix (#1412)
-
-For example:
-
-```shell
-# Only query databases served by the example providers
-optimade-get --include-providers exmpl,optimade
-# Exclude example providers from global list
-optimade-get --exclude-providers exmpl,optimade
-```
-
-You can also now exclude particular databases by their URLs:
-```shell
-# Exclude specific example databases
-optimade-get --exclude-databases https://example.org/optimade,https://optimade.org/example
-```
-
-The release also includes some server enhancements and fixes:
-- Caching of `/info/` and `/info/<entry>` endpoint responses (#1433)
-- A bugfix for the entry mapper classes, which were sharing cache resources globally leading to poor utilization (#1435)
-
 ## [v0.20.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.2) (2022-12-21)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.1...v0.20.2)
