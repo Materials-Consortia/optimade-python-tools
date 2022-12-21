@@ -513,8 +513,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2022-12-21" class="md-nav__link">
-    Unreleased (2022-12-21)
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0202-2022-12-21" class="md-nav__link">
+    v0.20.2 (2022-12-21)
   </a>
   
 </li>
@@ -2357,8 +2364,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2022-12-21" class="md-nav__link">
-    Unreleased (2022-12-21)
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0202-2022-12-21" class="md-nav__link">
+    v0.20.2 (2022-12-21)
   </a>
   
 </li>
@@ -2883,8 +2897,38 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased-2022-12-21"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2022-12-21)<a class="headerlink" href="#unreleased-2022-12-21" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.1...Unreleased">Full Changelog</a></p>
+<h2 id="unreleased"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD">Unreleased</a><a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.2...HEAD">Full Changelog</a></p>
+<p>This release adds the ability to include or exclude particular providers from queries with the <code>OptimadeClient</code> class and <code>optimade-get</code> CLI, via the provider's registered prefix (#1412)</p>
+<p>For example: </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Only query databases served by the example providers</span>
+optimade-get --include-providers exmpl,optimade
+<span class="c1"># Exclude example providers from global list</span>
+optimade-get --exclude-providers exmpl,optimade
+</code></pre></div>
+<p>You can also now exclude particular databases by their URLs:
+<div class="highlight"><pre><span></span><code><span class="c1"># Exclude specific example databases</span>
+optimade-get --exclude-databases https://example.org/optimade,https://optimade.org/example
+</code></pre></div></p>
+<p>The release also includes some server enhancements and fixes:
+- Caching of <code>/info/</code> and <code>/info/&lt;entry&gt;</code> endpoint responses (#1433)
+- A bugfix for the entry mapper classes, which were sharing cache resources globally leading to poor utilization (#1435)</p>
+<h2 id="v0202-2022-12-21"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.2">v0.20.2</a> (2022-12-21)<a class="headerlink" href="#v0202-2022-12-21" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.1...v0.20.2">Full Changelog</a></p>
+<p>This release adds the ability to include or exclude particular providers from queries with the <code>OptimadeClient</code> class and <code>optimade-get</code> CLI, via the provider's registered prefix (#1412)</p>
+<p>For example: </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Only query databases served by the example providers</span>
+optimade-get --include-providers exmpl,optimade
+<span class="c1"># Exclude example providers from global list</span>
+optimade-get --exclude-providers exmpl,optimade
+</code></pre></div>
+<p>You can also now exclude particular databases by their URLs:
+<div class="highlight"><pre><span></span><code><span class="c1"># Exclude specific example databases</span>
+optimade-get --exclude-databases https://example.org/optimade,https://optimade.org/example
+</code></pre></div></p>
+<p>The release also includes some server enhancements and fixes:
+- Caching of <code>/info/</code> and <code>/info/&lt;entry&gt;</code> endpoint responses (#1433)
+- A bugfix for the entry mapper classes, which were sharing cache resources globally leading to poor utilization (#1435)</p>
 <p><strong>Implemented enhancements:</strong></p>
 <ul>
 <li>Cache <code>/info</code> and <code>/info/&lt;entry&gt;</code> responses <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1433">#1433</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
