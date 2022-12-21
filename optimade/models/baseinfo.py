@@ -1,10 +1,10 @@
 # pylint: disable=no-self-argument,no-name-in-module
 import re
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from pydantic import AnyHttpUrl, BaseModel, Field, root_validator, validator
 
-from optimade.models.jsonapi import Resource
+from optimade.models.jsonapi import Link, Resource
 from optimade.models.utils import SemanticVersion, StrictField
 
 __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
@@ -77,6 +77,21 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
     entry_types_by_format: Dict[str, List[str]] = StrictField(
         ..., description="Available entry endpoints as a function of output formats."
+    )
+    license: Union[Link, AnyHttpUrl] = StrictField(
+        ...,
+        description="""A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) giving a URL to a web page containing a human-readable text describing the license (or licensing options if there are multiple) covering all the data and metadata provided by this database.
+Clients are advised not to try automated parsing of this link or its content, but rather rely on the field `available_licenses` instead.""",
+    )
+    available_licenses: Optional[List[str]] = StrictField(
+        ...,
+        description="""List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of alternative licenses under which the client is granted access to all the data and metadata in this database.
+
+If the data and metadata is available under multiple alternative licenses, identifiers of these multiple licenses SHOULD be provided to let clients know under which conditions the data and metadata can be used.
+Inclusion of a license identifier in the list is a commitment of the database that the rights are in place to grant clients access to all the data and metadata according to the terms of either of these licenses (at the choice of the client).
+If the licensing information provided via the field `license` omits licensing options specified in `available_licenses`, or if it otherwise contradicts them, a client MUST still be allowed to interpret the inclusion of a license in `available_licenses` as a full commitment from the database that the data and metadata is available, without exceptions, under the respective licenses.
+If the database cannot make that commitment, e.g., if only part of the data is available under a license, the corresponding license identifier MUST NOT appear in `available_licenses` (but, rather, the field `license` is to be used to clarify the licensing situation.)
+An empty list indicates that none of the SPDX licenses apply for the entirety of the database and that the licensing situation is clarified in human readable form in the field `license`.""",
     )
     is_index: Optional[bool] = StrictField(
         default=False,

@@ -44,6 +44,8 @@ def get_info(request: Request) -> InfoResponse:
                 available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS.keys()),
                 entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
                 is_index=False,
+                license={"href": f"https://spdx.org/licenses/{CONFIG.license}"},
+                available_licenses=[CONFIG.license],
             ),
         )
 

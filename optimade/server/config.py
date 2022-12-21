@@ -280,6 +280,13 @@ class ServerConfig(BaseSettings):
         ),
     )
 
+    license: str = Field(
+        "CC-BY-4.0",
+        description="""The SPDX license identifier that will be linked to by the server under the info field `license`.
+The `license` field value will be constructed from this identifier preprended with `https://spdx.org/licenses/CC-BY-4.0`, and the identifier will also be added to the `available_licenses` field directly.
+There is currently no support for providing a full list of identifiers to be served at `available_licenses`.""",
+    )
+
     log_level: LogLevel = Field(
         LogLevel.INFO, description="Logging level for the OPTIMADE server."
     )
