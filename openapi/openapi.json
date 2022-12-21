@@ -3280,6 +3280,12 @@
             "type": "string",
             "description": "response string from the server"
           },
+          "request_delay": {
+            "title": "Request Delay",
+            "minimum": 0.0,
+            "type": "number",
+            "description": "A non-negative float giving time in seconds that the client is suggested to wait before issuing a subsequent request."
+          },
           "implementation": {
             "title": "Implementation",
             "allOf": [
