@@ -6,7 +6,7 @@
 
 This release adds the ability to include or exclude particular providers from queries with the `OptimadeClient` class and `optimade-get` CLI, via the provider's registered prefix (#1412)
 
-For example: 
+For example:
 
 ```shell
 # Only query databases served by the example providers
@@ -31,7 +31,7 @@ The release also includes some server enhancements and fixes:
 
 This release adds the ability to include or exclude particular providers from queries with the `OptimadeClient` class and `optimade-get` CLI, via the provider's registered prefix (#1412)
 
-For example: 
+For example:
 
 ```shell
 # Only query databases served by the example providers
