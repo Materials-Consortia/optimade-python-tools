@@ -2168,7 +2168,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResourceMapper</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Generic Resource Mapper that defines and performs the mapping</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic Resource Mapper that defines and performs the mapping</span>
 <span class="sd">    between objects in the database and the resource objects defined by</span>
 <span class="sd">    the specification.</span>
 
@@ -2213,7 +2213,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
 <span class="sd">        including those defined by the server config. The first member</span>
 <span class="sd">        of each tuple is the OPTIMADE-compliant field name, the second</span>
 <span class="sd">        is the backend-specific field name.</span>
@@ -2246,7 +2246,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classproperty</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">SUPPORTED_PREFIXES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;A set of prefixes handled by this entry type.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A set of prefixes handled by this entry type.</span>
 
 <span class="sd">        !!! note</span>
 <span class="sd">            This implementation only includes the provider prefix,</span>
@@ -2261,7 +2261,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
     <span class="nd">@classproperty</span>
     <span class="k">def</span> <span class="nf">ALL_ATTRIBUTES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns all attributes served by this entry.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all attributes served by this entry.&quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">optimade.server.config</span> <span class="kn">import</span> <span class="n">CONFIG</span>
 
         <span class="k">return</span> <span class="p">(</span>
@@ -2281,7 +2281,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
     <span class="nd">@classproperty</span>
     <span class="k">def</span> <span class="nf">ENTRY_RESOURCE_ATTRIBUTES</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the dictionary of attributes defined by the underlying entry resource class.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dictionary of attributes defined by the underlying entry resource class.&quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">optimade.server.schemas</span> <span class="kn">import</span> <span class="n">retrieve_queryable_properties</span>
 
         <span class="k">return</span> <span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="o">.</span><span class="n">schema</span><span class="p">())</span>
@@ -2289,7 +2289,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classproperty</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">ENDPOINT</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the expected endpoint for this mapper, corresponding</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the expected endpoint for this mapper, corresponding</span>
 <span class="sd">        to the `type` property of the resource class.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2303,7 +2303,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
 <span class="sd">        including those defined by the server config.</span>
 
 <span class="sd">        Returns:</span>
@@ -2319,7 +2319,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">length_alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the length alias for the particular field,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the length alias for the particular field,</span>
 <span class="sd">        or `None` if no such alias is found.</span>
 
 <span class="sd">        Parameters:</span>
@@ -2334,7 +2334,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_backend_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">optimade_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return the field name configured for the particular</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the field name configured for the particular</span>
 <span class="sd">        underlying database for the passed OPTIMADE field name, that would</span>
 <span class="sd">        be used in an API filter.</span>
 
@@ -2369,7 +2369,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return aliased field name.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return aliased field name.</span>
 
 <span class="sd">        !!! warning &quot;Deprecated&quot;</span>
 <span class="sd">            This method is deprecated could be removed without further warning. Please use</span>
@@ -2391,7 +2391,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_optimade_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return the corresponding OPTIMADE field name for the underlying database field,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the corresponding OPTIMADE field name for the underlying database field,</span>
 <span class="sd">        ready to be used to construct the OPTIMADE-compliant JSON response.</span>
 
 <span class="sd">        Aliases are read from</span>
@@ -2419,7 +2419,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">alias_of</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return de-aliased field name, if it exists,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return de-aliased field name, if it exists,</span>
 <span class="sd">        otherwise return the input field name.</span>
 
 <span class="sd">        !!! warning &quot;Deprecated&quot;</span>
@@ -2442,7 +2442,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="nd">@classmethod</span>
     <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">get_required_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            REQUIRED response fields.</span>
@@ -2452,7 +2452,7 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE.</span>
 
 <span class="sd">        Starting from a MongoDB document `doc`, map the DB fields to the corresponding OPTIMADE fields.</span>
 <span class="sd">        Then, the fields are all added to the top-level field &quot;attributes&quot;,</span>
@@ -2544,7 +2544,7 @@ ENTRY_RESOURCE_CLASS            (<a class="autorefs autorefs-internal" title="op
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -2668,7 +2668,7 @@ ENTRY_RESOURCE_CLASS            (<a class="autorefs autorefs-internal" title="op
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return aliased field name.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return aliased field name.</span>
 
 <span class="sd">    !!! warning &quot;Deprecated&quot;</span>
 <span class="sd">        This method is deprecated could be removed without further warning. Please use</span>
@@ -2756,7 +2756,7 @@ otherwise return the input field name.</p>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">alias_of</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return de-aliased field name, if it exists,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return de-aliased field name, if it exists,</span>
 <span class="sd">    otherwise return the input field name.</span>
 
 <span class="sd">    !!! warning &quot;Deprecated&quot;</span>
@@ -2823,7 +2823,7 @@ is the backend-specific field name.</p>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">all_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns all of the associated aliases for this entry type,</span>
 <span class="sd">    including those defined by the server config. The first member</span>
 <span class="sd">    of each tuple is the OPTIMADE-compliant field name, the second</span>
 <span class="sd">    is the backend-specific field name.</span>
@@ -2898,7 +2898,7 @@ including those defined by the server config.</p>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">all_length_aliases</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns all of the associated length aliases for this class,</span>
 <span class="sd">    including those defined by the server config.</span>
 
 <span class="sd">    Returns:</span>
@@ -2991,7 +2991,7 @@ will return <code>kinds.mass</code>.</p>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_backend_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">optimade_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return the field name configured for the particular</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the field name configured for the particular</span>
 <span class="sd">    underlying database for the passed OPTIMADE field name, that would</span>
 <span class="sd">    be used in an API filter.</span>
 
@@ -3098,7 +3098,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_optimade_field</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return the corresponding OPTIMADE field name for the underlying database field,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the corresponding OPTIMADE field name for the underlying database field,</span>
 <span class="sd">    ready to be used to construct the OPTIMADE-compliant JSON response.</span>
 
 <span class="sd">    Aliases are read from</span>
@@ -3167,7 +3167,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="n">NUM_ENTRY_TYPES</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_required_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get REQUIRED response fields.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        REQUIRED response fields.</span>
@@ -3239,7 +3239,7 @@ or <code>None</code> if no such alias is found.</p>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">length_alias_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Returns the length alias for the particular field,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the length alias for the particular field,</span>
 <span class="sd">    or `None` if no such alias is found.</span>
 
 <span class="sd">    Parameters:</span>
@@ -3318,7 +3318,7 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE.</span>
 
 <span class="sd">    Starting from a MongoDB document `doc`, map the DB fields to the corresponding OPTIMADE fields.</span>
 <span class="sd">    Then, the fields are all added to the top-level field &quot;attributes&quot;,</span>
@@ -3400,7 +3400,7 @@ with some tweaks to allow mkdocstrings to do its thing.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">classproperty</span><span class="p">(</span><span class="nb">property</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A simple extension of the property decorator that binds to types</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple extension of the property decorator that binds to types</span>
 <span class="sd">    rather than instances.</span>
 
 <span class="sd">    Modelled on this [StackOverflow answer](https://stackoverflow.com/a/5192374)</span>

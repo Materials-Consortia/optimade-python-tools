@@ -1916,44 +1916,44 @@ This guide will briefly outline how to parse OPTIMADE filter strings into databa
 <span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;nelements&lt;3&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>Tree<span class="o">(</span><span class="s1">&#39;filter&#39;</span>, <span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression&#39;</span>, <span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression_clause&#39;</span>, <span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression_phrase&#39;</span>, <span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;comparison&#39;</span>, <span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;property_first_comparison&#39;</span>, <span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;property&#39;</span>, <span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;IDENTIFIER&#39;</span>, <span class="s1">&#39;nelements&#39;</span><span class="o">)])</span>, Tree<span class="o">(</span><span class="s1">&#39;value_op_rhs&#39;</span>, <span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;OPERATOR&#39;</span>, <span class="s1">&#39;&lt;&#39;</span><span class="o">)</span>, Tree<span class="o">(</span><span class="s1">&#39;value&#39;</span>, <span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;number&#39;</span>, <span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;SIGNED_INT&#39;</span>, <span class="s1">&#39;3&#39;</span><span class="o">)])])])])])])])])])</span>
+<div class="highlight"><pre><span></span><code>Tree<span class="o">(</span><span class="s1">&#39;filter&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression_clause&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression_phrase&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;comparison&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;property_first_comparison&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;property&#39;</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;IDENTIFIER&#39;</span>,<span class="w"> </span><span class="s1">&#39;nelements&#39;</span><span class="o">)])</span>,<span class="w"> </span>Tree<span class="o">(</span><span class="s1">&#39;value_op_rhs&#39;</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;OPERATOR&#39;</span>,<span class="w"> </span><span class="s1">&#39;&lt;&#39;</span><span class="o">)</span>,<span class="w"> </span>Tree<span class="o">(</span><span class="s1">&#39;value&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;number&#39;</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;SIGNED_INT&#39;</span>,<span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="o">)])])])])])])])])])</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>filter
-  expression
-    expression_clause
-      expression_phrase
-        comparison
-          property_first_comparison
-            property nelements
-            value_op_rhs
-              &lt;
-              value
-                number <span class="m">3</span>
+<span class="w">  </span>expression
+<span class="w">    </span>expression_clause
+<span class="w">      </span>expression_phrase
+<span class="w">        </span>comparison
+<span class="w">          </span>property_first_comparison
+<span class="w">            </span>property<span class="w"> </span>nelements
+<span class="w">            </span>value_op_rhs
+<span class="w">              </span>&lt;
+<span class="w">              </span>value
+<span class="w">                </span>number<span class="w"> </span><span class="m">3</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;_mp_bandgap &gt; 5.0 AND _cod_molecular_weight &lt; 350&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>filter
-  expression
-    expression_clause
-      expression_phrase
-        comparison
-          property_first_comparison
-            property _mp_bandgap
-            value_op_rhs
-              &gt;
-              value
-                number <span class="m">5</span>.0
-      expression_phrase
-        comparison
-          property_first_comparison
-            property _cod_molecular_weight
-            value_op_rhs
-              &lt;
-              value
-                number <span class="m">350</span>
+<span class="w">  </span>expression
+<span class="w">    </span>expression_clause
+<span class="w">      </span>expression_phrase
+<span class="w">        </span>comparison
+<span class="w">          </span>property_first_comparison
+<span class="w">            </span>property<span class="w"> </span>_mp_bandgap
+<span class="w">            </span>value_op_rhs
+<span class="w">              </span>&gt;
+<span class="w">              </span>value
+<span class="w">                </span>number<span class="w"> </span><span class="m">5</span>.0
+<span class="w">      </span>expression_phrase
+<span class="w">        </span>comparison
+<span class="w">          </span>property_first_comparison
+<span class="w">            </span>property<span class="w"> </span>_cod_molecular_weight
+<span class="w">            </span>value_op_rhs
+<span class="w">              </span>&lt;
+<span class="w">              </span>value
+<span class="w">                </span>number<span class="w"> </span><span class="m">350</span>
 </code></pre></div>
 <h2 id="flow-for-parsing-a-user-supplied-filter-and-converting-to-a-backend-query">Flow for parsing a user-supplied filter and converting to a backend query<a class="headerlink" href="#flow-for-parsing-a-user-supplied-filter-and-converting-to-a-backend-query" title="Permanent link">&para;</a></h2>
 <p>After the <a class="autorefs autorefs-internal" href="../../api_reference/filterparser/lark_parser/#optimade.filterparser.lark_parser.LarkParser"><code>LarkParser</code></a> has turned the filter string into a <code>lark.Tree</code>, it is fed to a <code>lark.Transformer</code> instance, which transforms the 'lark.Tree' into a backend-specific representation of the query.
@@ -1967,12 +1967,12 @@ For example, <a class="autorefs autorefs-internal" href="../../api_reference/fil
 <span class="n">query</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;$and&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="nt">&quot;_mp_bandgap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;$gt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span><span class="p">}},</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="nt">&quot;_cod_molecular_weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;$lt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">350.0</span><span class="p">}}</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;$and&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;_mp_bandgap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;$gt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span><span class="p">}},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;_cod_molecular_weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;$lt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">350.0</span><span class="p">}}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="developing-new-filter-transformers">Developing new filter transformers<a class="headerlink" href="#developing-new-filter-transformers" title="Permanent link">&para;</a></h2>
 <p>In order to support a new backend, you will need to create a new filter transformer that inherits from the <a class="autorefs autorefs-internal" href="../../api_reference/filtertransformers/base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer"><code>BaseTransformer</code></a>.

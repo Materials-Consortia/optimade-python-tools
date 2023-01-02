@@ -1840,63 +1840,63 @@ The validator is dynamic and fuzzy, in that the tested filters are generated bas
 </ol>
 <p>To run the script, simply provide an OPTIMADE URL to the script at the command-line.
 You can use the following to validate the Heroku deployment of our reference server:</p>
-<div class="highlight"><pre><span></span><code>$ optimade-validator https://optimade.fly.dev/
-Testing entire implementation at https://optimade.fly.dev
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>optimade-validator<span class="w"> </span>https://optimade.fly.dev/
+Testing<span class="w"> </span>entire<span class="w"> </span>implementation<span class="w"> </span>at<span class="w"> </span>https://optimade.fly.dev
 ...
 </code></pre></div>
 <p>Several additional options can be found under the <code>--help</code> flag, with the most important being <code>-v/-vvvv</code> to set the verbosity, <code>--index</code> to validate OPTIMADE index meta-databases and <code>--json</code> to receive the validation results as JSON document for programmatic use.</p>
-<div class="highlight"><pre><span></span><code>$ optimade-validator --help
-usage: optimade-validator <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-j<span class="o">]</span> <span class="o">[</span>-t AS_TYPE<span class="o">]</span> <span class="o">[</span>--index<span class="o">]</span>
-                          <span class="o">[</span>--skip-optional<span class="o">]</span> <span class="o">[</span>--fail-fast<span class="o">]</span> <span class="o">[</span>-m<span class="o">]</span>
-                          <span class="o">[</span>--page_limit PAGE_LIMIT<span class="o">]</span>
-                          <span class="o">[</span>--headers HEADERS<span class="o">]</span>
-                          <span class="o">[</span>base_url<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>optimade-validator<span class="w"> </span>--help
+usage:<span class="w"> </span>optimade-validator<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-v<span class="o">]</span><span class="w"> </span><span class="o">[</span>-j<span class="o">]</span><span class="w"> </span><span class="o">[</span>-t<span class="w"> </span>AS_TYPE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--index<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--skip-optional<span class="o">]</span><span class="w"> </span><span class="o">[</span>--fail-fast<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--page_limit<span class="w"> </span>PAGE_LIMIT<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--headers<span class="w"> </span>HEADERS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>base_url<span class="o">]</span>
 
-Tests OPTIMADE implementations <span class="k">for</span> compliance with the optimade-python-tools models.
+Tests<span class="w"> </span>OPTIMADE<span class="w"> </span>implementations<span class="w"> </span><span class="k">for</span><span class="w"> </span>compliance<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>optimade-python-tools<span class="w"> </span>models.
 
-- To <span class="nb">test</span> an entire implementation <span class="o">(</span>at say example.com/optimade/v1<span class="o">)</span> <span class="k">for</span> all required/available endpoints:
+-<span class="w"> </span>To<span class="w"> </span><span class="nb">test</span><span class="w"> </span>an<span class="w"> </span>entire<span class="w"> </span>implementation<span class="w"> </span><span class="o">(</span>at<span class="w"> </span>say<span class="w"> </span>example.com/optimade/v1<span class="o">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>all<span class="w"> </span>required/available<span class="w"> </span>endpoints:
 
-    $ optimade-validator http://example.com/optimade/v1
+<span class="w">    </span>$<span class="w"> </span>optimade-validator<span class="w"> </span>http://example.com/optimade/v1
 
-- To <span class="nb">test</span> a particular response of an implementation against a particular model:
+-<span class="w"> </span>To<span class="w"> </span><span class="nb">test</span><span class="w"> </span>a<span class="w"> </span>particular<span class="w"> </span>response<span class="w"> </span>of<span class="w"> </span>an<span class="w"> </span>implementation<span class="w"> </span>against<span class="w"> </span>a<span class="w"> </span>particular<span class="w"> </span>model:
 
-    $ optimade-validator http://example.com/optimade/v1/structures/id<span class="o">=</span><span class="m">1234</span> --as-type structure
+<span class="w">    </span>$<span class="w"> </span>optimade-validator<span class="w"> </span>http://example.com/optimade/v1/structures/id<span class="o">=</span><span class="m">1234</span><span class="w"> </span>--as-type<span class="w"> </span>structure
 
-- To <span class="nb">test</span> a particular response of an implementation against a particular model:
+-<span class="w"> </span>To<span class="w"> </span><span class="nb">test</span><span class="w"> </span>a<span class="w"> </span>particular<span class="w"> </span>response<span class="w"> </span>of<span class="w"> </span>an<span class="w"> </span>implementation<span class="w"> </span>against<span class="w"> </span>a<span class="w"> </span>particular<span class="w"> </span>model:
 
-    $ optimade-validator http://example.com/optimade/v1/structures --as-type structures
+<span class="w">    </span>$<span class="w"> </span>optimade-validator<span class="w"> </span>http://example.com/optimade/v1/structures<span class="w"> </span>--as-type<span class="w"> </span>structures
 
 
-positional arguments:
-  base_url              The base URL of the OPTIMADE
-                        implementation to point at, e.g.
-                        <span class="s1">&#39;http://example.com/optimade/v1&#39;</span> or
-                        <span class="s1">&#39;http://localhost:5000/v1&#39;</span>
+positional<span class="w"> </span>arguments:
+<span class="w">  </span>base_url<span class="w">              </span>The<span class="w"> </span>base<span class="w"> </span>URL<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>OPTIMADE
+<span class="w">                        </span>implementation<span class="w"> </span>to<span class="w"> </span>point<span class="w"> </span>at,<span class="w"> </span>e.g.
+<span class="w">                        </span><span class="s1">&#39;http://example.com/optimade/v1&#39;</span><span class="w"> </span>or
+<span class="w">                        </span><span class="s1">&#39;http://localhost:5000/v1&#39;</span>
 
-optional arguments:
-  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
-  -v, --verbosity       Increase the verbosity of the output.
-                        <span class="o">(</span>-v: warning, -vv: info, -vvv: debug<span class="o">)</span>
-  -j, --json            Only a JSON summary of the validator
-                        results will be printed to stdout.
-  -t AS_TYPE, --as-type AS_TYPE
-                        Validate the request URL with the
-                        provided type, rather than scanning the
-                        entire implementation e.g. optimade-
-                        validator <span class="sb">`</span>http://example.com/optimade/v1
-                        /structures/0 --as-type structure<span class="sb">`</span>
-  --index               Flag <span class="k">for</span> whether the specified OPTIMADE
-                        implementation is an Index meta-database
-                        or not.
-  --skip-optional       Flag <span class="k">for</span> whether the skip the tests of
-                        optional features.
-  --fail-fast           Whether to <span class="nb">exit</span> on first <span class="nb">test</span> failure.
-  -m, --minimal         Run only a minimal <span class="nb">test</span> set.
-  --page_limit PAGE_LIMIT
-                        Alter the requested page limit <span class="k">for</span> some
-                        tests.
-  --headers HEADERS     Additional HTTP headers to use <span class="k">for</span> each
-                        request, specified as a JSON object.
+optional<span class="w"> </span>arguments:
+<span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<span class="w">  </span>-v,<span class="w"> </span>--verbosity<span class="w">       </span>Increase<span class="w"> </span>the<span class="w"> </span>verbosity<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>output.
+<span class="w">                        </span><span class="o">(</span>-v:<span class="w"> </span>warning,<span class="w"> </span>-vv:<span class="w"> </span>info,<span class="w"> </span>-vvv:<span class="w"> </span>debug<span class="o">)</span>
+<span class="w">  </span>-j,<span class="w"> </span>--json<span class="w">            </span>Only<span class="w"> </span>a<span class="w"> </span>JSON<span class="w"> </span>summary<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>validator
+<span class="w">                        </span>results<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>printed<span class="w"> </span>to<span class="w"> </span>stdout.
+<span class="w">  </span>-t<span class="w"> </span>AS_TYPE,<span class="w"> </span>--as-type<span class="w"> </span>AS_TYPE
+<span class="w">                        </span>Validate<span class="w"> </span>the<span class="w"> </span>request<span class="w"> </span>URL<span class="w"> </span>with<span class="w"> </span>the
+<span class="w">                        </span>provided<span class="w"> </span>type,<span class="w"> </span>rather<span class="w"> </span>than<span class="w"> </span>scanning<span class="w"> </span>the
+<span class="w">                        </span>entire<span class="w"> </span>implementation<span class="w"> </span>e.g.<span class="w"> </span>optimade-
+<span class="w">                        </span>validator<span class="w"> </span><span class="sb">`</span>http://example.com/optimade/v1
+<span class="w">                        </span>/structures/0<span class="w"> </span>--as-type<span class="w"> </span>structure<span class="sb">`</span>
+<span class="w">  </span>--index<span class="w">               </span>Flag<span class="w"> </span><span class="k">for</span><span class="w"> </span>whether<span class="w"> </span>the<span class="w"> </span>specified<span class="w"> </span>OPTIMADE
+<span class="w">                        </span>implementation<span class="w"> </span>is<span class="w"> </span>an<span class="w"> </span>Index<span class="w"> </span>meta-database
+<span class="w">                        </span>or<span class="w"> </span>not.
+<span class="w">  </span>--skip-optional<span class="w">       </span>Flag<span class="w"> </span><span class="k">for</span><span class="w"> </span>whether<span class="w"> </span>the<span class="w"> </span>skip<span class="w"> </span>the<span class="w"> </span>tests<span class="w"> </span>of
+<span class="w">                        </span>optional<span class="w"> </span>features.
+<span class="w">  </span>--fail-fast<span class="w">           </span>Whether<span class="w"> </span>to<span class="w"> </span><span class="nb">exit</span><span class="w"> </span>on<span class="w"> </span>first<span class="w"> </span><span class="nb">test</span><span class="w"> </span>failure.
+<span class="w">  </span>-m,<span class="w"> </span>--minimal<span class="w">         </span>Run<span class="w"> </span>only<span class="w"> </span>a<span class="w"> </span>minimal<span class="w"> </span><span class="nb">test</span><span class="w"> </span>set.
+<span class="w">  </span>--page_limit<span class="w"> </span>PAGE_LIMIT
+<span class="w">                        </span>Alter<span class="w"> </span>the<span class="w"> </span>requested<span class="w"> </span>page<span class="w"> </span>limit<span class="w"> </span><span class="k">for</span><span class="w"> </span>some
+<span class="w">                        </span>tests.
+<span class="w">  </span>--headers<span class="w"> </span>HEADERS<span class="w">     </span>Additional<span class="w"> </span>HTTP<span class="w"> </span>headers<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span><span class="k">for</span><span class="w"> </span>each
+<span class="w">                        </span>request,<span class="w"> </span>specified<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>JSON<span class="w"> </span>object.
 </code></pre></div>
 
 

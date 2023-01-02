@@ -1938,7 +1938,7 @@
     <span class="n">response_class</span><span class="o">=</span><span class="n">CsvResponse</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_versions</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CsvResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Respond with the text/csv representation for the served versions.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Respond with the text/csv representation for the served versions.&quot;&quot;&quot;</span>
     <span class="n">version</span> <span class="o">=</span> <span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/v&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;version</span><span class="se">\n</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">return</span> <span class="n">CsvResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>

@@ -2090,7 +2090,7 @@ Client        </code>
         <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span>
         <span class="n">read_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialises the Client with the given `base_url` without testing</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises the Client with the given `base_url` without testing</span>
 <span class="sd">        if it is valid.</span>
 
 <span class="sd">        Parameters:</span>
@@ -2121,7 +2121,7 @@ Client        </code>
         <span class="bp">self</span><span class="o">.</span><span class="n">read_timeout</span> <span class="o">=</span> <span class="n">read_timeout</span> <span class="ow">or</span> <span class="n">DEFAULT_READ_TIMEOUT</span>
 
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Makes the given request, with a number of retries if being rate limited. The</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Makes the given request, with a number of retries if being rate limited. The</span>
 <span class="sd">        request will be prepended with the `base_url` unless the request appears to be an</span>
 <span class="sd">        absolute URL (i.e. starts with `http://` or `https://`).</span>
 
@@ -2276,7 +2276,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
     <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span>
     <span class="n">read_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Initialises the Client with the given `base_url` without testing</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialises the Client with the given `base_url` without testing</span>
 <span class="sd">    if it is valid.</span>
 
 <span class="sd">    Parameters:</span>
@@ -2386,7 +2386,7 @@ the <code>MAX_RETRIES</code> attempts.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Makes the given request, with a number of retries if being rate limited. The</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes the given request, with a number of retries if being rate limited. The</span>
 <span class="sd">    request will be prepended with the `base_url` unless the request appears to be an</span>
 <span class="sd">    absolute URL (i.e. starts with `http://` or `https://`).</span>
 
@@ -2487,7 +2487,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">InternalError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This exception should be raised when validation throws an unexpected error.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This exception should be raised when validation throws an unexpected error.</span>
 <span class="sd">    These should be counted separately from `ResponseError`&#39;s and `ValidationError`&#39;s.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2521,7 +2521,7 @@ ResponseError            (<span title="Exception">Exception</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This exception should be raised for a manual hardcoded test failure.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This exception should be raised for a manual hardcoded test failure.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
 
@@ -2557,7 +2557,7 @@ ResponseError            (<span title="Exception">Exception</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_failure</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Print but sad.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print but sad.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[91m</span><span class="se">\033</span><span class="s2">[1m</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -2584,7 +2584,7 @@ ResponseError            (<span title="Exception">Exception</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_notify</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Print but louder.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print but louder.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[94m</span><span class="se">\033</span><span class="s2">[1m</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -2611,7 +2611,7 @@ ResponseError            (<span title="Exception">Exception</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_success</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Print but happy.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print but happy.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m</span><span class="se">\033</span><span class="s2">[1m</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -2638,7 +2638,7 @@ ResponseError            (<span title="Exception">Exception</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">print_warning</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Print but angry.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print but angry.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[93m</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -2694,7 +2694,7 @@ that the test was not appropriate and should be ignored.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_case</span><span class="p">(</span><span class="n">test_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]):</span>
-    <span class="sd">&quot;&quot;&quot;Wrapper for test case functions, which pretty-prints any errors</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for test case functions, which pretty-prints any errors</span>
 <span class="sd">    depending on verbosity level, collates the number and severity of</span>
 <span class="sd">    test failures, returns the response and summary string to the caller.</span>
 <span class="sd">    Any additional positional or keyword arguments are passed directly</span>
@@ -2721,7 +2721,7 @@ that the test was not appropriate and should be ignored.</p></td>
         <span class="n">multistage</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wraps a function or validator method and handles</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wraps a function or validator method and handles</span>
 <span class="sd">        success, failure and output depending on the keyword</span>
 <span class="sd">        arguments passed.</span>
 

@@ -2167,7 +2167,7 @@ trees into Elasticsearch queries.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ElasticTransformer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Transformer that transforms ``v0.10.1``/`v1.0` grammar parse</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transformer that transforms ``v0.10.1``/`v1.0` grammar parse</span>
 <span class="sd">    trees into Elasticsearch queries.</span>
 
 <span class="sd">    Uses elasticsearch_dsl and will produce an `elasticsearch_dsl.Q` instance.</span>
@@ -2196,7 +2196,7 @@ trees into Elasticsearch queries.</p>
     <span class="k">def</span> <span class="nf">_field</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">],</span> <span class="n">nested</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Used to unwrap from `property` to the string backend field name.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to unwrap from `property` to the string backend field name.</span>
 
 <span class="sd">        If passed a `Quantity` (or a derived `ElasticsearchQuantity`), this method</span>
 <span class="sd">        returns the backend field name, modulo some handling of nested fields.</span>
@@ -2238,7 +2238,7 @@ trees into Elasticsearch queries.</p>
         <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
         <span class="n">nested</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ElasticsearchQuantity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Q</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return a range, match, or term query for the given quantity, comparison</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a range, match, or term query for the given quantity, comparison</span>
 <span class="sd">        operator, and value.</span>
 
 <span class="sd">        Returns:</span>
@@ -2276,7 +2276,7 @@ trees into Elasticsearch queries.</p>
             <span class="k">return</span> <span class="o">~</span><span class="n">Q</span><span class="p">(</span><span class="n">query_type</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;exists&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_has_query_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">predicate_zip_list</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a bool query that combines the operator calls `_query_op`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a bool query that combines the operator calls `_query_op`</span>
 <span class="sd">        for each predicate and zipped quantity predicate combination.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS&quot;</span><span class="p">:</span>
@@ -2341,7 +2341,7 @@ trees into Elasticsearch queries.</p>
         <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">kind</span><span class="p">:</span> <span class="n">queries</span><span class="p">})</span>
 
     <span class="k">def</span> <span class="nf">_has_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">,</span> <span class="n">predicates</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a bool query that combines the operator queries ():func:`_query_op`)</span>
 <span class="sd">        for quantity pericate combination.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2377,7 +2377,7 @@ trees into Elasticsearch queries.</p>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
@@ -2587,7 +2587,7 @@ trees into Elasticsearch queries.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
         </details>
@@ -3090,7 +3090,7 @@ work for quantities that share the same nested object quantity.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ElasticsearchQuantity</span><span class="p">(</span><span class="n">Quantity</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Elasticsearch-specific extension of the underlying</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Elasticsearch-specific extension of the underlying</span>
 <span class="sd">    [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] class.</span>
 
 <span class="sd">    Attributes:</span>
@@ -3130,7 +3130,7 @@ work for quantities that share the same nested object quantity.</p></td>
         <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialise the quantity from its name, aliases and mapping type.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the quantity from its name, aliases and mapping type.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            name: The name of the quantity as used in the filter expressions.</span>
@@ -3264,7 +3264,7 @@ work for quantities that share the same nested object quantity.</p></td>
     <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Initialise the quantity from its name, aliases and mapping type.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the quantity from its name, aliases and mapping type.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        name: The name of the quantity as used in the filter expressions.</span>

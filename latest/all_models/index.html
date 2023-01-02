@@ -5899,7 +5899,7 @@ AvailableApiVersion            (<span title="pydantic.main.BaseModel">BaseModel<
         <details class="quote">
           <summary>Source code in <code>optimade/models/baseinfo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AvailableApiVersion</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A JSON object containing information about an available API version&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A JSON object containing information about an available API version&quot;&quot;&quot;</span>
 
     <span class="n">url</span><span class="p">:</span> <span class="n">AnyHttpUrl</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -5916,14 +5916,14 @@ AvailableApiVersion            (<span title="pydantic.main.BaseModel">BaseModel<
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">url_must_be_versioned_base_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The URL must be a valid versioned Base URL&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The URL must be a valid versioned Base URL&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.+/v[0-1](\.[0-9]+)*/?$&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;url MUST be a versioned base URL. It is: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">crosscheck_url_and_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
         <span class="n">url_version</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">values</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
             <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -6025,7 +6025,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
           <summary>Source code in <code>optimade/models/baseinfo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">crosscheck_url_and_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
     <span class="n">url_version</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
         <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -6072,7 +6072,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
           <summary>Source code in <code>optimade/models/baseinfo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">url_must_be_versioned_base_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The URL must be a valid versioned Base URL&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The URL must be a valid versioned Base URL&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.+/v[0-1](\.[0-9]+)*/?$&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;url MUST be a versioned base URL. It is: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">v</span>
@@ -6117,7 +6117,7 @@ BaseInfoAttributes            (<span title="pydantic.main.BaseModel">BaseModel</
         <details class="quote">
           <summary>Source code in <code>optimade/models/baseinfo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseInfoAttributes</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint&quot;&quot;&quot;</span>
 
     <span class="n">api_version</span><span class="p">:</span> <span class="n">SemanticVersion</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -6706,7 +6706,7 @@ EntryRelationships            (<a class="autorefs autorefs-internal" title="opti
         <details class="quote">
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryRelationships</span><span class="p">(</span><span class="n">Relationships</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This model wraps the JSON API Relationships to include type-specific top level keys.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This model wraps the JSON API Relationships to include type-specific top level keys.&quot;&quot;&quot;</span>
 
     <span class="n">references</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ReferenceRelationship</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -6809,7 +6809,7 @@ EntryResource            (<a class="autorefs autorefs-internal" title="optimade.
         <details class="quote">
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -6893,7 +6893,7 @@ EntryResourceAttributes            (<a class="autorefs autorefs-internal" title=
         <details class="quote">
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResourceAttributes</span><span class="p">(</span><span class="n">Attributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Contains key-value pairs representing the entry&#39;s properties.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Contains key-value pairs representing the entry&#39;s properties.&quot;&quot;&quot;</span>
 
     <span class="n">immutable_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -6931,7 +6931,7 @@ EntryResourceAttributes            (<a class="autorefs autorefs-internal" title=
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -7055,7 +7055,7 @@ EntryResourceAttributes            (<a class="autorefs autorefs-internal" title=
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -7137,7 +7137,7 @@ DefaultRelationship            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DefaultRelationship</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Enumeration of key(s) for relationship dictionary in IndexInfoResource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of key(s) for relationship dictionary in IndexInfoResource&quot;&quot;&quot;</span>
 
     <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
 </code></pre></div>
@@ -7189,7 +7189,7 @@ IndexInfoAttributes            (<a class="autorefs autorefs-internal" title="opt
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexInfoAttributes</span><span class="p">(</span><span class="n">BaseInfoAttributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint for an Index Meta-Database&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint for an Index Meta-Database&quot;&quot;&quot;</span>
 
     <span class="n">is_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">True</span><span class="p">,</span>
@@ -7228,7 +7228,7 @@ IndexInfoResource            (<a class="autorefs autorefs-internal" title="optim
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexInfoResource</span><span class="p">(</span><span class="n">BaseInfoResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Index Meta-Database Base URL Info endpoint resource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Index Meta-Database Base URL Info endpoint resource&quot;&quot;&quot;</span>
 
     <span class="n">attributes</span><span class="p">:</span> <span class="n">IndexInfoAttributes</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
     <span class="n">relationships</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
@@ -7272,7 +7272,7 @@ IndexRelationship            (<span title="pydantic.main.BaseModel">BaseModel</s
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexRelationship</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Index Meta-Database relationship&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Index Meta-Database relationship&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">RelatedLinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -7351,7 +7351,7 @@ RelatedLinksResource            (<a class="autorefs autorefs-internal" title="op
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RelatedLinksResource</span><span class="p">(</span><span class="n">BaseResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A related Links resource object&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A related Links resource object&quot;&quot;&quot;</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^links$&quot;</span><span class="p">)</span>
 </code></pre></div>
@@ -7429,7 +7429,7 @@ The keys for Attributes MUST NOT be:
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Attributes</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Members of the attributes object (&quot;attributes\&quot;) represent information about the resource object in which it&#39;s defined.</span>
 <span class="sd">    The keys for Attributes MUST NOT be:</span>
 <span class="sd">        relationships</span>
@@ -7500,7 +7500,7 @@ BaseResource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Minimum requirements to represent a Resource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimum requirements to represent a Resource&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Resource ID&quot;</span><span class="p">)</span>
     <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Resource type&quot;</span><span class="p">)</span>
@@ -7508,7 +7508,7 @@ BaseResource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="nd">@staticmethod</span>
         <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">            Note:</span>
 <span class="sd">                This _requires_ that `id` and `type` are the _first_ model fields defined</span>
@@ -7605,7 +7605,7 @@ Config        </code>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            This _requires_ that `id` and `type` are the _first_ model fields defined</span>
@@ -7664,7 +7664,7 @@ for all sub-models of <code>BaseResource</code>.</p>
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        This _requires_ that `id` and `type` are the _first_ model fields defined</span>
@@ -7735,7 +7735,7 @@ Error            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An error response&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An error response&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -8024,7 +8024,7 @@ ErrorLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Links object specific to Error objects&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Links object specific to Error objects&quot;&quot;&quot;</span>
 
     <span class="n">about</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -8100,7 +8100,7 @@ ErrorSource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorSource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;an object containing references to the source of the error&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;an object containing references to the source of the error&quot;&quot;&quot;</span>
 
     <span class="n">pointer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -8203,7 +8203,7 @@ JsonApi            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">JsonApi</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An object describing the server&#39;s implementation&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An object describing the server&#39;s implementation&quot;&quot;&quot;</span>
 
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Version of the json API used&quot;</span>
@@ -8303,7 +8303,7 @@ Link            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A link **MUST** be represented as either: a string containing the link&#39;s URL or a link object.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A link **MUST** be represented as either: a string containing the link&#39;s URL or a link object.&quot;&quot;&quot;</span>
 
     <span class="n">href</span><span class="p">:</span> <span class="n">AnyUrl</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a string containing the link’s URL.&quot;</span><span class="p">)</span>
     <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -8403,7 +8403,7 @@ Meta            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Non-standard meta-information that can not be represented as an attribute or relationship.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Non-standard meta-information that can not be represented as an attribute or relationship.&quot;&quot;&quot;</span>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
@@ -8456,7 +8456,7 @@ Relationship            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Representation references from the resource object in which it’s defined to other resource objects.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation references from the resource object in which it’s defined to other resource objects.&quot;&quot;&quot;</span>
 
     <span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RelationshipLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -8597,7 +8597,7 @@ Relationships can be specified by including a member in a resource's links objec
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RelationshipLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A resource object **MAY** contain references to other resource objects (&quot;relationships&quot;).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A resource object **MAY** contain references to other resource objects (&quot;relationships&quot;).</span>
 <span class="sd">    Relationships may be to-one or to-many.</span>
 <span class="sd">    Relationships can be specified by including a member in a resource&#39;s links object.</span>
 
@@ -8724,7 +8724,7 @@ Keys MUST NOT be:
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationships</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Members of the relationships object (\&quot;relationships\&quot;) represent references from the resource object in which it&#39;s defined to other resource objects.</span>
 <span class="sd">    Keys MUST NOT be:</span>
 <span class="sd">        type</span>
@@ -8789,7 +8789,7 @@ Resource            (<a class="autorefs autorefs-internal" title="optimade.model
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Resource</span><span class="p">(</span><span class="n">BaseResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Resource objects appear in a JSON API document to represent resources.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resource objects appear in a JSON API document to represent resources.&quot;&quot;&quot;</span>
 
     <span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ResourceLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a links object containing links related to the resource.&quot;</span>
@@ -8944,7 +8944,7 @@ ResourceLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResourceLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Resource Links object&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Resource Links object&quot;&quot;&quot;</span>
 
     <span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -9020,7 +9020,7 @@ Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Response</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A top-level response&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A top-level response&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Outputted Data&quot;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span>
@@ -9054,7 +9054,7 @@ Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
 <span class="sd">        [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support</span>
 <span class="sd">        fractional seconds, thus they must be stripped in the response. This can</span>
 <span class="sd">        cause issues when the underlying database contains fields that do include</span>
@@ -9234,7 +9234,7 @@ microseconds, as filters may return unexpected results.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
 <span class="sd">    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support</span>
 <span class="sd">    fractional seconds, thus they must be stripped in the response. This can</span>
 <span class="sd">    cause issues when the underlying database contains fields that do include</span>
@@ -9308,7 +9308,7 @@ ToplevelLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ToplevelLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A set of Links objects, possibly including pagination&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of Links objects, possibly including pagination&quot;&quot;&quot;</span>
 
     <span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A link to itself&quot;</span>
@@ -9333,7 +9333,7 @@ ToplevelLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">check_additional_keys_are_links</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
 <span class="sd">        they are also Links or Urls themselves.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -9515,7 +9515,7 @@ they are also Links or Urls themselves.</p>
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_additional_keys_are_links</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
 <span class="sd">    they are also Links or Urls themselves.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -9598,7 +9598,7 @@ Aggregate            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/links.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Aggregate</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Enumeration of aggregate values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of aggregate values&quot;&quot;&quot;</span>
 
     <span class="n">OK</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span>
     <span class="n">TEST</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
@@ -9653,7 +9653,7 @@ LinkType            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/links.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LinkType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Enumeration of link_type values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of link_type values&quot;&quot;&quot;</span>
 
     <span class="n">CHILD</span> <span class="o">=</span> <span class="s2">&quot;child&quot;</span>
     <span class="n">ROOT</span> <span class="o">=</span> <span class="s2">&quot;root&quot;</span>
@@ -9711,7 +9711,7 @@ LinksResource            (<a class="autorefs autorefs-internal" title="optimade.
         <details class="quote">
           <summary>Source code in <code>optimade/models/links.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LinksResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Links endpoint resource object&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Links endpoint resource object&quot;&quot;&quot;</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="s2">&quot;links&quot;</span><span class="p">,</span>
@@ -9778,7 +9778,7 @@ LinksResourceAttributes            (<a class="autorefs autorefs-internal" title=
         <details class="quote">
           <summary>Source code in <code>optimade/models/links.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LinksResourceAttributes</span><span class="p">(</span><span class="n">Attributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Links endpoint resource object attributes&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Links endpoint resource object attributes&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -10077,7 +10077,7 @@ BaseRelationshipMeta            (<a class="autorefs autorefs-internal" title="op
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Specific meta field for base relationship resource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Specific meta field for base relationship resource&quot;&quot;&quot;</span>
 
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;OPTIONAL human-readable description of the relationship.&quot;</span>
@@ -10153,7 +10153,7 @@ BaseRelationshipResource            (<a class="autorefs autorefs-internal" title
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipResource</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Minimum requirements to represent a relationship resource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimum requirements to represent a relationship resource&quot;&quot;&quot;</span>
 
     <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseRelationshipMeta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -10227,7 +10227,7 @@ DataType            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Optimade Data Types</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimade Data Types</span>
 
 <span class="sd">    See the section &quot;Data types&quot; in the OPTIMADE API specification for more information.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -10243,12 +10243,12 @@ DataType            (<span title="enum.Enum">Enum</span>)
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data types (enum values) as a (sorted) list&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data types (enum values) as a (sorted) list&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">cls</span><span class="p">))</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_python_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">python_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a Python type&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a Python type&quot;&quot;&quot;</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">,</span>
             <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
@@ -10291,7 +10291,7 @@ DataType            (<span title="enum.Enum">Enum</span>)
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a named JSON type&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a named JSON type&quot;&quot;&quot;</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
             <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
@@ -10376,7 +10376,7 @@ Implementation            (<span title="pydantic.main.BaseModel">BaseModel</span
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Information on the server implementation&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the server implementation&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of the implementation&quot;</span><span class="p">)</span>
 
@@ -10583,7 +10583,7 @@ ImplementationMaintainer            (<span title="pydantic.main.BaseModel">BaseM
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationMaintainer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Details about the maintainer of the implementation&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Details about the maintainer of the implementation&quot;&quot;&quot;</span>
 
     <span class="n">email</span><span class="p">:</span> <span class="n">EmailStr</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;the maintainer&#39;s email address&quot;</span><span class="p">)</span>
 </code></pre></div>
@@ -10657,7 +10657,7 @@ OptimadeError            (<a class="autorefs autorefs-internal" title="optimade.
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeError</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Error</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;detail MUST be present&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;detail MUST be present&quot;&quot;&quot;</span>
 
     <span class="n">detail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -10712,7 +10712,7 @@ Provider            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Provider</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Information on the database provider of the implementation.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the database provider of the implementation.&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a short name for the database provider&quot;</span><span class="p">)</span>
 
@@ -10871,7 +10871,7 @@ Relationship            (<a class="autorefs autorefs-internal" title="optimade.m
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Relationship</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource.&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
         <span class="n">Union</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]]</span>
@@ -10914,7 +10914,7 @@ database-provider-specific prefix.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)</span>
 <span class="sd">    that contains JSON API meta objects of non-standard</span>
 <span class="sd">    meta-information.</span>
@@ -11316,7 +11316,7 @@ ResponseMetaQuery            (<span title="pydantic.main.BaseModel">BaseModel</s
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMetaQuery</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Information on the query that was requested.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the query that was requested.&quot;&quot;&quot;</span>
 
     <span class="n">representation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -11399,7 +11399,7 @@ Success            (<a class="autorefs autorefs-internal" title="optimade.models
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Success</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;errors are not allowed&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;errors are not allowed&quot;&quot;&quot;</span>
 
     <span class="n">meta</span><span class="p">:</span> <span class="n">ResponseMeta</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A meta object containing non-standard information&quot;</span>
@@ -11407,7 +11407,7 @@ Success            (<a class="autorefs autorefs-internal" title="optimade.models
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
         <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -11455,7 +11455,7 @@ Success            (<a class="autorefs autorefs-internal" title="optimade.models
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
     <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -11512,7 +11512,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Warnings</span><span class="p">(</span><span class="n">OptimadeError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.</span>
 
 <span class="sd">    From the specification:</span>
 
@@ -11538,7 +11538,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="nd">@staticmethod</span>
         <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">            * Ensure `type` is in the list required properties and in the correct place.</span>
 <span class="sd">            * Remove `status` property.</span>
@@ -11610,7 +11610,7 @@ Config        </code>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">        * Ensure `type` is in the list required properties and in the correct place.</span>
 <span class="sd">        * Remove `status` property.</span>
@@ -11673,7 +11673,7 @@ Config        </code>
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">    * Ensure `type` is in the list required properties and in the correct place.</span>
 <span class="sd">    * Remove `status` property.</span>
@@ -11781,7 +11781,7 @@ Person            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/references.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A person, i.e., an author, editor or other.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A person, i.e., an author, editor or other.&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -11936,7 +11936,7 @@ ReferenceResource            (<a class="autorefs autorefs-internal" title="optim
         <details class="quote">
           <summary>Source code in <code>optimade/models/references.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The `references` entries describe bibliographic references.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `references` entries describe bibliographic references.</span>
 
 <span class="sd">    The following properties are used to provide the bibliographic details:</span>
 
@@ -12027,7 +12027,7 @@ ReferenceResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <details class="quote">
           <summary>Source code in <code>optimade/models/references.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Model that stores the attributes of a reference.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Model that stores the attributes of a reference.</span>
 
 <span class="sd">    Many properties match the meaning described in the</span>
 <span class="sd">    [BibTeX specification](http://bibtexml.sourceforge.net/btxdoc.pdf).</span>
@@ -12874,7 +12874,7 @@ ErrorResponse            (<a class="autorefs autorefs-internal" title="optimade.
         <details class="quote">
           <summary>Source code in <code>optimade/models/responses.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorResponse</span><span class="p">(</span><span class="n">Response</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;errors MUST be present and data MUST be skipped&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;errors MUST be present and data MUST be skipped&quot;&quot;&quot;</span>
 
     <span class="n">meta</span><span class="p">:</span> <span class="n">ResponseMeta</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A meta object containing non-standard information.&quot;</span>
@@ -12997,7 +12997,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Assembly</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A description of groups of sites that are statistically correlated.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A description of groups of sites that are statistically correlated.</span>
 
 <span class="sd">    - **Examples** (for each entry of the assemblies list):</span>
 <span class="sd">        - `{&quot;sites_in_groups&quot;: [[0], [1]], &quot;group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.</span>
@@ -13045,7 +13045,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sites_in_groups&quot;</span><span class="p">,</span> <span class="p">[])):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;sites_in_groups and group_probabilities MUST be of same length, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;but are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sites_in_groups&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">, respectively&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sites_in_groups&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">, respectively&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 </code></pre></div>
@@ -13151,7 +13151,7 @@ Periodicity            (<span title="enum.IntEnum">IntEnum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Periodicity</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Integer enumeration of dimension_types values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integer enumeration of dimension_types values&quot;&quot;&quot;</span>
 
     <span class="n">APERIODIC</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">PERIODIC</span> <span class="o">=</span> <span class="mi">1</span>
@@ -13222,7 +13222,7 @@ hydrogens might represent a methyl group, -CH3).</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Species</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A list describing the species of the sites of this structure.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list describing the species of the sites of this structure.</span>
 
 <span class="sd">    Species can represent pure chemical elements, virtual-crystal atoms representing a</span>
 <span class="sd">    statistical occupation of a given site by multiple chemical elements, and/or a</span>
@@ -13321,7 +13321,7 @@ hydrogens might represent a methyl group, -CH3).</p>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;chemical_symbols&quot;</span><span class="p">]):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Length of concentration (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">) MUST equal length of chemical_symbols &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chemical_symbols&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chemical_symbols&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="n">v</span>
 
@@ -13579,7 +13579,7 @@ StructureFeatures            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureFeatures</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Enumeration of structure_features values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of structure_features values&quot;&quot;&quot;</span>
 
     <span class="n">DISORDER</span> <span class="o">=</span> <span class="s2">&quot;disorder&quot;</span>
     <span class="n">IMPLICIT_ATOMS</span> <span class="o">=</span> <span class="s2">&quot;implicit_atoms&quot;</span>
@@ -13637,7 +13637,7 @@ StructureResource            (<a class="autorefs autorefs-internal" title="optim
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
@@ -13693,7 +13693,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.&quot;&quot;&quot;</span>
 
     <span class="n">elements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -14227,7 +14227,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
 
 <span class="sd">            1. Constrained types in pydantic do not currently play nicely with</span>
 <span class="sd">            &quot;Required Optional&quot; fields, i.e. fields must be specified but can be null.</span>
@@ -14252,7 +14252,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">warn_on_missing_correlated_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
 <span class="sd">        was expected based on the value/nullity of another field.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">accumulated_warnings</span> <span class="o">=</span> <span class="p">[]</span>
@@ -14260,7 +14260,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
             <span class="n">missing_fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">field_set</span> <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">}</span>
             <span class="k">if</span> <span class="n">missing_fields</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_fields</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_set</span><span class="p">):</span>
                 <span class="n">accumulated_warnings</span> <span class="o">+=</span> <span class="p">[</span>
-                    <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span> <span class="o">-</span> <span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
                 <span class="p">]</span>
 
         <span class="k">for</span> <span class="n">warn</span> <span class="ow">in</span> <span class="n">accumulated_warnings</span><span class="p">:</span>
@@ -14286,7 +14286,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Cannot use unknown chemical symbols </span><span class="si">{</span><span class="p">[</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot use unknown chemical symbols </span><span class="si">{</span><span class="p">[</span><span class="n">elem</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">elements</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">CHEMICAL_SYMBOLS</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">expected_elements</span> <span class="o">!=</span> <span class="n">elements</span><span class="p">:</span>
@@ -14390,7 +14390,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
                 <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="n">dim_type</span> <span class="o">==</span> <span class="n">Periodicity</span><span class="o">.</span><span class="n">PERIODIC</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Null entries in lattice vectors are only permitted when the corresponding dimension type is </span><span class="si">{</span><span class="n">Periodicity</span><span class="o">.</span><span class="n">APERIODIC</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">. &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;Here: dimension_types = </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">, lattice_vectors = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Here: dimension_types = </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;value&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">, lattice_vectors = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">v</span>
@@ -14417,7 +14417,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;nsites (value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">) MUST equal length of cartesian_site_positions &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cartesian_site_positions&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cartesian_site_positions&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
@@ -14429,7 +14429,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Number of species_at_sites (value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">) MUST equal number of sites &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites&#39;</span><span class="p">,</span> <span class="s1">&#39;Not specified&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Not specified&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">):</span>
             <span class="n">all_species_names</span> <span class="o">=</span> <span class="p">{</span>
@@ -14623,38 +14623,38 @@ Example: <code>[[1,2], [3]]</code>: one group with the second and third site, on
 <ul>
 <li>
 <p>Using a single species:
-    <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;cartesian_site_positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;species_at_sites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;SiGe-vac&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;species&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">  </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SiGe-vac&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;vacancy&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// ...</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;cartesian_site_positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span>
+<span class="w">  </span><span class="nt">&quot;species_at_sites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;SiGe-vac&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;species&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SiGe-vac&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;vacancy&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div></p>
 </li>
 <li>
 <p>Using multiple species and the assemblies:
-    <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;cartesian_site_positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;species_at_sites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;vac&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;species&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Ge&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vac&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;vacancy&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;assemblies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// ...</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;cartesian_site_positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;species_at_sites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;vac&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;species&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Ge&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vac&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;vacancy&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;assemblies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div></p>
 </li>
 </ul>
@@ -14666,18 +14666,18 @@ Example: <code>[[1,2], [3]]</code>: one group with the second and third site, on
 <li>
 <p>The probabilities of occurrence of different assemblies are uncorrelated.
     So, for instance in the following case with two assemblies:
-    <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;assemblies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.7</span><span class="p">]</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;assemblies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">],</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.7</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div></p>
 <p>Site 0 is present with a probability of 20 % and site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 % and site 3 with a probability of 70 %.
 These two sites are correlated (either site 2 or 3 is present).
@@ -15536,7 +15536,7 @@ Config        </code>
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
 
 <span class="sd">        1. Constrained types in pydantic do not currently play nicely with</span>
 <span class="sd">        &quot;Required Optional&quot; fields, i.e. fields must be specified but can be null.</span>
@@ -15602,7 +15602,7 @@ to be <code>nullable</code> according to the OpenAPI definition.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
 
 <span class="sd">    1. Constrained types in pydantic do not currently play nicely with</span>
 <span class="sd">    &quot;Required Optional&quot; fields, i.e. fields must be specified but can be null.</span>
@@ -15679,7 +15679,7 @@ was expected based on the value/nullity of another field.</p>
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">warn_on_missing_correlated_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
 <span class="sd">    was expected based on the value/nullity of another field.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">accumulated_warnings</span> <span class="o">=</span> <span class="p">[]</span>
@@ -15687,7 +15687,7 @@ was expected based on the value/nullity of another field.</p>
         <span class="n">missing_fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">field_set</span> <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">missing_fields</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_fields</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_set</span><span class="p">):</span>
             <span class="n">accumulated_warnings</span> <span class="o">+=</span> <span class="p">[</span>
-                <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span> <span class="o">-</span> <span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
             <span class="p">]</span>
 
     <span class="k">for</span> <span class="n">warn</span> <span class="ow">in</span> <span class="n">accumulated_warnings</span><span class="p">:</span>
@@ -15795,7 +15795,7 @@ https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-sem
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SemanticVersion</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A custom type for a semantic version, using the recommended</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A custom type for a semantic version, using the recommended</span>
 <span class="sd">    semver regexp from</span>
 <span class="sd">    https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string.</span>
 
@@ -15828,37 +15828,37 @@ https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-sem
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_match</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The result of the regex match.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The result of the regex match.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">major</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The major version number.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The major version number.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">minor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The minor version number.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The minor version number.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The patch version number.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The patch version number.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">prerelease</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The pre-release tag.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The pre-release tag.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">build_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The build metadata.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The build metadata.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">base_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The base version string without patch and metadata info.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The base version string without patch and metadata info.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">major</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minor</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patch</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div>
         </details>
@@ -16048,7 +16048,7 @@ to prefix any custom keys from <code>StrictField</code>.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StrictFieldInfo</span><span class="p">(</span><span class="n">FieldInfo</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wraps the standard pydantic `FieldInfo` in order</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps the standard pydantic `FieldInfo` in order</span>
 <span class="sd">    to prefix any custom keys from `StrictField`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -16139,7 +16139,7 @@ SupportLevel            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SupportLevel</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;OPTIMADE property/field support levels&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;OPTIMADE property/field support levels&quot;&quot;&quot;</span>
 
     <span class="n">MUST</span> <span class="o">=</span> <span class="s2">&quot;must&quot;</span>
     <span class="n">SHOULD</span> <span class="o">=</span> <span class="s2">&quot;should&quot;</span>
@@ -16233,7 +16233,7 @@ of this field.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7f96efd720c0&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7f0dbcf160c0&gt;</code></td>
       <td><p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" href="../api_reference/models/utils/#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p></td>
     </tr>
   </tbody>
@@ -16247,7 +16247,7 @@ of this field.</p></td>
     <span class="n">unit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Field</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that adds OPTIMADE-specific</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that adds OPTIMADE-specific</span>
 <span class="sd">    field paramters `queryable`, `support` and `unit`, indicating</span>
 <span class="sd">    the corresponding support level in the specification and the</span>
 <span class="sd">    physical unit of the field.</span>
@@ -16377,7 +16377,7 @@ by models in this package (see above).</p></td>
     <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StrictFieldInfo</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that does the following:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that does the following:</span>
 
 <span class="sd">    - Forbids any &quot;extra&quot; keys that would be passed to `pydantic.Field`,</span>
 <span class="sd">      except those used elsewhere to modify the schema in-place,</span>
@@ -16448,7 +16448,7 @@ the pydantic <code>FieldInfo</code>.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">StrictPydanticField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrapper for `Field` that uses `StrictFieldInfo` instead of</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for `Field` that uses `StrictFieldInfo` instead of</span>
 <span class="sd">    the pydantic `FieldInfo`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">field_info</span> <span class="o">=</span> <span class="n">StrictFieldInfo</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -16479,7 +16479,7 @@ the pydantic <code>FieldInfo</code>.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">anonymous_element_generator</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme.&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_lowercase</span>
 
     <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>

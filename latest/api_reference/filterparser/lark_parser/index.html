@@ -2003,7 +2003,7 @@ it to be parsed into Lark tree objects.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/filterparser/lark_parser.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LarkParser</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;This class wraps a versioned OPTIMADE grammar and allows</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class wraps a versioned OPTIMADE grammar and allows</span>
 <span class="sd">    it to be parsed into Lark tree objects.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2011,7 +2011,7 @@ it to be parsed into Lark tree objects.</p>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">variant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;For a given version and variant, try to load the corresponding grammar.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;For a given version and variant, try to load the corresponding grammar.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            version: The grammar version number to use (e.g., `(1, 0, 1)` for v1.0.1).</span>
@@ -2044,7 +2044,7 @@ it to be parsed into Lark tree objects.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tree</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a filter string into a `lark.Tree`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a filter string into a `lark.Tree`.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            filter_: The filter string to parse.</span>
@@ -2147,7 +2147,7 @@ grammar does not exist.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">variant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;For a given version and variant, try to load the corresponding grammar.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For a given version and variant, try to load the corresponding grammar.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        version: The grammar version number to use (e.g., `(1, 0, 1)` for v1.0.1).</span>
@@ -2253,7 +2253,7 @@ grammar does not exist.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/filterparser/lark_parser.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tree</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Parse a filter string into a `lark.Tree`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a filter string into a `lark.Tree`.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        filter_: The filter string to parse.</span>
@@ -2312,7 +2312,7 @@ to 500 Server Error HTTP statuses.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/filterparser/lark_parser.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ParserError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Triggered by critical parsing errors that should lead</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Triggered by critical parsing errors that should lead</span>
 <span class="sd">    to 500 Server Error HTTP statuses.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
@@ -2360,7 +2360,7 @@ returning a dictionary broken down by scraped grammar version
         <details class="quote">
           <summary>Source code in <code>optimade/filterparser/lark_parser.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_versions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Find grammar files within this package&#39;s grammar directory,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find grammar files within this package&#39;s grammar directory,</span>
 <span class="sd">    returning a dictionary broken down by scraped grammar version</span>
 <span class="sd">    (major, minor, patch) and variant (a string tag).</span>
 

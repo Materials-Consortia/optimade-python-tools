@@ -2217,7 +2217,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
         <details class="quote">
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AddWarnings</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add [`OptimadeWarning`][optimade.warnings.OptimadeWarning]s to the response.</span>
 
 <span class="sd">    All sub-classes of [`OptimadeWarning`][optimade.warnings.OptimadeWarning]</span>
@@ -2268,7 +2268,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
         <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">line</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Hook to write a warning to a file using the built-in `warnings` lib.</span>
 
 <span class="sd">        In [the documentation](https://docs.python.org/3/library/warnings.html)</span>
@@ -2357,7 +2357,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            content: String or bytes content to separate into chunks.</span>
@@ -2486,7 +2486,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        content: String or bytes content to separate into chunks.</span>
@@ -2600,7 +2600,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
     <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">line</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Hook to write a warning to a file using the built-in `warnings` lib.</span>
 
 <span class="sd">    In [the documentation](https://docs.python.org/3/library/warnings.html)</span>
@@ -2724,11 +2724,11 @@ CheckWronglyVersionedBaseUrls            (<span title="starlette.middleware.base
         <details class="quote">
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CheckWronglyVersionedBaseUrls</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;If a non-supported versioned base URL is supplied return `553 Version Not Supported`.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;If a non-supported versioned base URL is supplied return `553 Version Not Supported`.&quot;&quot;&quot;</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">check_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">StarletteURL</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check URL path for versioned part.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check URL path for versioned part.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            url: A complete urllib-parsed raw URL.</span>
@@ -2827,7 +2827,7 @@ and the version part is not supported by the implementation.</p></td>
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">check_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">StarletteURL</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check URL path for versioned part.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check URL path for versioned part.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        url: A complete urllib-parsed raw URL.</span>
@@ -2888,11 +2888,11 @@ EnsureQueryParamIntegrity            (<span title="starlette.middleware.base.Bas
         <details class="quote">
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EnsureQueryParamIntegrity</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Ensure all query parameters are followed by an equal sign (`=`).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure all query parameters are followed by an equal sign (`=`).&quot;&quot;&quot;</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">check_url</span><span class="p">(</span><span class="n">url_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Check parsed URL query part for parameters not followed by `=`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check parsed URL query part for parameters not followed by `=`.</span>
 
 <span class="sd">        URL query parameters are considered to be split by ampersand (`&amp;`)</span>
 <span class="sd">        and semi-colon (`;`).</span>
@@ -3018,7 +3018,7 @@ response will be returned.</p></td>
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">check_url</span><span class="p">(</span><span class="n">url_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check parsed URL query part for parameters not followed by `=`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check parsed URL query part for parameters not followed by `=`.</span>
 
 <span class="sd">    URL query parameters are considered to be split by ampersand (`&amp;`)</span>
 <span class="sd">    and semi-colon (`;`).</span>
@@ -3086,11 +3086,11 @@ HandleApiHint            (<span title="starlette.middleware.base.BaseHTTPMiddlew
         <details class="quote">
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">HandleApiHint</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Handle `api_hint` query parameter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` query parameter.&quot;&quot;&quot;</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
 
 <span class="sd">        There are several scenarios that can play out, when handling the `api_hint`</span>
 <span class="sd">        query parameter:</span>
@@ -3173,7 +3173,7 @@ HandleApiHint            (<span title="starlette.middleware.base.BaseHTTPMiddlew
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Determine whether a request is for a versioned base URL.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine whether a request is for a versioned base URL.</span>
 
 <span class="sd">        First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.</span>
 <span class="sd">        If not, return `False`, else, remove unversioned base URL from the URL and check again.</span>
@@ -3347,7 +3347,7 @@ supported major version of the implementation.</p></td>
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
 
 <span class="sd">    There are several scenarios that can play out, when handling the `api_hint`</span>
 <span class="sd">    query parameter:</span>
@@ -3493,7 +3493,7 @@ Return <code>bool</code> of final result.</p>
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Determine whether a request is for a versioned base URL.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine whether a request is for a versioned base URL.</span>
 
 <span class="sd">    First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.</span>
 <span class="sd">    If not, return `False`, else, remove unversioned base URL from the URL and check again.</span>

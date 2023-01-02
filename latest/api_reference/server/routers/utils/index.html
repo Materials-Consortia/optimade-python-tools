@@ -2005,7 +2005,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">JSONAPIResponse</span><span class="p">(</span><span class="n">JSONResponse</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This class simply patches `fastapi.responses.JSONResponse` to use the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class simply patches `fastapi.responses.JSONResponse` to use the</span>
 <span class="sd">    JSON:API &#39;application/vnd.api+json&#39; MIME type.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2060,7 +2060,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
         <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span><span class="p">,</span> <span class="n">StarletteURL</span><span class="p">,</span> <span class="nb">str</span>
     <span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Get base URL for current server</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get base URL for current server</span>
 
 <span class="sd">    Take the base URL from the config file, if it exists, otherwise use the request.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2104,7 +2104,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResponseMany</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Generalized /{entry} endpoint getter&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generalized /{entry} endpoint getter&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">optimade.server.routers</span> <span class="kn">import</span> <span class="n">ENTRY_COLLECTIONS</span>
 
     <span class="n">params</span><span class="o">.</span><span class="n">check_params</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="p">)</span>
@@ -2232,7 +2232,7 @@ based on endpoint type.</p></td>
     <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
     <span class="n">include_param</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Filters the included relationships and makes the appropriate compound request</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filters the included relationships and makes the appropriate compound request</span>
 <span class="sd">    to include them in the response.</span>
 
 <span class="sd">    Parameters:</span>
@@ -2376,7 +2376,7 @@ the <code>response_fields</code> OPTIMADE URL query parameter.</p></td>
     <span class="n">exclude_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">include_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Handle query parameter `response_fields`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle query parameter `response_fields`.</span>
 
 <span class="sd">    It is assumed that all fields are under `attributes`.</span>
 <span class="sd">    This is due to all other top-level fields are REQUIRED in the response.</span>
@@ -2443,7 +2443,7 @@ the <code>response_fields</code> OPTIMADE URL query parameter.</p></td>
     <span class="n">schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseMeta</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Helper to initialize the meta values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper to initialize the meta values&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">optimade.models</span> <span class="kn">import</span> <span class="n">ResponseMetaQuery</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>

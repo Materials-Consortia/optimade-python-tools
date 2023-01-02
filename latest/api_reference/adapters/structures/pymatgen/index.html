@@ -1988,7 +1988,7 @@ to a pymatgen <code>Molecule</code> or <code>Structure</code> object.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/pymatgen.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">from_pymatgen</span><span class="p">(</span><span class="n">pmg_structure</span><span class="p">:</span> <span class="n">Structure</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StructureResourceAttributes</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Convert a pymatgen `Structure` (3D) into an OPTIMADE `StructureResourceAttributes` model.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a pymatgen `Structure` (3D) into an OPTIMADE `StructureResourceAttributes` model.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        pmg_structure: The pymatgen `Structure` to convert.</span>
@@ -2103,7 +2103,7 @@ OPTIMADE structure.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/pymatgen.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_pymatgen</span><span class="p">(</span><span class="n">optimade_structure</span><span class="p">:</span> <span class="n">OptimadeStructure</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Structure</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Get pymatgen `Structure` or `Molecule` from OPTIMADE structure.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get pymatgen `Structure` or `Molecule` from OPTIMADE structure.</span>
 
 <span class="sd">    This function will return either a pymatgen `Structure` or `Molecule` based</span>
 <span class="sd">    on the periodicity or periodic dimensionality of OPTIMADE structure.</span>

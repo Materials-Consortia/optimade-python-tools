@@ -1999,10 +1999,10 @@ Filters that use the prefixed form of these fields will then be passed through t
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>Example JSON config file fragment for adding two fields to each of the <code>structures</code> and <code>references</code> endpoints, that will be served as, e.g., <code>_exmpl_cell_volume</code> if the <code>provider.prefix</code> is set to 'exmpl'.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&quot;provider_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;cell_volume&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;total_energy&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;orcid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;num_citations&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;provider_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;cell_volume&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;total_energy&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;orcid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;num_citations&quot;</span><span class="p">],</span>
+<span class="p">}</span>
 </code></pre></div>
 </div>
 <p>It is recommended that you provide a description, type and unit for each custom field that can be returned at the corresponding <code>/info/&lt;entry_type&gt;</code> endpoint.
@@ -2010,18 +2010,18 @@ This can be achieved by providing a dictionary per field at <a class="autorefs a
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>Example JSON config file fragment for adding a description, type and unit for the custom <code>_exmpl_cell_volume</code> field, which will cause it to be added to the <code>/info/structures</code> endpoint.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&quot;provider_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cell_volume&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The volume of the cell per formula unit.&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ao3&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;float&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;total_energy&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;orcid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;num_citations&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;provider_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cell_volume&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The volume of the cell per formula unit.&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ao3&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;float&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;total_energy&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;orcid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;num_citations&quot;</span><span class="p">],</span>
+<span class="p">}</span>
 </code></pre></div>
 </div>
 <h3 id="extending-the-pydantic-models">Extending the pydantic models<a class="headerlink" href="#extending-the-pydantic-models" title="Permanent link">&para;</a></h3>
@@ -2051,7 +2051,7 @@ In this case, it may be easier to write a custom endpoint for your entry type, t
     <span class="p">)</span>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Add a pydantic `Config` that defines the alias generator,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a pydantic `Config` that defines the alias generator,</span>
 <span class="sd">        based on our configured `provider_fields`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

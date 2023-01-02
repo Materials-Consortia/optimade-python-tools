@@ -2204,7 +2204,7 @@ various field-related configuration.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MongoTransformer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A filter transformer for the MongoDB backend.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A filter transformer for the MongoDB backend.</span>
 
 <span class="sd">    Parses a lark tree into a dictionary representation to be</span>
 <span class="sd">    used by pymongo or mongomock. Uses post-processing functions</span>
@@ -2242,7 +2242,7 @@ various field-related configuration.</p></td>
     <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_relationship_filtering</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_length_operators</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_unknown_or_null_filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -2415,7 +2415,7 @@ various field-related configuration.</p></td>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_recursive_expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Helper function for parsing `expression_phrase`. Recursively sorts out</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function for parsing `expression_phrase`. Recursively sorts out</span>
 <span class="sd">        the correct precedence for `$not`, `$and` and `$or`.</span>
 
 <span class="sd">        Parameters:</span>
@@ -2428,7 +2428,7 @@ various field-related configuration.</p></td>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">handle_not_and</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
-            <span class="sd">&quot;&quot;&quot;Handle the case of `~(A &amp; B) -&gt; (~A | ~B)`.</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Handle the case of `~(A &amp; B) -&gt; (~A | ~B)`.</span>
 
 <span class="sd">            We have to check for the special case in which the &quot;and&quot; was created</span>
 <span class="sd">            by a previous NOT, e.g.,</span>
@@ -2457,7 +2457,7 @@ various field-related configuration.</p></td>
             <span class="p">}</span>
 
         <span class="k">def</span> <span class="nf">handle_not_or</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
-            <span class="sd">&quot;&quot;&quot;Handle the case of ~(A | B) -&gt; (~A &amp; ~B).</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Handle the case of ~(A | B) -&gt; (~A &amp; ~B).</span>
 
 <span class="sd">            !!! note</span>
 <span class="sd">            Although the MongoDB `$nor` could be used here, it is not convenient as it</span>
@@ -2507,7 +2507,7 @@ various field-related configuration.</p></td>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">filter_</span><span class="p">,</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$ne&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>
 
     <span class="k">def</span> <span class="nf">_apply_length_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Check for any invalid pymongo queries that involve applying a</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check for any invalid pymongo queries that involve applying a</span>
 <span class="sd">        comparison operator to the length of a field, and transform</span>
 <span class="sd">        them into a test for existence of the relevant entry, e.g.</span>
 <span class="sd">        &quot;list LENGTH &gt; 3&quot; becomes &quot;does the 4th list entry exist?&quot;.</span>
@@ -2530,7 +2530,7 @@ various field-related configuration.</p></td>
                 <span class="n">_prop</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">existence</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;$gt&quot;</span><span class="p">:</span>
-                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="n">existence</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;$gte&quot;</span><span class="p">:</span>
                     <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -2539,7 +2539,7 @@ various field-related configuration.</p></td>
                     <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="n">existence</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;$lte&quot;</span><span class="p">:</span>
-                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="n">existence</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">if</span> <span class="n">_prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">subdict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
@@ -2554,7 +2554,7 @@ various field-related configuration.</p></td>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_apply_relationship_filtering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Check query for property names that match the entry</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check query for property names that match the entry</span>
 <span class="sd">        types, and transform them as relationship filters rather than</span>
 <span class="sd">        property filters.</span>
 
@@ -2582,16 +2582,16 @@ various field-related configuration.</p></td>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_apply_has_only_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;This method loops through the query and replaces the magic key `&quot;#only&quot;`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method loops through the query and replaces the magic key `&quot;#only&quot;`</span>
 <span class="sd">        with the proper &#39;HAS ONLY&#39; query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">check_for_only_filter</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Find cases where the magic key `&quot;#only&quot;` is in the query.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find cases where the magic key `&quot;#only&quot;` is in the query.&quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">&quot;#only&quot;</span> <span class="ow">in</span> <span class="n">expr</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">replace_only_filter</span><span class="p">(</span><span class="n">subdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Replace the magic key `&quot;#only&quot;` (added by this transformer) with an `$elemMatch`-based query.</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Replace the magic key `&quot;#only&quot;` (added by this transformer) with an `$elemMatch`-based query.</span>
 
 <span class="sd">            The first part of the query selects all the documents that contain any value that does not</span>
 <span class="sd">            match any target values for the property `prop`.</span>
@@ -2636,14 +2636,14 @@ various field-related configuration.</p></td>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_apply_unknown_or_null_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;This method loops through the query and replaces the check for</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method loops through the query and replaces the check for</span>
 <span class="sd">        KNOWN with a check for existence and a check for not null, and the</span>
 <span class="sd">        inverse for UNKNOWN.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">check_for_known_filter</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Find cases where the query dict looks like</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find cases where the query dict looks like</span>
 <span class="sd">            `{&quot;field&quot;: {&quot;#known&quot;: T/F}}` or</span>
 <span class="sd">            `{&quot;field&quot;: &quot;$not&quot;: {&quot;#known&quot;: T/F}}`, which is a magic word</span>
 <span class="sd">            for KNOWN/UNKNOWN filters in this transformer.</span>
@@ -2654,7 +2654,7 @@ various field-related configuration.</p></td>
             <span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">replace_known_filter_with_or</span><span class="p">(</span><span class="n">subdict</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Replace magic key `&quot;#known&quot;` (added by this transformer) with the appropriate</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Replace magic key `&quot;#known&quot;` (added by this transformer) with the appropriate</span>
 <span class="sd">            combination of `$exists` and/or test for nullity.</span>
 <span class="sd">            combination of $exists and/or $eq/$ne null.</span>
 
@@ -2686,13 +2686,13 @@ various field-related configuration.</p></td>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_apply_mongo_id_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;This method loops through the query and replaces any operations</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method loops through the query and replaces any operations</span>
 <span class="sd">        on the special Mongodb `_id` key with the corresponding operation</span>
 <span class="sd">        on a BSON `ObjectId` type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">check_for_id_key</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Find cases where the query dict is operating on the `_id` field.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find cases where the query dict is operating on the `_id` field.&quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;_id&quot;</span>
 
         <span class="k">def</span> <span class="nf">replace_str_id_with_objectid</span><span class="p">(</span><span class="n">subdict</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
@@ -2715,19 +2715,19 @@ various field-related configuration.</p></td>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_apply_mongo_date_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;This method loops through the query and replaces any operations</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method loops through the query and replaces any operations</span>
 <span class="sd">        on suspected timestamp properties with the corresponding operation</span>
 <span class="sd">        on a BSON `DateTime` type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">check_for_timestamp_field</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Find cases where the query dict is operating on a timestamp field.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find cases where the query dict is operating on a timestamp field.&quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;last_modified&quot;</span>
 
         <span class="k">def</span> <span class="nf">replace_str_date_with_datetime</span><span class="p">(</span><span class="n">subdict</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Encode suspected dates in with BSON.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Encode suspected dates in with BSON.&quot;&quot;&quot;</span>
             <span class="kn">import</span> <span class="nn">bson.json_util</span>
 
             <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">]:</span>
@@ -3005,7 +3005,7 @@ various field-related configuration.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_relationship_filtering</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_length_operators</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_unknown_or_null_filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -3348,7 +3348,7 @@ another, the following functions could be used:</p>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recursive_postprocessing</span><span class="p">(</span><span class="n">filter_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">],</span> <span class="n">condition</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Recursively descend into the query, checking each dictionary</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively descend into the query, checking each dictionary</span>
 <span class="sd">    (contained in a list, or as an entry in another dictionary) for</span>
 <span class="sd">    the condition passed. If the condition is true, apply the</span>
 <span class="sd">    replacement to the dictionary.</span>

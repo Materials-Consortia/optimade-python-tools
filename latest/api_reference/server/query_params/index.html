@@ -2004,7 +2004,7 @@ are not implemented by the server, e.g., cursor-based pagination.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseQueryParams</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A base class for query parameters that provides validation via the `check_params` method.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A base class for query parameters that provides validation via the `check_params` method.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        unsupported_params: Any string parameter listed here will raise a warning when passed to</span>
@@ -2016,7 +2016,7 @@ are not implemented by the server, e.g., cursor-based pagination.</p></td>
     <span class="n">unsupported_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
 <span class="sd">        in the URL string are implemented in the relevant `*QueryParams` class.</span>
 
 <span class="sd">        This method handles four cases:</span>
@@ -2155,7 +2155,7 @@ does not have a valid prefix.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
 <span class="sd">    in the URL string are implemented in the relevant `*QueryParams` class.</span>
 
 <span class="sd">    This method handles four cases:</span>
@@ -2370,7 +2370,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryListingQueryParams</span><span class="p">(</span><span class="n">BaseQueryParams</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Common query params for all Entry listing endpoints.</span>
 
 <span class="sd">    Attributes:</span>
@@ -2645,7 +2645,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <details class="quote">
           <summary>Source code in <code>optimade/server/query_params.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SingleEntryQueryParams</span><span class="p">(</span><span class="n">BaseQueryParams</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Common query params for single entry endpoints.</span>
 
 <span class="sd">    Attributes:</span>

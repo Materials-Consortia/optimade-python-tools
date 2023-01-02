@@ -2988,7 +2988,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Assembly</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A description of groups of sites that are statistically correlated.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A description of groups of sites that are statistically correlated.</span>
 
 <span class="sd">    - **Examples** (for each entry of the assemblies list):</span>
 <span class="sd">        - `{&quot;sites_in_groups&quot;: [[0], [1]], &quot;group_probabilities: [0.3, 0.7]}`: the first site and the second site never occur at the same time in the unit cell.</span>
@@ -3036,7 +3036,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sites_in_groups&quot;</span><span class="p">,</span> <span class="p">[])):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;sites_in_groups and group_probabilities MUST be of same length, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;but are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sites_in_groups&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">, respectively&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sites_in_groups&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">, respectively&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 </code></pre></div>
@@ -3133,7 +3133,7 @@ The possible reasons for the values not to sum to one are the same as already sp
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sites_in_groups&quot;</span><span class="p">,</span> <span class="p">[])):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;sites_in_groups and group_probabilities MUST be of same length, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;but are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sites_in_groups&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">, respectively&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;but are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sites_in_groups&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">, respectively&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">v</span>
 </code></pre></div>
@@ -3210,7 +3210,7 @@ Periodicity            (<span title="enum.IntEnum">IntEnum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Periodicity</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Integer enumeration of dimension_types values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integer enumeration of dimension_types values&quot;&quot;&quot;</span>
 
     <span class="n">APERIODIC</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">PERIODIC</span> <span class="o">=</span> <span class="mi">1</span>
@@ -3315,7 +3315,7 @@ hydrogens might represent a methyl group, -CH3).</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Species</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A list describing the species of the sites of this structure.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list describing the species of the sites of this structure.</span>
 
 <span class="sd">    Species can represent pure chemical elements, virtual-crystal atoms representing a</span>
 <span class="sd">    statistical occupation of a given site by multiple chemical elements, and/or a</span>
@@ -3414,7 +3414,7 @@ hydrogens might represent a methyl group, -CH3).</p>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;chemical_symbols&quot;</span><span class="p">]):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Length of concentration (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">) MUST equal length of chemical_symbols &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chemical_symbols&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chemical_symbols&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="n">v</span>
 
@@ -3746,7 +3746,7 @@ Elements denoting vacancies MUST have masses equal to 0.</p>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;chemical_symbols&quot;</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Length of concentration (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">) MUST equal length of chemical_symbols &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chemical_symbols&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;chemical_symbols&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
@@ -3824,7 +3824,7 @@ StructureFeatures            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureFeatures</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Enumeration of structure_features values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of structure_features values&quot;&quot;&quot;</span>
 
     <span class="n">DISORDER</span> <span class="o">=</span> <span class="s2">&quot;disorder&quot;</span>
     <span class="n">IMPLICIT_ATOMS</span> <span class="o">=</span> <span class="s2">&quot;implicit_atoms&quot;</span>
@@ -3950,7 +3950,7 @@ StructureResource            (<a class="autorefs autorefs-internal" title="optim
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
@@ -4006,7 +4006,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.&quot;&quot;&quot;</span>
 
     <span class="n">elements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -4540,7 +4540,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
 
 <span class="sd">            1. Constrained types in pydantic do not currently play nicely with</span>
 <span class="sd">            &quot;Required Optional&quot; fields, i.e. fields must be specified but can be null.</span>
@@ -4565,7 +4565,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">warn_on_missing_correlated_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
 <span class="sd">        was expected based on the value/nullity of another field.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">accumulated_warnings</span> <span class="o">=</span> <span class="p">[]</span>
@@ -4573,7 +4573,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
             <span class="n">missing_fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">field_set</span> <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">}</span>
             <span class="k">if</span> <span class="n">missing_fields</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_fields</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_set</span><span class="p">):</span>
                 <span class="n">accumulated_warnings</span> <span class="o">+=</span> <span class="p">[</span>
-                    <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span> <span class="o">-</span> <span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
                 <span class="p">]</span>
 
         <span class="k">for</span> <span class="n">warn</span> <span class="ow">in</span> <span class="n">accumulated_warnings</span><span class="p">:</span>
@@ -4599,7 +4599,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Cannot use unknown chemical symbols </span><span class="si">{</span><span class="p">[</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot use unknown chemical symbols </span><span class="si">{</span><span class="p">[</span><span class="n">elem</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">elements</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">CHEMICAL_SYMBOLS</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">expected_elements</span> <span class="o">!=</span> <span class="n">elements</span><span class="p">:</span>
@@ -4703,7 +4703,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
                 <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="n">dim_type</span> <span class="o">==</span> <span class="n">Periodicity</span><span class="o">.</span><span class="n">PERIODIC</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Null entries in lattice vectors are only permitted when the corresponding dimension type is </span><span class="si">{</span><span class="n">Periodicity</span><span class="o">.</span><span class="n">APERIODIC</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">. &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;Here: dimension_types = </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">, lattice_vectors = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Here: dimension_types = </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;value&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">, lattice_vectors = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">v</span>
@@ -4730,7 +4730,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;nsites (value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">) MUST equal length of cartesian_site_positions &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cartesian_site_positions&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cartesian_site_positions&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
@@ -4742,7 +4742,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Number of species_at_sites (value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">) MUST equal number of sites &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites&#39;</span><span class="p">,</span> <span class="s1">&#39;Not specified&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Not specified&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">):</span>
             <span class="n">all_species_names</span> <span class="o">=</span> <span class="p">{</span>
@@ -4936,38 +4936,38 @@ Example: <code>[[1,2], [3]]</code>: one group with the second and third site, on
 <ul>
 <li>
 <p>Using a single species:
-    <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;cartesian_site_positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;species_at_sites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;SiGe-vac&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;species&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">  </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SiGe-vac&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;vacancy&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// ...</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;cartesian_site_positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span>
+<span class="w">  </span><span class="nt">&quot;species_at_sites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;SiGe-vac&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;species&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SiGe-vac&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;vacancy&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div></p>
 </li>
 <li>
 <p>Using multiple species and the assemblies:
-    <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;cartesian_site_positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;species_at_sites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;vac&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;species&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Ge&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vac&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;vacancy&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;assemblies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="w">  </span><span class="c1">// ...</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;cartesian_site_positions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;species_at_sites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;vac&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;species&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Si&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Si&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ge&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Ge&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vac&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;chemical_symbols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;vacancy&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;concentration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;assemblies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
 </code></pre></div></p>
 </li>
 </ul>
@@ -4979,18 +4979,18 @@ Example: <code>[[1,2], [3]]</code>: one group with the second and third site, on
 <li>
 <p>The probabilities of occurrence of different assemblies are uncorrelated.
     So, for instance in the following case with two assemblies:
-    <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;assemblies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.7</span><span class="p">]</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;assemblies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">],</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;sites_in_groups&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;group_probabilities&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.7</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div></p>
 <p>Site 0 is present with a probability of 20 % and site 1 with a probability of 80 %. These two sites are correlated (either site 0 or 1 is present). Similarly, site 2 is present with a probability of 30 % and site 3 with a probability of 70 %.
 These two sites are correlated (either site 2 or 3 is present).
@@ -5849,7 +5849,7 @@ Config        </code>
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
 
 <span class="sd">        1. Constrained types in pydantic do not currently play nicely with</span>
 <span class="sd">        &quot;Required Optional&quot; fields, i.e. fields must be specified but can be null.</span>
@@ -5915,7 +5915,7 @@ to be <code>nullable</code> according to the OpenAPI definition.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Two things need to be added to the schema:</span>
 
 <span class="sd">    1. Constrained types in pydantic do not currently play nicely with</span>
 <span class="sd">    &quot;Required Optional&quot; fields, i.e. fields must be specified but can be null.</span>
@@ -6041,7 +6041,7 @@ to be <code>nullable</code> according to the OpenAPI definition.</p>
 
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Cannot use unknown chemical symbols </span><span class="si">{</span><span class="p">[</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CHEMICAL_SYMBOLS</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot use unknown chemical symbols </span><span class="si">{</span><span class="p">[</span><span class="n">elem</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">elements</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">CHEMICAL_SYMBOLS</span><span class="p">]</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">expected_elements</span> <span class="o">!=</span> <span class="n">elements</span><span class="p">:</span>
@@ -6309,7 +6309,7 @@ to be <code>nullable</code> according to the OpenAPI definition.</p>
             <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="n">dim_type</span> <span class="o">==</span> <span class="n">Periodicity</span><span class="o">.</span><span class="n">PERIODIC</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;Null entries in lattice vectors are only permitted when the corresponding dimension type is </span><span class="si">{</span><span class="n">Periodicity</span><span class="o">.</span><span class="n">APERIODIC</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">. &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;Here: dimension_types = </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">, lattice_vectors = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Here: dimension_types = </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;value&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">None</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dimension_types&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">, lattice_vectors = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">v</span>
@@ -6349,7 +6349,7 @@ to be <code>nullable</code> according to the OpenAPI definition.</p>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;nsites (value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">) MUST equal length of cartesian_site_positions &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cartesian_site_positions&#39;</span><span class="p">,</span> <span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cartesian_site_positions&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">v</span>
 </code></pre></div>
@@ -6425,7 +6425,7 @@ to be <code>nullable</code> according to the OpenAPI definition.</p>
     <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nsites&quot;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Number of species_at_sites (value: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">) MUST equal number of sites &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites&#39;</span><span class="p">,</span> <span class="s1">&#39;Not specified&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(value: </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Not specified&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">):</span>
         <span class="n">all_species_names</span> <span class="o">=</span> <span class="p">{</span>
@@ -6567,7 +6567,7 @@ was expected based on the value/nullity of another field.</p>
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">warn_on_missing_correlated_fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Emit warnings if a field takes a null value when a value</span>
 <span class="sd">    was expected based on the value/nullity of another field.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">accumulated_warnings</span> <span class="o">=</span> <span class="p">[]</span>
@@ -6575,7 +6575,7 @@ was expected based on the value/nullity of another field.</p>
         <span class="n">missing_fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">field_set</span> <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">missing_fields</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_fields</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_set</span><span class="p">):</span>
             <span class="n">accumulated_warnings</span> <span class="o">+=</span> <span class="p">[</span>
-                <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span> <span class="o">-</span> <span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Structure with values </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2"> is missing fields </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> which are required if </span><span class="si">{</span><span class="n">field_set</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">missing_fields</span><span class="si">}</span><span class="s2"> are present.&quot;</span>
             <span class="p">]</span>
 
     <span class="k">for</span> <span class="n">warn</span> <span class="ow">in</span> <span class="n">accumulated_warnings</span><span class="p">:</span>

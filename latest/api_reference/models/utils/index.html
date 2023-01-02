@@ -2474,7 +2474,7 @@ https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-sem
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SemanticVersion</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A custom type for a semantic version, using the recommended</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A custom type for a semantic version, using the recommended</span>
 <span class="sd">    semver regexp from</span>
 <span class="sd">    https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string.</span>
 
@@ -2507,37 +2507,37 @@ https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-sem
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_match</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The result of the regex match.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The result of the regex match.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">major</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The major version number.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The major version number.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">minor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The minor version number.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The minor version number.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The patch version number.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The patch version number.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">prerelease</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The pre-release tag.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The pre-release tag.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">build_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The build metadata.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The build metadata.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">base_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The base version string without patch and metadata info.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The base version string without patch and metadata info.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">major</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minor</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">patch</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div>
         </details>
@@ -2839,7 +2839,7 @@ to prefix any custom keys from <code>StrictField</code>.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StrictFieldInfo</span><span class="p">(</span><span class="n">FieldInfo</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wraps the standard pydantic `FieldInfo` in order</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wraps the standard pydantic `FieldInfo` in order</span>
 <span class="sd">    to prefix any custom keys from `StrictField`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2930,7 +2930,7 @@ SupportLevel            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SupportLevel</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;OPTIMADE property/field support levels&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;OPTIMADE property/field support levels&quot;&quot;&quot;</span>
 
     <span class="n">MUST</span> <span class="o">=</span> <span class="s2">&quot;must&quot;</span>
     <span class="n">SHOULD</span> <span class="o">=</span> <span class="s2">&quot;should&quot;</span>
@@ -3075,7 +3075,7 @@ of this field.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7f96efd720c0&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7f0dbcf160c0&gt;</code></td>
       <td><p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" href="#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p></td>
     </tr>
   </tbody>
@@ -3089,7 +3089,7 @@ of this field.</p></td>
     <span class="n">unit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Field</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that adds OPTIMADE-specific</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that adds OPTIMADE-specific</span>
 <span class="sd">    field paramters `queryable`, `support` and `unit`, indicating</span>
 <span class="sd">    the corresponding support level in the specification and the</span>
 <span class="sd">    physical unit of the field.</span>
@@ -3219,7 +3219,7 @@ by models in this package (see above).</p></td>
     <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StrictFieldInfo</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that does the following:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that does the following:</span>
 
 <span class="sd">    - Forbids any &quot;extra&quot; keys that would be passed to `pydantic.Field`,</span>
 <span class="sd">      except those used elsewhere to modify the schema in-place,</span>
@@ -3290,7 +3290,7 @@ the pydantic <code>FieldInfo</code>.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">StrictPydanticField</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrapper for `Field` that uses `StrictFieldInfo` instead of</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for `Field` that uses `StrictFieldInfo` instead of</span>
 <span class="sd">    the pydantic `FieldInfo`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">field_info</span> <span class="o">=</span> <span class="n">StrictFieldInfo</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -3321,7 +3321,7 @@ the pydantic <code>FieldInfo</code>.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">anonymous_element_generator</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme.&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_lowercase</span>
 
     <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>

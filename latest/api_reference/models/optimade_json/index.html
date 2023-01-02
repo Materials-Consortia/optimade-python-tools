@@ -2807,7 +2807,7 @@ BaseRelationshipMeta            (<a class="autorefs autorefs-internal" title="op
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Specific meta field for base relationship resource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Specific meta field for base relationship resource&quot;&quot;&quot;</span>
 
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;OPTIONAL human-readable description of the relationship.&quot;</span>
@@ -2883,7 +2883,7 @@ BaseRelationshipResource            (<a class="autorefs autorefs-internal" title
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipResource</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Minimum requirements to represent a relationship resource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimum requirements to represent a relationship resource&quot;&quot;&quot;</span>
 
     <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseRelationshipMeta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -2957,7 +2957,7 @@ DataType            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Optimade Data Types</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimade Data Types</span>
 
 <span class="sd">    See the section &quot;Data types&quot; in the OPTIMADE API specification for more information.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2973,12 +2973,12 @@ DataType            (<span title="enum.Enum">Enum</span>)
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data types (enum values) as a (sorted) list&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data types (enum values) as a (sorted) list&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">cls</span><span class="p">))</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_python_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">python_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a Python type&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a Python type&quot;&quot;&quot;</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;bool&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BOOLEAN</span><span class="p">,</span>
             <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
@@ -3021,7 +3021,7 @@ DataType            (<span title="enum.Enum">Enum</span>)
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a named JSON type&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a named JSON type&quot;&quot;&quot;</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;string&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
             <span class="s2">&quot;integer&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">,</span>
@@ -3242,7 +3242,7 @@ Implementation            (<span title="pydantic.main.BaseModel">BaseModel</span
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Information on the server implementation&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the server implementation&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;name of the implementation&quot;</span><span class="p">)</span>
 
@@ -3449,7 +3449,7 @@ ImplementationMaintainer            (<span title="pydantic.main.BaseModel">BaseM
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationMaintainer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Details about the maintainer of the implementation&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Details about the maintainer of the implementation&quot;&quot;&quot;</span>
 
     <span class="n">email</span><span class="p">:</span> <span class="n">EmailStr</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;the maintainer&#39;s email address&quot;</span><span class="p">)</span>
 </code></pre></div>
@@ -3523,7 +3523,7 @@ OptimadeError            (<a class="autorefs autorefs-internal" title="optimade.
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeError</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Error</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;detail MUST be present&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;detail MUST be present&quot;&quot;&quot;</span>
 
     <span class="n">detail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -3605,7 +3605,7 @@ Provider            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Provider</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Information on the database provider of the implementation.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the database provider of the implementation.&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a short name for the database provider&quot;</span><span class="p">)</span>
 
@@ -3764,7 +3764,7 @@ Relationship            (<a class="autorefs autorefs-internal" title="optimade.m
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Relationship</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource.&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
         <span class="n">Union</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]]</span>
@@ -3807,7 +3807,7 @@ database-provider-specific prefix.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)</span>
 <span class="sd">    that contains JSON API meta objects of non-standard</span>
 <span class="sd">    meta-information.</span>
@@ -4209,7 +4209,7 @@ ResponseMetaQuery            (<span title="pydantic.main.BaseModel">BaseModel</s
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMetaQuery</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Information on the query that was requested.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the query that was requested.&quot;&quot;&quot;</span>
 
     <span class="n">representation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -4292,7 +4292,7 @@ Success            (<a class="autorefs autorefs-internal" title="optimade.models
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Success</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;errors are not allowed&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;errors are not allowed&quot;&quot;&quot;</span>
 
     <span class="n">meta</span><span class="p">:</span> <span class="n">ResponseMeta</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A meta object containing non-standard information&quot;</span>
@@ -4300,7 +4300,7 @@ Success            (<a class="autorefs autorefs-internal" title="optimade.models
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
         <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -4348,7 +4348,7 @@ Success            (<a class="autorefs autorefs-internal" title="optimade.models
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
     <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -4405,7 +4405,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Warnings</span><span class="p">(</span><span class="n">OptimadeError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.</span>
 
 <span class="sd">    From the specification:</span>
 
@@ -4431,7 +4431,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="nd">@staticmethod</span>
         <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">            * Ensure `type` is in the list required properties and in the correct place.</span>
 <span class="sd">            * Remove `status` property.</span>
@@ -4503,7 +4503,7 @@ Config        </code>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">        * Ensure `type` is in the list required properties and in the correct place.</span>
 <span class="sd">        * Remove `status` property.</span>
@@ -4566,7 +4566,7 @@ Config        </code>
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">    * Ensure `type` is in the list required properties and in the correct place.</span>
 <span class="sd">    * Remove `status` property.</span>

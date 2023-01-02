@@ -2140,7 +2140,7 @@ AvailableApiVersion            (<span title="pydantic.main.BaseModel">BaseModel<
         <details class="quote">
           <summary>Source code in <code>optimade/models/baseinfo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AvailableApiVersion</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A JSON object containing information about an available API version&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A JSON object containing information about an available API version&quot;&quot;&quot;</span>
 
     <span class="n">url</span><span class="p">:</span> <span class="n">AnyHttpUrl</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -2157,14 +2157,14 @@ AvailableApiVersion            (<span title="pydantic.main.BaseModel">BaseModel<
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">url_must_be_versioned_base_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The URL must be a valid versioned Base URL&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The URL must be a valid versioned Base URL&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.+/v[0-1](\.[0-9]+)*/?$&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;url MUST be a versioned base URL. It is: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">crosscheck_url_and_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
         <span class="n">url_version</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">values</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
             <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -2266,7 +2266,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
           <summary>Source code in <code>optimade/models/baseinfo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_on_failure</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">crosscheck_url_and_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
     <span class="n">url_version</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">values</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
         <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -2313,7 +2313,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
           <summary>Source code in <code>optimade/models/baseinfo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">url_must_be_versioned_base_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The URL must be a valid versioned Base URL&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The URL must be a valid versioned Base URL&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.+/v[0-1](\.[0-9]+)*/?$&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;url MUST be a versioned base URL. It is: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">v</span>
@@ -2358,7 +2358,7 @@ BaseInfoAttributes            (<span title="pydantic.main.BaseModel">BaseModel</
         <details class="quote">
           <summary>Source code in <code>optimade/models/baseinfo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseInfoAttributes</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint&quot;&quot;&quot;</span>
 
     <span class="n">api_version</span><span class="p">:</span> <span class="n">SemanticVersion</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>

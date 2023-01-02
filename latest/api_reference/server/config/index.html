@@ -2720,7 +2720,7 @@ LogLevel            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/server/config.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LogLevel</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Replication of logging LogLevels</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replication of logging LogLevels</span>
 
 <span class="sd">    - `notset`</span>
 <span class="sd">    - `debug`</span>
@@ -2894,7 +2894,7 @@ can be easily extended for new config file types.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/config.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This class stores server config parameters in a way that</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class stores server config parameters in a way that</span>
 <span class="sd">    can be easily extended for new config file types.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -3063,14 +3063,14 @@ can be easily extended for new config file types.</p>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">set_implementation_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set defaults and modify bypassed value(s)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set defaults and modify bypassed value(s)&quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">}</span>
         <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">use_real_mongo_override</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Overrides the `database_backend` setting with MongoDB and</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overrides the `database_backend` setting with MongoDB and</span>
 <span class="sd">        raises a deprecation warning.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3088,7 +3088,7 @@ can be easily extended for new config file types.</p>
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is a pydantic model Config object that modifies the behaviour of</span>
 <span class="sd">        ServerConfig by adding a prefix to the environment variables that</span>
 <span class="sd">        override config file values. It has nothing to do with the OPTIMADE</span>
@@ -3107,7 +3107,7 @@ can be easily extended for new config file types.</p>
             <span class="n">env_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
             <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-            <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            **Priority of config settings sources**:</span>
 
 <span class="sd">            1. Passed arguments upon initialization of</span>
@@ -3781,7 +3781,7 @@ config.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/config.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is a pydantic model Config object that modifies the behaviour of</span>
 <span class="sd">    ServerConfig by adding a prefix to the environment variables that</span>
 <span class="sd">    override config file values. It has nothing to do with the OPTIMADE</span>
@@ -3800,7 +3800,7 @@ config.</p>
         <span class="n">env_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
         <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        **Priority of config settings sources**:</span>
 
 <span class="sd">        1. Passed arguments upon initialization of</span>
@@ -3932,7 +3932,7 @@ config.</p>
     <span class="n">env_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
     <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    **Priority of config settings sources**:</span>
 
 <span class="sd">    1. Passed arguments upon initialization of</span>
@@ -3996,7 +3996,7 @@ config.</p>
           <summary>Source code in <code>optimade/server/config.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">set_implementation_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set defaults and modify bypassed value(s)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set defaults and modify bypassed value(s)&quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">}</span>
     <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
@@ -4030,7 +4030,7 @@ raises a deprecation warning.</p>
           <summary>Source code in <code>optimade/server/config.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">use_real_mongo_override</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Overrides the `database_backend` setting with MongoDB and</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overrides the `database_backend` setting with MongoDB and</span>
 <span class="sd">    raises a deprecation warning.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -4092,7 +4092,7 @@ SupportedBackend            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/server/config.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SupportedBackend</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Enumeration of supported database backends</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of supported database backends</span>
 
 <span class="sd">    - `elastic`: [Elasticsearch](https://www.elastic.co/).</span>
 <span class="sd">    - `mongodb`: [MongoDB](https://www.mongodb.com/).</span>
@@ -4242,7 +4242,7 @@ this function loads ServerConfig settings from a configuration file.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/config.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">config_file_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">BaseSettings</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Configuration file settings source.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration file settings source.</span>
 
 <span class="sd">    Based on the example in the</span>
 <span class="sd">    [pydantic documentation](https://pydantic-docs.helpmanual.io/usage/settings/#adding-sources),</span>

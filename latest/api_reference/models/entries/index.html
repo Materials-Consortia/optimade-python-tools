@@ -2613,7 +2613,7 @@ EntryRelationships            (<a class="autorefs autorefs-internal" title="opti
         <details class="quote">
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryRelationships</span><span class="p">(</span><span class="n">Relationships</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This model wraps the JSON API Relationships to include type-specific top level keys.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This model wraps the JSON API Relationships to include type-specific top level keys.&quot;&quot;&quot;</span>
 
     <span class="n">references</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ReferenceRelationship</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -2716,7 +2716,7 @@ EntryResource            (<a class="autorefs autorefs-internal" title="optimade.
         <details class="quote">
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -2800,7 +2800,7 @@ EntryResourceAttributes            (<a class="autorefs autorefs-internal" title=
         <details class="quote">
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResourceAttributes</span><span class="p">(</span><span class="n">Attributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Contains key-value pairs representing the entry&#39;s properties.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Contains key-value pairs representing the entry&#39;s properties.&quot;&quot;&quot;</span>
 
     <span class="n">immutable_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -2838,7 +2838,7 @@ EntryResourceAttributes            (<a class="autorefs autorefs-internal" title=
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -2962,7 +2962,7 @@ EntryResourceAttributes            (<a class="autorefs autorefs-internal" title=
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 

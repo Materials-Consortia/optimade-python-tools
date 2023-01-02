@@ -2029,7 +2029,7 @@ FieldValueNotRecognized            (<a class="autorefs autorefs-internal" title=
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">FieldValueNotRecognized</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A field or value used in the request is not recognised by this implementation.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A field or value used in the request is not recognised by this implementation.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
 
@@ -2061,7 +2061,7 @@ with a value.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MissingExpectedField</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A field was provided with a null value when a related field was provided</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A field was provided with a null value when a related field was provided</span>
 <span class="sd">    with a value.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
@@ -2093,7 +2093,7 @@ OptimadeWarning            (<span title="Warning">Warning</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base Warning for the `optimade` package&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Warning for the `optimade` package&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">detail</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
@@ -2166,7 +2166,7 @@ QueryParamNotUsed            (<a class="autorefs autorefs-internal" title="optim
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryParamNotUsed</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A query parameter is not used in this request.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A query parameter is not used in this request.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
 
@@ -2198,7 +2198,7 @@ RFC 3339 compliant. This may cause undefined behaviour in the query results.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TimestampNotRFCCompliant</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A timestamp has been used in a filter that contains microseconds and is thus not</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A timestamp has been used in a filter that contains microseconds and is thus not</span>
 <span class="sd">    RFC 3339 compliant. This may cause undefined behaviour in the query results.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2232,7 +2232,7 @@ TooManyValues            (<a class="autorefs autorefs-internal" title="optimade.
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TooManyValues</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A field or query parameter has too many values to be handled by this implementation.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A field or query parameter has too many values to be handled by this implementation.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
 
@@ -2264,7 +2264,7 @@ recognised by this implementation.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderProperty</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A provider-specific property has been requested via `response_fields` or as in a `filter` that is not</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A provider-specific property has been requested via `response_fields` or as in a `filter` that is not</span>
 <span class="sd">    recognised by this implementation.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2299,7 +2299,7 @@ recognised by this implementation.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnknownProviderQueryParameter</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A provider-specific query parameter has been requested in the query with a prefix not</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A provider-specific query parameter has been requested in the query with a prefix not</span>
 <span class="sd">    recognised by this implementation.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

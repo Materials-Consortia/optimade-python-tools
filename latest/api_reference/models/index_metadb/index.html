@@ -2039,7 +2039,7 @@ DefaultRelationship            (<span title="enum.Enum">Enum</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DefaultRelationship</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Enumeration of key(s) for relationship dictionary in IndexInfoResource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of key(s) for relationship dictionary in IndexInfoResource&quot;&quot;&quot;</span>
 
     <span class="n">DEFAULT</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
 </code></pre></div>
@@ -2108,7 +2108,7 @@ IndexInfoAttributes            (<a class="autorefs autorefs-internal" title="opt
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexInfoAttributes</span><span class="p">(</span><span class="n">BaseInfoAttributes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint for an Index Meta-Database&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint for an Index Meta-Database&quot;&quot;&quot;</span>
 
     <span class="n">is_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">True</span><span class="p">,</span>
@@ -2147,7 +2147,7 @@ IndexInfoResource            (<a class="autorefs autorefs-internal" title="optim
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexInfoResource</span><span class="p">(</span><span class="n">BaseInfoResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Index Meta-Database Base URL Info endpoint resource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Index Meta-Database Base URL Info endpoint resource&quot;&quot;&quot;</span>
 
     <span class="n">attributes</span><span class="p">:</span> <span class="n">IndexInfoAttributes</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
     <span class="n">relationships</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
@@ -2191,7 +2191,7 @@ IndexRelationship            (<span title="pydantic.main.BaseModel">BaseModel</s
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">IndexRelationship</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Index Meta-Database relationship&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Index Meta-Database relationship&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">RelatedLinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -2270,7 +2270,7 @@ RelatedLinksResource            (<a class="autorefs autorefs-internal" title="op
         <details class="quote">
           <summary>Source code in <code>optimade/models/index_metadb.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RelatedLinksResource</span><span class="p">(</span><span class="n">BaseResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A related Links resource object&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A related Links resource object&quot;&quot;&quot;</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^links$&quot;</span><span class="p">)</span>
 </code></pre></div>

@@ -1992,7 +1992,7 @@
 <h2 id="retrieve-the-container-image">Retrieve the container image<a class="headerlink" href="#retrieve-the-container-image" title="Permanent link">&para;</a></h2>
 <p>Retrieving the container image is explained in the <a href="../../INSTALL/#retrieve-the-image">installation instructions</a>.
 In short, using <a href="https://docs.docker.com">Docker</a> you can run:</p>
-<div class="highlight"><pre><span></span><code>docker pull ghcr.io/materials-consortia/optimade
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>ghcr.io/materials-consortia/optimade
 </code></pre></div>
 <p>A general overview on running a container is also given in the <a href="../../INSTALL/#run-a-container">installations instructions</a>.</p>
 <h2 id="prepare-the-container-and-configure-the-server">Prepare the container and configure the server<a class="headerlink" href="#prepare-the-container-and-configure-the-server" title="Permanent link">&para;</a></h2>
@@ -2004,19 +2004,19 @@ In short, using <a href="https://docs.docker.com">Docker</a> you can run:</p>
 This can be changed in several different ways.</p>
 <p>One is to <code>git clone</code> the repository locally and bind the repository folder to the <code>/app</code> folder in the container:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># volume will bind the local version of `optimade-python-tools` to the container.</span>
-docker run <span class="se">\</span>
-    --rm <span class="se">\</span>
-    --detach <span class="se">\</span>
-    --publish <span class="m">8080</span>:5000 <span class="se">\</span>
-    --env <span class="nv">MAIN</span><span class="o">=</span>main <span class="se">\</span>
-    --name my-optimade <span class="se">\</span>
-    --volume /path/to/optimade-python-tools:/app <span class="se">\</span>
-    ghcr.io/materials-consortia/optimade:latest
+docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--detach<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--publish<span class="w"> </span><span class="m">8080</span>:5000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">MAIN</span><span class="o">=</span>main<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="w"> </span>my-optimade<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--volume<span class="w"> </span>/path/to/optimade-python-tools:/app<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ghcr.io/materials-consortia/optimade:latest
 </code></pre></div>
 <div class="admonition help">
 <p class="admonition-title">Help</p>
 <p>To clone the repository you can run:</p>
-<div class="highlight"><pre><span></span><code>git clone --recursive https://github.com/Materials-Consortia/optimade-python-tools.git
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/Materials-Consortia/optimade-python-tools.git
 </code></pre></div>
 </div>
 <p>You should change the <code>/path/to/optimade-python-tools</code> to the full local path to the repository - or use <code>$PWD</code> if you are running this command from the root of the cloned repository on a Unix system.
@@ -2027,15 +2027,15 @@ E.g., if you do not wish to use the test data you can add the <code>insert_test_
 As an example, let us say we generate <code>config.yml</code> locally, with the full path <code>/home/user/optimade/config.yml</code>.
 Then we can start the server with the following command:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># volume will bind the local directory to an unused folder in the container.</span>
-docker run <span class="se">\</span>
-    --rm <span class="se">\</span>
-    --detach <span class="se">\</span>
-    --publish <span class="m">8080</span>:5000 <span class="se">\</span>
-    --env <span class="nv">MAIN</span><span class="o">=</span>main <span class="se">\</span>
-    --name my-optimade <span class="se">\</span>
-    --volume /home/user/optimade:/config <span class="se">\</span>
-    --env <span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span>/config/config.yml <span class="se">\</span>
-    ghcr.io/materials-consortia/optimade:latest
+docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--detach<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--publish<span class="w"> </span><span class="m">8080</span>:5000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">MAIN</span><span class="o">=</span>main<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="w"> </span>my-optimade<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--volume<span class="w"> </span>/home/user/optimade:/config<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span>/config/config.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ghcr.io/materials-consortia/optimade:latest
 </code></pre></div>
 <p>As shown, it is necessary to update the environment variable <code>OPTIMADE_CONFIG_FILE</code> within the container to point to the new internal path to the config file.
 By default, this environment variable points to <code>/app/optimade_config.json</code>.</p>
@@ -2049,7 +2049,7 @@ One could choose to use the <a href="https://docs.docker.com/compose/">Docker Co
 Hence, we need to run three separate services, configure it properly, and make sure only the OPTIMADE APIs are exposed.</p>
 <h3 id="1-setup-closed-network">1. Setup closed network<a class="headerlink" href="#1-setup-closed-network" title="Permanent link">&para;</a></h3>
 <p>First, we want to create the internal network:</p>
-<div class="highlight"><pre><span></span><code>docker network create -d bridge optimade
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>-d<span class="w"> </span>bridge<span class="w"> </span>optimade
 </code></pre></div>
 <h3 id="2-run-mongodb-service">2. Run MongoDB service<a class="headerlink" href="#2-run-mongodb-service" title="Permanent link">&para;</a></h3>
 <p>Then, we can create a volume for the MongoDB server to use and start it.</p>
@@ -2059,14 +2059,14 @@ Hence, we need to run three separate services, configure it properly, and make s
 For more information on the specifics of how to use the MongoDB container image, see <a href="https://hub.docker.com/_/mongo">the Docker Hub documentation</a>.
 For more information from the MongoDB team concerning the Enterprise version, see <a href="https://www.mongodb.com/docs/manual/tutorial/install-mongodb-enterprise-with-docker/">the MongoDB documentation</a>.</p>
 </div>
-<div class="highlight"><pre><span></span><code>docker volume create mongodb-persist
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>mongodb-persist
 <span class="c1"># `mongo` will be the host name in the docker network, using `--name`.</span>
-docker run <span class="se">\</span>
-    --detach <span class="se">\</span>
-    --name mongo <span class="se">\</span>
-    --volume mongodb-persist:/data/db <span class="se">\</span>
-    --network optimade <span class="se">\</span>
-    docker.io/library/mongo:latest
+docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--detach<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="w"> </span>mongo<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--volume<span class="w"> </span>mongodb-persist:/data/db<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--network<span class="w"> </span>optimade<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>docker.io/library/mongo:latest
 </code></pre></div>
 <p>At this point you should fill up the database with your data, or instead of doing the command above exactly, you could choose to bind to another "local" path that contains an existing MongoDB you have.</p>
 <p>Most likely, you will have a database dump archive, which you will now be able to import.
@@ -2074,26 +2074,26 @@ If you do so, please note the name of the database, the collection, and consider
 <p>In the example, we assume the database has been filled with fully valid OPTIMADE <em>structures</em> and <em>references</em> in a database called <strong>optimade_prod</strong>, within the collections <strong>structures</strong> and <strong>references</strong>, respectively.</p>
 <h3 id="3-run-the-optimade-service">3. Run the OPTIMADE service<a class="headerlink" href="#3-run-the-optimade-service" title="Permanent link">&para;</a></h3>
 <p>With this information, we can now start the OPTIMADE server:</p>
-<div class="highlight"><pre><span></span><code>docker run <span class="se">\</span>
-    --rm <span class="se">\</span>
-    --detach <span class="se">\</span>
-    --publish <span class="m">8081</span>:5000 <span class="se">\</span>
-    --env <span class="nv">MAIN</span><span class="o">=</span>main <span class="se">\</span>
-    --name my-optimade <span class="se">\</span>
-    --network optimade <span class="se">\</span>
-    --env <span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span> <span class="se">\</span>
-    --env <span class="nv">optimade_insert_test_data</span><span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-    --env <span class="nv">optimade_database_backend</span><span class="o">=</span>mongodb <span class="se">\</span>
-    --env <span class="nv">optimade_mongo_uri</span><span class="o">=</span>mongodb://mongo:27017 <span class="se">\</span>
-    --env <span class="nv">optimade_mongo_database</span><span class="o">=</span>optimade_prod <span class="se">\</span>
-    --env <span class="nv">optimade_references_collection</span><span class="o">=</span>references <span class="se">\</span>
-    --env <span class="nv">optimade_structures_collection</span><span class="o">=</span>structures <span class="se">\</span>
-    --env <span class="nv">optimade_page_limit</span><span class="o">=</span><span class="m">25</span> <span class="se">\</span>
-    --env <span class="nv">optimade_page_limit_max</span><span class="o">=</span><span class="m">100</span> <span class="se">\</span>
-    --env <span class="nv">optimade_base_url</span><span class="o">=</span>http://localhost:8081 <span class="se">\</span>
-    --env <span class="nv">optimade_index_base_url</span><span class="o">=</span>http://localhost:8080 <span class="se">\</span>
-    --env <span class="nv">optimade_provider</span><span class="o">=</span><span class="s2">&quot;{\&quot;prefix\&quot;:\&quot;myorg\&quot;,\&quot;name\&quot;:\&quot;My Organization\&quot;,\&quot;description\&quot;:\&quot;Short description for My Organization\&quot;,\&quot;homepage\&quot;:\&quot;https://example.org\&quot;}&quot;</span> <span class="se">\</span>
-    ghcr.io/materials-consortia/optimade:latest
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--detach<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--publish<span class="w"> </span><span class="m">8081</span>:5000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">MAIN</span><span class="o">=</span>main<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="w"> </span>my-optimade<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--network<span class="w"> </span>optimade<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_insert_test_data</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_database_backend</span><span class="o">=</span>mongodb<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_mongo_uri</span><span class="o">=</span>mongodb://mongo:27017<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_mongo_database</span><span class="o">=</span>optimade_prod<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_references_collection</span><span class="o">=</span>references<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_structures_collection</span><span class="o">=</span>structures<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_page_limit</span><span class="o">=</span><span class="m">25</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_page_limit_max</span><span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_base_url</span><span class="o">=</span>http://localhost:8081<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_index_base_url</span><span class="o">=</span>http://localhost:8080<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_provider</span><span class="o">=</span><span class="s2">&quot;{\&quot;prefix\&quot;:\&quot;myorg\&quot;,\&quot;name\&quot;:\&quot;My Organization\&quot;,\&quot;description\&quot;:\&quot;Short description for My Organization\&quot;,\&quot;homepage\&quot;:\&quot;https://example.org\&quot;}&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ghcr.io/materials-consortia/optimade:latest
 </code></pre></div>
 <p>Note, the <code>optimade_base_url</code> and <code>optimade_index_base_url</code> values should be different if the server is run through a reverse-proxy service like NGINX, Apache or other.
 For this example, we are only concerned with exposing the OPTIMADE APIs from the <code>localhost</code>.</p>
@@ -2101,43 +2101,43 @@ For this example, we are only concerned with exposing the OPTIMADE APIs from the
 <h3 id="4-setup-and-run-the-optimade-index-meta-database-service">4. Setup and run the OPTIMADE index meta-database service<a class="headerlink" href="#4-setup-and-run-the-optimade-index-meta-database-service" title="Permanent link">&para;</a></h3>
 <p>The next step is to start the OPTIMADE index meta-database.
 For this, we will first create a JSON file to reference and load as data for the <code>/links</code> endpoint:</p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="w"></span>
-<span class="w">  </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-optimade-db&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;links&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My OPTIMADE API&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An OPTIMADE API for my database of essential material structures.&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;base_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8081&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;homepage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.org&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;link_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;child&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">]</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-optimade-db&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;links&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My OPTIMADE API&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An OPTIMADE API for my database of essential material structures.&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;base_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8081&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;homepage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.org&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;link_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;child&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
 </code></pre></div>
 <p>This file is stored in a newly created directory at <code>/home/user/optimade/index_data/index_links.json</code>.</p>
 <p>Now, we can start the index meta-database server:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># `optimade_insert_test_data` needs to be `true` to insert JSON file data</span>
-docker run <span class="se">\</span>
-    --rm <span class="se">\</span>
-    --detach <span class="se">\</span>
-    --publish <span class="m">8080</span>:5000 <span class="se">\</span>
-    --env <span class="nv">MAIN</span><span class="o">=</span>main_index <span class="se">\</span>
-    --name my-optimade-index <span class="se">\</span>
-    --network optimade <span class="se">\</span>
-    --env <span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span> <span class="se">\</span>
-    --env <span class="nv">optimade_insert_test_data</span><span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    --env <span class="nv">optimade_database_backend</span><span class="o">=</span>mongodb <span class="se">\</span>
-    --env <span class="nv">optimade_mongo_uri</span><span class="o">=</span>mongodb://mongo:27017 <span class="se">\</span>
-    --env <span class="nv">optimade_mongo_database</span><span class="o">=</span>optimade_index_prod <span class="se">\</span>
-    --env <span class="nv">optimade_links_collection</span><span class="o">=</span>links <span class="se">\</span>
-    --env <span class="nv">optimade_page_limit</span><span class="o">=</span><span class="m">25</span> <span class="se">\</span>
-    --env <span class="nv">optimade_page_limit_max</span><span class="o">=</span><span class="m">100</span> <span class="se">\</span>
-    --env <span class="nv">optimade_base_url</span><span class="o">=</span>http://localhost:8080 <span class="se">\</span>
-    --env <span class="nv">optimade_index_base_url</span><span class="o">=</span>http://localhost:8080 <span class="se">\</span>
-    --env <span class="nv">optimade_provider</span><span class="o">=</span><span class="s2">&quot;{\&quot;prefix\&quot;:\&quot;myorg\&quot;,\&quot;name\&quot;:\&quot;My Organization\&quot;,\&quot;description\&quot;:\&quot;Short description for My Organization\&quot;,\&quot;homepage\&quot;:\&quot;https://example.org\&quot;}&quot;</span> <span class="se">\</span>
-    --env <span class="nv">optimade_default_db</span><span class="o">=</span>my-optimade-db <span class="se">\</span>
-    --env <span class="nv">optimade_index_links_path</span><span class="o">=</span>/external/index_data/index_links.json <span class="se">\</span>
-    --volume /home/user/optimade/index_data:/external/index_data <span class="se">\</span>
-    ghcr.io/materials-consortia/optimade:latest
+docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--detach<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--publish<span class="w"> </span><span class="m">8080</span>:5000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">MAIN</span><span class="o">=</span>main_index<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="w"> </span>my-optimade-index<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--network<span class="w"> </span>optimade<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_insert_test_data</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_database_backend</span><span class="o">=</span>mongodb<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_mongo_uri</span><span class="o">=</span>mongodb://mongo:27017<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_mongo_database</span><span class="o">=</span>optimade_index_prod<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_links_collection</span><span class="o">=</span>links<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_page_limit</span><span class="o">=</span><span class="m">25</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_page_limit_max</span><span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_base_url</span><span class="o">=</span>http://localhost:8080<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_index_base_url</span><span class="o">=</span>http://localhost:8080<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_provider</span><span class="o">=</span><span class="s2">&quot;{\&quot;prefix\&quot;:\&quot;myorg\&quot;,\&quot;name\&quot;:\&quot;My Organization\&quot;,\&quot;description\&quot;:\&quot;Short description for My Organization\&quot;,\&quot;homepage\&quot;:\&quot;https://example.org\&quot;}&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_default_db</span><span class="o">=</span>my-optimade-db<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_index_links_path</span><span class="o">=</span>/external/index_data/index_links.json<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--volume<span class="w"> </span>/home/user/optimade/index_data:/external/index_data<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ghcr.io/materials-consortia/optimade:latest
 </code></pre></div>
 <h3 id="5-test-the-services">5. Test the services<a class="headerlink" href="#5-test-the-services" title="Permanent link">&para;</a></h3>
 <p>Finally, we can test it all works as intended.</p>

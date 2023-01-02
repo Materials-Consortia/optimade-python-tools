@@ -2002,7 +2002,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MongoCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class for querying MongoDB collections (implemented by either pymongo or mongomock)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for querying MongoDB collections (implemented by either pymongo or mongomock)</span>
 <span class="sd">    containing serialized [`EntryResource`][optimade.models.entries.EntryResource]s objects.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2014,7 +2014,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
         <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            name: The name of the collection.</span>
@@ -2038,11 +2038,11 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
 <span class="sd">        by the keyword arguments.</span>
 
 <span class="sd">        Parameters:</span>
@@ -2059,7 +2059,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">        Warning:</span>
 <span class="sd">            No validation is performed on the incoming data.</span>
@@ -2073,7 +2073,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
     <span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">        that can be used by MongoDB.</span>
 
 <span class="sd">        This Mongo-specific method calls the base `EntryCollection.handle_query_params` method</span>
@@ -2106,7 +2106,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
     <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            criteria: A dictionary representation of the query parameters.</span>
@@ -2141,7 +2141,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span>
 
     <span class="k">def</span> <span class="nf">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aliases</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check that aliases do not clash with mongo keywords.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that aliases do not clash with mongo keywords.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
             <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span>
         <span class="p">):</span>
@@ -2225,7 +2225,7 @@ format changes between deserialization and response.</p></td>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
     <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        name: The name of the collection.</span>
@@ -2295,7 +2295,7 @@ to the <code>pymongo.collection.Collection.count_documents</code> method.</p></t
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
 <span class="sd">    by the keyword arguments.</span>
 
 <span class="sd">    Parameters:</span>
@@ -2394,7 +2394,7 @@ or response format.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">    that can be used by MongoDB.</span>
 
 <span class="sd">    This Mongo-specific method calls the base `EntryCollection.handle_query_params` method</span>
@@ -2471,7 +2471,7 @@ or response format.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">    Warning:</span>
 <span class="sd">        No validation is performed on the incoming data.</span>

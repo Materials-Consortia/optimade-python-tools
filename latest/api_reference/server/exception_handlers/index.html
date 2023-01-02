@@ -2112,7 +2112,7 @@ OPTIMADE specification.</p>
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>  <span class="c1"># A status_code in `exc` will take precedence</span>
     <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Handle an exception</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle an exception</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        request: The HTTP request resulting in the exception being raised.</span>
@@ -2233,7 +2233,7 @@ OPTIMADE specification.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/exception_handlers.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">general_exception_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Catch all Python Exceptions not handled by other exception handlers</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Catch all Python Exceptions not handled by other exception handlers</span>
 
 <span class="sd">    Pass-through directly to [`general_exception()`][optimade.server.exception_handlers.general_exception].</span>
 
@@ -2318,7 +2318,7 @@ return a 501 NotImplementedError.</p>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">grammar_not_implemented_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">VisitError</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Handle an error raised by Lark during filter transformation</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle an error raised by Lark during filter transformation</span>
 
 <span class="sd">    All errors raised during filter transformation are wrapped in the Lark `VisitError`.</span>
 <span class="sd">    According to the OPTIMADE specification, these errors are repurposed to be 501 NotImplementedErrors.</span>
@@ -2420,7 +2420,7 @@ return a 501 NotImplementedError.</p>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">exc</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">StarletteHTTPException</span><span class="p">,</span> <span class="n">OptimadeHTTPException</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Handle a general HTTP Exception from Starlette</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle a general HTTP Exception from Starlette</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        request: The HTTP request resulting in the exception being raised.</span>
@@ -2498,7 +2498,7 @@ return a 501 NotImplementedError.</p>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">not_implemented_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">NotImplementedError</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Handle a standard NotImplementedError Python exception</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle a standard NotImplementedError Python exception</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        request: The HTTP request resulting in the exception being raised.</span>
@@ -2582,7 +2582,7 @@ Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.s
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">request_validation_exception_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">RequestValidationError</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Handle a request validation error from FastAPI</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle a request validation error from FastAPI</span>
 
 <span class="sd">    `RequestValidationError` is a specialization of a general pydantic `ValidationError`.</span>
 <span class="sd">    Pass-through directly to [`general_exception()`][optimade.server.exception_handlers.general_exception].</span>
@@ -2665,7 +2665,7 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">validation_exception_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">ValidationError</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Handle a general pydantic validation error</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle a general pydantic validation error</span>
 
 <span class="sd">    The pydantic `ValidationError` usually contains a list of errors,</span>
 <span class="sd">    this function extracts them and wraps them in the OPTIMADE specific error resource.</span>

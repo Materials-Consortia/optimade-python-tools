@@ -2058,7 +2058,7 @@ EntryAdapter        </code>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/base.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryAdapter</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for lazy resource entry adapters.</span>
 
 <span class="sd">    Attributes:</span>
@@ -2074,7 +2074,7 @@ EntryAdapter        </code>
     <span class="n">_type_ingesters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">            entry (dict): A JSON OPTIMADE single resource entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2093,7 +2093,7 @@ EntryAdapter        </code>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResource</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Get OPTIMADE entry.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE entry.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The entry resource.</span>
@@ -2103,7 +2103,7 @@ EntryAdapter        </code>
 
     <span class="nd">@entry</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Set OPTIMADE entry.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set OPTIMADE entry.</span>
 
 <span class="sd">        If already set, print that this can _only_ be set once.</span>
 
@@ -2117,7 +2117,7 @@ EntryAdapter        </code>
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;entry can only be set once and is already set.&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Convert OPTIMADE entry to desired format.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert OPTIMADE entry to desired format.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            format (str): Type or format to which the entry should be converted.</span>
@@ -2135,7 +2135,7 @@ EntryAdapter        </code>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to convert to: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2150,7 +2150,7 @@ EntryAdapter        </code>
     <span class="k">def</span> <span class="nf">_get_model_attributes</span><span class="p">(</span>
         <span class="n">starting_instances</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Helper method for retrieving the OPTIMADE model&#39;s attribute, supporting &quot;.&quot;-nested attributes&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper method for retrieving the OPTIMADE model&#39;s attribute, supporting &quot;.&quot;-nested attributes&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">starting_instances</span><span class="p">:</span>
             <span class="n">nested_attributes</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">nested_attribute</span> <span class="ow">in</span> <span class="n">nested_attributes</span><span class="p">:</span>
@@ -2164,7 +2164,7 @@ EntryAdapter        </code>
         <span class="k">raise</span> <span class="ne">AttributeError</span>
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Get converted entry or attribute from OPTIMADE entry.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get converted entry or attribute from OPTIMADE entry.</span>
 
 <span class="sd">        Support any level of &quot;.&quot;-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,</span>
 <span class="sd">        `attributes.species` for [`StuctureResource`][optimade.models.structures.StructureResource].</span>
@@ -2214,7 +2214,7 @@ EntryAdapter        </code>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Unknown attribute: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="s2">&quot;If you want to get a converted entry as &lt;entry_type&gt; use `as_&lt;entry_type&gt;`, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;Otherwise, you can try to retrieve an OPTIMADE </span><span class="si">{</span><span class="n">entry_resource_name</span><span class="si">}</span><span class="s2"> attribute or property.&quot;</span>
         <span class="p">)</span>
 </code></pre></div>
@@ -2291,7 +2291,7 @@ ENTRY_RESOURCE            (<a class="autorefs autorefs-internal" title="optimade
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/base.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
@@ -2424,7 +2424,7 @@ See above for the description of the order in which an attribute is tested for v
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/base.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Get converted entry or attribute from OPTIMADE entry.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get converted entry or attribute from OPTIMADE entry.</span>
 
 <span class="sd">    Support any level of &quot;.&quot;-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,</span>
 <span class="sd">    `attributes.species` for [`StuctureResource`][optimade.models.structures.StructureResource].</span>
@@ -2474,7 +2474,7 @@ See above for the description of the order in which an attribute is tested for v
     <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Unknown attribute: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="s2">&quot;If you want to get a converted entry as &lt;entry_type&gt; use `as_&lt;entry_type&gt;`, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="sa">f</span><span class="s2">&quot;Otherwise, you can try to retrieve an OPTIMADE </span><span class="si">{</span><span class="n">entry_resource_name</span><span class="si">}</span><span class="s2"> attribute or property.&quot;</span>
     <span class="p">)</span>
 </code></pre></div>
@@ -2523,7 +2523,7 @@ See above for the description of the order in which an attribute is tested for v
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/base.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters:</span>
 <span class="sd">        entry (dict): A JSON OPTIMADE single resource entry.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2613,7 +2613,7 @@ See above for the description of the order in which an attribute is tested for v
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/base.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Convert OPTIMADE entry to desired format.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert OPTIMADE entry to desired format.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        format (str): Type or format to which the entry should be converted.</span>
@@ -2631,7 +2631,7 @@ See above for the description of the order in which an attribute is tested for v
     <span class="p">):</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to convert to: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>

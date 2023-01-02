@@ -1951,7 +1951,7 @@ To implement your own index meta-database server see the documentation at https:
         <details class="quote">
           <summary>Source code in <code>optimade/server/main_index.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add mandatory endpoints to `/vMAJOR` base URL.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add mandatory endpoints to `/vMAJOR` base URL.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">index_info</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span>
         <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">])</span>
 </code></pre></div>
@@ -1982,7 +1982,7 @@ To implement your own index meta-database server see the documentation at https:
         <details class="quote">
           <summary>Source code in <code>optimade/server/main_index.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add the following OPTIONAL prefixes/base URLs to server:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the following OPTIONAL prefixes/base URLs to server:</span>
 <span class="sd">    ```</span>
 <span class="sd">        /vMajor.Minor</span>
 <span class="sd">        /vMajor.Minor.Patch</span>

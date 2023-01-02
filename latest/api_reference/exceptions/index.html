@@ -2028,7 +2028,7 @@ BadRequest            (<a class="autorefs autorefs-internal" title="optimade.exc
         <details class="quote">
           <summary>Source code in <code>optimade/exceptions.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BadRequest</span><span class="p">(</span><span class="n">OptimadeHTTPException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;400 Bad Request&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;400 Bad Request&quot;&quot;&quot;</span>
 
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Bad Request&quot;</span>
@@ -2079,7 +2079,7 @@ Forbidden            (<a class="autorefs autorefs-internal" title="optimade.exce
         <details class="quote">
           <summary>Source code in <code>optimade/exceptions.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Forbidden</span><span class="p">(</span><span class="n">OptimadeHTTPException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;403 Forbidden&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;403 Forbidden&quot;&quot;&quot;</span>
 
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">403</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Forbidden&quot;</span>
@@ -2130,7 +2130,7 @@ InternalServerError            (<a class="autorefs autorefs-internal" title="opt
         <details class="quote">
           <summary>Source code in <code>optimade/exceptions.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">InternalServerError</span><span class="p">(</span><span class="n">OptimadeHTTPException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;500 Internal Server Error&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;500 Internal Server Error&quot;&quot;&quot;</span>
 
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Internal Server Error&quot;</span>
@@ -2181,7 +2181,7 @@ NotFound            (<a class="autorefs autorefs-internal" title="optimade.excep
         <details class="quote">
           <summary>Source code in <code>optimade/exceptions.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NotFound</span><span class="p">(</span><span class="n">OptimadeHTTPException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;404 Not Found&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;404 Not Found&quot;&quot;&quot;</span>
 
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">404</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Not Found&quot;</span>
@@ -2232,7 +2232,7 @@ NotImplementedResponse            (<a class="autorefs autorefs-internal" title="
         <details class="quote">
           <summary>Source code in <code>optimade/exceptions.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NotImplementedResponse</span><span class="p">(</span><span class="n">OptimadeHTTPException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;501 Not Implemented&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;501 Not Implemented&quot;&quot;&quot;</span>
 
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">501</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Not Implemented&quot;</span>
@@ -2316,7 +2316,7 @@ raised from within client code.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/exceptions.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeHTTPException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This abstract class can be subclassed to define</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This abstract class can be subclassed to define</span>
 <span class="sd">    HTTP responses with the desired status codes, and</span>
 <span class="sd">    detailed error strings to represent in the JSON:API</span>
 <span class="sd">    error response.</span>
@@ -2403,7 +2403,7 @@ UnprocessableEntity            (<a class="autorefs autorefs-internal" title="opt
         <details class="quote">
           <summary>Source code in <code>optimade/exceptions.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">UnprocessableEntity</span><span class="p">(</span><span class="n">OptimadeHTTPException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;422 Unprocessable Entity&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;422 Unprocessable Entity&quot;&quot;&quot;</span>
 
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">422</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Unprocessable Entity&quot;</span>
@@ -2454,7 +2454,7 @@ VersionNotSupported            (<a class="autorefs autorefs-internal" title="opt
         <details class="quote">
           <summary>Source code in <code>optimade/exceptions.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">VersionNotSupported</span><span class="p">(</span><span class="n">OptimadeHTTPException</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;553 Version Not Supported&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;553 Version Not Supported&quot;&quot;&quot;</span>
 
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">553</span>
     <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Version Not Supported&quot;</span>

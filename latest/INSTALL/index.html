@@ -1975,8 +1975,8 @@ The location of that <code>json</code> file is controllable using the <code>inde
 <p>Running the index meta-database is then as simple as writing <code>./run.sh index</code> in a terminal from the root of this package.
 You can find it at the base URL: <a href="http://localhost:5001/v1">http://localhost:5001/v1</a>.</p>
 <p>Here is an example of how it may look to start your server:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span>/home/optimade_server/config.json
-./path/to/optimade/run.sh index
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">OPTIMADE_CONFIG_FILE</span><span class="o">=</span>/home/optimade_server/config.json
+./path/to/optimade/run.sh<span class="w"> </span>index
 </code></pre></div>
 <h2 id="full-development-installation">Full development installation<a class="headerlink" href="#full-development-installation" title="Permanent link">&para;</a></h2>
 <p>The dependencies of this package can be found in <code>setup.py</code> with their latest supported versions.
@@ -1986,46 +1986,46 @@ The suite of development and testing tools are installed with via the install mo
 There are additionally two backend-specific install modes, <code>elastic</code> and <code>mongo</code>, as well as the <code>all</code> mode, which installs all dependencies.
 All contributed Python code, must use the <a href="https://github.com/ambv/black">black</a> code formatter, and must pass the <a href="http://flake8.pycqa.org/en/latest/">flake8</a> linter that is run automatically on all PRs.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Clone this repository to your computer</span>
-git clone --recursive git@github.com:Materials-Consortia/optimade-python-tools.git
-<span class="nb">cd</span> optimade-python-tools
+git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>git@github.com:Materials-Consortia/optimade-python-tools.git
+<span class="nb">cd</span><span class="w"> </span>optimade-python-tools
 
 <span class="c1"># Ensure a Python&gt;=3.8 (virtual) environment (example below using Anaconda/Miniconda)</span>
-conda create -n optimade <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10
-conda activate optimade
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>optimade<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10
+conda<span class="w"> </span>activate<span class="w"> </span>optimade
 
 <span class="c1"># Install package and dependencies in editable mode (including &quot;dev&quot; requirements).</span>
-pip install -e <span class="s2">&quot;.[dev]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
 
 <span class="c1"># Optional: Retrieve the list of OPTIMADE providers. (Without this submodule, some of the tests will fail because &quot;providers.json&quot; cannot be found.)</span>
-git submodule update --init
+git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init
 
 <span class="c1"># Run the tests with pytest</span>
 py.test
 
 <span class="c1"># Install pre-commit environment (e.g., auto-formats code on `git commit`)</span>
-pre-commit install
+pre-commit<span class="w"> </span>install
 
 <span class="c1"># Optional: Install MongoDB (and set `database_backend = mongodb`)</span>
 <span class="c1"># Below method installs in conda environment and</span>
 <span class="c1"># - starts server in background</span>
 <span class="c1"># - ensures and uses ~/dbdata directory to store data</span>
-conda install -c anaconda mongodb
-mkdir -p ~/dbdata <span class="o">&amp;&amp;</span> mongod --dbpath ~/dbdata --syslog --fork
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>anaconda<span class="w"> </span>mongodb
+mkdir<span class="w"> </span>-p<span class="w"> </span>~/dbdata<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mongod<span class="w"> </span>--dbpath<span class="w"> </span>~/dbdata<span class="w"> </span>--syslog<span class="w"> </span>--fork
 
 <span class="c1"># Start a development server (auto-reload on file changes at http://localhost:5000</span>
 <span class="c1"># You can also execute ./run.sh</span>
-uvicorn optimade.server.main:app --reload --port <span class="m">5000</span>
+uvicorn<span class="w"> </span>optimade.server.main:app<span class="w"> </span>--reload<span class="w"> </span>--port<span class="w"> </span><span class="m">5000</span>
 
 <span class="c1"># View auto-generated docs</span>
-open http://localhost:5000/docs
+open<span class="w"> </span>http://localhost:5000/docs
 <span class="c1"># View Open API Schema</span>
-open http://localhost:5000/openapi.json
+open<span class="w"> </span>http://localhost:5000/openapi.json
 </code></pre></div>
 <p>When developing, you can run both the server and an index meta-database server at the same time (from two separate terminals).
 Running the following:</p>
-<div class="highlight"><pre><span></span><code>./run.sh index
+<div class="highlight"><pre><span></span><code>./run.sh<span class="w"> </span>index
 <span class="c1"># or</span>
-uvicorn optimade.server.main_index:app --reload --port <span class="m">5001</span>
+uvicorn<span class="w"> </span>optimade.server.main_index:app<span class="w"> </span>--reload<span class="w"> </span>--port<span class="w"> </span><span class="m">5001</span>
 </code></pre></div>
 <p>will run the index meta-database server at <a href="http://localhost:5001/v1">http://localhost:5001/v1</a>.</p>
 <h2 id="testing-specific-backends">Testing specific backends<a class="headerlink" href="#testing-specific-backends" title="Permanent link">&para;</a></h2>
@@ -2039,21 +2039,21 @@ Tests for the two "real" database backends, MongoDB and Elasticsearch, require a
 <a href="https://docs.docker.com/engine/install/">Docker installation instructions</a> will depend on your system; on Linux, the <code>docker</code> commands below may need to be prepended with <code>sudo</code>, depending on your distribution.
 These commands should be run from a local optimade-python-tools directory.</p>
 <p>The following command starts a local Elasticsearch v6 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):</p>
-<div class="highlight"><pre><span></span><code>docker run -d --name elasticsearch_test -p <span class="m">9200</span>:9200 -p <span class="m">9300</span>:9300 -e <span class="s2">&quot;discovery.type=single-node&quot;</span> -e <span class="s2">&quot;xpack.security.enabled=false&quot;</span> elasticsearch:7.17.7 <span class="se">\</span>
-<span class="o">&amp;&amp;</span> sleep <span class="m">10</span> <span class="se">\</span>
-<span class="o">&amp;&amp;</span> <span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">&quot;elastic&quot;</span> py.test<span class="p">;</span> <span class="se">\</span>
-docker container stop elasticsearch_test<span class="p">;</span> docker container rm elasticsearch_test
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>elasticsearch_test<span class="w"> </span>-p<span class="w"> </span><span class="m">9200</span>:9200<span class="w"> </span>-p<span class="w"> </span><span class="m">9300</span>:9300<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;discovery.type=single-node&quot;</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;xpack.security.enabled=false&quot;</span><span class="w"> </span>elasticsearch:7.17.7<span class="w"> </span><span class="se">\</span>
+<span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">&quot;elastic&quot;</span><span class="w"> </span>py.test<span class="p">;</span><span class="w"> </span><span class="se">\</span>
+docker<span class="w"> </span>container<span class="w"> </span>stop<span class="w"> </span>elasticsearch_test<span class="p">;</span><span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>rm<span class="w"> </span>elasticsearch_test
 </code></pre></div>
 <p>The following command starts a local MongoDB instance, runs the test suite, then stops and deletes the containers:</p>
-<div class="highlight"><pre><span></span><code>docker run -d --name mongo_test -p <span class="m">27017</span>:27017 -d mongo:4.4.6 <span class="se">\</span>
-<span class="o">&amp;&amp;</span> <span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">&quot;mongodb&quot;</span> py.test<span class="p">;</span> <span class="se">\</span>
-docker container stop mongo_test<span class="p">;</span> docker container rm mongo_test
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>mongo_test<span class="w"> </span>-p<span class="w"> </span><span class="m">27017</span>:27017<span class="w"> </span>-d<span class="w"> </span>mongo:4.4.6<span class="w"> </span><span class="se">\</span>
+<span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">&quot;mongodb&quot;</span><span class="w"> </span>py.test<span class="p">;</span><span class="w"> </span><span class="se">\</span>
+docker<span class="w"> </span>container<span class="w"> </span>stop<span class="w"> </span>mongo_test<span class="p">;</span><span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>rm<span class="w"> </span>mongo_test
 </code></pre></div>
 <h2 id="container-image">Container image<a class="headerlink" href="#container-image" title="Permanent link">&para;</a></h2>
 <h3 id="retrieve-the-image">Retrieve the image<a class="headerlink" href="#retrieve-the-image" title="Permanent link">&para;</a></h3>
 <p>The <a href="https://github.com/Materials-Consortia/optimade-python-tools/pkgs/container/optimade"><code>optimade</code> container image</a> is available from the <a href="https://ghcr.io">GitHub Container registry</a>.
 To pull the latest version using <a href="https://docs.docker.com/">Docker</a> run the following:</p>
-<div class="highlight"><pre><span></span><code>docker pull ghcr.io/materials-consortia/optimade:latest
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>ghcr.io/materials-consortia/optimade:latest
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -2091,13 +2091,13 @@ The key is setting the environment variable <code>MAIN</code>.</p>
 <span class="c1"># detach will run the server in the background.</span>
 <span class="c1"># publish will run the server from the host port 8080.</span>
 <span class="c1"># name will give the container a handy name for referencing later.</span>
-docker run <span class="se">\</span>
-    --rm <span class="se">\</span>
-    --detach <span class="se">\</span>
-    --publish <span class="m">8080</span>:5000 <span class="se">\</span>
-    --env <span class="nv">MAIN</span><span class="o">=</span>main <span class="se">\</span>
-    --name my-optimade <span class="se">\</span>
-    ghcr.io/materials-consortia/optimade:latest
+docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--detach<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--publish<span class="w"> </span><span class="m">8080</span>:5000<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">MAIN</span><span class="o">=</span>main<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="w"> </span>my-optimade<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ghcr.io/materials-consortia/optimade:latest
 </code></pre></div>
 <p>The server should now be available at <a href="http://localhost:8080">localhost:8080</a>.</p>
 

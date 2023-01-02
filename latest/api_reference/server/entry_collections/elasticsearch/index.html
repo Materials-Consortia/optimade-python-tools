@@ -2035,7 +2035,7 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
         <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
         <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Elasticsearch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the ElasticCollection for the given parameters.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the ElasticCollection for the given parameters.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            name: The name of the collection.</span>
@@ -2063,7 +2063,7 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">create_optimade_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
 <span class="sd">        to the current client.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2086,7 +2086,7 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">predefined_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Loads and returns the default pre-defined index.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads and returns the default pre-defined index.&quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;elastic_indexes.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">index</span>
@@ -2095,7 +2095,7 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
     <span class="k">def</span> <span class="nf">create_elastic_index_from_mapper</span><span class="p">(</span>
         <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Create a fallback elastic index based on a resource mapper.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a fallback elastic index based on a resource mapper.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            resource_mapper: The resource mapper to create the index for.</span>
@@ -2114,11 +2114,11 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Search</span><span class="p">(</span><span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">total</span><span class="o">.</span><span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">        Warning:</span>
 <span class="sd">            No validation is performed on the incoming data.</span>
@@ -2157,7 +2157,7 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
     <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            criteria: A dictionary representation of the query parameters.</span>
@@ -2310,7 +2310,7 @@ format changes between deserialization and response.</p></td>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Elasticsearch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Initialize the ElasticCollection for the given parameters.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the ElasticCollection for the given parameters.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        name: The name of the collection.</span>
@@ -2452,7 +2452,7 @@ by the keyword arguments.</p>
 <span class="k">def</span> <span class="nf">create_elastic_index_from_mapper</span><span class="p">(</span>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Create a fallback elastic index based on a resource mapper.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a fallback elastic index based on a resource mapper.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        resource_mapper: The resource mapper to create the index for.</span>
@@ -2495,7 +2495,7 @@ to the current client.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_optimade_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
 <span class="sd">    to the current client.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2563,7 +2563,7 @@ to the current client.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">    Warning:</span>
 <span class="sd">        No validation is performed on the incoming data.</span>

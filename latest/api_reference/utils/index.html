@@ -2022,7 +2022,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Iterate through all databases reported by registered OPTIMADE providers.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate through all databases reported by registered OPTIMADE providers.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        include_providers: A set/container of provider IDs to include child databases for.</span>
@@ -2129,7 +2129,7 @@ invalid, or the request otherwise fails.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_child_database_links</span><span class="p">(</span>
     <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;For a provider, return a list of available child databases.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For a provider, return a list of available child databases.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        provider: The links entry for the provider.</span>
@@ -2246,7 +2246,7 @@ ObjectID.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
 
 <span class="sd">    Fallback order if providers.optimade.org is not available:</span>
 
@@ -2285,7 +2285,7 @@ ObjectID.</p></td>
             <span class="kn">from</span> <span class="nn">optimade.server.logger</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;Could not retrieve a list of providers!</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;Could not retrieve a list of providers!</span>
 
 <span class="sd">    Tried the following resources:</span>
 
@@ -2339,14 +2339,14 @@ ObjectID.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Produce a MongoDB ObjectId for a database&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a MongoDB ObjectId for a database&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">bson.objectid</span> <span class="kn">import</span> <span class="n">ObjectId</span>
 
     <span class="n">oid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_id</span><span class="si">}{</span><span class="n">database_type</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">oid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span>
         <span class="n">oid</span> <span class="o">=</span> <span class="n">oid</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">oid</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">:</span>
-        <span class="n">oid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">oid</span><span class="si">}{</span><span class="s1">&#39;0&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">12</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">oid</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">oid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">oid</span><span class="si">}{</span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mi">12</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">oid</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">ObjectId</span><span class="p">(</span><span class="n">oid</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)))</span>
 </code></pre></div>

@@ -2013,7 +2013,7 @@ OptimadeClientProgress            (<span title="rich.progress.Progress">Progress
         <details class="quote">
           <summary>Source code in <code>optimade/client/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeClientProgress</span><span class="p">(</span><span class="n">Progress</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A wrapper around `Rich.Progress` that defines the OPTIMADE client progressbars.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper around `Rich.Progress` that defines the OPTIMADE client progressbars.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -2078,7 +2078,7 @@ QueryResults        </code>
           <summary>Source code in <code>optimade/client/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">QueryResults</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A container dataclass for the results from a given query.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A container dataclass for the results from a given query.&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]</span>
     <span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -2096,7 +2096,7 @@ QueryResults        </code>
         <span class="k">return</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Combine the results from one page with the existing results for a given query.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Combine the results from one page with the existing results for a given query.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            page_results: The results for the current page.</span>
@@ -2203,7 +2203,7 @@ QueryResults        </code>
         <details class="quote">
           <summary>Source code in <code>optimade/client/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Combine the results from one page with the existing results for a given query.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine the results from one page with the existing results for a given query.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        page_results: The results for the current page.</span>
@@ -2288,7 +2288,7 @@ repeating the query.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/client/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RecoverableHTTPError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for any HTTP issues that may be recoverable by just</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for any HTTP issues that may be recoverable by just</span>
 <span class="sd">    repeating the query.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
@@ -2320,7 +2320,7 @@ TooManyRequestsException            (<a class="autorefs autorefs-internal" title
         <details class="quote">
           <summary>Source code in <code>optimade/client/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TooManyRequestsException</span><span class="p">(</span><span class="n">RecoverableHTTPError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;For when the underlying HTTP request returns 429: Too Many Requests.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For when the underlying HTTP request returns 429: Too Many Requests.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
 
@@ -2350,7 +2350,7 @@ TooManyRequestsException            (<a class="autorefs autorefs-internal" title
           <summary>Source code in <code>optimade/client/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@contextmanager</span>
 <span class="k">def</span> <span class="nf">silent_raise</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Raise an exception without printing a traceback, or the exception message itself.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise an exception without printing a traceback, or the exception message itself.&quot;&quot;&quot;</span>
     <span class="n">default_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
         <span class="n">sys</span><span class="p">,</span> <span class="s2">&quot;tracebacklimit&quot;</span><span class="p">,</span> <span class="mi">1000</span>
     <span class="p">)</span>  <span class="c1"># `1000` is a Python&#39;s default value</span>

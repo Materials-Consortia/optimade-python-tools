@@ -2086,7 +2086,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryCollection</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Backend-agnostic base class for querying collections of</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Backend-agnostic base class for querying collections of</span>
 <span class="sd">    [`EntryResource`][optimade.models.entries.EntryResource]s.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -2095,7 +2095,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
         <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
         <span class="n">transformer</span><span class="p">:</span> <span class="n">Transformer</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize the collection for the given parameters.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the collection for the given parameters.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            resource_cls (EntryResource): The `EntryResource` model</span>
@@ -2122,11 +2122,11 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            data: The entry resource objects to add to the database.</span>
@@ -2135,7 +2135,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
 <span class="sd">        by the keyword arguments.</span>
 
 <span class="sd">        Parameters:</span>
@@ -2152,7 +2152,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
         <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetches results and indicates if more data is available.</span>
 
 <span class="sd">        Also gives the total number of data available in the absence of `page_limit`.</span>
@@ -2230,7 +2230,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
     <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            criteria: A dictionary representation of the query parameters.</span>
@@ -2244,7 +2244,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">all_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Get the set of all fields handled in this collection,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the set of all fields handled in this collection,</span>
 <span class="sd">        from attribute fields in the schema, provider fields and top-level OPTIMADE fields.</span>
 
 <span class="sd">        The set of all fields are lazily created and then cached.</span>
@@ -2269,7 +2269,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_fields</span>
 
     <span class="k">def</span> <span class="nf">get_attribute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Get the set of attribute fields</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the set of attribute fields</span>
 
 <span class="sd">        Return only the _first-level_ attribute fields from the schema of the resource class,</span>
 <span class="sd">        resolving references along the way if needed.</span>
@@ -2301,7 +2301,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
     <span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">        that can be used by the specific backend.</span>
 
 <span class="sd">        Note:</span>
@@ -2393,7 +2393,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
         <span class="k">return</span> <span class="n">cursor_kwargs</span>
 
     <span class="k">def</span> <span class="nf">parse_sort_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Handles any sort parameters passed to the collection,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles any sort parameters passed to the collection,</span>
 <span class="sd">        resolving aliases and dealing with any invalid fields.</span>
 
 <span class="sd">        Raises:</span>
@@ -2564,7 +2564,7 @@ interpret the filter.</p></td>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
     <span class="n">transformer</span><span class="p">:</span> <span class="n">Transformer</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Initialize the collection for the given parameters.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the collection for the given parameters.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        resource_cls (EntryResource): The `EntryResource` model</span>
@@ -2617,7 +2617,7 @@ interpret the filter.</p></td>
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -2664,7 +2664,7 @@ by the keyword arguments.</p>
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
 <span class="sd">    by the keyword arguments.</span>
 
 <span class="sd">    Parameters:</span>
@@ -2741,7 +2741,7 @@ for more information.</p>
     <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches results and indicates if more data is available.</span>
 
 <span class="sd">    Also gives the total number of data available in the absence of `page_limit`.</span>
@@ -2862,7 +2862,7 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_attribute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Get the set of attribute fields</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the set of attribute fields</span>
 
 <span class="sd">    Return only the _first-level_ attribute fields from the schema of the resource class,</span>
 <span class="sd">    resolving references along the way if needed.</span>
@@ -2977,7 +2977,7 @@ or response format.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">    that can be used by the specific backend.</span>
 
 <span class="sd">    Note:</span>
@@ -3112,7 +3112,7 @@ or response format.</p></td>
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        data: The entry resource objects to add to the database.</span>
@@ -3175,7 +3175,7 @@ sort direction encoded as 1 (ascending) or -1 (descending).</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_sort_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Handles any sort parameters passed to the collection,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles any sort parameters passed to the collection,</span>
 <span class="sd">    resolving aliases and dealing with any invalid fields.</span>
 
 <span class="sd">    Raises:</span>
@@ -3317,7 +3317,7 @@ sort direction encoded as 1 (ascending) or -1 (descending).</p></td>
     <span class="n">resource_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryCollection&quot;</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Create an `EntryCollection` of the configured type, depending on the value of</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an `EntryCollection` of the configured type, depending on the value of</span>
 <span class="sd">    `CONFIG.database_backend`.</span>
 
 <span class="sd">    Arguments:</span>

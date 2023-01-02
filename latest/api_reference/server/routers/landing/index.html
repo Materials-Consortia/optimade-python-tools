@@ -1950,7 +1950,7 @@
         <details class="quote">
           <summary>Source code in <code>optimade/server/routers/landing.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">landing</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Show a human-readable landing page when the base URL is accessed.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show a human-readable landing page when the base URL is accessed.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_landing_page</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
 </code></pre></div>
         </details>
@@ -1986,7 +1986,7 @@ web safe before inclusion in the template.</p>
           <summary>Source code in <code>optimade/server/routers/landing.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">render_landing_page</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HTMLResponse</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Render and cache the landing page.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render and cache the landing page.</span>
 
 <span class="sd">    This function uses the template file `./static/landing_page.html`, adapted</span>
 <span class="sd">    from the original Jinja template. Instead of Jinja, some basic string</span>

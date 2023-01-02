@@ -3082,7 +3082,7 @@ The keys for Attributes MUST NOT be:
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Attributes</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Members of the attributes object (&quot;attributes\&quot;) represent information about the resource object in which it&#39;s defined.</span>
 <span class="sd">    The keys for Attributes MUST NOT be:</span>
 <span class="sd">        relationships</span>
@@ -3215,7 +3215,7 @@ BaseResource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Minimum requirements to represent a Resource&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimum requirements to represent a Resource&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Resource ID&quot;</span><span class="p">)</span>
     <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Resource type&quot;</span><span class="p">)</span>
@@ -3223,7 +3223,7 @@ BaseResource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="nd">@staticmethod</span>
         <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">            Note:</span>
 <span class="sd">                This _requires_ that `id` and `type` are the _first_ model fields defined</span>
@@ -3320,7 +3320,7 @@ Config        </code>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            This _requires_ that `id` and `type` are the _first_ model fields defined</span>
@@ -3379,7 +3379,7 @@ for all sub-models of <code>BaseResource</code>.</p>
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        This _requires_ that `id` and `type` are the _first_ model fields defined</span>
@@ -3450,7 +3450,7 @@ Error            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An error response&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An error response&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -3739,7 +3739,7 @@ ErrorLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Links object specific to Error objects&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Links object specific to Error objects&quot;&quot;&quot;</span>
 
     <span class="n">about</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -3815,7 +3815,7 @@ ErrorSource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ErrorSource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;an object containing references to the source of the error&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;an object containing references to the source of the error&quot;&quot;&quot;</span>
 
     <span class="n">pointer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -3918,7 +3918,7 @@ JsonApi            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">JsonApi</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An object describing the server&#39;s implementation&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An object describing the server&#39;s implementation&quot;&quot;&quot;</span>
 
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Version of the json API used&quot;</span>
@@ -4018,7 +4018,7 @@ Link            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A link **MUST** be represented as either: a string containing the link&#39;s URL or a link object.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A link **MUST** be represented as either: a string containing the link&#39;s URL or a link object.&quot;&quot;&quot;</span>
 
     <span class="n">href</span><span class="p">:</span> <span class="n">AnyUrl</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a string containing the link’s URL.&quot;</span><span class="p">)</span>
     <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -4118,7 +4118,7 @@ Meta            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Non-standard meta-information that can not be represented as an attribute or relationship.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Non-standard meta-information that can not be represented as an attribute or relationship.&quot;&quot;&quot;</span>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
@@ -4199,7 +4199,7 @@ Relationship            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Representation references from the resource object in which it’s defined to other resource objects.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation references from the resource object in which it’s defined to other resource objects.&quot;&quot;&quot;</span>
 
     <span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RelationshipLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -4375,7 +4375,7 @@ Relationships can be specified by including a member in a resource's links objec
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RelationshipLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A resource object **MAY** contain references to other resource objects (&quot;relationships&quot;).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A resource object **MAY** contain references to other resource objects (&quot;relationships&quot;).</span>
 <span class="sd">    Relationships may be to-one or to-many.</span>
 <span class="sd">    Relationships can be specified by including a member in a resource&#39;s links object.</span>
 
@@ -4537,7 +4537,7 @@ Keys MUST NOT be:
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Relationships</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Members of the relationships object (\&quot;relationships\&quot;) represent references from the resource object in which it&#39;s defined to other resource objects.</span>
 <span class="sd">    Keys MUST NOT be:</span>
 <span class="sd">        type</span>
@@ -4636,7 +4636,7 @@ Resource            (<a class="autorefs autorefs-internal" title="optimade.model
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Resource</span><span class="p">(</span><span class="n">BaseResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Resource objects appear in a JSON API document to represent resources.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resource objects appear in a JSON API document to represent resources.&quot;&quot;&quot;</span>
 
     <span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ResourceLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a links object containing links related to the resource.&quot;</span>
@@ -4791,7 +4791,7 @@ ResourceLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ResourceLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Resource Links object&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Resource Links object&quot;&quot;&quot;</span>
 
     <span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -4867,7 +4867,7 @@ Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Response</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A top-level response&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A top-level response&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Outputted Data&quot;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span>
@@ -4901,7 +4901,7 @@ Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
 <span class="sd">        [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support</span>
 <span class="sd">        fractional seconds, thus they must be stripped in the response. This can</span>
 <span class="sd">        cause issues when the underlying database contains fields that do include</span>
@@ -5081,7 +5081,7 @@ microseconds, as filters may return unexpected results.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The specification mandates that datetimes must be encoded following</span>
 <span class="sd">    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support</span>
 <span class="sd">    fractional seconds, thus they must be stripped in the response. This can</span>
 <span class="sd">    cause issues when the underlying database contains fields that do include</span>
@@ -5207,7 +5207,7 @@ ToplevelLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ToplevelLinks</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A set of Links objects, possibly including pagination&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of Links objects, possibly including pagination&quot;&quot;&quot;</span>
 
     <span class="bp">self</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A link to itself&quot;</span>
@@ -5232,7 +5232,7 @@ ToplevelLinks            (<span title="pydantic.main.BaseModel">BaseModel</span>
 
     <span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">check_additional_keys_are_links</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
 <span class="sd">        they are also Links or Urls themselves.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -5442,7 +5442,7 @@ they are also Links or Urls themselves.</p>
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@root_validator</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_additional_keys_are_links</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `ToplevelLinks` class allows any additional keys, as long as</span>
 <span class="sd">    they are also Links or Urls themselves.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>

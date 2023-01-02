@@ -2066,7 +2066,7 @@
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cell_to_cellpar</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">radians</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Returns the cell parameters `[a, b, c, alpha, beta, gamma]`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the cell parameters `[a, b, c, alpha, beta, gamma]`.</span>
 
 <span class="sd">    Angles are in degrees unless `radian=True` is used.</span>
 
@@ -2203,7 +2203,7 @@ plane.</p>
     <span class="n">ab_normal</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">a_direction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.</span>
 
 <span class="sd">    Angles must be in degrees.</span>
 
@@ -2384,7 +2384,7 @@ attribute.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fractional_coordinates</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">cartesian_positions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Returns fractional coordinates and wraps coordinates to `[0,1[`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns fractional coordinates and wraps coordinates to `[0,1[`.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        Based on [ASE code](https://wiki.fysik.dtu.dk/ase/_modules/ase/atoms.html#Atoms.get_scaled_positions).</span>
@@ -2491,7 +2491,7 @@ values.</p></td>
     <span class="n">lattice_vectors</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span>
     <span class="n">padding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>  <span class="c1"># Setting this properly makes MkDocs fail.</span>
-    <span class="sd">&quot;&quot;&quot;Turn any `null`/`None` values into a `float` in given `tuple` of</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn any `null`/`None` values into a `float` in given `tuple` of</span>
 <span class="sd">    [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].</span>
 
 <span class="sd">    Parameters:</span>
@@ -2577,7 +2577,7 @@ For more info, see <a href="https://www.wwpdb.org/documentation/file-format-cont
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">scaled_cell</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).</span>
 <span class="sd">    This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.</span>
 
 <span class="sd">    This is based on PDB&#39;s method of calculating SCALE from CRYST data.</span>
@@ -2670,7 +2670,7 @@ the chemical symbol.</p>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">species_from_species_at_sites</span><span class="p">(</span>
     <span class="n">species_at_sites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">OptimadeStructureSpecies</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;When a list of species dictionaries is not provided, this function</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;When a list of species dictionaries is not provided, this function</span>
 <span class="sd">    can be used to infer the species from the provided species_at_sites.</span>
 
 <span class="sd">    In this use case, species_at_sites is assumed to provide a list of</span>
@@ -2749,7 +2749,7 @@ the chemical symbol.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">unit_vector</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Vector3D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector3D</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return a unit vector in the same direction as `x`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a unit vector in the same direction as `x`.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        x: A three-dimensional vector.</span>

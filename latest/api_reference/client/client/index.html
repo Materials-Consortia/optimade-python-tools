@@ -2094,7 +2094,7 @@ and provider.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/client/client.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeClient</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;This class implemements a client for executing the same queries</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class implemements a client for executing the same queries</span>
 <span class="sd">    across multiple OPTIMADE APIs simultaneously, paging and caching the</span>
 <span class="sd">    results.</span>
 
@@ -2106,46 +2106,46 @@ and provider.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
-    <span class="sd">&quot;&quot;&quot;A list (or any iterable) of OPTIMADE base URLs to query.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list (or any iterable) of OPTIMADE base URLs to query.&quot;&quot;&quot;</span>
 
     <span class="n">all_results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
 <span class="sd">    the results from each base URL for that particular filter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">count_results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
 <span class="sd">    the number of results from each base URL for that particular filter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">max_results_per_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="sd">&quot;&quot;&quot;Maximum number of results to downlod per provider. If None, will</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum number of results to downlod per provider. If None, will</span>
 <span class="sd">    download all.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">headers</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-    <span class="sd">&quot;&quot;&quot;Additional HTTP headers.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Additional HTTP headers.&quot;&quot;&quot;</span>
 
     <span class="n">http_timeout</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="sd">&quot;&quot;&quot;The timeout to use for each HTTP request.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The timeout to use for each HTTP request.&quot;&quot;&quot;</span>
 
     <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="sd">&quot;&quot;&quot;The maximum number of times to repeat a failed query before giving up.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The maximum number of times to repeat a failed query before giving up.&quot;&quot;&quot;</span>
 
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span>
-    <span class="sd">&quot;&quot;&quot;Whether or not to make all requests asynchronously using asyncio.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether or not to make all requests asynchronously using asyncio.&quot;&quot;&quot;</span>
 
     <span class="n">_excluded_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="sd">&quot;&quot;&quot;A set of providers IDs excluded from future queries.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of providers IDs excluded from future queries.&quot;&quot;&quot;</span>
 
     <span class="n">_included_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="sd">&quot;&quot;&quot;A set of providers IDs included from future queries.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of providers IDs included from future queries.&quot;&quot;&quot;</span>
 
     <span class="n">_excluded_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="sd">&quot;&quot;&quot;A set of child database URLs excluded from future queries.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of child database URLs excluded from future queries.&quot;&quot;&quot;</span>
 
     <span class="n">__current_endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="sd">&quot;&quot;&quot;Used internally when querying via `client.structures.get()` to set the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used internally when querying via `client.structures.get()` to set the</span>
 <span class="sd">    chosen endpoint. Should be reset to `None` outside of all `get()` calls.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -2160,7 +2160,7 @@ and provider.</p>
         <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            base_urls: A list of OPTIMADE base URLs to query.</span>
@@ -2216,7 +2216,7 @@ and provider.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
 
     <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
 <span class="sd">        allowed list for this module.</span>
 
 <span class="sd">        Should also pass through any `extensions/&lt;example&gt;` endpoints.</span>
@@ -2252,7 +2252,7 @@ and provider.</p>
         <span class="n">response_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]]:</span>
-        <span class="sd">&quot;&quot;&quot;Gets the results from the endpoint and filter across the</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the results from the endpoint and filter across the</span>
 <span class="sd">        defined OPTIMADE APIs.</span>
 
 <span class="sd">        Parameters:</span>
@@ -2305,7 +2305,7 @@ and provider.</p>
     <span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
-        <span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
 <span class="sd">        only 1 request per provider by making use of the `meta-&gt;data_returned`</span>
 <span class="sd">        key.</span>
 
@@ -2369,7 +2369,7 @@ and provider.</p>
         <span class="n">response_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
         <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Executes the queries over the base URLs either asynchronously or</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the queries over the base URLs either asynchronously or</span>
 <span class="sd">        serially, depending on the `self.use_async` setting.</span>
 
 <span class="sd">        Parameters:</span>
@@ -2432,7 +2432,7 @@ and provider.</p>
         <span class="n">page_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">paginate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Executes the query synchronously on one API.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the query synchronously on one API.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            endpoint: The OPTIMADE endpoint to query.</span>
@@ -2477,7 +2477,7 @@ and provider.</p>
         <span class="n">page_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">paginate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Executes the query asynchronously across all defined APIs.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the query asynchronously across all defined APIs.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            endpoint: The OPTIMADE endpoint to query.</span>
@@ -2520,7 +2520,7 @@ and provider.</p>
         <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">paginate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Executes the query synchronously across all defined APIs.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the query synchronously across all defined APIs.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            endpoint: The OPTIMADE endpoint to query.</span>
@@ -2565,7 +2565,7 @@ and provider.</p>
         <span class="n">page_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">paginate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Executes the query asynchronously on one API.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the query asynchronously on one API.</span>
 
 <span class="sd">        !!! note</span>
 <span class="sd">            This method currently makes non-blocking requests</span>
@@ -2623,7 +2623,7 @@ and provider.</p>
         <span class="n">page_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">paginate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;See [`OptimadeClient.get_one_async`][optimade.client.OptimadeClient.get_one_async].&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;See [`OptimadeClient.get_one_async`][optimade.client.OptimadeClient.get_one_async].&quot;&quot;&quot;</span>
         <span class="n">next_url</span><span class="p">,</span> <span class="n">_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span>
             <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
             <span class="n">base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
@@ -2681,7 +2681,7 @@ and provider.</p>
         <span class="n">response_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">paginate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;See [`OptimadeClient.get_one`][optimade.client.OptimadeClient.get_one].&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;See [`OptimadeClient.get_one`][optimade.client.OptimadeClient.get_one].&quot;&quot;&quot;</span>
         <span class="n">next_url</span><span class="p">,</span> <span class="n">_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span>
             <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
             <span class="n">base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
@@ -2738,7 +2738,7 @@ and provider.</p>
         <span class="n">response_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
         <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TaskID</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Constructs the first query URL and creates the progress bar task.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs the first query URL and creates the progress bar task.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The URL for the first query and the Rich TaskID for progress logging.</span>
@@ -2769,7 +2769,7 @@ and provider.</p>
         <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">page_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Builds the URL to query based on the passed parameters.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the URL to query based on the passed parameters.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            base_url: The server&#39;s base URL.</span>
@@ -2816,7 +2816,7 @@ and provider.</p>
         <span class="k">return</span> <span class="n">url</span>
 
     <span class="k">def</span> <span class="nf">_check_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Passes the filter through [`LarkParser`][optimade.filterparser.LarkParser]</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Passes the filter through [`LarkParser`][optimade.filterparser.LarkParser]</span>
 <span class="sd">        from the optimade-python-tools reference server implementation.</span>
 
 <span class="sd">        Parameters:</span>
@@ -2843,7 +2843,7 @@ and provider.</p>
     <span class="k">def</span> <span class="nf">_handle_response</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">_task</span><span class="p">:</span> <span class="n">TaskID</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Handle the response from the server.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the response from the server.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            response: The response from the server.</span>
@@ -2901,7 +2901,7 @@ and provider.</p>
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">next_url</span>
 
     <span class="k">def</span> <span class="nf">_teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_task</span><span class="p">:</span> <span class="n">TaskID</span><span class="p">,</span> <span class="n">num_results</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Update the finished status of the progress bar depending on the number of results.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the finished status of the progress bar depending on the number of results.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            _task: The Rich TaskID for this task&#39;s progressbar.</span>
@@ -3041,7 +3041,7 @@ original <code>__getattribute__</code>.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/client/client.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
 <span class="sd">    allowed list for this module.</span>
 
 <span class="sd">    Should also pass through any `extensions/&lt;example&gt;` endpoints.</span>
@@ -3176,7 +3176,7 @@ from each provider.</p></td>
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        base_urls: A list of OPTIMADE base URLs to query.</span>
@@ -3289,7 +3289,7 @@ key.</p>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
-    <span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
 <span class="sd">    only 1 request per provider by making use of the `meta-&gt;data_returned`</span>
 <span class="sd">    key.</span>
 
@@ -3443,7 +3443,7 @@ from the server.</p></td>
     <span class="n">response_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]]:</span>
-    <span class="sd">&quot;&quot;&quot;Gets the results from the endpoint and filter across the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the results from the endpoint and filter across the</span>
 <span class="sd">    defined OPTIMADE APIs.</span>
 
 <span class="sd">    Parameters:</span>
@@ -3594,7 +3594,7 @@ after one page.</p></td>
     <span class="n">page_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">paginate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Executes the query synchronously on one API.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes the query synchronously on one API.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        endpoint: The OPTIMADE endpoint to query.</span>
@@ -3742,7 +3742,7 @@ after one page.</p></td>
     <span class="n">page_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">paginate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Executes the query asynchronously on one API.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes the query asynchronously on one API.</span>
 
 <span class="sd">    !!! note</span>
 <span class="sd">        This method currently makes non-blocking requests</span>
