@@ -119,6 +119,7 @@ def _get(
     include_providers,
     exclude_providers,
     exclude_databases,
+    **kwargs,
 ):
 
     if output_file:
@@ -143,6 +144,7 @@ def _get(
         exclude_databases=set(_.strip() for _ in exclude_databases.split(","))
         if exclude_databases
         else None,
+        **kwargs,
     )
     if response_fields:
         response_fields = response_fields.split(",")
