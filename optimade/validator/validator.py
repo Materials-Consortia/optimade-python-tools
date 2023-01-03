@@ -15,7 +15,7 @@ import sys
 import urllib.parse
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
-import requests
+import httpx
 
 from optimade.models import DataType, EntryInfoResponse, SupportLevel
 from optimade.validator.config import VALIDATOR_CONFIG as CONF
@@ -1125,8 +1125,8 @@ class ImplementationValidator:
 
     @test_case
     def _test_versions_endpoint_content(
-        self, response: requests.Response
-    ) -> Tuple[requests.Response, str]:
+        self, response: httpx.Response
+    ) -> Tuple[httpx.Response, str]:
         """Checks that the response from the versions endpoint complies
         with the specification and that its 'Content-Type' header complies with
         [RFC 4180](https://tools.ietf.org/html/rfc4180.html).
@@ -1246,7 +1246,7 @@ class ImplementationValidator:
     @test_case
     def _test_meta_schema_reporting(
         self,
-        response: requests.models.Response,
+        response: httpx.Response,
         request_str: str,
     ):
         """Tests that the endpoint responds with a `meta->schema`."""
@@ -1268,7 +1268,7 @@ class ImplementationValidator:
     @test_case
     def _test_page_limit(
         self,
-        response: requests.models.Response,
+        response: httpx.Response,
         check_next_link: int = 5,
         previous_links: Optional[Set[str]] = None,
     ) -> Tuple[Optional[bool], str]:
@@ -1380,7 +1380,7 @@ class ImplementationValidator:
     @test_case
     def _deserialize_response(
         self,
-        response: requests.models.Response,
+        response: httpx.Response,
         response_cls: Any,
         request: Optional[str] = None,
     ) -> Tuple[Any, str]:
@@ -1474,7 +1474,7 @@ class ImplementationValidator:
     @test_case
     def _get_endpoint(
         self, request_str: str, expected_status_code: Union[List[int], int] = 200
-    ) -> Tuple[Optional[requests.Response], str]:
+    ) -> Tuple[Optional[httpx.Response], str]:
         """Gets the response from the endpoint specified by `request_str`.
         function is wrapped by the `test_case` decorator
 

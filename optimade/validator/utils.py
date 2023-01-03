@@ -20,7 +20,7 @@ import traceback as tb
 import urllib.parse
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-import requests
+import httpx
 from pydantic import Field, ValidationError
 
 from optimade import __version__
@@ -194,24 +194,27 @@ class Client:  # pragma: no cover
         """
         self.base_url: str = base_url
         self.last_request: Optional[str] = None
-        self.response: Optional[requests.Response] = None
+        self.response: Optional[httpx.Response] = None
         self.max_retries = max_retries
         self.headers = headers or {}
         if "User-Agent" not in self.headers:
             self.headers["User-Agent"] = DEFAULT_USER_AGENT_STRING
         self.timeout = timeout or DEFAULT_CONN_TIMEOUT
         self.read_timeout = read_timeout or DEFAULT_READ_TIMEOUT
+        self._httpx_timeout = httpx.Timeout(
+            self.timeout, connect=self.timeout, read=self.read_timeout
+        )
 
-    def get(self, request: str):
+    def get(self, request: str) -> httpx.Response:
         """Makes the given request, with a number of retries if being rate limited. The
         request will be prepended with the `base_url` unless the request appears to be an
         absolute URL (i.e. starts with `http://` or `https://`).
 
         Parameters:
-            request (str): the request to make against the base URL of this client.
+            request: the request to make against the base URL of this client.
 
         Returns:
-            response (requests.models.Response): the response from the server.
+            response: the response from the server.
 
         Raises:
             SystemExit: if there is no response from the server, or if the URL is invalid.
@@ -232,10 +235,10 @@ class Client:  # pragma: no cover
         while retries < self.max_retries:
             retries += 1
             try:
-                self.response = requests.get(
+                self.response = httpx.get(
                     self.last_request,
                     headers=self.headers,
-                    timeout=(self.timeout, self.read_timeout),
+                    timeout=self._httpx_timeout,
                 )
 
                 status_code = self.response.status_code
@@ -243,18 +246,18 @@ class Client:  # pragma: no cover
                 if status_code != 429:
                     return self.response
 
-            # If the connection times out, retry but cache the error
-            except requests.exceptions.ConnectionError as exc:
-                errors.append(str(exc))
-
-            # Read timeouts should prevent further retries
-            except requests.exceptions.ReadTimeout as exc:
-                raise ResponseError(str(exc)) from exc
-
-            except requests.exceptions.MissingSchema:
+            except httpx.UnsupportedProtocol:
                 sys.exit(
                     f"Unable to make request on {self.last_request}, did you mean http://{self.last_request}?"
                 )
+
+            # Other transport errors should prevent further retries
+            except httpx.TimeoutException as exc:
+                raise ResponseError(str(exc)) from exc
+
+            # Timeouts should retry but cache the error in case it continues to fail
+            except httpx.HTTPError as exc:
+                errors.append(str(exc))
 
             # If the connection failed, or returned a 429, then wait 1 second before retrying
             time.sleep(1)
