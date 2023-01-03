@@ -28,11 +28,11 @@ aiida_deps = ["aiida-core~=2.1"]
 
 http_client_deps = [
     "httpx~=0.23",
-    "rich~=12.6",
+    "rich~=13.0",
     "click~=8.1",
 ]
 ase_deps = ["ase~=3.22"]
-cif_deps = ["numpy~=1.23"]
+cif_deps = ["numpy~=1.24"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2022.7"]
 jarvis_deps = ["jarvis-tools==2022.12.11"]
@@ -43,7 +43,7 @@ docs_deps = [
     "mike~=1.1",
     "mkdocs~=1.4",
     "mkdocs-awesome-pages-plugin~=2.8",
-    "mkdocs-material~=8.5",
+    "mkdocs-material~=9.0",
     "mkdocstrings[python-legacy]~=0.19.0",
 ]
 testing_deps = [
