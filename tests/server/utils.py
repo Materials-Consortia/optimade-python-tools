@@ -4,9 +4,9 @@ import warnings
 from typing import Iterable, Optional, Type, Union
 from urllib.parse import urlparse
 
+import httpx
 import pytest
 from fastapi.testclient import TestClient
-from requests import Response
 from starlette import testclient
 
 import optimade.models.jsonapi as jsonapi
@@ -52,9 +52,11 @@ class OptimadeTestClient(TestClient):
     def request(  # pylint: disable=too-many-locals
         self,
         method: str,
-        url: str,
+        url: httpx._types.URLTypes,
         **kwargs,
-    ) -> Response:
+    ) -> httpx.Response:
+
+        url = str(url)
         if (
             re.match(r"/?v[0-9](.[0-9]){0,2}/", url) is None
             and not urlparse(url).scheme
@@ -75,7 +77,7 @@ class BaseEndpointTests:
     request_str: Optional[str] = None
     response_cls: Optional[Type[jsonapi.Response]] = None
 
-    response: Optional[Response] = None
+    response: Optional[httpx.Response] = None
     json_response: Optional[dict] = None
 
     @staticmethod
@@ -224,7 +226,7 @@ class NoJsonEndpointTests:
     request_str: Optional[str] = None
     response_cls: Optional[Type] = None
 
-    response: Optional[Response] = None
+    response: Optional[httpx.Response] = None
 
     @pytest.fixture(autouse=True)
     def get_response(self, both_clients):
