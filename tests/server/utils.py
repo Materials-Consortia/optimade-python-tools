@@ -240,3 +240,17 @@ class NoJsonEndpointTests:
         assert (
             self.response.status_code == 200
         ), f"Request to {self.request_str} failed: {self.response.content}"
+
+
+class HttpxTestClient(httpx.Client):
+    """An HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    def request(  # pylint: disable=too-many-locals
+        self,
+        method: str,
+        url: httpx._types.URLTypes,
+        **kwargs,
+    ) -> httpx.Response:
+        return self.client.request(method, url, **kwargs)

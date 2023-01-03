@@ -1,5 +1,4 @@
 import json
-from functools import partial
 from pathlib import Path
 
 import pytest
@@ -19,24 +18,14 @@ TEST_URLS = [
 TEST_URL = TEST_URLS[0]
 
 
-@pytest.fixture(scope="function")
-def httpx_mocked_response(httpx_mock, client):
-    import httpx
-
-    def httpx_mock_response(client, request: httpx.Request):
-        response = client.get(str(request.url))
-        return httpx.Response(status_code=response.status_code, json=response.json())
-
-    httpx_mock.add_callback(partial(httpx_mock_response, client))
-    yield httpx_mock
-
-
 @pytest.mark.parametrize("use_async", [False])
-def test_client_endpoints(httpx_mocked_response, use_async):
+def test_client_endpoints(http_client, use_async):
 
     filter = ""
 
-    cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
+    cli = OptimadeClient(
+        base_urls=[TEST_URL], use_async=use_async, http_client=http_client
+    )
     get_results = cli.get()
     assert get_results["structures"][filter][TEST_URL]["data"]
     assert (
@@ -76,8 +65,10 @@ def test_client_endpoints(httpx_mocked_response, use_async):
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_filter_validation(use_async):
-    cli = OptimadeClient(use_async=use_async, base_urls=TEST_URL)
+def test_filter_validation(http_client, use_async):
+    cli = OptimadeClient(
+        use_async=use_async, base_urls=TEST_URL, http_client=http_client
+    )
     with pytest.raises(Exception):
         cli.get("completely wrong filter")
 
@@ -86,9 +77,13 @@ def test_filter_validation(use_async):
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_client_response_fields(httpx_mocked_response, use_async):
+def test_client_response_fields(http_client, use_async):
     with pytest.warns(MissingExpectedField):
-        cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
+        cli = OptimadeClient(
+            base_urls=[TEST_URL],
+            use_async=use_async,
+            http_client=http_client,
+        )
         results = cli.get(response_fields=["chemical_formula_reduced"])
         for d in results["structures"][""][TEST_URL]["data"]:
             assert "chemical_formula_reduced" in d["attributes"]
@@ -104,8 +99,10 @@ def test_client_response_fields(httpx_mocked_response, use_async):
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_multiple_base_urls(httpx_mocked_response, use_async):
-    cli = OptimadeClient(base_urls=TEST_URLS, use_async=use_async)
+def test_multiple_base_urls(http_client, use_async):
+    cli = OptimadeClient(
+        base_urls=TEST_URLS, use_async=use_async, http_client=http_client
+    )
     results = cli.get()
     count_results = cli.count()
     for url in TEST_URLS:
@@ -117,7 +114,7 @@ def test_multiple_base_urls(httpx_mocked_response, use_async):
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_include_exclude_providers(use_async):
+def test_include_exclude_providers(http_client, use_async):
     with pytest.raises(
         SystemExit,
         match="Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs.",
@@ -126,6 +123,7 @@ def test_include_exclude_providers(use_async):
             include_providers={"exmpl"},
             exclude_providers={"exmpl"},
             use_async=use_async,
+            http_client=http_client,
         )
 
     with pytest.raises(
@@ -150,14 +148,16 @@ def test_include_exclude_providers(use_async):
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_client_sort(httpx_mocked_response, use_async):
-    cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
+def test_client_sort(http_client, use_async):
+    cli = OptimadeClient(
+        base_urls=[TEST_URL], use_async=use_async, http_client=http_client
+    )
     results = cli.get(sort="last_modified")
     assert len(results["structures"][""][TEST_URL]["data"]) > 0
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_command_line_client(httpx_mocked_response, use_async, capsys):
+def test_command_line_client(http_client, use_async, capsys):
     from optimade.client.cli import _get
 
     args = dict(
@@ -174,6 +174,7 @@ def test_command_line_client(httpx_mocked_response, use_async, capsys):
         include_providers=None,
         exclude_providers=None,
         exclude_databases=None,
+        http_client=http_client,
     )
 
     # Test multi-provider query

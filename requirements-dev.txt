@@ -10,5 +10,4 @@ pre-commit==2.21.0
 pylint==2.15.9
 pytest==7.2.0
 pytest-cov==4.0.0
-pytest-httpx==0.21.2
 types-all==1.0.0

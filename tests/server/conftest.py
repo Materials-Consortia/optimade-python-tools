@@ -243,3 +243,10 @@ def check_error_response(client, index_client):
             raise
 
     return inner
+
+
+@pytest.fixture(scope="session")
+def http_client():
+    from .utils import HttpxTestClient
+
+    return HttpxTestClient

@@ -98,6 +98,9 @@ class OptimadeClient:
     """Used internally when querying via `client.structures.get()` to set the
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
 
+    __http_client: Union[httpx.Client, httpx.AsyncClient] = None
+    """Override the HTTP client, primarily used for testing."""
+
     def __init__(
         self,
         base_urls: Optional[Union[str, Iterable[str]]] = None,
@@ -109,6 +112,7 @@ class OptimadeClient:
         exclude_providers: Optional[List[str]] = None,
         include_providers: Optional[List[str]] = None,
         exclude_databases: Optional[List[str]] = None,
+        http_client: Union[httpx.Client, httpx.AsyncClient] = None,
     ):
         """Create the OPTIMADE client object.
 
@@ -123,6 +127,7 @@ class OptimadeClient:
             exclude_providers: A set or collection of provider IDs to exclude from queries.
             include_providers: A set or collection of provider IDs to include in queries.
             exclude_databases: A set or collection of child database URLs to exclude from queries.
+            http_client: An override for the underlying HTTP client, primarily used for testing.
 
         """
 
@@ -164,6 +169,18 @@ class OptimadeClient:
         self.max_attempts = max_attempts
 
         self.use_async = use_async
+
+        if http_client:
+            self.__http_client = http_client
+            if isinstance(self.__http_client, httpx.AsyncClient):
+                self.use_async = True
+            elif isinstance(self.__http_client, httpx.Client):
+                self.use_async = False
+        else:
+            if use_async:
+                self.__http_client = httpx.AsyncClient
+            else:
+                self.__http_client = httpx.Client
 
     def __getattribute__(self, name):
         """Allows entry endpoints to be queried via attribute access, using the
@@ -584,7 +601,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            async with httpx.AsyncClient(headers=self.headers) as client:
+            async with self.__http_client(headers=self.headers) as client:
                 while next_url:
 
                     attempts = 0
@@ -642,7 +659,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            with httpx.Client(headers=self.headers) as client:
+            with self.__http_client(headers=self.headers) as client:
                 while next_url:
 
                     attempts = 0

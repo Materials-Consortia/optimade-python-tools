@@ -52,7 +52,6 @@ testing_deps = [
     "jsondiff~=2.0",
     "pytest~=7.2",
     "pytest-cov~=4.0",
-    "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
     [
