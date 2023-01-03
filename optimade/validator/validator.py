@@ -166,10 +166,13 @@ class ImplementationValidator:
         )
 
         # some simple checks on base_url
+        self.base_url = str(self.base_url)
         self.base_url_parsed = urllib.parse.urlparse(self.base_url)
         # only allow filters/endpoints if we are working in "as_type" mode
         if self.as_type_cls is None and self.base_url_parsed.query:
-            raise SystemExit("Base URL not appropriate: should not contain a filter.")
+            raise SystemExit(
+                f"Base URL {self.base_url} not appropriate: should not contain a filter."
+            )
 
         self.valid = None
 
@@ -805,7 +808,7 @@ class ImplementationValidator:
                 expected_status_code=(200, 501),
             )
 
-            if not response:
+            if response.status_code != 200:
                 if query_optional:
                     return (
                         None,
@@ -822,7 +825,7 @@ class ImplementationValidator:
                     f"Required field `meta->more_data_available` missing from response for {request}."
                 )
 
-            if not response["meta"]["more_data_available"]:
+            if not response["meta"]["more_data_available"] and "data" in response:
                 num_data_returned[operator] = len(response["data"])
             else:
                 num_data_returned[operator] = response["meta"].get("data_returned")
