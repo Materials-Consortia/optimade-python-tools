@@ -59,7 +59,7 @@ def test_url_changes(both_clients, get_good_response):
     response = get_good_response(query_url, server=both_clients, return_json=False)
 
     assert (
-        unquote(response.url)
+        unquote(str(response.url))
         == f"{both_clients.base_url}{BASE_URL_PREFIXES['major']}{query_url.split('&')[0]}"
     )
 
@@ -68,7 +68,7 @@ def test_url_changes(both_clients, get_good_response):
 
     response = get_good_response(query_url, server=both_clients, return_json=False)
 
-    assert unquote(response.url) == f"{both_clients.base_url}{query_url}"
+    assert unquote(str(response.url)) == f"{both_clients.base_url}{query_url}"
 
 
 def test_is_versioned_base_url(both_clients):
