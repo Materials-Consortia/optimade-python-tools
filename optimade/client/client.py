@@ -902,6 +902,60 @@ class OptimadeClient:
 
         return results, next_url
 
+    def save(self, filename: Union[str, Path]) -> None:
+        """Saves all results from this client in the specified JSON file,
+        combining it with any existing results in that file.
+
+        Parameters:
+            filename: The filename to save to.
+
+        """
+        with open(Path(filename), "w") as f:
+            try:
+                existing_data = json.load(f) or {}
+            except Exception:
+                existing_data = {}
+
+            breakpoint()
+
+            results_to_write = self._merge_results(
+                existing_data, dict(self.all_results)
+            )
+
+            json.dump(results_to_write, f, indent=2)
+
+    def _merge_results(
+        self,
+        old: Dict[str, Dict[str, Dict[str, Any]]],
+        new: Dict[str, Dict[str, Dict[str, Any]]],
+    ):
+        """Merges two sets of results from the same endpoints.
+
+        Parameters:
+            old: The old results.
+            new: The new results.
+
+        Returns:
+            The merged results.
+
+        """
+        output: Dict = {}
+
+        endpoints = set(old.keys()).union(new.keys())
+
+        for endpoint in endpoints:
+
+            output[endpoint] = {}
+            filters = set(old.get(endpoint, {}).keys()).union(
+                new.get(endpoint, {}).keys()
+            )
+            for filter in filters:
+                output[endpoint][filter] = {}
+                output[endpoint][filter].update(old.get(endpoint, {}).get(filter, {}))
+                output[endpoint][filter].update(new.get(endpoint, {}).get(filter, {}))
+
+        return output
+
     def _teardown(self, _task: TaskID, num_results: int) -> None:
         """Update the finished status of the progress bar depending on the number of results.
 

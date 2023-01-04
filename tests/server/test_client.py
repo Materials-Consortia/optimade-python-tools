@@ -116,6 +116,27 @@ def test_client_save_results(httpx_mocked_response, use_async, tmp_path_factory)
         results["structures"][""][TEST_URL]
     )
 
+    tmp_path = tmp_path_factory.mktemp("data") / "all_results.json"
+    cli.save(tmp_path)
+    breakpoint()
+
+    # Fake another query
+    import copy
+
+    cli.all_results["structures"][""]["https://test_url.org"] = copy.deepcopy(
+        cli.all_results["structures"][""][TEST_URL]
+    )
+
+    del cli.all_results["structures"][""][TEST_URL]
+
+    cli.save(tmp_path)
+
+    with open(tmp_path) as f:
+        saved_data = json.load(f)
+
+    assert "https://test_url.org" in saved_data["structures"][""]
+    assert TEST_URL in saved_data["structures"][""]
+
     with pytest.raises(RuntimeError, match="already exists, will not overwrite."):
         cli.get(
             response_fields=["chemical_formula_reduced"],
