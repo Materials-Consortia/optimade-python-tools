@@ -98,10 +98,34 @@ def test_client_response_fields(http_client, use_async):
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_multiple_base_urls(http_client, use_async):
-    cli = OptimadeClient(
-        base_urls=TEST_URLS, use_async=use_async, http_client=http_client
+def test_client_save_results(httpx_mocked_response, use_async, tmp_path_factory):
+    cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
+    tmp_path = tmp_path_factory.mktemp("data") / "results.json"
+    results = cli.get(
+        response_fields=["chemical_formula_reduced"],
+        save_as=tmp_path,
     )
+    assert tmp_path.exists()
+    with open(tmp_path) as f:
+        data = json.load(f)
+
+    assert "structures" in data
+    assert "" in data["structures"]
+    assert TEST_URL in data["structures"][""]
+    assert len(data["structures"][""][TEST_URL]) == len(
+        results["structures"][""][TEST_URL]
+    )
+
+    with pytest.raises(RuntimeError, match="already exists, will not overwrite."):
+        cli.get(
+            response_fields=["chemical_formula_reduced"],
+            save_as=tmp_path,
+        )
+
+
+@pytest.mark.parametrize("use_async", [False])
+def test_multiple_base_urls(httpx_mocked_response, use_async):
+    cli = OptimadeClient(base_urls=TEST_URLS, use_async=use_async)
     results = cli.get()
     count_results = cli.count()
     for url in TEST_URLS:

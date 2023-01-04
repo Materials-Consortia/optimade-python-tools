@@ -10,6 +10,7 @@ import functools
 import json
 import time
 from collections import defaultdict
+from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 from urllib.parse import urlparse
 
@@ -225,6 +226,7 @@ class OptimadeClient:
         endpoint: Optional[str] = None,
         response_fields: Optional[List[str]] = None,
         sort: Optional[str] = None,
+        save_as: Optional[Union[str, Path]] = None,
     ) -> Dict[str, Dict[str, Dict[str, Dict]]]:
         """Gets the results from the endpoint and filter across the
         defined OPTIMADE APIs.
@@ -235,6 +237,7 @@ class OptimadeClient:
             response_fields: A list of response fields to request
                 from the server.
             sort: The field by which to sort the results.
+            save_as: A filename in which to save a JSON dump of the results.
 
         Raises:
             RuntimeError: If the query could not be executed.
@@ -243,6 +246,16 @@ class OptimadeClient:
             A nested mapping from endpoint, filter and base URL to the query results.
 
         """
+
+        _save_as: Optional[Path] = None
+        if save_as:
+            _save_as = Path(save_as)
+            if _save_as.exists():
+                raise RuntimeError(
+                    f"Path {save_as} already exists, will not overwrite."
+                )
+
+            _save_as.touch()
 
         if endpoint is None:
             if self.__current_endpoint is not None:
@@ -274,7 +287,16 @@ class OptimadeClient:
                 sort=sort,
             )
             self.all_results[endpoint][filter] = results
-            return {endpoint: {filter: {k: results[k].dict() for k in results}}}
+
+            final_results = {
+                endpoint: {filter: {k: results[k].dict() for k in results}}
+            }
+
+            if _save_as:
+                with _save_as.open("w") as f:
+                    json.dump(final_results, f, indent=2)
+
+            return final_results
 
     def count(
         self, filter: Optional[str] = None, endpoint: Optional[str] = None
