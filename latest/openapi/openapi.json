@@ -1585,7 +1585,7 @@
           "dictionary",
           "unknown"
         ],
-        "description": "Optimade Data Types\n\n    See the section \"Data types\" in the OPTIMADE API specification for more information.\n    "
+        "description": "Optimade Data Types\n\nSee the section \"Data types\" in the OPTIMADE API specification for more information."
       },
       "EntryInfoProperty": {
         "title": "EntryInfoProperty",
