@@ -122,7 +122,7 @@ class EntryCollection(ABC):
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> Tuple[
-        Union[List[EntryResource], EntryResource],
+        Union[None, List[EntryResource], EntryResource, List[Dict]],
         int,
         bool,
         Set[str],
@@ -134,6 +134,11 @@ class EntryCollection(ABC):
         Also gives the total number of data available in the absence of `page_limit`.
         See [`EntryListingQueryParams`][optimade.server.query_params.EntryListingQueryParams]
         for more information.
+
+        Returns either the list of validated pydantic models matching the query, or simply the
+        mapped database reponse, depending on the value of `CONFIG.validate_api_response`.
+
+        If no results match the query, then `results` is set to `None`.
 
         Parameters:
             params: Entry listing URL query params.
@@ -150,14 +155,6 @@ class EntryCollection(ABC):
         raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
         )
-
-        if single_entry:
-            raw_results = raw_results[0] if raw_results else None  # type: ignore[assignment]
-
-            if data_returned > 1:
-                raise NotFound(
-                    detail=f"Instead of a single entry, {data_returned} entries were found",
-                )
 
         exclude_fields = self.all_fields - response_fields
         include_fields = (
@@ -189,10 +186,21 @@ class EntryCollection(ABC):
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
 
+        results: Union[None, List[EntryResource], EntryResource, List[Dict]] = None
+
         if raw_results is not None:
-            results = self.resource_mapper.deserialize(raw_results)
-        else:
-            results = None
+            if CONFIG.validate_api_response:
+                results = self.resource_mapper.deserialize(raw_results)
+            else:
+                results = [self.resource_mapper.map_back(doc) for doc in raw_results]
+
+            if single_entry:
+                results = results[0]  # type: ignore[assignment]
+
+                if data_returned > 1:
+                    raise NotFound(
+                        detail=f"Instead of a single entry, {data_returned} entries were found",
+                    )
 
         return (
             results,

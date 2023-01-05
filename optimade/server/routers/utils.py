@@ -115,7 +115,11 @@ def handle_response_fields(
 
     new_results = []
     while results:
-        new_entry = results.pop(0).dict(exclude_unset=True, by_alias=True)
+        new_entry = results.pop(0)
+        try:
+            new_entry = new_entry.dict(exclude_unset=True, by_alias=True)
+        except AttributeError:
+            pass
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -133,7 +137,7 @@ def handle_response_fields(
 
 
 def get_included_relationships(
-    results: Union[EntryResource, List[EntryResource]],
+    results: Union[EntryResource, List[EntryResource], Dict, List[Dict]],
     ENTRY_COLLECTIONS: Dict[str, EntryCollection],
     include_param: List[str],
 ) -> List[Union[EntryResource, Dict]]:
@@ -170,11 +174,17 @@ def get_included_relationships(
         if doc is None:
             continue
 
-        relationships = doc.relationships
+        try:
+            relationships = doc.relationships  # type: ignore
+        except AttributeError:
+            relationships = doc.get("relationships", None)
+
         if relationships is None:
             continue
 
-        relationships = relationships.dict()
+        if not isinstance(relationships, dict):
+            relationships = relationships.dict()
+
         for entry_type in ENTRY_COLLECTIONS:
             # Skip entry type if it is not in `include_param`
             if entry_type not in include_param:
