@@ -253,4 +253,4 @@ class HttpxTestClient(httpx.Client):
         url: httpx._types.URLTypes,
         **kwargs,
     ) -> httpx.Response:
-        return self.client.request(method, url, **kwargs)
+        return self.client.request(method, url)
