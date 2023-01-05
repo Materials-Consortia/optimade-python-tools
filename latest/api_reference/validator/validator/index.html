@@ -2142,10 +2142,13 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="p">)</span>
 
         <span class="c1"># some simple checks on base_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url_parsed</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
         <span class="c1"># only allow filters/endpoints if we are working in &quot;as_type&quot; mode</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url_parsed</span><span class="o">.</span><span class="n">query</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s2">&quot;Base URL not appropriate: should not contain a filter.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Base URL </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> not appropriate: should not contain a filter.&quot;</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -2781,7 +2784,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                 <span class="n">expected_status_code</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">501</span><span class="p">),</span>
             <span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">query_optional</span><span class="p">:</span>
                     <span class="k">return</span> <span class="p">(</span>
                         <span class="kc">None</span><span class="p">,</span>
@@ -2798,7 +2801,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                     <span class="sa">f</span><span class="s2">&quot;Required field `meta-&gt;more_data_available` missing from response for </span><span class="si">{</span><span class="n">request</span><span class="si">}</span><span class="s2">.&quot;</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">][</span><span class="s2">&quot;more_data_available&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">][</span><span class="s2">&quot;more_data_available&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
                 <span class="n">num_data_returned</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">num_data_returned</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_returned&quot;</span><span class="p">)</span>
@@ -3732,10 +3735,13 @@ to be pointed to the corresponding endpoint.</p></td>
     <span class="p">)</span>
 
     <span class="c1"># some simple checks on base_url</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">base_url_parsed</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
     <span class="c1"># only allow filters/endpoints if we are working in &quot;as_type&quot; mode</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_type_cls</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url_parsed</span><span class="o">.</span><span class="n">query</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s2">&quot;Base URL not appropriate: should not contain a filter.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Base URL </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> not appropriate: should not contain a filter.&quot;</span>
+        <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">valid</span> <span class="o">=</span> <span class="kc">None</span>
 
