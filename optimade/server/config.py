@@ -172,6 +172,10 @@ class ServerConfig(BaseSettings):
         "structures",
         description="Mongo collection name for /structures endpoint resources",
     )
+    files_collection: str = Field(
+        "files",
+        description="Mongo collection name for /files endpoint resources",
+    )
     page_limit: int = Field(20, description="Default number of resources per page")
     page_limit_max: int = Field(
         500, description="Max allowed number of resources per page"
@@ -228,7 +232,9 @@ class ServerConfig(BaseSettings):
             "broken down by endpoint."
         ),
     )
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
+    aliases: Dict[
+        Literal["links", "references", "structures", "files"], Dict[str, str]
+    ] = Field(
         {},
         description=(
             "A mapping between field names in the database with their corresponding OPTIMADE field"

@@ -1,6 +1,7 @@
 # pylint: disable=undefined-variable
 from .baseinfo import *  # noqa: F403
 from .entries import *  # noqa: F403
+from .files import *  # noqa: F403
 from .index_metadb import *  # noqa: F403
 from .jsonapi import *  # noqa: F403
 from .links import *  # noqa: F403
@@ -21,4 +22,5 @@ __all__ = (
     + references.__all__  # type: ignore[name-defined] # noqa: F405
     + responses.__all__  # type: ignore[name-defined] # noqa: F405
     + structures.__all__  # type: ignore[name-defined] # noqa: F405
+    + files.__all__  # type: ignore[name-defined] # noqa: F405
 )
