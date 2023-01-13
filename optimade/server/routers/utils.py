@@ -320,7 +320,7 @@ def handle_response_fields(
                             first_index = None
                             last_included_index = 0
                             for requested_frame in range(
-                                first_frame, last_frame + 1, frame_step
+                                first_frame + 1, last_frame + 2, frame_step
                             ):
                                 found = False
                                 while sparse_frame <= requested_frame:
