@@ -161,11 +161,11 @@ def handle_response_fields(
             else:
                 last_frame = last_frame - 1
 
-            frame_step = getattr(params, "frame_step")
             if continue_from_frame:
                 first_frame = continue_from_frame
                 continue_from_frame = None
 
+            frame_step = getattr(params, "frame_step")
             if frame_step is None:
                 frame_step_set = False
                 frame_step = 1
@@ -239,8 +239,9 @@ def handle_response_fields(
                             step_size_sparse = new_entry["attributes"][field].get(
                                 "step_size_sparse"
                             )
-                            offset = new_entry["attributes"][field].get(
-                                "offset_sparse", 0
+                            offset = (
+                                new_entry["attributes"][field].get("offset_sparse", 1)
+                                - 1
                             )
 
                             if not frame_step_set:
