@@ -309,8 +309,8 @@ def handle_response_fields(
                                     IncompatibleFrameStep,
                                 )
                             new_entry["attributes"][field]["last_frame"] = (
-                                first_frame + (len(values) - 1) * frame_step
-                            )
+                                first_frame + 1
+                            ) + (len(values) - 1) * frame_step
                         elif frame_serialization_format == "explicit_custom_sparse":
                             # TODO this algorithm does not seem very efficient in case frame_step has not been set. It should be possible to add a more efficient algorithm for this case.
                             frames = new_entry["attributes"][field]["frames"]
