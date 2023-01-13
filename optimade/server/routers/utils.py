@@ -346,7 +346,7 @@ def handle_response_fields(
                                 new_entry["attributes"][field][
                                     "frames"
                                 ] = list(  # TODO if framestep is specified it is not neccesary to also return the frames here.
-                                    range(first_frame, last_frame, frame_step)
+                                    range(first_frame + 1, last_frame + 2, frame_step)
                                 )
                             else:
                                 new_entry["attributes"][field]["frames"] = frames[
