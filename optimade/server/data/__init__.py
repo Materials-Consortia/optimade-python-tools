@@ -1,7 +1,7 @@
 """ Test Data to be used with the OPTIMADE server """
-import bson.json_util
 from pathlib import Path
 
+import bson.json_util
 
 data_paths = {
     "trajectories": "test_trajectories.json",

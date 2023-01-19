@@ -1,4 +1,5 @@
 from optimade import __api_version__
+
 from ..utils import NoJsonEndpointTests
 
 

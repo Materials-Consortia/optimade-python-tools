@@ -1,4 +1,4 @@
-from optimade.server.warnings import OptimadeWarning
+from optimade.warnings import OptimadeWarning
 
 __all__ = ("AdapterPackageNotFound", "ConversionWarning")
 

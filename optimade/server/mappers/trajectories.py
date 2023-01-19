@@ -1,6 +1,6 @@
-from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.models.entries import EntryResourceAttributes
 from optimade.models.trajectories import TrajectoryResource
+from optimade.server.mappers.entries import BaseResourceMapper
 
 __all__ = ("TrajectoryMapper",)
 
@@ -21,7 +21,6 @@ class TrajectoryMapper(BaseResourceMapper):
         .union(EntryResourceAttributes.__fields__.keys())
     )
     ENTRY_RESOURCE_CLASS = TrajectoryResource
-    ENDPOINT = "trajectories"
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:

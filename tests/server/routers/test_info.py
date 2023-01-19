@@ -1,6 +1,6 @@
-from optimade.models import InfoResponse, EntryInfoResponse, IndexInfoResponse, DataType
+from optimade.models import DataType, EntryInfoResponse, IndexInfoResponse, InfoResponse
 
-from ..utils import RegularEndpointTests, IndexEndpointTests
+from ..utils import IndexEndpointTests, RegularEndpointTests
 
 
 class TestInfoEndpoint(RegularEndpointTests):

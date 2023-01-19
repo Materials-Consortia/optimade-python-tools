@@ -1,19 +1,23 @@
 # pylint: disable=no-member
 import pytest
+from pydantic import ValidationError
 
 from optimade.models.references import ReferenceResource
-
 
 MAPPER = "ReferenceMapper"
 
 
-def test_good_references(mapper):
-    """Check well-formed references used as example data"""
-    import optimade.server.data
-
-    good_refs = optimade.server.data.references
-    for doc in good_refs:
-        ReferenceResource(**mapper(MAPPER).map_back(doc))
+def test_more_good_references(good_references, mapper):
+    """Check well-formed structures with specific edge-cases"""
+    for index, structure in enumerate(good_references):
+        try:
+            ReferenceResource(**mapper(MAPPER).map_back(structure))
+        except ValidationError:
+            # Printing to keep the original exception as is, while still being informational
+            print(
+                f"Good test structure {index} failed to validate from 'test_good_structures.json'"
+            )
+            raise
 
 
 def test_bad_references(mapper):

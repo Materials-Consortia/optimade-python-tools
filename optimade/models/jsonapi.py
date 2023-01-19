@@ -1,16 +1,17 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-self-argument
-from typing import Optional, Union, List, Dict, Any, Type
 from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional, Type, Union
+
 import numpy
 from pydantic import (  # pylint: disable=no-name-in-module
-    BaseModel,
     AnyUrl,
+    BaseModel,
     parse_obj_as,
     root_validator,
 )
-from optimade.models.utils import StrictField
 
+from optimade.models.utils import StrictField
 
 __all__ = (
     "Meta",

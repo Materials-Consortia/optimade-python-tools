@@ -2,30 +2,30 @@
 import re
 import sys
 import urllib.parse
-from datetime import datetime
 import warnings
-from fastapi import Request, Response
-from typing import Any, Dict, List, Optional, Set, Union
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Set, Tuple, Type, Union
 
+from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
-from optimade.models import (
-    ResponseMeta,
+from optimade.adapters.hdf5 import generate_hdf5_file_content
+from optimade.exceptions import BadRequest, InternalServerError
+from optimade.models import (  # type:ignore[attr-defined]
     EntryResource,
     EntryResponseMany,
     EntryResponseOne,
+    ResponseMeta,
     ToplevelLinks,
 )
-
 from optimade.server.config import CONFIG, SupportedResponseFormats
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.warnings import IncompatibleFrameStep
-from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
-from optimade.adapters.hdf5 import generate_hdf5_file_content
+from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_database
 
 __all__ = (
     "BASE_URL_PREFIXES",
@@ -69,7 +69,7 @@ def meta_values(
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
-    from optimade.models import ResponseMetaQuery
+    from optimade.models import ResponseMetaQuery  # type:ignore[attr-defined]
 
     if isinstance(url, str):
         url = urllib.parse.urlparse(url)
@@ -102,7 +102,7 @@ def handle_response_fields(
     exclude_fields: Set[str],
     include_fields: Set[str],
     params: Union[EntryListingQueryParams, SingleEntryQueryParams],
-) -> List[Dict[str, Any]]:
+) -> Union[Tuple[Any, bool, Optional[Any]], Tuple[List[Any], bool, Optional[Any]]]:
     """Handle query parameter `response_fields`.
 
     It is assumed that all fields are under `attributes`.
@@ -124,7 +124,7 @@ def handle_response_fields(
         results = [results]
     sum_entry_size = 0
     continue_from_frame = getattr(params, "continue_from_frame", None)
-    new_results = []
+    new_results: List = []
     traj_trunc = False
     last_frame = None
     # TODO the code below only needs to be executed if there is a trajectory endpoint
@@ -386,12 +386,14 @@ def handle_response_fields(
         return new_results, traj_trunc, last_frame
 
 
-def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method: str):
-    from pathlib import Path
+def get_values_from_file(
+    field: str, path_str: str, new_entry: Dict, storage_method: str
+):
 
     # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
-    if path[0] != "/":
-        path = Path(__file__).parent.parent / "data" / path
+    if path_str[0] != "/":
+        path = str(Path(__file__).parent.parent / "data" / path_str)
+
     frame_serialization_format = new_entry["attributes"][field][
         "frame_serialization_format"
     ]
@@ -422,7 +424,7 @@ def get_included_relationships(
     results: Union[EntryResource, List[EntryResource]],
     ENTRY_COLLECTIONS: Dict[str, EntryCollection],
     include_param: List[str],
-) -> Dict[str, List[EntryResource]]:
+) -> List[Union[EntryResource, Dict]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -450,7 +452,7 @@ def get_included_relationships(
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
             )
 
-    endpoint_includes = defaultdict(dict)
+    endpoint_includes: Dict[Any, Dict] = defaultdict(dict)
     for doc in results:
         # convert list of references into dict by ID to only included unique IDs
         if doc is None:
@@ -481,8 +483,8 @@ def get_included_relationships(
         params = EntryListingQueryParams(
             filter=compound_filter,
             response_format="json",
-            response_fields=None,
-            sort=None,
+            response_fields="",
+            sort="",
             page_limit=0,
             page_offset=0,
         )
@@ -516,9 +518,9 @@ def get_base_url(
     )
 
 
-def get_entries(
+def get_entries(  # type:ignore[return]
     collection: EntryCollection,
-    response: EntryResponseMany,
+    response: Type[EntryResponseMany],
     request: Request,
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
@@ -537,7 +539,10 @@ def get_entries(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
-    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+
+    included = []
+    if results is not None:
+        included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     traj_trunc = False
     if fields or include_fields:
@@ -550,10 +555,12 @@ def get_entries(
     if more_data_available:
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
-        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
+        if isinstance(results, list):
+            query["page_offset"] = int(query.get("page_offset", ["0"])[0]) + len(results)  # type: ignore[assignment]
         if traj_trunc:
-            query["page_offset"] -= 1
-            query["continue_from_frame"] = last_frame + 2
+            query["page_offset"] -= 1  # type: ignore[assignment,operator]
+            query["continue_from_frame"] = last_frame + 2  # type: ignore[operator,assignment]
+
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
 
@@ -593,17 +600,17 @@ def get_entries(
         )
 
 
-def get_single_entry(
+def get_single_entry(  # type: ignore[return]
     collection: EntryCollection,
     entry_id: str,
-    response: EntryResponseOne,
+    response: Type[EntryResponseOne],
     request: Request,
     params: SingleEntryQueryParams,
 ) -> EntryResponseOne:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
-    params.filter = f'id="{entry_id}"'
+    params.filter = f'id="{entry_id}"'  # type: ignore[attr-defined]
     (
         results,
         data_returned,
@@ -612,10 +619,18 @@ def get_single_entry(
         include_fields,
     ) = collection.find(params)
 
+    if more_data_available:
+        raise InternalServerError(
+            detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
+        )
+
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
-    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+
+    included = []
+    if results is not None:
+        included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
         raise InternalServerError(
@@ -633,8 +648,8 @@ def get_single_entry(
         more_data_available = True
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
-        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results) - 1
-        query["continue_from_frame"] = last_frame + 2
+        query["page_offset"] = int(query.get("page_offset", ["0"])[0]) + len(results) - 1  # type: ignore[assignment]
+        query["continue_from_frame"] = last_frame + 2  # type: ignore[operator, assignment]
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
         links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")

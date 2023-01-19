@@ -5,21 +5,19 @@
 
 """
 
-from typing import Dict, List, Union, Iterable, Optional, Any, Tuple
-from urllib.parse import urlparse
-from collections import defaultdict
 import asyncio
-import time
-import json
 import functools
-
-from pydantic import AnyUrl
+import json
+import time
+from collections import defaultdict
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
+from urllib.parse import urlparse
 
 # External deps that are only used in the client code
 try:
     import httpx
-    from rich.progress import TaskID
     from rich.panel import Panel
+    from rich.progress import TaskID
 except ImportError as exc:
     raise ImportError(
         "Could not find dependencies required for the `OptimadeClient`. "
@@ -28,17 +26,17 @@ except ImportError as exc:
     ) from exc
 
 
-from optimade.utils import get_all_databases
-from optimade.filterparser import LarkParser
 from optimade import __api_version__, __version__
 from optimade.client.utils import (
     OptimadeClientProgress,
-    TooManyRequestsException,
     QueryResults,
     RecoverableHTTPError,
+    TooManyRequestsException,
     silent_raise,
 )
-from optimade.server.exceptions import BadRequest
+from optimade.exceptions import BadRequest
+from optimade.filterparser import LarkParser
+from optimade.utils import get_all_databases
 
 ENDPOINTS = ("structures", "references", "calculations", "info", "extensions")
 
@@ -57,7 +55,7 @@ class OptimadeClient:
 
     """
 
-    base_urls: Union[AnyUrl, Iterable[AnyUrl]]
+    base_urls: Union[str, Iterable[str]]
     """A list (or any iterable) of OPTIMADE base URLs to query."""
 
     all_results: Dict[str, Dict[str, Dict[str, QueryResults]]] = defaultdict(dict)
@@ -87,18 +85,34 @@ class OptimadeClient:
     use_async: bool
     """Whether or not to make all requests asynchronously using asyncio."""
 
+    _excluded_providers: Optional[Set[str]] = None
+    """A set of providers IDs excluded from future queries."""
+
+    _included_providers: Optional[Set[str]] = None
+    """A set of providers IDs included from future queries."""
+
+    _excluded_databases: Optional[Set[str]] = None
+    """A set of child database URLs excluded from future queries."""
+
     __current_endpoint: Optional[str] = None
     """Used internally when querying via `client.structures.get()` to set the
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
 
+    __http_client: Union[httpx.Client, httpx.AsyncClient] = None
+    """Override the HTTP client, primarily used for testing."""
+
     def __init__(
         self,
-        base_urls: Union[None, AnyUrl, List[AnyUrl]] = None,
+        base_urls: Optional[Union[str, Iterable[str]]] = None,
         max_results_per_provider: int = 1000,
         headers: Optional[Dict] = None,
         http_timeout: int = 10,
         max_attempts: int = 5,
         use_async: bool = True,
+        exclude_providers: Optional[List[str]] = None,
+        include_providers: Optional[List[str]] = None,
+        exclude_databases: Optional[List[str]] = None,
+        http_client: Union[httpx.Client, httpx.AsyncClient] = None,
     ):
         """Create the OPTIMADE client object.
 
@@ -110,17 +124,35 @@ class OptimadeClient:
             http_timeout: The HTTP timeout to use per request.
             max_attempts: The maximum number of times to repeat a failing query.
             use_async: Whether or not to make all requests asynchronously.
+            exclude_providers: A set or collection of provider IDs to exclude from queries.
+            include_providers: A set or collection of provider IDs to include in queries.
+            exclude_databases: A set or collection of child database URLs to exclude from queries.
+            http_client: An override for the underlying HTTP client, primarily used for testing.
 
         """
-
-        if not base_urls:
-            base_urls = get_all_databases()
 
         self.max_results_per_provider = max_results_per_provider
         if self.max_results_per_provider in (-1, 0):
             self.max_results_per_provider = None
 
-        self.base_urls = base_urls
+        self._excluded_providers = set(exclude_providers) if exclude_providers else None
+        self._included_providers = set(include_providers) if include_providers else None
+        self._excluded_databases = set(exclude_databases) if exclude_databases else None
+
+        if not base_urls:
+            self.base_urls = get_all_databases(
+                exclude_providers=self._excluded_providers,
+                include_providers=self._included_providers,
+                exclude_databases=self._excluded_databases,
+            )
+        else:
+            if exclude_providers or include_providers or exclude_databases:
+                raise RuntimeError(
+                    "Cannot provide both a list of base URLs and included/excluded databases."
+                )
+
+            self.base_urls = base_urls
+
         if isinstance(self.base_urls, str):
             self.base_urls = [self.base_urls]
         self.base_urls = list(self.base_urls)
@@ -137,6 +169,18 @@ class OptimadeClient:
         self.max_attempts = max_attempts
 
         self.use_async = use_async
+
+        if http_client:
+            self.__http_client = http_client
+            if isinstance(self.__http_client, httpx.AsyncClient):
+                self.use_async = True
+            elif isinstance(self.__http_client, httpx.Client):
+                self.use_async = False
+        else:
+            if use_async:
+                self.__http_client = httpx.AsyncClient
+            else:
+                self.__http_client = httpx.Client
 
     def __getattribute__(self, name):
         """Allows entry endpoints to be queried via attribute access, using the
@@ -170,7 +214,7 @@ class OptimadeClient:
 
     def get(
         self,
-        filter: str = None,
+        filter: Optional[str] = None,
         endpoint: Optional[str] = None,
         response_fields: Optional[List[str]] = None,
         sort: Optional[str] = None,
@@ -226,7 +270,7 @@ class OptimadeClient:
             return {endpoint: {filter: {k: results[k].dict() for k in results}}}
 
     def count(
-        self, filter: str = None, endpoint: Optional[str] = None
+        self, filter: Optional[str] = None, endpoint: Optional[str] = None
     ) -> Dict[str, Dict[str, Dict[str, Optional[int]]]]:
         """Counts the number of results for the filter, requiring
         only 1 request per provider by making use of the `meta->data_returned`
@@ -325,7 +369,7 @@ class OptimadeClient:
                 event_loop = None
 
         if self.use_async and not event_loop:
-            results = asyncio.run(
+            return asyncio.run(
                 self._get_all_async(
                     endpoint,
                     filter,
@@ -335,17 +379,15 @@ class OptimadeClient:
                     sort=sort,
                 )
             )
-        else:
-            results = self._get_all(
-                endpoint,
-                filter,
-                page_limit=page_limit,
-                paginate=paginate,
-                response_fields=response_fields,
-                sort=sort,
-            )
 
-        return results
+        return self._get_all(
+            endpoint,
+            filter,
+            page_limit=page_limit,
+            paginate=paginate,
+            response_fields=response_fields,
+            sort=sort,
+        )
 
     def get_one(
         self,
@@ -477,7 +519,8 @@ class OptimadeClient:
         ]
         if results:
             return functools.reduce(lambda r1, r2: {**r1, **r2}, results)
-        return None
+
+        return {}
 
     async def get_one_async(
         self,
@@ -558,7 +601,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            async with httpx.AsyncClient(headers=self.headers) as client:
+            async with self.__http_client(headers=self.headers) as client:
                 while next_url:
 
                     attempts = 0
@@ -616,7 +659,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            with httpx.Client(headers=self.headers) as client:
+            with self.__http_client(headers=self.headers) as client:
                 while next_url:
 
                     attempts = 0
@@ -731,8 +774,9 @@ class OptimadeClient:
         if sort:
             _sort = f"sort={sort}"
 
-        params = (_filter, _response_fields, _page_limit, _sort)
-        params = "&".join(p for p in params if p)
+        params = "&".join(
+            p for p in (_filter, _response_fields, _page_limit, _sort) if p
+        )
         if params:
             url += f"?{params}"
 

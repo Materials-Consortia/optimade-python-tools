@@ -1,26 +1,24 @@
 import traceback
-from typing import List, Tuple, Callable
+from typing import Callable, Iterable, List, Optional, Tuple, Type, Union
 
-from lark.exceptions import VisitError
-
-from pydantic import ValidationError
+from fastapi import Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError, StarletteHTTPException
-from fastapi import Request
+from lark.exceptions import VisitError
+from pydantic import ValidationError
 
-from optimade.models import OptimadeError, ErrorResponse, ErrorSource
-
+from optimade.exceptions import BadRequest, OptimadeHTTPException
+from optimade.models import ErrorResponse, ErrorSource, OptimadeError
 from optimade.server.config import CONFIG
-from optimade.server.exceptions import BadRequest
 from optimade.server.logger import LOGGER
-from optimade.server.routers.utils import meta_values, JSONAPIResponse
+from optimade.server.routers.utils import JSONAPIResponse, meta_values
 
 
 def general_exception(
     request: Request,
     exc: Exception,
     status_code: int = 500,  # A status_code in `exc` will take precedence
-    errors: List[OptimadeError] = None,
+    errors: Optional[List[OptimadeError]] = None,
 ) -> JSONAPIResponse:
     """Handle an exception
 
@@ -44,17 +42,17 @@ def general_exception(
         debug_info[f"_{CONFIG.provider.prefix}_traceback"] = tb
 
     try:
-        http_response_code = int(exc.status_code)
+        http_response_code = int(exc.status_code)  # type: ignore[attr-defined]
     except AttributeError:
         http_response_code = int(status_code)
 
     try:
-        title = str(exc.title)
+        title = str(exc.title)  # type: ignore[attr-defined]
     except AttributeError:
         title = str(exc.__class__.__name__)
 
     try:
-        detail = str(exc.detail)
+        detail = str(exc.detail)  # type: ignore[attr-defined]
     except AttributeError:
         detail = str(exc)
 
@@ -80,7 +78,8 @@ def general_exception(
 
 
 def http_exception_handler(
-    request: Request, exc: StarletteHTTPException
+    request: Request,
+    exc: Union[StarletteHTTPException, OptimadeHTTPException],
 ) -> JSONAPIResponse:
     """Handle a general HTTP Exception from Starlette
 
@@ -154,7 +153,7 @@ def grammar_not_implemented_handler(
     All errors raised during filter transformation are wrapped in the Lark `VisitError`.
     According to the OPTIMADE specification, these errors are repurposed to be 501 NotImplementedErrors.
 
-    For special exceptions, like [`BadRequest`][optimade.server.exceptions.BadRequest], we pass-through to
+    For special exceptions, like [`BadRequest`][optimade.exceptions.BadRequest], we pass-through to
     [`general_exception()`][optimade.server.exception_handlers.general_exception], since they should not
     return a 501 NotImplementedError.
 
@@ -221,16 +220,20 @@ def general_exception_handler(request: Request, exc: Exception) -> JSONAPIRespon
     return general_exception(request, exc)
 
 
-OPTIMADE_EXCEPTIONS: Tuple[
-    Exception, Callable[[Request, Exception], JSONAPIResponse]
-] = (
+OPTIMADE_EXCEPTIONS: Iterable[
+    Tuple[
+        Type[Exception],
+        Callable[[Request, Exception], JSONAPIResponse],
+    ]
+] = [
     (StarletteHTTPException, http_exception_handler),
+    (OptimadeHTTPException, http_exception_handler),
     (RequestValidationError, request_validation_exception_handler),
     (ValidationError, validation_exception_handler),
     (VisitError, grammar_not_implemented_handler),
-    (NotImplementedError, not_implemented_handler),
+    (NotImplementedError, not_implemented_handler),  # type: ignore[list-item] # not entirely sure why this entry triggers mypy
     (Exception, general_exception_handler),
-)
+]
 """A tuple of all pairs of exceptions and handler functions that allow for
 appropriate responses to be returned in certain scenarios according to the
 OPTIMADE specification.

@@ -1,9 +1,15 @@
 import pytest
 
+_ = pytest.importorskip(
+    "bson",
+    reason="MongoDB dependency set (pymongo, bson) are required to run these tests.",
+)
+
 from lark.exceptions import VisitError
 
+from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
-from optimade.server.exceptions import BadRequest
+from optimade.warnings import UnknownProviderProperty
 
 
 class TestMongoTransformer:
@@ -442,9 +448,10 @@ class TestMongoTransformer:
 
         t = MongoTransformer(mapper=mapper("StructureMapper"))
         p = LarkParser(version=self.version, variant=self.variant)
-        assert t.transform(p.parse("_other_provider_field > 1")) == {
-            "_other_provider_field": {"$gt": 1}
-        }
+        with pytest.warns(UnknownProviderProperty):
+            assert t.transform(p.parse("_other_provider_field > 1")) == {
+                "_other_provider_field": {"$gt": 1}
+            }
 
     def test_not_implemented(self):
         """Test that list properties that are currently not implemented
@@ -521,9 +528,11 @@ class TestMongoTransformer:
 
     def test_suspected_timestamp_fields(self, mapper):
         import datetime
+
         import bson.tz_util
+
         from optimade.filtertransformers.mongo import MongoTransformer
-        from optimade.server.warnings import TimestampNotRFCCompliant
+        from optimade.warnings import TimestampNotRFCCompliant
 
         example_RFC3339_date = "2019-06-08T04:13:37Z"
         example_RFC3339_date_2 = "2019-06-08T04:13:37"
@@ -587,8 +596,9 @@ class TestMongoTransformer:
 
     def test_mongo_special_id(self, mapper):
 
-        from optimade.filtertransformers.mongo import MongoTransformer
         from bson import ObjectId
+
+        from optimade.filtertransformers.mongo import MongoTransformer
 
         class MyMapper(mapper("StructureMapper")):
             ALIASES = (("immutable_id", "_id"),)

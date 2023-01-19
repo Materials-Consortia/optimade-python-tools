@@ -1,8 +1,8 @@
 # pylint: disable=no-self-argument
+import warnings
 from enum import Enum
 from pathlib import Path
-import warnings
-from typing import Any, Dict, List, Optional, Tuple, Union, Literal
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
@@ -13,9 +13,8 @@ from pydantic import (  # pylint: disable=no-name-in-module
 )
 from pydantic.env_settings import SettingsSourceCallable
 
-from optimade import __version__, __api_version__
-from optimade.models import Implementation, Provider
-
+from optimade import __api_version__, __version__
+from optimade.models import Implementation, Provider  # type:ignore[attr-defined]
 
 DEFAULT_CONFIG_FILE_PATH: str = str(Path.home().joinpath(".optimade.json"))
 """Default configuration file path.
@@ -99,6 +98,7 @@ def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
     """
     import json
     import os
+
     import yaml
 
     encoding = settings.__config__.env_file_encoding
@@ -166,7 +166,7 @@ class ServerConfig(BaseSettings):
         description="Which database backend to use out of the supported backends.",
     )
 
-    elastic_hosts: Optional[List[Dict]] = Field(
+    elastic_hosts: Optional[Union[str, List[str], Dict, List[Dict]]] = Field(
         None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
@@ -314,7 +314,7 @@ class ServerConfig(BaseSettings):
         ["json"],
         description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
     )
-    max_response_size: Optional[Dict[SupportedResponseFormats, int]] = Field(
+    max_response_size: Dict[SupportedResponseFormats, int] = Field(
         {"json": 10},
         description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
     )

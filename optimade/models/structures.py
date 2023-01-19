@@ -1,25 +1,26 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
-import re
-import warnings
-import sys
 import math
+import re
+import sys
+import warnings
+from enum import Enum, IntEnum
 from functools import reduce
-from enum import IntEnum, Enum
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, validator, root_validator, conlist
+from pydantic import BaseModel, conlist, root_validator, validator
+
+from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.jsonapi import Attributes
-from optimade.models.entries import EntryResourceAttributes, EntryResource
 from optimade.models.utils import (
+    ANONYMOUS_ELEMENTS,
+    CHEMICAL_FORMULA_REGEXP,
     CHEMICAL_SYMBOLS,
     EXTRA_SYMBOLS,
     OptimadeField,
     StrictField,
     SupportLevel,
-    ANONYMOUS_ELEMENTS,
-    CHEMICAL_FORMULA_REGEXP,
 )
-from optimade.server.warnings import MissingExpectedField
+from optimade.warnings import MissingExpectedField
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
@@ -450,7 +451,7 @@ The proportion number MUST be omitted if it is 1.
         regex=CHEMICAL_FORMULA_REGEXP,
     )
 
-    dimension_types: Optional[
+    dimension_types: Optional[  # type: ignore[valid-type]
         conlist(Periodicity, min_items=3, max_items=3)
     ] = OptimadeField(
         None,
@@ -498,7 +499,7 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.MUST,
     )
 
-    lattice_vectors: Optional[
+    lattice_vectors: Optional[  # type: ignore[valid-type]
         conlist(Vector3D_unknown, min_items=3, max_items=3)
     ] = OptimadeField(
         None,
@@ -526,7 +527,7 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.OPTIONAL,
     )
 
-    cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(
+    cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(  # type: ignore[valid-type]
         ...,
         description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.

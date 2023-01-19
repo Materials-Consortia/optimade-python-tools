@@ -1,7 +1,9 @@
+from typing import Callable, List
+
 import pytest
-from pydantic import BaseModel, ValidationError, Field
+from pydantic import BaseModel, Field, ValidationError
+
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
-from typing import List, Callable
 
 
 def make_bad_models(field: Callable):
@@ -82,6 +84,7 @@ def test_formula_regexp():
 
     """
     import re
+
     from optimade.models.utils import CHEMICAL_FORMULA_REGEXP
 
     class DummyModel(BaseModel):
@@ -93,6 +96,7 @@ def test_formula_regexp():
         "LiP5",
         "Jn7Qb4",  # Regexp does not care about the actual existence of elements
         "A5B213CeD3E65F12G",
+        "",
     )
 
     bad_formulae = (
@@ -103,7 +107,7 @@ def test_formula_regexp():
         "6F7G",
         "A0Be2",
         "A1Be2",
-        "",
+        "A0B1",
     )
 
     for formula in good_formulae:

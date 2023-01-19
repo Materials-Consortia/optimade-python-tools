@@ -1,10 +1,13 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 # import warnings
-from typing import List, Optional, Any
-from enum import IntEnum
+from typing import Any, List, Optional
+
 from pydantic import BaseModel
 
-from optimade.models.entries import EntryResourceAttributes, EntryResource
+from optimade.models.entries import EntryResource, EntryResourceAttributes
+
+# from optimade.server.warnings import MissingExpectedField
+from optimade.models.structures import StructureAttributes
 from optimade.models.utils import (
     CHEMICAL_SYMBOLS,
     EXTRA_SYMBOLS,
@@ -12,9 +15,6 @@ from optimade.models.utils import (
     StrictField,
     SupportLevel,
 )
-
-# from optimade.server.warnings import MissingExpectedField
-from optimade.models.structures import StructureAttributes
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
@@ -24,7 +24,6 @@ __all__ = (
     "AvailablePropertyAttributes",
     "TrajectoryDataAttributes",
     "TrajectoryResource",
-    "Periodicity",
 )
 
 CORRELATED_TRAJECTORY_FIELDS = (
@@ -110,13 +109,6 @@ GENERAL_DESCRIPTION_TRAJECTORY_FIELD = """To define how this property is stored 
     If a value has not been sampled for a particular frame the value should be set to :val:`null` at the highest possible nesting level.
     In case of `cartesian_site_positions`_, a site that has the value :val:`null` for the x,y and z coordinates means that the site is not in the simulation volume.
     This may be useful for grand canonical simulations where the number of particles in the simulation volume is not constant."""
-
-
-class Periodicity(IntEnum):
-    """Integer enumeration of dimension_types values"""
-
-    APERIODIC = 0
-    PERIODIC = 1
 
 
 class AvailablePropertySubfields(BaseModel):

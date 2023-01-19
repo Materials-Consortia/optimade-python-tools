@@ -1,9 +1,11 @@
-import json
 import dataclasses
+import json
 
 import pytest
 
 from optimade.validator import ImplementationValidator
+
+pytestmark = pytest.mark.filterwarnings("ignore")
 
 
 def test_with_validator(both_fake_remote_clients):
@@ -42,7 +44,7 @@ def test_with_validator_json_response(both_fake_remote_clients, capsys):
 
 
 def test_as_type_with_validator(client, capsys):
-    from unittest.mock import patch, Mock
+    from unittest.mock import Mock, patch
 
     test_urls = {
         f"{client.base_url}/structures": "structures",
@@ -93,10 +95,6 @@ def test_versioned_base_urls(client, index_client, server: str):
 
     This depends on the routers for each kind of server.
     """
-    try:
-        import simplejson as json
-    except ImportError:
-        import json
 
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
@@ -130,13 +128,9 @@ def test_meta_schema_value_obeys_index(client, index_client, server: str):
     """Test that the reported `meta->schema` is correct for index/non-index
     servers.
     """
-    try:
-        import simplejson as json
-    except ImportError:
-        import json
 
-    from optimade.server.routers.utils import BASE_URL_PREFIXES
     from optimade.server.config import CONFIG
+    from optimade.server.routers.utils import BASE_URL_PREFIXES
 
     clients = {
         "regular": client,

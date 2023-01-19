@@ -1,19 +1,18 @@
 # pylint: disable=no-self-argument
-from typing import Union, List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import Field, root_validator
 
-from optimade.models.jsonapi import Response
 from optimade.models.baseinfo import BaseInfoResource
 from optimade.models.entries import EntryInfoResource, EntryResource
 from optimade.models.index_metadb import IndexInfoResource
+from optimade.models.jsonapi import Response
 from optimade.models.links import LinksResource
-from optimade.models.optimade_json import Success, ResponseMeta, OptimadeError
+from optimade.models.optimade_json import OptimadeError, ResponseMeta, Success
 from optimade.models.references import ReferenceResource
 from optimade.models.structures import StructureResource
 from optimade.models.trajectories import TrajectoryResource
 from optimade.models.utils import StrictField
-
 
 __all__ = (
     "ErrorResponse",
@@ -70,17 +69,17 @@ class InfoResponse(Success):
 
 
 class EntryResponseOne(Success):
-    data: Union[EntryResource, Dict[str, Any], None] = Field(...)
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
+    data: Union[EntryResource, Dict[str, Any], None] = Field(...)  # type: ignore[assignment]
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
         None, uniqueItems=True
     )
 
 
 class EntryResponseMany(Success):
-    data: Union[List[EntryResource], List[Dict[str, Any]]] = Field(
+    data: Union[List[EntryResource], List[Dict[str, Any]]] = Field(  # type: ignore[assignment]
         ..., uniqueItems=True
     )
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
         None, uniqueItems=True
     )
 

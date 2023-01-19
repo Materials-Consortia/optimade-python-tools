@@ -1,12 +1,14 @@
+from abc import ABC
+from typing import Iterable, List
+from warnings import warn
+
 from fastapi import Query
 from pydantic import EmailStr  # pylint: disable=no-name-in-module
-from typing import Iterable, List
+
+from optimade.exceptions import BadRequest
 from optimade.server.config import CONFIG
-from warnings import warn
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.exceptions import BadRequest
-from optimade.server.warnings import UnknownProviderQueryParameter, QueryParamNotUsed
-from abc import ABC
+from optimade.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
 
 
 class BaseQueryParams(ABC):
@@ -185,7 +187,7 @@ class EntryListingQueryParams(BaseQueryParams):
             The default value is 1.
     """
 
-    # The reference server implementation only supports offset-based pagination
+    # The reference server implementation only supports offset/number-based pagination
     unsupported_params: List[str] = [
         "page_cursor",
         "page_below",
@@ -230,7 +232,7 @@ class EntryListingQueryParams(BaseQueryParams):
         page_number: int = Query(
             None,
             description="RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
-            ge=1,
+            # ge=1,  # This constraint is only 'RECOMMENDED' in the specification, so should not be included here or in the OpenAPI schema
         ),
         page_cursor: int = Query(
             0,

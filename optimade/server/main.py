@@ -18,10 +18,9 @@ with warnings.catch_warnings(record=True) as w:
 
 from optimade import __api_version__, __version__
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.logger import LOGGER
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
+from optimade.server.logger import LOGGER
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
-
 from optimade.server.routers import (
     info,
     landing,
@@ -65,6 +64,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 if CONFIG.insert_test_data:
     import bson.json_util
     from bson.objectid import ObjectId
+
     import optimade.server.data as data
     from optimade.server.routers import ENTRY_COLLECTIONS
     from optimade.server.routers.utils import get_providers
@@ -82,7 +82,7 @@ if CONFIG.insert_test_data:
             )
             providers = get_providers(add_mongo_id=True)
             for doc in providers:
-                endpoint_collection.collection.replace_one(
+                endpoint_collection.collection.replace_one(  # type: ignore[attr-defined]
                     filter={"_id": ObjectId(doc["_id"]["$oid"])},
                     replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
                     upsert=True,

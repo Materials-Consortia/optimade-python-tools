@@ -1,24 +1,26 @@
 """Test EntryListingQueryParams middleware"""
 import pytest
 
-from optimade.server.exceptions import BadRequest
+from optimade.exceptions import BadRequest
 from optimade.server.middleware import EnsureQueryParamIntegrity
+from optimade.warnings import FieldValueNotRecognized
 
 
 def test_wrong_html_form(check_error_response, both_clients):
     """Using a parameter without equality sign `=` or values should result in a `400 Bad Request` response"""
     from optimade.server.query_params import EntryListingQueryParams
 
-    for valid_query_parameter in EntryListingQueryParams().__dict__:
-        request = f"/structures?{valid_query_parameter}"
-        with pytest.raises(BadRequest):
-            check_error_response(
-                request,
-                expected_status=400,
-                expected_title="Bad Request",
-                expected_detail="A query parameter without an equal sign (=) is not supported by this server",
-                server=both_clients,
-            )
+    with pytest.warns(FieldValueNotRecognized):
+        for valid_query_parameter in EntryListingQueryParams().__dict__:
+            request = f"/structures?{valid_query_parameter}"
+            with pytest.raises(BadRequest):
+                check_error_response(
+                    request,
+                    expected_status=400,
+                    expected_title="Bad Request",
+                    expected_detail="A query parameter without an equal sign (=) is not supported by this server",
+                    server=both_clients,
+                )
 
 
 def test_wrong_html_form_one_wrong(check_error_response, both_clients):
@@ -156,6 +158,20 @@ def test_page_number_and_offset_both_set(check_response):
         {
             "title": "QueryParamNotUsed",
             "detail": "Only one of the query parameters 'page_number' and 'page_offset' should be set - 'page_number' will be ignored.",
+        }
+    ]
+    check_response(
+        request, expected_ids=expected_ids, expected_warnings=expected_warnings
+    )
+
+
+def test_page_number_less_than_one(check_response):
+    request = "/structures?page_number=0&page_limit=1"
+    expected_ids = ["mpf_1"]
+    expected_warnings = [
+        {
+            "title": "QueryParamNotUsed",
+            "detail": "'page_number' is 1-based, using 'page_number=1' instead of 0",
         }
     ]
     check_response(
