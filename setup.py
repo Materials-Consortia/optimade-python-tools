@@ -20,7 +20,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Server minded
 elastic_deps = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
 mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
-hdf5_deps = ["h5py", "numpy~=1.23"]
+hdf5_deps = ["h5py", "numpy>=1.23"]
 server_deps = ["uvicorn~=0.19", "fastapi~=0.86", "pyyaml~=6.0"] + mongo_deps + hdf5_deps
 
 # Client minded
@@ -109,7 +109,7 @@ setup(
         "pydantic~=1.10,>=1.10.2",
         "email_validator~=1.2",
         "requests~=2.28",
-        "numpy~=1.23",
+        "numpy>=1.23",
     ],
     extras_require={
         "all": all_deps,
