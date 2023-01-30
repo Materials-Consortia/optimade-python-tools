@@ -3,7 +3,7 @@ build==0.10.0
 codecov==2.1.12
 flake8==6.0.0
 invoke==2.0.0
-isort==5.11.4
+isort==5.12.0
 jsondiff==2.0.0
 mypy==0.991
 pre-commit==2.21.0
