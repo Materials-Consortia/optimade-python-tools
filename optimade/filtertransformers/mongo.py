@@ -5,13 +5,15 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.
 
 
 import copy
-import warnings
 import itertools
-from typing import Dict, List, Any, Union
-from lark import v_args, Token
+import warnings
+from typing import Any, Dict, List, Union
+
+from lark import Token, v_args
+
+from optimade.exceptions import BadRequest
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
-from optimade.server.exceptions import BadRequest
-from optimade.server.warnings import TimestampNotRFCCompliant
+from optimade.warnings import TimestampNotRFCCompliant
 
 __all__ = ("MongoTransformer",)
 
@@ -311,7 +313,7 @@ class MongoTransformer(BaseTransformer):
         if operator in self.inverse_operator_map:
             filter_ = {prop: {self.inverse_operator_map[operator]: value}}
             if operator in ("$in", "$eq"):
-                filter_ = {"$and": [filter_, {prop: {"$ne": None}}]}
+                filter_ = {"$and": [filter_, {prop: {"$ne": None}}]}  # type: ignore[dict-item]
             return filter_
 
         filter_ = {prop: {"$not": expr}}

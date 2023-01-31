@@ -1,7 +1,6 @@
 # pylint: disable=protected-access,pointless-statement,relative-beyond-top-level
 import json
 import os
-
 from pathlib import Path
 
 
@@ -141,7 +140,9 @@ def test_yaml_config_file():
     NOTE: Since pytest loads a JSON config file, there's no need to test that further.
     """
     import tempfile
+
     import pytest
+
     from optimade.server.config import ServerConfig
 
     yaml_content = """

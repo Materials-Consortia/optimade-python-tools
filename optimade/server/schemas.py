@@ -1,30 +1,41 @@
-from typing import Dict, Callable
+from typing import Callable, Dict, Iterable, Optional
+
 from optimade.models import (
     DataType,
     ErrorResponse,
-    StructureResource,
     ReferenceResource,
+    StructureResource,
 )
-from optimade.server.exceptions import POSSIBLE_ERRORS
 
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
-ENTRY_INFO_SCHEMAS: Dict[str, Callable[[None], Dict]] = {
+ENTRY_INFO_SCHEMAS: Dict[str, Callable[[], Dict]] = {
     "structures": StructureResource.schema,
     "references": ReferenceResource.schema,
 }
 """This dictionary is used to define the `/info/<entry_type>` endpoints."""
 
-ERROR_RESPONSES: Dict[int, Dict] = {
-    err.status_code: {"model": ErrorResponse, "description": err.title}
-    for err in POSSIBLE_ERRORS
-}
+try:
+    """The possible errors list contains FastAPI/starlette exception objects
+    This dictionary is only used for constructing the OpenAPI schema, i.e.,
+    a development task, so can be safely nulled to allow other non-server
+    submodules (e.g., the validator) to access the other schemas
+    (that only require pydantic to construct).
+    """
+    from optimade.exceptions import POSSIBLE_ERRORS
+
+    ERROR_RESPONSES: Optional[Dict[int, Dict]] = {
+        err.status_code: {"model": ErrorResponse, "description": err.title}
+        for err in POSSIBLE_ERRORS
+    }
+except ModuleNotFoundError:
+    ERROR_RESPONSES = None
 
 
 def retrieve_queryable_properties(
     schema: dict,
-    queryable_properties: list = None,
-    entry_type: str = None,
+    queryable_properties: Optional[Iterable[str]] = None,
+    entry_type: Optional[str] = None,
 ) -> dict:
     """Recursively loops through the schema of a pydantic model and
     resolves all references, returning a dictionary of all the
@@ -79,7 +90,7 @@ def retrieve_queryable_properties(
 
         described_provider_fields = [
             field
-            for field in CONFIG.provider_fields.get(entry_type, {})
+            for field in CONFIG.provider_fields.get(entry_type, {})  # type: ignore[call-overload]
             if isinstance(field, dict)
         ]
         for field in described_provider_fields:

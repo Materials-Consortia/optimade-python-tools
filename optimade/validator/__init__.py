@@ -1,19 +1,21 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
 # pylint: disable=import-outside-toplevel
 import warnings
-from optimade import __version__, __api_version__
-from .validator import ImplementationValidator
+
+from optimade import __api_version__, __version__
+
 from .utils import DEFAULT_CONN_TIMEOUT, DEFAULT_READ_TIMEOUT
+from .validator import ImplementationValidator
 
 __all__ = ["ImplementationValidator", "validate"]
 
 
 def validate():  # pragma: no cover
     import argparse
-    import sys
-    import os
-    import traceback
     import json
+    import os
+    import sys
+    import traceback
 
     parser = argparse.ArgumentParser(
         prog="optimade-validator",

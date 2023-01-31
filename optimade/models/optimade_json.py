@@ -1,15 +1,13 @@
 """Modified JSON API v1.0 for OPTIMADE API"""
 # pylint: disable=no-self-argument,no-name-in-module
-from enum import Enum
-
-from typing import Optional, Union, List, Dict, Type, Any
 from datetime import datetime
+from enum import Enum
+from typing import Any, Dict, List, Optional, Type, Union
 
-from pydantic import root_validator, BaseModel, AnyHttpUrl, AnyUrl, EmailStr
+from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, root_validator
 
 from optimade.models import jsonapi
 from optimade.models.utils import SemanticVersion, StrictField
-
 
 __all__ = (
     "DataType",

@@ -1,9 +1,9 @@
 import inspect
-import warnings
-import re
 import itertools
+import re
+import warnings
 from enum import Enum
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from pydantic import Field
 from pydantic.fields import FieldInfo
@@ -60,7 +60,7 @@ def StrictPydanticField(*args, **kwargs):
 
 def StrictField(
     *args: "Any",
-    description: str = None,
+    description: Optional[str] = None,
     **kwargs: "Any",
 ) -> StrictFieldInfo:
     """A wrapper around `pydantic.Field` that does the following:
@@ -231,7 +231,7 @@ def anonymous_element_generator():
 ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
 """ Returns the first 150 values of the anonymous element generator. """
 
-CHEMICAL_FORMULA_REGEXP = r"^([A-Z][a-z]?([2-9]|[1-9]\d+)?)+$"
+CHEMICAL_FORMULA_REGEXP = r"(^$)|^([A-Z][a-z]?([2-9]|[1-9]\d+)?)+$"
 
 EXTRA_SYMBOLS = ["X", "vacancy"]
 

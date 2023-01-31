@@ -1,4 +1,4 @@
-from fastapi import Request, APIRouter
+from fastapi import APIRouter, Request
 from fastapi.responses import Response
 
 from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -15,7 +15,7 @@ class CsvResponse(Response):
     tags=["Versions"],
     response_class=CsvResponse,
 )
-def get_versions(request: Request) -> CsvResponse:
+def get_versions(request: Request):
     """Respond with the text/csv representation for the served versions."""
     version = BASE_URL_PREFIXES["major"].replace("/v", "")
     response = f"version\n{version}"

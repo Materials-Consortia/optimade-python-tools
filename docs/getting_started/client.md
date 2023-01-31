@@ -72,6 +72,62 @@ We can refine the search by manually specifying some URLs:
     client.get()
     ```
 
+or by including/excluding some providers by their registered IDs in the [Providers list](https://providers.optimade.org).
+
+Query only a list of included providers (after a lookup of the providers list):
+
+=== "Command line"
+    ```shell
+    # Only query databases served by the example providers
+    optimade-get --include-providers exmpl,optimade
+    ```
+
+=== "Python"
+    ```python
+    # Only query databases served by the example providers
+    from optimade.client import OptimadeClient
+    client = OptimadeClient(
+        include_providers={"exmpl", "optimade"},
+    )
+    client.get()
+    ```
+
+Exclude certain providers:
+
+=== "Command line"
+    ```shell
+    # Exclude example providers from global list
+    optimade-get --exclude-providers exmpl,optimade
+    ```
+
+=== "Python"
+    ```python
+    # Exclude example providers from global list
+    from optimade.client import OptimadeClient
+    client = OptimadeClient(
+        exclude_providers={"exmpl", "optimade"},
+    )
+    client.get()
+    ```
+
+Exclude particular databases by URL:
+
+=== "Command line"
+    ```shell
+    # Exclude specific example databases
+    optimade-get --exclude-databases https://example.org/optimade,https://optimade.org/example
+    ```
+
+=== "Python"
+    ```python
+    # Exclude specific example databases
+    from optimade.client import OptimadeClient
+    client = OptimadeClient(
+        exclude_databases={"https://example.org/optimade", "https://optimade.org/example"}
+    )
+    client.get()
+    ```
+
 ### Filtering
 
 By default, an empty filter will be used (which will return all entries in a database).

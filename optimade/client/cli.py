@@ -1,6 +1,6 @@
-import sys
 import json
 import pathlib
+import sys
 
 import click
 import rich
@@ -53,7 +53,26 @@ __all__ = ("_get",)
     is_flag=True,
     help="Pretty print the JSON results.",
 )
-@click.argument("base-url", default=None, nargs=-1)
+@click.option(
+    "--include-providers",
+    default=None,
+    help="A string of comma-separated provider IDs to query.",
+)
+@click.option(
+    "--exclude-providers",
+    default=None,
+    help="A string of comma-separated provider IDs to exclude from queries.",
+)
+@click.option(
+    "--exclude-databases",
+    default=None,
+    help="A string of comma-separated database URLs to exclude from queries.",
+)
+@click.argument(
+    "base-url",
+    default=None,
+    nargs=-1,
+)
 def get(
     use_async,
     filter,
@@ -65,6 +84,9 @@ def get(
     sort,
     endpoint,
     pretty_print,
+    include_providers,
+    exclude_providers,
+    exclude_databases,
 ):
     return _get(
         use_async,
@@ -77,6 +99,9 @@ def get(
         sort,
         endpoint,
         pretty_print,
+        include_providers,
+        exclude_providers,
+        exclude_databases,
     )
 
 
@@ -91,6 +116,10 @@ def _get(
     sort,
     endpoint,
     pretty_print,
+    include_providers,
+    exclude_providers,
+    exclude_databases,
+    **kwargs,
 ):
 
     if output_file:
@@ -106,6 +135,16 @@ def _get(
         base_urls=base_url,
         use_async=use_async,
         max_results_per_provider=max_results_per_provider,
+        include_providers=set(_.strip() for _ in include_providers.split(","))
+        if include_providers
+        else None,
+        exclude_providers=set(_.strip() for _ in exclude_providers.split(","))
+        if exclude_providers
+        else None,
+        exclude_databases=set(_.strip() for _ in exclude_databases.split(","))
+        if exclude_databases
+        else None,
+        **kwargs,
     )
     if response_fields:
         response_fields = response_fields.split(",")

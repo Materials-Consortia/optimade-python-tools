@@ -1,12 +1,10 @@
-from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.models.links import LinksResource
+from optimade.server.mappers.entries import BaseResourceMapper
 
 __all__ = ("LinksMapper",)
 
 
 class LinksMapper(BaseResourceMapper):
-
-    ENDPOINT = "links"
 
     ENTRY_RESOURCE_CLASS = LinksResource
 

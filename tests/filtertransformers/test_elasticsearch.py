@@ -1,7 +1,8 @@
 import pytest
 
 elasticsearch_dsl = pytest.importorskip(
-    "elasticsearch_dsl", reason="No ElasticSearch installation, skipping tests..."
+    "elasticsearch_dsl",
+    reason="ElasticSearch dependencies (elasticsearch_dsl, elasticsearch) are required to run these tests.",
 )
 
 from optimade.filterparser import LarkParser
@@ -17,7 +18,7 @@ def parser():
 def transformer():
     from optimade.server.mappers import StructureMapper
 
-    return ElasticTransformer(mapper=StructureMapper())
+    return ElasticTransformer(mapper=StructureMapper)
 
 
 test_queries = [

@@ -1,9 +1,13 @@
+black==22.12.0
 build==0.9.0
 codecov==2.1.12
+flake8==6.0.0
 invoke==1.7.3
+isort==5.11.4
 jsondiff==2.0.0
-pre-commit==2.20.0
-pylint==2.15.5
+mypy==0.991
+pre-commit==2.21.0
+pylint==2.15.9
 pytest==7.2.0
 pytest-cov==4.0.0
-pytest-httpx==0.21.2
+types-all==1.0.0

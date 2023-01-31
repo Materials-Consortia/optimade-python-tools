@@ -20,10 +20,7 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
 # Server minded
 elastic_deps = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
 mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
-server_deps = [
-    "uvicorn~=0.19",
-    "pyyaml>=5.4,<7",  # Keep at pyyaml 5.4 for aiida-core support
-] + mongo_deps
+server_deps = ["uvicorn~=0.19", "fastapi~=0.86", "pyyaml~=6.0"] + mongo_deps
 
 
 # Client minded
@@ -31,14 +28,14 @@ aiida_deps = ["aiida-core~=2.1"]
 
 http_client_deps = [
     "httpx~=0.23",
-    "rich~=12.6",
+    "rich~=13.0",
     "click~=8.1",
 ]
 ase_deps = ["ase~=3.22"]
-cif_deps = ["numpy~=1.23"]
+cif_deps = ["numpy>=1.23"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2022.7"]
-jarvis_deps = ["jarvis-tools==2022.8.27"]
+jarvis_deps = ["jarvis-tools==2022.12.11"]
 client_deps = cif_deps
 
 # General
@@ -46,7 +43,7 @@ docs_deps = [
     "mike~=1.1",
     "mkdocs~=1.4",
     "mkdocs-awesome-pages-plugin~=2.8",
-    "mkdocs-material~=8.5",
+    "mkdocs-material~=9.0",
     "mkdocstrings[python-legacy]~=0.19.0",
 ]
 testing_deps = [
@@ -55,10 +52,18 @@ testing_deps = [
     "jsondiff~=2.0",
     "pytest~=7.2",
     "pytest-cov~=4.0",
-    "pytest-httpx~=0.21",
 ] + server_deps
 dev_deps = (
-    ["pylint~=2.15", "pre-commit~=2.20", "invoke~=1.7"]
+    [
+        "black~=22.10",
+        "flake8~=6.0",
+        "isort~=5.10",
+        "mypy~=0.991",
+        "pylint~=2.15",
+        "pre-commit~=2.20",
+        "invoke~=1.7",
+        "types-all==1.0.0",
+    ]
     + docs_deps
     + testing_deps
     + client_deps
@@ -101,7 +106,6 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "lark~=1.1",
-        "fastapi~=0.86.0",
         "pydantic~=1.10,>=1.10.2",
         "email_validator~=1.2",
         "requests~=2.28",

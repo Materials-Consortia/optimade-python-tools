@@ -1,17 +1,17 @@
-from dataclasses import dataclass, field, asdict
-from contextlib import contextmanager
-from typing import List, Dict, Set, Union
 import sys
+from contextlib import contextmanager
+from dataclasses import asdict, dataclass, field
+from typing import Dict, List, Set, Union
 
+from rich.console import Console
 from rich.progress import (
+    BarColumn,
     Progress,
     SpinnerColumn,
-    TimeElapsedColumn,
     TaskProgressColumn,
-    BarColumn,
     TextColumn,
+    TimeElapsedColumn,
 )
-from rich.console import Console
 
 __all__ = (
     "RecoverableHTTPError",
@@ -34,8 +34,8 @@ class TooManyRequestsException(RecoverableHTTPError):
 class QueryResults:
     """A container dataclass for the results from a given query."""
 
-    data: Union[Dict, List[Dict]] = field(default_factory=list, init=False)
-    errors: List[Dict] = field(default_factory=list, init=False)
+    data: Union[Dict, List[Dict]] = field(default_factory=list, init=False)  # type: ignore[assignment]
+    errors: List[str] = field(default_factory=list, init=False)
     links: Dict = field(default_factory=dict, init=False)
     included: List[Dict] = field(default_factory=list, init=False)
     meta: Dict = field(default_factory=dict, init=False)
@@ -62,7 +62,7 @@ class QueryResults:
             # Otherwise, as is the case for `info` endpoints, `data` is a dictionary (or null)
             # and should be added as the only `data` field for these results.
             if isinstance(page_results["data"], list):
-                self.data.extend(page_results["data"])
+                self.data.extend(page_results["data"])  # type: ignore[union-attr]
             elif not self.data:
                 self.data = page_results["data"]
             else:

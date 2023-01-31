@@ -3,13 +3,13 @@ default_language_version:
 
 repos:
   - repo: https://github.com/ambv/black
-    rev: 22.10.0
+    rev: 22.12.0
     hooks:
     - id: black
       name: Blacken
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.4.0
     hooks:
     - id: check-symlinks
     - id: check-yaml
@@ -24,7 +24,7 @@ repos:
       args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/pycqa/flake8
-    rev: '5.0.4'
+    rev: '6.0.0'
     hooks:
     - id: flake8
 
@@ -43,3 +43,16 @@ repos:
       pass_filenames: false
       files: ^optimade/.*\.py$
       description: Update the API Reference documentation whenever a Python file is touched in the code base.
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.991
+    hooks:
+      - id: mypy
+        name: "MyPy"
+        additional_dependencies: ["types-all", "pydantic~=1.10"]
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.11.4
+    hooks:
+      - id: isort
+        name: "isort"

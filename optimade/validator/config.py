@@ -7,27 +7,25 @@ the hardcoded values.
 
 """
 
-from typing import Dict, Any, Set, List, Container
+from typing import Any, Container, Dict, List, Set
+
 from pydantic import BaseSettings, Field
 
 from optimade.models import (
-    InfoResponse,
-    IndexInfoResponse,
     DataType,
+    IndexInfoResponse,
+    InfoResponse,
     StructureFeatures,
     SupportLevel,
 )
+from optimade.server.mappers import BaseResourceMapper
+from optimade.server.schemas import ENTRY_INFO_SCHEMAS, retrieve_queryable_properties
 from optimade.validator.utils import (
     ValidatorLinksResponse,
-    ValidatorReferenceResponseOne,
     ValidatorReferenceResponseMany,
-    ValidatorStructureResponseOne,
+    ValidatorReferenceResponseOne,
     ValidatorStructureResponseMany,
-)
-from optimade.server.mappers import BaseResourceMapper
-from optimade.server.schemas import (
-    ENTRY_INFO_SCHEMAS,
-    retrieve_queryable_properties,
+    ValidatorStructureResponseOne,
 )
 
 __all__ = ("ValidatorConfig", "VALIDATOR_CONFIG")

@@ -18,8 +18,8 @@ with warnings.catch_warnings(record=True) as w:
     config_warnings = w
 
 from optimade import __api_version__, __version__
-from optimade.server.logger import LOGGER
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
+from optimade.server.logger import LOGGER
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers import index_info, links, versions
 from optimade.server.routers.utils import BASE_URL_PREFIXES, JSONAPIResponse
@@ -59,8 +59,9 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 if CONFIG.insert_test_data and CONFIG.index_links_path.exists():
     import bson.json_util
     from bson.objectid import ObjectId
+
     from optimade.server.routers.links import links_coll
-    from optimade.server.routers.utils import mongo_id_for_database, get_providers
+    from optimade.server.routers.utils import get_providers, mongo_id_for_database
 
     LOGGER.debug("Loading index links...")
     with open(CONFIG.index_links_path) as f:
@@ -83,7 +84,7 @@ if CONFIG.insert_test_data and CONFIG.index_links_path.exists():
         )
         providers = get_providers(add_mongo_id=True)
         for doc in providers:
-            links_coll.collection.replace_one(
+            links_coll.collection.replace_one(  # type: ignore[attr-defined]
                 filter={"_id": ObjectId(doc["_id"]["$oid"])},
                 replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
                 upsert=True,

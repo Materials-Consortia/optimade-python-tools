@@ -1,8 +1,7 @@
 import pytest
 
-from optimade.server.config import CONFIG
 from optimade.models import StructureResource
-
+from optimade.server.config import CONFIG
 
 MAPPER = "BaseResourceMapper"
 
@@ -17,7 +16,7 @@ def test_disallowed_aliases(mapper):
     class MyMapper(mapper(MAPPER)):
         ALIASES = (("$and", "my_special_and"), ("not", "$not"))
 
-    mapper = MyMapper()
+    mapper = MyMapper
     with pytest.raises(RuntimeError):
         MongoCollection("fake", StructureResource, mapper, database="fake")
 
@@ -28,7 +27,7 @@ def test_property_aliases(mapper):
         LENGTH_ALIASES = (("_exmpl_test_field", "test_field_len"),)
         ALIASES = (("field", "completely_different_field"),)
 
-    mapper = MyMapper()
+    mapper = MyMapper
     assert mapper.get_backend_field("_exmpl_dft_parameters") == "dft_parameters"
     assert mapper.get_backend_field("_exmpl_test_field") == "test_field"
     assert mapper.get_backend_field("field") == "completely_different_field"
@@ -63,3 +62,33 @@ def test_property_aliases(mapper):
         mapper.get_backend_field("_exmpl_dft_parameters_dft_parameters.nested.property")
         == "_exmpl_dft_parameters_dft_parameters.nested.property"
     )
+
+
+def test_cached_mapper_properties(mapper):
+    """Tests that alias caching both occurs, and is not effected
+    by the presence of other mapper caches.
+    """
+
+    class MyMapper(mapper(MAPPER)):
+        ALIASES = (("field", "completely_different_field"),)
+
+    class MyOtherMapper(mapper(MAPPER)):
+        ALIASES = (
+            ("field", "completely_different_field2"),
+            ("a", "b"),
+        )
+
+    assert MyMapper.get_backend_field("field") == "completely_different_field"
+    hits = MyMapper.get_backend_field.cache_info().hits
+    assert MyMapper.get_backend_field("field") == "completely_different_field"
+    assert MyMapper.get_backend_field.cache_info().hits == hits + 1
+    assert MyOtherMapper.get_backend_field("field") == "completely_different_field2"
+    assert MyOtherMapper.get_backend_field.cache_info().hits == hits + 1
+    assert MyOtherMapper.get_backend_field("field") == "completely_different_field2"
+    assert MyOtherMapper.get_backend_field.cache_info().hits == hits + 2
+
+    assert MyOtherMapper.get_backend_field("a") == "b"
+    assert MyOtherMapper.get_backend_field.cache_info().hits == hits + 2
+    assert MyOtherMapper.get_backend_field("a") == "b"
+    assert MyOtherMapper.get_backend_field.cache_info().hits == hits + 3
+    assert MyMapper.get_backend_field("a") == "a"
