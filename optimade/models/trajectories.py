@@ -422,7 +422,7 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
     )
     _storage_path: Optional[str] = OptimadeField(
         None,
-        description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
+        description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because it is only used internally.
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )

@@ -361,7 +361,8 @@ def handle_response_fields(
                     # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
                     else:
                         path = getattr(one_doc.attributes, "_storage_path", None)
-                        if path is None:
+                        # Somehow when the value of _storage_path is not set or set to None, getattr returns an object of the type 'StrictFieldInfo' instead of None.
+                        if path is None or not isinstance(path, str):
                             raise InternalServerError(
                                 f"The property{field} is supposed to be stored in a file yet no filepath is specified in _storage_path."
                             )
@@ -386,13 +387,11 @@ def handle_response_fields(
         return new_results, traj_trunc, last_frame
 
 
-def get_values_from_file(
-    field: str, path_str: str, new_entry: Dict, storage_method: str
-):
+def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method: str):
 
-    # This is still a bit ugly but someway I need to access an hdf5 file for the demo server.
-    if path_str[0] != "/":
-        path = str(Path(__file__).parent.parent / "data" / path_str)
+    # This is still a bit ugly but someway I need to access an hdf5 file for the demo server where I do only know the relative path.
+    if path[0] not in ["/", "~", "."]:
+        path = str(Path(__file__).parent.parent / "data" / path)
 
     frame_serialization_format = new_entry["attributes"][field][
         "frame_serialization_format"
