@@ -116,6 +116,10 @@ class OptimadeClientProgress(Progress):
             refresh_per_second=10,
         )
 
+    def print(self, *args, **kwargs):
+        if not self.disable:
+            super().print(*args, **kwargs)
+
 
 @contextmanager
 def silent_raise():
