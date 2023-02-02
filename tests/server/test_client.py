@@ -1,8 +1,10 @@
 import json
 from pathlib import Path
 
+import httpx
 import pytest
 
+from optimade.client.cli import _get
 from optimade.warnings import MissingExpectedField
 
 try:
@@ -177,10 +179,6 @@ def test_client_sort(async_http_client, http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [True, False])
 def test_command_line_client(async_http_client, http_client, use_async, capsys):
-    import httpx
-
-    from optimade.client.cli import _get
-
     args = dict(
         use_async=use_async,
         filter=['elements HAS "Ag"'],
@@ -190,6 +188,7 @@ def test_command_line_client(async_http_client, http_client, use_async, capsys):
         count=False,
         response_fields=None,
         sort=None,
+        silent=False,
         endpoint="structures",
         pretty_print=False,
         include_providers=None,
@@ -211,8 +210,64 @@ def test_command_line_client(async_http_client, http_client, use_async, capsys):
         assert len(results["structures"]['elements HAS "Ag"'][url]["errors"]) == 0
         assert len(results["structures"]['elements HAS "Ag"'][url]["meta"]) > 0
 
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_command_line_client_silent(async_http_client, http_client, use_async, capsys):
+    args = dict(
+        use_async=use_async,
+        filter=['elements HAS "Ag"'],
+        base_url=TEST_URLS,
+        max_results_per_provider=100,
+        output_file=None,
+        count=False,
+        response_fields=None,
+        sort=None,
+        silent=True,
+        endpoint="structures",
+        pretty_print=False,
+        include_providers=None,
+        exclude_providers=None,
+        exclude_databases=None,
+        http_client=async_http_client if use_async else http_client,
+        http_timeout=httpx.Timeout(2.0),
+    )
+
+    # Test silent mode
+    _get(**args)
+    captured = capsys.readouterr()
+    assert 'Performing query structures/?filter=elements HAS "Ag"' not in captured.err
+    results = json.loads(captured.out)
+    for url in TEST_URLS:
+        assert len(results["structures"]['elements HAS "Ag"'][url]["data"]) == 11
+        assert len(results["structures"]['elements HAS "Ag"'][url]["included"]) == 2
+        assert len(results["structures"]['elements HAS "Ag"'][url]["links"]) == 2
+        assert len(results["structures"]['elements HAS "Ag"'][url]["errors"]) == 0
+        assert len(results["structures"]['elements HAS "Ag"'][url]["meta"]) > 0
+
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_command_line_client_multi_provider(
+    async_http_client, http_client, use_async, capsys
+):
     # Test multi-provider count
-    args["count"] = True
+    args = dict(
+        count=True,
+        use_async=use_async,
+        filter=['elements HAS "Ag"'],
+        base_url=TEST_URLS,
+        max_results_per_provider=100,
+        output_file=None,
+        response_fields=None,
+        sort=None,
+        silent=False,
+        endpoint="structures",
+        pretty_print=False,
+        include_providers=None,
+        exclude_providers=None,
+        exclude_databases=None,
+        http_client=async_http_client if use_async else http_client,
+        http_timeout=httpx.Timeout(2.0),
+    )
     _get(**args)
     captured = capsys.readouterr()
     assert 'Counting results for structures/?filter=elements HAS "Ag"' in captured.err
@@ -221,7 +276,30 @@ def test_command_line_client(async_http_client, http_client, use_async, capsys):
         assert results["structures"]['elements HAS "Ag"'][url] == 11
     args["count"] = False
 
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_command_line_client_write_to_file(
+    async_http_client, http_client, use_async, capsys
+):
     # Test writing to file
+    args = dict(
+        use_async=use_async,
+        filter=['elements HAS "Ag"'],
+        base_url=TEST_URLS,
+        max_results_per_provider=100,
+        output_file=None,
+        count=False,
+        response_fields=None,
+        sort=None,
+        silent=False,
+        endpoint="structures",
+        pretty_print=False,
+        include_providers=None,
+        exclude_providers=None,
+        exclude_databases=None,
+        http_client=async_http_client if use_async else http_client,
+        http_timeout=httpx.Timeout(2.0),
+    )
     test_filename = "test-optimade-client.json"
     if Path(test_filename).is_file():
         Path(test_filename).unlink()
