@@ -138,7 +138,6 @@ def test_meta_schema_value_obeys_index(client, index_client, server: str):
     }
 
     for version in BASE_URL_PREFIXES.values():
-
         # Mimic the effect of the relevant server's startup
         CONFIG.is_index = server == "index"
         response = clients[server].get(url=version + "/links")

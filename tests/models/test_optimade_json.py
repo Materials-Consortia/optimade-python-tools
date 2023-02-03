@@ -112,7 +112,6 @@ def test_good_prefixes(prefix):
     ("Example", "_exmpl", "123_exmpl", "", "example provider", "exampleProvider"),
 )
 def test_bad_prefixes(prefix):
-
     provider = {
         "name": "Example",
         "description": "example",
