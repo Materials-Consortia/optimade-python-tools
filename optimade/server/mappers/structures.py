@@ -5,7 +5,6 @@ __all__ = ("StructureMapper",)
 
 
 class StructureMapper(BaseResourceMapper):
-
     LENGTH_ALIASES = (
         ("elements", "nelements"),
         ("element_ratios", "nelements"),

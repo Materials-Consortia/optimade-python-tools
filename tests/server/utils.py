@@ -55,7 +55,6 @@ class OptimadeTestClient(TestClient):
         url: httpx._types.URLTypes,
         **kwargs,
     ) -> httpx.Response:
-
         url = str(url)
         if (
             re.match(r"/?v[0-9](.[0-9]){0,2}/", url) is None
@@ -191,7 +190,6 @@ def client_factory():
         server_module.add_optional_versioned_base_urls(app)
 
         if add_empty_endpoint:
-
             from fastapi import APIRouter
             from fastapi.responses import PlainTextResponse
             from starlette.routing import Route

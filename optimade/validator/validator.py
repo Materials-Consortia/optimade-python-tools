@@ -426,7 +426,6 @@ class ImplementationValidator:
 
     @test_case
     def _test_unknown_provider_property(self, endp):
-
         dummy_provider_field = "_crazyprovider_field"
 
         request = f"{endp}?filter={dummy_provider_field}=2"

@@ -5,5 +5,4 @@ __all__ = ("ReferenceMapper",)
 
 
 class ReferenceMapper(BaseResourceMapper):
-
     ENTRY_RESOURCE_CLASS = ReferenceResource

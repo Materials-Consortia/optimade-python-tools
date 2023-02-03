@@ -121,7 +121,6 @@ def _get(
     exclude_databases,
     **kwargs,
 ):
-
     if output_file:
         output_file_path = pathlib.Path(output_file)
         try:
