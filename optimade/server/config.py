@@ -314,8 +314,8 @@ class ServerConfig(BaseSettings):
         ["json"],
         description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
     )
-    max_response_size: Dict[SupportedResponseFormats, int] = Field(
-        {"json": 10},
+    max_response_size: Optional[Dict[SupportedResponseFormats, int]] = Field(
+        {"json": 10, "hdf5": 40},
         description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
     )
 
