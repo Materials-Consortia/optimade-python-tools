@@ -1,5 +1,4 @@
 {
-    "config_file": "~/.optimade.json",
     "debug": false,
     "insert_test_data": true,
     "mongo_database": "optimade",
@@ -29,5 +28,6 @@
     "length_aliases": {},
     "index_links_path": "./optimade/server/index_links.json",
     "log_level": "info",
-    "log_dir": "/var/log/optimade/"
+    "log_dir": "/var/log/optimade/",
+    "validate_query_parameters": true
 }
