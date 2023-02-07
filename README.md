@@ -30,6 +30,7 @@ OPTIMADE Python tools
   </td>
   <td align="center">
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/Materials-Consortia/optimade-python-tools/ci.yml?logo=github"></a><br>
+    <a href="https://optimade.org/optimade-python-tools"><img alt="Docs" src="https://img.shields.io/github/actions/workflow/status/Materials-Consortia/optimade-python-tools/ci_cd_updated_master.yml?label=docs&logo=github"></a><br>
     <a href="https://codecov.io/gh/Materials-Consortia/optimade-python-tools"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/Materials-Consortia/optimade-python-tools?logo=codecov&logoColor=white&token=UJAtmqkZZO"></a><br>
   </td>
   <td align="center">
