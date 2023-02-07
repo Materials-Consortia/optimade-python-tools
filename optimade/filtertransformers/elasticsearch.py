@@ -349,7 +349,6 @@ class ElasticTransformer(BaseTransformer):
             op = "="
 
         def query(quantity):
-
             # This is only the case if quantity is an "other" provider's field,
             # in which case, we should treat it as unknown and try to do a null query
             if isinstance(quantity, str):

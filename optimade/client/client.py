@@ -603,7 +603,6 @@ class OptimadeClient:
         try:
             async with self.__http_client(headers=self.headers) as client:
                 while next_url:
-
                     attempts = 0
                     try:
                         r = await client.get(
@@ -661,7 +660,6 @@ class OptimadeClient:
         try:
             with self.__http_client(headers=self.headers) as client:
                 while next_url:
-
                     attempts = 0
                     try:
                         r = client.get(

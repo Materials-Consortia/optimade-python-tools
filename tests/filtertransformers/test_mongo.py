@@ -595,7 +595,6 @@ class TestMongoTransformer:
         }
 
     def test_mongo_special_id(self, mapper):
-
         from bson import ObjectId
 
         from optimade.filtertransformers.mongo import MongoTransformer

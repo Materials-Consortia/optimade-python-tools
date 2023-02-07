@@ -20,7 +20,6 @@ TEST_URL = TEST_URLS[0]
 
 @pytest.mark.parametrize("use_async", [False])
 def test_client_endpoints(http_client, use_async):
-
     filter = ""
 
     cli = OptimadeClient(

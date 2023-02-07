@@ -6,7 +6,6 @@ def test_quantity_builder(mapper):
         pass
 
     class AwkwardMapper(mapper("StructureMapper")):
-
         ALIASES = (("elements", "my_elements"), ("nelements", "nelem"))
         LENGTH_ALIASES = (
             ("chemsys", "nelements"),

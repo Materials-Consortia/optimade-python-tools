@@ -108,7 +108,6 @@ def test_handling_prefixed_query_param(check_response):
 
 
 def test_unsupported_optimade_query_param(check_response):
-
     request = "/structures?filter=elements LENGTH >= 9&page_below=1"
     expected_ids = ["mpf_3819"]
     expected_warnings = [
