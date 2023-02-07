@@ -35,7 +35,7 @@ ase_deps = ["ase~=3.22"]
 cif_deps = ["numpy>=1.23"]
 pdb_deps = cif_deps
 pymatgen_deps = ["pymatgen~=2022.7"]
-jarvis_deps = ["jarvis-tools==2022.12.11"]
+jarvis_deps = ["jarvis-tools==2023.1.8"]
 client_deps = cif_deps
 
 # General
@@ -44,7 +44,7 @@ docs_deps = [
     "mkdocs~=1.4",
     "mkdocs-awesome-pages-plugin~=2.8",
     "mkdocs-material~=9.0",
-    "mkdocstrings[python-legacy]~=0.19.0",
+    "mkdocstrings[python-legacy]~=0.20",
 ]
 testing_deps = [
     "build~=0.9.0",
@@ -57,11 +57,11 @@ dev_deps = (
     [
         "black~=22.10",
         "flake8~=6.0",
-        "isort~=5.10",
+        "isort~=5.12",
         "mypy~=0.991",
         "pylint~=2.15",
-        "pre-commit~=2.20",
-        "invoke~=1.7",
+        "pre-commit~=3.0",
+        "invoke~=2.0",
         "types-all==1.0.0",
     ]
     + docs_deps

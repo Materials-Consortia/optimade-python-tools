@@ -58,7 +58,6 @@ def test_compatible_strict_optimade_field():
         )
 
     class CorrectModelWithOptimadeField(BaseModel):
-
         good_field: List[str] = OptimadeField(
             ...,
             # Only difference here is that OptimadeField allows case-insensitive

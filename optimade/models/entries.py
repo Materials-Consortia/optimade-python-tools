@@ -155,7 +155,6 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
 
 
 class EntryInfoProperty(BaseModel):
-
     description: str = StrictField(
         ..., description="A human-readable description of the entry property"
     )
@@ -185,7 +184,6 @@ E.g., for the entry resource `structures`, the `species` property is defined as 
 
 
 class EntryInfoResource(BaseModel):
-
     formats: List[str] = StrictField(
         ..., description="List of output formats available for this type of entry."
     )

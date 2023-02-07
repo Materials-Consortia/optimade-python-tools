@@ -5,7 +5,6 @@ __all__ = ("LinksMapper",)
 
 
 class LinksMapper(BaseResourceMapper):
-
     ENTRY_RESOURCE_CLASS = LinksResource
 
     @classmethod
