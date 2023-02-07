@@ -11,7 +11,7 @@ OPTIMADE Python tools
 
 <div align="center">
 
-<a href="https://doi.org/10.21105/joss.03458"><img alt="JOSS DOI" src="https://joss.theoj.org/papers/10.21105/joss.03458/status.svg"></a>
+<a href="https://doi.org/10.21105/joss.03458"><img alt="JOSS DOI" src="https://img.shields.io/badge/JOSS-10.21105%2Fjoss.03458-blueviolet"></a>
 </div>
 
 <div align="center">
