@@ -32,9 +32,9 @@ http_client_deps = [
     "click~=8.1",
 ]
 ase_deps = ["ase~=3.22"]
-cif_deps = ["numpy>=1.23"]
+cif_deps = ["numpy>=1.20"]
 pdb_deps = cif_deps
-pymatgen_deps = ["pymatgen~=2022.7"]
+pymatgen_deps = ["pymatgen>=2022"]
 jarvis_deps = ["jarvis-tools==2023.1.8"]
 client_deps = cif_deps
 
