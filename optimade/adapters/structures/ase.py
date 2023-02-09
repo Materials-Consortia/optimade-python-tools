@@ -10,10 +10,15 @@ For more information on the ASE code see [their documentation](https://wiki.fysi
 from typing import Dict
 
 from optimade.adapters.exceptions import ConversionError
-from optimade.adapters.structures.utils import species_from_species_at_sites
+from optimade.adapters.structures.utils import (
+    elements_ratios_from_species_at_sites,
+    species_from_species_at_sites,
+)
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureFeatures
 from optimade.models import StructureResource as OptimadeStructure
+from optimade.models.structures import StructureResourceAttributes
+from optimade.models.utils import anonymize_formula, reduce_formula
 
 try:
     from ase import Atom, Atoms
@@ -26,7 +31,7 @@ except (ImportError, ModuleNotFoundError):
     ASE_NOT_FOUND = "ASE not found, cannot convert structure to an ASE Atoms"
 
 
-__all__ = ("get_ase_atoms",)
+__all__ = ("get_ase_atoms", "from_ase_atoms")
 
 
 def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
@@ -85,3 +90,52 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
     return Atoms(
         symbols=atoms, cell=attributes.lattice_vectors, pbc=attributes.dimension_types
     )
+
+
+def from_ase_atoms(atoms: Atoms) -> StructureResourceAttributes:
+    """Convert an ASE `Atoms` object into an OPTIMADE `StructureResourceAttributes` model.
+
+    Parameters:
+        atoms: The ASE `Atoms` object to convert.
+
+    Returns:
+        An OPTIMADE `StructureResourceAttributes` model, which can be converted to a raw Python
+            dictionary with `.dict()` or to JSON with `.json()`.
+
+    """
+    if not isinstance(atoms, Atoms):
+        raise RuntimeError(
+            f"Cannot convert type {type(atoms)} into an OPTIMADE `StructureResourceAttributes` model."
+        )
+
+    attributes = {}
+    attributes["cartesian_site_positions"] = atoms.positions.tolist()
+    attributes["lattice_vectors"] = atoms.cell.tolist()
+    attributes["species_at_sites"] = atoms.get_chemical_symbols()
+    attributes["elements_ratios"] = elements_ratios_from_species_at_sites(
+        attributes["species_at_sites"]
+    )
+    attributes["species"] = species_from_species_at_sites(
+        attributes["species_at_sites"]
+    )
+    attributes["dimension_types"] = [int(_) for _ in atoms.pbc.tolist()]
+    attributes["nperiodic_dimensions"] = sum(attributes["dimension_types"])
+    attributes["nelements"] = len(attributes["species"])
+    attributes["elements"] = sorted([_.name for _ in attributes["species"]])
+    attributes["nsites"] = len(attributes["species_at_sites"])
+
+    attributes["chemical_formula_descriptive"] = atoms.get_chemical_formula()
+    attributes["chemical_formula_reduced"] = reduce_formula(
+        atoms.get_chemical_formula()
+    )
+    attributes["chemical_formula_anonymous"] = anonymize_formula(
+        attributes["chemical_formula_reduced"],
+    )
+    attributes["last_modified"] = None
+    attributes["immutable_id"] = None
+    attributes["structure_features"] = []
+
+    for key in atoms.info:
+        attributes[f"_ase_{key}".lower()] = atoms.info[key]
+
+    return StructureResourceAttributes(**attributes)
