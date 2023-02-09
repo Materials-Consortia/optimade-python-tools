@@ -116,6 +116,35 @@ class EntryAdapter:
 
         return self._converted[format]
 
+    @classmethod
+    def ingest_from(cls, data: Any, format: str) -> Any:
+        """Convert desired format to OPTIMADE format.
+
+        Parameters:
+            data (Any): The data to convert.
+            format (str): Type or format to which the entry should be converted.
+
+        Raises:
+            AttributeError: If `format` can not be found in `_type_ingesters`.
+
+        Returns:
+            The ingested Structure.
+
+        """
+        if format not in cls._type_ingesters:
+            raise AttributeError(
+                f"Non-valid entry type to ingest from: {format}\n"
+                f"Valid entry types: {tuple(cls._type_ingesters.keys())}"
+            )
+
+        return cls(
+            {
+                "attributes": cls._type_ingesters[format](data).dict(),
+                "id": "",
+                "type": "structures",
+            }
+        )
+
     @staticmethod
     def _get_model_attributes(
         starting_instances: Union[Tuple[BaseModel, ...], List[BaseModel]], name: str
