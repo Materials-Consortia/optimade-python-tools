@@ -1,10 +1,7 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
-import math
 import re
-import sys
 import warnings
 from enum import Enum, IntEnum
-from functools import reduce
 from typing import List, Optional, Union
 
 from pydantic import BaseModel, conlist, root_validator, validator
@@ -18,6 +15,7 @@ from optimade.models.utils import (
     OptimadeField,
     StrictField,
     SupportLevel,
+    reduce_formula,
 )
 from optimade.warnings import MissingExpectedField
 
@@ -895,18 +893,10 @@ The properties of the species are found in the property `species`.
         if value is None:
             return value
 
-        numbers = [n.strip() or 1 for n in re.split(r"[A-Z][a-z]*", value)]
-        # Need to remove leading 1 from split and convert to ints
-        numbers = [int(n) for n in numbers[1:]]
-
-        if sys.version_info[1] >= 9:
-            gcd = math.gcd(*numbers)
-        else:
-            gcd = reduce(math.gcd, numbers)
-
-        if gcd != 1:
+        reduced_formula = reduce_formula(value)
+        if reduced_formula != value:
             raise ValueError(
-                f"{field.name} {value!r} is not properly reduced: greatest common divisor was {gcd}, expected 1."
+                f"{field.name} {value!r} is not properly reduced: expected {reduced_formula!r}."
             )
 
         return value

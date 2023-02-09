@@ -1,9 +1,11 @@
 import inspect
 import itertools
+import math
 import re
 import warnings
 from enum import Enum
-from typing import TYPE_CHECKING, Optional
+from functools import reduce
+from typing import TYPE_CHECKING, List, Optional
 
 from pydantic import Field
 from pydantic.fields import FieldInfo
@@ -226,6 +228,63 @@ def anonymous_element_generator():
             s = list(s)
             s[0] = s[0].upper()
             yield "".join(s)
+
+
+def _reduce_or_anonymize_formula(
+    formula: str, alphabetize: bool = True, anonymize: bool = False
+) -> str:
+    """Takes an input formula, reduces it and either alphabetizes or anonymizes it."""
+    import re
+    import sys
+
+    numbers: List[int] = [
+        int(n.strip() or 1) for n in re.split(r"[A-Z][a-z]*", formula)[1:]
+    ]
+    # Need to remove leading 1 from split and convert to ints
+
+    species = re.findall("[A-Z][a-z]*", formula)
+
+    if sys.version_info[1] >= 9:
+        gcd = math.gcd(*numbers)
+    else:
+        gcd = reduce(math.gcd, numbers)
+
+    if not len(species) == len(numbers):
+        raise ValueError(f"Something is wrong with the input formula: {formula}")
+
+    numbers = [n // gcd for n in numbers]
+
+    if anonymize:
+        numbers = sorted(numbers, reverse=True)
+        species = [s for _, s in zip(numbers, anonymous_element_generator())]
+
+    elif alphabetize:
+        species, numbers = zip(*sorted(zip(species, numbers)))
+
+    return "".join(f"{s}{n if n != 1 else ''}" for n, s in zip(numbers, species))
+
+
+def anonymize_formula(formula: str) -> str:
+    """Takes a string representation of a chemical formula of the form `[A-Z][a-z]*[0-9]*` (potentially with whitespace) and
+    returns the OPTIMADE `chemical_formula_anonymous` representation, i.e., a reduced chemical formula comprising of element symbols
+    drawn from A, B, C... ordered from largest proportion to smallest.
+
+    Returns:
+        The anonymous chemical formula in the OPTIMADE representation.
+
+    """
+    return _reduce_or_anonymize_formula(formula, alphabetize=False, anonymize=True)
+
+
+def reduce_formula(formula: str) -> str:
+    """Takes a string representation of a chemical formula of the form `[A-Z][a-z]*[0-9]*` (potentially with whitespace) and
+    reduces it by the GCD of the proportion integers present in the formula, stripping any leftover "1" values.
+
+    Returns:
+        The reduced chemical formula in the OPTIMADE representation.
+
+    """
+    return _reduce_or_anonymize_formula(formula, alphabetize=True, anonymize=False)
 
 
 ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
