@@ -4,10 +4,12 @@ from optimade.adapters.base import EntryAdapter
 from optimade.models import StructureResource
 
 from .aiida import get_aiida_structure_data
+from .ase import Atoms as ASEAtoms
 from .ase import from_ase_atoms, get_ase_atoms
 from .cif import get_cif
 from .jarvis import get_jarvis_atoms
 from .proteindatabank import get_pdb, get_pdbx_mmcif
+from .pymatgen import Structure as PymatgenStructure
 from .pymatgen import from_pymatgen, get_pymatgen
 
 
@@ -56,4 +58,9 @@ class Structure(EntryAdapter):
     _type_ingesters: Dict[str, Callable] = {
         "pymatgen": from_pymatgen,
         "ase": from_ase_atoms,
+    }
+
+    _type_ingesters_by_type: Dict[str, Type] = {
+        "pymatgen": PymatgenStructure,
+        "ase": ASEAtoms,
     }

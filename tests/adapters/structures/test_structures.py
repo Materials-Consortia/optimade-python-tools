@@ -182,3 +182,39 @@ def test_two_way_conversion(RAW_STRUCTURES, format):
                     )
                 else:
                     assert reconverted_structure[k] == structure["attributes"][k]
+
+
+@pytest.mark.parametrize(
+    "format",
+    [k for k in Structure._type_ingesters.keys() if k in Structure._type_converters],
+)
+def test_two_way_conversion_with_implicit_type(RAW_STRUCTURES, format):
+    import numpy as np
+
+    lossy_keys = (
+        "chemical_formula_descriptive",
+        "chemical_formula_hill",
+        "last_modified",
+        "assemblies",
+        "attached",
+        "immutable_id",
+        "species",
+        "fractional_site_positions",
+    )
+    array_keys = ("cartesian_site_positions", "lattice_vectors")
+    for structure in RAW_STRUCTURES:
+        new_structure = Structure(structure)
+        converted_structure = new_structure.convert(format)
+        if converted_structure is None:
+            continue
+        reconverted_structure = Structure.ingest_from(
+            converted_structure, format=None
+        ).entry.dict()["attributes"]
+        for k in reconverted_structure:
+            if k not in lossy_keys:
+                if k in array_keys:
+                    np.testing.assert_almost_equal(
+                        reconverted_structure[k], structure["attributes"][k]
+                    )
+                else:
+                    assert reconverted_structure[k] == structure["attributes"][k]
