@@ -20,6 +20,8 @@ from optimade.models import StructureResource as OptimadeStructure
 from optimade.models.structures import StructureResourceAttributes
 from optimade.models.utils import anonymize_formula, reduce_formula
 
+EXTRA_FIELD_PREFIX = "ase"
+
 try:
     from ase import Atom, Atoms
 except (ImportError, ModuleNotFoundError):
@@ -87,8 +89,19 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
 
         atoms.append(Atom(symbol=species_name, position=site, mass=mass))
 
+    info = {}
+    for key in attributes.dict().keys():
+        if key.startswith("_"):
+            ase_key = key
+            if key.startswith(f"_{EXTRA_FIELD_PREFIX}_"):
+                ase_key = "".join(key.split(f"_{EXTRA_FIELD_PREFIX}_")[1:])
+            info[ase_key] = getattr(attributes, key)
+
     return Atoms(
-        symbols=atoms, cell=attributes.lattice_vectors, pbc=attributes.dimension_types
+        symbols=atoms,
+        cell=attributes.lattice_vectors,
+        pbc=attributes.dimension_types,
+        info=info if info else None,
     )
 
 
@@ -136,6 +149,9 @@ def from_ase_atoms(atoms: Atoms) -> StructureResourceAttributes:
     attributes["structure_features"] = []
 
     for key in atoms.info:
-        attributes[f"_ase_{key}".lower()] = atoms.info[key]
+        optimade_key = key.lower()
+        if not key.startswith(f"_{EXTRA_FIELD_PREFIX}"):
+            optimade_key = f"_{EXTRA_FIELD_PREFIX}_{optimade_key}"
+        attributes[optimade_key] = atoms.info[key]
 
     return StructureResourceAttributes(**attributes)
