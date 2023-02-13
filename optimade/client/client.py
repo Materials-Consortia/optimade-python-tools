@@ -316,7 +316,7 @@ class OptimadeClient:
                 endpoint,
                 page_limit=1,
                 paginate=False,
-                response_fields=None,
+                response_fields=[],
                 sort=None,
             )
             count_results = {}
@@ -776,8 +776,12 @@ class OptimadeClient:
 
         if filter:
             _filter = f"filter={filter}"
-        if response_fields:
-            _response_fields = f'response_fields={",".join(response_fields)}'
+        if response_fields is not None:
+            # If we have requested no response fields (e.g., in the case of --count) then just ask for IDs
+            if len(response_fields) == 0:
+                _response_fields = "response_fields=id"
+            else:
+                _response_fields = f'response_fields={",".join(response_fields)}'
         if page_limit:
             _page_limit = f"page_limit={page_limit}"
         if sort:
