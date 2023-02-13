@@ -76,7 +76,7 @@ class OptimadeClient:
     headers: Dict = {"User-Agent": f"optimade-python-tools/{__version__}"}
     """Additional HTTP headers."""
 
-    http_timeout: int
+    http_timeout: httpx.Timeout = httpx.Timeout(10.0, read=1000.0)
     """The timeout to use for each HTTP request."""
 
     max_attempts: int
@@ -106,7 +106,7 @@ class OptimadeClient:
         base_urls: Optional[Union[str, Iterable[str]]] = None,
         max_results_per_provider: int = 1000,
         headers: Optional[Dict] = None,
-        http_timeout: int = 10,
+        http_timeout: Optional[Union[httpx.Timeout, float]] = None,
         max_attempts: int = 5,
         use_async: bool = True,
         exclude_providers: Optional[List[str]] = None,
@@ -121,7 +121,9 @@ class OptimadeClient:
             max_results_per_provider: The maximum number of results to download
                 from each provider.
             headers: Any additional HTTP headers to use for the queries.
-            http_timeout: The HTTP timeout to use per request.
+            http_timeout: The timeout to use per request. Defaults to 10
+                seconds with 60 seconds for reads specifically. Overriding this value
+                will replace all timeouts (connect, read, write and pool) with this value.
             max_attempts: The maximum number of times to repeat a failing query.
             use_async: Whether or not to make all requests asynchronously.
             exclude_providers: A set or collection of provider IDs to exclude from queries.
@@ -165,7 +167,12 @@ class OptimadeClient:
         if headers:
             self.headers.update(headers)
 
-        self.http_timeout = http_timeout
+        if http_timeout:
+            if isinstance(http_timeout, httpx.Timeout):
+                self.http_timeout = http_timeout
+            else:
+                self.http_timeout = httpx.Timeout(http_timeout)
+
         self.max_attempts = max_attempts
 
         self.use_async = use_async
@@ -321,7 +328,7 @@ class OptimadeClient:
 
                 if count_results[base_url] is None:
                     self._progress.print(
-                        f"Warning: {base_url} did not return a value for `meta->data_returned`, unable to count results."
+                        f"Warning: {base_url} did not return a value for `meta->data_returned`, unable to count results. Full response: {results[base_url]}"
                     )
 
             self.count_results[endpoint][filter] = count_results
@@ -429,7 +436,9 @@ class OptimadeClient:
             )
         except (RuntimeError, httpx.TimeoutException, json.JSONDecodeError) as exc:
             error_query_results = QueryResults()
-            error_query_results.errors = [str(exc)]
+            error_query_results.errors = [
+                f"{exc.__class__.__name__}: {str(exc.args[0])}"
+            ]
             self._progress.print(
                 f"[red]Error[/red]: Provider {str(base_url)!r} returned: [red i]{exc}[/red i]"
             )
@@ -574,9 +583,11 @@ class OptimadeClient:
             Exception,
         ) as exc:
             error_query_results = QueryResults()
-            error_query_results.errors = [str(exc)]
+            error_query_results.errors = [
+                f"{exc.__class__.__name__}: {str(exc.args[0])}"
+            ]
             self._progress.print(
-                f"[red]Error[/red]: Provider {str(base_url)!r} returned: [red i]{exc}[/red i]"
+                f"[red]Error[/red]: Provider {str(base_url)!r} returned: [red i]{error_query_results.errors}[/red i]"
             )
             return {base_url: error_query_results}
 
