@@ -355,3 +355,14 @@ def species_from_species_at_sites(
         OptimadeStructureSpecies(name=_, concentration=[1.0], chemical_symbols=[_])
         for _ in set(species_at_sites)
     ]
+
+
+def elements_ratios_from_species_at_sites(species_at_sites: List[str]) -> List[float]:
+    """Compute the OPTIMADE `elements_ratios` field from `species_at_sites` in the case where `species_at_sites` refers
+    to sites wholly occupied by the given elements, e.g., not arbitrary species labels or with partial/mixed occupancy.
+
+    """
+    elements = set(species_at_sites)
+    counts = {e: species_at_sites.count(e) for e in elements}
+    num_sites = len(species_at_sites)
+    return [counts[e] / num_sites for e in sorted(elements)]
