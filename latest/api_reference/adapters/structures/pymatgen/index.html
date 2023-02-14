@@ -1953,7 +1953,6 @@ to a pymatgen <code>Molecule</code> or <code>Structure</code> object.</p>
 
 
 
-
   <div class="doc doc-object doc-function">
 
 
@@ -2035,14 +2034,14 @@ to a pymatgen <code>Molecule</code> or <code>Structure</code> object.</p>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;dimension_types&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pmg_structure</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">pbc</span><span class="p">]</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;nperiodic_dimensions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;dimension_types&quot;</span><span class="p">])</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;nelements&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pmg_structure</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_anonymous&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_pymatgen_anonymized_formula_to_optimade</span><span class="p">(</span>
-        <span class="n">pmg_structure</span><span class="o">.</span><span class="n">composition</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_anonymous&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">anonymize_formula</span><span class="p">(</span>
+        <span class="n">pmg_structure</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">formula</span>
     <span class="p">)</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;elements&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
         <span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pmg_structure</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">elements</span><span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_reduced&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_pymatgen_reduced_formula_to_optimade</span><span class="p">(</span>
-        <span class="n">pmg_structure</span><span class="o">.</span><span class="n">composition</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_reduced&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduce_formula</span><span class="p">(</span>
+        <span class="n">pmg_structure</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">formula</span>
     <span class="p">)</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_descriptive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pmg_structure</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">formula</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;elements_ratios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>

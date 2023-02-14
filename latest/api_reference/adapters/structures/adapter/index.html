@@ -2072,6 +2072,12 @@ model.</p></td>
 
     <span class="n">_type_ingesters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;pymatgen&quot;</span><span class="p">:</span> <span class="n">from_pymatgen</span><span class="p">,</span>
+        <span class="s2">&quot;ase&quot;</span><span class="p">:</span> <span class="n">from_ase_atoms</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">_type_ingesters_by_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;pymatgen&quot;</span><span class="p">:</span> <span class="n">PymatgenStructure</span><span class="p">,</span>
+        <span class="s2">&quot;ase&quot;</span><span class="p">:</span> <span class="n">ASEAtoms</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div>
         </details>

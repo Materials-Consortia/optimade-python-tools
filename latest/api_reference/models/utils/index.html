@@ -1471,8 +1471,22 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.models.utils.anonymize_formula" class="md-nav__link">
+    anonymize_formula()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.models.utils.anonymous_element_generator" class="md-nav__link">
     anonymous_element_generator()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.utils.reduce_formula" class="md-nav__link">
+    reduce_formula()
   </a>
   
 </li>
@@ -2302,8 +2316,22 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.models.utils.anonymize_formula" class="md-nav__link">
+    anonymize_formula()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.models.utils.anonymous_element_generator" class="md-nav__link">
     anonymous_element_generator()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.models.utils.reduce_formula" class="md-nav__link">
+    reduce_formula()
   </a>
   
 </li>
@@ -3093,7 +3121,7 @@ of this field.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7f261c16a190&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7fa34fbce190&gt;</code></td>
       <td><p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" href="#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p></td>
     </tr>
   </tbody>
@@ -3326,6 +3354,57 @@ the pydantic <code>FieldInfo</code>.</p>
 
 
 
+<h2 id="optimade.models.utils.anonymize_formula" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">anonymize_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span></code>
+
+
+<a href="#optimade.models.utils.anonymize_formula" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Takes a string representation of a chemical formula of the form <code>[A-Z][a-z]*[0-9]*</code> (potentially with whitespace) and
+returns the OPTIMADE <code>chemical_formula_anonymous</code> representation, i.e., a reduced chemical formula comprising of element symbols
+drawn from A, B, C... ordered from largest proportion to smallest.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>The anonymous chemical formula in the OPTIMADE representation.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">anonymize_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes a string representation of a chemical formula of the form `[A-Z][a-z]*[0-9]*` (potentially with whitespace) and</span>
+<span class="sd">    returns the OPTIMADE `chemical_formula_anonymous` representation, i.e., a reduced chemical formula comprising of element symbols</span>
+<span class="sd">    drawn from A, B, C... ordered from largest proportion to smallest.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The anonymous chemical formula in the OPTIMADE representation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_reduce_or_anonymize_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">alphabetize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">anonymize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="optimade.models.utils.anonymous_element_generator" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">anonymous_element_generator</span><span class="p">()</span></code>
 
@@ -3347,6 +3426,55 @@ the pydantic <code>FieldInfo</code>.</p>
             <span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
             <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
             <span class="k">yield</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade.models.utils.reduce_formula" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">reduce_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span></code>
+
+
+<a href="#optimade.models.utils.reduce_formula" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Takes a string representation of a chemical formula of the form <code>[A-Z][a-z]*[0-9]*</code> (potentially with whitespace) and
+reduces it by the GCD of the proportion integers present in the formula, stripping any leftover "1" values.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>The reduced chemical formula in the OPTIMADE representation.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/models/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">reduce_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes a string representation of a chemical formula of the form `[A-Z][a-z]*[0-9]*` (potentially with whitespace) and</span>
+<span class="sd">    reduces it by the GCD of the proportion integers present in the formula, stripping any leftover &quot;1&quot; values.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The reduced chemical formula in the OPTIMADE representation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_reduce_or_anonymize_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">,</span> <span class="n">alphabetize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">anonymize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

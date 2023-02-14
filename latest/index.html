@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#documentation" class="md-skip">
+        <a href="#optimade-python-tools" class="md-skip">
           Skip to content
         </a>
       
@@ -224,6 +224,8 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Home
@@ -239,6 +241,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -1889,6 +1893,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1954,18 +1960,13 @@
 
 
 
-  <h1>Home</h1>
-
 <!-- markdownlint-disable MD033 -->
 <!-- markdownlint-disable-next-line MD041 -->
 <div align="center" style="padding-bottom: 1em;">
 <img width="100px" align="center" src="https://matsci.org/uploads/default/original/2X/b/bd2f59b3bf14fb046b74538750699d7da4c19ac1.svg">
 </div>
 
-<h1 align="center">
-OPTIMADE Python tools
-</h1>
-
+<h1 id="optimade-python-tools"><div align="center">OPTIMADE Python tools</div><a class="headerlink" href="#optimade-python-tools" title="Permanent link">&para;</a></h1>
 <div align="center">
 
 <a href="https://doi.org/10.21105/joss.03458"><img alt="JOSS DOI" src="https://img.shields.io/badge/JOSS-10.21105%2Fjoss.03458-blueviolet"></a>
@@ -2006,6 +2007,7 @@ This is to enable interoperability among databases that serve crystal structures
 <p>This repository contains a library of tools for implementing and consuming <a href="https://www.optimade.org">OPTIMADE APIs</a> using Python:</p>
 <ol>
 <li><a href="https://github.com/pydantic/pydantic">pydantic</a> data models for all <a href="https://www.optimade.org/optimade-python-tools/latest/all_models/">OPTIMADE entry types</a> and endpoint responses, and a <a href="https://github.com/lark-parser/lark">Lark</a> <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF grammar</a> implementation for the OPTIMADE filter language.</li>
+<li>Adapters to map OPTIMADE data to and from many commonly used atomistic Python frameworks (e.g., <a href="https://pymatgen.org/">pymatgen</a>, <a href="https://wiki.fysik.dtu.dk/ase/">ASE</a>) and crystallographic file types (e.g., <a href="https://www.iucr.org/resources/cif">CIF</a>), using the <code>optimade.adapters</code> module.</li>
 <li>A configurable reference server implementation that can make use of either MongoDB or Elasticsearch database backends out-of-the-box, and is readily extensible to other backends. Try it out on the <a href="https://optimade.fly.dev">demo site</a>! The OpenAPI schemas of the server are used to construct the <a href="https://schemas.optimade.org/">OPTIMADE schemas</a> site.</li>
 <li>An <a href="https://www.optimade.org/optimade-python-tools/latest/getting_started/client/">OPTIMADE client</a> (<code>optimade-get</code>) that can query multiple <a href="https://optimade.org/providers-dashboard">OPTIMADE providers</a> concurrently with a given filter, at the command-line or from Python code.</li>
 <li>A fuzzy API validator tool, which may be called from the shell (<code>optimade-validator</code>) or used as a GitHub Action from <a href="https://github.com/Materials-Consortia/optimade-validator-action">optimade-validator-action</a>; this validator is used to construct the <a href="https://optimade.org/providers-dashboard">providers dashboard</a>.</li>

@@ -899,6 +899,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.adapters.structures.utils.elements_ratios_from_species_at_sites" class="md-nav__link">
+    elements_ratios_from_species_at_sites()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.adapters.structures.utils.fractional_coordinates" class="md-nav__link">
     fractional_coordinates()
   </a>
@@ -1946,6 +1953,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.adapters.structures.utils.elements_ratios_from_species_at_sites" class="md-nav__link">
+    elements_ratios_from_species_at_sites()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.adapters.structures.utils.fractional_coordinates" class="md-nav__link">
     fractional_coordinates()
   </a>
@@ -2328,6 +2342,40 @@ plane.</p>
     <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abc</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">cell</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade.adapters.structures.utils.elements_ratios_from_species_at_sites" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">elements_ratios_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span></code>
+
+
+<a href="#optimade.adapters.structures.utils.elements_ratios_from_species_at_sites" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Compute the OPTIMADE <code>elements_ratios</code> field from <code>species_at_sites</code> in the case where <code>species_at_sites</code> refers
+to sites wholly occupied by the given elements, e.g., not arbitrary species labels or with partial/mixed occupancy.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">elements_ratios_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the OPTIMADE `elements_ratios` field from `species_at_sites` in the case where `species_at_sites` refers</span>
+<span class="sd">    to sites wholly occupied by the given elements, e.g., not arbitrary species labels or with partial/mixed occupancy.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">elements</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="p">:</span> <span class="n">species_at_sites</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">}</span>
+    <span class="n">num_sites</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">counts</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">/</span> <span class="n">num_sites</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">elements</span><span class="p">)]</span>
 </code></pre></div>
         </details>
     </div>

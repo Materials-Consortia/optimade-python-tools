@@ -696,6 +696,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#optimade.adapters.base.EntryAdapter.ingest_from" class="md-nav__link">
+    ingest_from()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1971,6 +1978,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#optimade.adapters.base.EntryAdapter.ingest_from" class="md-nav__link">
+    ingest_from()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2062,6 +2076,17 @@ EntryAdapter        </code>
         <td><p>Dictionary of valid conversion types for entry.</p></td>
       </tr>
       <tr>
+        <td><code>_type_ingesters</code></td>
+        <td><code>Dict[str, Callable]</code></td>
+        <td><p>Dictionary of valid ingestion types mapped to ingestion functions.</p></td>
+      </tr>
+      <tr>
+        <td><code>_type_ingesters_by_type</code></td>
+        <td><code>Dict[str, Type]</code></td>
+        <td><p>Dictionary mapping the keys of <code>_type_ingesters</code> to data
+types that can be ingested.</p></td>
+      </tr>
+      <tr>
         <td><code>as_&lt;_type_converters&gt;</code></td>
         <td></td>
         <td><p>Convert entry to a type listed in <code>_type_converters</code>.</p></td>
@@ -2082,6 +2107,9 @@ EntryAdapter        </code>
 <span class="sd">    Attributes:</span>
 <span class="sd">        ENTRY_RESOURCE: Entry resource to store entry as.</span>
 <span class="sd">        _type_converters: Dictionary of valid conversion types for entry.</span>
+<span class="sd">        _type_ingesters: Dictionary of valid ingestion types mapped to ingestion functions.</span>
+<span class="sd">        _type_ingesters_by_type: Dictionary mapping the keys of `_type_ingesters` to data</span>
+<span class="sd">            types that can be ingested.</span>
 <span class="sd">        as_&lt;_type_converters&gt;: Convert entry to a type listed in `_type_converters`.</span>
 <span class="sd">        from_&lt;_type_converters&gt;: Convert an external type to the corresponding OPTIMADE model.</span>
 
@@ -2090,6 +2118,7 @@ EntryAdapter        </code>
     <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
     <span class="n">_type_converters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">_type_ingesters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_type_ingesters_by_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2163,6 +2192,48 @@ EntryAdapter        </code>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">[</span><span class="nb">format</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="p">[</span><span class="nb">format</span><span class="p">]()</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">[</span><span class="nb">format</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">ingest_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert desired format to OPTIMADE format.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            data (Any): The data to convert.</span>
+<span class="sd">            format (str): Type or format to which the entry should be converted.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: If `format` can not be found in `_type_ingesters`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The ingested Structure.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">instance_type</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters_by_type</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">instance_type</span><span class="p">):</span>
+                    <span class="nb">format</span> <span class="o">=</span> <span class="n">key</span>
+                    <span class="k">break</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Non entry type to data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> from.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to ingest from: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">[</span><span class="nb">format</span><span class="p">](</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_model_attributes</span><span class="p">(</span>
@@ -2659,6 +2730,129 @@ See above for the description of the order in which an attribute is tested for v
             <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">[</span><span class="nb">format</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="p">[</span><span class="nb">format</span><span class="p">]()</span>
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">[</span><span class="nb">format</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.adapters.base.EntryAdapter.ingest_from" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">ingest_from</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#optimade.adapters.base.EntryAdapter.ingest_from" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert desired format to OPTIMADE format.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>Any</code></td>
+        <td><p>The data to convert.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>format</code></td>
+        <td><code>str</code></td>
+        <td><p>Type or format to which the entry should be converted.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>AttributeError</code></td>
+        <td><p>If <code>format</code> can not be found in <code>_type_ingesters</code>.</p></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Any</code></td>
+      <td><p>The ingested Structure.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/adapters/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">ingest_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert desired format to OPTIMADE format.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        data (Any): The data to convert.</span>
+<span class="sd">        format (str): Type or format to which the entry should be converted.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        AttributeError: If `format` can not be found in `_type_ingesters`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The ingested Structure.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">instance_type</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters_by_type</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">instance_type</span><span class="p">):</span>
+                <span class="nb">format</span> <span class="o">=</span> <span class="n">key</span>
+                <span class="k">break</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Non entry type to data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> from.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to ingest from: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">[</span><span class="nb">format</span><span class="p">](</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
