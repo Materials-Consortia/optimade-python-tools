@@ -122,7 +122,7 @@ class OptimadeClient:
                 from each provider.
             headers: Any additional HTTP headers to use for the queries.
             http_timeout: The timeout to use per request. Defaults to 10
-                seconds with 60 seconds for reads specifically. Overriding this value
+                seconds with 1000 seconds for reads specifically. Overriding this value
                 will replace all timeouts (connect, read, write and pool) with this value.
             max_attempts: The maximum number of times to repeat a failing query.
             use_async: Whether or not to make all requests asynchronously.
