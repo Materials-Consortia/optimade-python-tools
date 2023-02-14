@@ -116,3 +116,25 @@ def test_formula_regexp():
     for formula in bad_formulae:
         with pytest.raises(ValidationError):
             assert DummyModel(formula=formula)
+
+
+def test_reduce_formula():
+    from optimade.models.utils import reduce_formula
+
+    assert reduce_formula("Si1O2") == "O2Si"
+    assert reduce_formula("Si11O2") == "O2Si11"
+    assert reduce_formula("Si10O2C4") == "C2OSi5"
+    assert reduce_formula("Li1") == "Li"
+    assert reduce_formula("Li1Ge1") == "GeLi"
+
+
+def test_anonymize_formula():
+    from optimade.models.utils import anonymize_formula
+
+    assert anonymize_formula("Si1O2") == "A2B"
+    assert anonymize_formula("Si11O2") == "A11B2"
+    assert anonymize_formula("Si10O2C4") == "A5B2C"
+
+    assert anonymize_formula("Si1 O2") == "A2B"
+    assert anonymize_formula("Si11 O2") == "A11B2"
+    assert anonymize_formula("Si10 O2C4") == "A5B2C"
