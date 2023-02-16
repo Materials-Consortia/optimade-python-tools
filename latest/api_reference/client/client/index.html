@@ -981,6 +981,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.http_timeout" class="md-nav__link">
+    http_timeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.client.client.OptimadeClient.max_results_per_provider" class="md-nav__link">
     max_results_per_provider
   </a>
@@ -1993,6 +2000,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.http_timeout" class="md-nav__link">
+    http_timeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.client.client.OptimadeClient.max_results_per_provider" class="md-nav__link">
     max_results_per_provider
   </a>
@@ -2144,7 +2158,7 @@ and provider.</p>
     <span class="n">headers</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Additional HTTP headers.&quot;&quot;&quot;</span>
 
-    <span class="n">http_timeout</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">http_timeout</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The timeout to use for each HTTP request.&quot;&quot;&quot;</span>
 
     <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span>
@@ -2174,7 +2188,7 @@ and provider.</p>
         <span class="n">base_urls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_results_per_provider</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
         <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">http_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">http_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2189,7 +2203,9 @@ and provider.</p>
 <span class="sd">            max_results_per_provider: The maximum number of results to download</span>
 <span class="sd">                from each provider.</span>
 <span class="sd">            headers: Any additional HTTP headers to use for the queries.</span>
-<span class="sd">            http_timeout: The HTTP timeout to use per request.</span>
+<span class="sd">            http_timeout: The timeout to use per request. Defaults to 10</span>
+<span class="sd">                seconds with 1000 seconds for reads specifically. Overriding this value</span>
+<span class="sd">                will replace all timeouts (connect, read, write and pool) with this value.</span>
 <span class="sd">            max_attempts: The maximum number of times to repeat a failing query.</span>
 <span class="sd">            use_async: Whether or not to make all requests asynchronously.</span>
 <span class="sd">            exclude_providers: A set or collection of provider IDs to exclude from queries.</span>
@@ -2233,7 +2249,12 @@ and provider.</p>
         <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">http_timeout</span>
+        <span class="k">if</span> <span class="n">http_timeout</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">http_timeout</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
@@ -2377,7 +2398,7 @@ and provider.</p>
                 <span class="n">endpoint</span><span class="p">,</span>
                 <span class="n">page_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                 <span class="n">paginate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">response_fields</span><span class="o">=</span><span class="p">[],</span>
                 <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">count_results</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2389,7 +2410,7 @@ and provider.</p>
 
                 <span class="k">if</span> <span class="n">count_results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Warning: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> did not return a value for `meta-&gt;data_returned`, unable to count results.&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Warning: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> did not return a value for `meta-&gt;data_returned`, unable to count results. Full response: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">count_results</span><span class="p">[</span><span class="n">endpoint</span><span class="p">][</span><span class="nb">filter</span><span class="p">]</span> <span class="o">=</span> <span class="n">count_results</span>
@@ -2497,7 +2518,9 @@ and provider.</p>
             <span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">TimeoutException</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
-            <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)]</span>
+            <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
             <span class="p">)</span>
@@ -2642,9 +2665,11 @@ and provider.</p>
             <span class="ne">Exception</span><span class="p">,</span>
         <span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
-            <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)]</span>
+            <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
 
@@ -2833,8 +2858,12 @@ and provider.</p>
 
         <span class="k">if</span> <span class="nb">filter</span><span class="p">:</span>
             <span class="n">_filter</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;filter=</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">if</span> <span class="n">response_fields</span><span class="p">:</span>
-            <span class="n">_response_fields</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;response_fields=</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">response_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If we have requested no response fields (e.g., in the case of --count) then just ask for IDs</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">_response_fields</span> <span class="o">=</span> <span class="s2">&quot;response_fields=id&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_response_fields</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;response_fields=</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="k">if</span> <span class="n">page_limit</span><span class="p">:</span>
             <span class="n">_page_limit</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;page_limit=</span><span class="si">{</span><span class="n">page_limit</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
@@ -3022,6 +3051,25 @@ the number of results from each base URL for that particular filter.</p>
 
 
 
+<h3 id="optimade.client.client.OptimadeClient.http_timeout" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">http_timeout</span><span class="p">:</span> <span class="n">Timeout</span></code>
+
+
+<a href="#optimade.client.client.OptimadeClient.http_timeout" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The timeout to use for each HTTP request.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
 <h3 id="optimade.client.client.OptimadeClient.max_results_per_provider" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">max_results_per_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
 
@@ -3115,7 +3163,7 @@ original <code>__getattribute__</code>.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -3159,9 +3207,11 @@ from each provider.</p></td>
       </tr>
       <tr>
         <td><code>http_timeout</code></td>
-        <td><code>int</code></td>
-        <td><p>The HTTP timeout to use per request.</p></td>
-        <td><code>10</code></td>
+        <td><code>Union[httpx.Timeout, float]</code></td>
+        <td><p>The timeout to use per request. Defaults to 10
+seconds with 1000 seconds for reads specifically. Overriding this value
+will replace all timeouts (connect, read, write and pool) with this value.</p></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>max_attempts</code></td>
@@ -3208,7 +3258,7 @@ from each provider.</p></td>
     <span class="n">base_urls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">max_results_per_provider</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">http_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">http_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3223,7 +3273,9 @@ from each provider.</p></td>
 <span class="sd">        max_results_per_provider: The maximum number of results to download</span>
 <span class="sd">            from each provider.</span>
 <span class="sd">        headers: Any additional HTTP headers to use for the queries.</span>
-<span class="sd">        http_timeout: The HTTP timeout to use per request.</span>
+<span class="sd">        http_timeout: The timeout to use per request. Defaults to 10</span>
+<span class="sd">            seconds with 1000 seconds for reads specifically. Overriding this value</span>
+<span class="sd">            will replace all timeouts (connect, read, write and pool) with this value.</span>
 <span class="sd">        max_attempts: The maximum number of times to repeat a failing query.</span>
 <span class="sd">        use_async: Whether or not to make all requests asynchronously.</span>
 <span class="sd">        exclude_providers: A set or collection of provider IDs to exclude from queries.</span>
@@ -3267,7 +3319,12 @@ from each provider.</p></td>
     <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">http_timeout</span>
+    <span class="k">if</span> <span class="n">http_timeout</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">http_timeout</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">)</span>
+
     <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
@@ -3379,7 +3436,7 @@ key.</p>
             <span class="n">endpoint</span><span class="p">,</span>
             <span class="n">page_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">paginate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">response_fields</span><span class="o">=</span><span class="p">[],</span>
             <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">count_results</span> <span class="o">=</span> <span class="p">{}</span>
@@ -3391,7 +3448,7 @@ key.</p>
 
             <span class="k">if</span> <span class="n">count_results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Warning: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> did not return a value for `meta-&gt;data_returned`, unable to count results.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Warning: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> did not return a value for `meta-&gt;data_returned`, unable to count results. Full response: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">count_results</span><span class="p">[</span><span class="n">endpoint</span><span class="p">][</span><span class="nb">filter</span><span class="p">]</span> <span class="o">=</span> <span class="n">count_results</span>
@@ -3677,7 +3734,9 @@ after one page.</p></td>
         <span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">TimeoutException</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
-        <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)]</span>
+        <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
         <span class="p">)</span>
@@ -3837,9 +3896,11 @@ after one page.</p></td>
         <span class="ne">Exception</span><span class="p">,</span>
     <span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
-        <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)]</span>
+        <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
 </code></pre></div>
