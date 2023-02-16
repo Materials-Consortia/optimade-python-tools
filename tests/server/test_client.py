@@ -157,6 +157,8 @@ def test_client_sort(http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [False])
 def test_command_line_client(http_client, use_async, capsys):
+    import httpx
+
     from optimade.client.cli import _get
 
     args = dict(
@@ -174,6 +176,7 @@ def test_command_line_client(http_client, use_async, capsys):
         exclude_providers=None,
         exclude_databases=None,
         http_client=http_client,
+        http_timeout=httpx.Timeout(2.0),
     )
 
     # Test multi-provider query
