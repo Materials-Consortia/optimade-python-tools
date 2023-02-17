@@ -388,6 +388,7 @@ class OptimadeClient:
         if self.use_async:
             # Check for a pre-existing event loop (e.g. within a Jupyter notebook)
             # and use it if present
+            event_loop: Optional[asyncio.AbstractEventLoop]
             try:
                 event_loop = asyncio.get_running_loop()
                 if event_loop:
@@ -916,8 +917,6 @@ class OptimadeClient:
             except Exception:
                 existing_data = {}
 
-            breakpoint()
-
             results_to_write = self._merge_results(
                 existing_data, dict(self.all_results)
             )
@@ -944,7 +943,6 @@ class OptimadeClient:
         endpoints = set(old.keys()).union(new.keys())
 
         for endpoint in endpoints:
-
             output[endpoint] = {}
             filters = set(old.get(endpoint, {}).keys()).union(
                 new.get(endpoint, {}).keys()

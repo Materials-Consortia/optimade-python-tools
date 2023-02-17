@@ -98,8 +98,10 @@ def test_client_response_fields(http_client, use_async):
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_client_save_results(httpx_mocked_response, use_async, tmp_path_factory):
-    cli = OptimadeClient(base_urls=[TEST_URL], use_async=use_async)
+def test_client_save_results(http_client, use_async, tmp_path_factory):
+    cli = OptimadeClient(
+        base_urls=[TEST_URL], use_async=use_async, http_client=http_client
+    )
     tmp_path = tmp_path_factory.mktemp("data") / "results.json"
     results = cli.get(
         response_fields=["chemical_formula_reduced"],
@@ -145,8 +147,10 @@ def test_client_save_results(httpx_mocked_response, use_async, tmp_path_factory)
 
 
 @pytest.mark.parametrize("use_async", [False])
-def test_multiple_base_urls(httpx_mocked_response, use_async):
-    cli = OptimadeClient(base_urls=TEST_URLS, use_async=use_async)
+def test_multiple_base_urls(http_client, use_async):
+    cli = OptimadeClient(
+        base_urls=TEST_URLS, use_async=use_async, http_client=http_client
+    )
     results = cli.get()
     count_results = cli.count()
     for url in TEST_URLS:
