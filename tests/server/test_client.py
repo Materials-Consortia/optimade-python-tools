@@ -1,5 +1,10 @@
+"""This module uses the reference test server to test the OPTIMADE client."""
+
+
 import json
+from functools import partial
 from pathlib import Path
+from typing import Dict, Optional
 
 import pytest
 
@@ -250,3 +255,88 @@ def test_strict_async(async_http_client, http_client, use_async):
             use_async=use_async,
             http_client=http_client if use_async else async_http_client,
         )
+
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_client_global_data_callback(async_http_client, http_client, use_async):
+    container: Dict[str, str] = {}
+
+    def global_database_callback(_: str, results: Dict):
+        """A test callback that creates a flat dictionary of results via global state"""
+
+        for structure in results["data"]:
+            container[structure["id"]] = structure["attributes"][
+                "chemical_formula_reduced"
+            ]
+
+        return None
+
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+        callbacks=[global_database_callback],
+    )
+
+    cli.get(response_fields=["chemical_formula_reduced"])
+
+    assert len(container) == 17
+
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_client_mutable_data_callback(async_http_client, http_client, use_async):
+    container: Dict[str, str] = {}
+
+    def mutable_database_callback(
+        _: str, results: Dict, db: Optional[Dict[str, str]] = None
+    ) -> None:
+        """A test callback that creates a flat dictionary of results via mutable args."""
+
+        if db is None:
+            return
+
+        for structure in results["data"]:
+            db[structure["id"]] = structure["attributes"]["chemical_formula_reduced"]
+
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+        callbacks=[partial(mutable_database_callback, db=container)],
+    )
+
+    cli.get(response_fields=["chemical_formula_reduced"])
+
+    assert len(container) == 17
+
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_client_asynchronous_write_callback(
+    async_http_client, http_client, use_async, tmp_path
+):
+    def write_to_file(_: str, results: Dict):
+        """A test callback that creates a flat dictionary of results via global state"""
+
+        with open(tmp_path / "formulae.csv", "a") as f:
+            for structure in results["data"]:
+                f.write(
+                    f'\n{structure["id"]}, {structure["attributes"]["chemical_formula_reduced"]}'
+                )
+
+        return None
+
+    cli = OptimadeClient(
+        base_urls=TEST_URLS,
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+        callbacks=[write_to_file],
+    )
+
+    cli.__strict_async = True
+
+    cli.get(response_fields=["chemical_formula_reduced"])
+
+    with open(tmp_path / "formulae.csv", "r") as f:
+        lines = f.readlines()
+
+    assert len(lines) == 17 * len(TEST_URLS) + 1

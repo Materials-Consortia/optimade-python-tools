@@ -10,7 +10,7 @@ import functools
 import json
 import time
 from collections import defaultdict
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
+from typing import Any, Callable, Dict, Iterable, List, Optional, Set, Tuple, Union
 from urllib.parse import urlparse
 
 # External deps that are only used in the client code
@@ -85,6 +85,17 @@ class OptimadeClient:
     use_async: bool
     """Whether or not to make all requests asynchronously using asyncio."""
 
+    callbacks: Optional[List[Callable[[str, Dict], None]]] = None
+    """A list of callbacks to execute after each successful request, used
+    to e.g., write to a file, add results to a database or perform additional
+    filtering.
+
+    The callbacks will receive the request URL and the results extracted
+    from the JSON response, with keys 'data', 'meta', 'links', 'errors'
+    and 'included'.
+
+    """
+
     _excluded_providers: Optional[Set[str]] = None
     """A set of providers IDs excluded from future queries."""
 
@@ -98,7 +109,7 @@ class OptimadeClient:
     """Used internally when querying via `client.structures.get()` to set the
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
 
-    __http_client: Union[httpx.Client, httpx.AsyncClient] = None
+    _http_client: Union[httpx.Client, httpx.AsyncClient] = None
     """Override the HTTP client, primarily used for testing."""
 
     __strict_async: bool = False
@@ -118,6 +129,7 @@ class OptimadeClient:
         include_providers: Optional[List[str]] = None,
         exclude_databases: Optional[List[str]] = None,
         http_client: Union[httpx.Client, httpx.AsyncClient] = None,
+        callbacks: Optional[List[Callable[[str, Dict], None]]] = None,
     ):
         """Create the OPTIMADE client object.
 
@@ -135,6 +147,9 @@ class OptimadeClient:
             include_providers: A set or collection of provider IDs to include in queries.
             exclude_databases: A set or collection of child database URLs to exclude from queries.
             http_client: An override for the underlying HTTP client, primarily used for testing.
+            callbacks: A list of functions to call after each successful response, see the
+                attribute [`OptimadeClient.callbacks`][optimade.client.OptimadeClient.callbacks]
+                docstring for more details.
 
         """
 
@@ -201,6 +216,8 @@ class OptimadeClient:
                 self._http_client = httpx.AsyncClient
             else:
                 self._http_client = httpx.Client
+
+        self.callbacks = callbacks
 
     def __getattribute__(self, name):
         """Allows entry endpoints to be queried via attribute access, using the
@@ -891,6 +908,9 @@ class OptimadeClient:
             total=results["meta"].get("data_returned", None),
         )
 
+        if self.callbacks:
+            self._execute_callbacks(results, response)
+
         next_url = results["links"].get("next", None)
         if isinstance(next_url, dict):
             next_url = next_url.pop("href")
@@ -911,3 +931,17 @@ class OptimadeClient:
             self._progress.update(
                 _task, total=num_results, finished=True, complete=True
             )
+
+    def _execute_callbacks(self, results: Dict, response: httpx.Response) -> None:
+        """Execute any callbacks registered with the client.
+
+        Parameters:
+            results: The results from the query.
+            response: The full response from the server.
+
+        """
+        request_url = response.request.url
+        if not self.callbacks:
+            return
+        for callback in self.callbacks:
+            callback(request_url, results)
