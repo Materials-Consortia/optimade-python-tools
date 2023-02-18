@@ -64,8 +64,17 @@ The release history and changelog can be found in [the changelog](CHANGELOG.md).
 
 Detailed installation instructions for different use cases (e.g., using the library or running a server) can be found in [the installation documentation](INSTALL.md).
 
-The latest stable version of this package can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade`.
-The latest development version of this package can be obtained from the master branch of this repository `git clone https://github.com/Materials-Consortia/optimade-python-tools`.
+The latest stable version of this package can be obtained from [PyPI](https://pypi.org/project/optimade):
+
+```shell
+pip install optimade
+```
+
+The latest development version of this package can be obtained from the master branch of this repository:
+
+```shell
+git clone https://github.com/Materials-Consortia/optimade-python-tools
+```
 
 ## Supported OPTIMADE versions
 
