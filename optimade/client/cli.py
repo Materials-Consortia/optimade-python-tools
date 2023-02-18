@@ -10,7 +10,7 @@ from optimade.client.client import OptimadeClient
 __all__ = ("_get",)
 
 
-@click.command("optimade-get")
+@click.command("optimade-get", no_args_is_help=True)
 @click.option(
     "--filter",
     default=[None],
