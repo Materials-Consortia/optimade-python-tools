@@ -250,3 +250,10 @@ def http_client():
     from .utils import HttpxTestClient
 
     return HttpxTestClient
+
+
+@pytest.fixture(scope="session")
+def async_http_client():
+    from .utils import AsyncHttpxTestClient
+
+    return AsyncHttpxTestClient
