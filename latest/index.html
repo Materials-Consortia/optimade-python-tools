@@ -39,8 +39,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karla:300,300i,400,400i,700,700i%7CShare+Tech+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Karla";--md-code-font:"Share Tech Mono"}</style>
       
     
     
@@ -60,12 +60,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -93,7 +97,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="." title="OPTIMADE Python tools" class="md-header__button md-logo" aria-label="OPTIMADE Python tools" data-md-component="logo">
       
-  <img src="images/optimade_logo_180x180.svg" alt="logo">
+  <img src="https://matsci.org/uploads/default/original/2X/b/bd2f59b3bf14fb046b74538750699d7da4c19ac1.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -115,6 +119,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -190,7 +214,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="." title="OPTIMADE Python tools" class="md-nav__button md-logo" aria-label="OPTIMADE Python tools" data-md-component="logo">
       
-  <img src="images/optimade_logo_180x180.svg" alt="logo">
+  <img src="https://matsci.org/uploads/default/original/2X/b/bd2f59b3bf14fb046b74538750699d7da4c19ac1.svg" alt="logo">
 
     </a>
     OPTIMADE Python tools
@@ -2018,8 +2042,12 @@ In particular, documentation of the OPTIMADE API response data models (implement
 <p>The release history and changelog can be found in <a href="CHANGELOG/">the changelog</a>.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <p>Detailed installation instructions for different use cases (e.g., using the library or running a server) can be found in <a href="INSTALL/">the installation documentation</a>.</p>
-<p>The latest stable version of this package can be obtained from <a href="https://pypi.org/project/optimade">PyPI</a> <code>pip install optimade</code>.
-The latest development version of this package can be obtained from the master branch of this repository <code>git clone https://github.com/Materials-Consortia/optimade-python-tools</code>.</p>
+<p>The latest stable version of this package can be obtained from <a href="https://pypi.org/project/optimade">PyPI</a>:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>optimade
+</code></pre></div>
+<p>The latest development version of this package can be obtained from the master branch of this repository:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Materials-Consortia/optimade-python-tools
+</code></pre></div>
 <h2 id="supported-optimade-versions">Supported OPTIMADE versions<a class="headerlink" href="#supported-optimade-versions" title="Permanent link">&para;</a></h2>
 <p>Each release of the <code>optimade</code> package from this repository only targets one version of the OPTIMADE specification, summarised in the table below.</p>
 <div align="center">
