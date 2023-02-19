@@ -2183,6 +2183,11 @@ and provider.</p>
     <span class="n">__http_client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the HTTP client, primarily used for testing.&quot;&quot;&quot;</span>
 
+    <span class="n">__strict_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether or not to fallover if `use_async` is true yet asynchronous mode</span>
+<span class="sd">    is impossible due to, e.g., a running event loop.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">base_urls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2201,7 +2206,7 @@ and provider.</p>
 <span class="sd">        Parameters:</span>
 <span class="sd">            base_urls: A list of OPTIMADE base URLs to query.</span>
 <span class="sd">            max_results_per_provider: The maximum number of results to download</span>
-<span class="sd">                from each provider.</span>
+<span class="sd">                from each provider (-1 or 0 indicate unlimited).</span>
 <span class="sd">            headers: Any additional HTTP headers to use for the queries.</span>
 <span class="sd">            http_timeout: The timeout to use per request. Defaults to 10</span>
 <span class="sd">                seconds with 1000 seconds for reads specifically. Overriding this value</span>
@@ -2260,16 +2265,24 @@ and provider.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
 
         <span class="k">if</span> <span class="n">http_client</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span> <span class="o">=</span> <span class="n">http_client</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">http_client</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                        <span class="s2">&quot;Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client.&quot;</span>
+                    <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                        <span class="s2">&quot;Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client.&quot;</span>
+                    <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">use_async</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
 
     <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
@@ -2451,6 +2464,10 @@ and provider.</p>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">event_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_running_loop</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">event_loop</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                            <span class="s2">&quot;Detected a running event loop, cannot run in async mode.&quot;</span>
+                        <span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                         <span class="s2">&quot;Detected a running event loop (e.g., Jupyter, pytest). Running in synchronous mode.&quot;</span>
                     <span class="p">)</span>
@@ -2694,7 +2711,7 @@ and provider.</p>
         <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
                 <span class="k">while</span> <span class="n">next_url</span><span class="p">:</span>
                     <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -2751,7 +2768,7 @@ and provider.</p>
         <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
                 <span class="k">while</span> <span class="n">next_url</span><span class="p">:</span>
                     <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -3196,7 +3213,7 @@ original <code>__getattribute__</code>.</p>
         <td><code>max_results_per_provider</code></td>
         <td><code>int</code></td>
         <td><p>The maximum number of results to download
-from each provider.</p></td>
+from each provider (-1 or 0 indicate unlimited).</p></td>
         <td><code>1000</code></td>
       </tr>
       <tr>
@@ -3271,7 +3288,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
 <span class="sd">    Parameters:</span>
 <span class="sd">        base_urls: A list of OPTIMADE base URLs to query.</span>
 <span class="sd">        max_results_per_provider: The maximum number of results to download</span>
-<span class="sd">            from each provider.</span>
+<span class="sd">            from each provider (-1 or 0 indicate unlimited).</span>
 <span class="sd">        headers: Any additional HTTP headers to use for the queries.</span>
 <span class="sd">        http_timeout: The timeout to use per request. Defaults to 10</span>
 <span class="sd">            seconds with 1000 seconds for reads specifically. Overriding this value</span>
@@ -3330,16 +3347,24 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
     <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
 
     <span class="k">if</span> <span class="n">http_client</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span> <span class="o">=</span> <span class="n">http_client</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">http_client</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client.&quot;</span>
+                <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client.&quot;</span>
+                <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">use_async</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
 </code></pre></div>
         </details>
     </div>
