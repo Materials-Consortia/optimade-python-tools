@@ -2191,6 +2191,9 @@ and provider.</p>
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether or not to make all requests asynchronously using asyncio.&quot;&quot;&quot;</span>
 
+    <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to disable progress bar printing.&quot;&quot;&quot;</span>
+
     <span class="n">_excluded_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of providers IDs excluded from future queries.&quot;&quot;&quot;</span>
 
@@ -2220,6 +2223,7 @@ and provider.</p>
         <span class="n">http_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2285,6 +2289,7 @@ and provider.</p>
                 <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">silent</span> <span class="o">=</span> <span class="n">silent</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
 
@@ -2373,17 +2378,20 @@ and provider.</p>
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
-
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="n">Panel</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Performing query [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
-                    <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                    <span class="n">Panel</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Performing query [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
+                        <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
-            <span class="p">)</span>
             <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_queries</span><span class="p">(</span>
                 <span class="nb">filter</span><span class="p">,</span>
                 <span class="n">endpoint</span><span class="p">,</span>
@@ -2420,16 +2428,20 @@ and provider.</p>
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="n">Panel</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Counting results for [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
-                    <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                    <span class="n">Panel</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Counting results for [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
+                        <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
-            <span class="p">)</span>
             <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_queries</span><span class="p">(</span>
                 <span class="nb">filter</span><span class="p">,</span>
                 <span class="n">endpoint</span><span class="p">,</span>
@@ -2761,9 +2773,10 @@ and provider.</p>
                         <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span>
                         <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span>
                     <span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Reached </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> results for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, exceeding `max_results_per_provider` parameter (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span><span class="si">}</span><span class="s2">). Stopping download.&quot;</span>
-                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Reached </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> results for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, exceeding `max_results_per_provider` parameter (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span><span class="si">}</span><span class="s2">). Stopping download.&quot;</span>
+                            <span class="p">)</span>
                         <span class="k">break</span>
 
             <span class="k">return</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">):</span> <span class="n">results</span><span class="p">}</span>
@@ -2815,9 +2828,10 @@ and provider.</p>
                         <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span>
                         <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span>
                     <span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Reached </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> results for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, exceeding `max_results_per_provider` parameter (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span><span class="si">}</span><span class="s2">). Stopping download.&quot;</span>
-                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Reached </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> results for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, exceeding `max_results_per_provider` parameter (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span><span class="si">}</span><span class="s2">). Stopping download.&quot;</span>
+                            <span class="p">)</span>
                         <span class="k">break</span>
 
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">paginate</span><span class="p">:</span>
@@ -3204,7 +3218,7 @@ original <code>__getattribute__</code>.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -3302,6 +3316,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
     <span class="n">http_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3367,6 +3382,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
             <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">silent</span> <span class="o">=</span> <span class="n">silent</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
 
@@ -3470,16 +3486,20 @@ key.</p>
     <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
+    <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
+
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
     <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-            <span class="n">Panel</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Counting results for [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
-                <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                <span class="n">Panel</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Counting results for [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
+                    <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="p">)</span>
-        <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_queries</span><span class="p">(</span>
             <span class="nb">filter</span><span class="p">,</span>
             <span class="n">endpoint</span><span class="p">,</span>
@@ -3630,17 +3650,20 @@ from the server.</p></td>
     <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
+    <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
+
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
-
     <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-            <span class="n">Panel</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Performing query [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
-                <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                <span class="n">Panel</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Performing query [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
+                    <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="p">)</span>
-        <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_queries</span><span class="p">(</span>
             <span class="nb">filter</span><span class="p">,</span>
             <span class="n">endpoint</span><span class="p">,</span>
