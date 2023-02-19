@@ -6,9 +6,16 @@ import pytest
 from optimade.warnings import MissingExpectedField
 
 try:
-    from optimade.client import OptimadeClient
+    from optimade.client import OptimadeClient as OptimadeTestClient
 except ImportError as exc:
     pytest.skip(str(exc), allow_module_level=True)
+
+
+class OptimadeClient(OptimadeTestClient):
+    """Wrapper to the base OptimadeClient that enables strict mode for testing."""
+
+    __strict_async = True
+
 
 TEST_URLS = [
     "https://example.com",
@@ -18,12 +25,17 @@ TEST_URLS = [
 TEST_URL = TEST_URLS[0]
 
 
-@pytest.mark.parametrize("use_async", [False])
-def test_client_endpoints(http_client, use_async):
+@pytest.mark.parametrize(
+    "use_async",
+    [True, False],
+)
+def test_client_endpoints(async_http_client, http_client, use_async):
     filter = ""
 
     cli = OptimadeClient(
-        base_urls=[TEST_URL], use_async=use_async, http_client=http_client
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
     )
     get_results = cli.get()
     assert get_results["structures"][filter][TEST_URL]["data"]
@@ -63,10 +75,12 @@ def test_client_endpoints(http_client, use_async):
     assert "properties" in count_results["info/structures"][""][TEST_URL]["data"]
 
 
-@pytest.mark.parametrize("use_async", [False])
-def test_filter_validation(http_client, use_async):
+@pytest.mark.parametrize("use_async", [True, False])
+def test_filter_validation(async_http_client, http_client, use_async):
     cli = OptimadeClient(
-        use_async=use_async, base_urls=TEST_URL, http_client=http_client
+        use_async=use_async,
+        base_urls=TEST_URL,
+        http_client=async_http_client if use_async else http_client,
     )
     with pytest.raises(Exception):
         cli.get("completely wrong filter")
@@ -75,13 +89,13 @@ def test_filter_validation(http_client, use_async):
         cli.get("elements HAS 'Ag'")
 
 
-@pytest.mark.parametrize("use_async", [False])
-def test_client_response_fields(http_client, use_async):
+@pytest.mark.parametrize("use_async", [True, False])
+def test_client_response_fields(async_http_client, http_client, use_async):
     with pytest.warns(MissingExpectedField):
         cli = OptimadeClient(
             base_urls=[TEST_URL],
             use_async=use_async,
-            http_client=http_client,
+            http_client=async_http_client if use_async else http_client,
         )
         results = cli.get(response_fields=["chemical_formula_reduced"])
         for d in results["structures"][""][TEST_URL]["data"]:
@@ -97,10 +111,12 @@ def test_client_response_fields(http_client, use_async):
             assert len(d["attributes"]) == 2
 
 
-@pytest.mark.parametrize("use_async", [False])
-def test_multiple_base_urls(http_client, use_async):
+@pytest.mark.parametrize("use_async", [True, False])
+def test_multiple_base_urls(async_http_client, http_client, use_async):
     cli = OptimadeClient(
-        base_urls=TEST_URLS, use_async=use_async, http_client=http_client
+        base_urls=TEST_URLS,
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
     )
     results = cli.get()
     count_results = cli.count()
@@ -112,8 +128,8 @@ def test_multiple_base_urls(http_client, use_async):
         )
 
 
-@pytest.mark.parametrize("use_async", [False])
-def test_include_exclude_providers(http_client, use_async):
+@pytest.mark.parametrize("use_async", [True, False])
+def test_include_exclude_providers(async_http_client, http_client, use_async):
     with pytest.raises(
         SystemExit,
         match="Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs.",
@@ -122,7 +138,7 @@ def test_include_exclude_providers(http_client, use_async):
             include_providers={"exmpl"},
             exclude_providers={"exmpl"},
             use_async=use_async,
-            http_client=http_client,
+            http_client=async_http_client if use_async else http_client,
         )
 
     with pytest.raises(
@@ -133,6 +149,7 @@ def test_include_exclude_providers(http_client, use_async):
             base_urls=TEST_URLS,
             include_providers={"exmpl"},
             use_async=use_async,
+            http_client=async_http_client if use_async else http_client,
         )
 
     with pytest.raises(
@@ -143,20 +160,23 @@ def test_include_exclude_providers(http_client, use_async):
             include_providers={"exmpl"},
             exclude_databases={"https://example.org/optimade"},
             use_async=use_async,
+            http_client=async_http_client if use_async else http_client,
         )
 
 
-@pytest.mark.parametrize("use_async", [False])
-def test_client_sort(http_client, use_async):
+@pytest.mark.parametrize("use_async", [True, False])
+def test_client_sort(async_http_client, http_client, use_async):
     cli = OptimadeClient(
-        base_urls=[TEST_URL], use_async=use_async, http_client=http_client
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
     )
     results = cli.get(sort="last_modified")
     assert len(results["structures"][""][TEST_URL]["data"]) > 0
 
 
-@pytest.mark.parametrize("use_async", [False])
-def test_command_line_client(http_client, use_async, capsys):
+@pytest.mark.parametrize("use_async", [True, False])
+def test_command_line_client(async_http_client, http_client, use_async, capsys):
     import httpx
 
     from optimade.client.cli import _get
@@ -175,7 +195,7 @@ def test_command_line_client(http_client, use_async, capsys):
         include_providers=None,
         exclude_providers=None,
         exclude_databases=None,
-        http_client=http_client,
+        http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
     )
 
@@ -220,3 +240,13 @@ def test_command_line_client(http_client, use_async, capsys):
         assert len(results["structures"]['elements HAS "Ag"'][url]["errors"]) == 0
         assert len(results["structures"]['elements HAS "Ag"'][url]["meta"]) > 0
     Path(test_filename).unlink()
+
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_strict_async(async_http_client, http_client, use_async):
+    with pytest.raises(RuntimeError):
+        _ = OptimadeClient(
+            base_urls=TEST_URLS,
+            use_async=use_async,
+            http_client=http_client if use_async else async_http_client,
+        )

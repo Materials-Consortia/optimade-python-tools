@@ -101,6 +101,11 @@ class OptimadeClient:
     __http_client: Union[httpx.Client, httpx.AsyncClient] = None
     """Override the HTTP client, primarily used for testing."""
 
+    __strict_async: bool = False
+    """Whether or not to fallover if `use_async` is true yet asynchronous mode
+    is impossible due to, e.g., a running event loop.
+    """
+
     def __init__(
         self,
         base_urls: Optional[Union[str, Iterable[str]]] = None,
@@ -119,7 +124,7 @@ class OptimadeClient:
         Parameters:
             base_urls: A list of OPTIMADE base URLs to query.
             max_results_per_provider: The maximum number of results to download
-                from each provider.
+                from each provider (-1 or 0 indicate unlimited).
             headers: Any additional HTTP headers to use for the queries.
             http_timeout: The timeout to use per request. Defaults to 10
                 seconds with 1000 seconds for reads specifically. Overriding this value
@@ -178,16 +183,24 @@ class OptimadeClient:
         self.use_async = use_async
 
         if http_client:
-            self.__http_client = http_client
-            if isinstance(self.__http_client, httpx.AsyncClient):
+            self._http_client = http_client
+            if issubclass(self._http_client, httpx.AsyncClient):
+                if not self.use_async and self.__strict_async:
+                    raise RuntimeError(
+                        "Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client."
+                    )
                 self.use_async = True
-            elif isinstance(self.__http_client, httpx.Client):
+            elif issubclass(self._http_client, httpx.Client):
+                if self.use_async and self.__strict_async:
+                    raise RuntimeError(
+                        "Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client."
+                    )
                 self.use_async = False
         else:
             if use_async:
-                self.__http_client = httpx.AsyncClient
+                self._http_client = httpx.AsyncClient
             else:
-                self.__http_client = httpx.Client
+                self._http_client = httpx.Client
 
     def __getattribute__(self, name):
         """Allows entry endpoints to be queried via attribute access, using the
@@ -369,6 +382,10 @@ class OptimadeClient:
             try:
                 event_loop = asyncio.get_running_loop()
                 if event_loop:
+                    if self.__strict_async:
+                        raise RuntimeError(
+                            "Detected a running event loop, cannot run in async mode."
+                        )
                     self._progress.print(
                         "Detected a running event loop (e.g., Jupyter, pytest). Running in synchronous mode."
                     )
@@ -612,7 +629,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            async with self.__http_client(headers=self.headers) as client:
+            async with self._http_client(headers=self.headers) as client:
                 while next_url:
                     attempts = 0
                     try:
@@ -669,7 +686,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            with self.__http_client(headers=self.headers) as client:
+            with self._http_client(headers=self.headers) as client:
                 while next_url:
                     attempts = 0
                     try:

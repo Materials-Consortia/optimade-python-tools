@@ -252,3 +252,17 @@ class HttpxTestClient(httpx.Client):
         **kwargs,
     ) -> httpx.Response:
         return self.client.request(method, url)
+
+
+class AsyncHttpxTestClient(httpx.AsyncClient):
+    """An async HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    async def request(  # pylint: disable=too-many-locals
+        self,
+        method: str,
+        url: httpx._types.URLTypes,
+        **kwargs,
+    ) -> httpx.Response:
+        return self.client.request(method, url)
