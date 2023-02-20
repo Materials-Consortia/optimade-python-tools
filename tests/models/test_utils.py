@@ -38,7 +38,7 @@ def test_optimade_field():
     make_bad_models(OptimadeField)
 
 
-def test_compatible_strict_optimade_field():
+def test_compatible_strict_optimade_field() -> None:
     """This test checks that OptimadeField and StrictField
     produce the same schemas when given the same arguments.
 
@@ -77,7 +77,7 @@ def test_compatible_strict_optimade_field():
     assert strict_schema == optimade_schema
 
 
-def test_formula_regexp():
+def test_formula_regexp() -> None:
     """This test checks some simple chemical formulae with the
     `CHEMICAL_FORMULA_REGEXP`.
 

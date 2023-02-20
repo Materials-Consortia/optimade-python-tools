@@ -5,7 +5,7 @@ import re
 import warnings
 from enum import Enum
 from functools import reduce
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, List, Optional, Union
 
 from pydantic import Field
 from pydantic.fields import FieldInfo
@@ -114,8 +114,8 @@ def StrictField(
 
 def OptimadeField(
     *args,
-    support: Optional[SupportLevel] = None,
-    queryable: Optional[SupportLevel] = None,
+    support: Optional[Union[str, SupportLevel]] = None,
+    queryable: Optional[Union[str, SupportLevel]] = None,
     unit: Optional[str] = None,
     **kwargs,
 ) -> Field:
