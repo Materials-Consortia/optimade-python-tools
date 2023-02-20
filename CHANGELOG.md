@@ -2,9 +2,94 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.3...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.21.0...HEAD)
 
-This release primarily adds compatibility for the newest FastAPI releases (`>=0.87`) by updating our test client to work with both `httpx` and `requests`.
+This minor release contains new client functionality and improved support for ASE.
+
+## New features:
+
+- Ability to specify async callback functions that are called after every client response.
+  This can be used for e.g., iteratively saving to file or a database. For example:
+
+  ```python
+  from optimade.client import OptimadeClient
+
+  DATABASE = pymongo.MongoClient().database.collection
+
+  def save_callback(url, results) -> None:
+      for structure in results["data"]:
+          DATABASE.insert_one(structure)
+
+  client = OptimadeClient(callbacks=[save_callback])
+  client.get()
+  ```
+
+- Ability to create OPTIMADE structure objects from ASE atoms:
+  ```python
+  from optimade.adapters import Structure
+  from ase import Atoms
+
+  co = Atoms('CO', positions=[(0, 0, 0), (0, 0, 1.1)])
+
+  structure = Structure.from_ase_atoms(co)
+  ```
+
+- Added ability to mute the client progress bars with `--silent`/`silent=True` and increased default response timeouts to better reflect those required for practical queries.
+
+## [v0.21.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.21.0) (2023-02-20)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.3...v0.21.0)
+
+This minor release contains new client functionality and improved support for ASE.
+
+## New features:
+
+- Ability to specify async callback functions that are called after every client response.
+  This can be used for e.g., iteratively saving to file or a database. For example:
+
+  ```python
+  from optimade.client import OptimadeClient
+
+  DATABASE = pymongo.MongoClient().database.collection
+
+  def save_callback(url, results) -> None:
+      for structure in results["data"]:
+          DATABASE.insert_one(structure)
+
+  client = OptimadeClient(callbacks=[save_callback])
+  client.get()
+  ```
+
+- Ability to create OPTIMADE structure objects from ASE atoms:
+  ```python
+  from optimade.adapters import Structure
+  from ase import Atoms
+
+  co = Atoms('CO', positions=[(0, 0, 0), (0, 0, 1.1)])
+
+  structure = Structure.from_ase_atoms(co)
+  ```
+
+- Added ability to mute the client progress bars with `--silent`/`silent=True` and increased default response timeouts to better reflect those required for practical queries.
+
+**Implemented enhancements:**
+
+- Add customisable callback functions to client [\#1515](https://github.com/Materials-Consortia/optimade-python-tools/issues/1515)
+- Add ability to specify callbacks to run after each client request [\#1519](https://github.com/Materials-Consortia/optimade-python-tools/pull/1519) ([ml-evs](https://github.com/ml-evs))
+- Increase client timeouts and tweak `response_fields` behaviour [\#1514](https://github.com/Materials-Consortia/optimade-python-tools/pull/1514) ([ml-evs](https://github.com/ml-evs))
+- Add ASE ingester and generalize other ingestion utilities [\#1509](https://github.com/Materials-Consortia/optimade-python-tools/pull/1509) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Increase default client timeouts [\#1513](https://github.com/Materials-Consortia/optimade-python-tools/issues/1513)
+- Provide basic support for older pymatgen versions in adapters [\#1490](https://github.com/Materials-Consortia/optimade-python-tools/issues/1490)
+
+**Merged pull requests:**
+
+- Replace several linters and fixers \(flake8, isort etc.\) with ruff [\#1526](https://github.com/Materials-Consortia/optimade-python-tools/pull/1526) ([ml-evs](https://github.com/ml-evs))
+- Add `--silent` option to suppress client output until results [\#1518](https://github.com/Materials-Consortia/optimade-python-tools/pull/1518) ([ml-evs](https://github.com/ml-evs))
+- Update tests and client to properly test async mode [\#1517](https://github.com/Materials-Consortia/optimade-python-tools/pull/1517) ([ml-evs](https://github.com/ml-evs))
+- Refresh docs style and associated tweaks [\#1516](https://github.com/Materials-Consortia/optimade-python-tools/pull/1516) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.20.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.3) (2023-01-09)
 
