@@ -10,10 +10,10 @@ from optimade.client.client import OptimadeClient
 __all__ = ("_get",)
 
 
-@click.command("optimade-get")
+@click.command("optimade-get", no_args_is_help=True)
 @click.option(
     "--filter",
-    default=[""],
+    default=[None],
     help="Filter to apply to OPTIMADE API. Default is an empty filter.",
     multiple=True,
 )
@@ -54,6 +54,11 @@ __all__ = ("_get",)
     help="Pretty print the JSON results.",
 )
 @click.option(
+    "--silent",
+    is_flag=True,
+    help="Suppresses all output except the final JSON results.",
+)
+@click.option(
     "--include-providers",
     default=None,
     help="A string of comma-separated provider IDs to query.",
@@ -89,6 +94,7 @@ def get(
     sort,
     endpoint,
     pretty_print,
+    silent,
     include_providers,
     exclude_providers,
     exclude_databases,
@@ -105,6 +111,7 @@ def get(
         sort,
         endpoint,
         pretty_print,
+        silent,
         include_providers,
         exclude_providers,
         exclude_databases,
@@ -123,6 +130,7 @@ def _get(
     sort,
     endpoint,
     pretty_print,
+    silent,
     include_providers,
     exclude_providers,
     exclude_databases,
@@ -151,6 +159,7 @@ def _get(
         exclude_databases=set(_.strip() for _ in exclude_databases.split(","))
         if exclude_databases
         else None,
+        silent=silent,
     )
 
     # Only set http timeout if its not null to avoid overwriting or duplicating the

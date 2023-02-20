@@ -96,6 +96,9 @@ class OptimadeClient:
 
     """
 
+    silent: bool
+    """Whether to disable progress bar printing."""
+
     _excluded_providers: Optional[Set[str]] = None
     """A set of providers IDs excluded from future queries."""
 
@@ -125,6 +128,7 @@ class OptimadeClient:
         http_timeout: Optional[Union[httpx.Timeout, float]] = None,
         max_attempts: int = 5,
         use_async: bool = True,
+        silent: bool = False,
         exclude_providers: Optional[List[str]] = None,
         include_providers: Optional[List[str]] = None,
         exclude_databases: Optional[List[str]] = None,
@@ -194,6 +198,7 @@ class OptimadeClient:
                 self.http_timeout = httpx.Timeout(http_timeout)
 
         self.max_attempts = max_attempts
+        self.silent = silent
 
         self.use_async = use_async
 
@@ -284,17 +289,20 @@ class OptimadeClient:
         if filter is None:
             filter = ""
 
+        self._progress = OptimadeClientProgress()
+        if self.silent:
+            self._progress.disable = True
+
         self._check_filter(filter, endpoint)
 
-        self._progress = OptimadeClientProgress()
-
         with self._progress:
-            self._progress.print(
-                Panel(
-                    f"Performing query [bold yellow]{endpoint}[/bold yellow]/?filter=[bold magenta][i]{filter}[/i][/bold magenta]",
-                    expand=False,
+            if not self.silent:
+                self._progress.print(
+                    Panel(
+                        f"Performing query [bold yellow]{endpoint}[/bold yellow]/?filter=[bold magenta][i]{filter}[/i][/bold magenta]",
+                        expand=False,
+                    )
                 )
-            )
             results = self._execute_queries(
                 filter,
                 endpoint,
@@ -331,16 +339,20 @@ class OptimadeClient:
         if filter is None:
             filter = ""
 
+        self._progress = OptimadeClientProgress()
+        if self.silent:
+            self._progress.disable = True
+
         self._check_filter(filter, endpoint)
 
-        self._progress = OptimadeClientProgress()
         with self._progress:
-            self._progress.print(
-                Panel(
-                    f"Counting results for [bold yellow]{endpoint}[/bold yellow]/?filter=[bold magenta][i]{filter}[/i][/bold magenta]",
-                    expand=False,
+            if not self.silent:
+                self._progress.print(
+                    Panel(
+                        f"Counting results for [bold yellow]{endpoint}[/bold yellow]/?filter=[bold magenta][i]{filter}[/i][/bold magenta]",
+                        expand=False,
+                    )
                 )
-            )
             results = self._execute_queries(
                 filter,
                 endpoint,
@@ -672,9 +684,10 @@ class OptimadeClient:
                         self.max_results_per_provider
                         and len(results.data) >= self.max_results_per_provider
                     ):
-                        self._progress.print(
-                            f"Reached {len(results.data)} results for {base_url}, exceeding `max_results_per_provider` parameter ({self.max_results_per_provider}). Stopping download."
-                        )
+                        if not self.silent:
+                            self._progress.print(
+                                f"Reached {len(results.data)} results for {base_url}, exceeding `max_results_per_provider` parameter ({self.max_results_per_provider}). Stopping download."
+                            )
                         break
 
             return {str(base_url): results}
@@ -726,9 +739,10 @@ class OptimadeClient:
                         self.max_results_per_provider
                         and len(results.data) >= self.max_results_per_provider
                     ):
-                        self._progress.print(
-                            f"Reached {len(results.data)} results for {base_url}, exceeding `max_results_per_provider` parameter ({self.max_results_per_provider}). Stopping download."
-                        )
+                        if not self.silent:
+                            self._progress.print(
+                                f"Reached {len(results.data)} results for {base_url}, exceeding `max_results_per_provider` parameter ({self.max_results_per_provider}). Stopping download."
+                            )
                         break
 
                     if not paginate:
