@@ -541,8 +541,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2023-02-20" class="md-nav__link">
-    Unreleased (2023-02-20)
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-features" class="md-nav__link">
+    New features:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0210-2023-02-20" class="md-nav__link">
+    v0.21.0 (2023-02-20)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-features_1" class="md-nav__link">
+    New features:
   </a>
   
 </li>
@@ -2412,8 +2433,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2023-02-20" class="md-nav__link">
-    Unreleased (2023-02-20)
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-features" class="md-nav__link">
+    New features:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v0210-2023-02-20" class="md-nav__link">
+    v0.21.0 (2023-02-20)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#new-features_1" class="md-nav__link">
+    New features:
   </a>
   
 </li>
@@ -2952,8 +2994,74 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased-2023-02-20"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2023-02-20)<a class="headerlink" href="#unreleased-2023-02-20" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.3...Unreleased">Full Changelog</a></p>
+<h2 id="unreleased"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD">Unreleased</a><a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.21.0...HEAD">Full Changelog</a></p>
+<p>This minor release contains new client functionality and improved support for ASE.</p>
+<h2 id="new-features">New features:<a class="headerlink" href="#new-features" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Ability to specify async callback functions that are called after every client response.
+  This can be used for e.g., iteratively saving to file or a database. For example:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+
+<span class="n">DATABASE</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">()</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">collection</span>
+
+<span class="k">def</span> <span class="nf">save_callback</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
+        <span class="n">DATABASE</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">save_callback</span><span class="p">])</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>
+<p>Ability to create OPTIMADE structure objects from ASE atoms:
+  <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.adapters</span> <span class="kn">import</span> <span class="n">Structure</span>
+<span class="kn">from</span> <span class="nn">ase</span> <span class="kn">import</span> <span class="n">Atoms</span>
+
+<span class="n">co</span> <span class="o">=</span> <span class="n">Atoms</span><span class="p">(</span><span class="s1">&#39;CO&#39;</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)])</span>
+
+<span class="n">structure</span> <span class="o">=</span> <span class="n">Structure</span><span class="o">.</span><span class="n">from_ase_atoms</span><span class="p">(</span><span class="n">co</span><span class="p">)</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Added ability to mute the client progress bars with <code>--silent</code>/<code>silent=True</code> and increased default response timeouts to better reflect those required for practical queries.</p>
+</li>
+</ul>
+<h2 id="v0210-2023-02-20"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.21.0">v0.21.0</a> (2023-02-20)<a class="headerlink" href="#v0210-2023-02-20" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.3...v0.21.0">Full Changelog</a></p>
+<p>This minor release contains new client functionality and improved support for ASE.</p>
+<h2 id="new-features_1">New features:<a class="headerlink" href="#new-features_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Ability to specify async callback functions that are called after every client response.
+  This can be used for e.g., iteratively saving to file or a database. For example:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+
+<span class="n">DATABASE</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">()</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">collection</span>
+
+<span class="k">def</span> <span class="nf">save_callback</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
+        <span class="n">DATABASE</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">save_callback</span><span class="p">])</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>
+<p>Ability to create OPTIMADE structure objects from ASE atoms:
+  <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.adapters</span> <span class="kn">import</span> <span class="n">Structure</span>
+<span class="kn">from</span> <span class="nn">ase</span> <span class="kn">import</span> <span class="n">Atoms</span>
+
+<span class="n">co</span> <span class="o">=</span> <span class="n">Atoms</span><span class="p">(</span><span class="s1">&#39;CO&#39;</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)])</span>
+
+<span class="n">structure</span> <span class="o">=</span> <span class="n">Structure</span><span class="o">.</span><span class="n">from_ase_atoms</span><span class="p">(</span><span class="n">co</span><span class="p">)</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Added ability to mute the client progress bars with <code>--silent</code>/<code>silent=True</code> and increased default response timeouts to better reflect those required for practical queries.</p>
+</li>
+</ul>
 <p><strong>Implemented enhancements:</strong></p>
 <ul>
 <li>Add customisable callback functions to client <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1515">#1515</a></li>
