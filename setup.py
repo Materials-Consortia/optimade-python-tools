@@ -55,10 +55,10 @@ testing_deps = [
 ] + server_deps
 dev_deps = (
     [
-        "black~=22.10",
+        "black~=23.1",
         "flake8~=6.0",
         "isort~=5.12",
-        "mypy~=0.991",
+        "mypy~=1.0",
         "pylint~=2.15",
         "pre-commit~=3.0",
         "invoke~=2.0",
