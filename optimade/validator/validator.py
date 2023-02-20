@@ -1430,6 +1430,7 @@ class ImplementationValidator:
             and a string summary.
 
         """
+        available_json_entry_endpoints = []
         for _ in [0]:
             try:
                 available_json_entry_endpoints = base_info["data"]["attributes"][
