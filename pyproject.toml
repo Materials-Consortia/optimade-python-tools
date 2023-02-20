@@ -1,0 +1,38 @@
+[tool.ruff]
+select = ["E", "F", "I", "W", "Q"]
+ignore = ["E501", "E402"]
+fixable = ["A", "B", "C", "D", "E", "F", "I"]
+unfixable = []
+extend-exclude = [
+    "providers",
+]
+target-version = "py310"
+per-file-ignores = {}
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.mypy]
+plugins = "pydantic.mypy"
+ignore_missing_imports = true
+follow_imports = "skip"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    "ignore:.*parameter is deprecated for the.*:DeprecationWarning",
+    "ignore:.*read_text is deprecated.*:DeprecationWarning",
+    "ignore:.*open_text is deprecated.*:DeprecationWarning",
+    "ignore:.*SixMetaPathImporter.*:ImportWarning",
+    "ignore:.*PY_SSIZE_T_CLEAN will be required for.*:DeprecationWarning",
+    "ignore:.*not found, cannot convert structure.*:",
+    "ignore:.*will default to setting mass to 1.0.:",
+    "ignore:.*is missing fields.*which are required if.*:",
+    "ignore:.*the imp module is deprecated in favour of importlib.*:DeprecationWarning",
+    "ignore:.*has an unrecognised prefix.*:",
+]
+testpaths = "tests"
+addopts = "-rs"
+
+[tool.isort]
+known_first_party = "optimade"
+profile = "black"
