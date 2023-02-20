@@ -991,6 +991,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.callbacks" class="md-nav__link">
+    callbacks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.client.client.OptimadeClient.count_results" class="md-nav__link">
     count_results
   </a>
@@ -2010,6 +2017,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.callbacks" class="md-nav__link">
+    callbacks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.client.client.OptimadeClient.count_results" class="md-nav__link">
     count_results
   </a>
@@ -2190,6 +2204,17 @@ and provider.</p>
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether or not to make all requests asynchronously using asyncio.&quot;&quot;&quot;</span>
 
+    <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of callbacks to execute after each successful request, used</span>
+<span class="sd">    to e.g., write to a file, add results to a database or perform additional</span>
+<span class="sd">    filtering.</span>
+
+<span class="sd">    The callbacks will receive the request URL and the results extracted</span>
+<span class="sd">    from the JSON response, with keys &#39;data&#39;, &#39;meta&#39;, &#39;links&#39;, &#39;errors&#39;</span>
+<span class="sd">    and &#39;included&#39;.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to disable progress bar printing.&quot;&quot;&quot;</span>
 
@@ -2206,7 +2231,7 @@ and provider.</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Used internally when querying via `client.structures.get()` to set the</span>
 <span class="sd">    chosen endpoint. Should be reset to `None` outside of all `get()` calls.&quot;&quot;&quot;</span>
 
-    <span class="n">__http_client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_http_client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the HTTP client, primarily used for testing.&quot;&quot;&quot;</span>
 
     <span class="n">__strict_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
@@ -2227,6 +2252,7 @@ and provider.</p>
         <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">http_client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
 
@@ -2244,6 +2270,9 @@ and provider.</p>
 <span class="sd">            include_providers: A set or collection of provider IDs to include in queries.</span>
 <span class="sd">            exclude_databases: A set or collection of child database URLs to exclude from queries.</span>
 <span class="sd">            http_client: An override for the underlying HTTP client, primarily used for testing.</span>
+<span class="sd">            callbacks: A list of functions to call after each successful response, see the</span>
+<span class="sd">                attribute [`OptimadeClient.callbacks`][optimade.client.OptimadeClient.callbacks]</span>
+<span class="sd">                docstring for more details.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -2311,6 +2340,8 @@ and provider.</p>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">=</span> <span class="n">callbacks</span>
 
     <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
@@ -3010,6 +3041,9 @@ and provider.</p>
             <span class="n">total</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_returned&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="p">)</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_execute_callbacks</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
         <span class="n">next_url</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">next_url</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">next_url</span> <span class="o">=</span> <span class="n">next_url</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span>
@@ -3030,6 +3064,20 @@ and provider.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="n">_task</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">num_results</span><span class="p">,</span> <span class="n">finished</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">complete</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_execute_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute any callbacks registered with the client.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            results: The results from the query.</span>
+<span class="sd">            response: The full response from the server.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
+            <span class="n">callback</span><span class="p">(</span><span class="n">request_url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -3056,6 +3104,30 @@ and provider.</p>
 
       <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
 the results from each base URL for that particular filter.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.client.client.OptimadeClient.callbacks" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">]]]</span></code>
+
+
+<a href="#optimade.client.client.OptimadeClient.callbacks" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A list of callbacks to execute after each successful request, used
+to e.g., write to a file, add results to a database or perform additional
+filtering.</p>
+<p>The callbacks will receive the request URL and the results extracted
+from the JSON response, with keys 'data', 'meta', 'links', 'errors'
+and 'included'.</p>
     </div>
 
   </div>
@@ -3217,7 +3289,7 @@ original <code>__getattribute__</code>.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -3303,6 +3375,14 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
         <td><p>An override for the underlying HTTP client, primarily used for testing.</p></td>
         <td><code>None</code></td>
       </tr>
+      <tr>
+        <td><code>callbacks</code></td>
+        <td><code>Optional[List[Callable[[str, Dict], NoneType]]]</code></td>
+        <td><p>A list of functions to call after each successful response, see the
+attribute <a class="autorefs autorefs-internal" href="#optimade.client.client.OptimadeClient.callbacks"><code>OptimadeClient.callbacks</code></a>
+docstring for more details.</p></td>
+        <td><code>None</code></td>
+      </tr>
   </tbody>
 </table>
         <details class="quote">
@@ -3320,6 +3400,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">http_client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
 
@@ -3337,6 +3418,9 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
 <span class="sd">        include_providers: A set or collection of provider IDs to include in queries.</span>
 <span class="sd">        exclude_databases: A set or collection of child database URLs to exclude from queries.</span>
 <span class="sd">        http_client: An override for the underlying HTTP client, primarily used for testing.</span>
+<span class="sd">        callbacks: A list of functions to call after each successful response, see the</span>
+<span class="sd">            attribute [`OptimadeClient.callbacks`][optimade.client.OptimadeClient.callbacks]</span>
+<span class="sd">            docstring for more details.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -3404,6 +3488,8 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
             <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">=</span> <span class="n">callbacks</span>
 </code></pre></div>
         </details>
     </div>
