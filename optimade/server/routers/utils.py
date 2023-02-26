@@ -283,7 +283,7 @@ def get_entries(
 
     return response(
         links=links,
-        data=results,
+        data=results if results else [],
         meta=meta_values(
             url=request.url,
             data_returned=data_returned,
@@ -336,7 +336,7 @@ def get_single_entry(
 
     return response(
         links=links,
-        data=results,
+        data=results if results else None,
         meta=meta_values(
             url=request.url,
             data_returned=data_returned,

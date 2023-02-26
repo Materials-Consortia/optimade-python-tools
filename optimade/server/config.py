@@ -293,7 +293,7 @@ class ServerConfig(BaseSettings):
     )
 
     validate_api_response: Optional[bool] = Field(
-        False,
+        True,
         description="""If False, data from the database will not undergo validation before being emitted by the API, and
         only the mapping of aliases will occur.""",
     )

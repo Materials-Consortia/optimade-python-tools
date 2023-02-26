@@ -194,6 +194,12 @@ jobs:
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
+    - name: Run server tests with no API validation (using `mongomock`)
+      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'mongomock'
+        OPTIMADE_VALIDATE_API_RESPONSE: false
+
     - name: Run server tests (using a real MongoDB)
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:

@@ -188,7 +188,7 @@ class EntryCollection(ABC):
 
         results: Union[None, List[EntryResource], EntryResource, List[Dict]] = None
 
-        if raw_results is not None:
+        if raw_results:
             if CONFIG.validate_api_response:
                 results = self.resource_mapper.deserialize(raw_results)
             else:
@@ -197,10 +197,12 @@ class EntryCollection(ABC):
             if single_entry:
                 results = results[0]  # type: ignore[assignment]
 
-                if data_returned > 1:
+                if CONFIG.validate_api_response and data_returned > 1:
                     raise NotFound(
                         detail=f"Instead of a single entry, {data_returned} entries were found",
                     )
+                else:
+                    data_returned = 1
 
         return (
             results,
