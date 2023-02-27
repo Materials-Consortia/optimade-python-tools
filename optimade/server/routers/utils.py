@@ -91,7 +91,7 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[List[EntryResource], EntryResource],
+    results: Union[List[EntryResource], EntryResource, List[Dict], Dict],
     exclude_fields: Set[str],
     include_fields: Set[str],
 ) -> List[Dict[str, Any]]:
@@ -115,7 +115,11 @@ def handle_response_fields(
 
     new_results = []
     while results:
-        new_entry = results.pop(0).dict(exclude_unset=True, by_alias=True)
+        new_entry = results.pop(0)
+        try:
+            new_entry = new_entry.dict(exclude_unset=True, by_alias=True)  # type: ignore[union-attr]
+        except AttributeError:
+            pass
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -133,7 +137,7 @@ def handle_response_fields(
 
 
 def get_included_relationships(
-    results: Union[EntryResource, List[EntryResource]],
+    results: Union[EntryResource, List[EntryResource], Dict, List[Dict]],
     ENTRY_COLLECTIONS: Dict[str, EntryCollection],
     include_param: List[str],
 ) -> List[Union[EntryResource, Dict]]:
@@ -170,11 +174,17 @@ def get_included_relationships(
         if doc is None:
             continue
 
-        relationships = doc.relationships
+        try:
+            relationships = doc.relationships  # type: ignore
+        except AttributeError:
+            relationships = doc.get("relationships", None)
+
         if relationships is None:
             continue
 
-        relationships = relationships.dict()
+        if not isinstance(relationships, dict):
+            relationships = relationships.dict()
+
         for entry_type in ENTRY_COLLECTIONS:
             # Skip entry type if it is not in `include_param`
             if entry_type not in include_param:
@@ -187,7 +197,9 @@ def get_included_relationships(
                     if ref["id"] not in endpoint_includes[entry_type]:
                         endpoint_includes[entry_type][ref["id"]] = ref
 
-    included = {}
+    included: Dict[
+        str, Union[List[EntryResource], EntryResource, List[Dict], Dict]
+    ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
             ['id="{}"'.format(ref_id) for ref_id in endpoint_includes[entry_type]]
@@ -203,6 +215,8 @@ def get_included_relationships(
 
         # still need to handle pagination
         ref_results, _, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
+        if ref_results is None:
+            ref_results = []
         included[entry_type] = ref_results
 
     # flatten dict by endpoint to list
@@ -273,7 +287,7 @@ def get_entries(
 
     return response(
         links=links,
-        data=results,
+        data=results if results else [],
         meta=meta_values(
             url=request.url,
             data_returned=data_returned,
@@ -326,7 +340,7 @@ def get_single_entry(
 
     return response(
         links=links,
-        data=results,
+        data=results if results else None,
         meta=meta_values(
             url=request.url,
             data_returned=data_returned,

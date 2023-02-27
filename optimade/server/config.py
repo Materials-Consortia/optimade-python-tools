@@ -292,6 +292,12 @@ class ServerConfig(BaseSettings):
         description="If True, the server will check whether the query parameters given in the request are correct.",
     )
 
+    validate_api_response: Optional[bool] = Field(
+        True,
+        description="""If False, data from the database will not undergo validation before being emitted by the API, and
+        only the mapping of aliases will occur.""",
+    )
+
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):
         """Set defaults and modify bypassed value(s)"""

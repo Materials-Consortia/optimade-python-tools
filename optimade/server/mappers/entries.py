@@ -363,6 +363,10 @@ class BaseResourceMapper:
     def deserialize(
         cls, results: Union[dict, Iterable[dict]]
     ) -> Union[List[EntryResource], EntryResource]:
+        """Converts the raw database entries for this class into serialized models,
+        mapping the data along the way.
+
+        """
         if isinstance(results, dict):
             return cls.ENTRY_RESOURCE_CLASS(**cls.map_back(results))
 
