@@ -91,7 +91,7 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[List[EntryResource], EntryResource],
+    results: Union[List[EntryResource], EntryResource, List[Dict], Dict],
     exclude_fields: Set[str],
     include_fields: Set[str],
 ) -> List[Dict[str, Any]]:
@@ -117,7 +117,7 @@ def handle_response_fields(
     while results:
         new_entry = results.pop(0)
         try:
-            new_entry = new_entry.dict(exclude_unset=True, by_alias=True)
+            new_entry = new_entry.dict(exclude_unset=True, by_alias=True)  # type: ignore[union-attr]
         except AttributeError:
             pass
 
@@ -197,7 +197,9 @@ def get_included_relationships(
                     if ref["id"] not in endpoint_includes[entry_type]:
                         endpoint_includes[entry_type][ref["id"]] = ref
 
-    included = {}
+    included: Dict[
+        str, Union[List[EntryResource], EntryResource, List[Dict], Dict]
+    ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
             ['id="{}"'.format(ref_id) for ref_id in endpoint_includes[entry_type]]
@@ -213,6 +215,8 @@ def get_included_relationships(
 
         # still need to handle pagination
         ref_results, _, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
+        if ref_results is None:
+            ref_results = []
         included[entry_type] = ref_results
 
     # flatten dict by endpoint to list
