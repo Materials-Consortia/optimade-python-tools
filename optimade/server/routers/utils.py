@@ -618,8 +618,7 @@ def get_single_entry(
         more_data_available = True
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
-        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results) - 1
-        query["continue_from_frame"] = last_frame + 2
+        query["continue_from_frame"] = last_frame + 2  # type: ignore[operator, assignment]
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
         links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
