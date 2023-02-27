@@ -1602,6 +1602,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.validate_api_response" class="md-nav__link">
+    validate_api_response
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.validate_query_parameters" class="md-nav__link">
     validate_query_parameters
   </a>
@@ -2545,6 +2552,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.validate_api_response" class="md-nav__link">
+    validate_api_response
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.validate_query_parameters" class="md-nav__link">
     validate_query_parameters
   </a>
@@ -3100,6 +3114,12 @@ can be easily extended for new config file types.</p>
     <span class="n">validate_query_parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">True</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;If True, the server will check whether the query parameters given in the request are correct.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">validate_api_response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">True</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If False, data from the database will not undergo validation before being emitted by the API, and</span>
+<span class="s2">        only the mapping of aliases will occur.&quot;&quot;&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">pre</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3771,6 +3791,29 @@ can be easily extended for new config file types.</p>
     <div class="doc doc-contents ">
 
       <p>DEPRECATED: force usage of MongoDB over any other backend.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.server.config.ServerConfig.validate_api_response" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_api_response</span><span class="p">:</span> <span class="nb">bool</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.server.config.ServerConfig.validate_api_response" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>If False, data from the database will not undergo validation before being emitted by the API, and
+        only the mapping of aliases will occur.</p>
     </div>
 
   </div>

@@ -1624,6 +1624,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.mappers.entries.BaseResourceMapper.deserialize" class="md-nav__link">
+    deserialize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.mappers.entries.BaseResourceMapper.get_backend_field" class="md-nav__link">
     get_backend_field()
   </a>
@@ -2035,6 +2042,13 @@
           <li class="md-nav__item">
   <a href="#optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases" class="md-nav__link">
     all_length_aliases()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.server.mappers.entries.BaseResourceMapper.deserialize" class="md-nav__link">
+    deserialize()
   </a>
   
 </li>
@@ -2539,6 +2553,10 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
     <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the raw database entries for this class into serialized models,</span>
+<span class="sd">        mapping the data along the way.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">(</span><span class="o">**</span><span class="bp">cls</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
 
@@ -2957,6 +2975,45 @@ including those defined by the server config.</p>
 
   </div>
 
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.server.mappers.entries.BaseResourceMapper.deserialize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">deserialize</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#optimade.server.mappers.entries.BaseResourceMapper.deserialize" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Converts the raw database entries for this class into serialized models,
+mapping the data along the way.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts the raw database entries for this class into serialized models,</span>
+<span class="sd">    mapping the data along the way.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">(</span><span class="o">**</span><span class="bp">cls</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">(</span><span class="o">**</span><span class="bp">cls</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
 
 
 

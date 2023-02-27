@@ -2182,7 +2182,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
     <span class="k">return</span> <span class="n">response</span><span class="p">(</span>
         <span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">,</span>
-        <span class="n">data</span><span class="o">=</span><span class="n">results</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">results</span> <span class="k">if</span> <span class="n">results</span> <span class="k">else</span> <span class="p">[],</span>
         <span class="n">meta</span><span class="o">=</span><span class="n">meta_values</span><span class="p">(</span>
             <span class="n">url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
             <span class="n">data_returned</span><span class="o">=</span><span class="n">data_returned</span><span class="p">,</span>
@@ -2230,7 +2230,7 @@ to include them in the response.</p>
   <tbody>
       <tr>
         <td><code>results</code></td>
-        <td><code>Union[optimade.models.entries.EntryResource, List[optimade.models.entries.EntryResource]]</code></td>
+        <td><code>Union[optimade.models.entries.EntryResource, List[optimade.models.entries.EntryResource], Dict, List[Dict]]</code></td>
         <td><p>list of returned documents.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -2269,7 +2269,7 @@ based on endpoint type.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_included_relationships</span><span class="p">(</span>
-    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]],</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
     <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
     <span class="n">include_param</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]:</span>
@@ -2306,11 +2306,17 @@ based on endpoint type.</p></td>
         <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">continue</span>
 
-        <span class="n">relationships</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">relationships</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">relationships</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">relationships</span>  <span class="c1"># type: ignore</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">relationships</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">relationships</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">continue</span>
 
-        <span class="n">relationships</span> <span class="o">=</span> <span class="n">relationships</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">relationships</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">relationships</span> <span class="o">=</span> <span class="n">relationships</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+
         <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span>
             <span class="c1"># Skip entry type if it is not in `include_param`</span>
             <span class="k">if</span> <span class="n">entry_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">include_param</span><span class="p">:</span>
@@ -2323,7 +2329,9 @@ based on endpoint type.</p></td>
                     <span class="k">if</span> <span class="n">ref</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]:</span>
                         <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">ref</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ref</span>
 
-    <span class="n">included</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">included</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">:</span>
         <span class="n">compound_filter</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="p">[</span><span class="s1">&#39;id=&quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ref_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">ref_id</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]]</span>
@@ -2339,6 +2347,8 @@ based on endpoint type.</p></td>
 
         <span class="c1"># still need to handle pagination</span>
         <span class="n">ref_results</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ENTRY_COLLECTIONS</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ref_results</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ref_results</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">included</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">ref_results</span>
 
     <span class="c1"># flatten dict by endpoint to list</span>
@@ -2413,7 +2423,7 @@ the <code>response_fields</code> OPTIMADE URL query parameter.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_response_fields</span><span class="p">(</span>
-    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">],</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">Dict</span><span class="p">],</span>
     <span class="n">exclude_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">include_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -2437,7 +2447,11 @@ the <code>response_fields</code> OPTIMADE URL query parameter.</p></td>
 
     <span class="n">new_results</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">while</span> <span class="n">results</span><span class="p">:</span>
-        <span class="n">new_entry</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">new_entry</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_entry</span> <span class="o">=</span> <span class="n">new_entry</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
 
         <span class="c1"># Remove fields excluded by their omission in `response_fields`</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">exclude_fields</span><span class="p">:</span>
