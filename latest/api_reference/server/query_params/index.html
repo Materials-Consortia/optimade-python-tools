@@ -2374,14 +2374,14 @@ It is RECOMMENDED that the first page has number 1, i.e., that <code>page_number
       </tr>
       <tr>
         <td><code>page_above</code></td>
-        <td><code>int</code></td>
+        <td><code>str</code></td>
         <td><p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p>
 <p><strong>Example</strong>: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by
 increasing <code>id</code>, so <code>page_above</code> value refers to an <code>id</code> value): <code>/structures?page_above=4000&amp;page_limit=100</code>.</p></td>
       </tr>
       <tr>
         <td><code>page_below</code></td>
-        <td><code>int</code></td>
+        <td><code>str</code></td>
         <td><p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p></td>
       </tr>
       <tr>
@@ -2469,12 +2469,12 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 
 <span class="sd">        page_cursor (int): RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.</span>
 
-<span class="sd">        page_above (int): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.</span>
+<span class="sd">        page_above (str): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.</span>
 
 <span class="sd">            **Example**: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by</span>
 <span class="sd">            increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&amp;page_limit=100`.</span>
 
-<span class="sd">        page_below (int): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.</span>
+<span class="sd">        page_below (str): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.</span>
 
 <span class="sd">        include (str): A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents)</span>
 <span class="sd">            by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).</span>
@@ -2550,15 +2550,13 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.&quot;</span><span class="p">,</span>
             <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">),</span>
-        <span class="n">page_above</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
-            <span class="mi">0</span><span class="p">,</span>
+        <span class="n">page_above</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.</span><span class="se">\n</span><span class="s2">Example: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&amp;page_limit=100`.&quot;</span><span class="p">,</span>
-            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">),</span>
-        <span class="n">page_below</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
-            <span class="mi">0</span><span class="p">,</span>
+        <span class="n">page_below</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.&quot;</span><span class="p">,</span>
-            <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">include</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
             <span class="s2">&quot;references&quot;</span><span class="p">,</span>
