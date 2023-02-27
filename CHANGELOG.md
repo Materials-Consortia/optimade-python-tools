@@ -2,39 +2,23 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.21.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.0...HEAD)
 
-This minor release contains new client functionality and improved support for ASE.
+This release adds a new feature to the reference server for avoiding validating data on the way out of the API (useful in cases where a small amount of leniency is desirable, and will have a minor performance bump). It also fixes a bug in the schema where `page_below` and `page_above` were codified as integers rather than strings.
 
-## New features:
+## [v0.22.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.0) (2023-02-27)
 
-- Ability to specify async callback functions that are called after every client response.
-  This can be used for e.g., iteratively saving to file or a database. For example:
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.21.0...v0.22.0)
 
-  ```python
-  from optimade.client import OptimadeClient
+This release adds a new feature to the reference server for avoiding validating data on the way out of the API (useful in cases where a small amount of leniency is desirable, and will have a minor performance bump). It also fixes a bug in the schema where `page_below` and `page_above` were codified as integers rather than strings.
 
-  DATABASE = pymongo.MongoClient().database.collection
+**Implemented enhancements:**
 
-  def save_callback(url, results) -> None:
-      for structure in results["data"]:
-          DATABASE.insert_one(structure)
+- Add server config option to disable validation of outgoing data [\#1530](https://github.com/Materials-Consortia/optimade-python-tools/pull/1530) ([ml-evs](https://github.com/ml-evs))
 
-  client = OptimadeClient(callbacks=[save_callback])
-  client.get()
-  ```
+**Fixed bugs:**
 
-- Ability to create OPTIMADE structure objects from ASE atoms:
-  ```python
-  from optimade.adapters import Structure
-  from ase import Atoms
-
-  co = Atoms('CO', positions=[(0, 0, 0), (0, 0, 1.1)])
-
-  structure = Structure.from_ase_atoms(co)
-  ```
-
-- Added ability to mute the client progress bars with `--silent`/`silent=True` and increased default response timeouts to better reflect those required for practical queries.
+- Make `page_above/below` strings rather than ints [\#1529](https://github.com/Materials-Consortia/optimade-python-tools/pull/1529) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.21.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.21.0) (2023-02-20)
 
