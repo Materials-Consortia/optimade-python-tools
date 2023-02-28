@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 import httpx
 import pytest
+import requests
 from fastapi.testclient import TestClient
 from starlette import testclient
 
@@ -251,6 +252,21 @@ class HttpxTestClient(httpx.Client):
         url: httpx._types.URLTypes,
         **kwargs,
     ) -> httpx.Response:
+        return self.client.request(method, url)
+
+
+class RequestsTestClient(requests.Session):
+    """An HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    def request(  # pylint: disable=too-many-locals
+        self,
+        method,
+        url,
+        *args,
+        **kwargs,
+    ) -> requests.Response:
         return self.client.request(method, url)
 
 

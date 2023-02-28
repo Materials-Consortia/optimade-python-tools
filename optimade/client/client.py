@@ -10,12 +10,24 @@ import functools
 import json
 import time
 from collections import defaultdict
-from typing import Any, Callable, Dict, Iterable, List, Optional, Set, Tuple, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+    Union,
+)
 from urllib.parse import urlparse
 
 # External deps that are only used in the client code
 try:
     import httpx
+    import requests
     from rich.panel import Panel
     from rich.progress import TaskID
 except ImportError as exc:
@@ -112,8 +124,10 @@ class OptimadeClient:
     """Used internally when querying via `client.structures.get()` to set the
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
 
-    _http_client: Union[httpx.Client, httpx.AsyncClient] = None
-    """Override the HTTP client, primarily used for testing."""
+    _http_client: Optional[
+        Union[Type[httpx.AsyncClient], Type[requests.Session]]
+    ] = None
+    """Override the HTTP client class, primarily used for testing."""
 
     __strict_async: bool = False
     """Whether or not to fallover if `use_async` is true yet asynchronous mode
@@ -132,7 +146,9 @@ class OptimadeClient:
         exclude_providers: Optional[List[str]] = None,
         include_providers: Optional[List[str]] = None,
         exclude_databases: Optional[List[str]] = None,
-        http_client: Union[httpx.Client, httpx.AsyncClient] = None,
+        http_client: Optional[
+            Union[Type[httpx.AsyncClient], Type[requests.Session]]
+        ] = None,
         callbacks: Optional[List[Callable[[str, Dict], None]]] = None,
     ):
         """Create the OPTIMADE client object.
@@ -210,7 +226,7 @@ class OptimadeClient:
                         "Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client."
                     )
                 self.use_async = True
-            elif issubclass(self._http_client, httpx.Client):
+            elif issubclass(self._http_client, requests.Session):
                 if self.use_async and self.__strict_async:
                     raise RuntimeError(
                         "Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client."
@@ -220,7 +236,7 @@ class OptimadeClient:
             if use_async:
                 self._http_client = httpx.AsyncClient
             else:
-                self._http_client = httpx.Client
+                self._http_client = requests.Session
 
         self.callbacks = callbacks
 
@@ -416,8 +432,9 @@ class OptimadeClient:
                             "Detected a running event loop, cannot run in async mode."
                         )
                     self._progress.print(
-                        "Detected a running event loop (e.g., Jupyter, pytest). Running in synchronous mode."
+                        "Detected a running event loop (e.g., Jupyter, pytest). Trying to use nest_asyncio."
                     )
+                    self.use_async = False
             except RuntimeError:
                 event_loop = None
 
@@ -480,7 +497,7 @@ class OptimadeClient:
                 response_fields=response_fields,
                 sort=sort,
             )
-        except (RuntimeError, httpx.TimeoutException, json.JSONDecodeError) as exc:
+        except Exception as exc:
             error_query_results = QueryResults()
             error_query_results.errors = [
                 f"{exc.__class__.__name__}: {str(exc.args[0])}"
@@ -622,12 +639,7 @@ class OptimadeClient:
                 response_fields=response_fields,
                 sort=sort,
             )
-        except (
-            RuntimeError,
-            httpx.TimeoutException,
-            json.JSONDecodeError,
-            Exception,
-        ) as exc:
+        except Exception as exc:
             error_query_results = QueryResults()
             error_query_results.errors = [
                 f"{exc.__class__.__name__}: {str(exc.args[0])}"
@@ -658,7 +670,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            async with self._http_client(headers=self.headers) as client:
+            async with self._http_client(headers=self.headers) as client:  # type: ignore[union-attr,call-arg,misc]
                 while next_url:
                     attempts = 0
                     try:
@@ -716,13 +728,17 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            with self._http_client(headers=self.headers) as client:
+            with self._http_client() as client:  # type: ignore[misc]
+                client.headers.update(self.headers)
+
+                if isinstance(client, requests.Session):
+                    # Convert configured httpx timeout to requests-style tuple
+                    timeout = (self.http_timeout.connect, self.http_timeout.read)
+
                 while next_url:
                     attempts = 0
                     try:
-                        r = client.get(
-                            next_url, follow_redirects=True, timeout=self.http_timeout
-                        )
+                        r = client.get(next_url, timeout=timeout)
                         page_results, next_url = self._handle_response(r, _task)
                     except RecoverableHTTPError:
                         attempts += 1
@@ -869,7 +885,7 @@ class OptimadeClient:
                 raise RuntimeError(exc) from None
 
     def _handle_response(
-        self, response: httpx.Response, _task: TaskID
+        self, response: Union[httpx.Response, requests.Response], _task: TaskID
     ) -> Tuple[Dict[str, Any], str]:
         """Handle the response from the server.
 
@@ -903,7 +919,7 @@ class OptimadeClient:
             r = response.json()
         except json.JSONDecodeError as exc:
             raise RuntimeError(
-                f"Could not decode response as JSON: {response.content}"
+                f"Could not decode response as JSON: {response.content!r}"
             ) from exc
 
         # Accumulate results with correct empty containers if missing
@@ -946,7 +962,9 @@ class OptimadeClient:
                 _task, total=num_results, finished=True, complete=True
             )
 
-    def _execute_callbacks(self, results: Dict, response: httpx.Response) -> None:
+    def _execute_callbacks(
+        self, results: Dict, response: Union[httpx.Response, requests.Response]
+    ) -> None:
         """Execute any callbacks registered with the client.
 
         Parameters:
@@ -954,7 +972,7 @@ class OptimadeClient:
             response: The full response from the server.
 
         """
-        request_url = response.request.url
+        request_url = str(response.request.url)
         if not self.callbacks:
             return
         for callback in self.callbacks:
