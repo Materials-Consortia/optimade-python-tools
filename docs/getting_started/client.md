@@ -13,9 +13,9 @@ This list outlines the current and planned features for the client:
 - [x] Automatically paginate through the results for each query.
 - [x] Validate filters against the OPTIMADE grammar before they are sent to each database.
 - [x] Count the number of results for a query without downloading them all.
+- [x] Cache the results for queries to disk, and use them in future sessions without making new requests (achieved via callbacks).
 - [ ] Valiate the results against the optimade-python-tools models and export into other supported formats (ASE, pymatgen, CIF, AiiDA).
 - [ ] Enable asynchronous use in cases where there is already a running event loop (e.g., inside a Jupyter notebook).
-- [ ] Cache the results for queries to disk, and use them in future sessions without making new requests.
 - [ ] Support for querying databases indirectly via an [OPTIMADE gateway server](https://github.com/Materials-Consortia/optimade-gateway).
 
 ## Installation
@@ -382,3 +382,33 @@ which, at the timing of writing, yields the results:
   }
 }
 ```
+
+### Callbacks
+
+In Python, the client can also be initialized with a list of callbacks.
+These will be executed after every request and will have access to the JSON response and the request URL.
+
+For example, callbacks be used, to save to a file or write to a database, without having to pull all the results into memory.
+Care should be taken if combining an asynchronous client with callbacks, as the callbacks may depend on the execution order of various asynchronous requests and the callbacks themselves may be blocking.
+
+
+=== "Python"
+    ```python
+    # Write a callback that saves into a MongoDB (fake or otherwise)
+    import mongomock as pymongo
+    from optimade.client import OptimadeClient
+
+    db = pymongo.MongoClient().database.structures
+
+    def write_to_db(url, results):
+        for entry in results["data"]:
+            entry.update(entry.pop("attributes"))
+            entry["immutable_id"] = url
+            db.insert_one(entry)
+
+    client = OptimadeClient(callbacks=[write_to_db], silent=True)
+
+    client.get()
+
+    print(db.find_one())
+    ```
