@@ -2231,8 +2231,10 @@ and provider.</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Used internally when querying via `client.structures.get()` to set the</span>
 <span class="sd">    chosen endpoint. Should be reset to `None` outside of all `get()` calls.&quot;&quot;&quot;</span>
 
-    <span class="n">_http_client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the HTTP client, primarily used for testing.&quot;&quot;&quot;</span>
+    <span class="n">_http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the HTTP client class, primarily used for testing.&quot;&quot;&quot;</span>
 
     <span class="n">__strict_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether or not to fallover if `use_async` is true yet asynchronous mode</span>
@@ -2251,7 +2253,9 @@ and provider.</p>
         <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">http_client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
@@ -2329,7 +2333,7 @@ and provider.</p>
                         <span class="s2">&quot;Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client.&quot;</span>
                     <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                         <span class="s2">&quot;Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client.&quot;</span>
@@ -2339,7 +2343,7 @@ and provider.</p>
             <span class="k">if</span> <span class="n">use_async</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">=</span> <span class="n">callbacks</span>
 
@@ -2535,8 +2539,9 @@ and provider.</p>
                             <span class="s2">&quot;Detected a running event loop, cannot run in async mode.&quot;</span>
                         <span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                        <span class="s2">&quot;Detected a running event loop (e.g., Jupyter, pytest). Running in synchronous mode.&quot;</span>
+                        <span class="s2">&quot;Detected a running event loop (e.g., Jupyter, pytest). Trying to use nest_asyncio.&quot;</span>
                     <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                 <span class="n">event_loop</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -2599,7 +2604,7 @@ and provider.</p>
                 <span class="n">response_fields</span><span class="o">=</span><span class="n">response_fields</span><span class="p">,</span>
                 <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">TimeoutException</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
             <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -2741,12 +2746,7 @@ and provider.</p>
                 <span class="n">response_fields</span><span class="o">=</span><span class="n">response_fields</span><span class="p">,</span>
                 <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">except</span> <span class="p">(</span>
-            <span class="ne">RuntimeError</span><span class="p">,</span>
-            <span class="n">httpx</span><span class="o">.</span><span class="n">TimeoutException</span><span class="p">,</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span>
-            <span class="ne">Exception</span><span class="p">,</span>
-        <span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
             <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -2777,7 +2777,7 @@ and provider.</p>
         <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr,call-arg,misc]</span>
                 <span class="k">while</span> <span class="n">next_url</span><span class="p">:</span>
                     <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -2835,13 +2835,17 @@ and provider.</p>
         <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>  <span class="c1"># type: ignore[misc]</span>
+                <span class="n">client</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
+                    <span class="c1"># Convert configured httpx timeout to requests-style tuple</span>
+                    <span class="n">timeout</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span><span class="o">.</span><span class="n">read</span><span class="p">)</span>
+
                 <span class="k">while</span> <span class="n">next_url</span><span class="p">:</span>
                     <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                            <span class="n">next_url</span><span class="p">,</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span>
-                        <span class="p">)</span>
+                        <span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">next_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
                         <span class="n">page_results</span><span class="p">,</span> <span class="n">next_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">_task</span><span class="p">)</span>
                     <span class="k">except</span> <span class="n">RecoverableHTTPError</span><span class="p">:</span>
                         <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -2988,7 +2992,7 @@ and provider.</p>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
 
     <span class="k">def</span> <span class="nf">_handle_response</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">_task</span><span class="p">:</span> <span class="n">TaskID</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">],</span> <span class="n">_task</span><span class="p">:</span> <span class="n">TaskID</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the response from the server.</span>
 
@@ -3022,7 +3026,7 @@ and provider.</p>
             <span class="n">r</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Could not decode response as JSON: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not decode response as JSON: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
 
         <span class="c1"># Accumulate results with correct empty containers if missing</span>
@@ -3065,7 +3069,9 @@ and provider.</p>
                 <span class="n">_task</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">num_results</span><span class="p">,</span> <span class="n">finished</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">complete</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_execute_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_execute_callbacks</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute any callbacks registered with the client.</span>
 
 <span class="sd">        Parameters:</span>
@@ -3073,7 +3079,7 @@ and provider.</p>
 <span class="sd">            response: The full response from the server.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+        <span class="n">request_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
@@ -3371,7 +3377,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
       </tr>
       <tr>
         <td><code>http_client</code></td>
-        <td><code>Union[httpx.Client, httpx.AsyncClient]</code></td>
+        <td><code>Union[Type[httpx.AsyncClient], Type[requests.sessions.Session]]</code></td>
         <td><p>An override for the underlying HTTP client, primarily used for testing.</p></td>
         <td><code>None</code></td>
       </tr>
@@ -3399,7 +3405,9 @@ docstring for more details.</p></td>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">http_client</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
@@ -3477,7 +3485,7 @@ docstring for more details.</p></td>
                     <span class="s2">&quot;Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client.&quot;</span>
                 <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                     <span class="s2">&quot;Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client.&quot;</span>
@@ -3487,7 +3495,7 @@ docstring for more details.</p></td>
         <span class="k">if</span> <span class="n">use_async</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">=</span> <span class="n">callbacks</span>
 </code></pre></div>
@@ -3889,7 +3897,7 @@ after one page.</p></td>
             <span class="n">response_fields</span><span class="o">=</span><span class="n">response_fields</span><span class="p">,</span>
             <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
         <span class="p">)</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">TimeoutException</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -4046,12 +4054,7 @@ after one page.</p></td>
             <span class="n">response_fields</span><span class="o">=</span><span class="n">response_fields</span><span class="p">,</span>
             <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span>
         <span class="p">)</span>
-    <span class="k">except</span> <span class="p">(</span>
-        <span class="ne">RuntimeError</span><span class="p">,</span>
-        <span class="n">httpx</span><span class="o">.</span><span class="n">TimeoutException</span><span class="p">,</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span>
-        <span class="ne">Exception</span><span class="p">,</span>
-    <span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>

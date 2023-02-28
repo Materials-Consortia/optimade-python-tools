@@ -408,6 +408,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#callbacks" class="md-nav__link">
+    Callbacks
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2007,6 +2014,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#callbacks" class="md-nav__link">
+    Callbacks
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2038,9 +2052,9 @@ The client can be used from the command-line (<code>optimade-get</code>), or cal
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Automatically paginate through the results for each query.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Validate filters against the OPTIMADE grammar before they are sent to each database.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Count the number of results for a query without downloading them all.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Cache the results for queries to disk, and use them in future sessions without making new requests (achieved via callbacks).</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Valiate the results against the optimade-python-tools models and export into other supported formats (ASE, pymatgen, CIF, AiiDA).</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Enable asynchronous use in cases where there is already a running event loop (e.g., inside a Jupyter notebook).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Cache the results for queries to disk, and use them in future sessions without making new requests.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Support for querying databases indirectly via an <a href="https://github.com/Materials-Consortia/optimade-gateway">OPTIMADE gateway server</a>.</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
@@ -2382,6 +2396,35 @@ We can use this to repeat the queries from the <a href="https://doi.org/10.1038/
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<h3 id="callbacks">Callbacks<a class="headerlink" href="#callbacks" title="Permanent link">&para;</a></h3>
+<p>In Python, the client can also be initialized with a list of callbacks.
+These will be executed after every request and will have access to the JSON response and the request URL.</p>
+<p>For example, callbacks be used, to save to a file or write to a database, without having to pull all the results into memory.
+Care should be taken if combining an asynchronous client with callbacks, as the callbacks may depend on the execution order of various asynchronous requests and the callbacks themselves may be blocking.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:1"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">Python</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="c1"># Write a callback that saves into a MongoDB (fake or otherwise)</span>
+<span class="kn">import</span> <span class="nn">mongomock</span> <span class="k">as</span> <span class="nn">pymongo</span>
+<span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">()</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">structures</span>
+
+<span class="k">def</span> <span class="nf">write_to_db</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">))</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">write_to_db</span><span class="p">],</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">find_one</span><span class="p">())</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 
 
 
