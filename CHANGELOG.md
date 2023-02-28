@@ -2,9 +2,22 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.1...HEAD)
 
-This release adds a new feature to the reference server for avoiding validating data on the way out of the API (useful in cases where a small amount of leniency is desirable, and will have a minor performance bump). It also fixes a bug in the schema where `page_below` and `page_above` were codified as integers rather than strings.
+**Closed issues:**
+
+- Add docs examples for client callbacks [\#1527](https://github.com/Materials-Consortia/optimade-python-tools/issues/1527)
+- Cannot use the `OptimadeClient` in async mode with an existing event loop [\#1195](https://github.com/Materials-Consortia/optimade-python-tools/issues/1195)
+
+## [v0.22.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.1) (2023-02-28)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.0...v0.22.1)
+
+This patch release changes the synchronous functionality of `OptimadeClient` to use "vanilla" requests rather than httpx. This enables easier use inside of Jupyter notebooks.
+
+**Merged pull requests:**
+
+- Replace httpx usage in synchronous `OptimadeClient` with requests  [\#1536](https://github.com/Materials-Consortia/optimade-python-tools/pull/1536) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.22.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.0) (2023-02-27)
 
