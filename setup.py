@@ -63,7 +63,7 @@ dev_deps = (
         "pre-commit~=3.0",
         "invoke~=2.0",
         "types-all==1.0.0",
-        "ruff==0.0.247",
+        "ruff~=0.0",
     ]
     + docs_deps
     + testing_deps
