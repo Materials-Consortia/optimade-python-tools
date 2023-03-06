@@ -8,7 +8,7 @@ jsondiff==2.0.0
 mypy==1.0.1
 pre-commit==3.1.0
 pylint==2.16.2
-pytest==7.2.1
+pytest==7.2.2
 pytest-cov==4.0.0
 ruff==0.0.252
 types-all==1.0.0
