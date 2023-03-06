@@ -29,6 +29,7 @@ filterwarnings = [
     "ignore:.*is missing fields.*which are required if.*:",
     "ignore:.*the imp module is deprecated in favour of importlib.*:DeprecationWarning",
     "ignore:.*has an unrecognised prefix.*:",
+    "ignore:.*pkg_resources is deprecated as an API*:DeprecationWarning",
 ]
 testpaths = "tests"
 addopts = "-rs"
