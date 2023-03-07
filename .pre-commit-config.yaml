@@ -24,7 +24,7 @@ repos:
       args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.0.253'
+    rev: 'v0.0.254'
     hooks:
     - id: ruff
       args: [--fix]
@@ -46,7 +46,7 @@ repos:
       description: Update the API Reference documentation whenever a Python file is touched in the code base.
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.0.1
+    rev: v1.1.1
     hooks:
       - id: mypy
         name: "MyPy"
