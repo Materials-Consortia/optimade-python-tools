@@ -937,7 +937,7 @@ class ImplementationValidator:
                     ].get("data_returned"):
                         raise ResponseError(
                             f"Query {query} did not work both ways around: {reversed_query}, "
-                            "returning different results each time."
+                            "returning a different number of results each time (as reported by `meta->data_returned`)"
                         )
 
                 # check that the filter returned no entries that had a null or missing value for the filtered property
@@ -1082,7 +1082,7 @@ class ImplementationValidator:
 
         if deserialized.meta.data_available != deserialized.meta.data_returned:
             raise ResponseError(
-                "No query was performed, but `data_returned` != `data_available`."
+                f"No query was performed, but `data_returned` != `data_available` {deserialized.meta.data_returned} vs {deserialized.meta.data_available}."
             )
 
         return (
