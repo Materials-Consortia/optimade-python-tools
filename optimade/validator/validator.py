@@ -1006,9 +1006,8 @@ class ImplementationValidator:
             if response_fields:
                 request_str += f"?response_fields={','.join(response_fields)}"
             response, _ = self._get_endpoint(request_str)
-            self._test_meta_schema_reporting(response, request_str, optional=True)
-
             if response:
+                self._test_meta_schema_reporting(response, request_str, optional=True)
                 self._deserialize_response(response, response_cls, request=request_str)
 
     def _test_multi_entry_endpoint(self, endp: str) -> None:
