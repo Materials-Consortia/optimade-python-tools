@@ -2954,7 +2954,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                     <span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_returned&quot;</span><span class="p">):</span>
                         <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
                             <span class="sa">f</span><span class="s2">&quot;Query </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2"> did not work both ways around: </span><span class="si">{</span><span class="n">reversed_query</span><span class="si">}</span><span class="s2">, &quot;</span>
-                            <span class="s2">&quot;returning different results each time.&quot;</span>
+                            <span class="s2">&quot;returning a different number of results each time (as reported by `meta-&gt;data_returned`)&quot;</span>
                         <span class="p">)</span>
 
                 <span class="c1"># check that the filter returned no entries that had a null or missing value for the filtered property</span>
@@ -3023,9 +3023,8 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
             <span class="k">if</span> <span class="n">response_fields</span><span class="p">:</span>
                 <span class="n">request_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;?response_fields=</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="n">response</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span><span class="n">request_str</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_test_meta_schema_reporting</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">request_str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
             <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_test_meta_schema_reporting</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">request_str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_deserialize_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="n">request_str</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_test_multi_entry_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3100,7 +3099,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
         <span class="k">if</span> <span class="n">deserialized</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">data_available</span> <span class="o">!=</span> <span class="n">deserialized</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">data_returned</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
-                <span class="s2">&quot;No query was performed, but `data_returned` != `data_available`.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;No query was performed, but `data_returned` != `data_available` </span><span class="si">{</span><span class="n">deserialized</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">data_returned</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">deserialized</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">data_available</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span>
