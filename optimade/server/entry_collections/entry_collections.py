@@ -369,7 +369,7 @@ class EntryCollection(ABC):
 
         # warn if multiple pagination keys are present, and only use the first from this list
         received_pagination_option = False
-        warn_multiple_keys = True
+        warn_multiple_keys = False
 
         if getattr(params, "page_offset", False):
             received_pagination_option = True
