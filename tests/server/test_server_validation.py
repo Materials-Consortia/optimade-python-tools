@@ -26,7 +26,7 @@ def test_with_validator_skip_optional(both_fake_remote_clients):
     validator = ImplementationValidator(
         client=both_fake_remote_clients,
         index=both_fake_remote_clients.app == app,
-        run_optional_tests=True,
+        run_optional_tests=False,
     )
 
     validator.validate_implementation()

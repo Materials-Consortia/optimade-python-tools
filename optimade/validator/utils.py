@@ -355,8 +355,7 @@ def test_case(test_fn: Callable[..., Tuple[Any, str]]):
             # If the result was None, return it here and ignore statuses
             if result is None:
                 return result, msg
-            else:
-                display_request = requests.utils.requote_uri(request.replace("\n", ""))  # type: ignore[union-attr]
+            display_request = requests.utils.requote_uri(request.replace("\n", ""))  # type: ignore[union-attr]
 
             if not isinstance(result, Exception):
                 if not multistage:
