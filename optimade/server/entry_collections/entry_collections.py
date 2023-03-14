@@ -1,3 +1,4 @@
+import enum
 import re
 import warnings
 from abc import ABC, abstractmethod
@@ -61,9 +62,21 @@ def create_collection(
     )
 
 
+class PaginationMechanism(enum.Enum):
+    """The supported pagination mechanisms."""
+
+    OFFSET = "page_offset"
+    NUMBER = "page_number"
+    CURSOR = "page_cursor"
+    ABOVE = "page_above"
+    BELOW = "page_below"
+
+
 class EntryCollection(ABC):
     """Backend-agnostic base class for querying collections of
     [`EntryResource`][optimade.models.entries.EntryResource]s."""
+
+    pagination_mechanism = PaginationMechanism("page_offset")
 
     def __init__(
         self,
