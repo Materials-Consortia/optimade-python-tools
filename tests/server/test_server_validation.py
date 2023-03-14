@@ -20,6 +20,19 @@ def test_with_validator(both_fake_remote_clients):
     assert validator.valid
 
 
+def test_with_validator_skip_optional(both_fake_remote_clients):
+    from optimade.server.main_index import app
+
+    validator = ImplementationValidator(
+        client=both_fake_remote_clients,
+        index=both_fake_remote_clients.app == app,
+        run_optional_tests=True,
+    )
+
+    validator.validate_implementation()
+    assert validator.valid
+
+
 def test_with_validator_json_response(both_fake_remote_clients, capsys):
     """Test that the validator writes compliant JSON when requested."""
     from optimade.server.main_index import app
