@@ -2824,7 +2824,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                 <span class="n">expected_status_code</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">501</span><span class="p">),</span>
             <span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">query_optional</span><span class="p">:</span>
                     <span class="k">return</span> <span class="p">(</span>
                         <span class="kc">None</span><span class="p">,</span>
