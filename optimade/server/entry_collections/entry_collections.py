@@ -395,7 +395,7 @@ class EntryCollection(ABC):
                 warn_multiple_keys = True
             else:
                 received_pagination_option = True
-                cursor_kwargs["page_above"] = params.page_above
+                cursor_kwargs["page_above"] = params.page_above  # type: ignore[union-attr]
 
         if warn_multiple_keys:
             warnings.warn(
