@@ -186,6 +186,6 @@ def test_default_pagination(check_response):
         SupportedBackend.MONGODB,
         SupportedBackend.MONGOMOCK,
     ):
-        assert "page_offset" in response.links.next
+        assert "page_offset" in response["links"]["next"]
     if CONFIG.database_backend == SupportedBackend.ELASTIC:
-        assert "page_above" in response.links.next
+        assert "page_above" in response["links"]["next"]
