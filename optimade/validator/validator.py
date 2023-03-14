@@ -807,7 +807,7 @@ class ImplementationValidator:
                 expected_status_code=(200, 501),
             )
 
-            if response.status_code != 200:
+            if response is None or response.status_code != 200:
                 if query_optional:
                     return (
                         None,
