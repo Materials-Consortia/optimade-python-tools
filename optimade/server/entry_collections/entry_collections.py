@@ -77,6 +77,9 @@ class EntryCollection(ABC):
     [`EntryResource`][optimade.models.entries.EntryResource]s."""
 
     pagination_mechanism = PaginationMechanism("page_offset")
+    """The default pagination mechansim to use with a given collection,
+    if the user does not provide any pagination query parameters.
+    """
 
     def __init__(
         self,

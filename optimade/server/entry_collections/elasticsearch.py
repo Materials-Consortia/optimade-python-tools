@@ -19,7 +19,7 @@ if CONFIG.database_backend.value == "elastic":
 
 
 class ElasticCollection(EntryCollection):
-    pagination_mechanism = PaginationMechanism("value")
+    pagination_mechanism = PaginationMechanism("page_above")
 
     def __init__(
         self,
