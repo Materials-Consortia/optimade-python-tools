@@ -371,7 +371,7 @@ class EntryCollection(ABC):
         received_pagination_option = False
         warn_multiple_keys = True
 
-        if isinstance(getattr(params, "page_offset", False), int):
+        if getattr(params, "page_offset", False):
             received_pagination_option = True
             cursor_kwargs["skip"] = params.page_offset  # type: ignore[union-attr]
 
