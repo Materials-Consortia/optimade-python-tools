@@ -355,13 +355,15 @@ def test_case(test_fn: Callable[..., Tuple[Any, str]]):
             # If the result was None, return it here and ignore statuses
             if result is None:
                 return result, msg
+            display_request = requests.utils.requote_uri(request.replace("\n", ""))  # type: ignore[union-attr]
 
             if not isinstance(result, Exception):
                 if not multistage:
                     success_type = "optional" if optional else None
-                    validator.results.add_success(f"{request} - {msg}", success_type)
+                    validator.results.add_success(
+                        f"{display_request} - {msg}", success_type
+                    )
             else:
-                request = request.replace("\n", "")  # type: ignore[union-attr]
                 message = msg.split("\n")
                 if validator.verbosity > 1:
                     # ValidationErrors from pydantic already include very detailed errors
@@ -371,12 +373,12 @@ def test_case(test_fn: Callable[..., Tuple[Any, str]]):
 
                 failure_type = None
                 if isinstance(result, InternalError):
-                    summary = (
-                        f"{request} - {test_fn.__name__} - failed with internal error"
-                    )
+                    summary = f"{display_request} - {test_fn.__name__} - failed with internal error"
                     failure_type = "internal"
                 else:
-                    summary = f"{request} - {test_fn.__name__} - failed with error"
+                    summary = (
+                        f"{display_request} - {test_fn.__name__} - failed with error"
+                    )
                     failure_type = "optional" if optional else None
 
                 validator.results.add_failure(
