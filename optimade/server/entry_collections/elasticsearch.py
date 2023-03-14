@@ -195,7 +195,8 @@ class ElasticCollection(EntryCollection):
             search = search.extra(search_after=page_above, limit=limit)
 
         else:
-            search = search[:limit]
+            search = search[0:limit]
+            page_offset = 0
 
         search = search.extra(track_total_hits=True)
         response = search.execute()
@@ -204,7 +205,7 @@ class ElasticCollection(EntryCollection):
 
         if not single_entry:
             data_returned = response.hits.total.value
-            if page_offset:
+            if page_offset is not None:
                 more_data_available = page_offset + limit < data_returned
             else:
                 # Needs to be set by some custom elastic query: is the ID the last ID?
