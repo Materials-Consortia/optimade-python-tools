@@ -19,7 +19,7 @@ if CONFIG.database_backend.value == "elastic":
 
 
 class ElasticCollection(EntryCollection):
-    pagination_mechanism = PaginationMechanism("page_above")
+    pagination_mechanism = PaginationMechanism("page_offset")
 
     def __init__(
         self,
@@ -193,6 +193,9 @@ class ElasticCollection(EntryCollection):
 
         elif page_above:
             search = search.extra(search_after=page_above, limit=limit)
+
+        else:
+            search = search[:limit]
 
         search = search.extra(track_total_hits=True)
         response = search.execute()

@@ -188,4 +188,5 @@ def test_default_pagination(check_response):
     ):
         assert "page_offset" in response["links"]["next"]
     if CONFIG.database_backend == SupportedBackend.ELASTIC:
-        assert "page_above" in response["links"]["next"]
+        # Replace with `page_above` once default is changed
+        assert "page_offset" in response["links"]["next"]
