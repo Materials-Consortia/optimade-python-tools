@@ -98,7 +98,7 @@ The easiest way to deploy these databases and run the tests is with Docker, as s
 [Docker installation instructions](https://docs.docker.com/engine/install/) will depend on your system; on Linux, the `docker` commands below may need to be prepended with `sudo`, depending on your distribution.
 These commands should be run from a local optimade-python-tools directory.
 
-The following command starts a local Elasticsearch v6 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):
+The following command starts a local Elasticsearch v7 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):
 
 ```shell
 docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:7.17.7 \
