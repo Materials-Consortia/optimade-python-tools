@@ -807,7 +807,7 @@ class ImplementationValidator:
                 expected_status_code=(200, 501),
             )
 
-            if response.status_code != 200:
+            if response is None or response.status_code != 200:
                 if query_optional:
                     return (
                         None,
@@ -937,7 +937,7 @@ class ImplementationValidator:
                     ].get("data_returned"):
                         raise ResponseError(
                             f"Query {query} did not work both ways around: {reversed_query}, "
-                            "returning different results each time."
+                            "returning a different number of results each time (as reported by `meta->data_returned`)"
                         )
 
                 # check that the filter returned no entries that had a null or missing value for the filtered property
@@ -1006,9 +1006,8 @@ class ImplementationValidator:
             if response_fields:
                 request_str += f"?response_fields={','.join(response_fields)}"
             response, _ = self._get_endpoint(request_str)
-            self._test_meta_schema_reporting(response, request_str, optional=True)
-
             if response:
+                self._test_meta_schema_reporting(response, request_str, optional=True)
                 self._deserialize_response(response, response_cls, request=request_str)
 
     def _test_multi_entry_endpoint(self, endp: str) -> None:
@@ -1083,7 +1082,7 @@ class ImplementationValidator:
 
         if deserialized.meta.data_available != deserialized.meta.data_returned:
             raise ResponseError(
-                "No query was performed, but `data_returned` != `data_available`."
+                f"No query was performed, but `data_returned` != `data_available` {deserialized.meta.data_returned} vs {deserialized.meta.data_available}."
             )
 
         return (
@@ -1430,6 +1429,7 @@ class ImplementationValidator:
             and a string summary.
 
         """
+        available_json_entry_endpoints = []
         for _ in [0]:
             try:
                 available_json_entry_endpoints = base_info["data"]["attributes"][

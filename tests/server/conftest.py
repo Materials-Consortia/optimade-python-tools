@@ -247,6 +247,13 @@ def check_error_response(client, index_client):
 
 @pytest.fixture(scope="session")
 def http_client():
-    from .utils import HttpxTestClient
+    from .utils import RequestsTestClient
 
-    return HttpxTestClient
+    return RequestsTestClient
+
+
+@pytest.fixture(scope="session")
+def async_http_client():
+    from .utils import AsyncHttpxTestClient
+
+    return AsyncHttpxTestClient

@@ -23,10 +23,11 @@ repos:
     - id: trailing-whitespace
       args: [--markdown-linebreak-ext=md]
 
-  - repo: https://github.com/pycqa/flake8
-    rev: '6.0.0'
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.254'
     hooks:
-    - id: flake8
+    - id: ruff
+      args: [--fix]
 
   - repo: local
     hooks:
@@ -45,14 +46,8 @@ repos:
       description: Update the API Reference documentation whenever a Python file is touched in the code base.
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.991
+    rev: v1.1.1
     hooks:
       - id: mypy
         name: "MyPy"
         additional_dependencies: ["types-all", "pydantic~=1.10"]
-
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        name: "isort"

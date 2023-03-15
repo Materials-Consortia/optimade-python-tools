@@ -10,12 +10,24 @@ import functools
 import json
 import time
 from collections import defaultdict
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+    Union,
+)
 from urllib.parse import urlparse
 
 # External deps that are only used in the client code
 try:
     import httpx
+    import requests
     from rich.panel import Panel
     from rich.progress import TaskID
 except ImportError as exc:
@@ -76,7 +88,7 @@ class OptimadeClient:
     headers: Dict = {"User-Agent": f"optimade-python-tools/{__version__}"}
     """Additional HTTP headers."""
 
-    http_timeout: int
+    http_timeout: httpx.Timeout = httpx.Timeout(10.0, read=1000.0)
     """The timeout to use for each HTTP request."""
 
     max_attempts: int
@@ -84,6 +96,20 @@ class OptimadeClient:
 
     use_async: bool
     """Whether or not to make all requests asynchronously using asyncio."""
+
+    callbacks: Optional[List[Callable[[str, Dict], None]]] = None
+    """A list of callbacks to execute after each successful request, used
+    to e.g., write to a file, add results to a database or perform additional
+    filtering.
+
+    The callbacks will receive the request URL and the results extracted
+    from the JSON response, with keys 'data', 'meta', 'links', 'errors'
+    and 'included'.
+
+    """
+
+    silent: bool
+    """Whether to disable progress bar printing."""
 
     _excluded_providers: Optional[Set[str]] = None
     """A set of providers IDs excluded from future queries."""
@@ -98,36 +124,52 @@ class OptimadeClient:
     """Used internally when querying via `client.structures.get()` to set the
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
 
-    __http_client: Union[httpx.Client, httpx.AsyncClient] = None
-    """Override the HTTP client, primarily used for testing."""
+    _http_client: Optional[
+        Union[Type[httpx.AsyncClient], Type[requests.Session]]
+    ] = None
+    """Override the HTTP client class, primarily used for testing."""
+
+    __strict_async: bool = False
+    """Whether or not to fallover if `use_async` is true yet asynchronous mode
+    is impossible due to, e.g., a running event loop.
+    """
 
     def __init__(
         self,
         base_urls: Optional[Union[str, Iterable[str]]] = None,
         max_results_per_provider: int = 1000,
         headers: Optional[Dict] = None,
-        http_timeout: int = 10,
+        http_timeout: Optional[Union[httpx.Timeout, float]] = None,
         max_attempts: int = 5,
         use_async: bool = True,
+        silent: bool = False,
         exclude_providers: Optional[List[str]] = None,
         include_providers: Optional[List[str]] = None,
         exclude_databases: Optional[List[str]] = None,
-        http_client: Union[httpx.Client, httpx.AsyncClient] = None,
+        http_client: Optional[
+            Union[Type[httpx.AsyncClient], Type[requests.Session]]
+        ] = None,
+        callbacks: Optional[List[Callable[[str, Dict], None]]] = None,
     ):
         """Create the OPTIMADE client object.
 
         Parameters:
             base_urls: A list of OPTIMADE base URLs to query.
             max_results_per_provider: The maximum number of results to download
-                from each provider.
+                from each provider (-1 or 0 indicate unlimited).
             headers: Any additional HTTP headers to use for the queries.
-            http_timeout: The HTTP timeout to use per request.
+            http_timeout: The timeout to use per request. Defaults to 10
+                seconds with 1000 seconds for reads specifically. Overriding this value
+                will replace all timeouts (connect, read, write and pool) with this value.
             max_attempts: The maximum number of times to repeat a failing query.
             use_async: Whether or not to make all requests asynchronously.
             exclude_providers: A set or collection of provider IDs to exclude from queries.
             include_providers: A set or collection of provider IDs to include in queries.
             exclude_databases: A set or collection of child database URLs to exclude from queries.
             http_client: An override for the underlying HTTP client, primarily used for testing.
+            callbacks: A list of functions to call after each successful response, see the
+                attribute [`OptimadeClient.callbacks`][optimade.client.OptimadeClient.callbacks]
+                docstring for more details.
 
         """
 
@@ -165,22 +207,38 @@ class OptimadeClient:
         if headers:
             self.headers.update(headers)
 
-        self.http_timeout = http_timeout
+        if http_timeout:
+            if isinstance(http_timeout, httpx.Timeout):
+                self.http_timeout = http_timeout
+            else:
+                self.http_timeout = httpx.Timeout(http_timeout)
+
         self.max_attempts = max_attempts
+        self.silent = silent
 
         self.use_async = use_async
 
         if http_client:
-            self.__http_client = http_client
-            if isinstance(self.__http_client, httpx.AsyncClient):
+            self._http_client = http_client
+            if issubclass(self._http_client, httpx.AsyncClient):
+                if not self.use_async and self.__strict_async:
+                    raise RuntimeError(
+                        "Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client."
+                    )
                 self.use_async = True
-            elif isinstance(self.__http_client, httpx.Client):
+            elif issubclass(self._http_client, requests.Session):
+                if self.use_async and self.__strict_async:
+                    raise RuntimeError(
+                        "Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client."
+                    )
                 self.use_async = False
         else:
             if use_async:
-                self.__http_client = httpx.AsyncClient
+                self._http_client = httpx.AsyncClient
             else:
-                self.__http_client = httpx.Client
+                self._http_client = requests.Session
+
+        self.callbacks = callbacks
 
     def __getattribute__(self, name):
         """Allows entry endpoints to be queried via attribute access, using the
@@ -247,17 +305,20 @@ class OptimadeClient:
         if filter is None:
             filter = ""
 
+        self._progress = OptimadeClientProgress()
+        if self.silent:
+            self._progress.disable = True
+
         self._check_filter(filter, endpoint)
 
-        self._progress = OptimadeClientProgress()
-
         with self._progress:
-            self._progress.print(
-                Panel(
-                    f"Performing query [bold yellow]{endpoint}[/bold yellow]/?filter=[bold magenta][i]{filter}[/i][/bold magenta]",
-                    expand=False,
+            if not self.silent:
+                self._progress.print(
+                    Panel(
+                        f"Performing query [bold yellow]{endpoint}[/bold yellow]/?filter=[bold magenta][i]{filter}[/i][/bold magenta]",
+                        expand=False,
+                    )
                 )
-            )
             results = self._execute_queries(
                 filter,
                 endpoint,
@@ -294,22 +355,26 @@ class OptimadeClient:
         if filter is None:
             filter = ""
 
+        self._progress = OptimadeClientProgress()
+        if self.silent:
+            self._progress.disable = True
+
         self._check_filter(filter, endpoint)
 
-        self._progress = OptimadeClientProgress()
         with self._progress:
-            self._progress.print(
-                Panel(
-                    f"Counting results for [bold yellow]{endpoint}[/bold yellow]/?filter=[bold magenta][i]{filter}[/i][/bold magenta]",
-                    expand=False,
+            if not self.silent:
+                self._progress.print(
+                    Panel(
+                        f"Counting results for [bold yellow]{endpoint}[/bold yellow]/?filter=[bold magenta][i]{filter}[/i][/bold magenta]",
+                        expand=False,
+                    )
                 )
-            )
             results = self._execute_queries(
                 filter,
                 endpoint,
                 page_limit=1,
                 paginate=False,
-                response_fields=None,
+                response_fields=[],
                 sort=None,
             )
             count_results = {}
@@ -321,7 +386,7 @@ class OptimadeClient:
 
                 if count_results[base_url] is None:
                     self._progress.print(
-                        f"Warning: {base_url} did not return a value for `meta->data_returned`, unable to count results."
+                        f"Warning: {base_url} did not return a value for `meta->data_returned`, unable to count results. Full response: {results[base_url]}"
                     )
 
             self.count_results[endpoint][filter] = count_results
@@ -362,9 +427,14 @@ class OptimadeClient:
             try:
                 event_loop = asyncio.get_running_loop()
                 if event_loop:
+                    if self.__strict_async:
+                        raise RuntimeError(
+                            "Detected a running event loop, cannot run in async mode."
+                        )
                     self._progress.print(
-                        "Detected a running event loop (e.g., Jupyter, pytest). Running in synchronous mode."
+                        "Detected a running event loop (e.g., Jupyter, pytest). Trying to use nest_asyncio."
                     )
+                    self.use_async = False
             except RuntimeError:
                 event_loop = None
 
@@ -427,9 +497,11 @@ class OptimadeClient:
                 response_fields=response_fields,
                 sort=sort,
             )
-        except (RuntimeError, httpx.TimeoutException, json.JSONDecodeError) as exc:
+        except Exception as exc:
             error_query_results = QueryResults()
-            error_query_results.errors = [str(exc)]
+            error_query_results.errors = [
+                f"{exc.__class__.__name__}: {str(exc.args[0])}"
+            ]
             self._progress.print(
                 f"[red]Error[/red]: Provider {str(base_url)!r} returned: [red i]{exc}[/red i]"
             )
@@ -567,16 +639,13 @@ class OptimadeClient:
                 response_fields=response_fields,
                 sort=sort,
             )
-        except (
-            RuntimeError,
-            httpx.TimeoutException,
-            json.JSONDecodeError,
-            Exception,
-        ) as exc:
+        except Exception as exc:
             error_query_results = QueryResults()
-            error_query_results.errors = [str(exc)]
+            error_query_results.errors = [
+                f"{exc.__class__.__name__}: {str(exc.args[0])}"
+            ]
             self._progress.print(
-                f"[red]Error[/red]: Provider {str(base_url)!r} returned: [red i]{exc}[/red i]"
+                f"[red]Error[/red]: Provider {str(base_url)!r} returned: [red i]{error_query_results.errors}[/red i]"
             )
             return {base_url: error_query_results}
 
@@ -601,7 +670,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            async with self.__http_client(headers=self.headers) as client:
+            async with self._http_client(headers=self.headers) as client:  # type: ignore[union-attr,call-arg,misc]
                 while next_url:
                     attempts = 0
                     try:
@@ -627,9 +696,10 @@ class OptimadeClient:
                         self.max_results_per_provider
                         and len(results.data) >= self.max_results_per_provider
                     ):
-                        self._progress.print(
-                            f"Reached {len(results.data)} results for {base_url}, exceeding `max_results_per_provider` parameter ({self.max_results_per_provider}). Stopping download."
-                        )
+                        if not self.silent:
+                            self._progress.print(
+                                f"Reached {len(results.data)} results for {base_url}, exceeding `max_results_per_provider` parameter ({self.max_results_per_provider}). Stopping download."
+                            )
                         break
 
             return {str(base_url): results}
@@ -658,13 +728,17 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            with self.__http_client(headers=self.headers) as client:
+            with self._http_client() as client:  # type: ignore[misc]
+                client.headers.update(self.headers)
+
+                if isinstance(client, requests.Session):
+                    # Convert configured httpx timeout to requests-style tuple
+                    timeout = (self.http_timeout.connect, self.http_timeout.read)
+
                 while next_url:
                     attempts = 0
                     try:
-                        r = client.get(
-                            next_url, follow_redirects=True, timeout=self.http_timeout
-                        )
+                        r = client.get(next_url, timeout=timeout)
                         page_results, next_url = self._handle_response(r, _task)
                     except RecoverableHTTPError:
                         attempts += 1
@@ -681,9 +755,10 @@ class OptimadeClient:
                         self.max_results_per_provider
                         and len(results.data) >= self.max_results_per_provider
                     ):
-                        self._progress.print(
-                            f"Reached {len(results.data)} results for {base_url}, exceeding `max_results_per_provider` parameter ({self.max_results_per_provider}). Stopping download."
-                        )
+                        if not self.silent:
+                            self._progress.print(
+                                f"Reached {len(results.data)} results for {base_url}, exceeding `max_results_per_provider` parameter ({self.max_results_per_provider}). Stopping download."
+                            )
                         break
 
                     if not paginate:
@@ -765,8 +840,12 @@ class OptimadeClient:
 
         if filter:
             _filter = f"filter={filter}"
-        if response_fields:
-            _response_fields = f'response_fields={",".join(response_fields)}'
+        if response_fields is not None:
+            # If we have requested no response fields (e.g., in the case of --count) then just ask for IDs
+            if len(response_fields) == 0:
+                _response_fields = "response_fields=id"
+            else:
+                _response_fields = f'response_fields={",".join(response_fields)}'
         if page_limit:
             _page_limit = f"page_limit={page_limit}"
         if sort:
@@ -806,7 +885,7 @@ class OptimadeClient:
                 raise RuntimeError(exc) from None
 
     def _handle_response(
-        self, response: httpx.Response, _task: TaskID
+        self, response: Union[httpx.Response, requests.Response], _task: TaskID
     ) -> Tuple[Dict[str, Any], str]:
         """Handle the response from the server.
 
@@ -840,7 +919,7 @@ class OptimadeClient:
             r = response.json()
         except json.JSONDecodeError as exc:
             raise RuntimeError(
-                f"Could not decode response as JSON: {response.content}"
+                f"Could not decode response as JSON: {response.content!r}"
             ) from exc
 
         # Accumulate results with correct empty containers if missing
@@ -858,6 +937,9 @@ class OptimadeClient:
             advance=len(results["data"]),
             total=results["meta"].get("data_returned", None),
         )
+
+        if self.callbacks:
+            self._execute_callbacks(results, response)
 
         next_url = results["links"].get("next", None)
         if isinstance(next_url, dict):
@@ -879,3 +961,19 @@ class OptimadeClient:
             self._progress.update(
                 _task, total=num_results, finished=True, complete=True
             )
+
+    def _execute_callbacks(
+        self, results: Dict, response: Union[httpx.Response, requests.Response]
+    ) -> None:
+        """Execute any callbacks registered with the client.
+
+        Parameters:
+            results: The results from the query.
+            response: The full response from the server.
+
+        """
+        request_url = str(response.request.url)
+        if not self.callbacks:
+            return
+        for callback in self.callbacks:
+            callback(request_url, results)

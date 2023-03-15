@@ -4,14 +4,11 @@
 <img width="100px" align="center" src="https://matsci.org/uploads/default/original/2X/b/bd2f59b3bf14fb046b74538750699d7da4c19ac1.svg">
 </div>
 
-<h1 align="center">
-OPTIMADE Python tools
-</h1>
-
+# <div align="center">OPTIMADE Python tools</div>
 
 <div align="center">
 
-<a href="https://doi.org/10.21105/joss.03458"><img alt="JOSS DOI" src="https://joss.theoj.org/papers/10.21105/joss.03458/status.svg"></a>
+<a href="https://doi.org/10.21105/joss.03458"><img alt="JOSS DOI" src="https://img.shields.io/badge/JOSS-10.21105%2Fjoss.03458-blueviolet"></a>
 </div>
 
 <div align="center">
@@ -30,6 +27,7 @@ OPTIMADE Python tools
   </td>
   <td align="center">
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/Materials-Consortia/optimade-python-tools/ci.yml?logo=github"></a><br>
+    <a href="https://optimade.org/optimade-python-tools"><img alt="Docs" src="https://img.shields.io/github/actions/workflow/status/Materials-Consortia/optimade-python-tools/ci_cd_updated_master.yml?label=docs&logo=github"></a><br>
     <a href="https://codecov.io/gh/Materials-Consortia/optimade-python-tools"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/Materials-Consortia/optimade-python-tools?logo=codecov&logoColor=white&token=UJAtmqkZZO"></a><br>
   </td>
   <td align="center">
@@ -49,6 +47,7 @@ This is to enable interoperability among databases that serve crystal structures
 This repository contains a library of tools for implementing and consuming [OPTIMADE APIs](https://www.optimade.org) using Python:
 
 1. [pydantic](https://github.com/pydantic/pydantic) data models for all [OPTIMADE entry types](https://www.optimade.org/optimade-python-tools/latest/all_models/) and endpoint responses, and a [Lark](https://github.com/lark-parser/lark) [EBNF grammar](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form) implementation for the OPTIMADE filter language.
+1. Adapters to map OPTIMADE data to and from many commonly used atomistic Python frameworks (e.g., [pymatgen](https://pymatgen.org/), [ASE](https://wiki.fysik.dtu.dk/ase/)) and crystallographic file types (e.g., [CIF](https://www.iucr.org/resources/cif)), using the `optimade.adapters` module.
 1. A configurable reference server implementation that can make use of either MongoDB or Elasticsearch database backends out-of-the-box, and is readily extensible to other backends. Try it out on the [demo site](https://optimade.fly.dev)! The OpenAPI schemas of the server are used to construct the [OPTIMADE schemas](https://schemas.optimade.org/) site.
 1. An [OPTIMADE client](https://www.optimade.org/optimade-python-tools/latest/getting_started/client/) (`optimade-get`) that can query multiple [OPTIMADE providers](https://optimade.org/providers-dashboard) concurrently with a given filter, at the command-line or from Python code.
 1. A fuzzy API validator tool, which may be called from the shell (`optimade-validator`) or used as a GitHub Action from [optimade-validator-action](https://github.com/Materials-Consortia/optimade-validator-action); this validator is used to construct the [providers dashboard](https://optimade.org/providers-dashboard).
@@ -65,8 +64,17 @@ The release history and changelog can be found in [the changelog](CHANGELOG.md).
 
 Detailed installation instructions for different use cases (e.g., using the library or running a server) can be found in [the installation documentation](INSTALL.md).
 
-The latest stable version of this package can be obtained from [PyPI](https://pypi.org/project/optimade) `pip install optimade`.
-The latest development version of this package can be obtained from the master branch of this repository `git clone https://github.com/Materials-Consortia/optimade-python-tools`.
+The latest stable version of this package can be obtained from [PyPI](https://pypi.org/project/optimade):
+
+```shell
+pip install optimade
+```
+
+The latest development version of this package can be obtained from the master branch of this repository:
+
+```shell
+git clone https://github.com/Materials-Consortia/optimade-python-tools
+```
 
 ## Supported OPTIMADE versions
 
