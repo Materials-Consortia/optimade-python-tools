@@ -102,7 +102,7 @@ The following command starts a local Elasticsearch v7 instance, runs the test su
 
 ```shell
 docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:7.17.7 \
-&& sleep 10 \
+&& sleep 20 \
 && OPTIMADE_DATABASE_BACKEND="elastic" py.test; \
 docker container stop elasticsearch_test; docker container rm elasticsearch_test
 ```
