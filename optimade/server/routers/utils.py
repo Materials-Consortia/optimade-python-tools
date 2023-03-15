@@ -273,8 +273,8 @@ def get_entries(
     if more_data_available:
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
-        if isinstance(results, list):
-            query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)  # type: ignore[assignment,list-item]
+        query.update(collection.get_next_query_params(params, results))
+
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
 
