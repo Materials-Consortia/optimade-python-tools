@@ -29,5 +29,6 @@
     "index_links_path": "./optimade/server/index_links.json",
     "log_level": "info",
     "log_dir": "/var/log/optimade/",
-    "validate_query_parameters": true
+    "validate_query_parameters": true,
+    "validate_api_response": true
 }
