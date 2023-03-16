@@ -1755,15 +1755,15 @@
             "title": "Id",
             "type": "string",
             "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "must"
           },
           "type": {
             "title": "Type",
             "type": "string",
             "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Example**: `\"structures\"`",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "must"
           },
           "links": {
             "title": "Links",
@@ -1815,8 +1815,8 @@
             "title": "Immutable Id",
             "type": "string",
             "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "optional"
           },
           "last_modified": {
             "title": "Last Modified",
@@ -2223,8 +2223,8 @@
             "title": "Id",
             "type": "string",
             "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "must"
           },
           "type": {
             "title": "Type",
@@ -2522,22 +2522,22 @@
             "title": "Name",
             "type": "string",
             "description": "Full name of the person, REQUIRED.",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "must"
           },
           "firstname": {
             "title": "Firstname",
             "type": "string",
             "description": "First name of the person.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "lastname": {
             "title": "Lastname",
             "type": "string",
             "description": "Last name of the person.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           }
         },
         "description": "A person, i.e., an author, editor or other."
@@ -2639,8 +2639,8 @@
             "title": "Id",
             "type": "string",
             "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "must"
           },
           "type": {
             "title": "Type",
@@ -2695,8 +2695,8 @@
             "title": "Immutable Id",
             "type": "string",
             "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "optional"
           },
           "last_modified": {
             "title": "Last Modified",
@@ -2730,8 +2730,8 @@
             "title": "Doi",
             "type": "string",
             "description": "The digital object identifier of the reference.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "url": {
             "title": "Url",
@@ -2747,155 +2747,155 @@
             "title": "Address",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "annote": {
             "title": "Annote",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "booktitle": {
             "title": "Booktitle",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "chapter": {
             "title": "Chapter",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "crossref": {
             "title": "Crossref",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "edition": {
             "title": "Edition",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "howpublished": {
             "title": "Howpublished",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "institution": {
             "title": "Institution",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "journal": {
             "title": "Journal",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "key": {
             "title": "Key",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "month": {
             "title": "Month",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "note": {
             "title": "Note",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "number": {
             "title": "Number",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "organization": {
             "title": "Organization",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "pages": {
             "title": "Pages",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "publisher": {
             "title": "Publisher",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "school": {
             "title": "School",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "series": {
             "title": "Series",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "title": {
             "title": "Title",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "bib_type": {
             "title": "Bib Type",
             "type": "string",
             "description": "Type of the reference, corresponding to the **type** property in the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "volume": {
             "title": "Volume",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "year": {
             "title": "Year",
             "type": "string",
             "description": "Meaning of property matches the BiBTeX specification.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           }
         },
         "description": "Model that stores the attributes of a reference.\n\nMany properties match the meaning described in the\n[BibTeX specification](http://bibtexml.sourceforge.net/btxdoc.pdf)."
@@ -3317,8 +3317,8 @@
             "title": "Name",
             "type": "string",
             "description": "Gives the name of the species; the **name** value MUST be unique in the `species` list.",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "must"
           },
           "chemical_symbols": {
             "title": "Chemical Symbols",
@@ -3355,8 +3355,8 @@
             "title": "Original Name",
             "type": "string",
             "description": "Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.\n\nNote: With regards to \"source database\", we refer to the immediate source being queried via the OPTIMADE API implementation.",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "optional"
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
           },
           "attached": {
             "title": "Attached",
@@ -3445,8 +3445,8 @@
             "title": "Id",
             "type": "string",
             "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "must"
           },
           "type": {
             "title": "Type",
@@ -3515,8 +3515,8 @@
             "title": "Immutable Id",
             "type": "string",
             "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "optional"
           },
           "last_modified": {
             "title": "Last Modified",
