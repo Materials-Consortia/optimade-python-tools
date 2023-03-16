@@ -2,7 +2,7 @@
   "openapi": "3.0.2",
   "info": {
     "title": "OPTIMADE API - Index meta-database",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.1) v0.22.1.",
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.2) v0.22.2.",
     "version": "1.1.0"
   },
   "paths": {
@@ -573,8 +573,8 @@
             "type": "string",
             "description": "Date and time representing when the entry was last modified.\n\n- **Type**: timestamp.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.\n\n- **Example**:\n    - As part of JSON response format: `\"2007-04-05T14:30:20Z\"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)",
             "format": "date-time",
-            "x-optimade-queryable": "must",
-            "x-optimade-support": "should"
+            "x-optimade-support": "should",
+            "x-optimade-queryable": "must"
           }
         },
         "description": "Contains key-value pairs representing the entry's properties."
