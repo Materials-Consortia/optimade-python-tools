@@ -1571,6 +1571,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.entry_collections.EntryCollection.get_next_query_params" class="md-nav__link">
+    get_next_query_params()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.entry_collections.EntryCollection.handle_query_params" class="md-nav__link">
     handle_query_params()
   </a>
@@ -2042,6 +2049,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.entry_collections.EntryCollection.get_next_query_params" class="md-nav__link">
+    get_next_query_params()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.entry_collections.EntryCollection.handle_query_params" class="md-nav__link">
     handle_query_params()
   </a>
@@ -2501,6 +2515,30 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
         <span class="p">]</span>
 
         <span class="k">return</span> <span class="n">sort_spec</span>
+
+    <span class="k">def</span> <span class="nf">get_next_query_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
+<span class="sd">        link.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            results: The results produced by find.</span>
+<span class="sd">            params: The parsed request params produced by handle_query_params.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary with the necessary query parameters.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+            <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">query</span>
 </code></pre></div>
         </details>
 
@@ -2956,6 +2994,94 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
             <span class="n">next_key</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">attributes</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">[</span><span class="n">next_key</span><span class="p">]</span>
     <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.server.entry_collections.entry_collections.EntryCollection.get_next_query_params" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_next_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span></code>
+
+
+<a href="#optimade.server.entry_collections.entry_collections.EntryCollection.get_next_query_params" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Provides url query pagination parameters that will be used in the next
+link.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>results</code></td>
+        <td><code>Union[NoneType, List[optimade.models.entries.EntryResource], optimade.models.entries.EntryResource, List[Dict]]</code></td>
+        <td><p>The results produced by find.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>params</code></td>
+        <td><code>EntryListingQueryParams</code></td>
+        <td><p>The parsed request params produced by handle_query_params.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Dict[str, List[str]]</code></td>
+      <td><p>A dictionary with the necessary query parameters.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_next_query_params</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
+<span class="sd">    link.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        results: The results produced by find.</span>
+<span class="sd">        params: The parsed request params produced by handle_query_params.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary with the necessary query parameters.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+        <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">query</span>
 </code></pre></div>
         </details>
     </div>
