@@ -434,3 +434,27 @@ class EntryCollection(ABC):
         ]
 
         return sort_spec
+
+    def get_next_query_params(
+        self,
+        params: EntryListingQueryParams,
+        results: Union[None, List[EntryResource], EntryResource, List[Dict]],
+    ) -> Dict[str, List[str]]:
+        """Provides url query pagination parameters that will be used in the next
+        link.
+
+        Arguments:
+            results: The results produced by find.
+            params: The parsed request params produced by handle_query_params.
+
+        Returns:
+            A dictionary with the necessary query parameters.
+
+        """
+        query: Dict[str, List[str]] = dict()
+        if isinstance(results, list):
+            query["page_offset"] = [
+                str(getattr(params, "page_offset", 0) + len(results))
+            ]
+
+        return query
