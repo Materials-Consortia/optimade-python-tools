@@ -482,9 +482,22 @@ class EntryCollection(ABC):
 
         """
         query: Dict[str, List[str]] = dict()
-        if isinstance(results, list):
-            query["page_offset"] = [
-                str(getattr(params, "page_offset", 0) + len(results))
-            ]
+        if isinstance(results, list) and results:
+            # If a user passed a particular pagination mechanism, keep using it
+            # Otherwise, use the default pagination mechanism of the collection
+            pagination_mechanism = PaginationMechanism.OFFSET
+            for pagination_key in (
+                "page_offset",
+                "page_number",
+                "page_above",
+            ):
+                if getattr(params, pagination_key, None) is not None:
+                    pagination_mechanism = PaginationMechanism(pagination_key)
+                    break
+
+            if pagination_mechanism == PaginationMechanism.OFFSET:
+                query["page_offset"] = [
+                    str(params.page_offset + len(results))  # type: ignore[list-item]
+                ]
 
         return query
