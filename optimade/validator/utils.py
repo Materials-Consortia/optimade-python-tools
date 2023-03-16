@@ -371,7 +371,7 @@ def test_case(test_fn: Callable[..., Tuple[Any, str]]):
                     if not isinstance(result, ValidationError):
                         message += traceback.split("\n")
 
-                failure_type = None
+                failure_type: Optional[str] = None
                 if isinstance(result, InternalError):
                     summary = f"{display_request} - {test_fn.__name__} - failed with internal error"
                     failure_type = "internal"

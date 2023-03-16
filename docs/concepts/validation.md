@@ -9,7 +9,7 @@ The validator is implemented in the [`optimade.validator`][optimade.validator.va
 2. The [`optimade-validator-action`](https://github.com/Materials-Consortia/optimade-validator-action) which allows the validator to be used as a GitHub Action.
 
 To run the script, simply provide an OPTIMADE URL to the script at the command-line.
-You can use the following to validate the Heroku deployment of our reference server:
+You can use the following to validate the Fly deployment of our reference server:
 
 ```shell
 $ optimade-validator https://optimade.fly.dev/
