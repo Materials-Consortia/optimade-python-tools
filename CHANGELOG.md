@@ -2,18 +2,32 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.1...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.2...HEAD)
 
 **Closed issues:**
 
-- Add docs examples for client callbacks [\#1527](https://github.com/Materials-Consortia/optimade-python-tools/issues/1527)
-- Cannot use the `OptimadeClient` in async mode with an existing event loop [\#1195](https://github.com/Materials-Consortia/optimade-python-tools/issues/1195)
+- Validator presents internal errors when run with `--skip-optional` [\#1558](https://github.com/Materials-Consortia/optimade-python-tools/issues/1558)
+
+## [v0.22.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.2) (2023-03-14)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.1...v0.22.2)
+
+**Merged pull requests:**
+
+- Fix spurious errors when running validator with `--skip-optional` [\#1559](https://github.com/Materials-Consortia/optimade-python-tools/pull/1559) ([ml-evs](https://github.com/ml-evs))
+- Improve some validator error messages [\#1557](https://github.com/Materials-Consortia/optimade-python-tools/pull/1557) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `a92e5bc` to `3be73e9` [\#1538](https://github.com/Materials-Consortia/optimade-python-tools/pull/1538) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.22.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.1) (2023-02-28)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.0...v0.22.1)
 
 This patch release changes the synchronous functionality of `OptimadeClient` to use "vanilla" requests rather than httpx. This enables easier use inside of Jupyter notebooks.
+
+**Closed issues:**
+
+- Add docs examples for client callbacks [\#1527](https://github.com/Materials-Consortia/optimade-python-tools/issues/1527)
+- Cannot use the `OptimadeClient` in async mode with an existing event loop [\#1195](https://github.com/Materials-Consortia/optimade-python-tools/issues/1195)
 
 **Merged pull requests:**
 
