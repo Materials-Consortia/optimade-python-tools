@@ -2840,7 +2840,7 @@ that the test was not appropriate and should be ignored.</p></td>
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ValidationError</span><span class="p">):</span>
                         <span class="n">message</span> <span class="o">+=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-                <span class="n">failure_type</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">failure_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">InternalError</span><span class="p">):</span>
                     <span class="n">summary</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">display_request</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">test_fn</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> - failed with internal error&quot;</span>
                     <span class="n">failure_type</span> <span class="o">=</span> <span class="s2">&quot;internal&quot;</span>
