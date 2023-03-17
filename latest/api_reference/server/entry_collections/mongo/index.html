@@ -2141,6 +2141,11 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{}):</span>
             <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
+        <span class="k">if</span> <span class="s2">&quot;page_above&quot;</span> <span class="ow">in</span> <span class="n">criteria</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;`page_above` is not implemented for this backend.&quot;</span>
+            <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
             <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$toString&quot;</span><span class="p">:</span> <span class="s2">&quot;$_id&quot;</span><span class="p">}</span>
 
@@ -2461,6 +2466,11 @@ or response format.</p></td>
     <span class="c1"># - If they were requested, then cast them to strings in the response</span>
     <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{}):</span>
         <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="s2">&quot;page_above&quot;</span> <span class="ow">in</span> <span class="n">criteria</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;`page_above` is not implemented for this backend.&quot;</span>
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
         <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$toString&quot;</span><span class="p">:</span> <span class="s2">&quot;$_id&quot;</span><span class="p">}</span>

@@ -1536,6 +1536,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.entry_collections.EntryCollection.pagination_mechanism" class="md-nav__link">
+    pagination_mechanism
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.entry_collections.EntryCollection.__init__" class="md-nav__link">
     __init__()
   </a>
@@ -1600,6 +1607,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.entry_collections.PaginationMechanism" class="md-nav__link">
+    PaginationMechanism
+  </a>
   
 </li>
       
@@ -2014,6 +2028,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.entry_collections.EntryCollection.pagination_mechanism" class="md-nav__link">
+    pagination_mechanism
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.entry_collections.EntryCollection.__init__" class="md-nav__link">
     __init__()
   </a>
@@ -2082,6 +2103,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.entry_collections.PaginationMechanism" class="md-nav__link">
+    PaginationMechanism
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.entry_collections.create_collection" class="md-nav__link">
     create_collection()
   </a>
@@ -2145,6 +2173,11 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryCollection</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Backend-agnostic base class for querying collections of</span>
 <span class="sd">    [`EntryResource`][optimade.models.entries.EntryResource]s.&quot;&quot;&quot;</span>
+
+    <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="s2">&quot;page_offset&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The default pagination mechansim to use with a given collection,</span>
+<span class="sd">    if the user does not provide any pagination query parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2435,27 +2468,41 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
             <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_sort_params</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
 
-        <span class="c1"># warn if both page_offset and page_number are given</span>
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Only one of the query parameters &#39;page_number&#39; and &#39;page_offset&#39; should be set - &#39;page_number&#39; will be ignored.&quot;</span><span class="p">,</span>
-                    <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
-                <span class="p">)</span>
+        <span class="c1"># warn if multiple pagination keys are present, and only use the first from this list</span>
+        <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">False</span>
 
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_offset</span>  <span class="c1"># type: ignore[union-attr]</span>
 
-        <span class="c1"># validate page_number</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr]</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;page_number&#39; is 1-based, using &#39;page_number=1&#39; instead of </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># type: ignore[union-attr]</span>
-                    <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
-                <span class="p">)</span>
-                <span class="n">page_number</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">received_pagination_option</span><span class="p">:</span>
+                <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">page_number</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span>  <span class="c1"># type: ignore[union-attr]</span>
-            <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">page_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span>
+                <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr]</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                        <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;page_number&#39; is 1-based, using &#39;page_number=1&#39; instead of </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># type: ignore[union-attr]</span>
+                        <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">page_number</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">page_number</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span>  <span class="c1"># type: ignore[union-attr]</span>
+                <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">page_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_above&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">received_pagination_option</span><span class="p">:</span>
+                <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;page_above&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_above</span>  <span class="c1"># type: ignore[union-attr]</span>
+
+        <span class="k">if</span> <span class="n">warn_multiple_keys</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Multiple pagination keys were provided, only using the first one of &#39;page_offset&#39;, &#39;page_number&#39; or &#39;page_above&#39;&quot;</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">cursor_kwargs</span>
 
@@ -2533,10 +2580,23 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
-            <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">results</span><span class="p">:</span>
+            <span class="c1"># If a user passed a particular pagination mechanism, keep using it</span>
+            <span class="c1"># Otherwise, use the default pagination mechanism of the collection</span>
+            <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="o">.</span><span class="n">OFFSET</span>
+            <span class="k">for</span> <span class="n">pagination_key</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;page_number&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;page_above&quot;</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">pagination_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="n">pagination_key</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">pagination_mechanism</span> <span class="o">==</span> <span class="n">PaginationMechanism</span><span class="o">.</span><span class="n">OFFSET</span><span class="p">:</span>
+                <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">page_offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>  <span class="c1"># type: ignore[list-item]</span>
+                <span class="p">]</span>
 
         <span class="k">return</span> <span class="n">query</span>
 </code></pre></div>
@@ -2587,6 +2647,26 @@ This means the set is created the first time the property is requested and then 
     </tr>
   </tbody>
 </table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.server.entry_collections.entry_collections.EntryCollection.pagination_mechanism" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pagination_mechanism</span></code>
+
+
+<a href="#optimade.server.entry_collections.entry_collections.EntryCollection.pagination_mechanism" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The default pagination mechansim to use with a given collection,
+if the user does not provide any pagination query parameters.</p>
+    </div>
 
   </div>
 
@@ -3076,10 +3156,23 @@ link.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="nb">str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
-        <span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">results</span><span class="p">:</span>
+        <span class="c1"># If a user passed a particular pagination mechanism, keep using it</span>
+        <span class="c1"># Otherwise, use the default pagination mechanism of the collection</span>
+        <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="o">.</span><span class="n">OFFSET</span>
+        <span class="k">for</span> <span class="n">pagination_key</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;page_number&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;page_above&quot;</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">pagination_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="n">pagination_key</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">pagination_mechanism</span> <span class="o">==</span> <span class="n">PaginationMechanism</span><span class="o">.</span><span class="n">OFFSET</span><span class="p">:</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">page_offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>  <span class="c1"># type: ignore[list-item]</span>
+            <span class="p">]</span>
 
     <span class="k">return</span> <span class="n">query</span>
 </code></pre></div>
@@ -3236,27 +3329,41 @@ or response format.</p></td>
     <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_sort_params</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
 
-    <span class="c1"># warn if both page_offset and page_number are given</span>
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Only one of the query parameters &#39;page_number&#39; and &#39;page_offset&#39; should be set - &#39;page_number&#39; will be ignored.&quot;</span><span class="p">,</span>
-                <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
-            <span class="p">)</span>
+    <span class="c1"># warn if multiple pagination keys are present, and only use the first from this list</span>
+    <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">False</span>
 
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_offset</span>  <span class="c1"># type: ignore[union-attr]</span>
 
-    <span class="c1"># validate page_number</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr]</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;page_number&#39; is 1-based, using &#39;page_number=1&#39; instead of </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># type: ignore[union-attr]</span>
-                <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">page_number</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">received_pagination_option</span><span class="p">:</span>
+            <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">page_number</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span>  <span class="c1"># type: ignore[union-attr]</span>
-        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">page_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span>
+            <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr]</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;page_number&#39; is 1-based, using &#39;page_number=1&#39; instead of </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># type: ignore[union-attr]</span>
+                    <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">page_number</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">page_number</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">page_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_above&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">received_pagination_option</span><span class="p">:</span>
+            <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;page_above&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_above</span>  <span class="c1"># type: ignore[union-attr]</span>
+
+    <span class="k">if</span> <span class="n">warn_multiple_keys</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Multiple pagination keys were provided, only using the first one of &#39;page_offset&#39;, &#39;page_number&#39; or &#39;page_above&#39;&quot;</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">cursor_kwargs</span>
 </code></pre></div>
@@ -3427,6 +3534,63 @@ sort direction encoded as 1 (ascending) or -1 (descending).</p></td>
     </div>
 
   </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade.server.entry_collections.entry_collections.PaginationMechanism" class="doc doc-heading">
+        <code>
+PaginationMechanism            (<span title="enum.Enum">Enum</span>)
+        </code>
+
+
+
+<a href="#optimade.server.entry_collections.entry_collections.PaginationMechanism" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>The supported pagination mechanisms.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PaginationMechanism</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The supported pagination mechanisms.&quot;&quot;&quot;</span>
+
+    <span class="n">OFFSET</span> <span class="o">=</span> <span class="s2">&quot;page_offset&quot;</span>
+    <span class="n">NUMBER</span> <span class="o">=</span> <span class="s2">&quot;page_number&quot;</span>
+    <span class="n">CURSOR</span> <span class="o">=</span> <span class="s2">&quot;page_cursor&quot;</span>
+    <span class="n">ABOVE</span> <span class="o">=</span> <span class="s2">&quot;page_above&quot;</span>
+    <span class="n">BELOW</span> <span class="o">=</span> <span class="s2">&quot;page_below&quot;</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
 
 
 

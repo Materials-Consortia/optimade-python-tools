@@ -1515,6 +1515,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.pagination_mechanism" class="md-nav__link">
+    pagination_mechanism
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="md-nav__link">
     predefined_index
   </a>
@@ -1972,6 +1979,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.pagination_mechanism" class="md-nav__link">
+    pagination_mechanism
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="md-nav__link">
     predefined_index
   </a>
@@ -2071,6 +2085,8 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ElasticCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
+    <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="s2">&quot;page_offset&quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2217,7 +2233,9 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
         <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
             <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">])</span>
 
-        <span class="n">page_offset</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">page_offset</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">page_above</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;page_above&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
         <span class="n">limit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">page_limit</span><span class="p">)</span>
 
         <span class="n">all_aliased_fields</span> <span class="o">=</span> <span class="p">[</span>
@@ -2236,19 +2254,31 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
 
         <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">*</span><span class="n">elastic_sort</span><span class="p">)</span>
 
-        <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="p">[</span><span class="n">page_offset</span> <span class="p">:</span> <span class="n">page_offset</span> <span class="o">+</span> <span class="n">limit</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">page_offset</span><span class="p">:</span>
+            <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="p">[</span><span class="n">page_offset</span> <span class="p">:</span> <span class="n">page_offset</span> <span class="o">+</span> <span class="n">limit</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">page_above</span><span class="p">:</span>
+            <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">extra</span><span class="p">(</span><span class="n">search_after</span><span class="o">=</span><span class="n">page_above</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">limit</span><span class="p">]</span>
+            <span class="n">page_offset</span> <span class="o">=</span> <span class="mi">0</span>
+
         <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">extra</span><span class="p">(</span><span class="n">track_total_hits</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">hit</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">hits</span><span class="p">]</span>
 
+        <span class="n">more_data_available</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">single_entry</span><span class="p">:</span>
             <span class="n">data_returned</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">total</span><span class="o">.</span><span class="n">value</span>
-            <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">page_offset</span> <span class="o">+</span> <span class="n">limit</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
+            <span class="k">if</span> <span class="n">page_above</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">more_data_available</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="n">limit</span> <span class="ow">and</span> <span class="n">data_returned</span> <span class="o">!=</span> <span class="n">limit</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">page_offset</span> <span class="o">+</span> <span class="n">limit</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># SingleEntryQueryParams, e.g., /structures/{entry_id}</span>
             <span class="n">data_returned</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-            <span class="n">more_data_available</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span>
 </code></pre></div>
@@ -2260,6 +2290,26 @@ ElasticCollection            (<a class="autorefs autorefs-internal" title="optim
 
 
 
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.pagination_mechanism" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pagination_mechanism</span></code>
+
+
+<a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.pagination_mechanism" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The default pagination mechansim to use with a given collection,
+if the user does not provide any pagination query parameters.</p>
+    </div>
+
+  </div>
 
 
 
