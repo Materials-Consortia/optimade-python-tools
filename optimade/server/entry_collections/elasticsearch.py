@@ -203,16 +203,15 @@ class ElasticCollection(EntryCollection):
 
         results = [hit.to_dict() for hit in response.hits]
 
+        more_data_available = False
         if not single_entry:
             data_returned = response.hits.total.value
-            if page_offset is not None:
-                more_data_available = page_offset + limit < data_returned
+            if page_above is not None:
+                more_data_available = len(results) == limit and data_returned != limit
             else:
-                # Needs to be set by some custom elastic query: is the ID the last ID?
-                more_data_available = False
+                more_data_available = page_offset + limit < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = len(results)
-            more_data_available = False
 
         return results, data_returned, more_data_available
