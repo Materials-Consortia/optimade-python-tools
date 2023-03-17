@@ -2,6 +2,7 @@
 import pytest
 
 from optimade.exceptions import BadRequest
+from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.middleware import EnsureQueryParamIntegrity
 from optimade.warnings import FieldValueNotRecognized
 
@@ -156,7 +157,6 @@ def test_page_number_and_offset_both_set(check_response):
     expected_warnings = [
         {
             "title": "QueryParamNotUsed",
-            "detail": "Only one of the query parameters 'page_number' and 'page_offset' should be set - 'page_number' will be ignored.",
         }
     ]
     check_response(
@@ -176,3 +176,17 @@ def test_page_number_less_than_one(check_response):
     check_response(
         request, expected_ids=expected_ids, expected_warnings=expected_warnings
     )
+
+
+def test_default_pagination(check_response):
+    request = "/structures?page_limit=1"
+    expected_ids = ["mpf_1"]
+    response = check_response(request, expected_ids)
+    if CONFIG.database_backend in (
+        SupportedBackend.MONGODB,
+        SupportedBackend.MONGOMOCK,
+    ):
+        assert "page_offset" in response["links"]["next"]
+    if CONFIG.database_backend == SupportedBackend.ELASTIC:
+        # Replace with `page_above` once default is changed
+        assert "page_offset" in response["links"]["next"]

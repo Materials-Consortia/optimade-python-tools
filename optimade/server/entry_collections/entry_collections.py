@@ -1,3 +1,4 @@
+import enum
 import re
 import warnings
 from abc import ABC, abstractmethod
@@ -61,9 +62,24 @@ def create_collection(
     )
 
 
+class PaginationMechanism(enum.Enum):
+    """The supported pagination mechanisms."""
+
+    OFFSET = "page_offset"
+    NUMBER = "page_number"
+    CURSOR = "page_cursor"
+    ABOVE = "page_above"
+    BELOW = "page_below"
+
+
 class EntryCollection(ABC):
     """Backend-agnostic base class for querying collections of
     [`EntryResource`][optimade.models.entries.EntryResource]s."""
+
+    pagination_mechanism = PaginationMechanism("page_offset")
+    """The default pagination mechansim to use with a given collection,
+    if the user does not provide any pagination query parameters.
+    """
 
     def __init__(
         self,
@@ -354,27 +370,41 @@ class EntryCollection(ABC):
         if getattr(params, "sort", False):
             cursor_kwargs["sort"] = self.parse_sort_params(params.sort)  # type: ignore[union-attr]
 
-        # warn if both page_offset and page_number are given
-        if getattr(params, "page_offset", False):
-            if getattr(params, "page_number", False):
-                warnings.warn(
-                    message="Only one of the query parameters 'page_number' and 'page_offset' should be set - 'page_number' will be ignored.",
-                    category=QueryParamNotUsed,
-                )
+        # warn if multiple pagination keys are present, and only use the first from this list
+        received_pagination_option = False
+        warn_multiple_keys = False
 
+        if getattr(params, "page_offset", False):
+            received_pagination_option = True
             cursor_kwargs["skip"] = params.page_offset  # type: ignore[union-attr]
 
-        # validate page_number
-        elif isinstance(getattr(params, "page_number", None), int):
-            if params.page_number < 1:  # type: ignore[union-attr]
-                warnings.warn(
-                    message=f"'page_number' is 1-based, using 'page_number=1' instead of {params.page_number}",  # type: ignore[union-attr]
-                    category=QueryParamNotUsed,
-                )
-                page_number = 1
+        if isinstance(getattr(params, "page_number", None), int):
+            if received_pagination_option:
+                warn_multiple_keys = True
             else:
-                page_number = params.page_number  # type: ignore[union-attr]
-            cursor_kwargs["skip"] = (page_number - 1) * cursor_kwargs["limit"]
+                received_pagination_option = True
+                if params.page_number < 1:  # type: ignore[union-attr]
+                    warnings.warn(
+                        message=f"'page_number' is 1-based, using 'page_number=1' instead of {params.page_number}",  # type: ignore[union-attr]
+                        category=QueryParamNotUsed,
+                    )
+                    page_number = 1
+                else:
+                    page_number = params.page_number  # type: ignore[union-attr]
+                cursor_kwargs["skip"] = (page_number - 1) * cursor_kwargs["limit"]
+
+        if isinstance(getattr(params, "page_above", None), str):
+            if received_pagination_option:
+                warn_multiple_keys = True
+            else:
+                received_pagination_option = True
+                cursor_kwargs["page_above"] = params.page_above  # type: ignore[union-attr]
+
+        if warn_multiple_keys:
+            warnings.warn(
+                message="Multiple pagination keys were provided, only using the first one of 'page_offset', 'page_number' or 'page_above'",
+                category=QueryParamNotUsed,
+            )
 
         return cursor_kwargs
 
@@ -452,9 +482,22 @@ class EntryCollection(ABC):
 
         """
         query: Dict[str, List[str]] = dict()
-        if isinstance(results, list):
-            query["page_offset"] = [
-                str(getattr(params, "page_offset", 0) + len(results))
-            ]
+        if isinstance(results, list) and results:
+            # If a user passed a particular pagination mechanism, keep using it
+            # Otherwise, use the default pagination mechanism of the collection
+            pagination_mechanism = PaginationMechanism.OFFSET
+            for pagination_key in (
+                "page_offset",
+                "page_number",
+                "page_above",
+            ):
+                if getattr(params, pagination_key, None) is not None:
+                    pagination_mechanism = PaginationMechanism(pagination_key)
+                    break
+
+            if pagination_mechanism == PaginationMechanism.OFFSET:
+                query["page_offset"] = [
+                    str(params.page_offset + len(results))  # type: ignore[list-item]
+                ]
 
         return query

@@ -126,6 +126,11 @@ class MongoCollection(EntryCollection):
         if "_id" not in criteria.get("projection", {}):
             criteria["projection"]["_id"] = False
 
+        if "page_above" in criteria:
+            raise NotImplementedError(
+                "`page_above` is not implemented for this backend."
+            )
+
         if criteria.get("projection", {}).get("_id"):
             criteria["projection"]["_id"] = {"$toString": "$_id"}
 
