@@ -176,7 +176,6 @@ class EntryListingQueryParams(BaseQueryParams):
     unsupported_params: List[str] = [
         "page_cursor",
         "page_below",
-        "page_above",
     ]
 
     def __init__(

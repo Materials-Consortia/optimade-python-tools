@@ -41,8 +41,10 @@ class TestStructuresEndpoint(RegularEndpointTests):
 
         while more_data_available:
             next_response = get_good_response(next_request)
+            last_request = next_request
             assert next_response["meta"]["data_returned"] == total_data
             next_request = next_response["links"]["next"]
+            assert next_request != last_request
             cursor.extend(next_response["data"])
             more_data_available = next_response["meta"]["more_data_available"]
             if more_data_available:

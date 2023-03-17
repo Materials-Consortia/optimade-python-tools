@@ -171,6 +171,8 @@ def check_response(get_good_response):
         else:
             assert "warnings" not in response["meta"]
 
+        return response
+
     return inner
 
 

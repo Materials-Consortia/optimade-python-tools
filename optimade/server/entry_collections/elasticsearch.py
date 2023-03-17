@@ -5,7 +5,7 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG
-from optimade.server.entry_collections import EntryCollection
+from optimade.server.entry_collections import EntryCollection, PaginationMechanism
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
 
@@ -19,6 +19,8 @@ if CONFIG.database_backend.value == "elastic":
 
 
 class ElasticCollection(EntryCollection):
+    pagination_mechanism = PaginationMechanism("page_offset")
+
     def __init__(
         self,
         name: str,
@@ -165,7 +167,9 @@ class ElasticCollection(EntryCollection):
         if criteria.get("filter", False):
             search = search.query(criteria["filter"])
 
-        page_offset = criteria.get("skip", 0)
+        page_offset = criteria.get("skip", None)
+        page_above = criteria.get("page_above", None)
+
         limit = criteria.get("limit", CONFIG.page_limit)
 
         all_aliased_fields = [
@@ -184,18 +188,30 @@ class ElasticCollection(EntryCollection):
 
         search = search.sort(*elastic_sort)
 
-        search = search[page_offset : page_offset + limit]
+        if page_offset:
+            search = search[page_offset : page_offset + limit]
+
+        elif page_above:
+            search = search.extra(search_after=page_above, limit=limit)
+
+        else:
+            search = search[0:limit]
+            page_offset = 0
+
         search = search.extra(track_total_hits=True)
         response = search.execute()
 
         results = [hit.to_dict() for hit in response.hits]
 
+        more_data_available = False
         if not single_entry:
             data_returned = response.hits.total.value
-            more_data_available = page_offset + limit < data_returned
+            if page_above is not None:
+                more_data_available = len(results) == limit and data_returned != limit
+            else:
+                more_data_available = page_offset + limit < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = len(results)
-            more_data_available = False
 
         return results, data_returned, more_data_available
