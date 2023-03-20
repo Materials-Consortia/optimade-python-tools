@@ -3,4 +3,4 @@ lark==1.1.5
 pydantic==1.10.6
 pyyaml==6.0
 requests==2.28.2
-uvicorn==0.21.0
+uvicorn==0.21.1
