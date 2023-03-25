@@ -267,7 +267,16 @@
         "concentration": [
           1.0
         ],
-        "name": "Ac"
+        "name": "Ac1"
+      },
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac2"
       },
       {
         "chemical_symbols": [
@@ -289,8 +298,8 @@
       }
     ],
     "species_at_sites": [
-      "Ac",
-      "Ac",
+      "Ac1",
+      "Ac2",
       "Ag",
       "Pb"
     ],
