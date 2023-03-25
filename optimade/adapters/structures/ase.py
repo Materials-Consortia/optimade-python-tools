@@ -87,7 +87,9 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         if current_species.mass:
             mass = current_species.mass[0]
 
-        atoms.append(Atom(symbol=species_name, position=site, mass=mass))
+        atoms.append(
+            Atom(symbol=current_species.chemical_symbols[0], position=site, mass=mass)
+        )
 
     info = {}
     for key in attributes.dict().keys():
