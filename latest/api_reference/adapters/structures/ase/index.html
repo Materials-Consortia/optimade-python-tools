@@ -2192,7 +2192,9 @@ to an ASE <code>Atoms</code> object.</p>
         <span class="k">if</span> <span class="n">current_species</span><span class="o">.</span><span class="n">mass</span><span class="p">:</span>
             <span class="n">mass</span> <span class="o">=</span> <span class="n">current_species</span><span class="o">.</span><span class="n">mass</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">species_name</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="n">mass</span><span class="p">))</span>
+        <span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">Atom</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">position</span><span class="o">=</span><span class="n">site</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="n">mass</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
