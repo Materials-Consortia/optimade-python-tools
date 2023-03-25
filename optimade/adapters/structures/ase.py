@@ -13,6 +13,7 @@ from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.utils import (
     elements_ratios_from_species_at_sites,
     species_from_species_at_sites,
+    standardize_chemical_symbol,
 )
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureFeatures
@@ -87,7 +88,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         if current_species.mass:
             mass = current_species.mass[0]
 
-        atoms.append(Atom(symbol=species_name, position=site, mass=mass))
+        atoms.append(Atom(symbol=standardize_chemical_symbol(species_name), position=site, mass=mass))
 
     info = {}
     for key in attributes.dict().keys():

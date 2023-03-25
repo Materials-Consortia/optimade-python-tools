@@ -4,6 +4,7 @@ Utility functions to help the conversion functions along.
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
 from typing import Iterable, List, Optional, Tuple, Type
+import re
 
 from optimade.models.structures import Species as OptimadeStructureSpecies
 from optimade.models.structures import Vector3D
@@ -366,3 +367,16 @@ def elements_ratios_from_species_at_sites(species_at_sites: List[str]) -> List[f
     counts = {e: species_at_sites.count(e) for e in elements}
     num_sites = len(species_at_sites)
     return [counts[e] / num_sites for e in sorted(elements)]
+
+def standardize_chemical_symbol(symbol: str) -> str:
+    """Standardize chemical symbol to be with no index included.
+    "Fe1" -> "Fe", "Fe2" -> "Fe", "Fe3" -> "Fe", "Fe4" -> "Fe", etc.
+
+    Parameters:
+        symbol: The chemical symbol to standardize.
+
+    Returns:
+        The standardized chemical symbol.
+
+    """
+    return re.sub(r"\d+", "", symbol)

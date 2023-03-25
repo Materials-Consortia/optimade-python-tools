@@ -3788,7 +3788,7 @@
     }
   },
   {
-    "id": "mc3d-432468",
+    "id": "432468",
     "type": "structures",
     "links": null,
     "meta": null,
@@ -3809,6 +3809,7 @@
       ],
       "chemical_formula_descriptive": "Fe2Li2O10P2",
       "chemical_formula_reduced": "FeLiO5P",
+      "chemical_formula_anonymous": "A5BCD",
       "chemical_formula_hill": "Fe2Li2O10P2",
       "dimension_types": [
         1,
