@@ -1,6 +1,6 @@
 # Changelog
 
-## [v0.23.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.23.0) (2023-03-27)
+## [v0.23.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.23.0) (2023-03-28)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.2...v0.23.0)
 
