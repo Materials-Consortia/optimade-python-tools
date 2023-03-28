@@ -1,16 +1,28 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.23.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.23.0) (2023-03-27)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.2...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.2...v0.23.0)
+
+**Fixed bugs:**
+
+- Landing page provider homepage link is broken [\#1568](https://github.com/Materials-Consortia/optimade-python-tools/issues/1568)
+
+**Merged pull requests:**
+
+- Element symbols are now used when generating an ase atom. [\#1571](https://github.com/Materials-Consortia/optimade-python-tools/pull/1571) ([JPBergsma](https://github.com/JPBergsma))
+- Fix provider homepage on landing page [\#1569](https://github.com/Materials-Consortia/optimade-python-tools/pull/1569) ([ml-evs](https://github.com/ml-evs))
+- Small code corrections [\#1562](https://github.com/Materials-Consortia/optimade-python-tools/pull/1562) ([JPBergsma](https://github.com/JPBergsma))
+- Extract next link query param creation into EntriesCollection method. [\#1561](https://github.com/Materials-Consortia/optimade-python-tools/pull/1561) ([markus1978](https://github.com/markus1978))
+- Preliminary support for `page_above` in base entry collections [\#1560](https://github.com/Materials-Consortia/optimade-python-tools/pull/1560) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.22.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.2) (2023-03-16)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.1...v0.22.2)
 
 **Closed issues:**
 
 - Validator presents internal errors when run with `--skip-optional` [\#1558](https://github.com/Materials-Consortia/optimade-python-tools/issues/1558)
-
-## [v0.22.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.2) (2023-03-14)
-
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.1...v0.22.2)
 
 **Merged pull requests:**
 
