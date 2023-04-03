@@ -158,11 +158,11 @@ def handle_response_fields(
             else:
                 last_frame = last_frame - 1
 
-            frame_step = getattr(params, "frame_step")
             if continue_from_frame:
                 first_frame = continue_from_frame
                 continue_from_frame = None
 
+            frame_step = getattr(params, "frame_step")
             if frame_step is None:
                 # frame_step_set = False
                 frame_step = 1
@@ -208,15 +208,6 @@ def handle_response_fields(
                 (last_frame - first_frame + 1) // frame_step
             )
 
-            #
-            # # Case data has been read from MongDB In that case we may need to reduce the data ranges accoording to first_frame , last_frame and frame_step
-            # # Retrieve field from file if not stored in database # TODO It would be nice if it would not just say file but also give the file type.
-            #
-            #     path = getattr(one_doc.attributes, "_storage_path", None)
-            #     if path is None:
-            #         raise InternalServerError(
-            #             f"The property{field} is supposed to be stored in a file yet no filepath is specified in _storage_path."
-            #         )
             for field in include_fields:
                 if field == "cartesian_site_positions":
                     new_entry["attributes"][field] = {}

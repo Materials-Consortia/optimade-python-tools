@@ -12,8 +12,8 @@ To run the script, simply provide an OPTIMADE URL to the script at the command-l
 You can use the following to validate the Heroku deployment of our reference server:
 
 ```shell
-$ optimade-validator https://optimade.herokuapp.com/
-Testing entire implementation at https://optimade.herokuapp.com
+$ optimade-validator https://optimade.fly.dev/
+Testing entire implementation at https://optimade.fly.dev
 ...
 ```
 

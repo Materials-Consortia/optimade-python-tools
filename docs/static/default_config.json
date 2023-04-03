@@ -1,5 +1,4 @@
 {
-    "config_file": "~/.optimade.json",
     "debug": false,
     "insert_test_data": true,
     "mongo_database": "optimade",
@@ -7,6 +6,7 @@
     "links_collection": "links",
     "references_collection": "references",
     "structures_collection": "structures",
+    "trajectories_collection": "trajectories",
     "page_limit": 20,
     "page_limit_max": 500,
     "default_db": "test_server",
@@ -29,5 +29,8 @@
     "length_aliases": {},
     "index_links_path": "./optimade/server/index_links.json",
     "log_level": "info",
-    "log_dir": "/var/log/optimade/"
+    "log_dir": "/var/log/optimade/",
+    "validate_query_parameters": true,
+    "enabled_response_formats": ["json"],
+    "max_response_size": {"json": 10, "hdf5": 40}
 }

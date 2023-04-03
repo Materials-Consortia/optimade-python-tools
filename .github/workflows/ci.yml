@@ -246,14 +246,14 @@ jobs:
         coverage run --append --source optimade optimade/client/cli.py \
            --filter 'nsites = 1' \
            --output-file test_get_async.json \
-           https://optimade.herokuapp.com
+           https://optimade.fly.dev
         test test_get_async.json
 
         coverage run --append --source optimade optimade/client/cli.py \
           --filter 'nsites = 1' \
           --count \
           --output-file test_count.json \
-          https://optimade.herokuapp.com
+          https://optimade.fly.dev
         test test_count.json
 
         coverage run --append --source optimade optimade/client/cli.py \
@@ -261,7 +261,7 @@ jobs:
           --filter 'nsites = 1' \
           --count \
           --output-file test_count_no_async.json \
-          https://optimade.herokuapp.com
+          https://optimade.fly.dev
         test test_count_no_async.json
 
         diff test_count_no_async.json test_count.json
