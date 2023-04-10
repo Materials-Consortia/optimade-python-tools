@@ -6,7 +6,7 @@ invoke==2.0.0
 isort==5.12.0
 jsondiff==2.0.0
 mypy==1.1.1
-pre-commit==3.2.0
+pre-commit==3.2.2
 pylint==2.17.0
 pytest==7.2.2
 pytest-cov==4.0.0
