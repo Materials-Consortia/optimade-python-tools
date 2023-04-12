@@ -232,16 +232,30 @@ def get_base_url(
 
     Take the base URL from the config file, if it exists, otherwise use the request.
     """
+    if CONFIG.base_url:
+        return CONFIG.base_url.rstrip("/")
+
+    from optimade.server.schemas import ENTRY_INFO_SCHEMAS
+
     parsed_url_request = (
         urllib.parse.urlparse(parsed_url_request)
         if isinstance(parsed_url_request, str)
         else parsed_url_request
     )
-    return (
-        CONFIG.base_url.rstrip("/")
-        if CONFIG.base_url
-        else f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
-    )
+    base_url = f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
+    if parsed_url_request.path:
+        split_path = re.split(r"/v[0-9]+(\.[0-9]+){0,2}", parsed_url_request.path, 1)
+        if len(split_path) == 1:
+            available_endpoints = ["info", "links"] + list(ENTRY_INFO_SCHEMAS)
+            for endpoint in available_endpoints:
+                split_path = parsed_url_request.path.split("/" + endpoint)
+                if len(split_path) > 1:
+                    break
+            else:
+                split_path[0] = split_path[0].rstrip("/")
+        base_url = base_url + split_path[0]
+
+    return base_url
 
 
 def get_entries(
