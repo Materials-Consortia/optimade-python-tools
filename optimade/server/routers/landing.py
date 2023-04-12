@@ -28,7 +28,8 @@ def render_landing_page(url: str) -> HTMLResponse:
     """
     meta = meta_values(url, 1, 1, more_data_available=False, schema=CONFIG.schema_url)
     major_version = __api_version__.split(".")[0]
-    versioned_url = f"{get_base_url(url)}/v{major_version}/"
+    base_url = get_base_url(url)
+    versioned_url = f"{base_url}/v{major_version}/"
 
     template_dir = Path(__file__).parent.joinpath("static").resolve()
 
@@ -45,7 +46,10 @@ def render_landing_page(url: str) -> HTMLResponse:
                 "provider.name": meta.provider.name,
                 "provider.prefix": meta.provider.prefix,
                 "provider.description": meta.provider.description,
-                "provider.homepage": str(meta.provider.homepage) or "",
+                "provider.homepage": str(
+                    CONFIG.provider_homepage.get(base_url, meta.provider.homepage)
+                )
+                or "",
             }
         )
 

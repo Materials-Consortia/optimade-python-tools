@@ -234,6 +234,9 @@ class ServerConfig(BaseSettings):
         ),
         description="General information about the provider of this OPTIMADE implementation",
     )
+    provider_homepage: Dict[str, str] = Field(
+        {}, description="A dictionary that maps the base url to the provider website."
+    )
     provider_fields: Dict[
         Literal["links", "references", "structures", "trajectories"],
         List[Union[str, Dict[Literal["name", "type", "unit", "description"], str]]],

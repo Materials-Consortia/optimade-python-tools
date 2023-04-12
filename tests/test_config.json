@@ -20,6 +20,10 @@
         "prefix": "bioxl",
         "homepage": "https://example.com"
     },
+    "provider_homepage":{
+        "http://127.0.0.1:5000":"https://bioexcel-cv19-dev.bsc.es",
+        "http://localhost:5000":"https://mdposit-dev.mddbr.eu"
+    },
     "provider_fields": {
         "trajectories": [{
                 "name": "metadata.TIMESTEP",
