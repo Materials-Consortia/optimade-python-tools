@@ -48,7 +48,6 @@ docs_deps = [
 ]
 testing_deps = [
     "build~=0.9.0",
-    "codecov~=2.1",
     "jsondiff~=2.0",
     "pytest~=7.2",
     "pytest-cov~=4.0",
