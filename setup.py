@@ -54,8 +54,7 @@ docs_deps = [
     "mkdocstrings[python-legacy]~=0.19.0",
 ]
 testing_deps = [
-    "build~=0.8.0",
-    "codecov~=2.1",
+    "build~=0.9.0",
     "jsondiff~=2.0",
     "pytest~=7.1",
     "pytest-cov~=3.0",
