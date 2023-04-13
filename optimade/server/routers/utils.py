@@ -235,8 +235,6 @@ def get_base_url(
     if CONFIG.base_url:
         return CONFIG.base_url.rstrip("/")
 
-    from optimade.server.schemas import ENTRY_INFO_SCHEMAS
-
     parsed_url_request = (
         urllib.parse.urlparse(parsed_url_request)
         if isinstance(parsed_url_request, str)
@@ -246,6 +244,8 @@ def get_base_url(
     if parsed_url_request.path:
         split_path = re.split(r"/v[0-9]+(\.[0-9]+){0,2}", parsed_url_request.path, 1)
         if len(split_path) == 1:
+            from optimade.server.schemas import ENTRY_INFO_SCHEMAS
+
             available_endpoints = ["info", "links"] + list(ENTRY_INFO_SCHEMAS)
             for endpoint in available_endpoints:
                 split_path = parsed_url_request.path.split("/" + endpoint)
