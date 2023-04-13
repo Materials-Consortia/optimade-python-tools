@@ -246,14 +246,11 @@ def get_base_url(
         if len(split_path) == 1:
             from optimade.server.schemas import ENTRY_INFO_SCHEMAS
 
-            available_endpoints = ["info", "links"] + list(ENTRY_INFO_SCHEMAS)
-            for endpoint in available_endpoints:
+            for endpoint in ["info", "links"] + list(ENTRY_INFO_SCHEMAS):
                 split_path = parsed_url_request.path.split("/" + endpoint)
                 if len(split_path) > 1:
                     break
-            else:
-                split_path[0] = split_path[0].rstrip("/")
-        base_url = base_url + split_path[0]
+        base_url = base_url + split_path[0].rstrip("/")
 
     return base_url
 
