@@ -2991,7 +2991,7 @@ and provider.</p>
                 <span class="n">Panel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[magenta]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/magenta]&quot;</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="k">with</span> <span class="n">silent_raise</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_handle_response</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">],</span> <span class="n">_task</span><span class="p">:</span> <span class="n">TaskID</span>
