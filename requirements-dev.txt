@@ -1,6 +1,5 @@
 black==23.1.0
 build==0.10.0
-codecov==2.1.12
 flake8==6.0.0
 invoke==2.0.0
 isort==5.12.0
