@@ -117,8 +117,8 @@ def test_get_base_url():
     """
     This tests whether the base_url is correctly extracted from the request.
     """
-    from optimade.server.routers.utils import get_base_url
     from optimade.server.config import CONFIG
+    from optimade.server.routers.utils import get_base_url
 
     base_url_org = CONFIG.base_url
     root_path_org = CONFIG.root_path
