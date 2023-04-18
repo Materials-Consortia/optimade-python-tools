@@ -121,7 +121,9 @@ def test_get_base_url():
     from optimade.server.config import CONFIG
 
     base_url_org = CONFIG.base_url
+    root_path_org = CONFIG.root_path
     CONFIG.base_url = None
+    CONFIG.root_path = "/optimade"
     request_urls = (
         "http://www.example.com",
         "http://www.example.com/",
@@ -130,10 +132,10 @@ def test_get_base_url():
         "https://www.links.org/optimade/structures/123456",
     )
     base_urls = (
-        "http://www.example.com",
-        "http://www.example.com",
         "http://www.example.com/optimade",
-        "http://www.structures.com",
+        "http://www.example.com/optimade",
+        "http://www.example.com/optimade",
+        "http://www.structures.com/optimade",
         "https://www.links.org/optimade",
     )
     results = []
@@ -141,6 +143,6 @@ def test_get_base_url():
         results.append(get_base_url(request_url))
 
     CONFIG.base_url = base_url_org
-
+    CONFIG.root_path = root_path_org
     for i in range(len(base_urls)):
         assert results[i] == base_urls[i]
