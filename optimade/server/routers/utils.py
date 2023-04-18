@@ -485,16 +485,8 @@ def get_base_url(
         else parsed_url_request
     )
     base_url = f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
-    if parsed_url_request.path:
-        split_path = re.split(r"/v[0-9]+(\.[0-9]+){0,2}", parsed_url_request.path, 1)
-        if len(split_path) == 1:
-            from optimade.server.schemas import ENTRY_INFO_SCHEMAS
-
-            for endpoint in ["info", "links"] + list(ENTRY_INFO_SCHEMAS):
-                split_path = parsed_url_request.path.split("/" + endpoint)
-                if len(split_path) > 1:
-                    break
-        base_url = base_url + split_path[0].rstrip("/")
+    if CONFIG.root_path:
+        base_url = base_url + CONFIG.root_path.rstrip("/")
 
     return base_url
 
