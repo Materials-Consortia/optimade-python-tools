@@ -82,13 +82,18 @@ def meta_values(
     if schema is None:
         schema = CONFIG.schema_url if not CONFIG.is_index else CONFIG.index_schema_url
 
+    prov_dict = CONFIG.provider
+    prov_dict.homepage = CONFIG.provider_homepage.get(
+        get_base_url(url), CONFIG.provider.homepage
+    )
+
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
         api_version=__api_version__,
         time_stamp=datetime.now(),
         data_returned=data_returned,
         more_data_available=more_data_available,
-        provider=CONFIG.provider,
+        provider=prov_dict,
         data_available=data_available,
         implementation=CONFIG.implementation,
         schema=schema,
