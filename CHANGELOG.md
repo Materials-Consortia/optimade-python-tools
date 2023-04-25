@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.23.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.23.1) (2023-04-13)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.23.0...v0.23.1)
+
+**Merged pull requests:**
+
+- Removing Codecov from dependencies because it is no longer on pypi. [\#1603](https://github.com/Materials-Consortia/optimade-python-tools/pull/1603) ([JPBergsma](https://github.com/JPBergsma))
+
 ## [v0.23.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.23.0) (2023-03-28)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.2...v0.23.0)
