@@ -1,10 +1,12 @@
 #!/bin/bash
 
+THIS_FILE=`basename "$0"`
+
 if [ -z "$OPTIMADE_CONFIG_FILE" ]; then
     export OPTIMADE_CONFIG_FILE="./optimade_config.json"
-    echo "Using the demo config file at ${OPTIMADE_CONFIG_FILE}."
-    echo "Set the environment variable OPTIMADE_CONFIG_FILE to override this behaviour."
-    echo "For more configuration options, please see https://www.optimade.org/optimade-python-tools/configuration/."
+    echo -e "INFO:\t[${THIS_FILE}] Using the demo config file at ${OPTIMADE_CONFIG_FILE}."
+    echo -e "INFO:\t[${THIS_FILE}] Set the environment variable OPTIMADE_CONFIG_FILE to override this behaviour."
+    echo -e "INFO:\t[${THIS_FILE}] For more configuration options, please see https://www.optimade.org/optimade-python-tools/configuration/."
 fi
 
 export OPTIMADE_LOG_LEVEL=info
@@ -29,4 +31,6 @@ else
     fi
 fi
 
-uvicorn optimade.server.$MAIN:app --reload --port $PORT --log-level $OPTIMADE_LOG_LEVEL
+echo -e "INFO:\t[${THIS_FILE}] Launching the development server with uvicorn for the ${MAIN} app on port ${PORT} with log level ${OPTIMADE_LOG_LEVEL}."
+
+uvicorn optimade.server.$MAIN:app --reload --port $PORT --log-level $OPTIMADE_LOG_LEVEL --host 0.0.0.0
