@@ -1,5 +1,5 @@
 mike==1.1.2
 mkdocs==1.4.3
 mkdocs-awesome-pages-plugin==2.9.0
-mkdocs-material==9.1.9
+mkdocs-material==9.1.12
 mkdocstrings[python-legacy]==0.21.2
