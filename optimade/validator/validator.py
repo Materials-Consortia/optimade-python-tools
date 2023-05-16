@@ -1240,7 +1240,7 @@ class ImplementationValidator:
             expected_status_code = [404, 400]
 
         self._get_endpoint(
-            "v123123", expected_status_code=expected_status_code, optional=True
+            "v123123/info", expected_status_code=expected_status_code, optional=True
         )
 
     @test_case
