@@ -682,6 +682,8 @@ class ImplementationValidator:
                 else:
                     _vals = [f"{val}" for val in _vals]
                 _test_value = ",".join(_vals)
+            elif operator == "LENGTH":
+                _test_value = f"{len(test_value)}"
             else:
                 if isinstance(test_value[0], str):
                     _test_value = f'"{test_value[0]}"'

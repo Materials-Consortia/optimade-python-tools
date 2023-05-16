@@ -79,7 +79,7 @@ _INCLUSIVE_OPERATORS = {
     ),
     DataType.INTEGER: inclusive_ops,
     DataType.FLOAT: (),
-    DataType.LIST: ("HAS", "HAS ALL", "HAS ANY"),
+    DataType.LIST: ("HAS", "HAS ALL", "HAS ANY", "LENGTH"),
 }
 
 exclusive_ops = ("!=", "<", ">")
