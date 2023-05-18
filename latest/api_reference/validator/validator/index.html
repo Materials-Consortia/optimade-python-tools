@@ -2705,6 +2705,8 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">_vals</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">_vals</span><span class="p">]</span>
                 <span class="n">_test_value</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_vals</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;LENGTH&quot;</span><span class="p">:</span>
+                <span class="n">_test_value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="n">_test_value</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">test_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
@@ -3261,7 +3263,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
             <span class="n">expected_status_code</span> <span class="o">=</span> <span class="p">[</span><span class="mi">404</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span>
-            <span class="s2">&quot;v123123&quot;</span><span class="p">,</span> <span class="n">expected_status_code</span><span class="o">=</span><span class="n">expected_status_code</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span>
+            <span class="s2">&quot;v123123/info&quot;</span><span class="p">,</span> <span class="n">expected_status_code</span><span class="o">=</span><span class="n">expected_status_code</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 
     <span class="nd">@test_case</span>
