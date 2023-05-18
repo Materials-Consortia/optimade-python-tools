@@ -79,7 +79,7 @@ _INCLUSIVE_OPERATORS = {
     ),
     DataType.INTEGER: inclusive_ops,
     DataType.FLOAT: (),
-    DataType.LIST: ("HAS", "HAS ALL", "HAS ANY"),
+    DataType.LIST: ("HAS", "HAS ALL", "HAS ANY", "LENGTH"),
 }
 
 exclusive_ops = ("!=", "<", ">")
@@ -107,6 +107,9 @@ _FIELD_SPECIFIC_OVERRIDES = {
             for op in substring_operators + inclusive_ops + exclusive_ops
             if op != "="
         ],
+    },
+    "structure_features": {
+        SupportLevel.OPTIONAL: "LENGTH",
     },
 }
 
