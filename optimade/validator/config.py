@@ -108,6 +108,9 @@ _FIELD_SPECIFIC_OVERRIDES = {
             if op != "="
         ],
     },
+    "structure_features": {
+        SupportLevel.OPTIONAL: "LENGTH",
+    },
 }
 
 
