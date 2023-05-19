@@ -1,5 +1,23 @@
 # Changelog
 
+## [v0.24.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.24.0) (2023-05-18)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.23.1...v0.24.0)
+
+**Implemented enhancements:**
+
+- Validate list `LENGTH` queries with validator [\#1637](https://github.com/Materials-Consortia/optimade-python-tools/pull/1637) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Local version app not reachable in docker container. [\#1589](https://github.com/Materials-Consortia/optimade-python-tools/issues/1589)
+
+**Merged pull requests:**
+
+- Bump providers from `ae359c2` to `1c3f0f1` [\#1638](https://github.com/Materials-Consortia/optimade-python-tools/pull/1638) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Fix local docker dev server usage [\#1631](https://github.com/Materials-Consortia/optimade-python-tools/pull/1631) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `54c4f05` to `ae359c2` [\#1622](https://github.com/Materials-Consortia/optimade-python-tools/pull/1622) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.23.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.23.1) (2023-04-13)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.23.0...v0.23.1)
