@@ -107,7 +107,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "lark~=1.1",
-        "pydantic~=1.10,>=1.10.2",
+        "pydantic~=1.10,>=1.10.2,!=1.10.7",
         "email_validator~=1.2",
         "requests~=2.28",
     ],
