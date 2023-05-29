@@ -2079,7 +2079,6 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
             <span class="n">MongoTransformer</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">resource_mapper</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">LarkParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">variant</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection</span> <span class="o">=</span> <span class="n">CLIENT</span><span class="p">[</span><span class="n">database</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
 
         <span class="c1"># check aliases do not clash with mongo operators</span>
@@ -2295,7 +2294,6 @@ format changes between deserialization and response.</p></td>
         <span class="n">MongoTransformer</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">resource_mapper</span><span class="p">),</span>
     <span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">LarkParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">variant</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">collection</span> <span class="o">=</span> <span class="n">CLIENT</span><span class="p">[</span><span class="n">database</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
 
     <span class="c1"># check aliases do not clash with mongo operators</span>
