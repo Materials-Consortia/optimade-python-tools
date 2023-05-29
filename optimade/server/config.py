@@ -65,6 +65,7 @@ class SupportedBackend(Enum):
     ELASTIC = "elastic"
     MONGODB = "mongodb"
     MONGOMOCK = "mongomock"
+    SQL = "sql"
 
 
 def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
@@ -157,10 +158,15 @@ class ServerConfig(BaseSettings):
         None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
+    sql_connection: Optional[str] = Field(
+        None, description="SQLAlchemy connection string."
+    )
+
     mongo_database: str = Field(
-        "optimade", description="Mongo database for collection data"
+        "optimade", description="Mongo database name for collection data"
     )
     mongo_uri: str = Field("localhost:27017", description="URI for the Mongo server")
+
     links_collection: str = Field(
         "links", description="Mongo collection name for /links endpoint resources"
     )

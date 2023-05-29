@@ -16,12 +16,6 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
             f"Could not determine package version from {version_file.name} !"
         )
 
-# Dependencies
-# Server minded
-elastic_deps = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
-mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
-server_deps = ["uvicorn~=0.19", "fastapi~=0.86", "pyyaml~=6.0"] + mongo_deps
-
 
 # Client minded
 aiida_deps = ["aiida-core~=2.1"]
@@ -38,6 +32,14 @@ pymatgen_deps = ["pymatgen>=2022"]
 jarvis_deps = ["jarvis-tools>=2023.1.8"]
 client_deps = cif_deps
 
+# Dependencies
+# Server minded
+elastic_deps = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
+mongo_deps = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
+server_deps = ["uvicorn~=0.19", "fastapi~=0.86", "pyyaml~=6.0"] + mongo_deps
+sql_deps = ["sqlalchemy~=1.4"] + ase_deps
+
+
 # General
 docs_deps = [
     "mike~=1.1",
@@ -52,31 +54,38 @@ testing_deps = [
     "pytest~=7.2",
     "pytest-cov~=4.0",
 ] + server_deps
-dev_deps = (
-    [
-        "black~=23.1",
-        "flake8~=6.0",
-        "isort~=5.12",
-        "mypy~=1.0",
-        "pylint~=2.15",
-        "pre-commit~=3.0",
-        "invoke~=2.0",
-        "types-all==1.0.0",
-        "ruff~=0.0",
-    ]
-    + docs_deps
-    + testing_deps
-    + client_deps
-    + http_client_deps
+
+dev_deps = list(
+    set(
+        [
+            "black~=23.1",
+            "flake8~=6.0",
+            "isort~=5.12",
+            "mypy~=1.0",
+            "pylint~=2.15",
+            "pre-commit~=3.0",
+            "invoke~=2.0",
+            "types-all==1.0.0",
+            "ruff~=0.0",
+        ]
+        + docs_deps
+        + testing_deps
+        + client_deps
+        + http_client_deps
+    )
 )
-all_deps = (
-    dev_deps
-    + elastic_deps
-    + aiida_deps
-    + ase_deps
-    + pymatgen_deps
-    + jarvis_deps
-    + http_client_deps
+
+all_deps = list(
+    set(
+        dev_deps
+        + elastic_deps
+        + aiida_deps
+        + ase_deps
+        + pymatgen_deps
+        + jarvis_deps
+        + http_client_deps
+        + sql_deps
+    )
 )
 
 setup(
@@ -120,6 +129,7 @@ setup(
         "server": server_deps,
         "client": client_deps,
         "elastic": elastic_deps,
+        "sql": sql_deps,
         "mongo": mongo_deps,
         "aiida": aiida_deps,
         "ase": ase_deps,

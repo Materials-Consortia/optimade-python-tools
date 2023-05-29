@@ -3,3 +3,4 @@ elasticsearch-dsl==7.4.0
 fastapi==0.95.2
 mongomock==4.1.2
 pymongo==4.3.3
+sqlalchemy==1.4.48
