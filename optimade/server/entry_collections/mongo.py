@@ -1,6 +1,5 @@
 from typing import Any, Dict, List, Tuple, Type, Union
 
-from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
@@ -58,7 +57,6 @@ class MongoCollection(EntryCollection):
             MongoTransformer(mapper=resource_mapper),
         )
 
-        self.parser = LarkParser(version=(1, 0, 0), variant="default")
         self.collection = CLIENT[database][name]
 
         # check aliases do not clash with mongo operators
