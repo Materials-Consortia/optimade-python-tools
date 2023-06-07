@@ -1,6 +1,20 @@
 # Changelog
 
-## [v0.24.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.24.0) (2023-05-18)
+## [v0.24.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.24.1) (2023-06-07)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.24.0...v0.24.1)
+
+**Implemented enhancements:**
+
+- Add `--list-properties` and `--search-property` functionality to client [\#1663](https://github.com/Materials-Consortia/optimade-python-tools/pull/1663) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Use default parser version in Mongo collection [\#1655](https://github.com/Materials-Consortia/optimade-python-tools/pull/1655) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `54c4f05` to `1e5d59d` [\#1654](https://github.com/Materials-Consortia/optimade-python-tools/pull/1654) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump providers from `1c3f0f1` to `1e5d59d` [\#1639](https://github.com/Materials-Consortia/optimade-python-tools/pull/1639) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v0.24.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.24.0) (2023-05-19)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.23.1...v0.24.0)
 
