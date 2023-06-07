@@ -263,6 +263,37 @@ In the Python interface, the different endpoints can be queried as attributes of
     client.get(endpoint="extensions/properties")
     ```
 
+### Listing the properties served by a database
+
+You can also retrieve the list of properties served by a database using the
+`--list-properties` flag:
+
+=== "Command line"
+    ```
+    optimade-get --list-properties structures --include-providers odbx
+    ```
+
+=== "Python"
+    ```
+    from optimade.client import OptimadeClient
+    client = OptimadeClient(include_providers={"odbx"})
+    client.list_properties("structures")
+    ```
+
+and do simple string matching filtering of the response:
+
+=== "Command line"
+    ```
+    optimade-get --list-properties structures --search-property gap
+    ```
+
+=== "Python"
+    ```
+    from optimade.client import OptimadeClient
+    client = OptimadeClient()
+    client.list_properties("structures")
+    ```
+
 ### Limiting the number of responses
 
 Querying all OPTIMADE APIs without limiting the number of entries can result in a lot of data.
