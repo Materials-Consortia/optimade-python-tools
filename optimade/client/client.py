@@ -85,6 +85,11 @@ class OptimadeClient:
     download all.
     """
 
+    property_lists: Dict[str, Dict[str, List[str]]] = defaultdict(dict)
+    """A dictionary containing list of properties served by each database,
+    broken down by entry type, then database.
+    """
+
     headers: Dict = {"User-Agent": f"optimade-python-tools/{__version__}"}
     """Additional HTTP headers."""
 
@@ -391,6 +396,67 @@ class OptimadeClient:
 
             self.count_results[endpoint][filter] = count_results
             return {endpoint: {filter: count_results}}
+
+    def list_properties(
+        self,
+        entry_type: str,
+    ) -> Dict[str, List[str]]:
+        """Returns the list of properties reported at `/info/<entry_type>`
+        for the given entry type, for each database.
+
+        """
+        self._progress = OptimadeClientProgress()
+        if self.silent:
+            self._progress.disable = True
+
+        with self._progress:
+            if not self.silent:
+                self._progress.print(
+                    Panel(
+                        f"Listing properties for [bold yellow]{entry_type}[/bold yellow]",
+                        expand=False,
+                    )
+                )
+            results = self._execute_queries(
+                "",
+                f"info/{entry_type}",
+                paginate=False,
+                page_limit=1,
+                response_fields=[],
+                sort=None,
+            )
+        self.property_lists = {entry_type: {}}
+        for database in results:
+            self.property_lists[entry_type][database] = list(
+                results[database].data.get("properties", {}).keys()  # type: ignore
+            )
+        return self.property_lists[entry_type]
+
+    def search_property(self, query: str, entry_type: str) -> Dict[str, List[str]]:
+        """Searches for the query substring within the listed properties
+        served by each database.
+
+        Parameters:
+            query: The substring to search for.
+            entry_type: The entry type to query.
+
+        Returns:
+            A nested dictionary of matching property lists, arranged by
+            entry type and database.
+
+        """
+        if not self.property_lists:
+            self.list_properties(entry_type=entry_type)
+
+        matching_properties: Dict[str, Dict[str, List[str]]] = {
+            entry_type: defaultdict(list)
+        }
+        if entry_type in self.property_lists:
+            for database in self.property_lists[entry_type]:
+                for property in self.property_lists[entry_type][database]:
+                    if query in property:
+                        matching_properties[entry_type][database].append(property)
+        return matching_properties[entry_type]
 
     def _execute_queries(
         self,
