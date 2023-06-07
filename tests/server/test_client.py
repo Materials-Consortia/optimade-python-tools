@@ -197,6 +197,8 @@ def test_command_line_client(async_http_client, http_client, use_async, capsys):
         endpoint="structures",
         pretty_print=False,
         include_providers=None,
+        list_properties=None,
+        search_property=None,
         exclude_providers=None,
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
@@ -230,6 +232,8 @@ def test_command_line_client_silent(async_http_client, http_client, use_async, c
         silent=True,
         endpoint="structures",
         pretty_print=False,
+        list_properties=None,
+        search_property=None,
         include_providers=None,
         exclude_providers=None,
         exclude_databases=None,
@@ -267,6 +271,8 @@ def test_command_line_client_multi_provider(
         silent=False,
         endpoint="structures",
         pretty_print=False,
+        list_properties=None,
+        search_property=None,
         include_providers=None,
         exclude_providers=None,
         exclude_databases=None,
@@ -298,6 +304,8 @@ def test_command_line_client_write_to_file(
         sort=None,
         silent=False,
         endpoint="structures",
+        list_properties=None,
+        search_property=None,
         pretty_print=False,
         include_providers=None,
         exclude_providers=None,
@@ -418,3 +426,26 @@ def test_client_asynchronous_write_callback(
         lines = f.readlines()
 
     assert len(lines) == 17 * len(TEST_URLS) + 1
+
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_list_properties(
+    async_http_client,
+    http_client,
+    use_async,
+):
+    cli = OptimadeClient(
+        base_urls=TEST_URLS,
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+    )
+
+    cli.__strict_async = True
+
+    results = cli.list_properties("structures")
+    for database in results:
+        assert len(results[database]) == 21
+
+    results = cli.search_property("structures", "site")
+    for database in results:
+        assert results[database] == ["nsites", "cartesian_site_positions"]

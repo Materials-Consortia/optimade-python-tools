@@ -34,6 +34,16 @@ __all__ = ("_get",)
     help="Count the results of the filter rather than downloading them.",
 )
 @click.option(
+    "--list-properties",
+    default=None,
+    help="An entry type to list the properties of.",
+)
+@click.option(
+    "--search-property",
+    default=None,
+    help="An search string for finding a particular proprety.",
+)
+@click.option(
     "--endpoint",
     default="structures",
     help="The endpoint to query.",
@@ -90,6 +100,8 @@ def get(
     max_results_per_provider,
     output_file,
     count,
+    list_properties,
+    search_property,
     response_fields,
     sort,
     endpoint,
@@ -107,6 +119,8 @@ def get(
         max_results_per_provider,
         output_file,
         count,
+        list_properties,
+        search_property,
         response_fields,
         sort,
         endpoint,
@@ -126,6 +140,8 @@ def _get(
     max_results_per_provider,
     output_file,
     count,
+    list_properties,
+    search_property,
     response_fields,
     sort,
     endpoint,
@@ -178,6 +194,12 @@ def _get(
             for f in filter:
                 client.count(f, endpoint=endpoint)
                 results = client.count_results
+        elif list_properties:
+            results = client.list_properties(entry_type=list_properties)
+            if search_property:
+                results = client.search_property(
+                    entry_type=list_properties, query=search_property
+                )
         else:
             for f in filter:
                 client.get(
