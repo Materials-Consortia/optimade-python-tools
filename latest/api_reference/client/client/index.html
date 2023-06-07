@@ -1034,6 +1034,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.property_lists" class="md-nav__link">
+    property_lists
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.client.client.OptimadeClient.__getattribute__" class="md-nav__link">
     __getattribute__()
   </a>
@@ -1071,6 +1078,20 @@
           <li class="md-nav__item">
   <a href="#optimade.client.client.OptimadeClient.get_one_async" class="md-nav__link">
     get_one_async()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.list_properties" class="md-nav__link">
+    list_properties()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.search_property" class="md-nav__link">
+    search_property()
   </a>
   
 </li>
@@ -2060,6 +2081,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.property_lists" class="md-nav__link">
+    property_lists
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.client.client.OptimadeClient.__getattribute__" class="md-nav__link">
     __getattribute__()
   </a>
@@ -2097,6 +2125,20 @@
           <li class="md-nav__item">
   <a href="#optimade.client.client.OptimadeClient.get_one_async" class="md-nav__link">
     get_one_async()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.list_properties" class="md-nav__link">
+    list_properties()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.client.client.OptimadeClient.search_property" class="md-nav__link">
+    search_property()
   </a>
   
 </li>
@@ -2198,6 +2240,11 @@ and provider.</p>
     <span class="n">max_results_per_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum number of results to downlod per provider. If None, will</span>
 <span class="sd">    download all.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">property_lists</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dictionary containing list of properties served by each database,</span>
+<span class="sd">    broken down by entry type, then database.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">headers</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
@@ -2506,6 +2553,67 @@ and provider.</p>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">count_results</span><span class="p">[</span><span class="n">endpoint</span><span class="p">][</span><span class="nb">filter</span><span class="p">]</span> <span class="o">=</span> <span class="n">count_results</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">endpoint</span><span class="p">:</span> <span class="p">{</span><span class="nb">filter</span><span class="p">:</span> <span class="n">count_results</span><span class="p">}}</span>
+
+    <span class="k">def</span> <span class="nf">list_properties</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the list of properties reported at `/info/&lt;entry_type&gt;`</span>
+<span class="sd">        for the given entry type, for each database.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                    <span class="n">Panel</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Listing properties for [bold yellow]</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">[/bold yellow]&quot;</span><span class="p">,</span>
+                        <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_queries</span><span class="p">(</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;info/</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">paginate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">page_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">response_fields</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span> <span class="o">=</span> <span class="p">{</span><span class="n">entry_type</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">search_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Searches for the query substring within the listed properties</span>
+<span class="sd">        served by each database.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            query: The substring to search for.</span>
+<span class="sd">            entry_type: The entry type to query.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A nested dictionary of matching property lists, arranged by</span>
+<span class="sd">            entry type and database.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_properties</span><span class="p">(</span><span class="n">entry_type</span><span class="o">=</span><span class="n">entry_type</span><span class="p">)</span>
+
+        <span class="n">matching_properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">entry_type</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="nb">property</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">query</span> <span class="ow">in</span> <span class="nb">property</span><span class="p">:</span>
+                        <span class="n">matching_properties</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">property</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">matching_properties</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_execute_queries</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -3220,6 +3328,26 @@ the number of results from each base URL for that particular filter.</p>
 
       <p>Maximum number of results to downlod per provider. If None, will
 download all.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.client.client.OptimadeClient.property_lists" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">property_lists</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span></code>
+
+
+<a href="#optimade.client.client.OptimadeClient.property_lists" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A dictionary containing list of properties served by each database,
+broken down by entry type, then database.</p>
     </div>
 
   </div>
@@ -4071,6 +4199,156 @@ after one page.</p></td>
             <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.client.client.OptimadeClient.list_properties" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">list_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">)</span></code>
+
+
+<a href="#optimade.client.client.OptimadeClient.list_properties" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the list of properties reported at <code>/info/&lt;entry_type&gt;</code>
+for the given entry type, for each database.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">list_properties</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the list of properties reported at `/info/&lt;entry_type&gt;`</span>
+<span class="sd">    for the given entry type, for each database.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                <span class="n">Panel</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Listing properties for [bold yellow]</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">[/bold yellow]&quot;</span><span class="p">,</span>
+                    <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_queries</span><span class="p">(</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;info/</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">paginate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">page_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">response_fields</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span> <span class="o">=</span> <span class="p">{</span><span class="n">entry_type</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade.client.client.OptimadeClient.search_property" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">search_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">)</span></code>
+
+
+<a href="#optimade.client.client.OptimadeClient.search_property" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Searches for the query substring within the listed properties
+served by each database.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>query</code></td>
+        <td><code>str</code></td>
+        <td><p>The substring to search for.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>entry_type</code></td>
+        <td><code>str</code></td>
+        <td><p>The entry type to query.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Dict[str, List[str]]</code></td>
+      <td><p>A nested dictionary of matching property lists, arranged by
+entry type and database.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade/client/client.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">search_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Searches for the query substring within the listed properties</span>
+<span class="sd">    served by each database.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        query: The substring to search for.</span>
+<span class="sd">        entry_type: The entry type to query.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A nested dictionary of matching property lists, arranged by</span>
+<span class="sd">        entry type and database.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_properties</span><span class="p">(</span><span class="n">entry_type</span><span class="o">=</span><span class="n">entry_type</span><span class="p">)</span>
+
+    <span class="n">matching_properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">entry_type</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="nb">property</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">query</span> <span class="ow">in</span> <span class="nb">property</span><span class="p">:</span>
+                    <span class="n">matching_properties</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">property</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">matching_properties</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span>
 </code></pre></div>
         </details>
     </div>
