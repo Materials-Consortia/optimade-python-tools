@@ -294,6 +294,7 @@ class ImplementationValidator:
             self.valid = False
             self.print_summary()
             return
+        self._test_available_api_versions(base_info.get("data"))
 
         # Grab the provider prefix from base info and use it when looking for provider fields
         self.provider_prefix = None
@@ -952,6 +953,23 @@ class ImplementationValidator:
                     )
 
         return True, f"{prop} passed filter tests"
+
+    @test_case
+    def _test_available_api_versions(self, base_info: dict) -> bool:
+        """Take the base info response from `/info` and check that
+        `available_api_versions` points to valid OPTIMADE APIs.
+
+        """
+        for version in base_info.get("attributes", {}).get(
+            "available_api_versions", {}
+        ):
+            url = version.get("url")
+            if self.base_url not in url:
+                raise ResponseError(
+                    f"Invalid `available_api_versions` (expected URL to contain base URL {self.base_url!r}): {version=}"
+                )
+
+        return True
 
     def _test_info_or_links_endpoint(self, request_str: str) -> Union[bool, dict]:
         """Requests an info or links endpoint and attempts to deserialize
