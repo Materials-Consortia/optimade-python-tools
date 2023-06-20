@@ -955,7 +955,9 @@ class ImplementationValidator:
         return True, f"{prop} passed filter tests"
 
     @test_case
-    def _test_available_api_versions(self, base_info: dict) -> bool:
+    def _test_available_api_versions(
+        self, base_info: dict
+    ) -> Tuple[Optional[bool], str]:
         """Take the base info response from `/info` and check that
         `available_api_versions` points to valid OPTIMADE APIs.
 
@@ -969,7 +971,10 @@ class ImplementationValidator:
                     f"Invalid `available_api_versions` (expected URL to contain base URL {self.base_url!r}): {version=}"
                 )
 
-        return True
+        return (
+            True,
+            "`available_api_versions` urls look correct",
+        )
 
     def _test_info_or_links_endpoint(self, request_str: str) -> Union[bool, dict]:
         """Requests an info or links endpoint and attempts to deserialize
