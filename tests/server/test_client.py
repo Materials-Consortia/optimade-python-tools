@@ -34,7 +34,7 @@ TEST_URL = TEST_URLS[0]
 
 @pytest.mark.parametrize(
     "use_async",
-    [True, False],
+    [False, True],
 )
 def test_client_endpoints(async_http_client, http_client, use_async):
     filter = ""
