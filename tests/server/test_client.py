@@ -386,10 +386,10 @@ def test_client_global_data_callback(async_http_client, http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [True, False])
 def test_client_page_skip_callback(async_http_client, http_client, use_async):
-    def page_skip_callback(_: str, results: Dict) -> Optional[str]:
+    def page_skip_callback(_: str, results: Dict) -> Optional[Dict]:
         """A test callback that skips to the final page of results."""
         if len(results["data"]) > 16:
-            return f"{TEST_URL}/structures?page_offset=16"
+            return {"next": f"{TEST_URL}/structures?page_offset=16"}
         return None
 
     cli = OptimadeClient(
