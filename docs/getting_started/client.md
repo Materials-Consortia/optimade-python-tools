@@ -443,3 +443,10 @@ Care should be taken if combining an asynchronous client with callbacks, as the 
 
     print(db.find_one())
     ```
+
+Callbacks can also optionally return a URL which will be used instead of the `next` link
+returned by the API.
+This can be used to dynamically change queries based on the results, or to skip
+pages that have already been queried previously.
+When multiple callbacks are provided, only the final callback will have its
+result captured.
