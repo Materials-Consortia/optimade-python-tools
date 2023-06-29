@@ -14,7 +14,7 @@ This list outlines the current and planned features for the client:
 - [x] Validate filters against the OPTIMADE grammar before they are sent to each database.
 - [x] Count the number of results for a query without downloading them all.
 - [x] Cache the results for queries to disk, and use them in future sessions without making new requests (achieved via callbacks).
-- [ ] Valiate the results against the optimade-python-tools models and export into other supported formats (ASE, pymatgen, CIF, AiiDA).
+- [ ] Validate the results against the optimade-python-tools models and export into other supported formats (ASE, pymatgen, CIF, AiiDA).
 - [ ] Enable asynchronous use in cases where there is already a running event loop (e.g., inside a Jupyter notebook).
 - [ ] Support for querying databases indirectly via an [OPTIMADE gateway server](https://github.com/Materials-Consortia/optimade-gateway).
 
@@ -163,7 +163,7 @@ has the following (truncated) output:
 {
   // The endpoint that was queried
   "structures": {
-    // The filter applied to that endpointk
+    // The filter applied to that endpoint
     "nsites = 1": {
       // The base URL of the OPTIMADE API
       "https://optimade.fly.dev": {
@@ -444,9 +444,12 @@ Care should be taken if combining an asynchronous client with callbacks, as the 
     print(db.find_one())
     ```
 
-Callbacks can also optionally return a URL which will be used instead of the `next` link
-returned by the API.
-This can be used to dynamically change queries based on the results, or to skip
-pages that have already been queried previously.
+Callbacks can also optionally return a dictionary of data that can be used by the client.
+
+Currently the supported keys are:
+
+- `next` (string): To override the next URL returned by the API. This can be used to dynamically change queries based on the results, or to skip pages that have already been queried previously.
+- `advance_results` (integer): To skip the progress bar forward by the set amount.
+
 When multiple callbacks are provided, only the final callback will have its
 result captured.
