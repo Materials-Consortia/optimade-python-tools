@@ -195,7 +195,8 @@ jobs:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run server tests with no API validation (using `mongomock`)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run:
+        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
         OPTIMADE_VALIDATE_API_RESPONSE: false
@@ -206,7 +207,10 @@ jobs:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
 
     - name: Run server tests (using Elasticsearch)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run: |
+        .github/utils/wait_for_it.sh localhost:9200 -t 120
+        .github/utils/wait_for_it.sh localhost:9300 -t 120
+        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/filtertransformers tests/server
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
 
