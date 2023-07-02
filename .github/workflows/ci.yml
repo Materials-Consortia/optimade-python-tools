@@ -210,7 +210,7 @@ jobs:
       run: |
         .github/utils/wait_for_it.sh localhost:9200 -t 120
         .github/utils/wait_for_it.sh localhost:9300 -t 120
-        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/filtertransformers tests/server
+        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
 
