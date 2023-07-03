@@ -95,7 +95,6 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
@@ -104,7 +103,7 @@ setup(
         "Topic :: Database :: Database Engines/Servers",
         "Topic :: Database :: Front-Ends",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     install_requires=[
         "lark~=1.1",
         "pydantic~=1.10,>=1.10.2,!=1.10.7",
