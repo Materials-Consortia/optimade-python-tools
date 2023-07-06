@@ -73,7 +73,13 @@ class BaseResourceMapper:
     PROVIDER_FIELDS: Tuple[str, ...] = ()
     ENTRY_RESOURCE_CLASS: Type[EntryResource] = EntryResource
     RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
-    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {"id", "type", "relationships", "links"}
+    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {
+        "id",
+        "type",
+        "relationships",
+        "links",
+        "meta",
+    }
 
     @classmethod
     @lru_cache(maxsize=NUM_ENTRY_TYPES)

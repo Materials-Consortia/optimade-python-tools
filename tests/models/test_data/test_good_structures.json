@@ -179,6 +179,13 @@
     "nperiodic_dimensions": 3,
     "lattice_vectors": [[4.0,0.0,0.0],[0.0, 4.0, 0.0],[0.0,1.0,4.0]],
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0] ],
+    "meta": {
+      "property_metadata": {
+        "element_ratios": {
+          "_exmpl_originates_from_project": "piezoelectic_perovskites"
+        }
+      }
+    },
     "species_at_sites": ["Cl", "O", "N", "met", "Os", "Na", "P"],
     "species": [
       {"name": "Cl", "chemical_symbols": ["Cl"], "concentration": [1.0] },

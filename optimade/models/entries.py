@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
 
-from optimade.models.jsonapi import Attributes, Relationships, Resource
+from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
 from optimade.models.optimade_json import DataType, Relationship
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
@@ -100,6 +100,16 @@ class EntryResourceAttributes(Attributes):
         return value
 
 
+class EntryMetadata(Meta):
+    """Contains the metadata for the attributes of an entry"""
+
+    property_metadata: Dict = StrictField(
+        None,
+        description="""A dictionary, where the keys are the names of the properties in the attributes field and the value is a dictionary containing the meta data for that property.
+Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
+    )
+
+
 class EntryResource(Resource):
     """The base model for an entry resource."""
 
@@ -145,6 +155,11 @@ class EntryResource(Resource):
         ...,
         description="""A dictionary, containing key-value pairs representing the entry's properties, except for `type` and `id`.
 Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
+    )
+
+    meta: Optional[EntryMetadata] = StrictField(
+        None,
+        description="""A dictionary, containing entry and property-specific metadata for a given entry.""",
     )
 
     relationships: Optional[EntryRelationships] = StrictField(

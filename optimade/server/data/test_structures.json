@@ -180,6 +180,13 @@
     ],
     "structure_features": [],
     "task_id": "mpf_2",
+    "meta": {
+      "property_metadata": {
+        "elements_ratios": {
+          "_exmpl_originates_from_project":"piezoelectic_perovskites"
+        }
+      }
+    },
     "relationships": {
       "references": {
         "data": [
