@@ -1,4 +1,4 @@
-black==23.3.0
+black==23.7.0
 build==0.10.0
 flake8==6.0.0
 invoke==2.2.0
