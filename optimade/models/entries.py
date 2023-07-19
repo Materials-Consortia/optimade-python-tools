@@ -2,8 +2,13 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
+from pydantic import (
+    BaseModel,
+    root_validator,
+    validator,
+)
 
+# pylint: disable=no-name-in-module
 from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
 from optimade.models.optimade_json import DataType, Relationship
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
@@ -167,6 +172,52 @@ Database-provider-specific properties need to include the database-provider-spec
         description="""A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).
 The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
     )
+
+    def check_field_supported_prefix(field):
+        from optimade.server.mappers import BaseResourceMapper
+
+        prefix = field.split("_")[1]
+        if prefix not in BaseResourceMapper.SUPPORTED_PREFIXES:
+            raise ValueError(
+                f"The prefix {prefix} of the field {field} is not supported by this server."
+            )
+
+    @root_validator
+    def check_meta(cls, values):
+        """Validator to check whether meta field has been formatted correctly."""
+
+        meta = values.get("meta")
+        if meta is not None:
+            for field in meta.__dict__:
+                if field.startswith("_"):
+                    cls.check_field_supported_prefix(field)
+                elif field == "property_metadata":
+                    # check that all the fields under property metadata are in attributes
+                    attributes = (
+                        values.get("attributes").__dict__
+                        if values.get("attributes")
+                        else {}
+                    )
+                    for subfield in meta.__dict__.get(
+                        field
+                    ):  ## ToDo The names of the fields in atributes only need to be read once so this code can still be sped up.
+                        if subfield not in attributes:
+                            raise ValueError(
+                                f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
+                            )
+                        # check that the fields under subfield are starting with prefix
+                        for subsubfield in meta.__dict__.get(field).get(subfield):
+                            if subsubfield.startswith("_"):
+                                cls.check_field_supported_prefix(subsubfield)
+                            else:
+                                raise ValueError(
+                                    f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
+                                )
+                else:
+                    raise ValueError(
+                        "The fields under meta either need to be database specific fields or the field `property_metadata'"
+                    )
+        return values
 
 
 class EntryInfoProperty(BaseModel):

@@ -181,7 +181,7 @@
     "cartesian_site_positions": [ [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0] ],
     "meta": {
       "property_metadata": {
-        "element_ratios": {
+        "elements_ratios": {
           "_exmpl_originates_from_project": "piezoelectic_perovskites"
         }
       }
