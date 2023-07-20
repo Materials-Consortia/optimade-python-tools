@@ -3,6 +3,13 @@
     "_id": {
       "$oid": "5cfb441f053b174410700d02"
     },
+    "meta": {
+      "property_metadata": {
+        "elements_ratios": {
+          "_exmpl_originates_from_project":"piezoelectic_perovskites"
+        }
+      }
+    },
     "assemblies": null,
     "chemsys": "Ac",
     "cartesian_site_positions": [
