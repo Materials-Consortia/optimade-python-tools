@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, Request
 
 from optimade.models import LinksResource, LinksResponse
@@ -24,9 +26,7 @@ links_coll = create_collection(
     tags=["Links"],
     responses=ERROR_RESPONSES,
 )
-def get_links(
-    request: Request, params: EntryListingQueryParams = Depends()
-) -> LinksResponse:
+def get_links(request: Request, params: EntryListingQueryParams = Depends()) -> Any:
     return get_entries(
         collection=links_coll, response=LinksResponse, request=request, params=params
     )
