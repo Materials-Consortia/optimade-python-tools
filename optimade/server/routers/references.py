@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 
 from fastapi import APIRouter, Depends, Request
 
@@ -25,7 +25,7 @@ references_coll = create_collection(
 
 @router.get(
     "/references",
-    response_model=ReferenceResponseMany,
+    response_model=ReferenceResponseMany if CONFIG.validate_api_response else Dict,
     response_model_exclude_unset=True,
     tags=["References"],
     responses=ERROR_RESPONSES,
@@ -43,7 +43,7 @@ def get_references(
 
 @router.get(
     "/references/{entry_id:path}",
-    response_model=ReferenceResponseOne,
+    response_model=ReferenceResponseOne if CONFIG.validate_api_response else Dict,
     response_model_exclude_unset=True,
     tags=["References"],
     responses=ERROR_RESPONSES,

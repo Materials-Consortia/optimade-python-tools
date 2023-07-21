@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 
 from fastapi import APIRouter, Depends, Request
 
@@ -21,7 +21,7 @@ links_coll = create_collection(
 
 @router.get(
     "/links",
-    response_model=LinksResponse,
+    response_model=LinksResponse if CONFIG.validate_api_response else Dict,
     response_model_exclude_unset=True,
     tags=["Links"],
     responses=ERROR_RESPONSES,

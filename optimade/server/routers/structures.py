@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 
 from fastapi import APIRouter, Depends, Request
 
@@ -25,7 +25,7 @@ structures_coll = create_collection(
 
 @router.get(
     "/structures",
-    response_model=StructureResponseMany,
+    response_model=StructureResponseMany if CONFIG.validate_api_response else Dict,
     response_model_exclude_unset=True,
     tags=["Structures"],
     responses=ERROR_RESPONSES,
@@ -43,7 +43,7 @@ def get_structures(
 
 @router.get(
     "/structures/{entry_id:path}",
-    response_model=StructureResponseOne,
+    response_model=StructureResponseOne if CONFIG.validate_api_response else Dict,
     response_model_exclude_unset=True,
     tags=["Structures"],
     responses=ERROR_RESPONSES,

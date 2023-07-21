@@ -246,7 +246,7 @@ def get_base_url(
 
 def get_entries(
     collection: EntryCollection,
-    response: Type[EntryResponseMany],
+    response: Type[EntryResponseMany],  # noqa
     request: Request,
     params: EntryListingQueryParams,
 ) -> Dict:
