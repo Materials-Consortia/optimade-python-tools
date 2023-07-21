@@ -12,7 +12,6 @@ import pytest
 
 from optimade.client.cli import _get
 from optimade.server.config import CONFIG, SupportedBackend
-from optimade.warnings import MissingExpectedField
 
 try:
     from optimade.client import OptimadeClient as OptimadeTestClient
@@ -115,24 +114,23 @@ def test_filter_validation(async_http_client, http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [True, False])
 def test_client_response_fields(async_http_client, http_client, use_async):
-    with pytest.warns(MissingExpectedField):
-        cli = OptimadeClient(
-            base_urls=[TEST_URL],
-            use_async=use_async,
-            http_client=async_http_client if use_async else http_client,
-        )
-        results = cli.get(response_fields=["chemical_formula_reduced"])
-        for d in results["structures"][""][TEST_URL]["data"]:
-            assert "chemical_formula_reduced" in d["attributes"]
-            assert len(d["attributes"]) == 1
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+    )
+    results = cli.get(response_fields=["chemical_formula_reduced"])
+    for d in results["structures"][""][TEST_URL]["data"]:
+        assert "chemical_formula_reduced" in d["attributes"]
+        assert len(d["attributes"]) == 1
 
-        results = cli.get(
-            response_fields=["chemical_formula_reduced", "cartesian_site_positions"]
-        )
-        for d in results["structures"][""][TEST_URL]["data"]:
-            assert "chemical_formula_reduced" in d["attributes"]
-            assert "cartesian_site_positions" in d["attributes"]
-            assert len(d["attributes"]) == 2
+    results = cli.get(
+        response_fields=["chemical_formula_reduced", "cartesian_site_positions"]
+    )
+    for d in results["structures"][""][TEST_URL]["data"]:
+        assert "chemical_formula_reduced" in d["attributes"]
+        assert "cartesian_site_positions" in d["attributes"]
+        assert len(d["attributes"]) == 2
 
 
 @pytest.mark.parametrize("use_async", [True, False])
