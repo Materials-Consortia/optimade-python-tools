@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, Request
 
 from optimade.models import (
@@ -30,7 +32,7 @@ references_coll = create_collection(
 )
 def get_references(
     request: Request, params: EntryListingQueryParams = Depends()
-) -> ReferenceResponseMany:
+) -> Any:
     return get_entries(
         collection=references_coll,
         response=ReferenceResponseMany,
@@ -48,7 +50,7 @@ def get_references(
 )
 def get_single_reference(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
-) -> ReferenceResponseOne:
+) -> Any:
     return get_single_entry(
         collection=references_coll,
         entry_id=entry_id,

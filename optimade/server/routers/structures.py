@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, Request
 
 from optimade.models import (
@@ -30,7 +32,7 @@ structures_coll = create_collection(
 )
 def get_structures(
     request: Request, params: EntryListingQueryParams = Depends()
-) -> StructureResponseMany:
+) -> Any:
     return get_entries(
         collection=structures_coll,
         response=StructureResponseMany,
@@ -48,7 +50,7 @@ def get_structures(
 )
 def get_single_structure(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
-) -> StructureResponseOne:
+) -> Any:
     return get_single_entry(
         collection=structures_coll,
         entry_id=entry_id,
