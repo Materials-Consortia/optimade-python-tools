@@ -83,9 +83,8 @@ def check_required_fields_response(get_good_response):
         for entry in response["data"]:
             response_fields.update(set(entry.keys()))
             response_fields.update(set(entry["attributes"].keys()))
-            response_fields.discard(
-                "meta"
-            )  # As "meta" is an optional field the response may or may not have it, so we remove it here to prevent problems in the assert below.
+            # As "meta" is an optional field the response may or may not have it, so we remove it here to prevent problems in the assert below.
+            response_fields.discard("meta")
         assert sorted(expected_fields) == sorted(response_fields)
 
     return inner

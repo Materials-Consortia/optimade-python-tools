@@ -198,21 +198,25 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                         if values.get("attributes")
                         else {}
                     )
-                    for subfield in meta.__dict__.get(
-                        field
-                    ):  ## ToDo The names of the fields in atributes only need to be read once so this code can still be sped up.
-                        if subfield not in attributes:
-                            raise ValueError(
-                                f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
-                            )
-                        # check that the fields under subfield are starting with prefix
-                        for subsubfield in meta.__dict__.get(field).get(subfield):
-                            if subsubfield.startswith("_"):
-                                cls.check_field_supported_prefix(subsubfield)
-                            else:
+                    property_metadata = meta.__dict__.get(field)
+                    if property_metadata is not None:
+                        for (
+                            subfield
+                        ) in (
+                            property_metadata
+                        ):  ## ToDo The names of the fields in attributes only need to be read once so this code can still be sped up.
+                            if subfield not in attributes:
                                 raise ValueError(
-                                    f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
+                                    f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
                                 )
+                            # check that the fields under subfield are starting with prefix
+                            for subsubfield in meta.__dict__.get(field).get(subfield):
+                                if subsubfield.startswith("_"):
+                                    cls.check_field_supported_prefix(subsubfield)
+                                else:
+                                    raise ValueError(
+                                        f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
+                                    )
                 else:
                     raise ValueError(
                         "The fields under meta either need to be database specific fields or the field `property_metadata'"
