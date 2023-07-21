@@ -80,6 +80,7 @@ def test_meta():
         good_entry_resource,
         copy.deepcopy(good_entry_resource),
         copy.deepcopy(good_entry_resource),
+        copy.deepcopy(good_entry_resource),
     ]
     bad_entry_resources[0]["meta"]["property_metadata"][
         "_exmpl_database_specific_property"
@@ -88,6 +89,9 @@ def test_meta():
         "database_specific_property"
     ] = {"_exmpl_metadata_property": "metadata_value"}
     bad_entry_resources[2]["meta"]["database_specific_property"] = {
+        "_exmpl_metadata_property": "metadata_value"
+    }
+    bad_entry_resources[3]["meta"]["_other_database_specific_property"] = {
         "_exmpl_metadata_property": "metadata_value"
     }
 
