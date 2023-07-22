@@ -2075,7 +2075,7 @@ The client can be used from the command-line (<code>optimade-get</code>), or cal
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Validate filters against the OPTIMADE grammar before they are sent to each database.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Count the number of results for a query without downloading them all.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Cache the results for queries to disk, and use them in future sessions without making new requests (achieved via callbacks).</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Valiate the results against the optimade-python-tools models and export into other supported formats (ASE, pymatgen, CIF, AiiDA).</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Validate the results against the optimade-python-tools models and export into other supported formats (ASE, pymatgen, CIF, AiiDA).</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Enable asynchronous use in cases where there is already a running event loop (e.g., inside a Jupyter notebook).</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Support for querying databases indirectly via an <a href="https://github.com/Materials-Consortia/optimade-gateway">OPTIMADE gateway server</a>.</li>
 </ul>
@@ -2211,7 +2211,7 @@ cat<span class="w"> </span>results.json
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="c1">// The endpoint that was queried</span>
 <span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// The filter applied to that endpointk</span>
+<span class="w">    </span><span class="c1">// The filter applied to that endpoint</span>
 <span class="w">    </span><span class="nt">&quot;nsites = 1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="c1">// The base URL of the OPTIMADE API</span>
 <span class="w">      </span><span class="nt">&quot;https://optimade.fly.dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -2479,6 +2479,14 @@ Care should be taken if combining an asynchronous client with callbacks, as the 
 </div>
 </div>
 </div>
+<p>Callbacks can also optionally return a dictionary of data that can be used by the client.</p>
+<p>Currently the supported keys are:</p>
+<ul>
+<li><code>next</code> (string): To override the next URL returned by the API. This can be used to dynamically change queries based on the results, or to skip pages that have already been queried previously.</li>
+<li><code>advance_results</code> (integer): To skip the progress bar forward by the set amount.</li>
+</ul>
+<p>When multiple callbacks are provided, only the final callback will have its
+result captured.</p>
 
 
 

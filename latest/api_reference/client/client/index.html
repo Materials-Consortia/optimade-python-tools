@@ -2259,7 +2259,7 @@ and provider.</p>
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether or not to make all requests asynchronously using asyncio.&quot;&quot;&quot;</span>
 
-    <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of callbacks to execute after each successful request, used</span>
 <span class="sd">    to e.g., write to a file, add results to a database or perform additional</span>
 <span class="sd">    filtering.</span>
@@ -2267,6 +2267,11 @@ and provider.</p>
 <span class="sd">    The callbacks will receive the request URL and the results extracted</span>
 <span class="sd">    from the JSON response, with keys &#39;data&#39;, &#39;meta&#39;, &#39;links&#39;, &#39;errors&#39;</span>
 <span class="sd">    and &#39;included&#39;.</span>
+
+<span class="sd">    Each callback can return a dictionary that can modify the `next_url` with the</span>
+<span class="sd">    key `next` and the progress bar with the key `advance_results`.</span>
+<span class="sd">    In the case of multiple provided callbacks, only the value returned by the final</span>
+<span class="sd">    callback in the stack will be used.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -2311,7 +2316,7 @@ and provider.</p>
         <span class="n">http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
             <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]</span>
         <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
 
@@ -3154,17 +3159,19 @@ and provider.</p>
             <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errors&quot;</span><span class="p">,</span> <span class="p">[]),</span>
         <span class="p">}</span>
 
+        <span class="n">callback_response</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
+            <span class="n">callback_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_callbacks</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        <span class="n">callback_response</span> <span class="o">=</span> <span class="n">callback_response</span> <span class="ow">or</span> <span class="p">{}</span>
+
         <span class="c1"># Advance the progress bar for this provider</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="n">_task</span><span class="p">,</span>
-            <span class="n">advance</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]),</span>
+            <span class="n">advance</span><span class="o">=</span><span class="n">callback_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;advance_results&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])),</span>
             <span class="n">total</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_returned&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_execute_callbacks</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
-
-        <span class="n">next_url</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">next_url</span> <span class="o">=</span> <span class="n">callback_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">next_url</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">next_url</span> <span class="o">=</span> <span class="n">next_url</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span>
 
@@ -3187,19 +3194,23 @@ and provider.</p>
 
     <span class="k">def</span> <span class="nf">_execute_callbacks</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute any callbacks registered with the client.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            results: The results from the query.</span>
 <span class="sd">            response: The full response from the server.</span>
 
+<span class="sd">        Returns:</span>
+<span class="sd">            Either `None` or the string value returned from the *final* callback.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
-            <span class="k">return</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
-            <span class="n">callback</span><span class="p">(</span><span class="n">request_url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+            <span class="n">cb_response</span> <span class="o">=</span> <span class="n">callback</span><span class="p">(</span><span class="n">request_url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cb_response</span>
 </code></pre></div>
         </details>
 
@@ -3237,7 +3248,7 @@ the results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.callbacks" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="n">NoneType</span><span class="p">]]]</span></code>
+<code class="highlight language-python"><span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]]</span></code>
 
 
 <a href="#optimade.client.client.OptimadeClient.callbacks" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -3250,6 +3261,10 @@ filtering.</p>
 <p>The callbacks will receive the request URL and the results extracted
 from the JSON response, with keys 'data', 'meta', 'links', 'errors'
 and 'included'.</p>
+<p>Each callback can return a dictionary that can modify the <code>next_url</code> with the
+key <code>next</code> and the progress bar with the key <code>advance_results</code>.
+In the case of multiple provided callbacks, only the value returned by the final
+callback in the stack will be used.</p>
     </div>
 
   </div>
@@ -3519,7 +3534,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p></
       </tr>
       <tr>
         <td><code>callbacks</code></td>
-        <td><code>Optional[List[Callable[[str, Dict], NoneType]]]</code></td>
+        <td><code>Optional[List[Callable[[str, Dict], Optional[Dict]]]]</code></td>
         <td><p>A list of functions to call after each successful response, see the
 attribute <a class="autorefs autorefs-internal" href="#optimade.client.client.OptimadeClient.callbacks"><code>OptimadeClient.callbacks</code></a>
 docstring for more details.</p></td>
@@ -3544,7 +3559,7 @@ docstring for more details.</p></td>
     <span class="n">http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
         <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="n">Type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
 
