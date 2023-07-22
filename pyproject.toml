@@ -31,6 +31,7 @@ filterwarnings = [
     "ignore:.*the imp module is deprecated in favour of importlib.*:DeprecationWarning",
     "ignore:.*has an unrecognised prefix.*:",
     "ignore:.*pkg_resources is deprecated as an API*:DeprecationWarning",
+    "ignore:.*Deprecated call to `pkg_resources.declare_namespace*:DeprecationWarning",
 ]
 testpaths = "tests"
 addopts = "-rs"
