@@ -246,10 +246,10 @@ def get_base_url(
 
 def get_entries(
     collection: EntryCollection,
-    response: Type[EntryResponseMany],
+    response: Type[EntryResponseMany],  # noqa
     request: Request,
     params: EntryListingQueryParams,
-) -> EntryResponseMany:
+) -> Dict:
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
@@ -285,7 +285,7 @@ def get_entries(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)  # type: ignore[assignment]
 
-    return response(
+    return dict(
         links=links,
         data=results if results else [],
         meta=meta_values(
@@ -307,7 +307,7 @@ def get_single_entry(
     response: Type[EntryResponseOne],
     request: Request,
     params: SingleEntryQueryParams,
-) -> EntryResponseOne:
+) -> Dict:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
@@ -338,7 +338,7 @@ def get_single_entry(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
 
-    return response(
+    return dict(
         links=links,
         data=results if results else None,
         meta=meta_values(
