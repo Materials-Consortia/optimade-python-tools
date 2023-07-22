@@ -650,6 +650,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.warnings.LocalOptimadeWarning" class="md-nav__link">
+    LocalOptimadeWarning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.warnings.MissingExpectedField" class="md-nav__link">
     MissingExpectedField
   </a>
@@ -1974,6 +1981,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.warnings.LocalOptimadeWarning" class="md-nav__link">
+    LocalOptimadeWarning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.warnings.MissingExpectedField" class="md-nav__link">
     MissingExpectedField
   </a>
@@ -2093,9 +2107,43 @@ FieldValueNotRecognized            (<a class="autorefs autorefs-internal" title=
 
 
 
+<h2 id="optimade.warnings.LocalOptimadeWarning" class="doc doc-heading">
+        <code>
+LocalOptimadeWarning            (<a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a>)
+        </code>
+
+
+
+<a href="#optimade.warnings.LocalOptimadeWarning" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A warning that is specific to a local implementation of the OPTIMADE API
+and should not appear in the server log or response.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade/warnings.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LocalOptimadeWarning</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A warning that is specific to a local implementation of the OPTIMADE API</span>
+<span class="sd">    and should not appear in the server log or response.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+        </details>
+
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
 <h2 id="optimade.warnings.MissingExpectedField" class="doc doc-heading">
         <code>
-MissingExpectedField            (<a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a>)
+MissingExpectedField            (<a class="autorefs autorefs-internal" title="optimade.warnings.LocalOptimadeWarning" href="#optimade.warnings.LocalOptimadeWarning">LocalOptimadeWarning</a>)
         </code>
 
 
@@ -2109,7 +2157,7 @@ with a value.</p>
 
         <details class="quote">
           <summary>Source code in <code>optimade/warnings.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MissingExpectedField</span><span class="p">(</span><span class="n">OptimadeWarning</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MissingExpectedField</span><span class="p">(</span><span class="n">LocalOptimadeWarning</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A field was provided with a null value when a related field was provided</span>
 <span class="sd">    with a value.&quot;&quot;&quot;</span>
 </code></pre></div>

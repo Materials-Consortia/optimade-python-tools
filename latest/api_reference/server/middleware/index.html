@@ -2360,6 +2360,9 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
             <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
             <span class="k">return</span>
 
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">LocalOptimadeWarning</span><span class="p">):</span>
+            <span class="k">return</span>
+
         <span class="c1"># Format warning</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">title</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
@@ -2689,6 +2692,9 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
         <span class="c1"># If the Warning is not an OptimadeWarning or subclass thereof,</span>
         <span class="c1"># use the regular &#39;showwarning&#39; function.</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">_showwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">LocalOptimadeWarning</span><span class="p">):</span>
         <span class="k">return</span>
 
     <span class="c1"># Format warning</span>
