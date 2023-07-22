@@ -16,6 +16,12 @@ with open(module_dir.joinpath("optimade/__init__.py")) as version_file:
             f"Could not determine package version from {version_file.name} !"
         )
 
+strict_requirements = []
+# glob through requirements files and get strict versions
+for f in Path(__file__).parent.glob("requirements*.txt"):
+    with open(f) as fp:
+        strict_requirements.extend(fp.readlines())
+
 # Dependencies
 # Server minded
 elastic_deps = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
@@ -116,6 +122,7 @@ setup(
     ],
     extras_require={
         "all": all_deps,
+        "all_strict": strict_requirements,
         "dev": dev_deps,
         "http_client": http_client_deps,
         "docs": docs_deps,

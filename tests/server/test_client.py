@@ -385,6 +385,27 @@ def test_client_global_data_callback(async_http_client, http_client, use_async):
 
 
 @pytest.mark.parametrize("use_async", [True, False])
+def test_client_page_skip_callback(async_http_client, http_client, use_async):
+    def page_skip_callback(_: str, results: Dict) -> Optional[Dict]:
+        """A test callback that skips to the final page of results."""
+        if len(results["data"]) > 16:
+            return {"next": f"{TEST_URL}/structures?page_offset=16"}
+        return None
+
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+        callbacks=[page_skip_callback],
+    )
+
+    results = cli.get(response_fields=["chemical_formula_reduced"])
+
+    # callback will skip to final page after first query and add duplicate of final result
+    assert len(results["structures"][""][TEST_URL]["data"]) == 18
+
+
+@pytest.mark.parametrize("use_async", [True, False])
 def test_client_mutable_data_callback(async_http_client, http_client, use_async):
     container: Dict[str, str] = {}
 
