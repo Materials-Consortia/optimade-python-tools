@@ -2241,13 +2241,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
     <span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
-        <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
-        <span class="nb">int</span><span class="p">,</span>
-        <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetches results and indicates if more data is available.</span>
 
@@ -2255,8 +2249,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 <span class="sd">        See [`EntryListingQueryParams`][optimade.server.query_params.EntryListingQueryParams]</span>
 <span class="sd">        for more information.</span>
 
-<span class="sd">        Returns either the list of validated pydantic models matching the query, or simply the</span>
-<span class="sd">        mapped database reponse, depending on the value of `CONFIG.validate_api_response`.</span>
+<span class="sd">        Returns a list of the mapped database reponse.</span>
 
 <span class="sd">        If no results match the query, then `results` is set to `None`.</span>
 
@@ -2306,13 +2299,10 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
                 <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
-        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">raw_results</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">validate_api_response</span><span class="p">:</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">raw_results</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">]</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">single_entry</span><span class="p">:</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore[assignment]</span>
@@ -2572,7 +2562,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
     <span class="k">def</span> <span class="nf">get_next_query_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
-        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
 <span class="sd">        link.</span>
@@ -2872,8 +2862,7 @@ by the keyword arguments.</p>
 <p>Also gives the total number of data available in the absence of <code>page_limit</code>.
 See <a class="autorefs autorefs-internal" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams"><code>EntryListingQueryParams</code></a>
 for more information.</p>
-<p>Returns either the list of validated pydantic models matching the query, or simply the
-mapped database reponse, depending on the value of <code>CONFIG.validate_api_response</code>.</p>
+<p>Returns a list of the mapped database reponse.</p>
 <p>If no results match the query, then <code>results</code> is set to <code>None</code>.</p>
 
 <p><strong>Parameters:</strong></p>
@@ -2914,13 +2903,7 @@ mapped database reponse, depending on the value of <code>CONFIG.validate_api_res
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span>
-    <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
-    <span class="nb">int</span><span class="p">,</span>
-    <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-<span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches results and indicates if more data is available.</span>
 
@@ -2928,8 +2911,7 @@ mapped database reponse, depending on the value of <code>CONFIG.validate_api_res
 <span class="sd">    See [`EntryListingQueryParams`][optimade.server.query_params.EntryListingQueryParams]</span>
 <span class="sd">    for more information.</span>
 
-<span class="sd">    Returns either the list of validated pydantic models matching the query, or simply the</span>
-<span class="sd">    mapped database reponse, depending on the value of `CONFIG.validate_api_response`.</span>
+<span class="sd">    Returns a list of the mapped database reponse.</span>
 
 <span class="sd">    If no results match the query, then `results` is set to `None`.</span>
 
@@ -2979,13 +2961,10 @@ mapped database reponse, depending on the value of <code>CONFIG.validate_api_res
             <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
 
-    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">raw_results</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">validate_api_response</span><span class="p">:</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">raw_results</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">]</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">single_entry</span><span class="p">:</span>
             <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore[assignment]</span>
@@ -3116,7 +3095,7 @@ link.</p>
   <tbody>
       <tr>
         <td><code>results</code></td>
-        <td><code>Union[NoneType, List[optimade.models.entries.EntryResource], optimade.models.entries.EntryResource, List[Dict]]</code></td>
+        <td><code>Union[NoneType, Dict, List[Dict]]</code></td>
         <td><p>The results produced by find.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3148,7 +3127,7 @@ link.</p>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_next_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
-    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
 <span class="sd">    link.</span>

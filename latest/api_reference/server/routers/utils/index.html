@@ -2149,10 +2149,10 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
           <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
     <span class="n">collection</span><span class="p">:</span> <span class="n">EntryCollection</span><span class="p">,</span>
-    <span class="n">response</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResponseMany</span><span class="p">],</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResponseMany</span><span class="p">],</span>  <span class="c1"># noqa</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResponseMany</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generalized /{entry} endpoint getter&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">optimade.server.routers</span> <span class="kn">import</span> <span class="n">ENTRY_COLLECTIONS</span>
 
@@ -2188,7 +2188,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
     <span class="k">if</span> <span class="n">results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">fields</span> <span class="ow">or</span> <span class="n">include_fields</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">handle_response_fields</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">include_fields</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]</span>
 
-    <span class="k">return</span> <span class="n">response</span><span class="p">(</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">,</span>
         <span class="n">data</span><span class="o">=</span><span class="n">results</span> <span class="k">if</span> <span class="n">results</span> <span class="k">else</span> <span class="p">[],</span>
         <span class="n">meta</span><span class="o">=</span><span class="n">meta_values</span><span class="p">(</span>
