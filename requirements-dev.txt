@@ -9,5 +9,5 @@ pre-commit==3.3.3
 pylint==2.17.4
 pytest==7.4.0
 pytest-cov==4.1.0
-ruff==0.0.278
+ruff==0.0.280
 types-all==1.0.0
