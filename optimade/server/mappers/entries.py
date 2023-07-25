@@ -92,16 +92,22 @@ class BaseResourceMapper:
         return (
             tuple(
                 (f"_{CONFIG.provider.prefix}_{field}", field)
+                if not field.startswith("_")
+                else (field, field)
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
                 if isinstance(field, str)
             )
             + tuple(
                 (f"_{CONFIG.provider.prefix}_{field['name']}", field["name"])
+                if not field["name"].startswith("_")
+                else (field["name"], field["name"])
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
                 if isinstance(field, dict)
             )
             + tuple(
                 (f"_{CONFIG.provider.prefix}_{field}", field)
+                if not field.startswith("_")
+                else (field, field)
                 for field in cls.PROVIDER_FIELDS
             )
             + tuple(CONFIG.aliases.get(cls.ENDPOINT, {}).items())
