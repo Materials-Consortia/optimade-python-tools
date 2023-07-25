@@ -480,7 +480,7 @@ def test_list_properties(
 
     results = cli.list_properties("structures")
     for database in results:
-        assert len(results[database]) == 21
+        assert len(results[database]) == 22
 
     results = cli.search_property("structures", "site")
     for database in results:
