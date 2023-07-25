@@ -94,7 +94,11 @@ def retrieve_queryable_properties(
             if isinstance(field, dict)
         ]
         for field in described_provider_fields:
-            name = f"_{CONFIG.provider.prefix}_{field['name']}"
+            name = (
+                f"_{CONFIG.provider.prefix}_{field['name']}"
+                if not field["name"].startswith("_")
+                else field["name"]
+            )
             properties[name] = {k: field[k] for k in field if k != "name"}
             properties[name]["sortable"] = field.get("sortable", True)
 

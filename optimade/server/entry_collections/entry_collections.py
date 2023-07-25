@@ -255,6 +255,8 @@ class EntryCollection(ABC):
             # All provider-specific fields
             self._all_fields |= {
                 f"_{self.provider_prefix}_{field_name}"
+                if not field_name.startswith("_")
+                else field_name
                 for field_name in self.provider_fields
             }
 
