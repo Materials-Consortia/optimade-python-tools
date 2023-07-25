@@ -102,7 +102,7 @@ class OptimadeClient:
     use_async: bool
     """Whether or not to make all requests asynchronously using asyncio."""
 
-    callbacks: Optional[List[Callable[[str, Dict], None]]] = None
+    callbacks: Optional[List[Callable[[str, Dict], Union[None, Dict]]]] = None
     """A list of callbacks to execute after each successful request, used
     to e.g., write to a file, add results to a database or perform additional
     filtering.
@@ -110,6 +110,11 @@ class OptimadeClient:
     The callbacks will receive the request URL and the results extracted
     from the JSON response, with keys 'data', 'meta', 'links', 'errors'
     and 'included'.
+
+    Each callback can return a dictionary that can modify the `next_url` with the
+    key `next` and the progress bar with the key `advance_results`.
+    In the case of multiple provided callbacks, only the value returned by the final
+    callback in the stack will be used.
 
     """
 
@@ -154,7 +159,7 @@ class OptimadeClient:
         http_client: Optional[
             Union[Type[httpx.AsyncClient], Type[requests.Session]]
         ] = None,
-        callbacks: Optional[List[Callable[[str, Dict], None]]] = None,
+        callbacks: Optional[List[Callable[[str, Dict], Union[None, Dict]]]] = None,
     ):
         """Create the OPTIMADE client object.
 
@@ -997,17 +1002,19 @@ class OptimadeClient:
             "errors": r.get("errors", []),
         }
 
+        callback_response = None
+        if self.callbacks:
+            callback_response = self._execute_callbacks(results, response)
+        callback_response = callback_response or {}
+
         # Advance the progress bar for this provider
         self._progress.update(
             _task,
-            advance=len(results["data"]),
+            advance=callback_response.get("advance_results", len(results["data"])),
             total=results["meta"].get("data_returned", None),
         )
 
-        if self.callbacks:
-            self._execute_callbacks(results, response)
-
-        next_url = results["links"].get("next", None)
+        next_url = callback_response.get("next") or results["links"].get("next", None)
         if isinstance(next_url, dict):
             next_url = next_url.pop("href")
 
@@ -1030,16 +1037,20 @@ class OptimadeClient:
 
     def _execute_callbacks(
         self, results: Dict, response: Union[httpx.Response, requests.Response]
-    ) -> None:
+    ) -> Union[None, Dict]:
         """Execute any callbacks registered with the client.
 
         Parameters:
             results: The results from the query.
             response: The full response from the server.
 
+        Returns:
+            Either `None` or the string value returned from the *final* callback.
+
         """
         request_url = str(response.request.url)
         if not self.callbacks:
-            return
+            return None
         for callback in self.callbacks:
-            callback(request_url, results)
+            cb_response = callback(request_url, results)
+        return cb_response

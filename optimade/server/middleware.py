@@ -22,6 +22,7 @@ from optimade.server.config import CONFIG
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
 from optimade.warnings import (
     FieldValueNotRecognized,
+    LocalOptimadeWarning,
     OptimadeWarning,
     QueryParamNotUsed,
     TooManyValues,
@@ -359,6 +360,9 @@ class AddWarnings(BaseHTTPMiddleware):
             # If the Warning is not an OptimadeWarning or subclass thereof,
             # use the regular 'showwarning' function.
             warnings._showwarning_orig(message, category, filename, lineno, file, line)  # type: ignore[attr-defined]
+            return
+
+        if isinstance(message, LocalOptimadeWarning):
             return
 
         # Format warning

@@ -137,13 +137,7 @@ class EntryCollection(ABC):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[
-        Union[None, List[EntryResource], EntryResource, List[Dict]],
-        int,
-        bool,
-        Set[str],
-        Set[str],
-    ]:
+    ) -> Tuple[Union[None, Dict, List[Dict]], int, bool, Set[str], Set[str],]:
         """
         Fetches results and indicates if more data is available.
 
@@ -151,8 +145,7 @@ class EntryCollection(ABC):
         See [`EntryListingQueryParams`][optimade.server.query_params.EntryListingQueryParams]
         for more information.
 
-        Returns either the list of validated pydantic models matching the query, or simply the
-        mapped database reponse, depending on the value of `CONFIG.validate_api_response`.
+        Returns a list of the mapped database reponse.
 
         If no results match the query, then `results` is set to `None`.
 
@@ -202,13 +195,10 @@ class EntryCollection(ABC):
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
 
-        results: Union[None, List[EntryResource], EntryResource, List[Dict]] = None
+        results: Union[None, List[Dict], Dict] = None
 
         if raw_results:
-            if CONFIG.validate_api_response:
-                results = self.resource_mapper.deserialize(raw_results)
-            else:
-                results = [self.resource_mapper.map_back(doc) for doc in raw_results]
+            results = [self.resource_mapper.map_back(doc) for doc in raw_results]
 
             if single_entry:
                 results = results[0]  # type: ignore[assignment]
@@ -468,7 +458,7 @@ class EntryCollection(ABC):
     def get_next_query_params(
         self,
         params: EntryListingQueryParams,
-        results: Union[None, List[EntryResource], EntryResource, List[Dict]],
+        results: Union[None, Dict, List[Dict]],
     ) -> Dict[str, List[str]]:
         """Provides url query pagination parameters that will be used in the next
         link.
