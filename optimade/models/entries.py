@@ -190,16 +190,16 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                     attributes = (
                         values.get("attributes") if values.get("attributes") else {}
                     )
-                    property_metadata = meta.get(field)
+                    property_metadata = meta.get("property_metadata")
                     ## ToDo The names of the fields in attributes only need to be read once so this code can still be sped up.
-                    if property_metadata is not None:
+                    if property_metadata:
                         for subfield in property_metadata:
                             if subfield not in attributes:
                                 raise ValueError(
                                     f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
                                 )
                             #               # check that the fields under subfield are starting with prefix
-                            for subsubfield in meta.get(field).get(subfield):
+                            for subsubfield in property_metadata.get(subfield, {}):
                                 if subsubfield.startswith("_"):
                                     cls.check_field_supported_prefix(subsubfield)
                 #                             else:
