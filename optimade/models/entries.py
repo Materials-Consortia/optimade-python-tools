@@ -200,8 +200,8 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                                 )
                             #               # check that the fields under subfield are starting with prefix
                             for subsubfield in property_metadata.get(subfield, {}):
-                                pass
-                #                if subsubfield.startswith("_"):
+                                if subsubfield.startswith("_"):
+                                    pass
                 #                    cls.check_field_supported_prefix(subsubfield)
                 #                             else:
                 #                                 raise ValueError(
