@@ -198,10 +198,10 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                                 raise ValueError(
                                     f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
                                 )
-                #                         # check that the fields under subfield are starting with prefix
-                #                         for subsubfield in meta.get(field).get(subfield):
-                #                             if subsubfield.startswith("_"):
-                #                                 cls.check_field_supported_prefix(subsubfield)
+                            #               # check that the fields under subfield are starting with prefix
+                            for subsubfield in meta.get(field).get(subfield):
+                                if subsubfield.startswith("_"):
+                                    cls.check_field_supported_prefix(subsubfield)
                 #                             else:
                 #                                 raise ValueError(
                 #                                     f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
