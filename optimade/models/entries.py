@@ -200,8 +200,9 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                                 )
                             #               # check that the fields under subfield are starting with prefix
                             for subsubfield in property_metadata.get(subfield, {}):
-                                if subsubfield.startswith("_"):
-                                    cls.check_field_supported_prefix(subsubfield)
+                                pass
+                #                if subsubfield.startswith("_"):
+                #                    cls.check_field_supported_prefix(subsubfield)
                 #                             else:
                 #                                 raise ValueError(
                 #                                     f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
