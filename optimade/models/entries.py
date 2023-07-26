@@ -186,18 +186,14 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
         if meta is not None:
             for field in meta:
                 if field == "property_metadata":
-                    pass
-                #                 # check that all the fields under property metadata are in attributes
-                #                 attributes = (
-                #                     values.get("attributes") if values.get("attributes") else {}
-                #                 )
-                #                 property_metadata = meta.get(field)
-                #                 if property_metadata is not None:
-                #                     for (
-                #                         subfield
-                #                     ) in (
-                #                         property_metadata
-                #                     ):  ## ToDo The names of the fields in attributes only need to be read once so this code can still be sped up.
+                    # check that all the fields under property metadata are in attributes
+                    (values.get("attributes") if values.get("attributes") else {})
+                    property_metadata = meta.get(field)
+                    ## ToDo The names of the fields in attributes only need to be read once so this code can still be sped up.
+                    if property_metadata is not None:
+                        for subfield in property_metadata:
+                            pass
+                #
                 #                         if subfield not in attributes:
                 #                             raise ValueError(
                 #                                 f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
