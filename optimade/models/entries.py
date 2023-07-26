@@ -170,12 +170,9 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
     )
 
     def check_field_supported_prefix(field):
-        import yaml
-
         import optimade.server.mappers.entries
 
         # from optimade.server.config import CONFIG
-        yaml
         prefix = field.split("_")[1]
         if (
             prefix
