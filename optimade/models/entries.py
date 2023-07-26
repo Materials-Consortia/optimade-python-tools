@@ -201,12 +201,12 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                             #               # check that the fields under subfield are starting with prefix
                             for subsubfield in property_metadata.get(subfield, {}):
                                 if subsubfield.startswith("_"):
-                                    cls.check_field_supported_prefix(subsubfield)
-                #                             else:
-                #                                 raise ValueError(
-                #                                     f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
-                #                                 )
-                #             # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
+                                    pass  # cls.check_field_supported_prefix(subsubfield)
+                                else:
+                                    raise ValueError(
+                                        f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
+                                    )
+                # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
                 elif field.startswith("_"):
                     cls.check_field_supported_prefix(field)
                 else:
