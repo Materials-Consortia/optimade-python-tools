@@ -170,14 +170,15 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
     )
 
     def check_field_supported_prefix(field):
-        from optimade.server.mappers import BaseResourceMapper
+        # from optimade.server.mappers import BaseResourceMapper
+        from optimade.server.config import CONFIG
 
         prefix = field.split("_")[1]
-        if prefix not in BaseResourceMapper.SUPPORTED_PREFIXES:
-            pass
-        # raise ValueError(
-        #     f"The prefix {prefix} of the field {field} is not supported by this server."
-        # )
+        # if prefix not in BaseResourceMapper.SUPPORTED_PREFIXES:
+        if prefix not in CONFIG.provider.prefix:
+            raise ValueError(
+                f"The prefix {prefix} of the field {field} is not supported by this server."
+            )
 
     @root_validator(pre=True)
     def check_meta(cls, values):
