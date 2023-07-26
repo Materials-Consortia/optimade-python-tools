@@ -180,43 +180,43 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
 
     @root_validator(pre=True)
     def check_meta(cls, values):
-        pass
         #     """Validator to check whether meta field has been formatted correctly."""
         #
-        #     meta = values.get("meta")
-        #     if meta is not None:
-        #         for field in meta:
-        #             if field == "property_metadata":
-        #                 # check that all the fields under property metadata are in attributes
-        #                 attributes = (
-        #                     values.get("attributes") if values.get("attributes") else {}
-        #                 )
-        #                 property_metadata = meta.get(field)
-        #                 if property_metadata is not None:
-        #                     for (
-        #                         subfield
-        #                     ) in (
-        #                         property_metadata
-        #                     ):  ## ToDo The names of the fields in attributes only need to be read once so this code can still be sped up.
-        #                         if subfield not in attributes:
-        #                             raise ValueError(
-        #                                 f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
-        #                             )
-        #                         # check that the fields under subfield are starting with prefix
-        #                         for subsubfield in meta.get(field).get(subfield):
-        #                             if subsubfield.startswith("_"):
-        #                                 cls.check_field_supported_prefix(subsubfield)
-        #                             else:
-        #                                 raise ValueError(
-        #                                     f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
-        #                                 )
-        #             # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
-        #             elif field.startswith("_"):
-        #                 cls.check_field_supported_prefix(field)
-        #             else:
-        #                 raise ValueError(
-        #                     "The fields under meta either need to be database specific fields or the field `property_metadata'"
-        #                 )
+        meta = values.get("meta")
+        if meta is not None:
+            for field in meta:
+                if field == "property_metadata":
+                    pass
+                #                 # check that all the fields under property metadata are in attributes
+                #                 attributes = (
+                #                     values.get("attributes") if values.get("attributes") else {}
+                #                 )
+                #                 property_metadata = meta.get(field)
+                #                 if property_metadata is not None:
+                #                     for (
+                #                         subfield
+                #                     ) in (
+                #                         property_metadata
+                #                     ):  ## ToDo The names of the fields in attributes only need to be read once so this code can still be sped up.
+                #                         if subfield not in attributes:
+                #                             raise ValueError(
+                #                                 f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
+                #                             )
+                #                         # check that the fields under subfield are starting with prefix
+                #                         for subsubfield in meta.get(field).get(subfield):
+                #                             if subsubfield.startswith("_"):
+                #                                 cls.check_field_supported_prefix(subsubfield)
+                #                             else:
+                #                                 raise ValueError(
+                #                                     f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
+                #                                 )
+                #             # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
+                elif field.startswith("_"):
+                    cls.check_field_supported_prefix(field)
+                else:
+                    raise ValueError(
+                        "The fields under meta either need to be database specific fields or the field `property_metadata'"
+                    )
         return values
 
 
