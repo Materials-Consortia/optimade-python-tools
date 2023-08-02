@@ -1,3 +1,111 @@
+[build-system]
+requires = ["setuptools >= 61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = {attr = "optimade.__version__"}
+
+[project]
+name = "optimade"
+description = "Tools for implementing and consuming OPTIMADE APIs."
+readme = "README.md"
+keywords = ["optimade", "jsonapi", "materials"]
+license = { text = "MIT" }
+authors = [{ name = "OPTIMADE development team", email = "dev@optimade.org" }]
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Database :: Front-Ends",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "lark~=1.1",
+    "pydantic~=1.10,>=1.10.2,!=1.10.7",
+    "email_validator>=1.2",
+    "requests~=2.28",
+]
+
+[project.scripts]
+optimade-validator = "optimade.validator:validate"
+optimade-get = "optimade.client.cli:get"
+
+
+[project.urls]
+"Homepage" = "https://github.com/Materials-Consortia/optimade-python-tools"
+"Bug Tracker" = "https://github.com/Materials-Consortia/optimade-python-tools/issues"
+"Documentation" = "https://optimade.org/optimade-python-tools"
+
+[project.optional-dependencies]
+elastic = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
+mongo = ["pymongo>=3.12.1,<5", "mongomock~=4.1"]
+server = [
+    "uvicorn[standard]~=0.19",
+    "fastapi~=0.86,<0.99",
+    "pyyaml~=6.0",
+    "optimade[mongo]",
+]
+
+# Client minded
+aiida = ["aiida-core~=2.1"]
+
+http_client = [
+    "httpx~=0.23",
+    "rich~=13.0",
+    "click~=8.1",
+]
+
+ase = ["ase~=3.22"]
+cif = ["numpy>=1.20"]
+pymatgen = ["pymatgen>=2022"]
+jarvis = ["jarvis-tools>=2023.1.8"]
+client = ["optimade[cif]"]
+
+# General
+docs = [
+    "mike~=1.1",
+    "mkdocs~=1.4",
+    "mkdocs-awesome-pages-plugin~=2.8",
+    "mkdocs-material~=9.0",
+    "mkdocstrings[python-legacy]~=0.20",
+]
+
+testing = [
+    "build~=0.9.0",
+    "jsondiff~=2.0",
+    "pytest~=7.2",
+    "pytest-cov~=4.0",
+    "optimade[server]",
+]
+
+dev = [
+   "black~=23.1",
+   "isort~=5.12",
+   "mypy~=1.0",
+   "pre-commit~=3.0",
+   "invoke~=2.0",
+   "types-all==1.0.0",
+   "ruff~=0.0",
+   "optimade[docs,testing,client,http_client]"
+]
+
+all = ["optimade[dev,elastic,aiida,ase,pymatgen,jarvis,http_client,client]"]
+
+
 [tool.ruff]
 select = ["E", "F", "I", "W", "Q"]
 ignore = ["E501", "E402"]
