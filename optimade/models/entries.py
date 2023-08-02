@@ -8,7 +8,6 @@ from pydantic import (
     validator,
 )
 
-# pylint: disable=no-name-in-module
 from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
 from optimade.models.optimade_json import DataType, Relationship
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
