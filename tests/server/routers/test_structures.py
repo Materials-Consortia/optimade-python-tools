@@ -73,7 +73,7 @@ class TestSingleStructureEndpoint(RegularEndpointTests):
             self.json_response["data"]["meta"]["property_metadata"]["elements_ratios"][
                 "_exmpl_originates_from_project"
             ]
-            == "Actinides"
+            == "Pure Metals"
         )
 
 

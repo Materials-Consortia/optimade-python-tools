@@ -2,7 +2,11 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, root_validator, validator
+from pydantic import (
+    BaseModel,
+    root_validator,
+    validator,
+)
 
 # pylint: disable=no-name-in-module
 from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
@@ -16,6 +20,26 @@ __all__ = (
     "EntryInfoProperty",
     "EntryInfoResource",
 )
+
+
+def starts_with_supported_prefix(field):
+    from optimade.server.mappers.entries import BaseResourceMapper
+
+    prefix = None
+    if field.startswith("_"):
+        prefix = field.split("_")[1]
+        if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
+            return True, prefix
+    return False, prefix
+
+
+def _check_starts_with_supported_prefix(field, message=""):
+    prefixed, prefix = starts_with_supported_prefix(field)
+    if not prefixed:
+        raise ValueError(
+            f"The field {field} either has no prefix or the prefix {prefix} is not supported by this server."
+            + message
+        )
 
 
 class TypedRelationship(Relationship):
@@ -169,55 +193,38 @@ Database-provider-specific properties need to include the database-provider-spec
 The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
     )
 
-    def check_field_supported_prefix(field):
-        import optimade.server.mappers.entries
-
-        # from optimade.server.config import CONFIG
-        prefix = field.split("_")[1]
-        if (
-            prefix
-            not in optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES
-        ):
-            # if prefix not in "exmpl":
-            raise ValueError(
-                f"The prefix {prefix} of the field {field} is not supported by this server."
-            )
-
     @root_validator(pre=True)
     def check_meta(cls, values):
-        #     """Validator to check whether meta field has been formatted correctly."""
-        #
+        """Validator to check whether meta field has been formatted correctly."""
         meta = values.get("meta")
-        if meta is not None:
+        if meta:
             for field in meta:
                 if field == "property_metadata":
                     # check that all the fields under property metadata are in attributes
-                    attributes = (
-                        values.get("attributes") if values.get("attributes") else {}
-                    )
+                    attributes = values.get("attributes", {})
                     property_metadata = meta.get("property_metadata")
-                    ## ToDo The names of the fields in attributes only need to be read once so this code can still be sped up.
                     if property_metadata:
                         for subfield in property_metadata:
                             if subfield not in attributes:
                                 raise ValueError(
                                     f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
                                 )
-                            #               # check that the fields under subfield are starting with prefix
-                            for subsubfield in property_metadata.get(subfield, {}):
-                                if subsubfield.startswith("_"):
-                                    cls.check_field_supported_prefix(subsubfield)
-                                else:
-                                    raise ValueError(
-                                        f"The Provider/Domain specific field {subsubfield} must be prefixed with a prefix that is supported by this database."
+                            # check that the fields under subfield are starting with prefix
+                            subsubfields = property_metadata.get(subfield)
+                            if subsubfields:
+                                for subsubfield in subsubfields:
+                                    _check_starts_with_supported_prefix(
+                                        subsubfield,
+                                        "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only database and domain specific fields are allowed",
                                     )
+
                 # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
-                elif field.startswith("_"):
-                    cls.check_field_supported_prefix(field)
                 else:
-                    raise ValueError(
-                        "The fields under meta either need to be database specific fields or the field `property_metadata'"
+                    _check_starts_with_supported_prefix(
+                        field,
+                        'Currently no OPTIMADE fields other than "property_metadata" have been defined for the per entry "meta" field, thus only database and domain specific fields are allowed.',
                     )
+
         return values
 
 
