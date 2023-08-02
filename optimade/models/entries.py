@@ -21,26 +21,6 @@ __all__ = (
 )
 
 
-def starts_with_supported_prefix(field):
-    from optimade.server.mappers.entries import BaseResourceMapper
-
-    prefix = None
-    if field.startswith("_"):
-        prefix = field.split("_")[1]
-        if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
-            return True, prefix
-    return False, prefix
-
-
-def _check_starts_with_supported_prefix(field, message=""):
-    prefixed, prefix = starts_with_supported_prefix(field)
-    if not prefixed:
-        raise ValueError(
-            f"The field {field} either has no prefix or the prefix {prefix} is not supported by this server."
-            + message
-        )
-
-
 class TypedRelationship(Relationship):
     # This may be updated when moving to Python 3.8
     @validator("data")
@@ -195,6 +175,10 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
     @root_validator(pre=True)
     def check_meta(cls, values):
         """Validator to check whether meta field has been formatted correctly."""
+        from optimade.server.mappers.entries import (
+            BaseResourceMapper,
+        )
+
         meta = values.get("meta")
         if meta:
             for field in meta:
@@ -212,14 +196,14 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                             subsubfields = property_metadata.get(subfield)
                             if subsubfields:
                                 for subsubfield in subsubfields:
-                                    _check_starts_with_supported_prefix(
+                                    BaseResourceMapper.check_starts_with_supported_prefix(
                                         subsubfield,
                                         "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only database and domain specific fields are allowed",
                                     )
 
                 # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
                 else:
-                    _check_starts_with_supported_prefix(
+                    BaseResourceMapper.check_starts_with_supported_prefix(
                         field,
                         'Currently no OPTIMADE fields other than "property_metadata" have been defined for the per entry "meta" field, thus only database and domain specific fields are allowed.',
                     )

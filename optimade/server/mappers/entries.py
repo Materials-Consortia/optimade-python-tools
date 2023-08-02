@@ -383,3 +383,36 @@ class BaseResourceMapper:
             return cls.ENTRY_RESOURCE_CLASS(**cls.map_back(results))
 
         return [cls.ENTRY_RESOURCE_CLASS(**cls.map_back(doc)) for doc in results]
+
+    @staticmethod
+    def starts_with_supported_prefix(field: str):
+        """Tests whether the supplied field has a field that is supported by this server.
+        Parameters:
+            field: The field/string for which it should be checked that it starts with a supported prefix.
+
+        Returns:
+            A boolean which is true if the field/string starts with a supported prefix.
+            A string, containing the prefix if the field has a prefix otherwise it returns 'None'.
+        """
+
+        prefix = None
+        if field.startswith("_"):
+            prefix = field.split("_")[1]
+            if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
+                return True, prefix
+        return False, prefix
+
+    @classmethod
+    def check_starts_with_supported_prefix(cls, field: str, message: str = ""):
+        """Raises a value error if the field does not start with a supported prefix.
+        Parameters:
+            field: The field/string for which it should be checked that it starts with a supported prefix.
+            message: An additional error message that will be appended to the default error message.
+        """
+
+        prefixed, prefix = cls.starts_with_supported_prefix(field)
+        if not prefixed:
+            raise ValueError(
+                f"The field {field} either has no prefix or the prefix {prefix} is not supported by this server."
+                + message
+            )
