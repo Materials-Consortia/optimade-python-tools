@@ -129,7 +129,7 @@ class EntryMetadata(Meta):
 
     property_metadata: Dict = StrictField(
         None,
-        description="""A dictionary, where the keys are the names of the properties in the attributes field and the value is a dictionary containing the meta data for that property.
+        description="""A dictionary, where the keys are the names of the properties in the attributes field and the value is a dictionary containing the metadata for that property.
 Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
     )
 
