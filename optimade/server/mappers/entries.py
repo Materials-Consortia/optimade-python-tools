@@ -408,7 +408,7 @@ class BaseResourceMapper:
         Parameters:
             field: The field/string for which it should be checked that it starts with a supported prefix.
             message: An additional error message that will be appended to the default error message.
-        Rerturns:
+        Returns:
             Raises a value error when the field has no valid prefix.
         """
 
