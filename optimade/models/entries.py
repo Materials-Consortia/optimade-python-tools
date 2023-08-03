@@ -113,6 +113,23 @@ class EntryMetadata(Meta):
 Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
     )
 
+    @validator("property_metadata")
+    def check_property_metadata_subfields(cls, property_metadata):
+        from optimade.server.mappers.entries import (
+            BaseResourceMapper,
+        )
+
+        if property_metadata:
+            for field in property_metadata:
+                subfields = property_metadata.get(field)
+                if subfields:
+                    for subsubfield in subfields:
+                        BaseResourceMapper.check_starts_with_supported_prefix(
+                            subsubfield,
+                            "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only database and domain specific fields are allowed",
+                        )
+        return property_metadata
+
 
 class EntryResource(Resource):
     """The base model for an entry resource."""
@@ -180,33 +197,29 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
         )
 
         meta = values.get("meta")
-        if meta:
-            for field in meta:
-                if field == "property_metadata":
-                    # check that all the fields under property metadata are in attributes
-                    attributes = values.get("attributes", {})
-                    property_metadata = meta.get("property_metadata")
-                    if property_metadata:
-                        for subfield in property_metadata:
-                            if subfield not in attributes:
-                                raise ValueError(
-                                    f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
-                                )
-                            # check that the fields under subfield are starting with prefix
-                            subsubfields = property_metadata.get(subfield)
-                            if subsubfields:
-                                for subsubfield in subsubfields:
-                                    BaseResourceMapper.check_starts_with_supported_prefix(
-                                        subsubfield,
-                                        "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only database and domain specific fields are allowed",
-                                    )
+        if not meta:
+            return values
 
-                # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
-                else:
-                    BaseResourceMapper.check_starts_with_supported_prefix(
-                        field,
-                        'Currently no OPTIMADE fields other than "property_metadata" have been defined for the per entry "meta" field, thus only database and domain specific fields are allowed.',
+        if property_metadata := meta.pop("property_metadata", None):
+            # check that all the fields under property metadata are in attributes
+            attributes = values.get("attributes", {})
+            for subfield in property_metadata:
+                if subfield not in attributes:
+                    raise ValueError(
+                        f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
                     )
+
+        for (
+            field
+        ) in (
+            meta
+        ):  # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
+            BaseResourceMapper.check_starts_with_supported_prefix(
+                field,
+                'Currently no OPTIMADE fields other than "property_metadata" have been defined for the per entry "meta" field, thus only database and domain specific fields are allowed.',
+            )
+
+        values["meta"]["property_metadata"] = property_metadata
 
         return values
 
