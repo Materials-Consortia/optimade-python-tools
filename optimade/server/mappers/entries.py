@@ -1,6 +1,16 @@
 import warnings
 from functools import lru_cache
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+    Union,
+)
 
 from optimade.models.entries import EntryResource
 
@@ -385,7 +395,7 @@ class BaseResourceMapper:
         return [cls.ENTRY_RESOURCE_CLASS(**cls.map_back(doc)) for doc in results]
 
     @staticmethod
-    def starts_with_supported_prefix(field: str):
+    def starts_with_supported_prefix(field: str) -> Tuple[bool, str | None]:
         """Tests whether the supplied field has a field that is supported by this server.
         Parameters:
             field: The field/string for which it should be checked that it starts with a supported prefix.
@@ -403,7 +413,7 @@ class BaseResourceMapper:
         return False, prefix
 
     @classmethod
-    def check_starts_with_supported_prefix(cls, field: str, message: str = ""):
+    def check_starts_with_supported_prefix(cls, field: str, message: str = "") -> None:
         """Raises a value error if the field does not start with a supported prefix.
         Parameters:
             field: The field/string for which it should be checked that it starts with a supported prefix.
