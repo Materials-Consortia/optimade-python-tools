@@ -125,12 +125,12 @@ def handle_response_fields(
         for field in exclude_fields:
             if field in new_entry["attributes"]:
                 del new_entry["attributes"][field]
-            if new_entry.get("meta") and new_entry.get("meta").get(  # type: ignore[union-attr]
-                "property_metadata"
+            if new_entry.get("meta") and (
+                property_meta_data_fields := new_entry.get("meta").get(  # type: ignore[union-attr]
+                    "property_metadata"
+                )
             ):
-                if field in new_entry.get("meta", {}).get(
-                    "property_metadata", {}
-                ):  # type: ignore[union-attr]
+                if field in property_meta_data_fields:
                     del new_entry["meta"]["property_metadata"][field]
 
         # Include missing fields that were requested in `response_fields`
