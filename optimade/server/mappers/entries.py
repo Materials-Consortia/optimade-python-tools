@@ -395,7 +395,7 @@ class BaseResourceMapper:
         return [cls.ENTRY_RESOURCE_CLASS(**cls.map_back(doc)) for doc in results]
 
     @staticmethod
-    def starts_with_supported_prefix(field: str) -> Tuple[bool, str | None]:
+    def starts_with_supported_prefix(field: str) -> Tuple[bool, Union[str, None]]:
         """Tests whether the supplied field has a field that is supported by this server.
         Parameters:
             field: The field/string for which it should be checked that it starts with a supported prefix.
