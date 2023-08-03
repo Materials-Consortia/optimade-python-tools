@@ -121,11 +121,10 @@ Database-provider-specific properties need to include the database-provider-spec
 
         if property_metadata:
             for field in property_metadata:
-                subfields = property_metadata.get(field)
-                if subfields:
-                    for subsubfield in subfields:
+                if attribute_meta_dict := property_metadata.get(field):
+                    for subfield in attribute_meta_dict:
                         BaseResourceMapper.check_starts_with_supported_prefix(
-                            subsubfield,
+                            subfield,
                             "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only database and domain specific fields are allowed",
                         )
         return property_metadata
@@ -209,11 +208,8 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                         f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
                     )
 
-        for (
-            field
-        ) in (
-            meta
-        ):  # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
+        # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
+        for field in meta:
             BaseResourceMapper.check_starts_with_supported_prefix(
                 field,
                 'Currently no OPTIMADE fields other than "property_metadata" have been defined for the per entry "meta" field, thus only database and domain specific fields are allowed.',
