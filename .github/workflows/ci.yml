@@ -135,7 +135,7 @@ jobs:
 
     services:
       mongo:
-        image: mongo:4
+        image: mongo:6
         ports:
         - 27017:27017
       postgres:
