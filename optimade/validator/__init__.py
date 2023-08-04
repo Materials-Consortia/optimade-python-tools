@@ -37,8 +37,6 @@ def validate():  # pragma: no cover
     )
     parser.add_argument(
         "base_url",
-        nargs="?",
-        default="http://localhost:5000/v0",
         help=(
             "The base URL of the OPTIMADE implementation to point at, "
             "e.g. 'http://example.com/optimade/v1' or 'http://localhost:5000/v1'"
