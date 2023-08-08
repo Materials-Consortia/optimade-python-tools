@@ -1,11 +1,11 @@
-from typing import Optional
+from typing import Literal, Optional
 
-from pydantic import BaseModel  # pylint: disable=no-name-in-module
+from pydantic import BaseModel
 
 from optimade.models.utils import OptimadeField, SupportLevel
 
 
-class JsonLinesHeader(BaseModel):
+class PartialDataHeader(BaseModel):
     optimade_partial_data: dict = OptimadeField(
         ...,
         description="""An object identifying the response as being on OPTIMADE partial data format.
@@ -21,7 +21,7 @@ It MUST contain the following key:
     - `""optimade-partial-data": {"version": "1.2.0"}"`""",
         support=SupportLevel.MUST,
     )
-    layout: str = OptimadeField(
+    layout: Literal["dense", "sparse"] = OptimadeField(
         ...,
         description="""A string either equal to "dense" or "sparse" to indicate whether the returned format uses a dense or sparse layout.
 
@@ -119,6 +119,6 @@ It MUST contain the following key:
     )
 
 
-class JsonLinesResponse(BaseModel):
-    header: JsonLinesHeader
+class PartialDataResponse(BaseModel):
+    header: PartialDataHeader
     data: list
