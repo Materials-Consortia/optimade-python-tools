@@ -2,15 +2,6 @@
 requires = ["setuptools >= 61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-include-package-data = true
-
-[tool.setuptools.packages.find]
-namespaces = false
-
-[tool.setuptools.dynamic]
-version = {attr = "optimade.__version__"}
-
 [project]
 name = "optimade"
 description = "Tools for implementing and consuming OPTIMADE APIs."
@@ -49,6 +40,25 @@ optimade-get = "optimade.client.cli:get"
 "Homepage" = "https://github.com/Materials-Consortia/optimade-python-tools"
 "Bug Tracker" = "https://github.com/Materials-Consortia/optimade-python-tools/issues"
 "Documentation" = "https://optimade.org/optimade-python-tools"
+
+[tools.setuptools]
+license-files = ["LICENSE"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "optimade.__version__"}
+
+[tool.setuptools.packages.find]
+namespaces = false
+
+[tool.setuptools.package-data]
+optimade = ["py.typed"]
+"optimade.server" = ["*.json"]
+"optimade.server.data" = ["*.json"]
+"optimade.server.routers" = ["static/*.html"]
+"optimade.grammar" = ["*.lark"]
+
+
 
 [project.optional-dependencies]
 elastic = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
