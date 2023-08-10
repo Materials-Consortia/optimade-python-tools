@@ -1,3 +1,0 @@
-# JSONLines
-
-::: optimade.JSONLines

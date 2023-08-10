@@ -1,0 +1,3 @@
+# jsonl
+
+::: optimade.adapters.jsonl
