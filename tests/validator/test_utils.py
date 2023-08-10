@@ -381,7 +381,7 @@ def test_versions_test_cases():
         expected_status_code=200,
         content=b"version\n1",
         content_type="text/csv;header=present",
-        **kwargs
+        **kwargs,
     ):
         r = Response()
         if expected_status_code == 200:
