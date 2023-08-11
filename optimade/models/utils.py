@@ -5,14 +5,10 @@ import re
 import warnings
 from enum import Enum
 from functools import reduce
-from typing import TYPE_CHECKING, Optional, Union
+from typing import Any, Optional, Union
 
 from pydantic import Field
 from pydantic.fields import FieldInfo
-
-if TYPE_CHECKING:  # pragma: no cover
-    from typing import Any
-
 
 _PYDANTIC_FIELD_KWARGS = list(inspect.signature(Field).parameters.keys())
 
@@ -20,12 +16,13 @@ __all__ = (
     "CHEMICAL_SYMBOLS",
     "EXTRA_SYMBOLS",
     "ATOMIC_NUMBERS",
-    "SemanticVersion",
     "SupportLevel",
 )
 
 OPTIMADE_SCHEMA_EXTENSION_KEYS = ["support", "queryable", "unit", "sortable"]
 OPTIMADE_SCHEMA_EXTENSION_PREFIX = "x-optimade-"
+
+SEMVER_PATTERN = r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
 
 
 class SupportLevel(Enum):
@@ -43,12 +40,14 @@ class StrictFieldInfo(FieldInfo):
     """
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        if not kwargs.get("default"):
+            kwargs["default"] = args[0] if args else None
+        super().__init__(**kwargs)
         for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
-            if key in self.extra:
-                self.extra[f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"] = self.extra.pop(
-                    key
-                )
+            if self.json_schema_extra and key in self.json_schema_extra:
+                self.json_schema_extra[
+                    f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
+                ] = self.json_schema_extra.pop(key)
 
 
 def StrictPydanticField(*args, **kwargs):
@@ -56,7 +55,6 @@ def StrictPydanticField(*args, **kwargs):
     the pydantic `FieldInfo`.
     """
     field_info = StrictFieldInfo(*args, **kwargs)
-    field_info._validate()
     return field_info
 
 
@@ -151,74 +149,6 @@ def OptimadeField(
     return StrictField(*args, **kwargs)
 
 
-class SemanticVersion(str):
-    """A custom type for a semantic version, using the recommended
-    semver regexp from
-    https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string.
-
-    """
-
-    regex = re.compile(
-        r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
-    )
-
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(
-            pattern=cls.regex.pattern,
-            example=["0.10.1", "1.0.0-rc.2", "1.2.3-rc.5+develop"],
-        )
-
-    @classmethod
-    def validate(cls, v: str):
-        if not cls.regex.match(v):
-            raise ValueError(
-                f"Unable to validate the version string {v!r} as a semantic version (expected <major>.<minor>.<patch>)."
-                "See https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string for more information."
-            )
-
-        return v
-
-    @property
-    def _match(self):
-        """The result of the regex match."""
-        return self.regex.match(self)
-
-    @property
-    def major(self) -> int:
-        """The major version number."""
-        return int(self._match.group(1))
-
-    @property
-    def minor(self) -> int:
-        """The minor version number."""
-        return int(self._match.group(2))
-
-    @property
-    def patch(self) -> int:
-        """The patch version number."""
-        return int(self._match.group(3))
-
-    @property
-    def prerelease(self) -> str:
-        """The pre-release tag."""
-        return self._match.group(4)
-
-    @property
-    def build_metadata(self) -> str:
-        """The build metadata."""
-        return self._match.group(5)
-
-    @property
-    def base_version(self) -> str:
-        """The base version string without patch and metadata info."""
-        return f"{self.major}.{self.minor}.{self.patch}"
-
-
 def anonymous_element_generator():
     """Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme."""
     from string import ascii_lowercase
@@ -234,7 +164,6 @@ def _reduce_or_anonymize_formula(
     formula: str, alphabetize: bool = True, anonymize: bool = False
 ) -> str:
     """Takes an input formula, reduces it and either alphabetizes or anonymizes it."""
-    import re
     import sys
 
     numbers: list[int] = [
@@ -418,3 +347,9 @@ CHEMICAL_SYMBOLS = [
 ATOMIC_NUMBERS = {}
 for Z, symbol in enumerate(CHEMICAL_SYMBOLS):
     ATOMIC_NUMBERS[symbol] = Z + 1
+
+EXTENDED_CHEMICAL_SYMBOLS_PATTERN = (
+    "(" + "|".join(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS) + ")"
+)
+
+ELEMENT_SYMBOLS_PATTERN = "(" + "|".join(CHEMICAL_SYMBOLS) + ")"

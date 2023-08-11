@@ -4,13 +4,14 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Optional, Union
 
-from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, root_validator
+from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, model_validator
 
 from optimade.models import jsonapi
-from optimade.models.utils import SemanticVersion, StrictField
+from optimade.models.types import SemanticVersion
+from optimade.models.utils import StrictField
 
 __all__ = (
-    "DataType",
+    "Datatype",
     "ResponseMetaQuery",
     "Provider",
     "ImplementationMaintainer",
@@ -25,8 +26,8 @@ __all__ = (
 )
 
 
-class DataType(Enum):
-    """Optimade Data Types
+class Datatype(Enum):
+    """Optimade Data types
 
     See the section "Data types" in the OPTIMADE API specification for more information.
     """
@@ -68,7 +69,7 @@ class DataType(Enum):
             "dict_keys": cls.LIST,
             "dict_values": cls.LIST,
             "dict_items": cls.LIST,
-            "NoneType": cls.UNKNOWN,
+            "Nonetype": cls.UNKNOWN,
             "None": cls.UNKNOWN,
             "datetime": cls.TIMESTAMP,
             "date": cls.TIMESTAMP,
@@ -145,10 +146,11 @@ class Warnings(OptimadeError):
     type: str = StrictField(
         "warning",
         description='Warnings must be of type "warning"',
-        regex="^warning$",
+        pattern="^warning$",
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def status_must_not_be_specified(cls, values):
         if values.get("status", None) is not None:
             raise ValueError("status MUST NOT be specified for warnings")
@@ -156,7 +158,7 @@ class Warnings(OptimadeError):
 
     class Config:
         @staticmethod
-        def schema_extra(schema: dict[str, Any], model: type["Warnings"]) -> None:
+        def json_schema_extra(schema: dict[str, Any], model: type["Warnings"]) -> None:
             """Update OpenAPI JSON schema model for `Warning`.
 
             * Ensure `type` is in the list required properties and in the correct place.
@@ -199,7 +201,7 @@ class Provider(BaseModel):
 
     prefix: str = StrictField(
         ...,
-        regex=r"^[a-z]([a-z]|[0-9]|_)*$",
+        pattern=r"^[a-z]([a-z]|[0-9]|_)*$",
         description="database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes.",
     )
 
@@ -335,7 +337,8 @@ class Success(jsonapi.Response):
         ..., description="A meta object containing non-standard information"
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def either_data_meta_or_errors_must_be_set(cls, values):
         """Overwriting the existing validation function, since 'errors' MUST NOT be set."""
         required_fields = ("data", "meta")

@@ -56,4 +56,4 @@ repos:
     hooks:
       - id: mypy
         name: "MyPy"
-        additional_dependencies: ["types-all", "pydantic~=1.10"]
+        additional_dependencies: ["types-all", "pydantic~=2.0"]

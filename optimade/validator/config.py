@@ -10,7 +10,8 @@ the hardcoded values.
 from collections.abc import Container
 from typing import Any
 
-from pydantic import BaseSettings, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 from optimade.models import (
     DataType,

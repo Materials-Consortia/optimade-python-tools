@@ -1,8 +1,9 @@
 # pylint: disable=line-too-long,no-self-argument
 from typing import Optional
 
-from pydantic import AnyUrl, BaseModel, validator  # pylint: disable=no-name-in-module
+from pydantic import AnyUrl, BaseModel, field_validator
 
+# pylint: disable=no-name-in-module
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.utils import OptimadeField, SupportLevel
 
@@ -255,13 +256,14 @@ class ReferenceResource(EntryResource):
     - MUST be an existing entry type.
     - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
 - **Example**: `"structures"`""",
-        regex="^references$",
+        pattern="^references$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
     attributes: ReferenceResourceAttributes
 
-    @validator("attributes")
+    @field_validator("attributes")
+    @classmethod
     def validate_attributes(cls, v):
         if not any(prop[1] is not None for prop in v):
             raise ValueError("reference object must have at least one field defined")

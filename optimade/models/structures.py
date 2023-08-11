@@ -2,25 +2,22 @@
 import re
 import warnings
 from enum import Enum, IntEnum
-from typing import Optional, Union
+from typing import Annotated, Optional, Union
 
-from pydantic import BaseModel, conlist, root_validator, validator
+from pydantic import BaseModel, BeforeValidator, Field, field_validator, model_validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
+from optimade.models.types import ChemicalSymbol
 from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
     CHEMICAL_SYMBOLS,
-    EXTRA_SYMBOLS,
     OptimadeField,
     StrictField,
     SupportLevel,
     reduce_formula,
 )
 from optimade.warnings import MissingExpectedField
-
-EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
-
 
 __all__ = (
     "Vector3D",
@@ -37,8 +34,13 @@ __all__ = (
 EPS = 2**-23
 
 
-Vector3D = conlist(float, min_items=3, max_items=3)
-Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
+Vector3D = Annotated[
+    list[Annotated[float, BeforeValidator(float)]], Field(min_length=3, max_length=3)
+]
+Vector3D_unknown = Annotated[
+    list[Union[None, Annotated[float, BeforeValidator(float)]]],
+    Field(min_length=3, max_length=3),
+]
 
 
 class Periodicity(IntEnum):
@@ -84,7 +86,7 @@ class Species(BaseModel):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    chemical_symbols: list[str] = OptimadeField(
+    chemical_symbols: list[ChemicalSymbol] = OptimadeField(
         ...,
         description="""MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
 
@@ -141,31 +143,24 @@ Note: With regards to "source database", we refer to the immediate source being 
         queryable=SupportLevel.OPTIONAL,
     )
 
-    @validator("chemical_symbols", each_item=True)
-    def validate_chemical_symbols(cls, v):
-        if v not in EXTENDED_CHEMICAL_SYMBOLS:
-            raise ValueError(
-                f'{v!r} MUST be an element symbol, e.g., "C", "He", or a special symbol from {EXTRA_SYMBOLS}.'
-            )
-        return v
-
-    @validator("concentration", "mass")
-    def validate_concentration_and_mass(cls, v, values, field):
+    @field_validator("concentration", "mass")
+    def validate_concentration_and_mass(cls, v, info):
         if not v:
             return v
-        if values.get("chemical_symbols"):
-            if len(v) != len(values["chemical_symbols"]):
+        if info.data.get("chemical_symbols"):
+            if len(v) != len(info.data["chemical_symbols"]):
                 raise ValueError(
                     f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols "
-                    f"({len(values.get('chemical_symbols', []))})"
+                    f"({len(info.data.get('chemical_symbols', []))})"
                 )
             return v
 
         raise ValueError(
-            f"Could not validate {field.name!r} as 'chemical_symbols' is missing/invalid."
+            f"Could not validate {info.field_name!r} as 'chemical_symbols' is missing/invalid."
         )
 
-    @validator("attached", "nattached")
+    @field_validator("attached", "nattached")
+    @classmethod
     def validate_minimum_list_length(cls, v):
         if v is not None and len(v) < 1:
             raise ValueError(
@@ -173,7 +168,8 @@ Note: With regards to "source database", we refer to the immediate source being 
             )
         return v
 
-    @root_validator
+    @model_validator(mode="before")
+    @classmethod
     def attached_nattached_mutually_exclusive(cls, values):
         attached, nattached = (
             values.get("attached", None),
@@ -231,7 +227,8 @@ The possible reasons for the values not to sum to one are the same as already sp
         queryable=SupportLevel.OPTIONAL,
     )
 
-    @validator("sites_in_groups")
+    @field_validator("sites_in_groups")
+    @classmethod
     def validate_sites_in_groups(cls, v):
         sites = []
         for group in v:
@@ -242,12 +239,12 @@ The possible reasons for the values not to sum to one are the same as already sp
             )
         return v
 
-    @validator("group_probabilities")
-    def check_self_consistency(cls, v, values):
-        if len(v) != len(values.get("sites_in_groups", [])):
+    @field_validator("group_probabilities")
+    def check_self_consistency(cls, v, info):
+        if len(v) != len(info.data.get("sites_in_groups", [])):
             raise ValueError(
                 f"sites_in_groups and group_probabilities MUST be of same length, "
-                f"but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
+                f"but are {len(info.data.get('sites_in_groups', []))} and {len(v)}, respectively"
             )
         return v
 
@@ -264,7 +261,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
     elements: Optional[list[str]] = OptimadeField(
-        ...,
+        None,
         description="""The chemical symbols of the different elements present in the structure.
 
 - **Type**: list of strings.
@@ -290,7 +287,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     )
 
     nelements: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""Number of different elements in the structure as an integer.
 
 - **Type**: integer
@@ -312,7 +309,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     )
 
     elements_ratios: Optional[list[float]] = OptimadeField(
-        ...,
+        None,
         description="""Relative proportions of different elements in the structure.
 
 - **Type**: list of floats
@@ -337,7 +334,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     )
 
     chemical_formula_descriptive: Optional[str] = OptimadeField(
-        ...,
+        None,
         description="""The chemical formula for a structure as a string in a form chosen by the API implementation.
 
 - **Type**: string
@@ -365,7 +362,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     )
 
     chemical_formula_reduced: Optional[str] = OptimadeField(
-        ...,
+        None,
         description="""The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.
 The proportion number MUST be omitted if it is 1.
 
@@ -391,7 +388,7 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_reduced="H2NaO"`.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
-        regex=CHEMICAL_FORMULA_REGEXP,
+        pattern=CHEMICAL_FORMULA_REGEXP,
     )
 
     chemical_formula_hill: Optional[str] = OptimadeField(
@@ -422,11 +419,11 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_hill="H2O2"`.""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
-        regex=CHEMICAL_FORMULA_REGEXP,
+        pattern=CHEMICAL_FORMULA_REGEXP,
     )
 
     chemical_formula_anonymous: Optional[str] = OptimadeField(
-        ...,
+        None,
         description="""The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
 
 - **Type**: string
@@ -444,11 +441,11 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_anonymous="A2B"`.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
-        regex=CHEMICAL_FORMULA_REGEXP,
+        pattern=CHEMICAL_FORMULA_REGEXP,
     )
 
     dimension_types: Optional[  # type: ignore[valid-type]
-        conlist(Periodicity, min_items=3, max_items=3)
+        Annotated[list[Periodicity], Field(min_length=3, max_length=3)]
     ] = OptimadeField(
         None,
         title="Dimension Types",
@@ -474,7 +471,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     nperiodic_dimensions: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.
 
 - **Type**: integer
@@ -496,7 +493,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     lattice_vectors: Optional[  # type: ignore[valid-type]
-        conlist(Vector3D_unknown, min_items=3, max_items=3)
+        Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]
     ] = OptimadeField(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
@@ -524,7 +521,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     cartesian_site_positions: Optional[list[Vector3D]] = OptimadeField(  # type: ignore[valid-type]
-        ...,
+        None,
         description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
 
@@ -545,7 +542,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     )
 
     nsites: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""An integer specifying the length of the `cartesian_site_positions` property.
 
 - **Type**: integer
@@ -565,7 +562,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     )
 
     species: Optional[list[Species]] = OptimadeField(
-        ...,
+        None,
         description="""A list describing the species of the sites of this structure.
 Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
 
@@ -634,7 +631,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     )
 
     species_at_sites: Optional[list[str]] = OptimadeField(
-        ...,
+        None,
         description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).
 The properties of the species are found in the property `species`.
 
@@ -794,7 +791,7 @@ The properties of the species are found in the property `species`.
     )
 
     class Config:
-        def schema_extra(schema, model):
+        def json_schema_extra(schema, model):
             """Two things need to be added to the schema:
 
             1. Constrained types in pydantic do not currently play nicely with
@@ -818,7 +815,8 @@ The properties of the species are found in the property `species`.
             for prop in nullable_props:
                 schema["properties"][prop]["nullable"] = True
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def warn_on_missing_correlated_fields(cls, values):
         """Emit warnings if a field takes a null value when a value
         was expected based on the value/nullity of another field.
@@ -836,15 +834,15 @@ The properties of the species are found in the property `species`.
 
         return values
 
-    @validator("chemical_formula_reduced", "chemical_formula_hill")
-    def check_ordered_formula(cls, v, field):
+    @field_validator("chemical_formula_reduced", "chemical_formula_hill")
+    def check_ordered_formula(cls, v, info):
         if v is None:
             return v
 
         elements = re.findall(r"[A-Z][a-z]?", v)
         expected_elements = sorted(elements)
 
-        if field.name == "chemical_formula_hill":
+        if info.field_name == "chemical_formula_hill":
             # Make sure C is first (and H is second, if present along with C).
             if "C" in expected_elements:
                 expected_elements = sorted(
@@ -854,18 +852,21 @@ The properties of the species are found in the property `species`.
 
         if any(elem not in CHEMICAL_SYMBOLS for elem in elements):
             raise ValueError(
-                f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {field.name!r}"
+                f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {info.field_name!r}"
             )
 
         if expected_elements != elements:
-            order = "Hill" if field.name == "chemical_formula_hill" else "alphabetical"
+            order = (
+                "Hill" if info.field_name == "chemical_formula_hill" else "alphabetical"
+            )
             raise ValueError(
-                f"Elements in {field.name!r} must appear in {order} order: {expected_elements} not {elements}."
+                f"Elements in {info.field_name!r} must appear in {order} order: {expected_elements} not {elements}."
             )
 
         return v
 
-    @validator("chemical_formula_anonymous")
+    @field_validator("chemical_formula_anonymous")
+    @classmethod
     def check_anonymous_formula(cls, v):
         if v is None:
             return v
@@ -888,26 +889,21 @@ The properties of the species are found in the property `species`.
 
         return v
 
-    @validator("chemical_formula_anonymous", "chemical_formula_reduced")
-    def check_reduced_formulae(cls, value, field):
-        if value is None:
-            return value
+    @field_validator("chemical_formula_anonymous", "chemical_formula_reduced")
+    def check_reduced_formulae(cls, v, info):
+        if v is None:
+            return v
 
-        reduced_formula = reduce_formula(value)
-        if reduced_formula != value:
+        reduced_formula = reduce_formula(v)
+        if reduced_formula != v:
             raise ValueError(
-                f"{field.name} {value!r} is not properly reduced: expected {reduced_formula!r}."
+                f"{info.field_name} {v!r} is not properly reduced: expected {reduced_formula!r}."
             )
 
-        return value
-
-    @validator("elements", each_item=True)
-    def element_must_be_chemical_symbol(cls, v):
-        if v not in CHEMICAL_SYMBOLS:
-            raise ValueError(f"Only chemical symbols are allowed, you passed: {v}")
         return v
 
-    @validator("elements")
+    @field_validator("elements")
+    @classmethod
     def elements_must_be_alphabetical(cls, v):
         if v is None:
             return v
@@ -916,7 +912,8 @@ The properties of the species are found in the property `species`.
             raise ValueError(f"elements must be sorted alphabetically, but is: {v}")
         return v
 
-    @validator("elements_ratios")
+    @field_validator("elements_ratios")
+    @classmethod
     def ratios_must_sum_to_one(cls, v):
         if v is None:
             return v
@@ -927,35 +924,40 @@ The properties of the species are found in the property `species`.
             )
         return v
 
-    @validator("nperiodic_dimensions")
-    def check_periodic_dimensions(cls, v, values):
+    @field_validator("nperiodic_dimensions")
+    def check_periodic_dimensions(cls, v, info):
         if v is None:
             return v
 
-        if values.get("dimension_types") and v != sum(values.get("dimension_types")):
+        if info.data.get("dimension_types") and v != sum(
+            info.data.get("dimension_types")
+        ):
             raise ValueError(
-                f"nperiodic_dimensions ({v}) does not match expected value of {sum(values['dimension_types'])} "
-                f"from dimension_types ({values['dimension_types']})"
+                f"nperiodic_dimensions ({v}) does not match expected value of {sum(info.data['dimension_types'])} "
+                f"from dimension_types ({info.data['dimension_types']})"
             )
 
         return v
 
-    @validator("lattice_vectors", always=True)
-    def required_if_dimension_types_has_one(cls, v, values):
+    @field_validator("lattice_vectors")
+    def required_if_dimension_types_has_one(cls, v, info):
         if v is None:
             return v
 
-        if values.get("dimension_types"):
-            for dim_type, vector in zip(values.get("dimension_types", (None,) * 3), v):
+        if info.data.get("dimension_types"):
+            for dim_type, vector in zip(
+                info.data.get("dimension_types", (None,) * 3), v
+            ):
                 if None in vector and dim_type == Periodicity.PERIODIC.value:
                     raise ValueError(
                         f"Null entries in lattice vectors are only permitted when the corresponding dimension type is {Periodicity.APERIODIC.value}. "
-                        f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in values.get('dimension_types', []))}, lattice_vectors = {v}"
+                        f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in info.data.get('dimension_types', []))}, lattice_vectors = {v}"
                     )
 
         return v
 
-    @validator("lattice_vectors")
+    @field_validator("lattice_vectors")
+    @classmethod
     def null_values_for_whole_vector(cls, v):
         if v is None:
             return v
@@ -967,33 +969,33 @@ The properties of the species are found in the property `species`.
                 )
         return v
 
-    @validator("nsites")
-    def validate_nsites(cls, v, values):
+    @field_validator("nsites")
+    def validate_nsites(cls, v, info):
         if v is None:
             return v
 
-        if values.get("cartesian_site_positions") and v != len(
-            values.get("cartesian_site_positions", [])
+        if info.data.get("cartesian_site_positions") and v != len(
+            info.data.get("cartesian_site_positions", [])
         ):
             raise ValueError(
                 f"nsites (value: {v}) MUST equal length of cartesian_site_positions "
-                f"(value: {len(values.get('cartesian_site_positions', []))})"
+                f"(value: {len(info.data.get('cartesian_site_positions', []))})"
             )
         return v
 
-    @validator("species_at_sites")
-    def validate_species_at_sites(cls, v, values):
+    @field_validator("species_at_sites")
+    def validate_species_at_sites(cls, v, info):
         if v is None:
             return v
 
-        if values.get("nsites") and len(v) != values.get("nsites"):
+        if info.data.get("nsites") and len(v) != info.data.get("nsites"):
             raise ValueError(
                 f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites "
-                f"(value: {values.get('nsites', 'Not specified')})"
+                f"(value: {info.data.get('nsites', 'Not specified')})"
             )
-        if values.get("species"):
+        if info.data.get("species"):
             all_species_names = {
-                getattr(_, "name", None) for _ in values.get("species", [{}])
+                getattr(_, "name", None) for _ in info.data.get("species", [{}])
             }
             all_species_names -= {None}
             for value in v:
@@ -1004,7 +1006,8 @@ The properties of the species are found in the property `species`.
                     )
         return v
 
-    @validator("species")
+    @field_validator("species")
+    @classmethod
     def validate_species(cls, v):
         if v is None:
             return v
@@ -1018,15 +1021,15 @@ The properties of the species are found in the property `species`.
 
         return v
 
-    @validator("structure_features", always=True)
-    def validate_structure_features(cls, v, values):
-        if [StructureFeatures(value) for value in sorted(_.value for _ in v)] != v:
+    @field_validator("structure_features")
+    def validate_structure_features(cls, v, info):
+        if [StructureFeatures(value) for value in sorted((_.value for _ in v))] != v:
             raise ValueError(
                 f"structure_features MUST be sorted alphabetically, given value: {v}"
             )
 
         # assemblies
-        if values.get("assemblies") is not None:
+        if info.data.get("assemblies") is not None:
             if StructureFeatures.ASSEMBLIES not in v:
                 raise ValueError(
                     f"{StructureFeatures.ASSEMBLIES.value} MUST be present, since the property of the same name is present"
@@ -1037,9 +1040,9 @@ The properties of the species are found in the property `species`.
                 "since the property of the same name is not present"
             )
 
-        if values.get("species"):
+        if info.data.get("species"):
             # disorder
-            for species in values.get("species", []):
+            for species in info.data.get("species", []):
                 if len(species.chemical_symbols) > 1:
                     if StructureFeatures.DISORDER not in v:
                         raise ValueError(
@@ -1054,7 +1057,7 @@ The properties of the species are found in the property `species`.
                         "lists are equal to or less than one element"
                     )
             # site_attachments
-            for species in values.get("species", []):
+            for species in info.data.get("species", []):
                 # There is no need to also test "nattached",
                 # since a Species validator makes sure either both are present or both are None.
                 if getattr(species, "attached", None) is not None:
@@ -1071,11 +1074,11 @@ The properties of the species are found in the property `species`.
                         "the attached and nattached fields"
                     )
             # implicit_atoms
-            species_names = [_.name for _ in values.get("species", [])]
+            species_names = [_.name for _ in info.data.get("species", [])]
             for name in species_names:
-                if values.get(
+                if info.data.get(
                     "species_at_sites"
-                ) is not None and name not in values.get("species_at_sites", []):
+                ) is not None and name not in info.data.get("species_at_sites", []):
                     if StructureFeatures.IMPLICIT_ATOMS not in v:
                         raise ValueError(
                             f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST be present when any one entry in species "
@@ -1110,7 +1113,7 @@ class StructureResource(EntryResource):
 
 - **Examples**:
     - `"structures"`""",
-        regex="^structures$",
+        pattern="^structures$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )

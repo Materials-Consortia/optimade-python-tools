@@ -2,10 +2,18 @@
 import re
 from typing import Optional
 
-from pydantic import AnyHttpUrl, BaseModel, Field, root_validator, validator
+from pydantic import (
+    AnyHttpUrl,
+    BaseModel,
+    Field,
+    field_validator,
+    model_validator,
+    validator,
+)
 
 from optimade.models.jsonapi import Resource
-from optimade.models.utils import SemanticVersion, StrictField
+from optimade.models.types import SemanticVersion
+from optimade.models.utils import StrictField
 
 __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 
@@ -16,7 +24,6 @@ class AvailableApiVersion(BaseModel):
     url: AnyHttpUrl = StrictField(
         ...,
         description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
-        pattern=r".+/v[0-1](\.[0-9]+)*/?$",
     )
 
     version: SemanticVersion = StrictField(
@@ -26,14 +33,16 @@ The version number string MUST NOT be prefixed by, e.g., 'v'.
 Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
 
-    @validator("url")
+    @field_validator("url", mode="before")
+    @classmethod
     def url_must_be_versioned_base_url(cls, v):
         """The URL must be a valid versioned Base URL"""
         if not re.match(r".+/v[0-1](\.[0-9]+)*/?$", v):
             raise ValueError(f"url MUST be a versioned base URL. It is: {v}")
         return v
 
-    @root_validator(pre=False, skip_on_failure=True)
+    @model_validator(mode="before")
+    @classmethod
     def crosscheck_url_and_version(cls, values):
         """Check that URL version and API version are compatible."""
         url_version = (
@@ -85,6 +94,8 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
         "(i.e., the default is for `is_index` to be `false`).",
     )
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("entry_types_by_format", check_fields=False)
     def formats_and_endpoints_must_be_valid(cls, v, values):
         for format_, endpoints in v.items():
@@ -99,6 +110,6 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
 
 
 class BaseInfoResource(Resource):
-    id: str = Field("/", regex="^/$")
-    type: str = Field("info", regex="^info$")
+    id: str = Field("/", pattern="^/$")
+    type: str = Field("info", pattern="^info$")
     attributes: BaseInfoAttributes = Field(...)
