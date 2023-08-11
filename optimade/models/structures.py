@@ -4,7 +4,8 @@ import warnings
 from enum import Enum, IntEnum
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, conlist, root_validator, validator
+from pydantic import BaseModel, Field, field_validator, model_validator, validator
+from typing_extensions import Annotated
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.types import ChemicalSymbol
@@ -34,8 +35,10 @@ __all__ = (
 EPS = 2**-23
 
 
-Vector3D = conlist(float, min_length=3, max_length=3)
-Vector3D_unknown = conlist(Union[float, None], min_length=3, max_length=3)
+Vector3D = Annotated[List[float], Field(min_length=3, max_length=3)]
+Vector3D_unknown = Annotated[
+    List[Union[float, None]], Field(min_length=3, max_length=3)
+]
 
 
 class Periodicity(IntEnum):
@@ -138,6 +141,8 @@ Note: With regards to "source database", we refer to the immediate source being 
         queryable=SupportLevel.OPTIONAL,
     )
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("concentration", "mass")
     def validate_concentration_and_mass(cls, v, values, field):
         if not v:
@@ -154,7 +159,8 @@ Note: With regards to "source database", we refer to the immediate source being 
             f"Could not validate {field.name!r} as 'chemical_symbols' is missing/invalid."
         )
 
-    @validator("attached", "nattached")
+    @field_validator("attached", "nattached")
+    @classmethod
     def validate_minimum_list_length(cls, v):
         if v is not None and len(v) < 1:
             raise ValueError(
@@ -162,7 +168,8 @@ Note: With regards to "source database", we refer to the immediate source being 
             )
         return v
 
-    @root_validator(pre=False, skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def attached_nattached_mutually_exclusive(cls, values):
         attached, nattached = (
             values.get("attached", None),
@@ -220,7 +227,8 @@ The possible reasons for the values not to sum to one are the same as already sp
         queryable=SupportLevel.OPTIONAL,
     )
 
-    @validator("sites_in_groups")
+    @field_validator("sites_in_groups")
+    @classmethod
     def validate_sites_in_groups(cls, v):
         sites = []
         for group in v:
@@ -231,6 +239,8 @@ The possible reasons for the values not to sum to one are the same as already sp
             )
         return v
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("group_probabilities")
     def check_self_consistency(cls, v, values):
         if len(v) != len(values.get("sites_in_groups", [])):
@@ -437,7 +447,7 @@ The proportion number MUST be omitted if it is 1.
     )
 
     dimension_types: Optional[  # type: ignore[valid-type]
-        conlist(Periodicity, min_length=3, max_length=3)
+        Annotated[List[Periodicity], Field(min_length=3, max_length=3)]
     ] = OptimadeField(
         None,
         title="Dimension Types",
@@ -485,7 +495,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     lattice_vectors: Optional[  # type: ignore[valid-type]
-        conlist(Vector3D_unknown, min_length=3, max_length=3)
+        Annotated[List[Vector3D_unknown], Field(min_length=3, max_length=3)]
     ] = OptimadeField(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
@@ -782,6 +792,8 @@ The properties of the species are found in the property `species`.
         queryable=SupportLevel.MUST,
     )
 
+    # TODO[pydantic]: We couldn't refactor this class, please create the `model_config` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         def schema_extra(schema, model):
             """Two things need to be added to the schema:
@@ -807,7 +819,8 @@ The properties of the species are found in the property `species`.
             for prop in nullable_props:
                 schema["properties"][prop]["nullable"] = True
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def warn_on_missing_correlated_fields(cls, values):
         """Emit warnings if a field takes a null value when a value
         was expected based on the value/nullity of another field.
@@ -825,6 +838,8 @@ The properties of the species are found in the property `species`.
 
         return values
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("chemical_formula_reduced", "chemical_formula_hill")
     def check_ordered_formula(cls, v, field):
         if v is None:
@@ -854,7 +869,8 @@ The properties of the species are found in the property `species`.
 
         return v
 
-    @validator("chemical_formula_anonymous")
+    @field_validator("chemical_formula_anonymous")
+    @classmethod
     def check_anonymous_formula(cls, v):
         if v is None:
             return v
@@ -877,6 +893,8 @@ The properties of the species are found in the property `species`.
 
         return v
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("chemical_formula_anonymous", "chemical_formula_reduced")
     def check_reduced_formulae(cls, value, field):
         if value is None:
@@ -890,13 +908,16 @@ The properties of the species are found in the property `species`.
 
         return value
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("elements", each_item=True)
     def element_must_be_chemical_symbol(cls, v):
         if v not in CHEMICAL_SYMBOLS:
             raise ValueError(f"Only chemical symbols are allowed, you passed: {v}")
         return v
 
-    @validator("elements")
+    @field_validator("elements")
+    @classmethod
     def elements_must_be_alphabetical(cls, v):
         if v is None:
             return v
@@ -905,7 +926,8 @@ The properties of the species are found in the property `species`.
             raise ValueError(f"elements must be sorted alphabetically, but is: {v}")
         return v
 
-    @validator("elements_ratios")
+    @field_validator("elements_ratios")
+    @classmethod
     def ratios_must_sum_to_one(cls, v):
         if v is None:
             return v
@@ -916,6 +938,8 @@ The properties of the species are found in the property `species`.
             )
         return v
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("nperiodic_dimensions")
     def check_periodic_dimensions(cls, v, values):
         if v is None:
@@ -929,6 +953,8 @@ The properties of the species are found in the property `species`.
 
         return v
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("lattice_vectors", always=True)
     def required_if_dimension_types_has_one(cls, v, values):
         if v is None:
@@ -944,7 +970,8 @@ The properties of the species are found in the property `species`.
 
         return v
 
-    @validator("lattice_vectors")
+    @field_validator("lattice_vectors")
+    @classmethod
     def null_values_for_whole_vector(cls, v):
         if v is None:
             return v
@@ -956,6 +983,8 @@ The properties of the species are found in the property `species`.
                 )
         return v
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("nsites")
     def validate_nsites(cls, v, values):
         if v is None:
@@ -970,6 +999,8 @@ The properties of the species are found in the property `species`.
             )
         return v
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("species_at_sites")
     def validate_species_at_sites(cls, v, values):
         if v is None:
@@ -993,7 +1024,8 @@ The properties of the species are found in the property `species`.
                     )
         return v
 
-    @validator("species")
+    @field_validator("species")
+    @classmethod
     def validate_species(cls, v):
         if v is None:
             return v
@@ -1007,6 +1039,8 @@ The properties of the species are found in the property `species`.
 
         return v
 
+    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
     @validator("structure_features", always=True)
     def validate_structure_features(cls, v, values):
         if [StructureFeatures(value) for value in sorted((_.value for _ in v))] != v:

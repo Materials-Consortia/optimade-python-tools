@@ -2,7 +2,7 @@
 from enum import Enum
 from typing import Optional, Union
 
-from pydantic import AnyUrl, root_validator  # pylint: disable=no-name-in-module
+from pydantic import AnyUrl, model_validator  # pylint: disable=no-name-in-module
 
 from optimade.models.entries import EntryResource
 from optimade.models.jsonapi import Attributes, Link
@@ -96,7 +96,8 @@ class LinksResource(EntryResource):
         description="A dictionary containing key-value pairs representing the Links resource's properties.",
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def relationships_must_not_be_present(cls, values):
         if values.get("relationships", None) is not None:
             raise ValueError('"relationships" is not allowed for links resources')

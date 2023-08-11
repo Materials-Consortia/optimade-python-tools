@@ -1,11 +1,7 @@
 # pylint: disable=line-too-long,no-self-argument
 from typing import List, Optional
 
-from pydantic import (
-    AnyUrl,
-    BaseModel,
-    validator,
-)
+from pydantic import AnyUrl, BaseModel, field_validator
 
 # pylint: disable=no-name-in-module
 from optimade.models.entries import EntryResource, EntryResourceAttributes
@@ -266,7 +262,8 @@ class ReferenceResource(EntryResource):
     )
     attributes: ReferenceResourceAttributes
 
-    @validator("attributes")
+    @field_validator("attributes")
+    @classmethod
     def validate_attributes(cls, v):
         if not any(prop[1] is not None for prop in v):
             raise ValueError("reference object must have at least one field defined")

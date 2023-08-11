@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Type, Union
 
-from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, root_validator
+from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, model_validator
 
 from optimade.models import jsonapi
 from optimade.models.types import SemanticVersion
@@ -149,12 +149,15 @@ class Warnings(OptimadeError):
         pattern="^warning$",
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def status_must_not_be_specified(cls, values):
         if values.get("status", None) is not None:
             raise ValueError("status MUST NOT be specified for warnings")
         return values
 
+    # TODO[pydantic]: We couldn't refactor this class, please create the `model_config` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         @staticmethod
         def schema_extra(schema: Dict[str, Any], model: Type["Warnings"]) -> None:
@@ -336,7 +339,8 @@ class Success(jsonapi.Response):
         ..., description="A meta object containing non-standard information"
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def either_data_meta_or_errors_must_be_set(cls, values):
         """Overwriting the existing validation function, since 'errors' MUST NOT be set."""
         required_fields = ("data", "meta")

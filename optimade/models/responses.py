@@ -1,7 +1,7 @@
 # pylint: disable=no-self-argument
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import Field, root_validator
+from pydantic import Field, model_validator
 
 from optimade.models.baseinfo import BaseInfoResource
 from optimade.models.entries import EntryInfoResource, EntryResource
@@ -40,7 +40,8 @@ class ErrorResponse(Response):
         uniqueItems=True,
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def data_must_be_skipped(cls, values):
         if "data" in values:
             raise ValueError("data MUST be skipped for failures reporting errors.")
@@ -66,7 +67,7 @@ class InfoResponse(Success):
 
 
 class EntryResponseOne(Success):
-    data: Union[EntryResource, Dict[str, Any], None] = Field(...)  # type: ignore[assignment]
+    data: Union[EntryResource, Dict[str, Any], None] = Field(None)  # type: ignore[assignment]
     included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
         None, uniqueItems=True
     )

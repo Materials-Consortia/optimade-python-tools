@@ -7,7 +7,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
     AnyUrl,
     BaseModel,
     TypeAdapter,
-    root_validator,
+    model_validator,
 )
 
 from optimade.models.utils import StrictField
@@ -81,7 +81,8 @@ class ToplevelLinks(BaseModel):
         None, description="The next page of data"
     )
 
-    @root_validator(pre=False, skip_on_failure=True)
+    @model_validator(skip_on_failure=True)
+    @classmethod
     def check_additional_keys_are_links(cls, values):
         """The `ToplevelLinks` class allows any additional keys, as long as
         they are also Links or Urls themselves.
@@ -166,6 +167,8 @@ class BaseResource(BaseModel):
     id: str = StrictField(..., description="Resource ID")
     type: str = StrictField(..., description="Resource type")
 
+    # TODO[pydantic]: We couldn't refactor this class, please create the `model_config` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         @staticmethod
         def schema_extra(schema: Dict[str, Any], model: Type["BaseResource"]) -> None:
@@ -208,7 +211,8 @@ When fetched successfully, this link returns the [linkage](https://jsonapi.org/f
         description="A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links).",
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def either_self_or_related_must_be_specified(cls, values):
         for value in values.values():
             if value is not None:
@@ -235,7 +239,8 @@ class Relationship(BaseModel):
         description="a meta object that contains non-standard meta-information about the relationship.",
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def at_least_one_relationship_key_must_be_set(cls, values):
         for value in values.values():
             if value is not None:
@@ -255,7 +260,8 @@ class Relationships(BaseModel):
         id
     """
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def check_illegal_relationships_fields(cls, values):
         illegal_fields = ("id", "type")
         for field in illegal_fields:
@@ -287,7 +293,8 @@ class Attributes(BaseModel):
 
     model_config: Dict[str, Any] = {"extra": "allow"}
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def check_illegal_attributes_fields(cls, values):
         illegal_fields = ("relationships", "links", "id", "type")
         for field in illegal_fields:
@@ -342,7 +349,8 @@ class Response(BaseModel):
         None, description="Information about the JSON API used"
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def either_data_meta_or_errors_must_be_set(cls, values):
         required_fields = ("data", "meta", "errors")
         if not any(field in values for field in required_fields):

@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
     Field,
-    root_validator,
-    validator,
+    field_validator,
+    model_validator,
 )
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
 
@@ -297,14 +297,16 @@ class ServerConfig(BaseSettings):
         only the mapping of aliases will occur.""",
     )
 
-    @validator("implementation", pre=True)
+    @field_validator("implementation", mode="before")
+    @classmethod
     def set_implementation_version(cls, v):
         """Set defaults and modify bypassed value(s)"""
         res = {"version": __version__}
         res.update(v)
         return res
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def use_real_mongo_override(cls, values):
         """Overrides the `database_backend` setting with MongoDB and
         raises a deprecation warning.
@@ -323,6 +325,8 @@ class ServerConfig(BaseSettings):
 
         return values
 
+    # TODO[pydantic]: We couldn't refactor this class, please create the `model_config` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         """
         This is a pydantic model Config object that modifies the behaviour of

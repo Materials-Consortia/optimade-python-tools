@@ -87,7 +87,7 @@ def test_formula_regexp() -> None:
     from optimade.models.utils import CHEMICAL_FORMULA_REGEXP
 
     class DummyModel(BaseModel):
-        formula: str = Field(regex=CHEMICAL_FORMULA_REGEXP)
+        formula: str = Field(pattern=CHEMICAL_FORMULA_REGEXP)
 
     good_formulae = (
         "AgCl",
