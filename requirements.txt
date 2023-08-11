@@ -1,6 +1,7 @@
 email_validator==2.0.0.post2
 lark==1.1.7
-pydantic==2.3.0
+pydantic==2.4.1
+pydantic_settings==2.0.3
 pyyaml==6.0
 requests==2.31.0
 uvicorn==0.23.2
