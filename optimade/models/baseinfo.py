@@ -35,7 +35,7 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
             raise ValueError(f"url MUST be a versioned base URL. It is: {v}")
         return v
 
-    @model_validator(skip_on_failure=True)
+    @model_validator(mode="before")
     @classmethod
     def crosscheck_url_and_version(cls, values):
         """Check that URL version and API version are compatible."""

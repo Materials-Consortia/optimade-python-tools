@@ -2,11 +2,17 @@ from typing import Annotated
 
 from pydantic import Field
 
-from optimade.models.utils import EXTENDED_CHEMICAL_SYMBOLS_PATTERN, SEMVER_PATTERN
+from optimade.models.utils import (
+    ELEMENT_SYMBOLS_PATTERN,
+    EXTENDED_CHEMICAL_SYMBOLS_PATTERN,
+    SEMVER_PATTERN,
+)
 
 __all__ = ("ChemicalSymbol", "SemanticVersion")
 
 ChemicalSymbol = Annotated[str, Field(pattern=EXTENDED_CHEMICAL_SYMBOLS_PATTERN)]
+
+ElementSymbol = Annotated[str, Field(pattern=ELEMENT_SYMBOLS_PATTERN)]
 
 SemanticVersion = Annotated[
     str,

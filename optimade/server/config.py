@@ -201,6 +201,7 @@ class ServerConfig(BaseSettings):
             source_url="https://github.com/Materials-Consortia/optimade-python-tools",
             maintainer={"email": "dev@optimade.org"},
             issue_tracker="https://github.com/Materials-Consortia/optimade-python-tools/issues",
+            homepage="https://optimade.org/optimade-python-tools",
         ),
         description="Introspective information about this OPTIMADE implementation",
     )

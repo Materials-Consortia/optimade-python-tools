@@ -349,3 +349,5 @@ for Z, symbol in enumerate(CHEMICAL_SYMBOLS):
 EXTENDED_CHEMICAL_SYMBOLS_PATTERN = (
     "(" + "|".join(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS) + ")"
 )
+
+ELEMENT_SYMBOLS_PATTERN = "(" + "|".join(CHEMICAL_SYMBOLS) + ")"

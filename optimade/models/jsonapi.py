@@ -81,7 +81,7 @@ class ToplevelLinks(BaseModel):
         None, description="The next page of data"
     )
 
-    @model_validator(skip_on_failure=True)
+    @model_validator(mode="before")
     @classmethod
     def check_additional_keys_are_links(cls, values):
         """The `ToplevelLinks` class allows any additional keys, as long as

@@ -4,7 +4,7 @@ import warnings
 from enum import Enum, IntEnum
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, Field, field_validator, model_validator, validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from typing_extensions import Annotated
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
@@ -141,22 +141,20 @@ Note: With regards to "source database", we refer to the immediate source being 
         queryable=SupportLevel.OPTIONAL,
     )
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("concentration", "mass")
-    def validate_concentration_and_mass(cls, v, values, field):
+    @field_validator("concentration", "mass")
+    def validate_concentration_and_mass(cls, v, info):
         if not v:
             return v
-        if values.get("chemical_symbols"):
-            if len(v) != len(values["chemical_symbols"]):
+        if info.data.get("chemical_symbols"):
+            if len(v) != len(info.data["chemical_symbols"]):
                 raise ValueError(
                     f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols "
-                    f"({len(values.get('chemical_symbols', []))})"
+                    f"({len(info.data.get('chemical_symbols', []))})"
                 )
             return v
 
         raise ValueError(
-            f"Could not validate {field.name!r} as 'chemical_symbols' is missing/invalid."
+            f"Could not validate {info.field_name!r} as 'chemical_symbols' is missing/invalid."
         )
 
     @field_validator("attached", "nattached")
@@ -168,7 +166,7 @@ Note: With regards to "source database", we refer to the immediate source being 
             )
         return v
 
-    @model_validator(skip_on_failure=True)
+    @model_validator(mode="before")
     @classmethod
     def attached_nattached_mutually_exclusive(cls, values):
         attached, nattached = (
@@ -239,14 +237,12 @@ The possible reasons for the values not to sum to one are the same as already sp
             )
         return v
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("group_probabilities")
-    def check_self_consistency(cls, v, values):
-        if len(v) != len(values.get("sites_in_groups", [])):
+    @field_validator("group_probabilities")
+    def check_self_consistency(cls, v, info):
+        if len(v) != len(info.data.get("sites_in_groups", [])):
             raise ValueError(
                 f"sites_in_groups and group_probabilities MUST be of same length, "
-                f"but are {len(values.get('sites_in_groups', []))} and {len(v)}, respectively"
+                f"but are {len(info.data.get('sites_in_groups', []))} and {len(v)}, respectively"
             )
         return v
 
@@ -792,8 +788,6 @@ The properties of the species are found in the property `species`.
         queryable=SupportLevel.MUST,
     )
 
-    # TODO[pydantic]: We couldn't refactor this class, please create the `model_config` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         def schema_extra(schema, model):
             """Two things need to be added to the schema:
@@ -838,17 +832,15 @@ The properties of the species are found in the property `species`.
 
         return values
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("chemical_formula_reduced", "chemical_formula_hill")
-    def check_ordered_formula(cls, v, field):
+    @field_validator("chemical_formula_reduced", "chemical_formula_hill")
+    def check_ordered_formula(cls, v, info):
         if v is None:
             return v
 
         elements = re.findall(r"[A-Z][a-z]?", v)
         expected_elements = sorted(elements)
 
-        if field.name == "chemical_formula_hill":
+        if info.field_name == "chemical_formula_hill":
             # Make sure C is first (and H is second, if present along with C).
             if "C" in expected_elements:
                 expected_elements = sorted(
@@ -858,13 +850,15 @@ The properties of the species are found in the property `species`.
 
         if any(elem not in CHEMICAL_SYMBOLS for elem in elements):
             raise ValueError(
-                f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {field.name!r}"
+                f"Cannot use unknown chemical symbols {[elem for elem in elements if elem not in CHEMICAL_SYMBOLS]} in {info.field_name!r}"
             )
 
         if expected_elements != elements:
-            order = "Hill" if field.name == "chemical_formula_hill" else "alphabetical"
+            order = (
+                "Hill" if info.field_name == "chemical_formula_hill" else "alphabetical"
+            )
             raise ValueError(
-                f"Elements in {field.name!r} must appear in {order} order: {expected_elements} not {elements}."
+                f"Elements in {info.field_name!r} must appear in {order} order: {expected_elements} not {elements}."
             )
 
         return v
@@ -893,27 +887,17 @@ The properties of the species are found in the property `species`.
 
         return v
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("chemical_formula_anonymous", "chemical_formula_reduced")
-    def check_reduced_formulae(cls, value, field):
-        if value is None:
-            return value
+    @field_validator("chemical_formula_anonymous", "chemical_formula_reduced")
+    def check_reduced_formulae(cls, v, info):
+        if v is None:
+            return v
 
-        reduced_formula = reduce_formula(value)
-        if reduced_formula != value:
+        reduced_formula = reduce_formula(v)
+        if reduced_formula != v:
             raise ValueError(
-                f"{field.name} {value!r} is not properly reduced: expected {reduced_formula!r}."
+                f"{info.field_name} {v!r} is not properly reduced: expected {reduced_formula!r}."
             )
 
-        return value
-
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("elements", each_item=True)
-    def element_must_be_chemical_symbol(cls, v):
-        if v not in CHEMICAL_SYMBOLS:
-            raise ValueError(f"Only chemical symbols are allowed, you passed: {v}")
         return v
 
     @field_validator("elements")
@@ -938,34 +922,34 @@ The properties of the species are found in the property `species`.
             )
         return v
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("nperiodic_dimensions")
-    def check_periodic_dimensions(cls, v, values):
+    @field_validator("nperiodic_dimensions")
+    def check_periodic_dimensions(cls, v, info):
         if v is None:
             return v
 
-        if values.get("dimension_types") and v != sum(values.get("dimension_types")):
+        if info.data.get("dimension_types") and v != sum(
+            info.data.get("dimension_types")
+        ):
             raise ValueError(
-                f"nperiodic_dimensions ({v}) does not match expected value of {sum(values['dimension_types'])} "
-                f"from dimension_types ({values['dimension_types']})"
+                f"nperiodic_dimensions ({v}) does not match expected value of {sum(info.data['dimension_types'])} "
+                f"from dimension_types ({info.data['dimension_types']})"
             )
 
         return v
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("lattice_vectors", always=True)
-    def required_if_dimension_types_has_one(cls, v, values):
+    @field_validator("lattice_vectors")
+    def required_if_dimension_types_has_one(cls, v, info):
         if v is None:
             return v
 
-        if values.get("dimension_types"):
-            for dim_type, vector in zip(values.get("dimension_types", (None,) * 3), v):
+        if info.data.get("dimension_types"):
+            for dim_type, vector in zip(
+                info.data.get("dimension_types", (None,) * 3), v
+            ):
                 if None in vector and dim_type == Periodicity.PERIODIC.value:
                     raise ValueError(
                         f"Null entries in lattice vectors are only permitted when the corresponding dimension type is {Periodicity.APERIODIC.value}. "
-                        f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in values.get('dimension_types', []))}, lattice_vectors = {v}"
+                        f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in info.data.get('dimension_types', []))}, lattice_vectors = {v}"
                     )
 
         return v
@@ -983,37 +967,33 @@ The properties of the species are found in the property `species`.
                 )
         return v
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("nsites")
-    def validate_nsites(cls, v, values):
+    @field_validator("nsites")
+    def validate_nsites(cls, v, info):
         if v is None:
             return v
 
-        if values.get("cartesian_site_positions") and v != len(
-            values.get("cartesian_site_positions", [])
+        if info.data.get("cartesian_site_positions") and v != len(
+            info.data.get("cartesian_site_positions", [])
         ):
             raise ValueError(
                 f"nsites (value: {v}) MUST equal length of cartesian_site_positions "
-                f"(value: {len(values.get('cartesian_site_positions', []))})"
+                f"(value: {len(info.data.get('cartesian_site_positions', []))})"
             )
         return v
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("species_at_sites")
-    def validate_species_at_sites(cls, v, values):
+    @field_validator("species_at_sites")
+    def validate_species_at_sites(cls, v, info):
         if v is None:
             return v
 
-        if values.get("nsites") and len(v) != values.get("nsites"):
+        if info.data.get("nsites") and len(v) != info.data.get("nsites"):
             raise ValueError(
                 f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites "
-                f"(value: {values.get('nsites', 'Not specified')})"
+                f"(value: {info.data.get('nsites', 'Not specified')})"
             )
-        if values.get("species"):
+        if info.data.get("species"):
             all_species_names = {
-                getattr(_, "name", None) for _ in values.get("species", [{}])
+                getattr(_, "name", None) for _ in info.data.get("species", [{}])
             }
             all_species_names -= {None}
             for value in v:
@@ -1039,17 +1019,15 @@ The properties of the species are found in the property `species`.
 
         return v
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("structure_features", always=True)
-    def validate_structure_features(cls, v, values):
+    @field_validator("structure_features")
+    def validate_structure_features(cls, v, info):
         if [StructureFeatures(value) for value in sorted((_.value for _ in v))] != v:
             raise ValueError(
                 f"structure_features MUST be sorted alphabetically, given value: {v}"
             )
 
         # assemblies
-        if values.get("assemblies") is not None:
+        if info.data.get("assemblies") is not None:
             if StructureFeatures.ASSEMBLIES not in v:
                 raise ValueError(
                     f"{StructureFeatures.ASSEMBLIES.value} MUST be present, since the property of the same name is present"
@@ -1060,9 +1038,9 @@ The properties of the species are found in the property `species`.
                 "since the property of the same name is not present"
             )
 
-        if values.get("species"):
+        if info.data.get("species"):
             # disorder
-            for species in values.get("species", []):
+            for species in info.data.get("species", []):
                 if len(species.chemical_symbols) > 1:
                     if StructureFeatures.DISORDER not in v:
                         raise ValueError(
@@ -1077,7 +1055,7 @@ The properties of the species are found in the property `species`.
                         "lists are equal to or less than one element"
                     )
             # site_attachments
-            for species in values.get("species", []):
+            for species in info.data.get("species", []):
                 # There is no need to also test "nattached",
                 # since a Species validator makes sure either both are present or both are None.
                 if getattr(species, "attached", None) is not None:
@@ -1094,11 +1072,11 @@ The properties of the species are found in the property `species`.
                         "the attached and nattached fields"
                     )
             # implicit_atoms
-            species_names = [_.name for _ in values.get("species", [])]
+            species_names = [_.name for _ in info.data.get("species", [])]
             for name in species_names:
-                if values.get(
+                if info.data.get(
                     "species_at_sites"
-                ) is not None and name not in values.get("species_at_sites", []):
+                ) is not None and name not in info.data.get("species_at_sites", []):
                     if StructureFeatures.IMPLICIT_ATOMS not in v:
                         raise ValueError(
                             f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST be present when any one entry in species "
