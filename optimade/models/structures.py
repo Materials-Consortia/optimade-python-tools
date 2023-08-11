@@ -4,7 +4,7 @@ import warnings
 from enum import Enum, IntEnum
 from typing import Annotated, List, Optional, Union
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, BeforeValidator, Field, field_validator, model_validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.types import ChemicalSymbol
@@ -34,9 +34,12 @@ __all__ = (
 EPS = 2**-23
 
 
-Vector3D = Annotated[List[float], Field(min_length=3, max_length=3)]
+Vector3D = Annotated[
+    List[Annotated[float, BeforeValidator(float)]], Field(min_length=3, max_length=3)
+]
 Vector3D_unknown = Annotated[
-    List[Union[float, None]], Field(min_length=3, max_length=3)
+    List[Union[None, Annotated[float, BeforeValidator(float)]]],
+    Field(min_length=3, max_length=3),
 ]
 
 

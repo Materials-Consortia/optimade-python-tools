@@ -97,7 +97,7 @@ def fractional_coordinates(
         fractional[:, i] %= 1.0
         fractional[:, i] %= 1.0
 
-    return [tuple(position) for position in fractional]
+    return [tuple(position) for position in fractional]  # type: ignore
 
 
 def cell_to_cellpar(
@@ -157,12 +157,12 @@ def unit_vector(x: Vector3D) -> Vector3D:
         return None  # type: ignore[return-value]
 
     y = np.array(x, dtype="float")
-    return y / np.linalg.norm(y)
+    return list(y / np.linalg.norm(y))
 
 
 def cellpar_to_cell(
     cellpar: List[float],
-    ab_normal: Tuple[int, int, int] = (0, 0, 1),
+    ab_normal: Tuple[float, float, float] = (0.0, 0.0, 1.0),
     a_direction: Optional[Tuple[int, int, int]] = None,
 ) -> List[Vector3D]:
     """Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.
@@ -218,7 +218,7 @@ def cellpar_to_cell(
     # Define rotated X,Y,Z-system, with Z along ab_normal and X along
     # the projection of a_direction onto the normal plane of Z.
     a_direction_array = np.array(a_direction)
-    Z = unit_vector(ab_normal)
+    Z = unit_vector(list(ab_normal))
     X = unit_vector(a_direction_array - np.dot(a_direction_array, Z) * Z)
     Y = np.cross(Z, X)
 
