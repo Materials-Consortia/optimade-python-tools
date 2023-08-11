@@ -1,13 +1,13 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-self-argument
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Annotated, Any, Dict, List, Optional, Type, Union
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyUrl,
     BaseModel,
+    BeforeValidator,
     TypeAdapter,
-    field_validator,
     model_validator,
 )
 
@@ -133,14 +133,10 @@ class Error(BaseModel):
     links: Optional[ErrorLinks] = StrictField(
         None, description="A links object storing about"
     )
-    status: Optional[str] = StrictField(
+    status: Optional[Annotated[str, BeforeValidator(str)]] = StrictField(
         None,
         description="the HTTP status code applicable to this problem, expressed as a string value.",
     )
-
-    @field_validator("status", mode="before")
-    def coerce_from_int(v):
-        return str(v)
 
     code: Optional[str] = StrictField(
         None,
