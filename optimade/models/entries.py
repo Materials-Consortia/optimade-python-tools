@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
+from pydantic import BaseModel, field_validator  # pylint: disable=no-name-in-module
 
 from optimade.models.jsonapi import Attributes, Relationships, Resource
 from optimade.models.optimade_json import DataType, Relationship
@@ -19,14 +19,15 @@ __all__ = (
 
 class TypedRelationship(Relationship):
     # This may be updated when moving to Python 3.8
-    @validator("data")
+    @field_validator("data")
+    @classmethod
     def check_rel_type(cls, data):
         if not isinstance(data, list):
             # All relationships at this point are empty-to-many relationships in JSON:API:
             # https://jsonapi.org/format/1.0/#document-resource-object-linkage
             raise ValueError("`data` key in a relationship must always store a list.")
         if hasattr(cls, "_req_type") and any(
-            getattr(obj, "type", None) != cls._req_type for obj in data
+            getattr(obj, "type", None) != cls._req_type.default for obj in data
         ):
             raise ValueError("Object stored in relationship data has wrong type")
         return data
@@ -91,7 +92,8 @@ class EntryResourceAttributes(Attributes):
         queryable=SupportLevel.MUST,
     )
 
-    @validator("immutable_id", pre=True)
+    @field_validator("immutable_id", mode="before")
+    @classmethod
     def cast_immutable_id_to_str(cls, value):
         """Convenience validator for casting `immutable_id` to a string."""
         if value is not None and not isinstance(value, str):

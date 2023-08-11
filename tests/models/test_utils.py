@@ -71,8 +71,8 @@ def test_compatible_strict_optimade_field() -> None:
             sortable=True,
         )
 
-    optimade_schema = CorrectModelWithOptimadeField.schema()
-    strict_schema = CorrectModelWithStrictField.schema()
+    optimade_schema = CorrectModelWithOptimadeField.model_json_schema()
+    strict_schema = CorrectModelWithStrictField.model_json_schema()
     strict_schema["title"] = optimade_schema["title"]
     assert strict_schema == optimade_schema
 
@@ -87,7 +87,7 @@ def test_formula_regexp() -> None:
     from optimade.models.utils import CHEMICAL_FORMULA_REGEXP
 
     class DummyModel(BaseModel):
-        formula: str = Field(regex=CHEMICAL_FORMULA_REGEXP)
+        formula: str = Field(pattern=CHEMICAL_FORMULA_REGEXP)
 
     good_formulae = (
         "AgCl",

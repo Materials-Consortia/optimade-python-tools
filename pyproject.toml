@@ -26,8 +26,8 @@ classifiers = [
 requires-python = ">=3.9"
 dependencies = [
     "lark~=1.1",
-    "pydantic~=1.10,>=1.10.2,!=1.10.7",
-    "email_validator>=1.2",
+    "pydantic[email]~=2.0",
+    "pydantic-settings~=2.0",
     "requests~=2.28",
 ]
 
@@ -157,6 +157,7 @@ filterwarnings = [
     "ignore:.*has an unrecognised prefix.*:",
     "ignore:.*pkg_resources is deprecated as an API*:DeprecationWarning",
     "ignore:.*Deprecated call to `pkg_resources.declare_namespace*:DeprecationWarning",
+    "ignore:.*:pydantic.warnings.PydanticDeprecatedSince20",
 ]
 testpaths = "tests"
 addopts = "-rs"

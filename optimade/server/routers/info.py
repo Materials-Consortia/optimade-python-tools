@@ -30,8 +30,8 @@ def get_info(request: Request) -> InfoResponse:
         """Cached closure that generates the info response for the implementation."""
 
         return BaseInfoResource(
-            id=BaseInfoResource.schema()["properties"]["id"]["default"],
-            type=BaseInfoResource.schema()["properties"]["type"]["default"],
+            id=BaseInfoResource.model_json_schema()["properties"]["id"]["default"],
+            type=BaseInfoResource.model_json_schema()["properties"]["type"]["default"],
             attributes=BaseInfoAttributes(
                 api_version=__api_version__,
                 available_api_versions=[

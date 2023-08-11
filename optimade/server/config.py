@@ -6,12 +6,11 @@ from typing import Any, Literal, Optional, Union
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
-    BaseSettings,
     Field,
-    root_validator,
-    validator,
+    field_validator,
+    model_validator,
 )
-from pydantic.env_settings import SettingsSourceCallable
+from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
 
 from optimade import __api_version__, __version__
 from optimade.models import Implementation, Provider
@@ -71,14 +70,14 @@ def config_file_settings(settings: BaseSettings) -> dict[str, Any]:
     """Configuration file settings source.
 
     Based on the example in the
-    [pydantic documentation](https://pydantic-docs.helpmanual.io/usage/settings/#adding-sources),
+    [pydantic documentation](https://docs.pydantic.dev/latest/usage/pydantic_settings/#customise-settings-sources),
     this function loads ServerConfig settings from a configuration file.
 
     The file must be of either type JSON or YML/YAML.
 
     Parameters:
-        settings: The `pydantic.BaseSettings` class using this function as a
-            `pydantic.SettingsSourceCallable`.
+        settings: The `pydantic_settings.BaseSettings` class using this function as a
+            `pydantic_settings.PydanticBaseSettingsSource`.
 
     Returns:
         Dictionary of settings as read from a file.
@@ -208,6 +207,7 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             source_url="https://github.com/Materials-Consortia/optimade-python-tools",
             maintainer={"email": "dev@optimade.org"},
             issue_tracker="https://github.com/Materials-Consortia/optimade-python-tools/issues",
+            homepage="https://optimade.org/optimade-python-tools",
         ),
         description="Introspective information about this OPTIMADE implementation",
     )
@@ -309,14 +309,16 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         only the mapping of aliases will occur.""",
     )
 
-    @validator("implementation", pre=True)
+    @field_validator("implementation", mode="before")
+    @classmethod
     def set_implementation_version(cls, v):
         """Set defaults and modify bypassed value(s)"""
         res = {"version": __version__}
         res.update(v)
         return res
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def use_real_mongo_override(cls, values):
         """Overrides the `database_backend` setting with MongoDB and
         raises a deprecation warning.
@@ -335,6 +337,8 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
 
         return values
 
+    # TODO[pydantic]: We couldn't refactor this class, please create the `model_config` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         """
         This is a pydantic model Config object that modifies the behaviour of
@@ -351,10 +355,10 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         @classmethod
         def customise_sources(
             cls,
-            init_settings: SettingsSourceCallable,
-            env_settings: SettingsSourceCallable,
-            file_secret_settings: SettingsSourceCallable,
-        ) -> tuple[SettingsSourceCallable, ...]:
+            init_settings: PydanticBaseSettingsSource,
+            env_settings: PydanticBaseSettingsSource,
+            file_secret_settings: PydanticBaseSettingsSource,
+        ) -> tuple[PydanticBaseSettingsSource, ...]:
             """
             **Priority of config settings sources**:
 

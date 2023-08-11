@@ -1,13 +1,14 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-self-argument
 from datetime import datetime, timezone
-from typing import Any, Optional, Union
+from typing import Annotated, Any, Optional, Union
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyUrl,
     BaseModel,
-    parse_obj_as,
-    root_validator,
+    BeforeValidator,
+    TypeAdapter,
+    model_validator,
 )
 
 from optimade.models.utils import StrictField
@@ -33,8 +34,7 @@ __all__ = (
 class Meta(BaseModel):
     """Non-standard meta-information that can not be represented as an attribute or relationship."""
 
-    class Config:
-        extra = "allow"
+    model_config: dict[str, Any] = {"extra": "allow"}
 
 
 class Link(BaseModel):
@@ -82,20 +82,22 @@ class ToplevelLinks(BaseModel):
         None, description="The next page of data"
     )
 
-    @root_validator(pre=False)
+    @model_validator(mode="before")
+    @classmethod
     def check_additional_keys_are_links(cls, values):
         """The `ToplevelLinks` class allows any additional keys, as long as
         they are also Links or Urls themselves.
 
         """
         for key, value in values.items():
-            if key not in cls.schema()["properties"]:
-                values[key] = parse_obj_as(Optional[Union[AnyUrl, Link]], value)
+            if key not in cls.model_json_schema()["properties"]:
+                values[key] = TypeAdapter.validate_python(
+                    Optional[Union[AnyUrl, Link]], value
+                )
 
         return values
 
-    class Config:
-        extra = "allow"
+    model_config: dict[str, Any] = {"extra": "allow"}
 
 
 class ErrorLinks(BaseModel):
@@ -131,10 +133,11 @@ class Error(BaseModel):
     links: Optional[ErrorLinks] = StrictField(
         None, description="A links object storing about"
     )
-    status: Optional[str] = StrictField(
+    status: Optional[Annotated[str, BeforeValidator(str)]] = StrictField(
         None,
         description="the HTTP status code applicable to this problem, expressed as a string value.",
     )
+
     code: Optional[str] = StrictField(
         None,
         description="an application-specific error code, expressed as a string value.",
@@ -157,7 +160,7 @@ class Error(BaseModel):
     )
 
     def __hash__(self):
-        return hash(self.json())
+        return hash(self.model_dump_json())
 
 
 class BaseResource(BaseModel):
@@ -166,9 +169,13 @@ class BaseResource(BaseModel):
     id: str = StrictField(..., description="Resource ID")
     type: str = StrictField(..., description="Resource type")
 
+    # TODO[pydantic]: We couldn't refactor this class, please create the `model_config` manually.
+    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         @staticmethod
-        def schema_extra(schema: dict[str, Any], model: type["BaseResource"]) -> None:
+        def json_schema_extra(
+            schema: dict[str, Any], model: type["BaseResource"]
+        ) -> None:
             """Ensure `id` and `type` are the first two entries in the list required properties.
 
             Note:
@@ -208,7 +215,8 @@ When fetched successfully, this link returns the [linkage](https://jsonapi.org/f
         description="A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links).",
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def either_self_or_related_must_be_specified(cls, values):
         for value in values.values():
             if value is not None:
@@ -235,7 +243,8 @@ class Relationship(BaseModel):
         description="a meta object that contains non-standard meta-information about the relationship.",
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def at_least_one_relationship_key_must_be_set(cls, values):
         for value in values.values():
             if value is not None:
@@ -255,7 +264,8 @@ class Relationships(BaseModel):
         id
     """
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def check_illegal_relationships_fields(cls, values):
         illegal_fields = ("id", "type")
         for field in illegal_fields:
@@ -285,10 +295,10 @@ class Attributes(BaseModel):
         type
     """
 
-    class Config:
-        extra = "allow"
+    model_config: dict[str, Any] = {"extra": "allow"}
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def check_illegal_attributes_fields(cls, values):
         illegal_fields = ("relationships", "links", "id", "type")
         for field in illegal_fields:
@@ -343,7 +353,8 @@ class Response(BaseModel):
         None, description="Information about the JSON API used"
     )
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def either_data_meta_or_errors_must_be_set(cls, values):
         required_fields = ("data", "meta", "errors")
         if not any(field in values for field in required_fields):
@@ -354,16 +365,16 @@ class Response(BaseModel):
             raise ValueError("Errors MUST NOT be an empty or 'null' value.")
         return values
 
-    class Config:
-        """The specification mandates that datetimes must be encoded following
-        [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support
-        fractional seconds, thus they must be stripped in the response. This can
-        cause issues when the underlying database contains fields that do include
-        microseconds, as filters may return unexpected results.
-        """
-
-        json_encoders = {
+    """The specification mandates that datetimes must be encoded following
+    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support
+    fractional seconds, thus they must be stripped in the response. This can
+    cause issues when the underlying database contains fields that do include
+    microseconds, as filters may return unexpected results.
+    """
+    model_config: dict[str, Any] = {
+        "json_encoders": {
             datetime: lambda v: v.astimezone(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
-            ),
+            )
         }
+    }
