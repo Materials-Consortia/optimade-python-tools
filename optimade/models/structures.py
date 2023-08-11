@@ -4,7 +4,7 @@ import warnings
 from enum import Enum, IntEnum
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, conlist, root_validator, validator
+from pydantic.v1 import BaseModel, conlist, root_validator, validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.utils import (

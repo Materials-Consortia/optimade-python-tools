@@ -2,7 +2,7 @@
 from enum import Enum
 from typing import Optional, Union
 
-from pydantic import AnyUrl, root_validator  # pylint: disable=no-name-in-module
+from pydantic.v1 import AnyUrl, root_validator  # pylint: disable=no-name-in-module
 
 from optimade.models.entries import EntryResource
 from optimade.models.jsonapi import Attributes, Link
