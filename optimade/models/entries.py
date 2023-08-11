@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic.v1 import BaseModel, validator  # pylint: disable=no-name-in-module
+from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
 
 from optimade.models.jsonapi import Attributes, Relationships, Resource
 from optimade.models.optimade_json import DataType, Relationship

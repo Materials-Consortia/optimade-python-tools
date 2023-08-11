@@ -2,7 +2,7 @@
 import re
 from typing import Dict, List, Optional
 
-from pydantic.v1 import AnyHttpUrl, BaseModel, Field, root_validator, validator
+from pydantic import AnyHttpUrl, BaseModel, Field, root_validator, validator
 
 from optimade.models.jsonapi import Resource
 from optimade.models.utils import SemanticVersion, StrictField

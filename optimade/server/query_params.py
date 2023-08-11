@@ -3,7 +3,7 @@ from typing import Iterable, List
 from warnings import warn
 
 from fastapi import Query
-from pydantic.v1 import EmailStr  # pylint: disable=no-name-in-module
+from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
 from optimade.exceptions import BadRequest
 from optimade.server.config import CONFIG

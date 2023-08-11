@@ -1,7 +1,7 @@
 # pylint: disable=line-too-long,no-self-argument
 from typing import List, Optional
 
-from pydantic.v1 import (
+from pydantic import (
     AnyUrl,
     BaseModel,
     validator,

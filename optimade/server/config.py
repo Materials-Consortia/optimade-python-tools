@@ -4,14 +4,14 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
-from pydantic.v1 import (  # pylint: disable=no-name-in-module
+from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
     BaseSettings,
     Field,
     root_validator,
     validator,
 )
-from pydantic.v1.env_settings import SettingsSourceCallable
+from pydantic.env_settings import SettingsSourceCallable
 
 from optimade import __api_version__, __version__
 from optimade.models import Implementation, Provider

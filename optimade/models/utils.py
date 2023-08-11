@@ -7,8 +7,8 @@ from enum import Enum
 from functools import reduce
 from typing import TYPE_CHECKING, List, Optional, Union
 
-from pydantic.v1 import Field
-from pydantic.v1.fields import FieldInfo
+from pydantic import Field
+from pydantic.fields import FieldInfo
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any

@@ -2,7 +2,7 @@
 from enum import Enum
 from typing import Dict, Union
 
-from pydantic.v1 import BaseModel, Field  # pylint: disable=no-name-in-module
+from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
 
 from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource
 from optimade.models.jsonapi import BaseResource

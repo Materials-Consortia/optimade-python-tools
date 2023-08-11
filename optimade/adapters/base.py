@@ -21,7 +21,7 @@ and [`StructureResource`][optimade.models.structures.StructureResource]s, respec
 import re
 from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
-from pydantic.v1 import BaseModel  # pylint: disable=no-name-in-module
+from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 from optimade.adapters.logger import LOGGER
 from optimade.models.entries import EntryResource

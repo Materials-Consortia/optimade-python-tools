@@ -21,7 +21,7 @@ import urllib.parse
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import requests
-from pydantic.v1 import Field, ValidationError
+from pydantic import Field, ValidationError
 
 from optimade import __version__
 from optimade.models import (
@@ -366,7 +366,7 @@ def test_case(test_fn: Callable[..., Tuple[Any, str]]):
             else:
                 message = msg.split("\n")
                 if validator.verbosity > 1:
-                    # ValidationErrors from pydantic.v1 already include very detailed errors
+                    # ValidationErrors from pydantic already include very detailed errors
                     # that get duplicated in the traceback
                     if not isinstance(result, ValidationError):
                         message += traceback.split("\n")
