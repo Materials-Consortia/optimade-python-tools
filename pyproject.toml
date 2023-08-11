@@ -26,7 +26,8 @@ classifiers = [
 requires-python = ">=3.9"
 dependencies = [
     "lark~=1.1",
-    "pydantic~=1.10,>=1.10.2,!=1.10.7",
+    "pydantic~=2.0",
+    "pydantic-settings~=2.0",
     "email_validator>=1.2",
     "requests~=2.28",
 ]
@@ -65,7 +66,7 @@ elastic = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
 mongo = ["pymongo~=4.0", "mongomock~=4.1"]
 server = [
     "uvicorn[standard]~=0.19",
-    "fastapi~=0.86,<0.99",
+    "fastapi~=0.100",
     "pyyaml~=6.0",
     "optimade[mongo]",
 ]

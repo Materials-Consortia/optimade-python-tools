@@ -6,12 +6,11 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
-    BaseSettings,
     Field,
     root_validator,
     validator,
 )
-from pydantic.env_settings import SettingsSourceCallable
+from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
 
 from optimade import __api_version__, __version__
 from optimade.models import Implementation, Provider
@@ -71,14 +70,14 @@ def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
     """Configuration file settings source.
 
     Based on the example in the
-    [pydantic documentation](https://pydantic-docs.helpmanual.io/usage/settings/#adding-sources),
+    [pydantic documentation](https://docs.pydantic.dev/latest/usage/pydantic_settings/#customise-settings-sources),
     this function loads ServerConfig settings from a configuration file.
 
     The file must be of either type JSON or YML/YAML.
 
     Parameters:
-        settings: The `pydantic.BaseSettings` class using this function as a
-            `pydantic.SettingsSourceCallable`.
+        settings: The `pydantic_settings.BaseSettings` class using this function as a
+            `pydantic_settings.PydanticBaseSettingsSource`.
 
     Returns:
         Dictionary of settings as read from a file.
@@ -340,10 +339,10 @@ class ServerConfig(BaseSettings):
         @classmethod
         def customise_sources(
             cls,
-            init_settings: SettingsSourceCallable,
-            env_settings: SettingsSourceCallable,
-            file_secret_settings: SettingsSourceCallable,
-        ) -> Tuple[SettingsSourceCallable, ...]:
+            init_settings: PydanticBaseSettingsSource,
+            env_settings: PydanticBaseSettingsSource,
+            file_secret_settings: PydanticBaseSettingsSource,
+        ) -> Tuple[PydanticBaseSettingsSource, ...]:
             """
             **Priority of config settings sources**:
 
