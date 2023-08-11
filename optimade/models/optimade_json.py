@@ -160,7 +160,7 @@ class Warnings(OptimadeError):
     # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["Warnings"]) -> None:
+        def json_schema_extra(schema: Dict[str, Any], model: Type["Warnings"]) -> None:
             """Update OpenAPI JSON schema model for `Warning`.
 
             * Ensure `type` is in the list required properties and in the correct place.

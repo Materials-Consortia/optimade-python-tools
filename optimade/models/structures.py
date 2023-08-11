@@ -789,7 +789,7 @@ The properties of the species are found in the property `species`.
     )
 
     class Config:
-        def schema_extra(schema, model):
+        def json_schema_extra(schema, model):
             """Two things need to be added to the schema:
 
             1. Constrained types in pydantic do not currently play nicely with

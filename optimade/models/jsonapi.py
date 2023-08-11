@@ -171,7 +171,9 @@ class BaseResource(BaseModel):
     # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
     class Config:
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["BaseResource"]) -> None:
+        def json_schema_extra(
+            schema: Dict[str, Any], model: Type["BaseResource"]
+        ) -> None:
             """Ensure `id` and `type` are the first two entries in the list required properties.
 
             Note:
