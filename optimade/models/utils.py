@@ -40,6 +40,8 @@ class StrictFieldInfo(FieldInfo):
     """
 
     def __init__(self, *args, **kwargs):
+        if not kwargs.get("default"):
+            kwargs["default"] = args[0] if args else None
         super().__init__(**kwargs)
         for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
             if self.json_schema_extra and key in self.json_schema_extra:

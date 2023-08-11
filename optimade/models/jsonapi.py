@@ -7,6 +7,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
     AnyUrl,
     BaseModel,
     TypeAdapter,
+    field_validator,
     model_validator,
 )
 
@@ -89,7 +90,7 @@ class ToplevelLinks(BaseModel):
 
         """
         for key, value in values.items():
-            if key not in cls.model_json_model_json_schema()["properties"]:
+            if key not in cls.model_json_schema()["properties"]:
                 values[key] = TypeAdapter.validate_python(
                     Optional[Union[AnyUrl, Link]], value
                 )
@@ -136,6 +137,11 @@ class Error(BaseModel):
         None,
         description="the HTTP status code applicable to this problem, expressed as a string value.",
     )
+
+    @field_validator("status", mode="before")
+    def coerce_from_int(v):
+        return str(v)
+
     code: Optional[str] = StrictField(
         None,
         description="an application-specific error code, expressed as a string value.",

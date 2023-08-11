@@ -687,7 +687,7 @@
           "source": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ErrorSource"
+                "$ref": "#/components/schemas/ErrorSourceOutput"
               },
               {
                 "type": "null"
@@ -731,7 +731,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -742,9 +742,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "about"
-        ],
         "title": "ErrorLinks",
         "description": "A Links object specific to Error objects"
       },
@@ -758,7 +755,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -851,17 +848,44 @@
         },
         "type": "object",
         "required": [
-          "data",
           "meta",
-          "errors",
-          "included",
-          "links",
-          "jsonapi"
+          "errors"
         ],
         "title": "ErrorResponse",
         "description": "errors MUST be present and data MUST be skipped"
       },
-      "ErrorSource": {
+      "ErrorSourceInput": {
+        "properties": {
+          "pointer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pointer",
+            "description": "a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. \"/data\" for a primary data object, or \"/data/attributes/title\" for a specific attribute]."
+          },
+          "parameter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parameter",
+            "description": "a string indicating which URI query parameter caused the error."
+          }
+        },
+        "type": "object",
+        "title": "ErrorSource",
+        "description": "an object containing references to the source of the error"
+      },
+      "ErrorSourceOutput": {
         "properties": {
           "pointer": {
             "anyOf": [
@@ -930,7 +954,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -947,7 +971,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -975,7 +999,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -986,14 +1010,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "version",
-          "homepage",
-          "source_url",
-          "maintainer",
-          "issue_tracker"
-        ],
         "title": "Implementation",
         "description": "Information on the server implementation"
       },
@@ -1047,7 +1063,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -1064,7 +1080,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -1092,7 +1108,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -1168,7 +1184,8 @@
           "is_index": {
             "type": "boolean",
             "title": "Is Index",
-            "description": "This must be `true` since this is an index meta-database (see section Index Meta-Database)."
+            "description": "This must be `true` since this is an index meta-database (see section Index Meta-Database).",
+            "default": true
           }
         },
         "type": "object",
@@ -1374,9 +1391,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "meta"
-        ],
         "title": "JsonApi",
         "description": "An object describing the server's implementation"
       },
@@ -1408,7 +1422,35 @@
         "title": "JsonApi",
         "description": "An object describing the server's implementation"
       },
-      "Link": {
+      "LinkInput": {
+        "properties": {
+          "href": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "Href",
+            "description": "a string containing the link\u2019s URL."
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "a meta object containing non-standard meta-information about the link."
+          }
+        },
+        "type": "object",
+        "required": [
+          "href"
+        ],
+        "title": "Link",
+        "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object."
+      },
+      "LinkOutput": {
         "properties": {
           "href": {
             "type": "string",
@@ -1459,7 +1501,8 @@
             "type": "string",
             "pattern": "^links$",
             "title": "Type",
-            "description": "These objects are described in detail in the section Links Endpoint"
+            "description": "These objects are described in detail in the section Links Endpoint",
+            "default": "links"
           },
           "links": {
             "anyOf": [
@@ -1535,7 +1578,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -1552,7 +1595,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -1580,7 +1623,8 @@
               }
             ],
             "title": "Aggregate",
-            "description": "A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.\nThis flag SHOULD NOT be indicated for links where `link_type` is not `child`.\n\nIf not specified, clients MAY assume that the value is `ok`.\nIf specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).\n\nSpecific values indicate the reason why the server is providing the suggestion.\nA client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).\n\nIf specified, it MUST be one of the values listed in section Link Aggregate Options."
+            "description": "A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.\nThis flag SHOULD NOT be indicated for links where `link_type` is not `child`.\n\nIf not specified, clients MAY assume that the value is `ok`.\nIf specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).\n\nSpecific values indicate the reason why the server is providing the suggestion.\nA client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).\n\nIf specified, it MUST be one of the values listed in section Link Aggregate Options.",
+            "default": "ok"
           },
           "no_aggregate_reason": {
             "anyOf": [
@@ -1783,7 +1827,7 @@
           "source": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ErrorSource"
+                "$ref": "#/components/schemas/ErrorSourceInput"
               },
               {
                 "type": "null"
@@ -1805,14 +1849,7 @@
         },
         "type": "object",
         "required": [
-          "id",
-          "links",
-          "status",
-          "code",
-          "title",
-          "detail",
-          "source",
-          "meta"
+          "detail"
         ],
         "title": "OptimadeError",
         "description": "detail MUST be present"
@@ -1843,7 +1880,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -1857,8 +1894,7 @@
         "required": [
           "name",
           "description",
-          "prefix",
-          "homepage"
+          "prefix"
         ],
         "title": "Provider",
         "description": "Information on the database provider of the implementation."
@@ -1889,7 +1925,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -1992,7 +2028,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2009,7 +2045,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2093,11 +2129,7 @@
         "type": "object",
         "required": [
           "id",
-          "type",
-          "links",
-          "meta",
-          "attributes",
-          "relationships"
+          "type"
         ],
         "title": "Resource",
         "description": "Resource objects appear in a JSON API document to represent resources."
@@ -2112,7 +2144,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -2123,9 +2155,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "self"
-        ],
         "title": "ResourceLinks",
         "description": "A Resource Links object"
       },
@@ -2139,7 +2168,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2259,7 +2288,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -2373,16 +2402,7 @@
         "required": [
           "query",
           "api_version",
-          "more_data_available",
-          "optimade_schema",
-          "time_stamp",
-          "data_returned",
-          "provider",
-          "data_available",
-          "last_id",
-          "response_message",
-          "implementation",
-          "warnings"
+          "more_data_available"
         ],
         "title": "ResponseMeta",
         "description": "\n    A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)\n    that contains JSON API meta objects of non-standard\n    meta-information.\n\n    OPTIONAL additional information global to the query that is not\n    specified in this document, MUST start with a\n    database-provider-specific prefix.\n    "
@@ -2421,7 +2441,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2625,7 +2645,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -2642,7 +2662,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -2659,7 +2679,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -2676,7 +2696,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -2693,7 +2713,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -2710,7 +2730,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkInput"
               },
               {
                 "type": "null"
@@ -2722,14 +2742,6 @@
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "self",
-          "related",
-          "first",
-          "last",
-          "prev",
-          "next"
-        ],
         "title": "ToplevelLinks",
         "description": "A set of Links objects, possibly including pagination"
       },
@@ -2743,7 +2755,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2760,7 +2772,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2777,7 +2789,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2794,7 +2806,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2811,7 +2823,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2828,7 +2840,7 @@
                 "format": "uri"
               },
               {
-                "$ref": "#/components/schemas/Link"
+                "$ref": "#/components/schemas/LinkOutput"
               },
               {
                 "type": "null"
@@ -2908,7 +2920,7 @@
           "source": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ErrorSource"
+                "$ref": "#/components/schemas/ErrorSourceInput"
               },
               {
                 "type": "null"
@@ -2931,11 +2943,13 @@
             "type": "string",
             "pattern": "^warning$",
             "title": "Type",
-            "description": "Warnings must be of type \"warning\""
+            "description": "Warnings must be of type \"warning\"",
+            "default": "warning"
           }
         },
         "type": "object",
         "required": [
+          "detail",
           "type"
         ],
         "title": "Warnings",
@@ -2998,7 +3012,7 @@
           "source": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ErrorSource"
+                "$ref": "#/components/schemas/ErrorSourceOutput"
               },
               {
                 "type": "null"
@@ -3021,7 +3035,8 @@
             "type": "string",
             "pattern": "^warning$",
             "title": "Type",
-            "description": "Warnings must be of type \"warning\""
+            "description": "Warnings must be of type \"warning\"",
+            "default": "warning"
           }
         },
         "type": "object",

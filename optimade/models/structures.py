@@ -2,10 +2,9 @@
 import re
 import warnings
 from enum import Enum, IntEnum
-from typing import List, Optional, Union
+from typing import Annotated, List, Optional, Union
 
 from pydantic import BaseModel, Field, field_validator, model_validator
-from typing_extensions import Annotated
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.types import ChemicalSymbol
@@ -259,7 +258,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
     elements: Optional[List[str]] = OptimadeField(
-        ...,
+        None,
         description="""The chemical symbols of the different elements present in the structure.
 
 - **Type**: list of strings.
@@ -285,7 +284,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     )
 
     nelements: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""Number of different elements in the structure as an integer.
 
 - **Type**: integer
@@ -307,7 +306,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     )
 
     elements_ratios: Optional[List[float]] = OptimadeField(
-        ...,
+        None,
         description="""Relative proportions of different elements in the structure.
 
 - **Type**: list of floats
@@ -332,7 +331,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     )
 
     chemical_formula_descriptive: Optional[str] = OptimadeField(
-        ...,
+        None,
         description="""The chemical formula for a structure as a string in a form chosen by the API implementation.
 
 - **Type**: string
@@ -360,7 +359,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     )
 
     chemical_formula_reduced: Optional[str] = OptimadeField(
-        ...,
+        None,
         description="""The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.
 The proportion number MUST be omitted if it is 1.
 
@@ -421,7 +420,7 @@ The proportion number MUST be omitted if it is 1.
     )
 
     chemical_formula_anonymous: Optional[str] = OptimadeField(
-        ...,
+        None,
         description="""The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
 
 - **Type**: string
@@ -469,7 +468,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     nperiodic_dimensions: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.
 
 - **Type**: integer
@@ -519,7 +518,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(  # type: ignore[valid-type]
-        ...,
+        None,
         description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
 
@@ -540,7 +539,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     )
 
     nsites: Optional[int] = OptimadeField(
-        ...,
+        None,
         description="""An integer specifying the length of the `cartesian_site_positions` property.
 
 - **Type**: integer
@@ -560,7 +559,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     )
 
     species: Optional[List[Species]] = OptimadeField(
-        ...,
+        None,
         description="""A list describing the species of the sites of this structure.
 Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
 
@@ -629,7 +628,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     )
 
     species_at_sites: Optional[List[str]] = OptimadeField(
-        ...,
+        None,
         description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).
 The properties of the species are found in the property `species`.
 
