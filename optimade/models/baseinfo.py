@@ -2,10 +2,11 @@
 import re
 from typing import Dict, List, Optional
 
-from pydantic import AnyHttpUrl, BaseModel, Field, root_validator, validator
+from pydantic import BaseModel, Field, root_validator, validator
 
 from optimade.models.jsonapi import Resource
-from optimade.models.utils import SemanticVersion, StrictField
+from optimade.models.types import SemanticVersion
+from optimade.models.utils import StrictField
 
 __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 
@@ -13,7 +14,7 @@ __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 class AvailableApiVersion(BaseModel):
     """A JSON object containing information about an available API version"""
 
-    url: AnyHttpUrl = StrictField(
+    url: str = StrictField(
         ...,
         description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
         pattern=r".+/v[0-1](\.[0-9]+)*/?$",
@@ -99,6 +100,6 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
 
 
 class BaseInfoResource(Resource):
-    id: str = Field("/", regex="^/$")
-    type: str = Field("info", regex="^info$")
+    id: str = Field("/", pattern="^/$")
+    type: str = Field("info", pattern="^info$")
     attributes: BaseInfoAttributes = Field(...)

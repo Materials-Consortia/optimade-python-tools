@@ -7,20 +7,17 @@ from typing import List, Optional, Union
 from pydantic import BaseModel, conlist, root_validator, validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
+from optimade.models.types import ChemicalSymbol
 from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
     CHEMICAL_SYMBOLS,
-    EXTRA_SYMBOLS,
     OptimadeField,
     StrictField,
     SupportLevel,
     reduce_formula,
 )
 from optimade.warnings import MissingExpectedField
-
-EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
-
 
 __all__ = (
     "Vector3D",
@@ -37,8 +34,8 @@ __all__ = (
 EPS = 2**-23
 
 
-Vector3D = conlist(float, min_items=3, max_items=3)
-Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
+Vector3D = conlist(float, min_length=3, max_length=3)
+Vector3D_unknown = conlist(Union[float, None], min_length=3, max_length=3)
 
 
 class Periodicity(IntEnum):
@@ -84,7 +81,7 @@ class Species(BaseModel):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    chemical_symbols: List[str] = OptimadeField(
+    chemical_symbols: List[ChemicalSymbol] = OptimadeField(
         ...,
         description="""MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
 
@@ -141,14 +138,6 @@ Note: With regards to "source database", we refer to the immediate source being 
         queryable=SupportLevel.OPTIONAL,
     )
 
-    @validator("chemical_symbols", each_item=True)
-    def validate_chemical_symbols(cls, v):
-        if v not in EXTENDED_CHEMICAL_SYMBOLS:
-            raise ValueError(
-                f'{v!r} MUST be an element symbol, e.g., "C", "He", or a special symbol from {EXTRA_SYMBOLS}.'
-            )
-        return v
-
     @validator("concentration", "mass")
     def validate_concentration_and_mass(cls, v, values, field):
         if not v:
@@ -173,7 +162,7 @@ Note: With regards to "source database", we refer to the immediate source being 
             )
         return v
 
-    @root_validator
+    @root_validator(pre=False, skip_on_failure=True)
     def attached_nattached_mutually_exclusive(cls, values):
         attached, nattached = (
             values.get("attached", None),
@@ -391,7 +380,7 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_reduced="H2NaO"`.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
-        regex=CHEMICAL_FORMULA_REGEXP,
+        pattern=CHEMICAL_FORMULA_REGEXP,
     )
 
     chemical_formula_hill: Optional[str] = OptimadeField(
@@ -422,7 +411,7 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_hill="H2O2"`.""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
-        regex=CHEMICAL_FORMULA_REGEXP,
+        pattern=CHEMICAL_FORMULA_REGEXP,
     )
 
     chemical_formula_anonymous: Optional[str] = OptimadeField(
@@ -444,11 +433,11 @@ The proportion number MUST be omitted if it is 1.
     - A filter that matches an exactly given formula is `chemical_formula_anonymous="A2B"`.""",
         support=SupportLevel.SHOULD,
         queryable=SupportLevel.MUST,
-        regex=CHEMICAL_FORMULA_REGEXP,
+        pattern=CHEMICAL_FORMULA_REGEXP,
     )
 
     dimension_types: Optional[  # type: ignore[valid-type]
-        conlist(Periodicity, min_items=3, max_items=3)
+        conlist(Periodicity, min_length=3, max_length=3)
     ] = OptimadeField(
         None,
         title="Dimension Types",
@@ -496,7 +485,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     )
 
     lattice_vectors: Optional[  # type: ignore[valid-type]
-        conlist(Vector3D_unknown, min_items=3, max_items=3)
+        conlist(Vector3D_unknown, min_length=3, max_length=3)
     ] = OptimadeField(
         None,
         description="""The three lattice vectors in Cartesian coordinates, in ångström (Å).
@@ -1110,7 +1099,7 @@ class StructureResource(EntryResource):
 
 - **Examples**:
     - `"structures"`""",
-        regex="^structures$",
+        pattern="^structures$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )

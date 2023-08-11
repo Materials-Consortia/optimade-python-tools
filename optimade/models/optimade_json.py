@@ -7,7 +7,8 @@ from typing import Any, Dict, List, Optional, Type, Union
 from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, root_validator
 
 from optimade.models import jsonapi
-from optimade.models.utils import SemanticVersion, StrictField
+from optimade.models.types import SemanticVersion
+from optimade.models.utils import StrictField
 
 __all__ = (
     "DataType",
@@ -145,7 +146,7 @@ class Warnings(OptimadeError):
     type: str = StrictField(
         "warning",
         description='Warnings must be of type "warning"',
-        regex="^warning$",
+        pattern="^warning$",
     )
 
     @root_validator(pre=True)
@@ -199,7 +200,7 @@ class Provider(BaseModel):
 
     prefix: str = StrictField(
         ...,
-        regex=r"^[a-z]([a-z]|[0-9]|_)*$",
+        pattern=r"^[a-z]([a-z]|[0-9]|_)*$",
         description="database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes.",
     )
 

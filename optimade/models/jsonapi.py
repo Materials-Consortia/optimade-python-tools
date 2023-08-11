@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Type, Union
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyUrl,
     BaseModel,
-    parse_obj_as,
+    TypeAdapter,
     root_validator,
 )
 
@@ -33,8 +33,7 @@ __all__ = (
 class Meta(BaseModel):
     """Non-standard meta-information that can not be represented as an attribute or relationship."""
 
-    class Config:
-        extra = "allow"
+    model_config: Dict[str, Any] = {"extra": "allow"}
 
 
 class Link(BaseModel):
@@ -82,20 +81,21 @@ class ToplevelLinks(BaseModel):
         None, description="The next page of data"
     )
 
-    @root_validator(pre=False)
+    @root_validator(pre=False, skip_on_failure=True)
     def check_additional_keys_are_links(cls, values):
         """The `ToplevelLinks` class allows any additional keys, as long as
         they are also Links or Urls themselves.
 
         """
         for key, value in values.items():
-            if key not in cls.schema()["properties"]:
-                values[key] = parse_obj_as(Optional[Union[AnyUrl, Link]], value)
+            if key not in cls.model_json_model_json_schema()["properties"]:
+                values[key] = TypeAdapter.validate_python(
+                    Optional[Union[AnyUrl, Link]], value
+                )
 
         return values
 
-    class Config:
-        extra = "allow"
+    model_config: Dict[str, Any] = {"extra": "allow"}
 
 
 class ErrorLinks(BaseModel):
@@ -285,8 +285,7 @@ class Attributes(BaseModel):
         type
     """
 
-    class Config:
-        extra = "allow"
+    model_config: Dict[str, Any] = {"extra": "allow"}
 
     @root_validator(pre=True)
     def check_illegal_attributes_fields(cls, values):
@@ -354,16 +353,16 @@ class Response(BaseModel):
             raise ValueError("Errors MUST NOT be an empty or 'null' value.")
         return values
 
-    class Config:
-        """The specification mandates that datetimes must be encoded following
-        [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support
-        fractional seconds, thus they must be stripped in the response. This can
-        cause issues when the underlying database contains fields that do include
-        microseconds, as filters may return unexpected results.
-        """
-
-        json_encoders = {
+    """The specification mandates that datetimes must be encoded following
+    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support
+    fractional seconds, thus they must be stripped in the response. This can
+    cause issues when the underlying database contains fields that do include
+    microseconds, as filters may return unexpected results.
+    """
+    model_config: Dict[str, Any] = {
+        "json_encoders": {
             datetime: lambda v: v.astimezone(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
-            ),
+            )
         }
+    }

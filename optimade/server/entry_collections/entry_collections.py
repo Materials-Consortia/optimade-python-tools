@@ -278,7 +278,7 @@ class EntryCollection(ABC):
 
         """
 
-        schema = self.resource_cls.schema()
+        schema = self.resource_cls.model_json_schema()
         attributes = schema["properties"]["attributes"]
         if "allOf" in attributes:
             allOf = attributes.pop("allOf")

@@ -260,7 +260,7 @@ class ReferenceResource(EntryResource):
     - MUST be an existing entry type.
     - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
 - **Example**: `"structures"`""",
-        regex="^references$",
+        pattern="^references$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )

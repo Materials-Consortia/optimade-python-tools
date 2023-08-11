@@ -88,7 +88,7 @@ class LinksResource(EntryResource):
     type: str = StrictField(
         "links",
         description="These objects are described in detail in the section Links Endpoint",
-        regex="^links$",
+        pattern="^links$",
     )
 
     attributes: LinksResourceAttributes = StrictField(

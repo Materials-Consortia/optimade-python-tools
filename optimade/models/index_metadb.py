@@ -34,7 +34,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
 class RelatedLinksResource(BaseResource):
     """A related Links resource object"""
 
-    type: str = Field("links", regex="^links$")
+    type: str = Field("links", pattern="^links$")
 
 
 class IndexRelationship(BaseModel):
