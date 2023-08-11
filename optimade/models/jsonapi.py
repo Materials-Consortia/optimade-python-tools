@@ -157,7 +157,7 @@ class Error(BaseModel):
     )
 
     def __hash__(self):
-        return hash(self.json())
+        return hash(self.model_dump_json())
 
 
 class BaseResource(BaseModel):

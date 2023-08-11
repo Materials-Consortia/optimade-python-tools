@@ -60,9 +60,9 @@ class EntryAdapter:
         # Note that these return also the default values for otherwise non-provided properties.
         self._common_converters = {
             # Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson
-            "json": self.entry.json,  # type: ignore[attr-defined]
+            "json": self.entry.model_dump_json,  # type: ignore[attr-defined]
             # Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict
-            "dict": self.entry.dict,  # type: ignore[attr-defined]
+            "dict": self.entry.model_dump,  # type: ignore[attr-defined]
         }
 
     @property
