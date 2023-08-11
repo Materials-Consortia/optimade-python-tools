@@ -2,7 +2,7 @@
 
 Automatically created PR from the [`dependabot_updates`](https://github.com/Materials-Consortia/optimade-python-tools/tree/dependabot_updates) branch.
 
-For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-python-tools/blob/master/.github/workflows/ci_dependabot.yml).
+For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-python-tools/blob/main/.github/workflows/ci_dependabot.yml).
 
 #### To-do
 

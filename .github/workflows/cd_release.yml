@@ -6,7 +6,7 @@ on:
     - published
 
 env:
-  PUBLISH_UPDATE_BRANCH: master
+  PUBLISH_UPDATE_BRANCH: main
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
 
@@ -118,7 +118,7 @@ jobs:
     - name: Deploy documentation
       run: |
         mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
-        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest master
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest main
 
   publish_container_image:
     name: Publish container image
@@ -126,7 +126,7 @@ jobs:
     uses: ./.github/workflows/cd_container_image.yml
     with:
       release: true
-      checkout_ref: master
+      checkout_ref: main
     secrets: inherit
     permissions:
       packages: write

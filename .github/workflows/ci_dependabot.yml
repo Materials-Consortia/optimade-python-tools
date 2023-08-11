@@ -16,7 +16,7 @@ jobs:
       DEPENDABOT_BRANCH: dependabot_updates
       GIT_USER_NAME: OPTIMADE Developers
       GIT_USER_EMAIL: "dev@optimade.org"
-      DEFAULT_REPO_BRANCH: master
+      DEFAULT_REPO_BRANCH: main
 
     steps:
     - name: Checkout repository
