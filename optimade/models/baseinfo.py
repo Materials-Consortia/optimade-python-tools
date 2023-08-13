@@ -2,7 +2,14 @@
 import re
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field, field_validator, model_validator, validator
+from pydantic import (
+    AnyHttpUrl,
+    BaseModel,
+    Field,
+    field_validator,
+    model_validator,
+    validator,
+)
 
 from optimade.models.jsonapi import Resource
 from optimade.models.types import SemanticVersion
@@ -14,10 +21,9 @@ __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 class AvailableApiVersion(BaseModel):
     """A JSON object containing information about an available API version"""
 
-    url: str = StrictField(
+    url: AnyHttpUrl = StrictField(
         ...,
         description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
-        pattern=r".+/v[0-1](\.[0-9]+)*/?$",
     )
 
     version: SemanticVersion = StrictField(
@@ -27,7 +33,7 @@ The version number string MUST NOT be prefixed by, e.g., 'v'.
 Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
 
-    @field_validator("url")
+    @field_validator("url", mode="before")
     @classmethod
     def url_must_be_versioned_base_url(cls, v):
         """The URL must be a valid versioned Base URL"""

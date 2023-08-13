@@ -150,6 +150,7 @@ filterwarnings = [
     "ignore:.*has an unrecognised prefix.*:",
     "ignore:.*pkg_resources is deprecated as an API*:DeprecationWarning",
     "ignore:.*Deprecated call to `pkg_resources.declare_namespace*:DeprecationWarning",
+    "ignore:.*:pydantic.warnings.PydanticDeprecatedSince20",
 ]
 testpaths = "tests"
 addopts = "-rs"

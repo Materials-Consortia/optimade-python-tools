@@ -27,7 +27,7 @@ class TypedRelationship(Relationship):
             # https://jsonapi.org/format/1.0/#document-resource-object-linkage
             raise ValueError("`data` key in a relationship must always store a list.")
         if hasattr(cls, "_req_type") and any(
-            getattr(obj, "type", None) != cls._req_type for obj in data
+            getattr(obj, "type", None) != cls._req_type.default for obj in data
         ):
             raise ValueError("Object stored in relationship data has wrong type")
         return data
