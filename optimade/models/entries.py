@@ -101,8 +101,14 @@ class EntryResourceAttributes(Attributes):
 
 
 class PartialDataLink(BaseModel):
-    link: AnyUrl
-    format: str  # todo add check that the value of format is in a list of supported formats.
+    link: AnyUrl = OptimadeField(
+        ...,
+        description="String. A JSON API link that points to a location from which the omitted data can be fetched. There is no requirement on the syntax or format for the link URL.",
+    )
+    format: str = OptimadeField(
+        ...,
+        description='String. The name of the format provided via this link. For one of the objects this format field SHOULD have the value "jsonlines", which refers to the format in OPTIMADE JSON lines partial data format.',
+    )  # todo add check that the value of format is in a list of supported formats.
 
 
 class EntryMetadata(Meta):
