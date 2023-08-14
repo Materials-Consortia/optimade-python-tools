@@ -475,6 +475,17 @@
             "title": "Property Metadata",
             "type": "object",
             "description": "A dictionary, where the keys are the names of the properties in the attributes field and the value is a dictionary containing the metadata for that property.\nDatabase-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes)."
+          },
+          "partial_data_links": {
+            "title": "Partial Data Links",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PartialDataLink"
+              }
+            },
+            "description": "A dictionary, where the keys are the names of the properties in the attributes field for which the value is too large to be shared by default.\n        For each property one or more links are provided from which the value of the attribute can be retrieved."
           }
         },
         "description": "Contains the metadata for the attributes of an entry"
@@ -585,8 +596,8 @@
             "type": "string",
             "description": "Date and time representing when the entry was last modified.\n\n- **Type**: timestamp.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.\n\n- **Example**:\n    - As part of JSON response format: `\"2007-04-05T14:30:20Z\"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)",
             "format": "date-time",
-            "x-optimade-support": "should",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "should"
           }
         },
         "description": "Contains key-value pairs representing the entry's properties."
@@ -1404,6 +1415,27 @@
           }
         },
         "description": "detail MUST be present"
+      },
+      "PartialDataLink": {
+        "title": "PartialDataLink",
+        "required": [
+          "link",
+          "format"
+        ],
+        "type": "object",
+        "properties": {
+          "link": {
+            "title": "Link",
+            "maxLength": 65536,
+            "minLength": 1,
+            "type": "string",
+            "format": "uri"
+          },
+          "format": {
+            "title": "Format",
+            "type": "string"
+          }
+        }
       },
       "Provider": {
         "title": "Provider",

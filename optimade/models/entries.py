@@ -2,11 +2,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import (
-    BaseModel,
-    root_validator,
-    validator,
-)
+from pydantic import AnyUrl, BaseModel, root_validator, validator
 
 from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
 from optimade.models.optimade_json import DataType, Relationship
@@ -104,6 +100,11 @@ class EntryResourceAttributes(Attributes):
         return value
 
 
+class PartialDataLink(BaseModel):
+    link: AnyUrl
+    format: str  # todo add check that the value of format is in a list of supported formats.
+
+
 class EntryMetadata(Meta):
     """Contains the metadata for the attributes of an entry"""
 
@@ -111,6 +112,12 @@ class EntryMetadata(Meta):
         None,
         description="""A dictionary, where the keys are the names of the properties in the attributes field and the value is a dictionary containing the metadata for that property.
 Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
+    )
+
+    partial_data_links: Dict[str, list[PartialDataLink]] = StrictField(
+        None,
+        description="""A dictionary, where the keys are the names of the properties in the attributes field for which the value is too large to be shared by default.
+        For each property one or more links are provided from which the value of the attribute can be retrieved.""",
     )
 
     @validator("property_metadata")
@@ -128,6 +135,25 @@ Database-provider-specific properties need to include the database-provider-spec
                             "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only database and domain specific fields are allowed",
                         )
         return property_metadata
+
+    @validator("partial_data_links")
+    def check_partial_data_links_subfields(cls, partial_data_links):
+        from optimade.server.mappers.entries import (
+            BaseResourceMapper,
+        )
+
+        if partial_data_links:
+            for field in partial_data_links:
+                if attribute_partial_data_link := partial_data_links.get(field):
+                    for subdict in attribute_partial_data_link:
+                        for subfield in subdict.__dict__:
+                            if subfield in ("link", "format"):
+                                continue
+                            BaseResourceMapper.check_starts_with_supported_prefix(
+                                subfield,
+                                "The only OPTIMADE fields defined under the 'partial_data_links' field are 'format'and ĺinks' all other database and domain specific fields must have a database/domain specific prefix.",
+                            )
+        return partial_data_links
 
 
 class EntryResource(Resource):
@@ -199,6 +225,7 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
         if not meta:
             return values
 
+        # todo the code for property_metadata and partial_data_links is very similar so it should be possible to reduce the size of the code here.
         if property_metadata := meta.pop("property_metadata", None):
             # check that all the fields under property metadata are in attributes
             attributes = values.get("attributes", {})
@@ -206,6 +233,15 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                 if subfield not in attributes:
                     raise ValueError(
                         f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
+                    )
+
+        if partial_data_links := meta.pop("partial_data_links", None):
+            # check that all the fields under property metadata are in attributes
+            attributes = values.get("attributes", {})
+            for subfield in partial_data_links:
+                if subfield not in attributes:
+                    raise ValueError(
+                        f"The keys under the field `partial_data_links` need to match with the field names in attributes. The field {subfield} is however not in attributes."
                     )
 
         # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
@@ -216,6 +252,7 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
             )
 
         values["meta"]["property_metadata"] = property_metadata
+        values["meta"]["partial_data_links"] = partial_data_links
 
         return values
 

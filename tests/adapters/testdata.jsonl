@@ -1,0 +1,5 @@
+{"optimade_partial_data": {"version": "1.2.0"}, "layout": "dense", "returned_ranges": [{"start": 10, "stop": 20, "step": 2}]}
+1243
+345
+-12.6
+["PARTIAL-DATA-NEXT", ["https://example.db.org/value4"]]
