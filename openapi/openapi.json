@@ -1365,7 +1365,8 @@
         "properties": {
           "url": {
             "type": "string",
-            "pattern": ".+/v[0-1](\\.[0-9]+)*/?$",
+            "minLength": 1,
+            "format": "uri",
             "title": "Url",
             "description": "A string specifying a versioned base URL that MUST adhere to the rules in section Base URL"
           },
