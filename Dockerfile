@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Copy repo contents
-COPY setup.py pyproject.toml requirements.txt requirements-server.txt LICENSE MANIFEST.in README.md .docker/run.sh ./
+COPY pyproject.toml requirements.txt requirements-server.txt LICENSE README.md .docker/run.sh ./
 COPY optimade ./optimade
 COPY providers/src/links/v1/providers.json ./optimade/server/data/
 RUN apt-get purge -y --auto-remove \
