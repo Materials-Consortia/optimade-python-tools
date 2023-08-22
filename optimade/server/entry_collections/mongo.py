@@ -1,12 +1,16 @@
 from typing import Any, Dict, List, Tuple, Type, Union
 
 from optimade.filtertransformers.mongo import MongoTransformer
-from optimade.models import EntryResource
+from optimade.models import EntryResource  # type: ignore[attr-defined]
 from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
-from optimade.server.mappers import BaseResourceMapper
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.mappers import BaseResourceMapper  # type: ignore[attr-defined]
+from optimade.server.query_params import (
+    EntryListingQueryParams,
+    PartialDataQueryParams,
+    SingleEntryQueryParams,
+)
 
 if CONFIG.database_backend.value == "mongodb":
     from pymongo import MongoClient, version_tuple
@@ -20,9 +24,11 @@ if CONFIG.database_backend.value == "mongodb":
     LOGGER.info("Using: Real MongoDB (pymongo)")
 
 elif CONFIG.database_backend.value == "mongomock":
+    import mongomock.gridfs
     from mongomock import MongoClient
 
     LOGGER.info("Using: Mock MongoDB (mongomock)")
+    mongomock.gridfs.enable_gridfs_integration()
 
 if CONFIG.database_backend.value in ("mongomock", "mongodb"):
     CLIENT = MongoClient(CONFIG.mongo_uri)
@@ -132,10 +138,19 @@ class MongoCollection(EntryCollection):
         if criteria.get("projection", {}).get("_id"):
             criteria["projection"]["_id"] = {"$toString": "$_id"}
 
+        if isinstance(params, PartialDataQueryParams):
+            entry_id = params.filter.split("=")[1][1:-1]
+            criteria["filter"] = {
+                "filename": {"$eq": f"{entry_id}_{params.response_fields}"}
+            }  # Todo make sure response fields has only one value
+
         return criteria
 
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
+        self,
+        criteria: Dict[str, Any],
+        single_entry: bool = False,
+        partial_data: bool = False,
     ) -> Tuple[List[Dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 
@@ -148,7 +163,18 @@ class MongoCollection(EntryCollection):
             entries matching the query and a boolean for whether or not there is more data available.
 
         """
-        results = list(self.collection.find(**criteria))
+        if partial_data:
+            import gridfs
+
+            fs = gridfs.GridFS(self.collection.database)
+            # file = fs.find({"filename": })
+            for grid_out in fs.find(
+                {"filename": "mpf_551_cartesian_site_positions.json"}
+            ):
+                grid_out.read()
+            results = []
+        else:
+            results = list(self.collection.find(**criteria))
 
         if CONFIG.database_backend == SupportedBackend.MONGOMOCK and criteria.get(
             "projection", {}

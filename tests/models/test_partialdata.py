@@ -1,4 +1,4 @@
-from optimade.models.partialdata import PartialDataResponse
+from optimade.models.partial_data import PartialDataResource
 
 
 def test_object_generation():
@@ -16,6 +16,6 @@ def test_object_generation():
         ],
     }
 
-    PartialDataResponse(**test_object)
+    PartialDataResource(**test_object)
 
     pass

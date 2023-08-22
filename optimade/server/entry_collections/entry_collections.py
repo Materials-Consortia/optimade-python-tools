@@ -10,8 +10,12 @@ from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
 from optimade.models.entries import EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
-from optimade.server.mappers import BaseResourceMapper
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.mappers import BaseResourceMapper  # type: ignore[attr-defined]
+from optimade.server.query_params import (
+    EntryListingQueryParams,
+    PartialDataQueryParams,
+    SingleEntryQueryParams,
+)
 from optimade.warnings import (
     FieldValueNotRecognized,
     QueryParamNotUsed,
@@ -137,7 +141,7 @@ class EntryCollection(ABC):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[Union[None, Dict, List[Dict]], int, bool, Set[str], Set[str],]:
+    ) -> Tuple[Union[None, Dict, List[Dict]], int, bool, Set[str], Set[str]]:
         """
         Fetches results and indicates if more data is available.
 
@@ -158,11 +162,14 @@ class EntryCollection(ABC):
 
         """
         criteria = self.handle_query_params(params)
-        single_entry = isinstance(params, SingleEntryQueryParams)
+        single_entry = isinstance(
+            params, (SingleEntryQueryParams, PartialDataQueryParams)
+        )
         response_fields = criteria.pop("fields")
+        partial_data = isinstance(params, PartialDataQueryParams)
 
         raw_results, data_returned, more_data_available = self._run_db_query(
-            criteria, single_entry
+            criteria, single_entry, partial_data
         )
 
         exclude_fields = self.all_fields - response_fields
@@ -220,7 +227,10 @@ class EntryCollection(ABC):
 
     @abstractmethod
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
+        self,
+        criteria: Dict[str, Any],
+        single_entry: bool = False,
+        partial_data: bool = False,
     ) -> Tuple[List[Dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 

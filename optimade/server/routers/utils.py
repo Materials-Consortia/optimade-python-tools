@@ -10,16 +10,20 @@ from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
 from optimade.exceptions import BadRequest, InternalServerError
-from optimade.models import (
-    EntryResource,
+from optimade.models import (  # type: ignore[attr-defined]
+    EntryResource,  # type: ignore[attr-defined]
     EntryResponseMany,
     EntryResponseOne,
-    ResponseMeta,
-    ToplevelLinks,
+    ResponseMeta,  # type: ignore[attr-defined]
+    ToplevelLinks,  # type: ignore[attr-defined]
 )
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.query_params import (
+    EntryListingQueryParams,
+    PartialDataQueryParams,
+    SingleEntryQueryParams,
+)
 from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_database
 
 __all__ = (
@@ -62,7 +66,7 @@ def meta_values(
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
-    from optimade.models import ResponseMetaQuery
+    from optimade.models import ResponseMetaQuery  # type: ignore[attr-defined]
 
     if isinstance(url, str):
         url = urllib.parse.urlparse(url)
@@ -358,4 +362,56 @@ def get_single_entry(
             else CONFIG.index_schema_url,
         ),
         included=included,
+    )
+
+
+def get_partial_entry(
+    collection: EntryCollection,
+    entry_id: str,
+    request: Request,
+    params: PartialDataQueryParams,
+) -> Dict:
+    # from optimade.server.routers import ENTRY_COLLECTIONS
+
+    params.check_params(request.query_params)
+    params.filter = f'id="{entry_id}"'  # type: ignore[attr-defined]
+    (
+        results,
+        data_returned,
+        more_data_available,
+        fields,
+        include_fields,
+    ) = collection.find(params)
+
+    if more_data_available:
+        raise InternalServerError(
+            detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
+        )
+
+    # include = []
+    # if getattr(params, "include", False):
+    #     include.extend(params.include.split(","))
+    #
+    # included = []
+    # if results is not None:
+    #     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+
+    links = ToplevelLinks(next=None)
+
+    if results is not None and (fields or include_fields):
+        results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
+
+    return dict(
+        links=links,
+        data=results if results else None,
+        meta=meta_values(
+            url=request.url,
+            data_returned=data_returned,
+            data_available=len(collection),
+            more_data_available=more_data_available,
+            schema=CONFIG.schema_url
+            if not CONFIG.is_index
+            else CONFIG.index_schema_url,
+        ),
+        # included=included,
     )

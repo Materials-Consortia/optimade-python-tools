@@ -14,7 +14,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
 from pydantic.env_settings import SettingsSourceCallable
 
 from optimade import __api_version__, __version__
-from optimade.models import Implementation, Provider
+from optimade.models import Implementation, Provider  # type: ignore[attr-defined]
 
 DEFAULT_CONFIG_FILE_PATH: str = str(Path.home().joinpath(".optimade.json"))
 """Default configuration file path.
@@ -171,6 +171,10 @@ class ServerConfig(BaseSettings):
     structures_collection: str = Field(
         "structures",
         description="Mongo collection name for /structures endpoint resources",
+    )
+    partial_data_collection: str = Field(
+        "fs.files",
+        description="Mongo Grid FS system containing the data that needs to be returned via the partial data mechanism.",
     )
     page_limit: int = Field(20, description="Default number of resources per page")
     page_limit_max: int = Field(

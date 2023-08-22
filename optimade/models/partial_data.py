@@ -2,7 +2,13 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel
 
+from optimade.models.entries import EntryResource
 from optimade.models.utils import OptimadeField, SupportLevel
+
+__all__ = (
+    "PartialDataHeader",
+    "PartialDataResource",
+)
 
 
 class PartialDataHeader(BaseModel):
@@ -119,6 +125,6 @@ It MUST contain the following key:
     )
 
 
-class PartialDataResponse(BaseModel):
+class PartialDataResource(EntryResource):
     header: PartialDataHeader
     data: list

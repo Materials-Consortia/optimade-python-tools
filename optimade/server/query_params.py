@@ -7,7 +7,7 @@ from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
 from optimade.exceptions import BadRequest
 from optimade.server.config import CONFIG
-from optimade.server.mappers import BaseResourceMapper
+from optimade.server.mappers import BaseResourceMapper  # type: ignore[attr-defined]
 from optimade.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
 
 
@@ -329,4 +329,80 @@ class SingleEntryQueryParams(BaseQueryParams):
         self.email_address = email_address
         self.response_fields = response_fields
         self.include = include
+        self.api_hint = api_hint
+
+
+class PartialDataQueryParams(BaseQueryParams):
+    """
+    Common query params for single entry endpoints.
+
+    Attributes:
+        response_format (str): The output format requested (see section Response Format).
+            Defaults to the format string 'json', which specifies the standard output format described in this specification.
+
+            **Example**: `http://example.com/v1/structures?response_format=xml`
+
+        email_address (EmailStr): An email address of the user making the request.
+            The email SHOULD be that of a person and not an automatic system.
+
+            **Example**: `http://example.com/v1/structures?email_address=user@example.com`
+
+        response_fields (str): A comma-delimited set of fields to be provided in the output.
+            If provided, these fields MUST be returned along with the REQUIRED fields.
+            Other OPTIONAL fields MUST NOT be returned when this parameter is present.
+
+            **Example**: `http://example.com/v1/structures?response_fields=last_modified,nsites`
+
+        include (str): A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents)
+            by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).
+
+            All related resource objects MUST be returned as part of an array value for the top-level `included` field,
+            see the section JSON Response Schema: Common Fields.
+
+            The value of `include` MUST be a comma-separated list of "relationship paths", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).
+            If relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.
+
+            The **default value** for `include` is `references`. This means `references` entries MUST always be included under the top-level field
+            `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.
+            Note, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level
+            field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.
+
+            **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.
+
+        api_hint (str): If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`,
+            where MAJOR is a major version and MINOR is a minor version of the API.
+            For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.
+
+    """
+
+    def __init__(
+        self,
+        *,
+        response_format: str = Query(
+            "json",
+            description="The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
+        ),
+        email_address: EmailStr = Query(
+            "",
+            description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
+        ),
+        api_hint: str = Query(
+            "",
+            description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            regex=r"(v[0-9]+(\.[0-9]+)?)?",
+        ),
+        response_fields: str = Query(
+            "",
+            description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
+            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+        ),
+        filter: str = Query(  # pylint: disable=redefined-builtin
+            "",
+            description="A filter string, in the format described in section API Filtering Format Specification of the specification.",
+        ),
+    ):
+        self.filter = filter
+        self.response_format = response_format
+        self.email_address = email_address
+        self.response_fields = response_fields
         self.api_hint = api_hint

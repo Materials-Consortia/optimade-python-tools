@@ -9,6 +9,7 @@ from optimade.models.index_metadb import IndexInfoResource
 from optimade.models.jsonapi import Response
 from optimade.models.links import LinksResource
 from optimade.models.optimade_json import OptimadeError, ResponseMeta, Success
+from optimade.models.partial_data import PartialDataResource
 from optimade.models.references import ReferenceResource
 from optimade.models.structures import StructureResource
 from optimade.models.utils import StrictField
@@ -25,6 +26,7 @@ __all__ = (
     "StructureResponseMany",
     "ReferenceResponseOne",
     "ReferenceResponseMany",
+    "PartialDataResponse",
 )
 
 
@@ -114,4 +116,10 @@ class ReferenceResponseMany(EntryResponseMany):
         ...,
         description="List of unique OPTIMADE references entry resource objects.",
         uniqueItems=True,
+    )
+
+
+class PartialDataResponse(EntryResponseOne):
+    data: Union[PartialDataResource, Dict[str, Any], None] = StrictField(
+        ..., description="(Part of) the data for a single property of an entry."
     )

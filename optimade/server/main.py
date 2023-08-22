@@ -25,6 +25,7 @@ from optimade.server.routers import (
     info,
     landing,
     links,
+    partial_data,
     references,
     structures,
     versions,
@@ -68,6 +69,29 @@ if CONFIG.insert_test_data:
     from optimade.server.routers import ENTRY_COLLECTIONS
     from optimade.server.routers.utils import get_providers
 
+    # Todo Do we need to check a file is not already stored in gridfs?
+    # Load test data from files into gridfs
+    if CONFIG.database_backend.value in ("mongomock", "mongodb"):
+        from pathlib import Path
+
+        if CONFIG.database_backend.value == "mongodb":
+            from pymongo import MongoClient
+        elif CONFIG.database_backend.value == "mongomock":
+            import mongomock.gridfs
+            from mongomock import MongoClient
+
+            mongomock.gridfs.enable_gridfs_integration()
+        import gridfs
+
+        db = MongoClient(CONFIG.mongo_uri)[
+            CONFIG.mongo_database
+        ]  # Somehow importing the client from optimade.server.entry_collections.mongo gives an error that the type of db is not "Database" eventhough it is.
+        fs = gridfs.GridFS(db)
+        for filename in getattr(data, "data_files", []):
+            with open(Path(__file__).parent / "data" / filename, "rb") as f:
+                a = fs.put(f, filename=filename)
+        pass
+
     def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
         LOGGER.debug("Loading test %s...", endpoint_name)
 
@@ -103,7 +127,7 @@ for exception, handler in OPTIMADE_EXCEPTIONS:
     app.add_exception_handler(exception, handler)
 
 # Add various endpoints to unversioned URL
-for endpoint in (info, links, references, structures, landing, versions):
+for endpoint in (info, links, references, structures, landing, versions, partial_data):
     app.include_router(endpoint.router)
 
 
@@ -121,7 +145,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
     ```
     """
     for version in ("minor", "patch"):
-        for endpoint in (info, links, references, structures, landing):
+        for endpoint in (info, links, references, structures, landing, partial_data):
             app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES[version])
 
 
