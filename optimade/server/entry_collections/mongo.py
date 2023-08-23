@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Tuple, Type, Union
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
@@ -136,7 +136,7 @@ class MongoCollection(EntryCollection):
 
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+    ) -> Tuple[List[Dict[str, Any]], Optional[int], bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -162,8 +162,14 @@ class MongoCollection(EntryCollection):
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
             skip = criteria_nolimit.pop("skip", 0)
-            data_returned = self.count(**criteria_nolimit)
-            more_data_available = nresults_now + skip < data_returned
+            if CONFIG.elide_data_returned:
+                data_returned = None
+                # Only correct most of the time: if the total number of remaining results is exactly the page limit
+                # then this will incorrectly say there is more_data_available
+                more_data_available = nresults_now == criteria.get("limit", 0)
+            else:
+                data_returned = self.count(**criteria_nolimit)
+                more_data_available = nresults_now + skip < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = nresults_now

@@ -157,6 +157,11 @@ class ServerConfig(BaseSettings):
         None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
+    elide_data_returned: bool = Field(
+        False,
+        description="Whether to skip counting all the results for every query (to set the `data_returned` field), as this may be too strenuous for large databases. Currently only supports MongoDB.",
+    )
+
     mongo_database: str = Field(
         "optimade", description="Mongo database for collection data"
     )
