@@ -383,11 +383,6 @@ class MongoTransformer(BaseTransformer):
 
         def replace_with_relationship(subdict, prop, expr):
             _prop, _field = str(prop).split(".")
-            if _field != "id":
-                raise NotImplementedError(
-                    f'Cannot filter relationships by field "{_field}", only "id" is supported.'
-                )
-
             subdict[f"relationships.{_prop}.data.{_field}"] = expr
             subdict.pop(prop)
             return subdict
