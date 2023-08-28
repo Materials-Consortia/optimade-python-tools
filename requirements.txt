@@ -1,6 +1,6 @@
 lark==1.1.7
-pydantic[email]==2.1.1
-pydantic_settings==2.0.2
+pydantic[email]==2.3.0
+pydantic_settings==2.0.3
 pyyaml==6.0
 requests==2.31.0
 uvicorn==0.23.1
