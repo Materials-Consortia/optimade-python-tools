@@ -82,7 +82,9 @@ class MongoCollection(EntryCollection):
                 del kwargs[k]
         if "filter" not in kwargs:  # "filter" is needed for count_documents()
             kwargs["filter"] = {}
-        return self.collection.count_documents(**kwargs)
+            return self.collection.estimated_document_count()
+        else:
+            return self.collection.count_documents(**kwargs)
 
     def insert(self, data: List[EntryResource]) -> None:
         """Add the given entries to the underlying database.
