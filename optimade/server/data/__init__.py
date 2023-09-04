@@ -10,7 +10,7 @@ data_paths = {
     "providers": "providers.json",
 }
 
-data_files = ["mpf_551_cartesian_site_positions.json"]
+data_files = ["mpf_551:cartesian_site_positions"]
 
 for var, path in data_paths.items():
     try:

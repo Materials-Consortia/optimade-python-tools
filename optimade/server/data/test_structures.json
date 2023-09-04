@@ -2131,7 +2131,7 @@
         "cartesian_site_positions": [
           {
             "format": "jsonlines",
-            "link": "https://example.org/optimade/v1.2/extensions/partial_data/structures/mpf_551/a/default_format"
+            "link": "http://localhost:5000/partial_data/mpf_551?response_fields=cartesian_sitePositions"
           }
         ]
       }

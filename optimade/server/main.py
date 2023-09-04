@@ -71,25 +71,15 @@ if CONFIG.insert_test_data:
 
     # Todo Do we need to check a file is not already stored in gridfs?
     # Load test data from files into gridfs
+
     if CONFIG.database_backend.value in ("mongomock", "mongodb"):
         from pathlib import Path
 
-        if CONFIG.database_backend.value == "mongodb":
-            from pymongo import MongoClient
-        elif CONFIG.database_backend.value == "mongomock":
-            import mongomock.gridfs
-            from mongomock import MongoClient
+        from optimade.server.routers.partial_data import partial_data_coll
 
-            mongomock.gridfs.enable_gridfs_integration()
-        import gridfs
-
-        db = MongoClient(CONFIG.mongo_uri)[
-            CONFIG.mongo_database
-        ]  # Somehow importing the client from optimade.server.entry_collections.mongo gives an error that the type of db is not "Database" eventhough it is.
-        fs = gridfs.GridFS(db)
         for filename in getattr(data, "data_files", []):
             with open(Path(__file__).parent / "data" / filename, "rb") as f:
-                a = fs.put(f, filename=filename)
+                a = partial_data_coll.insert(f, filename=filename)
         pass
 
     def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
@@ -133,7 +123,7 @@ for endpoint in (info, links, references, structures, landing, versions, partial
 
 def add_major_version_base_url(app: FastAPI):
     """Add mandatory vMajor endpoints, i.e. all except versions."""
-    for endpoint in (info, links, references, structures, landing):
+    for endpoint in (info, links, references, structures, landing, partial_data):
         app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES["major"])
 
 

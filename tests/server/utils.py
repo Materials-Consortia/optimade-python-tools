@@ -228,9 +228,9 @@ class NoJsonEndpointTests:
     response: Optional[httpx.Response] = None
 
     @pytest.fixture(autouse=True)
-    def get_response(self, both_clients):
+    def get_response(self, client):
         """Get response from client"""
-        self.response = both_clients.get(self.request_str)
+        self.response = client.get(self.request_str)
         yield
         self.response = None
 

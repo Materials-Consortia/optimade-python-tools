@@ -67,6 +67,20 @@ class SupportedBackend(Enum):
     MONGOMOCK = "mongomock"
 
 
+class SupportedResponseFormats(Enum):
+    """Enumeration of supported response formats.
+
+    - 'JSON': [JSON](https://www.json.org/json-en.html)
+    - 'HDF5': [HDF5](https://portal.hdfgroup.org/display/HDF5/HDF5)
+    - `JSONL`: [JSONL](https://jsonlines.org/)
+
+    """
+
+    HDF5 = "hdf5"
+    JSON = "json"
+    JSONL = "jsonlines"
+
+
 def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
     """Configuration file settings source.
 
@@ -173,7 +187,7 @@ class ServerConfig(BaseSettings):
         description="Mongo collection name for /structures endpoint resources",
     )
     partial_data_collection: str = Field(
-        "fs.files",
+        "fs",
         description="Mongo Grid FS system containing the data that needs to be returned via the partial data mechanism.",
     )
     page_limit: int = Field(20, description="Default number of resources per page")
@@ -300,6 +314,14 @@ class ServerConfig(BaseSettings):
         True,
         description="""If False, data from the database will not undergo validation before being emitted by the API, and
         only the mapping of aliases will occur.""",
+    )
+    enabled_response_formats: List[SupportedResponseFormats] = Field(
+        ["json", "jsonlines"],
+        description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
+    )
+    max_response_size: Optional[Dict[SupportedResponseFormats, int]] = Field(
+        {"json": 10, "jsonlines": 40},
+        description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
     )
 
     @validator("implementation", pre=True)

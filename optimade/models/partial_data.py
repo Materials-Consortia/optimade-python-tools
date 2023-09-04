@@ -3,7 +3,7 @@ from typing import Literal, Optional
 from pydantic import BaseModel
 
 from optimade.models.entries import EntryResource
-from optimade.models.utils import OptimadeField, SupportLevel
+from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
 __all__ = (
     "PartialDataHeader",
@@ -26,7 +26,7 @@ It MUST contain the following key:
 - **Examples**:
     - `""optimade-partial-data": {"version": "1.2.0"}"`""",
         support=SupportLevel.MUST,
-    )
+    )  # Todo add format and link fields
     layout: Literal["dense", "sparse"] = OptimadeField(
         ...,
         description="""A string either equal to "dense" or "sparse" to indicate whether the returned format uses a dense or sparse layout.
@@ -123,8 +123,37 @@ It MUST contain the following key:
 """,
         support=SupportLevel.OPTIONAL,
     )
+    parent_id: Optional[dict] = OptimadeField(
+        None,
+        description="""The id of the entry to which this partial data belongs.
+""",
+        support=SupportLevel.OPTIONAL,
+    )
+
+
+class PartialDataFormat(BaseModel):
+    header: PartialDataHeader
+    data: list
 
 
 class PartialDataResource(EntryResource):
-    header: PartialDataHeader
-    data: list
+    type: str = StrictField(
+        "partial_data",
+        description="""The name of the type of an entry.
+        - **Type**: string.
+
+        - **Requirements/Conventions**:
+            - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
+            - **Query**: MUST be a queryable property with support for all mandatory filter features.
+            - **Response**: REQUIRED in the response.
+            - MUST be an existing entry type.
+            - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
+
+        - **Examples**:
+            - `"structures"`""",
+        regex="^structures$",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.MUST,
+    )
+
+    attributes: PartialDataHeader  # Todo make a better model for json response

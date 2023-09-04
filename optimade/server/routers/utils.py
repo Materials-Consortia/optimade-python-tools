@@ -1,15 +1,18 @@
 # pylint: disable=import-outside-toplevel,too-many-locals
+import io
 import re
 import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Type, Union
 
-from fastapi import Request
+import numpy as np
+from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
-from optimade.exceptions import BadRequest, InternalServerError
+from optimade.adapters.jsonl import to_jsonl
+from optimade.exceptions import BadRequest, InternalServerError, NotFound
 from optimade.models import (  # type: ignore[attr-defined]
     EntryResource,  # type: ignore[attr-defined]
     EntryResponseMany,
@@ -369,12 +372,12 @@ def get_partial_entry(
     collection: EntryCollection,
     entry_id: str,
     request: Request,
-    params: PartialDataQueryParams,
+    params: Union[PartialDataQueryParams],
 ) -> Dict:
     # from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
-    params.filter = f'id="{entry_id}"'  # type: ignore[attr-defined]
+    params.filter = f'parent_id="{entry_id}"'
     (
         results,
         data_returned,
@@ -383,35 +386,59 @@ def get_partial_entry(
         include_fields,
     ) = collection.find(params)
 
-    if more_data_available:
-        raise InternalServerError(
-            detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
-        )
-
-    # include = []
-    # if getattr(params, "include", False):
-    #     include.extend(params.include.split(","))
-    #
-    # included = []
-    # if results is not None:
-    #     included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
-
     links = ToplevelLinks(next=None)
 
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
+    if results is None:
+        raise NotFound(
+            detail=f"No data available for the combination of entry {entry_id} and property {params.response_fields}",
+        )
+    # todo make the implementation of these formats more universal. i.e. allow them for other endpoint as well,
 
-    return dict(
-        links=links,
-        data=results if results else None,
-        meta=meta_values(
-            url=request.url,
-            data_returned=data_returned,
-            data_available=len(collection),
-            more_data_available=more_data_available,
-            schema=CONFIG.schema_url
-            if not CONFIG.is_index
-            else CONFIG.index_schema_url,
-        ),
-        # included=included,
+    array = np.load(io.BytesIO(results["attributes"]["data"]))
+    sliceobj = []
+    for i in array.shape:
+        sliceobj.append({"start": 1, "stop": i, "step": 1})
+    header = {
+        "optimade-partial-data": {"format": "1.2.0"},
+        "layout": "dense",
+        "property_name": params.response_fields,
+        "returned_ranges": sliceobj,
+        # "entry": {"id": entry_id, "type": None}, #Todo add type information to metadata entry
+        "has_references": False,
+    }  # Todo: add support for non_dense data
+
+    if params.response_format == "json":
+        for key in header:
+            results["attributes"][key] = header[key]
+            results["attributes"]["data"] = array.tolist()
+        return dict(
+            links=links,
+            data=results if results else None,
+            meta=meta_values(
+                url=request.url,
+                data_returned=data_returned,
+                data_available=len(collection),
+                more_data_available=more_data_available,
+                schema=CONFIG.schema_url
+                if not CONFIG.is_index
+                else CONFIG.index_schema_url,
+            ),
+            # included=included,
+        )
+
+    return Response(
+        content=to_jsonl([header, array.tolist()]),
+        media_type="application/jsonlines",
+        headers={
+            "Content-disposition": f"attachment; filename={entry_id + ':' + params.response_fields}.jsonl"
+        },
     )
+
+
+def convert_data_to_str(results):
+    values = results["attributes"]["data"]
+    if isinstance(values, bytes):
+        results["attributes"]["data"] = np.array2string(np.load(io.BytesIO(values)))
+    return results
