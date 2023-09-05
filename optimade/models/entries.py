@@ -111,11 +111,15 @@ class PartialDataLink(BaseModel):
         description='String. The name of the format provided via this link. For one of the objects this format field SHOULD have the value "jsonlines", which refers to the format in OPTIMADE JSON lines partial data format.',
     )  # todo add check that the value of format is in a list of supported formats. I have already written the validator below but it causes an error I do not understand
 
-    # @validator("format", always=False, check_fields=False)
-    # def check_if_format_is_supported(cls, value):
-    #     from optimade.server.config import CONFIG
-    #     if value not in [form.value for form in CONFIG.enabled_response_formats]:
-    #         raise ValueError(f"The format {value} is not one of the enabled_formats{CONFIG.enabled_response_formats}.")
+    @validator("format", always=False, check_fields=False)
+    def check_if_format_is_supported(cls, value):
+        from optimade.server.config import CONFIG
+
+        if value not in [form.value for form in CONFIG.enabled_response_formats]:
+            raise ValueError(
+                f"The format {value} is not one of the enabled_formats{CONFIG.enabled_response_formats}."
+            )
+        return value
 
 
 class EntryMetadata(Meta):
