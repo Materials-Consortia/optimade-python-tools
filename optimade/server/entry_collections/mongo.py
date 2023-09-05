@@ -35,8 +35,16 @@ if CONFIG.database_backend.value in ("mongomock", "mongodb"):
     import gridfs
 
 
-# todo make general mongo class for both mongo and gridfs and move _check_aliases there.
-class GridFSCollection(EntryCollection):
+class MongoBaseCollection(EntryCollection):
+    def _check_aliases(self, aliases):
+        """Check that aliases do not clash with mongo keywords."""
+        if any(
+            alias[0].startswith("$") or alias[1].startswith("$") for alias in aliases
+        ):
+            raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
+
+
+class GridFSCollection(MongoBaseCollection):
     """Class for querying gridfs collections (implemented by either pymongo or mongomock)."""
 
     def __init__(
@@ -206,15 +214,8 @@ class GridFSCollection(EntryCollection):
 
         return results, nresults, more_data_available
 
-    def _check_aliases(self, aliases):
-        """Check that aliases do not clash with mongo keywords."""
-        if any(
-            alias[0].startswith("$") or alias[1].startswith("$") for alias in aliases
-        ):
-            raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
 
-
-class MongoCollection(EntryCollection):
+class MongoCollection(MongoBaseCollection):
     """Class for querying MongoDB collections (implemented by either pymongo or mongomock)
     containing serialized [`EntryResource`][optimade.models.entries.EntryResource]s objects.
 
@@ -358,10 +359,3 @@ class MongoCollection(EntryCollection):
             more_data_available = False
 
         return results, data_returned, more_data_available
-
-    def _check_aliases(self, aliases):
-        """Check that aliases do not clash with mongo keywords."""
-        if any(
-            alias[0].startswith("$") or alias[1].startswith("$") for alias in aliases
-        ):
-            raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
