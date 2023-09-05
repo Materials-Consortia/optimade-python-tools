@@ -2128,12 +2128,7 @@
     "cartesian_site_positions": null,
     "meta": {
       "partial_data_links": {
-        "cartesian_site_positions": [
-          {
-            "format": "jsonlines",
-            "link": "http://localhost:5000/partial_data/mpf_551?response_fields=cartesian_sitePositions"
-          }
-        ]
+        "cartesian_site_positions": []
       }
     },
     "dimension_types": [
