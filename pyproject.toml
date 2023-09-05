@@ -41,7 +41,7 @@ optimade-get = "optimade.client.cli:get"
 "Bug Tracker" = "https://github.com/Materials-Consortia/optimade-python-tools/issues"
 "Documentation" = "https://optimade.org/optimade-python-tools"
 
-[tools.setuptools]
+[tool.setuptools]
 license-files = ["LICENSE"]
 include-package-data = true
 
