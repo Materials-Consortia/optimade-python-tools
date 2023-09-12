@@ -1,14 +1,18 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.25.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.2) (2023-09-12)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.1...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.1...v0.25.2)
 
-This release simply tests the migration to `pyproject.toml`, as well as updating a few dependencies along the way.
+**Merged pull requests:**
+
+- Fix typo in pyproject.toml [\#1763](https://github.com/Materials-Consortia/optimade-python-tools/pull/1763) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.25.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.1) (2023-08-10)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.0...v0.25.1)
+
+This release simply tests the migration to `pyproject.toml`, as well as updating a few dependencies along the way.
 
 **Merged pull requests:**
 
