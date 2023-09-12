@@ -65,7 +65,7 @@ elastic = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
 mongo = ["pymongo~=4.0", "mongomock~=4.1"]
 server = [
     "uvicorn[standard]~=0.19",
-    "fastapi~=0.86,<0.99",
+    "fastapi>=0.103.1",
     "pyyaml~=6.0",
     "optimade[mongo]",
 ]
