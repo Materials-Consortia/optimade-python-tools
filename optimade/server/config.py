@@ -76,7 +76,6 @@ class SupportedResponseFormats(Enum):
 
     """
 
-    HDF5 = "hdf5"
     JSON = "json"
     JSONL = "jsonlines"
 
@@ -315,11 +314,11 @@ class ServerConfig(BaseSettings):
         description="""If False, data from the database will not undergo validation before being emitted by the API, and
         only the mapping of aliases will occur.""",
     )
-    enabled_response_formats: List[SupportedResponseFormats] = Field(
+    partial_data_formats: List[SupportedResponseFormats] = Field(
         ["json", "jsonlines"],
         description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
     )
-    max_response_size: Optional[Dict[SupportedResponseFormats, int]] = Field(
+    max_response_size: Dict[SupportedResponseFormats, int] = Field(
         {"json": 10, "jsonlines": 40},
         description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
     )

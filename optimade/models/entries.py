@@ -101,7 +101,6 @@ class EntryResourceAttributes(Attributes):
 
 
 class PartialDataLink(BaseModel):
-    # Todo add validator for link field.
     link: AnyUrl = OptimadeField(
         ...,
         description="String. A JSON API link that points to a location from which the omitted data can be fetched. There is no requirement on the syntax or format for the link URL.",
@@ -109,15 +108,15 @@ class PartialDataLink(BaseModel):
     format: str = OptimadeField(
         ...,
         description='String. The name of the format provided via this link. For one of the objects this format field SHOULD have the value "jsonlines", which refers to the format in OPTIMADE JSON lines partial data format.',
-    )  # todo add check that the value of format is in a list of supported formats. I have already written the validator below but it causes an error I do not understand
+    )
 
-    @validator("format", always=False, check_fields=False)
+    @validator("format")
     def check_if_format_is_supported(cls, value):
         from optimade.server.config import CONFIG
 
-        if value not in [form.value for form in CONFIG.enabled_response_formats]:
+        if value not in [form.value for form in CONFIG.partial_data_formats]:
             raise ValueError(
-                f"The format {value} is not one of the enabled_formats{CONFIG.enabled_response_formats}."
+                f"The format {value} is not one of the enabled_formats{CONFIG.partial_data_formats}."
             )
         return value
 

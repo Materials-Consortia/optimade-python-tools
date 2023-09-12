@@ -388,15 +388,35 @@ def get_partial_entry(
 
     links = ToplevelLinks(next=None)
 
-    if results is not None and (fields or include_fields):
-        results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
     if results is None:
         raise NotFound(
             detail=f"No data available for the combination of entry {entry_id} and property {params.response_fields}",
         )
+
+    array = np.frombuffer(
+        results["attributes"]["data"],
+        dtype=getattr(np, results["attributes"]["dtype"]["name"]),
+    ).reshape(results["attributes"]["shape"])
+    # slice array
+    property_ranges = results["attributes"]["property_ranges"]
+    slice_ind = [
+        slice(
+            0,
+            1 + property_ranges[0]["stop"] - property_ranges[0]["start"],
+            property_ranges[0]["step"],
+        )
+    ]
+    for dim_range in property_ranges[1:]:
+        slice_ind.append(
+            slice(dim_range["start"] - 1, dim_range["stop"], dim_range["step"])
+        )
+    array = array[tuple(slice_ind)]
+
+    if fields or include_fields:
+        results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
+
     # todo make the implementation of these formats more universal. i.e. allow them for other endpoint as well,
 
-    array = np.load(io.BytesIO(results["attributes"]["data"]))
     sliceobj = []
     for i in array.shape:
         sliceobj.append({"start": 1, "stop": i, "step": 1})
@@ -408,14 +428,18 @@ def get_partial_entry(
         # "entry": {"id": entry_id, "type": None}, #Todo add type information to metadata entry
         "has_references": False,
     }  # Todo: add support for non_dense data
+    if more_data_available:
+        next_link = ["PARTIAL-DATA-NEXT", [results["attributes"].pop("next")]]
 
     if params.response_format == "json":
         for key in header:
             results["attributes"][key] = header[key]
-            results["attributes"]["data"] = array.tolist()
+        results["attributes"]["data"] = array.tolist()
+        if more_data_available:
+            results["attributes"]["next"] = next_link
         return dict(
             links=links,
-            data=results if results else None,
+            data=[results] if results else None,
             meta=meta_values(
                 url=request.url,
                 data_returned=data_returned,
@@ -428,8 +452,11 @@ def get_partial_entry(
             # included=included,
         )
 
+    jsonl_content = [header, array.tolist()]
+    if more_data_available:
+        jsonl_content.append(next_link)
     return Response(
-        content=to_jsonl([header, array.tolist()]),
+        content=to_jsonl(jsonl_content),
         media_type="application/jsonlines",
         headers={
             "Content-disposition": f"attachment; filename={entry_id + ':' + params.response_fields}.jsonl"

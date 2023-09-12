@@ -60,7 +60,7 @@ def get_single_structure(
     entry_id: str,
     params: SingleEntryQueryParams = Depends(),
 ) -> Any:
-    if "property_ranges" in request.query_params:  # todo add test for this
+    if params.property_ranges is not None:  # todo add test for this
         from optimade.server.routers.partial_data import partial_data_coll
 
         return get_partial_entry(

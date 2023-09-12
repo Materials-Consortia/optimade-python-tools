@@ -1,8 +1,9 @@
 from typing import Any, Dict, List, Tuple, Type, Union
 
+from optimade.exceptions import BadRequest
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource  # type: ignore[attr-defined]
-from optimade.server.config import CONFIG, SupportedBackend
+from optimade.server.config import CONFIG, SupportedBackend, SupportedResponseFormats
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper  # type: ignore[attr-defined]
@@ -100,23 +101,21 @@ class GridFSCollection(MongoBaseCollection):
             kwargs["filter"] = {}
         return len(self.collection.find(**kwargs))
 
-    def insert(self, content: bytes, filename: str) -> None:
+    def insert(self, content: bytes, filename: str, metadata: dict = {}) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
             No validation is performed on the incoming data.
 
         Arguments:
-            data: The entry resource objects to add to the database.
-
+            content: The file content to add to gridfs.
+            filename: The filename of the added content.
+            metadata: extra metadata to add to the gridfs entry.
         """
-        self.collection.put(content, filename=filename)
+        self.collection.put(content, filename=filename, metadata=metadata)
 
     def handle_query_params(
-        self,
-        params: Union[
-            EntryListingQueryParams, SingleEntryQueryParams, PartialDataQueryParams
-        ],
+        self, params: Union[SingleEntryQueryParams, PartialDataQueryParams]
     ) -> Dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
@@ -155,8 +154,20 @@ class GridFSCollection(MongoBaseCollection):
         if isinstance(params, PartialDataQueryParams):
             entry_id = params.filter.split("=")[1][1:-1]
             criteria["filter"] = {
-                "filename": {"$eq": f"{entry_id}:{params.response_fields}"}
+                "filename": {
+                    "$eq": f"{entry_id}:{params.response_fields}.npy"
+                }  # todo Should we add support for other file extensions?
             }  # Todo make sure response fields has only one value
+
+        # response_format
+        if getattr(params, "response_format", False) and params.response_format not in (
+            x.value for x in CONFIG.partial_data_formats
+        ):
+            raise BadRequest(
+                detail=f"Response format {params.response_format} is not supported, please use one of the supported response formats: {', '.join((x.value for x in CONFIG.partial_data_formats))}"
+            )
+        criteria["response_format"] = params.response_format
+        criteria["property_ranges"] = params.property_ranges
 
         return criteria
 
@@ -179,40 +190,111 @@ class GridFSCollection(MongoBaseCollection):
         """
 
         # TODO handle case where the type does not have a fixed width. For example strings or dictionaries.
-
-        max_return_size = 10000000
-        property_dimensions: list[int] = []  # todo read this data from metadata
+        response_format = criteria.pop("response_format")
+        max_return_size = CONFIG.max_response_size[
+            SupportedResponseFormats(response_format)
+        ]  # todo adjust for different output formats(take into account that the number of numbers to read is larger for a text based output format than for a binary format.
         results = []
         filterdict = criteria.pop("filter", {})
-        criteria.pop("requested_range", property_dimensions)
-        gridcursor = self.collection.find(
-            filterdict
-        )  # I have tried to use just **criteria as is mentioned in the documentation but this does not seem to work.
+
+        # I have tried to use just **criteria as is mentioned in the documentation but this does not seem to work.
+        gridcursor = self.collection.find(filterdict)
         more_data_available = False
         nresults = 0
-        for file_obj in gridcursor:
-            nresults = +1
-            property_name = file_obj.filename.split(":")[1]
-            # results.append(grid_out.read())
-            if file_obj.length > max_return_size:
-                header = file_obj.readline()
-                values = header + file_obj.read()
-                # TODo handle splitting up file
+        # todo add code that can handle very sparse requests where reading individual sections of files is more efficient.
+        for (
+            file_obj
+        ) in (
+            gridcursor
+        ):  # Next throws an error when there are zero files returned, so I use a for loop instead to get one result.
+            nresults += 1
+            metadata = file_obj.metadata
+            property_ranges = self.parse_property_ranges(
+                criteria.pop("property_ranges", None),
+                metadata["sliceobj"],
+                metadata["dim_names"],
+            )
+            item_size = metadata["dtype"]["itemsize"]
+            dim_sizes = [
+                (i["stop"] - i["start"] + 1) // i["step"] for i in metadata["sliceobj"]
+            ]
+            top_stepsize = 1
+            for i in dim_sizes[1:]:
+                top_stepsize *= i
+            offset = (property_ranges[0]["start"] - 1) * item_size * top_stepsize
+            file_obj.seek(
+                offset
+            )  # set the correct starting point fo the read from the gridfs file system.
+            if (max_return_size / item_size) < (
+                1 + property_ranges[0]["stop"] - property_ranges[0]["start"]
+            ) * top_stepsize:  # case more data requested then fits in the response
                 more_data_available = True
-            else:  # case whole file can be returned.
-                values = file_obj.read()
+                n_val_return = max_return_size / item_size
+                n_outer = max(
+                    int(n_val_return / top_stepsize), 1
+                )  # always read at least one line for now.
+                read_size = n_outer * top_stepsize * item_size
+                shape = [n_outer] + dim_sizes[1:]
+            else:
+                read_size = (
+                    1 + property_ranges[0]["stop"] - property_ranges[0]["start"]
+                ) * top_stepsize
+                shape = (
+                    1 + property_ranges[0]["stop"] - property_ranges[0]["start"]
+                ) + dim_sizes[1:]
 
-                results = [
-                    {
-                        "type": "partial_data",
-                        "id": str(file_obj._id),
-                        "property_name": property_name,
-                        "data": values,
-                    }
-                ]
+            values = file_obj.read(read_size)
+            entry = {
+                "id": metadata.get("parent_id", None),
+                "type": metadata.get("endpoint", None),
+            }
+            results = [
+                {
+                    "type": "partial_data",
+                    "id": str(file_obj._id),
+                    "property_name": metadata.get("property_name", None),
+                    "entry": entry,
+                    "data": values,
+                    "dtype": metadata["dtype"],
+                    "shape": shape,
+                    "property_ranges": property_ranges,
+                }
+            ]
+            if more_data_available:
+                property_ranges_str = f"property_ranges={metadata['dim_names'][0]}:{property_ranges[0]['start']+n_outer}:{property_ranges[0]['stop']}:{property_ranges[0]['step']}"
+                for i, name in enumerate(metadata["dim_names"][1:]):
+                    property_ranges_str += f",{name}:{property_ranges[i+1]['start']}:{property_ranges[i+1]['stop']}:{property_ranges[i+1]['step']}"
+                results[0][
+                    "next"
+                ] = f"{CONFIG.base_url}/partial_data/{metadata['parent_id']}?response_fields={metadata['property_name']}&response_format={response_format}&{property_ranges_str}"
             break
 
         return results, nresults, more_data_available
+
+    def parse_property_ranges(
+        self, property_range_str: str, attribute_sliceobj: list, dim_names: list
+    ) -> list[dict]:
+        property_range_dict = {}
+        if property_range_str:
+            ranges = [dimrange.split(":") for dimrange in property_range_str.split(",")]
+
+            for subrange in ranges:
+                property_range_dict[subrange[0]] = {
+                    "start": int(subrange[1])
+                    if subrange[1]
+                    else attribute_sliceobj[dim_names.index(subrange[0])]["start"],
+                    "stop": int(subrange[2])
+                    if subrange[2]
+                    else attribute_sliceobj[dim_names.index(subrange[0])]["stop"],
+                    "step": int(subrange[3])
+                    if subrange[3]
+                    else attribute_sliceobj[dim_names.index(subrange[0])]["step"],
+                }
+        for i, dim in enumerate(dim_names):
+            if dim not in property_range_dict:
+                property_range_dict[dim] = attribute_sliceobj[i]
+
+        return [property_range_dict[dim] for dim in dim_names]
 
 
 class MongoCollection(MongoBaseCollection):

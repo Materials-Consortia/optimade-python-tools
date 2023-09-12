@@ -9,8 +9,11 @@ from lark import Transformer
 from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
 from optimade.models.entries import EntryResource
-from optimade.server.config import CONFIG, SupportedBackend
-from optimade.server.mappers import BaseResourceMapper  # type: ignore[attr-defined]
+from optimade.server.config import CONFIG, SupportedBackend, SupportedResponseFormats
+from optimade.server.mappers import (  # type: ignore[attr-defined]
+    BaseResourceMapper,
+    PartialDataMapper,
+)
 from optimade.server.query_params import (
     EntryListingQueryParams,
     PartialDataQueryParams,
@@ -190,7 +193,7 @@ class EntryCollection(ABC):
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
         all_attributes = self.resource_mapper.ALL_ATTRIBUTES
 
-        if not isinstance(params, PartialDataQueryParams):
+        if not self.resource_mapper == PartialDataMapper:
             include_fields = (
                 response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
             )
@@ -248,7 +251,7 @@ class EntryCollection(ABC):
         for entry in results:
             if entry.get("meta", {}) and entry["meta"].get("partial_data_links", {}):
                 for property in entry["meta"]["partial_data_links"]:
-                    for response_format in CONFIG.enabled_response_formats:
+                    for response_format in CONFIG.partial_data_formats:
                         entry["meta"]["partial_data_links"][property].append(
                             {
                                 "format": str(response_format.value),
@@ -375,10 +378,10 @@ class EntryCollection(ABC):
 
         # response_format
         if getattr(params, "response_format", False) and params.response_format not in (
-            x.value for x in CONFIG.enabled_response_formats
+            x.value for x in SupportedResponseFormats
         ):
             raise BadRequest(
-                detail=f"Response format {params.response_format} is not supported, please use one of the supported response formats: {', '.join((x.value for x in CONFIG.enabled_response_formats))}"
+                detail=f"Response format {params.response_format} is not supported, please use one of the supported response formats: {', '.join((x.value for x in SupportedResponseFormats))}"
             )
 
         # page_limit

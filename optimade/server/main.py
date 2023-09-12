@@ -75,12 +75,33 @@ if CONFIG.insert_test_data:
     if CONFIG.database_backend.value in ("mongomock", "mongodb"):
         from pathlib import Path
 
+        import numpy
+
         from optimade.server.routers.partial_data import partial_data_coll
 
-        for filename in getattr(data, "data_files", []):
+        # todo create seperate function for storing data files in gridfs
+        # read_array_header function originally from https://stackoverflow.com/a/64226659 by https://stackoverflow.com/users/982257/iguananaut
+        def read_array_header(fobj):
+            version = numpy.lib.format.read_magic(fobj)
+            func_name = "read_array_header_" + "_".join(str(v) for v in version)
+            func = getattr(numpy.lib.format, func_name)
+            return func(fobj)
+
+        for filename, filetype, metadata in getattr(data, "data_files", []):
             with open(Path(__file__).parent / "data" / filename, "rb") as f:
-                a = partial_data_coll.insert(f, filename=filename)
-        pass
+                if filetype == "numpy":
+                    numpy_meta = read_array_header(f)
+                    if "slice_obj" not in metadata:
+                        slice_obj = [
+                            {"start": 1, "stop": i, "step": 1} for i in numpy_meta[0]
+                        ]
+                        metadata["sliceobj"] = slice_obj
+                    if "dtype" not in metadata:
+                        metadata["dtype"] = {
+                            "name": numpy_meta[2].name,
+                            "itemsize": numpy_meta[2].itemsize,
+                        }
+                partial_data_coll.insert(f, filename=filename, metadata=metadata)
 
     def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
         LOGGER.debug("Loading test %s...", endpoint_name)

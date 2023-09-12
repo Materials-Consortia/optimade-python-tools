@@ -324,12 +324,17 @@ class SingleEntryQueryParams(BaseQueryParams):
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
             regex=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
+        property_ranges: str = Query(
+            None,
+            description="A list of lists which contains a range for each dimension of the property.",
+        ),
     ):
         self.response_format = response_format
         self.email_address = email_address
         self.response_fields = response_fields
         self.include = include
         self.api_hint = api_hint
+        self.property_ranges = property_ranges
 
 
 class PartialDataQueryParams(BaseQueryParams):
@@ -384,8 +389,8 @@ class PartialDataQueryParams(BaseQueryParams):
             "",
             description="A filter string, in the format described in section API Filtering Format Specification of the specification.",
         ),
-        property_ranges: list = Query(
-            [],
+        property_ranges: str = Query(
+            "",
             description="A list of lists which contains a range for each dimension of the property.",
         ),
     ):
