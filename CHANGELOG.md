@@ -1,14 +1,28 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.25.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.2) (2023-09-12)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.1...v0.25.2)
 
-This release primarily contains changes to the server code including significant optimizations, the ability to fully disable validation of outgoing responses and the ability to configure provider fields that already exist in the database with a prefix, as well as various bug fixes and dependency compatibility updates. Other important changes include the dropping of Python 3.8 support. This version still uses Pydantic v1 and a future version will migrate fully to Pydantic v2.
+**Merged pull requests:**
+
+- Fix typo in pyproject.toml [\#1763](https://github.com/Materials-Consortia/optimade-python-tools/pull/1763) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.25.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.1) (2023-08-10)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.0...v0.25.1)
+
+This release simply tests the migration to `pyproject.toml`, as well as updating a few dependencies along the way.
+
+**Merged pull requests:**
+
+- Migrate fully to pyproject.toml [\#1737](https://github.com/Materials-Consortia/optimade-python-tools/pull/1737) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.25.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.0) (2023-07-25)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.24.1...v0.25.0)
+
+This release primarily contains changes to the server code including significant optimizations, the ability to fully disable validation of outgoing responses and the ability to configure provider fields that already exist in the database with a prefix, as well as various bug fixes and dependency compatibility updates. Other important changes include the dropping of Python 3.8 support. This version still uses Pydantic v1 and a future version will migrate fully to Pydantic v2.
 
 **Fixed bugs:**
 
