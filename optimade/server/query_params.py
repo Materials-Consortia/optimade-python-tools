@@ -196,12 +196,12 @@ class EntryListingQueryParams(BaseQueryParams):
         response_fields: str = Query(
             "",
             description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
-            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+            pattern=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
         sort: str = Query(
             "",
             description='If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query.\nIf it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an entry listing endpoint, then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`.\nIf a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name.\nThe set of field names, with `sortable` equal to `true` are allowed to be used in the "sort fields" list according to its definition in the JSON API 1.0 specification.\nThe field `sortable` is in addition to each property description and other OPTIONAL fields.\nAn example is shown in the section Entry Listing Info Endpoints.',
-            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+            pattern=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
         page_limit: int = Query(
             CONFIG.page_limit,
@@ -238,7 +238,7 @@ class EntryListingQueryParams(BaseQueryParams):
         api_hint: str = Query(
             "",
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
-            regex=r"(v[0-9]+(\.[0-9]+)?)?",
+            pattern=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
     ):
         self.filter = filter
@@ -313,7 +313,7 @@ class SingleEntryQueryParams(BaseQueryParams):
         response_fields: str = Query(
             "",
             description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
-            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+            pattern=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
         include: str = Query(
             "references",
@@ -322,7 +322,7 @@ class SingleEntryQueryParams(BaseQueryParams):
         api_hint: str = Query(
             "",
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
-            regex=r"(v[0-9]+(\.[0-9]+)?)?",
+            pattern=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
         property_ranges: str = Query(
             None,
