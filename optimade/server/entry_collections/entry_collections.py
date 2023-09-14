@@ -228,7 +228,6 @@ class EntryCollection(ABC):
 
         if raw_results:
             results = [self.resource_mapper.map_back(doc) for doc in raw_results]
-            self.generate_links_partial_data(results)
             if single_entry:
                 results = results[0]  # type: ignore[assignment]
 
@@ -246,24 +245,6 @@ class EntryCollection(ABC):
             exclude_fields,
             include_fields,
         )
-
-    def generate_links_partial_data(self, results):
-        for entry in results:
-            if entry.get("meta", {}) and entry["meta"].get("partial_data_links", {}):
-                for property in entry["meta"]["partial_data_links"]:
-                    for response_format in CONFIG.partial_data_formats:
-                        entry["meta"]["partial_data_links"][property].append(
-                            {
-                                "format": str(response_format.value),
-                                "link": CONFIG.base_url
-                                + "/partial_data/"
-                                + entry["id"]
-                                + "?response_fields="
-                                + property
-                                + "&response_format="
-                                + str(response_format.value),
-                            }
-                        )
 
     @abstractmethod
     def _run_db_query(

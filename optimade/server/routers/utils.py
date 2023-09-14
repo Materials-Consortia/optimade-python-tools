@@ -258,6 +258,30 @@ def get_base_url(
     )
 
 
+def generate_links_partial_data(
+    results,
+    parsed_url_request: Union[
+        urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str
+    ],
+):
+    for entry in results:
+        if entry.get("meta", {}) and entry["meta"].get("partial_data_links", {}):
+            for property in entry["meta"]["partial_data_links"]:
+                for response_format in CONFIG.partial_data_formats:
+                    entry["meta"]["partial_data_links"][property].append(
+                        {
+                            "format": str(response_format.value),
+                            "link": get_base_url(parsed_url_request)
+                            + "/partial_data/"
+                            + entry["id"]
+                            + "?response_fields="
+                            + property
+                            + "&response_format="
+                            + str(response_format.value),
+                        }
+                    )
+
+
 def get_entries(
     collection: EntryCollection,
     response: Type[EntryResponseMany],  # noqa
@@ -282,6 +306,7 @@ def get_entries(
 
     included = []
     if results is not None:
+        generate_links_partial_data(results, request.url)
         included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
@@ -346,6 +371,7 @@ def get_single_entry(
     included = []
     if results is not None:
         included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+        generate_links_partial_data([results], request.url)
 
     links = ToplevelLinks(next=None)
 

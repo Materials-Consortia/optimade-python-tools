@@ -71,7 +71,6 @@ class SupportedResponseFormats(Enum):
     """Enumeration of supported response formats.
 
     - 'JSON': [JSON](https://www.json.org/json-en.html)
-    - 'HDF5': [HDF5](https://portal.hdfgroup.org/display/HDF5/HDF5)
     - `JSONL`: [JSONL](https://jsonlines.org/)
 
     """
