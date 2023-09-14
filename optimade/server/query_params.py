@@ -378,12 +378,12 @@ class PartialDataQueryParams(BaseQueryParams):
         api_hint: str = Query(
             "",
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
-            regex=r"(v[0-9]+(\.[0-9]+)?)?",
+            pattern=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
         response_fields: str = Query(
             "",
             description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
-            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+            pattern=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
         ),
         filter: str = Query(  # pylint: disable=redefined-builtin
             "",
