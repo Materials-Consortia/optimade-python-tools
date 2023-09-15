@@ -8,6 +8,7 @@ data_paths = {
     "references": "test_references.json",
     "links": "test_links.json",
     "providers": "providers.json",
+    "trajectories": "test_trajectories.json",
 }
 
 data_files = [

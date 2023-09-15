@@ -18,7 +18,7 @@ from optimade.models.entries import EntryResource
 # so that the global caches can be set to the correct size.
 # See https://github.com/Materials-Consortia/optimade-python-tools/issues/1434
 # for the details.
-NUM_ENTRY_TYPES = 4
+NUM_ENTRY_TYPES = 5
 
 __all__ = ("BaseResourceMapper",)
 
@@ -82,7 +82,7 @@ class BaseResourceMapper:
     LENGTH_ALIASES: Tuple[Tuple[str, str], ...] = ()
     PROVIDER_FIELDS: Tuple[str, ...] = ()
     ENTRY_RESOURCE_CLASS: Type[EntryResource] = EntryResource
-    RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
+    RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures", "trajectories"}
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {
         "id",
         "type",

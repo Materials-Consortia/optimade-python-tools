@@ -184,6 +184,10 @@ class ServerConfig(BaseSettings):
         "structures",
         description="Mongo collection name for /structures endpoint resources",
     )
+    trajectories_collection: str = Field(
+        "trajectories",
+        description="Mongo collection name for /trajectories endpoint resources",
+    )
     partial_data_collection: str = Field(
         "fs",
         description="Mongo Grid FS system containing the data that needs to be returned via the partial data mechanism.",

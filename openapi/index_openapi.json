@@ -509,6 +509,15 @@
             ],
             "title": "Structures",
             "description": "Object containing links to relationships with entries of the `structures` type."
+          },
+          "trajectories": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TrajectoryRelationship"
+              }
+            ],
+            "title": "Trajectories",
+            "description": "Object containing links to relationships with entries of the `trajectories` type."
           }
         },
         "type": "object",
@@ -521,15 +530,15 @@
             "type": "string",
             "title": "Id",
             "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "must"
           },
           "type": {
             "type": "string",
             "title": "Type",
             "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Example**: `\"structures\"`",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "must"
           },
           "links": {
             "allOf": [
@@ -583,16 +592,16 @@
             "type": "string",
             "title": "Immutable Id",
             "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)",
-            "x-optimade-support": "optional",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "optional"
           },
           "last_modified": {
             "type": "string",
             "format": "date-time",
             "title": "Last Modified",
             "description": "Date and time representing when the entry was last modified.\n\n- **Type**: timestamp.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.\n\n- **Example**:\n    - As part of JSON response format: `\"2007-04-05T14:30:20Z\"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)",
-            "x-optimade-support": "should",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "should"
           }
         },
         "type": "object",
@@ -1130,8 +1139,8 @@
             "type": "string",
             "title": "Id",
             "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
-            "x-optimade-support": "must",
-            "x-optimade-queryable": "must"
+            "x-optimade-queryable": "must",
+            "x-optimade-support": "must"
           },
           "type": {
             "type": "string",
@@ -1925,6 +1934,47 @@
         "type": "object",
         "title": "ToplevelLinks",
         "description": "A set of Links objects, possibly including pagination"
+      },
+      "TrajectoryRelationship": {
+        "properties": {
+          "links": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipLinks"
+              }
+            ],
+            "title": "Links",
+            "description": "a links object containing at least one of the following: self, related"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BaseRelationshipResource"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/BaseRelationshipResource"
+                },
+                "type": "array"
+              }
+            ],
+            "uniqueItems": true,
+            "title": "Data",
+            "description": "Resource linkage"
+          },
+          "meta": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              }
+            ],
+            "title": "Meta",
+            "description": "a meta object that contains non-standard meta-information about the relationship."
+          }
+        },
+        "type": "object",
+        "title": "TrajectoryRelationship",
+        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."
       },
       "Warnings": {
         "properties": {

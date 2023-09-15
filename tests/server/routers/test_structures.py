@@ -1,4 +1,4 @@
-from optimade.models import (
+from optimade.models import (  # type: ignore[attr-defined]
     ReferenceResource,
     StructureResponseMany,
     StructureResponseOne,
@@ -226,3 +226,17 @@ class TestStructuresWithUnknownResponseFields(RegularEndpointTests):
         assert all(
             len(doc["attributes"]) == len(keys) for doc in self.json_response["data"]
         )
+
+
+class TestStructuresWithNelementsInFilter(RegularEndpointTests):
+    """Tests that structures with e.g., `'assemblies':null` do get
+    returned for queries testing for "UNKNOWN" fields.
+
+    """
+
+    request_str = "/structures?filter=nelements>=6"
+    response_cls = StructureResponseMany
+
+    def test_structures_nreturned(self):
+        """Check that all structures are returned."""
+        assert len(self.json_response["data"]) == 7

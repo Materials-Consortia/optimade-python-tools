@@ -63,6 +63,7 @@ def check_required_fields_response(get_good_response):
         "links": mappers.LinksMapper,
         "references": mappers.ReferenceMapper,
         "structures": mappers.StructureMapper,
+        "trajectories": mappers.TrajectoryMapper,
     }
 
     def inner(
