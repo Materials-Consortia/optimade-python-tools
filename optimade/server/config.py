@@ -273,6 +273,11 @@ class ServerConfig(BaseSettings):
         ),
     )
 
+    custom_landing_page: Optional[Union[str, Path]] = Field(
+        None,
+        description="The location of a custom landing page (Jinja template) to use for the API.",
+    )
+
     index_schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
         f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade_index.json",
         description=(
