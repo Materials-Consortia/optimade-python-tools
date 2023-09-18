@@ -126,7 +126,7 @@ class EntryCollection(ABC):
         """
 
     @abstractmethod
-    def count(self, **kwargs: Any) -> int:
+    def count(self, **kwargs: Any) -> Union[int, None]:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
