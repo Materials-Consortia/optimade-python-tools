@@ -1807,6 +1807,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.custom_landing_page" class="md-nav__link">
+    custom_landing_page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.database_backend" class="md-nav__link">
     database_backend
   </a>
@@ -2953,6 +2960,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.custom_landing_page" class="md-nav__link">
+    custom_landing_page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.database_backend" class="md-nav__link">
     database_backend
   </a>
@@ -3673,6 +3687,11 @@ can be easily extended for new config file types.</p>
         <span class="p">),</span>
     <span class="p">)</span>
 
+    <span class="n">custom_landing_page</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The location of a custom landing page (Jinja template) to use for the API.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="n">index_schema_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AnyHttpUrl</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s2">/optimade_index.json&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
@@ -3817,6 +3836,28 @@ can be easily extended for new config file types.</p>
     <div class="doc doc-contents ">
 
       <p>Base URL for this implementation</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.server.config.ServerConfig.custom_landing_page" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">custom_landing_page</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.server.config.ServerConfig.custom_landing_page" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The location of a custom landing page (Jinja template) to use for the API.</p>
     </div>
 
   </div>
