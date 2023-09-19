@@ -741,7 +741,7 @@ class OptimadeClient:
         )
         results = QueryResults()
         try:
-            async with self._http_client(headers=self.headers) as client:  # type: ignore[union-attr,call-arg,misc]
+            async with self._http_client(headers=self.headers, verify=False) as client:  # type: ignore[union-attr,call-arg,misc]
                 while next_url:
                     attempts = 0
                     try:
