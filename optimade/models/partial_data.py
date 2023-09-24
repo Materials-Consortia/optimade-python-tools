@@ -13,8 +13,9 @@ class LinksObject(BaseModel):
         None,
         description="""The base URL of the implementation serving the database to which this property belongs.""",
     )
-    # todo should it not be item_described_by? check with json Api they may have defined this field name.
-    item_describedby: Optional[str] = OptimadeField(
+    item_describedby: Optional[
+        str
+    ] = OptimadeField(  # The term describedby is used in the json Api, therefore we do not place an underscore between described and by.
         None,
         description="""A URL to an external JSON Schema that validates the data lines of the response.
     The format and requirements on this schema are the same as for the inline schema field :field:`item_schema`.
