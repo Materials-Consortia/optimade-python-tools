@@ -2,6 +2,8 @@
 # import warnings
 from typing import Optional
 
+from pydantic import validator
+
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.structures import StructureAttributes
 
@@ -30,6 +32,8 @@ CORRELATED_TRAJECTORY_FIELDS = (
 class TrajectoryResourceAttributes(EntryResourceAttributes, StructureAttributes):
     """This class contains the Field for the attributes used to represent a trajectory."""
 
+    # todo get a better idea of how to inherrit from the Structure attributes while also allowing them to be list of fields as would be expected for a trajectory.
+
     reference_frames: Optional[int] = OptimadeField(
         None,
         description="""The indexes of a set of frames that give a good but very brief overview of the trajectory.
@@ -49,6 +53,14 @@ class TrajectoryResourceAttributes(EntryResourceAttributes, StructureAttributes)
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
+
+    @validator("reference_frames", each_item=True)
+    def validate_chemical_symbols(cls, reference_frame):
+        if reference_frame < 0:
+            raise ValueError(
+                f"All values in reference_frames have to positive in tegers. {reference_frame} is not a positive integer."
+            )
+        return reference_frame
 
     nframes: int = OptimadeField(
         ...,
@@ -78,8 +90,11 @@ class TrajectoryResourceAttributes(EntryResourceAttributes, StructureAttributes)
         queryable=SupportLevel.MUST,
     )
 
-
-# TODO add more Trajectory specific validators
+    @validator("nframes")
+    def validate_nframes(cls, nframes):
+        if nframes < 0:
+            raise ValueError("nframes must be a positive integer.")
+        return nframes
 
 
 class TrajectoryResource(EntryResource):
