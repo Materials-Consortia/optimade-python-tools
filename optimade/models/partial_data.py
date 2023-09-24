@@ -5,14 +5,36 @@ from pydantic import BaseModel
 from optimade.models.entries import EntryResource
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
-__all__ = (
-    "PartialDataHeader",
-    "PartialDataResource",
-)
+__all__ = ("PartialDataHeader", "PartialDataResource", "LinksObject")
+
+
+class LinksObject(BaseModel):
+    base_url: Optional[str] = OptimadeField(
+        None,
+        description="""The base URL of the implementation serving the database to which this property belongs.""",
+    )
+    # todo should it not be item_described_by? check with json Api they may have defined this field name.
+    item_describedby: Optional[str] = OptimadeField(
+        None,
+        description="""A URL to an external JSON Schema that validates the data lines of the response.
+    The format and requirements on this schema are the same as for the inline schema field :field:`item_schema`.
+The format of data lines of the response (i.e., all lines except the first and the last) depends on whether the header object specifies the layout as :val:`"dense"` or :val:`"sparse"`.
+""",
+    )
+
+
+class PartialDataInfo(BaseModel):
+    version: str = OptimadeField(
+        ...,
+        description="""Specifies the minor version of the partial data format used.
+    The string MUST be of the format "MAJOR.MINOR", referring to the version of the OPTIMADE standard that describes the format.
+    The version number string MUST NOT be prefixed by, e.g., "v". In implementations of the present version of the standard, the value MUST be exactly :val:`1.2`.
+    A client MUST NOT expect to be able to parse the :field:`format` value if the field is not a string of the format MAJOR.MINOR or if the MAJOR version number is unrecognized.""",
+    )
 
 
 class PartialDataHeader(BaseModel):
-    optimade_partial_data: dict = OptimadeField(
+    optimade_partial_data: PartialDataInfo = OptimadeField(
         ...,
         description="""An object identifying the response as being on OPTIMADE partial data format.
 It MUST contain the following key:
@@ -26,7 +48,7 @@ It MUST contain the following key:
 - **Examples**:
     - `""optimade-partial-data": {"version": "1.2.0"}"`""",
         support=SupportLevel.MUST,
-    )  # Todo add format and link fields
+    )
     layout: Literal["dense", "sparse"] = OptimadeField(
         ...,
         description="""A string either equal to "dense" or "sparse" to indicate whether the returned format uses a dense or sparse layout.
@@ -109,7 +131,7 @@ It MUST contain the following key:
         support=SupportLevel.OPTIONAL,
     )
 
-    links: Optional[dict] = OptimadeField(
+    links: Optional[LinksObject] = OptimadeField(
         None,
         description=""" An object to provide relevant links for the property being provided. It MAY contain the following key:
 
