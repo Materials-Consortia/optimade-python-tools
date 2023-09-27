@@ -157,6 +157,12 @@ class ServerConfig(BaseSettings):
         None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
+    mongo_count_timeout: int = Field(
+        5,
+        description="""Number of seconds to allow MongoDB to perform a full database count before falling back to `null`.
+This operation can require a full COLLSCAN for empty queries which can be prohibitively slow if the database does not fit into the active set, hence a timeout can drastically speed-up response times.""",
+    )
+
     mongo_database: str = Field(
         "optimade", description="Mongo database for collection data"
     )
