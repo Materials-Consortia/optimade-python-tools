@@ -84,7 +84,7 @@ cif = ["numpy>=1.20"]
 # we don't support pydantic v2 yet, but pymatgen has a (uncessary IMO) tight coupling to mp-api which now enforces it
 # as "true" users of pydantic, if we can't update our stuff to v2 (including all the fieldinfo hacks) then we will
 # probably just have to hard pin or remove pymatgen support
-pymatgen = ["pymatgen>=2022", "mp-api<=0.36"]
+pymatgen = ["pymatgen>=2022", "mp-api<=0.36", "emmet-core<=0.68"]
 jarvis = ["jarvis-tools>=2023.1.8"]
 client = ["optimade[cif]"]
 
