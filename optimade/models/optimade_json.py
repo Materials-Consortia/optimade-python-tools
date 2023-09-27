@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Type, Union
 
-from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, root_validator
+from pydantic.v1 import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, root_validator
 
 from optimade.models import jsonapi
 from optimade.models.utils import SemanticVersion, StrictField

@@ -1,6 +1,6 @@
 # pylint: disable=no-member
 import pytest
-from pydantic import ValidationError
+from pydantic.v1 import ValidationError
 
 from optimade.models.references import ReferenceResource
 
@@ -22,7 +22,7 @@ def test_more_good_references(good_references, mapper):
 
 def test_bad_references(mapper):
     """Check badly formed references"""
-    from pydantic import ValidationError
+    from pydantic.v1 import ValidationError
 
     bad_refs = [
         {"id": "AAAA", "type": "references", "doi": "10.1234/1234"},  # bad id

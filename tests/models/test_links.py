@@ -14,7 +14,7 @@ def test_good_links(starting_links, mapper):
 
 def test_bad_links(starting_links, mapper):
     """Check badly formed links"""
-    from pydantic import ValidationError
+    from pydantic.v1 import ValidationError
 
     bad_links = [
         {"aggregate": "wrong"},

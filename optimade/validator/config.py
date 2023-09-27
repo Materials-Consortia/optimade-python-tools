@@ -9,7 +9,7 @@ the hardcoded values.
 
 from typing import Any, Container, Dict, List, Set
 
-from pydantic import BaseSettings, Field
+from pydantic.v1 import BaseSettings, Field
 
 from optimade.models import (
     DataType,

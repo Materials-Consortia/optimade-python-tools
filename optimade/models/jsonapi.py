@@ -3,7 +3,7 @@
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Type, Union
 
-from pydantic import (  # pylint: disable=no-name-in-module
+from pydantic.v1 import (  # pylint: disable=no-name-in-module
     AnyUrl,
     BaseModel,
     parse_obj_as,

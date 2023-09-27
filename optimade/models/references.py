@@ -1,8 +1,13 @@
 # pylint: disable=line-too-long,no-self-argument
 from typing import List, Optional
 
-from pydantic import AnyUrl, BaseModel, validator  # pylint: disable=no-name-in-module
+from pydantic.v1 import (
+    AnyUrl,
+    BaseModel,
+    validator,
+)
 
+# pylint: disable=no-name-in-module
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.utils import OptimadeField, SupportLevel
 

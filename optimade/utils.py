@@ -6,7 +6,7 @@ with OPTIMADE providers that can be used in server or client code.
 import json
 from typing import Container, Iterable, List, Optional
 
-from pydantic import ValidationError
+from pydantic.v1 import ValidationError
 
 from optimade.models.links import LinksResource
 

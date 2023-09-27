@@ -2,7 +2,7 @@
 import itertools
 
 import pytest
-from pydantic import ValidationError
+from pydantic.v1 import ValidationError
 
 from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS, StructureResource
 from optimade.warnings import MissingExpectedField

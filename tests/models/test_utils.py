@@ -1,7 +1,7 @@
 from typing import Callable, List
 
 import pytest
-from pydantic import BaseModel, Field, ValidationError
+from pydantic.v1 import BaseModel, Field, ValidationError
 
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 

@@ -1,7 +1,7 @@
 # pylint: disable=no-self-argument
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import Field, root_validator
+from pydantic.v1 import Field, root_validator
 
 from optimade.models.baseinfo import BaseInfoResource
 from optimade.models.entries import EntryInfoResource, EntryResource
