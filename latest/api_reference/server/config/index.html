@@ -1912,6 +1912,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.mongo_count_timeout" class="md-nav__link">
+    mongo_count_timeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.mongo_database" class="md-nav__link">
     mongo_database
   </a>
@@ -3065,6 +3072,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.mongo_count_timeout" class="md-nav__link">
+    mongo_count_timeout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.mongo_database" class="md-nav__link">
     mongo_database
   </a>
@@ -3569,6 +3583,12 @@ can be easily extended for new config file types.</p>
 
     <span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Host settings to pass through to the `Elasticsearch` class.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">mongo_count_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">5</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Number of seconds to allow MongoDB to perform a full database count before falling back to `null`.</span>
+<span class="s2">This operation can require a full COLLSCAN for empty queries which can be prohibitively slow if the database does not fit into the active set, hence a timeout can drastically speed-up response times.&quot;&quot;&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">mongo_database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -4166,6 +4186,29 @@ can be easily extended for new config file types.</p>
     <div class="doc doc-contents ">
 
       <p>Logging level for the OPTIMADE server.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.server.config.ServerConfig.mongo_count_timeout" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">mongo_count_timeout</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade.server.config.ServerConfig.mongo_count_timeout" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Number of seconds to allow MongoDB to perform a full database count before falling back to <code>null</code>.
+This operation can require a full COLLSCAN for empty queries which can be prohibitively slow if the database does not fit into the active set, hence a timeout can drastically speed-up response times.</p>
     </div>
 
   </div>
