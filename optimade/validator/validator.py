@@ -1317,6 +1317,10 @@ class ImplementationValidator:
                 next_link = response_json["links"]["next"]
                 if isinstance(next_link, dict):
                     next_link = next_link["href"]
+                if not next_link:
+                    raise ResponseError(
+                        "Endpoint suggested more data was available but provided no valid links->next link."
+                    )
             except KeyError:
                 raise ResponseError(
                     "Endpoint suggested more data was available but provided no valid links->next link."
