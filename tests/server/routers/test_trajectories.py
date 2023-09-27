@@ -12,7 +12,7 @@ def test_trajectories(
     check_response,
 ):
     expected_ids = ["6509be05a54743f440a7f36b"]
-    request = "/trajectories"
+    request = "/trajectories?filter=nelements=1"
     check_response(request, expected_ids)
     pass
 

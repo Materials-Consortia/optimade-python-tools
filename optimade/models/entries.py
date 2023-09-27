@@ -139,7 +139,7 @@ class EntryMetadata(Meta):
 Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
     )
 
-    partial_data_links: Dict[str, list[PartialDataLink]] = StrictField(
+    partial_data_links: Dict[str, List[PartialDataLink]] = StrictField(
         None,
         description="""A dictionary, where the keys are the names of the properties in the attributes field for which the value is too large to be shared by default.
         For each property one or more links are provided from which the value of the attribute can be retrieved.""",

@@ -239,7 +239,7 @@ class ServerConfig(BaseSettings):
         description="General information about the provider of this OPTIMADE implementation",
     )
     provider_fields: Dict[
-        Literal["links", "references", "structures"],
+        Literal["links", "references", "structures", "trajectories"],
         List[Union[str, Dict[Literal["name", "type", "unit", "description"], str]]],
     ] = Field(
         {},
@@ -248,7 +248,9 @@ class ServerConfig(BaseSettings):
             "broken down by endpoint."
         ),
     )
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
+    aliases: Dict[
+        Literal["links", "references", "structures", "trajectories"], Dict[str, str]
+    ] = Field(
         {},
         description=(
             "A mapping between field names in the database with their corresponding OPTIMADE field"
@@ -256,7 +258,7 @@ class ServerConfig(BaseSettings):
         ),
     )
     length_aliases: Dict[
-        Literal["links", "references", "structures"], Dict[str, str]
+        Literal["links", "references", "structures", "trajectories"], Dict[str, str]
     ] = Field(
         {},
         description=(

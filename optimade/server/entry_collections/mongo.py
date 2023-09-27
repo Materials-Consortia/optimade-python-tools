@@ -278,7 +278,7 @@ class GridFSCollection(MongoBaseCollection):
 
     def parse_property_ranges(
         self, property_range_str: str, attribute_slice_obj: list, dim_names: list
-    ) -> list[dict]:
+    ) -> List[dict]:
         property_range_dict = {}
         if property_range_str:
             ranges = [dimrange.split(":") for dimrange in property_range_str.split(",")]
