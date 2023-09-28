@@ -56,7 +56,8 @@ Next, you can install the local version of this package by going into the optima
 
 ### Installing MongoDB
 
-The installation instructions for MongoDB can be found on the [MongoDB website](https://www.mongodb.com/docs/manual/installation/)
+You can either install MongoDB directly on your system, or use the docker instructions in the Deployment instructions below.
+For the former, installation instructions for MongoDB can be found on the [MongoDB website](https://www.mongodb.com/docs/manual/installation/)
 The free community edition is good enough for our purposes.
 To automatically run the `mongod` daemon when the machine is booted, you can run: `systemctl enable mongod.service`, to run it just once you can use: `systemctl start mongod.service`.
 
