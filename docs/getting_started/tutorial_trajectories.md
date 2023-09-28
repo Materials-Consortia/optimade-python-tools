@@ -20,7 +20,9 @@ You will however need to use the code found on GitHub at [https://github.com/JPB
 
 If you only want to use the optimade python tools as a library you could use:
 
-```pip install git+https://github.com/JPBergsma/optimade-python-tools/tree/JPBergsma/trajectory_endpoint```
+```
+pip install git+https://github.com/JPBergsma/optimade-python-tools/tree/JPBergsma/trajectory_endpoint
+```
 
 In this tutorial, we are however describing how to set up your own database for sharing trajectory data.
 In that case it is better to clone the repository and create your own branch from the [`optimade_python_tools_trajectory`](https://github.com/JPBergsma/optimade-python-tools/tree/JPBergsma/trajectory_endpoint) branch.
@@ -28,11 +30,15 @@ This way you can easily make modifications to the code when you want to change t
 
 If you already have a GitHub account setup you can clone the repository with:
 
-```git clone --recursive git@github.com:JPBergsma/optimade-python-tools.git -b optimade_python_tools_trajectory_0.1```
+```
+git clone --recursive git@github.com:JPBergsma/optimade-python-tools.git -b optimade_python_tools_trajectory_0.1
+```
 
 Without GitHub account you can use:
 
-```git clone --recursive https://github.com/JPBergsma/optimade-python-tools.git -b optimade_python_tools_trajectory_0.1```
+```
+git clone --recursive https://github.com/JPBergsma/optimade-python-tools.git -b optimade_python_tools_trajectory_0.1
+```
 
 
 ### Conda
@@ -42,7 +48,9 @@ See the instructions on how to install (Mini)Conda on the [conda website](https:
 
 If you use Conda you can create a separate environment using:
 
-```conda create -n optimade-traj python=3.11```
+```
+conda create -n optimade-traj python=3.11
+```
 
 You could also use Python versions 3.10 or 3.9 if you need to integrate with other libraries that require them.
 You can then activate and begin using the Conda environment with: `conda activate optimade-traj`
@@ -52,7 +60,9 @@ You can then activate and begin using the Conda environment with: `conda activat
 
 Next, you can install the local version of this package by going into the optimade-python-tools folder, created during the `git clone`, and installing the package locally with:
 
-```pip install -e .[server]```
+```
+pip install -e .[server]
+```
 
 ### Installing MongoDB
 
@@ -160,7 +170,9 @@ You can check whether MongoDB is running you can use: `systemctl status mongod`
 
 To launch the OPTIMADE API server and test the setup, you can go to optimade-python-tools folder and run:
 
-```uvicorn optimade.server.main:app --reload --port=5000```
+```
+uvicorn optimade.server.main:app --reload --port=5000
+```
 
 By adding the --reload flag, the server is automatically restarted when code is changed as you develop your server.
 Next, you can run `optimade-validator http://localhost:5000` to validate the setup of your database.
@@ -185,13 +197,19 @@ You can run the optimade-python-tools from within a [docker](https://docs.docker
 This adds a bit of security and is also a way to run multiple instances of the server.
 The first step is building a docker image with your local version of the optimade-python-tools.
 Run the following command in you local optimade-python-tools folder to create a docker image.
-`docker build -t optimade-traj:0.1 .`
+
+```
+docker build -t optimade-traj:0.1
+```
 
 If you also want to run mongodb in a docker container the next step is to create a docker network, so the containers can communicate with each other, via:
 
-`docker network create -d bridge optimade`
+```
+docker network create -d bridge optimade
+```
 
 You can start mongodb in a docker container via:
+
 ```
 docker run \
     --detach \
@@ -200,9 +218,11 @@ docker run \
     --network optimade \
     docker.io/library/mongo:latest
 ```
+
 In that case you have to set "mongo_uri" in the config file to "mongodb://mongo:27017".  
 
 Next you can start the container for the optimade python tools with:
+
 ```
 docker run \
     --rm \
@@ -249,8 +269,12 @@ IllegalOperation: Attempted to create a lock file on a read-only directory: /dat
 
 Because mongod was run in a docker container the file permissions were changed.
 You can reset them with:
-`sudo chmod -R 777 /data/db`
+```
+sudo chmod -R 777 /data/db
+```
+
 and
+
 ```
 sudo chown -R `id -u` /data/db
 ```
