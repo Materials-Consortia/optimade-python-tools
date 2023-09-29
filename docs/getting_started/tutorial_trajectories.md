@@ -166,7 +166,7 @@ You can use this script to load the trajectory data into your database.
 
 Instructions on how to run this script can be found in the accompanying [README.md](https://github.com/JPBergsma/Export_traj_to_mongo/blob/master/README.md) file.
 If you have not restarted since installing MongoDB you still need to start MongoDB with: `systemctl start mongod`
-You can check whether MongoDB is running you can use: `systemctl status mongod`
+To check whether MongoDB is running, you can use: `systemctl status mongod`
 
 ### Validation
 
@@ -179,7 +179,7 @@ uvicorn optimade.server.main:app --reload --port=5000
 By adding the --reload flag, the server is automatically restarted when code is changed as you develop your server.
 Next, you can run `optimade-validator http://localhost:5000` to validate the setup of your database.
 
-At the moment, the validator may still give a `"'StrictFieldInfo' object is not subscriptable"` error, which can be safely ignored for now.
+At the moment, the validator may still give a `ConfigError: duplicate validator function` error, which can be safely ignored for now.
 Any errors under INTERNAL FAILURES indicate problems with the validator itself and not with the server setup. You can report those [here](https://github.com/JPBergsma/optimade-python-tools/issues).
 More details about validating your server can be found in [the online documentation](https://github.com/JPBergsma/optimade-python-tools/blob/optimade_python_tools_trajectory_0.1/docs/concepts/validation.md).
 
@@ -221,7 +221,7 @@ docker run \
     docker.io/library/mongo:latest
 ```
 
-In that case you have to set "mongo_uri" in the config file to "mongodb://mongo:27017". 
+In that case you have to set "mongo_uri" in the config file to "mongodb://mongo:27017".
 
 Next you can start the container for the optimade python tools with:
 

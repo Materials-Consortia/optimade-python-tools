@@ -2,6 +2,7 @@
     "debug": false,
     "default_db": "test_server",
     "base_url": "http://localhost:5000",
+    "trajectories_collection": "trajectories",
     "implementation": {
         "name": "Example implementation",
         "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
@@ -19,7 +20,8 @@
         "structures": [
             "band_gap",
             {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"}
-        ]
+        ],
+        "trajectories": []
     },
     "aliases": {
         "structures": {
