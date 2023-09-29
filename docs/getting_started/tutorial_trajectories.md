@@ -43,16 +43,17 @@ git clone --recursive https://github.com/JPBergsma/optimade-python-tools.git -b 
 
 ### Conda
 
-You may now want to set up a separate Conda environment so there can't be a version conflict between the dependencies of different python programs.  
+You may now want to set up a separate Conda environment so there can't be a version conflict between the dependencies of different python programs.
 See the instructions on how to install (Mini)Conda on the [conda website](https://conda.io/projects/conda/en/stable/user-guide/install/index.html).
 
 If you use Conda you can create a separate environment using:
 
+
 ```
-conda create -n optimade-traj python=3.11
+conda create -n optimade-traj python=3.10
 ```
 
-You could also use Python versions 3.10 or 3.9 if you need to integrate with other libraries that require them.
+You could also use Python versions 3.9+ if you need to integrate with other libraries that require them.
 You can then activate and begin using the Conda environment with: `conda activate optimade-traj`
 
 
@@ -105,7 +106,7 @@ If you are setting up a new API, the important parameters to set are:
     * prefix:
       * description: An abbreviation of the name of the database provider with an underscore on each side. e.g. "\_exmpl_".
       This is used as a prefix for fields in the database that are not described by the optimade standard, but have instead stead been defined by the database provider.
-      * type: string  
+      * type: string
     * homepage:
       * description: A URL to the website of the provider.
       * type: string
@@ -164,7 +165,7 @@ You can use this script to load the trajectory data into your database.
 
 Instructions on how to run this script can be found in the accompanying [README.md](https://github.com/JPBergsma/Export_traj_to_mongo/blob/master/README.md) file.
 If you have not restarted since installing MongoDB you still need to start MongoDB with: `systemctl start mongod`
-You can check whether MongoDB is running you can use: `systemctl status mongod`  
+You can check whether MongoDB is running you can use: `systemctl status mongod`
 
 ### Validation
 
@@ -219,7 +220,7 @@ docker run \
     docker.io/library/mongo:latest
 ```
 
-In that case you have to set "mongo_uri" in the config file to "mongodb://mongo:27017".  
+In that case you have to set "mongo_uri" in the config file to "mongodb://mongo:27017". 
 
 Next you can start the container for the optimade python tools with:
 
@@ -237,7 +238,7 @@ docker run \
 ```
 
 You still have to replace /folder/containing/config/ with the path where you have put your config file.
-The flag `--detach` causes the docker container to run in the background. If you want to see the output you can remove it.  
+The flag `--detach` causes the docker container to run in the background. If you want to see the output you can remove it.
 If everything is running properly. you can now visit the landing page at http://0.0.0.0:8081/
 The first value indicted under the flag `--publish` is the port number that is exposed externally.
 You may need to adjust the value of "base_url" in the config file to match this port number.
