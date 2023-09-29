@@ -3908,6 +3908,10 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
                 <span class="n">next_link</span> <span class="o">=</span> <span class="n">response_json</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">][</span><span class="s2">&quot;next&quot;</span><span class="p">]</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">next_link</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                     <span class="n">next_link</span> <span class="o">=</span> <span class="n">next_link</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">next_link</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                        <span class="s2">&quot;Endpoint suggested more data was available but provided no valid links-&gt;next link.&quot;</span>
+                    <span class="p">)</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
                     <span class="s2">&quot;Endpoint suggested more data was available but provided no valid links-&gt;next link.&quot;</span>
