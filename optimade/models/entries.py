@@ -178,7 +178,7 @@ Database-provider-specific properties need to include the database-provider-spec
 
     meta: Optional[EntryMetadata] = StrictField(
         None,
-        description="""A dictionary, containing entry and property-specific metadata for a given entry.""",
+        description="""A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata.""",
     )
 
     relationships: Optional[EntryRelationships] = StrictField(
