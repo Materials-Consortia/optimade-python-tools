@@ -109,8 +109,7 @@ class EntryMetadata(Meta):
 
     property_metadata: Dict = StrictField(
         None,
-        description="""A dictionary, where the keys are the names of the properties in the attributes field and the value is a dictionary containing the metadata for that property.
-Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
+        description="""An object containing per-entry and per-property metadata. The keys are the names of the fields in attributes for which metadata is available. The values belonging to these keys are dictionaries containing the relevant metadata fields. See also [Metadata properties](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#metadata-properties)""",
     )
 
     @validator("property_metadata")
