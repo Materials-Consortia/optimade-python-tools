@@ -1016,7 +1016,7 @@ The properties of the species are found in the property `species`.
                 f"Species MUST be unique based on their 'name'. Found species names: {all_species}"
             )
 
-        return v
+        return sorted(v, key=lambda x: x.name)
 
     @validator("structure_features", always=True)
     def validate_structure_features(cls, v, values):
