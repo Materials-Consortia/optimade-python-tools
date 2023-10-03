@@ -61,9 +61,7 @@ class OptimadeTestClient(TestClient):
             re.match(r"/?v[0-9](.[0-9]){0,2}/", url) is None
             and not urlparse(url).scheme
         ):
-            while url.startswith("/"):
-                url = url[1:]
-            url = f"{self.version}/{url}"
+            url = f"{self.version}/{url.lstrip('/')}"
         return super(OptimadeTestClient, self).request(
             method=method,
             url=url,
