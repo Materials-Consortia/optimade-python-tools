@@ -87,6 +87,8 @@ def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
     import json
     import os
 
+    import yaml
+
     encoding = settings.__config__.env_file_encoding
     config_file = Path(os.getenv("OPTIMADE_CONFIG_FILE", DEFAULT_CONFIG_FILE_PATH))
 
@@ -98,8 +100,6 @@ def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
             res = json.loads(config_file_content)
         except json.JSONDecodeError as json_exc:
             try:
-                import yaml
-
                 # This can essentially also load JSON files, as JSON is a subset of YAML v1,
                 # but I suspect it is not as rigorous
                 res = yaml.safe_load(config_file_content)
