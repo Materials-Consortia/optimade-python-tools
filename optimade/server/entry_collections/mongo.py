@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Tuple, Type, Union
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
@@ -10,6 +10,7 @@ from optimade.server.query_params import EntryListingQueryParams, SingleEntryQue
 
 if CONFIG.database_backend.value == "mongodb":
     from pymongo import MongoClient, version_tuple
+    from pymongo.errors import ExecutionTimeout
 
     if version_tuple[0] < 4:
         LOGGER.warning(
@@ -67,9 +68,9 @@ class MongoCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return self.collection.estimated_document_count()
 
-    def count(self, **kwargs: Any) -> int:
+    def count(self, **kwargs: Any) -> Union[int, None]:
         """Returns the number of entries matching the query specified
-        by the keyword arguments.
+        by the keyword arguments, or `None` if the count timed out.
 
         Parameters:
             **kwargs: Query parameters as keyword arguments. The keys
@@ -80,9 +81,15 @@ class MongoCollection(EntryCollection):
         for k in list(kwargs.keys()):
             if k not in ("filter", "skip", "limit", "hint", "maxTimeMS"):
                 del kwargs[k]
-        if "filter" not in kwargs:  # "filter" is needed for count_documents()
-            kwargs["filter"] = {}
-        return self.collection.count_documents(**kwargs)
+        if "filter" not in kwargs:
+            return self.collection.estimated_document_count()
+        else:
+            if "maxTimeMS" not in kwargs:
+                kwargs["maxTimeMS"] = 1000 * CONFIG.mongo_count_timeout
+            try:
+                return self.collection.count_documents(**kwargs)
+            except ExecutionTimeout:
+                return None
 
     def insert(self, data: List[EntryResource]) -> None:
         """Add the given entries to the underlying database.
@@ -136,7 +143,7 @@ class MongoCollection(EntryCollection):
 
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+    ) -> Tuple[List[Dict[str, Any]], Optional[int], bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -163,7 +170,12 @@ class MongoCollection(EntryCollection):
             criteria_nolimit.pop("limit", None)
             skip = criteria_nolimit.pop("skip", 0)
             data_returned = self.count(**criteria_nolimit)
-            more_data_available = nresults_now + skip < data_returned
+            # Only correct most of the time: if the total number of remaining results is exactly the page limit
+            # then this will incorrectly say there is more_data_available
+            if data_returned is None:
+                more_data_available = nresults_now == criteria.get("limit", 0)
+            else:
+                more_data_available = nresults_now + skip < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = nresults_now
