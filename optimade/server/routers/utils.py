@@ -55,7 +55,7 @@ class JSONAPIResponse(JSONResponse):
 
 def meta_values(
     url: Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str],
-    data_returned: int,
+    data_returned: Optional[int],
     data_available: int,
     more_data_available: bool,
     schema: Optional[str] = None,
