@@ -1,14 +1,29 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.25.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3) (2023-09-29)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.1...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.2...v0.25.3)
 
-This release simply tests the migration to `pyproject.toml`, as well as updating a few dependencies along the way.
+**Merged pull requests:**
+
+- Add mp-api and emmet pins to avoid premature pydantic v2 upgrade [\#1795](https://github.com/Materials-Consortia/optimade-python-tools/pull/1795) ([ml-evs](https://github.com/ml-evs))
+- Debugging `links->next` issues [\#1794](https://github.com/Materials-Consortia/optimade-python-tools/pull/1794) ([ml-evs](https://github.com/ml-evs))
+- Add option for custom landing pages [\#1788](https://github.com/Materials-Consortia/optimade-python-tools/pull/1788) ([ml-evs](https://github.com/ml-evs))
+- Add config option `mongo_count_timeout` to skip the global count per request [\#1757](https://github.com/Materials-Consortia/optimade-python-tools/pull/1757) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.25.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.2) (2023-09-12)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.1...v0.25.2)
+
+**Merged pull requests:**
+
+- Fix typo in pyproject.toml [\#1763](https://github.com/Materials-Consortia/optimade-python-tools/pull/1763) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.25.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.1) (2023-08-10)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.0...v0.25.1)
+
+This release simply tests the migration to `pyproject.toml`, as well as updating a few dependencies along the way.
 
 **Merged pull requests:**
 

@@ -2,7 +2,7 @@ import enum
 import re
 import warnings
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Iterable, List, Set, Tuple, Type, Union
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
 
 from lark import Transformer
 
@@ -126,7 +126,7 @@ class EntryCollection(ABC):
         """
 
     @abstractmethod
-    def count(self, **kwargs: Any) -> int:
+    def count(self, **kwargs: Any) -> Union[int, None]:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
@@ -137,7 +137,7 @@ class EntryCollection(ABC):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[Union[None, Dict, List[Dict]], int, bool, Set[str], Set[str],]:
+    ) -> Tuple[Union[None, Dict, List[Dict]], Optional[int], bool, Set[str], Set[str],]:
         """
         Fetches results and indicates if more data is available.
 
@@ -203,7 +203,11 @@ class EntryCollection(ABC):
             if single_entry:
                 results = results[0]  # type: ignore[assignment]
 
-                if CONFIG.validate_api_response and data_returned > 1:
+                if (
+                    CONFIG.validate_api_response
+                    and data_returned is not None
+                    and data_returned > 1
+                ):
                     raise NotFound(
                         detail=f"Instead of a single entry, {data_returned} entries were found",
                     )
@@ -221,7 +225,7 @@ class EntryCollection(ABC):
     @abstractmethod
     def _run_db_query(
         self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+    ) -> Tuple[List[Dict[str, Any]], Optional[int], bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
