@@ -86,7 +86,7 @@ cif = ["numpy>=1.20"]
 # probably just have to hard pin or remove pymatgen support
 pymatgen = [
     "pymatgen>=2022",
-    "mp-api<=0.36",
+    "mp-api<=0.37.3",
     "emmet-core<=0.68"
 ]
 jarvis = ["jarvis-tools>=2023.1.8"]
