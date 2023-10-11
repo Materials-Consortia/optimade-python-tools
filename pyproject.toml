@@ -73,7 +73,7 @@ server = [
 # Client minded
 aiida = ["aiida-core~=2.1"]
 
-http_client = [
+http-client = [
     "httpx~=0.23",
     "rich~=13.0",
     "click~=8.1",
@@ -117,10 +117,10 @@ dev = [
    "invoke~=2.0",
    "types-all==1.0.0",
    "ruff~=0.0",
-   "optimade[docs,testing,client,http_client]"
+   "optimade[docs,testing,client,http-client]"
 ]
 
-all = ["optimade[dev,elastic,aiida,ase,pymatgen,jarvis,http_client,client]"]
+all = ["optimade[dev,elastic,aiida,ase,pymatgen,jarvis,http-client,client]"]
 
 
 [tool.ruff]
