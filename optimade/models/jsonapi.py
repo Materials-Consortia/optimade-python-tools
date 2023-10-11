@@ -7,6 +7,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
     AnyUrl,
     BaseModel,
     BeforeValidator,
+    ConfigDict,
     TypeAdapter,
     model_validator,
 )
@@ -34,7 +35,7 @@ __all__ = (
 class Meta(BaseModel):
     """Non-standard meta-information that can not be represented as an attribute or relationship."""
 
-    model_config: Dict[str, Any] = {"extra": "allow"}
+    model_config = ConfigDict(extra="allow")
 
 
 class Link(BaseModel):
@@ -61,6 +62,8 @@ class JsonApi(BaseModel):
 class ToplevelLinks(BaseModel):
     """A set of Links objects, possibly including pagination"""
 
+    model_config = ConfigDict(extra="allow")
+
     self: Optional[Union[AnyUrl, Link]] = StrictField(
         None, description="A link to itself"
     )
@@ -82,22 +85,21 @@ class ToplevelLinks(BaseModel):
         None, description="The next page of data"
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def check_additional_keys_are_links(cls, values):
+    @model_validator(mode="after")
+    def check_additional_keys_are_links(self) -> "ToplevelLinks":
         """The `ToplevelLinks` class allows any additional keys, as long as
         they are also Links or Urls themselves.
 
         """
-        for key, value in values.items():
-            if key not in cls.model_json_schema()["properties"]:
-                values[key] = TypeAdapter.validate_python(
-                    Optional[Union[AnyUrl, Link]], value
+        for field, value in self:
+            if field not in self.model_json_schema()["properties"]:
+                setattr(
+                    self,
+                    field,
+                    TypeAdapter(Optional[Union[AnyUrl, Link]]).validate_python(value),
                 )
 
-        return values
-
-    model_config: Dict[str, Any] = {"extra": "allow"}
+        return self
 
 
 class ErrorLinks(BaseModel):
@@ -163,37 +165,36 @@ class Error(BaseModel):
         return hash(self.model_dump_json())
 
 
+def resource_json_schema_extra(
+    schema: Dict[str, Any], model: Type["BaseResource"]
+) -> None:
+    """Ensure `id` and `type` are the first two entries in the list required properties.
+
+    Note:
+        This _requires_ that `id` and `type` are the _first_ model fields defined
+        for all sub-models of `BaseResource`.
+
+    """
+    if "id" not in schema.get("required", []):
+        schema["required"] = ["id"] + schema.get("required", [])
+    if "type" not in schema.get("required", []):
+        required = []
+        for field in schema.get("required", []):
+            required.append(field)
+            if field == "id":
+                # To make sure the property order match the listed properties,
+                # this ensures "type" is added immediately after "id".
+                required.append("type")
+        schema["required"] = required
+
+
 class BaseResource(BaseModel):
     """Minimum requirements to represent a Resource"""
 
+    model_config = ConfigDict(json_schema_extra=resource_json_schema_extra)
+
     id: str = StrictField(..., description="Resource ID")
     type: str = StrictField(..., description="Resource type")
-
-    # TODO[pydantic]: We couldn't refactor this class, please create the `model_config` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-config for more information.
-    class Config:
-        @staticmethod
-        def json_schema_extra(
-            schema: Dict[str, Any], model: Type["BaseResource"]
-        ) -> None:
-            """Ensure `id` and `type` are the first two entries in the list required properties.
-
-            Note:
-                This _requires_ that `id` and `type` are the _first_ model fields defined
-                for all sub-models of `BaseResource`.
-
-            """
-            if "id" not in schema.get("required", []):
-                schema["required"] = ["id"] + schema.get("required", [])
-            if "type" not in schema.get("required", []):
-                required = []
-                for field in schema.get("required", []):
-                    required.append(field)
-                    if field == "id":
-                        # To make sure the property order match the listed properties,
-                        # this ensures "type" is added immediately after "id".
-                        required.append("type")
-                schema["required"] = required
 
 
 class RelationshipLinks(BaseModel):
@@ -215,17 +216,13 @@ When fetched successfully, this link returns the [linkage](https://jsonapi.org/f
         description="A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links).",
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def either_self_or_related_must_be_specified(cls, values):
-        for value in values.values():
-            if value is not None:
-                break
-        else:
+    @model_validator(mode="after")
+    def either_self_or_related_must_be_specified(self) -> "RelationshipLinks":
+        if self.self is None and self.related is None:
             raise ValueError(
                 "Either 'self' or 'related' MUST be specified for RelationshipLinks"
             )
-        return values
+        return self
 
 
 class Relationship(BaseModel):
@@ -243,17 +240,13 @@ class Relationship(BaseModel):
         description="a meta object that contains non-standard meta-information about the relationship.",
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def at_least_one_relationship_key_must_be_set(cls, values):
-        for value in values.values():
-            if value is not None:
-                break
-        else:
+    @model_validator(mode="after")
+    def at_least_one_relationship_key_must_be_set(self) -> "Relationship":
+        if self.links is None and self.data is None and self.meta is None:
             raise ValueError(
                 "Either 'links', 'data', or 'meta' MUST be specified for Relationship"
             )
-        return values
+        return self
 
 
 class Relationships(BaseModel):
@@ -264,16 +257,15 @@ class Relationships(BaseModel):
         id
     """
 
-    @model_validator(mode="before")
-    @classmethod
-    def check_illegal_relationships_fields(cls, values):
+    @model_validator(mode="after")
+    def check_illegal_relationships_fields(self) -> "Relationships":
         illegal_fields = ("id", "type")
         for field in illegal_fields:
-            if field in values:
+            if hasattr(self, field):
                 raise ValueError(
                     f"{illegal_fields} MUST NOT be fields under Relationships"
                 )
-        return values
+        return self
 
 
 class ResourceLinks(BaseModel):
@@ -295,18 +287,17 @@ class Attributes(BaseModel):
         type
     """
 
-    model_config: Dict[str, Any] = {"extra": "allow"}
+    model_config = ConfigDict(extra="allow")
 
-    @model_validator(mode="before")
-    @classmethod
-    def check_illegal_attributes_fields(cls, values):
+    @model_validator(mode="after")
+    def check_illegal_attributes_fields(self) -> "Attributes":
         illegal_fields = ("relationships", "links", "id", "type")
         for field in illegal_fields:
-            if field in values:
+            if hasattr(self, field):
                 raise ValueError(
                     f"{illegal_fields} MUST NOT be fields under Attributes"
                 )
-        return values
+        return self
 
 
 class Resource(BaseResource):
@@ -331,7 +322,14 @@ describing relationships between the resource and other JSON API resources.""",
 
 
 class Response(BaseModel):
-    """A top-level response"""
+    """A top-level response.
+
+    The specification mandates that datetimes must be encoded following
+    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support
+    fractional seconds, thus they must be stripped in the response. This can
+    cause issues when the underlying database contains fields that do include
+    microseconds, as filters may return unexpected results.
+    """
 
     data: Optional[Union[None, Resource, List[Resource]]] = StrictField(
         None, description="Outputted Data", uniqueItems=True
@@ -353,28 +351,21 @@ class Response(BaseModel):
         None, description="Information about the JSON API used"
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def either_data_meta_or_errors_must_be_set(cls, values):
+    @model_validator(mode="after")
+    def either_data_meta_or_errors_must_be_set(self) -> "Response":
         required_fields = ("data", "meta", "errors")
-        if not any(field in values for field in required_fields):
+        if not any(hasattr(self, field) for field in required_fields):
             raise ValueError(
                 f"At least one of {required_fields} MUST be specified in the top-level response"
             )
-        if "errors" in values and not values.get("errors"):
+        if hasattr(self, "errors") and not self.errors:
             raise ValueError("Errors MUST NOT be an empty or 'null' value.")
-        return values
+        return self
 
-    """The specification mandates that datetimes must be encoded following
-    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support
-    fractional seconds, thus they must be stripped in the response. This can
-    cause issues when the underlying database contains fields that do include
-    microseconds, as filters may return unexpected results.
-    """
-    model_config: Dict[str, Any] = {
-        "json_encoders": {
+    model_config = ConfigDict(
+        json_encoders={
             datetime: lambda v: v.astimezone(timezone.utc).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
             )
         }
-    }
+    )

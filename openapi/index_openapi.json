@@ -398,6 +398,7 @@
           "url": {
             "type": "string",
             "minLength": 1,
+            "pattern": "^.+/v[0-1](\\.[0-9]+)*/?$",
             "format": "uri",
             "title": "Url",
             "description": "A string specifying a versioned base URL that MUST adhere to the rules in section Base URL"
@@ -509,12 +510,16 @@
           "id": {
             "type": "string",
             "title": "Id",
-            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`"
+            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
+            "queryable": "must",
+            "support": "must"
           },
           "type": {
             "type": "string",
             "title": "Type",
-            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Example**: `\"structures\"`"
+            "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Example**: `\"structures\"`",
+            "queryable": "must",
+            "support": "must"
           },
           "links": {
             "anyOf": [
@@ -579,7 +584,9 @@
               }
             ],
             "title": "Immutable Id",
-            "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)"
+            "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)",
+            "queryable": "must",
+            "support": "optional"
           },
           "last_modified": {
             "anyOf": [
@@ -592,7 +599,9 @@
               }
             ],
             "title": "Last Modified",
-            "description": "Date and time representing when the entry was last modified.\n\n- **Type**: timestamp.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.\n\n- **Example**:\n    - As part of JSON response format: `\"2007-04-05T14:30:20Z\"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)"
+            "description": "Date and time representing when the entry was last modified.\n\n- **Type**: timestamp.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.\n\n- **Example**:\n    - As part of JSON response format: `\"2007-04-05T14:30:20Z\"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)",
+            "queryable": "must",
+            "support": "should"
           }
         },
         "additionalProperties": true,
@@ -768,6 +777,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Data",
             "description": "Outputted Data"
           },
@@ -784,6 +794,7 @@
               "$ref": "#/components/schemas/OptimadeError"
             },
             "type": "array",
+            "uniqueItems": true,
             "title": "Errors",
             "description": "A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present."
           },
@@ -799,6 +810,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Included",
             "description": "A list of unique included resources"
           },
@@ -1137,14 +1149,12 @@
       "IndexInfoResource": {
         "properties": {
           "id": {
-            "type": "string",
-            "pattern": "^/$",
+            "const": "/",
             "title": "Id",
             "default": "/"
           },
           "type": {
-            "type": "string",
-            "pattern": "^info$",
+            "const": "info",
             "title": "Type",
             "default": "info"
           },
@@ -1229,6 +1239,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Errors",
             "description": "A list of unique errors"
           },
@@ -1244,6 +1255,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Included",
             "description": "A list of unique included resources"
           },
@@ -1366,7 +1378,9 @@
           "id": {
             "type": "string",
             "title": "Id",
-            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`"
+            "description": "An entry's ID as defined in section Definition of Terms.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n\n- **Examples**:\n    - `\"db/1234567\"`\n    - `\"cod/2000000\"`\n    - `\"cod/2000000@1234567\"`\n    - `\"nomad/L1234567890\"`\n    - `\"42\"`",
+            "queryable": "must",
+            "support": "must"
           },
           "type": {
             "type": "string",
@@ -1536,6 +1550,7 @@
                 "type": "array"
               }
             ],
+            "uniqueItems": true,
             "title": "Data",
             "description": "List of unique OPTIMADE links resource objects."
           },
@@ -1559,6 +1574,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Errors",
             "description": "A list of unique errors"
           },
@@ -1834,6 +1850,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Data",
             "description": "Resource linkage"
           },
@@ -1860,8 +1877,7 @@
             "description": "Resource ID"
           },
           "type": {
-            "type": "string",
-            "pattern": "^links$",
+            "const": "links",
             "title": "Type",
             "default": "links"
           }
@@ -2125,7 +2141,7 @@
             "title": "More Data Available",
             "description": "`false` if the response contains all data for the request (e.g., a request issued to a single entry endpoint, or a `filter` query at the last page of a paginated response) and `true` if the response is incomplete in the sense that multiple objects match the request, and not all of them have been included in the response (e.g., a query with multiple pages that is not at the last page)."
           },
-          "optimade_schema": {
+          "schema": {
             "anyOf": [
               {
                 "type": "string",
@@ -2139,7 +2155,7 @@
                 "type": "null"
               }
             ],
-            "title": "Optimade Schema",
+            "title": "Schema",
             "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.\nIf it is a string, or a dictionary containing no `meta` field, the provided URL MUST point at an [OpenAPI](https://swagger.io/specification/) schema.\nIt is possible that future versions of this specification allows for alternative schema types.\nHence, if the `meta` field of the JSON API links object is provided and contains a field `schema_type` that is not equal to the string `OpenAPI` the client MUST not handle failures to parse the schema or to validate the response against the schema as errors."
           },
           "time_stamp": {
@@ -2238,6 +2254,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Warnings",
             "description": "A list of warning resource objects representing non-critical errors or warnings.\nA warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `\"warning\"`.\nThe field `detail` MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\nThe field `status`, representing a HTTP response status code, MUST NOT be present for a warning resource object.\nThis is an exclusive field for error resource objects."
           }
@@ -2278,7 +2295,7 @@
             "title": "More Data Available",
             "description": "`false` if the response contains all data for the request (e.g., a request issued to a single entry endpoint, or a `filter` query at the last page of a paginated response) and `true` if the response is incomplete in the sense that multiple objects match the request, and not all of them have been included in the response (e.g., a query with multiple pages that is not at the last page)."
           },
-          "optimade_schema": {
+          "schema": {
             "anyOf": [
               {
                 "type": "string",
@@ -2292,7 +2309,7 @@
                 "type": "null"
               }
             ],
-            "title": "Optimade Schema",
+            "title": "Schema",
             "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.\nIf it is a string, or a dictionary containing no `meta` field, the provided URL MUST point at an [OpenAPI](https://swagger.io/specification/) schema.\nIt is possible that future versions of this specification allows for alternative schema types.\nHence, if the `meta` field of the JSON API links object is provided and contains a field `schema_type` that is not equal to the string `OpenAPI` the client MUST not handle failures to parse the schema or to validate the response against the schema as errors."
           },
           "time_stamp": {
@@ -2391,6 +2408,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Warnings",
             "description": "A list of warning resource objects representing non-critical errors or warnings.\nA warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `\"warning\"`.\nThe field `detail` MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\nThe field `status`, representing a HTTP response status code, MUST NOT be present for a warning resource object.\nThis is an exclusive field for error resource objects."
           }
@@ -2448,6 +2466,7 @@
                 "type": "null"
               }
             ],
+            "uniqueItems": true,
             "title": "Data",
             "description": "Resource linkage"
           },

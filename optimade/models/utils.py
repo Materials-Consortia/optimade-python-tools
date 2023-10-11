@@ -5,10 +5,12 @@ import re
 import warnings
 from enum import Enum
 from functools import reduce
-from typing import Any, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import Field
-from pydantic.fields import FieldInfo
+
+# from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 
 _PYDANTIC_FIELD_KWARGS = list(inspect.signature(Field).parameters.keys())
 
@@ -33,36 +35,37 @@ class SupportLevel(Enum):
     OPTIONAL = "optional"
 
 
-class StrictFieldInfo(FieldInfo):
-    """Wraps the standard pydantic `FieldInfo` in order
-    to prefix any custom keys from `StrictField`.
+# class StrictFieldInfo(FieldInfo):
+#     """Wraps the standard pydantic `FieldInfo` in order
+#     to prefix any custom keys from `StrictField`.
 
-    """
+#     """
 
-    def __init__(self, *args, **kwargs):
-        if not kwargs.get("default"):
-            kwargs["default"] = args[0] if args else None
-        super().__init__(**kwargs)
-        for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
-            if self.json_schema_extra and key in self.json_schema_extra:
-                self.json_schema_extra[
-                    f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
-                ] = self.json_schema_extra.pop(key)
+#     def __init__(self, *args, **kwargs):
+#         if not kwargs.get("default"):
+#             kwargs["default"] = args[0] if args else None
+#         super().__init__(**kwargs)
+#         for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
+#             if self.json_schema_extra and key in self.json_schema_extra:
+#                 self.json_schema_extra[
+#                     f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
+#                 ] = self.json_schema_extra.pop(key)
 
 
-def StrictPydanticField(*args, **kwargs):
-    """Wrapper for `Field` that uses `StrictFieldInfo` instead of
-    the pydantic `FieldInfo`.
-    """
-    field_info = StrictFieldInfo(*args, **kwargs)
-    return field_info
+# def StrictPydanticField(*args, **kwargs):
+#     """Wrapper for `Field` that uses `StrictFieldInfo` instead of
+#     the pydantic `FieldInfo`.
+#     """
+#     field_info = StrictFieldInfo(*args, **kwargs)
+#     return field_info
 
 
 def StrictField(
-    *args: "Any",
+    default: "Any" = PydanticUndefined,
+    *,
     description: Optional[str] = None,
     **kwargs: "Any",
-) -> StrictFieldInfo:
+) -> Any:
     """A wrapper around `pydantic.Field` that does the following:
 
     - Forbids any "extra" keys that would be passed to `pydantic.Field`,
@@ -72,7 +75,7 @@ def StrictField(
     - Emits a warning when no description is provided.
 
     Arguments:
-        *args: Positional arguments passed through to `Field`.
+        default: The only non-keyword argument allowed for Field.
         description: The description of the `Field`; if this is not
             specified then a `UserWarning` will be emitted.
         **kwargs: Extra keyword arguments to be passed to `Field`.
@@ -96,27 +99,70 @@ def StrictField(
 
     if _banned:
         raise RuntimeError(
-            f"Not creating StrictField({args}, {kwargs}) with forbidden keywords {_banned}."
+            f"Not creating StrictField({default!r}, **{kwargs!r}) with "
+            f"forbidden keywords {_banned}."
         )
-
-    if description is not None:
-        kwargs["description"] = description
 
     if description is None:
         warnings.warn(
-            f"No description provided for StrictField specified by {args}, {kwargs}."
+            f"No description provided for StrictField specified by {default!r}, "
+            f"**{kwargs!r}."
         )
+    else:
+        kwargs["description"] = description
 
-    return StrictPydanticField(*args, **kwargs)
+    # OPTIMADE schema extensions
+    if "json_schema_extra" in kwargs:
+        json_schema_extra: Dict[str, Any] = kwargs["json_schema_extra"]
+        for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
+            if key in list(kwargs["json_schema_extra"]):
+                json_schema_extra[
+                    f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
+                ] = json_schema_extra.pop(key)
+        kwargs["json_schema_extra"] = json_schema_extra
+
+    return Field(
+        default,
+        # default_factory=kwargs.pop("default_factory", PydanticUndefined),
+        # alias=kwargs.pop("alias", PydanticUndefined),
+        # alias_priority=kwargs.pop("alias_priority", PydanticUndefined),
+        # validation_alias=kwargs.pop("validation_alias", PydanticUndefined),
+        # serialization_alias=kwargs.pop("serialization_alias", PydanticUndefined),
+        # title=kwargs.pop("title", PydanticUndefined),
+        # description=kwargs.pop("description", PydanticUndefined),
+        # examples=kwargs.pop("examples", PydanticUndefined),
+        # exclude=kwargs.pop("exclude", PydanticUndefined),
+        # discriminator=kwargs.pop("discriminator", PydanticUndefined),
+        # json_schema_extra=kwargs.pop("json_schema_extra", PydanticUndefined),
+        # frozen=kwargs.pop("frozen", PydanticUndefined),
+        # validate_default=kwargs.pop("validate_default", PydanticUndefined),
+        # repr=kwargs.pop("repr", PydanticUndefined),
+        # init_var=kwargs.pop("init_var", PydanticUndefined),
+        # kw_only=kwargs.pop("kw_only", PydanticUndefined),
+        # pattern=kwargs.pop("pattern", PydanticUndefined),
+        # strict=kwargs.pop("strict", PydanticUndefined),
+        # gt=kwargs.pop("gt", PydanticUndefined),
+        # ge=kwargs.pop("ge", PydanticUndefined),
+        # lt=kwargs.pop("lt", PydanticUndefined),
+        # le=kwargs.pop("le", PydanticUndefined),
+        # multiple_of=kwargs.pop("multiple_of", PydanticUndefined),
+        # allow_inf_nan=kwargs.pop("allow_inf_nan", PydanticUndefined),
+        # max_digits=kwargs.pop("max_digits", PydanticUndefined),
+        # decimal_places=kwargs.pop("decimal_places", PydanticUndefined),
+        # min_length=kwargs.pop("min_length", PydanticUndefined),
+        # max_length=kwargs.pop("max_length", PydanticUndefined),
+        # union_mode=kwargs.pop("union_mode", PydanticUndefined),
+        **kwargs,
+    )
 
 
 def OptimadeField(
-    *args,
+    default: "Any" = PydanticUndefined,
     support: Optional[Union[str, SupportLevel]] = None,
     queryable: Optional[Union[str, SupportLevel]] = None,
     unit: Optional[str] = None,
     **kwargs,
-) -> Field:
+) -> Any:
     """A wrapper around `pydantic.Field` that adds OPTIMADE-specific
     field paramters `queryable`, `support` and `unit`, indicating
     the corresponding support level in the specification and the
@@ -146,7 +192,7 @@ def OptimadeField(
             support = SupportLevel(support.lower())
         kwargs["support"] = support
 
-    return StrictField(*args, **kwargs)
+    return StrictField(default, **kwargs)
 
 
 def anonymous_element_generator():
