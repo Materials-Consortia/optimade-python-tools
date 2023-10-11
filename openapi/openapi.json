@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "OPTIMADE API",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.2) v0.25.2.",
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3) v0.25.3.",
     "version": "1.1.0"
   },
   "paths": {
@@ -1921,7 +1921,7 @@
           "property_metadata": {
             "type": "object",
             "title": "Property Metadata",
-            "description": "A dictionary, where the keys are the names of the properties in the attributes field and the value is a dictionary containing the metadata for that property.\nDatabase-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes)."
+            "description": "An object containing per-entry and per-property metadata. The keys are the names of the fields in attributes for which metadata is available. The values belonging to these keys are dictionaries containing the relevant metadata fields. See also [Metadata properties](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#metadata-properties)"
           },
           "partial_data_links": {
             "additionalProperties": {
@@ -1996,7 +1996,7 @@
               }
             ],
             "title": "Meta",
-            "description": "A dictionary, containing entry and property-specific metadata for a given entry."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "allOf": [
@@ -2464,7 +2464,7 @@
               }
             ],
             "title": "Meta",
-            "description": "A dictionary, containing entry and property-specific metadata for a given entry."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "allOf": [
@@ -2905,7 +2905,7 @@
               }
             ],
             "title": "Meta",
-            "description": "A dictionary, containing entry and property-specific metadata for a given entry."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "$ref": "#/components/schemas/ReferenceResourceAttributes"
@@ -3585,8 +3585,8 @@
             "type": "array",
             "title": "Mass",
             "description": "If present MUST be a list of floats expressed in a.m.u.\nElements denoting vacancies MUST have masses equal to 0.",
-            "x-optimade-unit": "a.m.u.",
             "x-optimade-support": "optional",
+            "x-optimade-unit": "a.m.u.",
             "x-optimade-queryable": "optional"
           },
           "original_name": {
@@ -3711,7 +3711,7 @@
               }
             ],
             "title": "Meta",
-            "description": "A dictionary, containing entry and property-specific metadata for a given entry."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "$ref": "#/components/schemas/StructureResourceAttributes"
@@ -3768,8 +3768,8 @@
             "type": "integer",
             "title": "Nelements",
             "description": "Number of different elements in the structure as an integer.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - MUST be equal to the lengths of the list properties `elements` and `elements_ratios`, if they are provided.\n\n- **Examples**:\n    - `3`\n\n- **Querying**:\n    - Note: queries on this property can equivalently be formulated using `elements LENGTH`.\n    - A filter that matches structures that have exactly 4 elements: `nelements=4`.\n    - A filter that matches structures that have between 2 and 7 elements: `nelements>=2 AND nelements<=7`.",
-            "x-optimade-support": "should",
             "nullable": true,
+            "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
           "elements_ratios": {
@@ -3787,8 +3787,8 @@
             "type": "string",
             "title": "Chemical Formula Descriptive",
             "description": "The chemical formula for a structure as a string in a form chosen by the API implementation.\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - The chemical formula is given as a string consisting of properly capitalized element symbols followed by integers or decimal numbers, balanced parentheses, square, and curly brackets `(`,`)`, `[`,`]`, `{`, `}`, commas, the `+`, `-`, `:` and `=` symbols. The parentheses are allowed to be followed by a number. Spaces are allowed anywhere except within chemical symbols. The order of elements and any groupings indicated by parentheses or brackets are chosen freely by the API implementation.\n    - The string SHOULD be arithmetically consistent with the element ratios in the `chemical_formula_reduced` property.\n    - It is RECOMMENDED, but not mandatory, that symbols, parentheses and brackets, if used, are used with the meanings prescribed by [IUPAC's Nomenclature of Organic Chemistry](https://www.qmul.ac.uk/sbcs/iupac/bibliog/blue.html).\n\n- **Examples**:\n    - `\"(H2O)2 Na\"`\n    - `\"NaCl\"`\n    - `\"CaCO3\"`\n    - `\"CCaO3\"`\n    - `\"(CH3)3N+ - [CH2]2-OH = Me3N+ - CH2 - CH2OH\"`\n\n- **Query examples**:\n    - Note: the free-form nature of this property is likely to make queries on it across different databases inconsistent.\n    - A filter that matches an exactly given formula: `chemical_formula_descriptive=\"(H2O)2 Na\"`.\n    - A filter that does a partial match: `chemical_formula_descriptive CONTAINS \"H2O\"`.",
-            "x-optimade-support": "should",
             "nullable": true,
+            "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
           "chemical_formula_reduced": {
@@ -3834,8 +3834,8 @@
             "type": "integer",
             "title": "Nperiodic Dimensions",
             "description": "An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - The integer value MUST be between 0 and 3 inclusive and MUST be equal to the sum of the items in the `dimension_types` property.\n    - This property only reflects the treatment of the lattice vectors provided for the structure, and not any physical interpretation of the dimensionality of its contents.\n\n- **Examples**:\n    - `2` should be indicated in cases where `dimension_types` is any of `[1, 1, 0]`, `[1, 0, 1]`, `[0, 1, 1]`.\n\n- **Query examples**:\n    - Match only structures with exactly 3 periodic dimensions: `nperiodic_dimensions=3`\n    - Match all structures with 2 or fewer periodic dimensions: `nperiodic_dimensions<=2`",
-            "x-optimade-support": "should",
             "nullable": true,
+            "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
           "lattice_vectors": {
@@ -3854,8 +3854,8 @@
             "description": "The three lattice vectors in Cartesian coordinates, in \u00e5ngstr\u00f6m (\u00c5).\n\n- **Type**: list of list of floats or unknown values.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, filters MAY support only a subset of comparison operators.\n    - MUST be a list of three vectors *a*, *b*, and *c*, where each of the vectors MUST BE a list of the vector's coordinates along the x, y, and z Cartesian coordinates.\n      (Therefore, the first index runs over the three lattice vectors and the second index runs over the x, y, z Cartesian coordinates).\n    - For databases that do not define an absolute Cartesian system (e.g., only defining the length and angles between vectors), the first lattice vector SHOULD be set along *x* and the second on the *xy*-plane.\n    - MUST always contain three vectors of three coordinates each, independently of the elements of property `dimension_types`.\n      The vectors SHOULD by convention be chosen so the determinant of the `lattice_vectors` matrix is different from zero.\n      The vectors in the non-periodic directions have no significance beyond fulfilling these requirements.\n    - The coordinates of the lattice vectors of non-periodic dimensions (i.e., those dimensions for which `dimension_types` is `0`) MAY be given as a list of all `null` values.\n        If a lattice vector contains the value `null`, all coordinates of that lattice vector MUST be `null`.\n\n- **Examples**:\n    - `[[4.0,0.0,0.0],[0.0,4.0,0.0],[0.0,1.0,4.0]]` represents a cell, where the first vector is `(4, 0, 0)`, i.e., a vector aligned along the `x` axis of length 4 \u00c5; the second vector is `(0, 4, 0)`; and the third vector is `(0, 1, 4)`.",
             "x-optimade-support": "should",
             "x-optimade-queryable": "optional",
-            "x-optimade-unit": "\u00c5",
-            "nullable": true
+            "nullable": true,
+            "x-optimade-unit": "\u00c5"
           },
           "cartesian_site_positions": {
             "items": {
@@ -3871,15 +3871,15 @@
             "description": "Cartesian positions of each site in the structure.\nA site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.\n\n- **Type**: list of list of floats\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n      If supported, filters MAY support only a subset of comparison operators.\n    - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three Cartesian coordinates of a site expressed as float values in the unit angstrom (\u00c5).\n    - An entry MAY have multiple sites at the same Cartesian position (for a relevant use of this, see e.g., the property `assemblies`).\n\n- **Examples**:\n    - `[[0,0,0],[0,0,2]]` indicates a structure with two sites, one sitting at the origin and one along the (positive) *z*-axis, 2 \u00c5 away from the origin.",
             "x-optimade-support": "should",
             "x-optimade-queryable": "optional",
-            "x-optimade-unit": "\u00c5",
-            "nullable": true
+            "nullable": true,
+            "x-optimade-unit": "\u00c5"
           },
           "nsites": {
             "type": "integer",
             "title": "Nsites",
             "description": "An integer specifying the length of the `cartesian_site_positions` property.\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `42`\n\n- **Query examples**:\n    - Match only structures with exactly 4 sites: `nsites=4`\n    - Match structures that have between 2 and 7 sites: `nsites>=2 AND nsites<=7`",
-            "x-optimade-support": "should",
             "nullable": true,
+            "x-optimade-support": "should",
             "x-optimade-queryable": "must"
           },
           "species": {

@@ -169,6 +169,12 @@ class ServerConfig(BaseSettings):
         None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
+    mongo_count_timeout: int = Field(
+        5,
+        description="""Number of seconds to allow MongoDB to perform a full database count before falling back to `null`.
+This operation can require a full COLLSCAN for empty queries which can be prohibitively slow if the database does not fit into the active set, hence a timeout can drastically speed-up response times.""",
+    )
+
     mongo_database: str = Field(
         "optimade", description="Mongo database for collection data"
     )
@@ -244,6 +250,9 @@ class ServerConfig(BaseSettings):
             "broken down by endpoint."
         ),
     )
+    supported_prefixes: List[str] = Field(
+        [], description="A list of all the prefixes that are supported by this server."
+    )
     aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
         {},
         description=(
@@ -289,6 +298,11 @@ class ServerConfig(BaseSettings):
         ),
     )
 
+    custom_landing_page: Optional[Union[str, Path]] = Field(
+        None,
+        description="The location of a custom landing page (Jinja template) to use for the API.",
+    )
+
     index_schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
         f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade_index.json",
         description=(
@@ -321,6 +335,12 @@ class ServerConfig(BaseSettings):
         {"json": 10, "jsonlines": 40},
         description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
     )
+
+    @validator("supported_prefixes")
+    def add_own_prefix_to_supported_prefixes(value, values):
+        if values["provider"].prefix not in value:
+            value.append(values["provider"].prefix)
+        return value
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):

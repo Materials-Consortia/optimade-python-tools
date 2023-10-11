@@ -133,18 +133,10 @@ class BaseResourceMapper:
     @classproperty
     @lru_cache(maxsize=1)
     def SUPPORTED_PREFIXES(cls) -> Set[str]:
-        """A set of prefixes handled by this entry type.
-
-        !!! note
-            This implementation only includes the provider prefix,
-            but in the future this property may be extended to include other
-            namespaces (for serving fields from, e.g., other providers or
-            domain-specific terms).
-
-        """
+        """A set of prefixes handled by this entry type."""
         from optimade.server.config import CONFIG
 
-        return {CONFIG.provider.prefix}
+        return set(CONFIG.supported_prefixes)
 
     @classproperty
     def ALL_ATTRIBUTES(cls) -> Set[str]:
