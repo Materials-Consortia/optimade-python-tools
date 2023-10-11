@@ -35,31 +35,6 @@ class SupportLevel(Enum):
     OPTIONAL = "optional"
 
 
-# class StrictFieldInfo(FieldInfo):
-#     """Wraps the standard pydantic `FieldInfo` in order
-#     to prefix any custom keys from `StrictField`.
-
-#     """
-
-#     def __init__(self, *args, **kwargs):
-#         if not kwargs.get("default"):
-#             kwargs["default"] = args[0] if args else None
-#         super().__init__(**kwargs)
-#         for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
-#             if self.json_schema_extra and key in self.json_schema_extra:
-#                 self.json_schema_extra[
-#                     f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
-#                 ] = self.json_schema_extra.pop(key)
-
-
-# def StrictPydanticField(*args, **kwargs):
-#     """Wrapper for `Field` that uses `StrictFieldInfo` instead of
-#     the pydantic `FieldInfo`.
-#     """
-#     field_info = StrictFieldInfo(*args, **kwargs)
-#     return field_info
-
-
 def StrictField(
     default: "Any" = PydanticUndefined,
     *,
@@ -89,6 +64,7 @@ def StrictField(
         The pydantic `Field`.
 
     """
+    allowed_schema_and_field_keys = ["pattern"]
 
     allowed_keys = [
         "pattern",
@@ -103,6 +79,7 @@ def StrictField(
             f"forbidden keywords {_banned}."
         )
 
+    # Handle description
     if description is None:
         warnings.warn(
             f"No description provided for StrictField specified by {default!r}, "
@@ -112,48 +89,34 @@ def StrictField(
         kwargs["description"] = description
 
     # OPTIMADE schema extensions
-    if "json_schema_extra" in kwargs:
-        json_schema_extra: dict[str, Any] = kwargs["json_schema_extra"]
-        for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
-            if key in list(kwargs["json_schema_extra"]):
-                json_schema_extra[
-                    f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
-                ] = json_schema_extra.pop(key)
-        kwargs["json_schema_extra"] = json_schema_extra
+    json_schema_extra: dict[str, Any] = kwargs.pop("json_schema_extra", {})
 
-    return Field(
-        default,
-        # default_factory=kwargs.pop("default_factory", PydanticUndefined),
-        # alias=kwargs.pop("alias", PydanticUndefined),
-        # alias_priority=kwargs.pop("alias_priority", PydanticUndefined),
-        # validation_alias=kwargs.pop("validation_alias", PydanticUndefined),
-        # serialization_alias=kwargs.pop("serialization_alias", PydanticUndefined),
-        # title=kwargs.pop("title", PydanticUndefined),
-        # description=kwargs.pop("description", PydanticUndefined),
-        # examples=kwargs.pop("examples", PydanticUndefined),
-        # exclude=kwargs.pop("exclude", PydanticUndefined),
-        # discriminator=kwargs.pop("discriminator", PydanticUndefined),
-        # json_schema_extra=kwargs.pop("json_schema_extra", PydanticUndefined),
-        # frozen=kwargs.pop("frozen", PydanticUndefined),
-        # validate_default=kwargs.pop("validate_default", PydanticUndefined),
-        # repr=kwargs.pop("repr", PydanticUndefined),
-        # init_var=kwargs.pop("init_var", PydanticUndefined),
-        # kw_only=kwargs.pop("kw_only", PydanticUndefined),
-        # pattern=kwargs.pop("pattern", PydanticUndefined),
-        # strict=kwargs.pop("strict", PydanticUndefined),
-        # gt=kwargs.pop("gt", PydanticUndefined),
-        # ge=kwargs.pop("ge", PydanticUndefined),
-        # lt=kwargs.pop("lt", PydanticUndefined),
-        # le=kwargs.pop("le", PydanticUndefined),
-        # multiple_of=kwargs.pop("multiple_of", PydanticUndefined),
-        # allow_inf_nan=kwargs.pop("allow_inf_nan", PydanticUndefined),
-        # max_digits=kwargs.pop("max_digits", PydanticUndefined),
-        # decimal_places=kwargs.pop("decimal_places", PydanticUndefined),
-        # min_length=kwargs.pop("min_length", PydanticUndefined),
-        # max_length=kwargs.pop("max_length", PydanticUndefined),
-        # union_mode=kwargs.pop("union_mode", PydanticUndefined),
-        **kwargs,
-    )
+    # Go through all JSON Schema keys and add them to the json_schema_extra.
+    for key in allowed_keys:
+        if key not in kwargs:
+            continue
+
+        # If they are OPTIMADE schema extensions, add them with the OPTIMADE prefix.
+        schema_key = (
+            f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
+            if key in OPTIMADE_SCHEMA_EXTENSION_KEYS
+            else key
+        )
+
+        for key_variant in (key, schema_key):
+            if key_variant in json_schema_extra:
+                if json_schema_extra.pop(key_variant) != kwargs[key]:
+                    raise RuntimeError(
+                        f"Conflicting values for {key} in json_schema_extra and kwargs."
+                    )
+
+        json_schema_extra[schema_key] = (
+            kwargs[key] if key in allowed_schema_and_field_keys else kwargs.pop(key)
+        )
+
+    kwargs["json_schema_extra"] = json_schema_extra
+
+    return Field(default, **kwargs)
 
 
 def OptimadeField(
