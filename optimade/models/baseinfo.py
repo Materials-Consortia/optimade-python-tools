@@ -1,15 +1,8 @@
 # pylint: disable=no-self-argument,no-name-in-module
 import re
-from typing import Optional
+from typing import Literal, Optional
 
-from pydantic import (
-    AnyHttpUrl,
-    BaseModel,
-    Field,
-    field_validator,
-    model_validator,
-    validator,
-)
+from pydantic import AnyHttpUrl, BaseModel, field_validator, model_validator
 
 from optimade.models.jsonapi import Resource
 from optimade.models.types import SemanticVersion
@@ -18,12 +11,18 @@ from optimade.models.utils import StrictField
 __all__ = ("AvailableApiVersion", "BaseInfoAttributes", "BaseInfoResource")
 
 
+VERSIONED_BASE_URL_PATTERN = r"^.+/v[0-1](\.[0-9]+)*/?$"
+
+
 class AvailableApiVersion(BaseModel):
     """A JSON object containing information about an available API version"""
 
     url: AnyHttpUrl = StrictField(
         ...,
         description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
+        json_schema_extra={
+            "pattern": VERSIONED_BASE_URL_PATTERN,
+        },
     )
 
     version: SemanticVersion = StrictField(
@@ -33,21 +32,23 @@ The version number string MUST NOT be prefixed by, e.g., 'v'.
 Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
 
-    @field_validator("url", mode="before")
+    @field_validator("url", mode="after")
     @classmethod
-    def url_must_be_versioned_base_url(cls, v):
-        """The URL must be a valid versioned Base URL"""
-        if not re.match(r".+/v[0-1](\.[0-9]+)*/?$", v):
-            raise ValueError(f"url MUST be a versioned base URL. It is: {v}")
-        return v
+    def url_must_be_versioned_base_Url(cls, value: AnyHttpUrl) -> AnyHttpUrl:
+        """The URL must be a versioned base URL"""
+        if not re.match(VERSIONED_BASE_URL_PATTERN, str(value)):
+            raise ValueError(
+                f"URL {value} must be a versioned base URL (i.e., must match the "
+                f"pattern '{VERSIONED_BASE_URL_PATTERN}')"
+            )
+        return value
 
-    @model_validator(mode="before")
-    @classmethod
-    def crosscheck_url_and_version(cls, values):
+    @model_validator(mode="after")
+    def crosscheck_url_and_version(self) -> "AvailableApiVersion":
         """Check that URL version and API version are compatible."""
         url_version = (
-            values["url"]
-            .split("/")[-2 if values["url"].endswith("/") else -1]
+            str(self.url)
+            .split("/")[-2 if str(self.url).endswith("/") else -1]
             .replace("v", "")
         )
         # as with version urls, we need to split any release tags or build metadata out of these URLs
@@ -55,13 +56,13 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
             int(val) for val in url_version.split("-")[0].split("+")[0].split(".")
         )
         api_version = tuple(
-            int(val) for val in values["version"].split("-")[0].split("+")[0].split(".")
+            int(val) for val in str(self.version).split("-")[0].split("+")[0].split(".")
         )
         if any(a != b for a, b in zip(url_version, api_version)):
             raise ValueError(
                 f"API version {api_version} is not compatible with url version {url_version}."
             )
-        return values
+        return self
 
 
 class BaseInfoAttributes(BaseModel):
@@ -94,22 +95,20 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
         "(i.e., the default is for `is_index` to be `false`).",
     )
 
-    # TODO[pydantic]: We couldn't refactor the `validator`, please replace it by `field_validator` manually.
-    # Check https://docs.pydantic.dev/dev-v2/migration/#changes-to-validators for more information.
-    @validator("entry_types_by_format", check_fields=False)
-    def formats_and_endpoints_must_be_valid(cls, v, values):
-        for format_, endpoints in v.items():
-            if format_ not in values["formats"]:
+    @model_validator(mode="after")
+    def formats_and_endpoints_must_be_valid(self) -> "BaseInfoAttributes":
+        for format_, endpoints in self.entry_types_by_format.items():
+            if format_ not in self.formats:
                 raise ValueError(f"'{format_}' must be listed in formats to be valid")
             for endpoint in endpoints:
-                if endpoint not in values["available_endpoints"]:
+                if endpoint not in self.available_endpoints:
                     raise ValueError(
                         f"'{endpoint}' must be listed in available_endpoints to be valid"
                     )
-        return v
+        return self
 
 
 class BaseInfoResource(Resource):
-    id: str = Field("/", pattern="^/$")
-    type: str = Field("info", pattern="^info$")
-    attributes: BaseInfoAttributes = Field(...)
+    id: Literal["/"] = "/"
+    type: Literal["info"] = "info"
+    attributes: BaseInfoAttributes

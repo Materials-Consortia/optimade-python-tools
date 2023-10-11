@@ -1,5 +1,5 @@
 # pylint: disable=line-too-long,no-self-argument
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import AnyUrl, BaseModel, field_validator
 
@@ -262,9 +262,14 @@ class ReferenceResource(EntryResource):
     )
     attributes: ReferenceResourceAttributes
 
-    @field_validator("attributes")
+    @field_validator("attributes", mode="before")
     @classmethod
-    def validate_attributes(cls, v):
-        if not any(prop[1] is not None for prop in v):
+    def validate_attributes(cls, value: Any, _) -> dict:
+        if not isinstance(value, dict):
+            if isinstance(value, BaseModel):
+                value = value.model_dump()
+            else:
+                raise TypeError("attributes field must be a mapping")
+        if not any(prop[1] is not None for prop in value):
             raise ValueError("reference object must have at least one field defined")
-        return v
+        return value

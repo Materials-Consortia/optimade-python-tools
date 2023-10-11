@@ -96,9 +96,8 @@ class LinksResource(EntryResource):
         description="A dictionary containing key-value pairs representing the Links resource's properties.",
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def relationships_must_not_be_present(cls, values):
-        if values.get("relationships", None) is not None:
+    @model_validator(mode="after")
+    def relationships_must_not_be_present(self) -> "LinksResource":
+        if hasattr(self, "relationships"):
             raise ValueError('"relationships" is not allowed for links resources')
-        return values
+        return self
