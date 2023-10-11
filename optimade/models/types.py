@@ -17,6 +17,6 @@ ElementSymbol = Annotated[str, Field(pattern=ELEMENT_SYMBOLS_PATTERN)]
 SemanticVersion = Annotated[
     str,
     Field(
-        pattern=SEMVER_PATTERN, example=["0.10.1", "1.0.0-rc.2", "1.2.3-rc.5+develop"]
+        pattern=SEMVER_PATTERN, examples=["0.10.1", "1.0.0-rc.2", "1.2.3-rc.5+develop"]
     ),
 ]

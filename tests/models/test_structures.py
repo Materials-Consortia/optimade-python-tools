@@ -1,5 +1,6 @@
 # pylint: disable=no-member
 import itertools
+from typing import TYPE_CHECKING
 
 import pytest
 from pydantic import ValidationError
@@ -7,11 +8,17 @@ from pydantic import ValidationError
 from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS, StructureResource
 from optimade.warnings import MissingExpectedField
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from typing import Any, Dict, List, Optional, Tuple
+
+    from optimade.server.mappers import BaseResourceMapper
+
 MAPPER = "StructureMapper"
 
 
 @pytest.mark.filterwarnings("ignore", category=MissingExpectedField)
-def test_good_structure_with_missing_data(mapper, good_structure):
+def test_good_structure_with_missing_data(good_structure: "Dict[str, Any]") -> None:
     """Check deserialization of well-formed structure used
     as example data with all combinations of null values
     in non-mandatory fields.
@@ -37,7 +44,10 @@ def test_good_structure_with_missing_data(mapper, good_structure):
             StructureResource(**incomplete_structure)
 
 
-def test_more_good_structures(good_structures, mapper):
+def test_more_good_structures(
+    good_structures: "List[Dict[str, Any]]",
+    mapper: "Callable[[str], BaseResourceMapper]",
+) -> None:
     """Check well-formed structures with specific edge-cases"""
     for index, structure in enumerate(good_structures):
         try:
@@ -50,15 +60,24 @@ def test_more_good_structures(good_structures, mapper):
             raise
 
 
-def test_bad_structures(bad_structures, mapper):
-    """Check badly formed structures"""
+def test_bad_structures(
+    bad_structures: "List[Dict[str, Any]]",
+    mapper: "Callable[[str], BaseResourceMapper]",
+) -> None:
+    """Check badly formed structures.
+
+    NOTE: Only ValueError, AssertionError, and PydanticCustomError are wrapped in
+    ValidationError exceptions. All other exceptions are "bubbled up" as is. See
+    https://docs.pydantic.dev/latest/concepts/validators/#handling-errors-in-validators
+    for more information.
+    """
     with pytest.warns(MissingExpectedField):
         for index, structure in enumerate(bad_structures):
             # This is for helping devs finding any errors that may occur
             print(
                 f"Trying structure number {index}/{len(bad_structures)} from 'test_bad_structures.json'"
             )
-            with pytest.raises(ValidationError):
+            with pytest.raises((ValidationError, TypeError)):
                 StructureResource(**mapper(MAPPER).map_back(structure))
 
 
@@ -74,11 +93,11 @@ deformities = (
     ),
     (
         {"chemical_formula_anonymous": "A1B1"},
-        "string does not match regex",
+        "String should match pattern",
     ),
     (
         {"chemical_formula_anonymous": "BC1"},
-        "string does not match regex",
+        "String should match pattern",
     ),
     (
         {"chemical_formula_anonymous": "A9C"},
@@ -86,7 +105,7 @@ deformities = (
     ),
     (
         {"chemical_formula_anonymous": "A9.2B"},
-        "chemical_formula_anonymous\n  string does not match regex",
+        "chemical_formula_anonymous\n  String should match pattern",
     ),
     (
         {"chemical_formula_anonymous": "A2B90"},
@@ -114,23 +133,23 @@ deformities = (
     ),
     (
         {"chemical_formula_reduced": "Ge1.0Si1.0"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "GeSi2.0"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "GeSi.2"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "Ge1Si"},
-        "string does not match regex",
+        "String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "GeSi1"},
-        "string does not match regex",
+        "String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "SiGe2"},
@@ -142,19 +161,19 @@ deformities = (
     ),
     (
         {"chemical_formula_reduced": "abcd"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "a2BeH"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "............"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "Ag6 Cl2"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "Ge2Si2"},
@@ -170,13 +189,15 @@ deformities = (
     ),
     (
         {"chemical_formula_anonymous": "A44B15C9D4E3F2GHI0J0K0L0"},
-        "string does not match regex",
+        "String should match pattern",
     ),
 )
 
 
 @pytest.mark.parametrize("deformity", deformities)
-def test_structure_fatal_deformities(good_structure, deformity):
+def test_structure_fatal_deformities(
+    good_structure: "Dict[str, Any]", deformity: "Optional[Tuple[Dict[str, str], str]]"
+) -> None:
     """Make specific checks upon performing single invalidating deformations
     of the data of a good structure.
 
@@ -187,8 +208,8 @@ def test_structure_fatal_deformities(good_structure, deformity):
         StructureResource(**good_structure)
         return
 
-    deformity, message = deformity
-    good_structure["attributes"].update(deformity)
+    deformity_change, message = deformity
+    good_structure["attributes"].update(deformity_change)
     with pytest.raises(ValidationError, match=rf".*{re.escape(message)}.*"):
         StructureResource(**good_structure)
 
@@ -199,7 +220,9 @@ minor_deformities = (
 
 
 @pytest.mark.parametrize("deformity", minor_deformities)
-def test_structure_minor_deformities(good_structure, deformity):
+def test_structure_minor_deformities(
+    good_structure: "Dict[str, Any]", deformity: "Optional[Tuple[Dict[str, str], str]]"
+) -> None:
     """Make specific checks upon performing single minor invalidations
     of the data of a good structure that should emit warnings.
     """

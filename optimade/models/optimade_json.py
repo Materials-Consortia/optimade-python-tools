@@ -180,7 +180,7 @@ class Warnings(OptimadeError):
 
     @model_validator(mode="after")
     def status_must_not_be_specified(self) -> "Warnings":
-        if hasattr(self, "status"):
+        if self.status or "status" in self.model_fields_set:
             raise ValueError("status MUST NOT be specified for warnings")
         return self
 
@@ -348,13 +348,13 @@ class Success(jsonapi.Response):
     def either_data_meta_or_errors_must_be_set(self) -> "Success":
         """Overwriting the existing validation function, since 'errors' MUST NOT be set."""
         required_fields = ("data", "meta")
-        if not any(hasattr(self, field) for field in required_fields):
+        if not any(field in self.model_fields_set for field in required_fields):
             raise ValueError(
                 f"At least one of {required_fields} MUST be specified in the top-level response."
             )
 
         # errors MUST be skipped
-        if hasattr(self, "errors"):
+        if self.errors or "errors" in self.model_fields_set:
             raise ValueError("'errors' MUST be skipped for a successful response.")
 
         return self

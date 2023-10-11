@@ -42,7 +42,7 @@ class ErrorResponse(Response):
 
     @model_validator(mode="after")
     def data_must_be_skipped(self) -> "ErrorResponse":
-        if hasattr(self, "data"):
+        if self.data or "data" in self.model_fields_set:
             raise ValueError("data MUST be skipped for failures reporting errors.")
         return self
 

@@ -98,6 +98,6 @@ class LinksResource(EntryResource):
 
     @model_validator(mode="after")
     def relationships_must_not_be_present(self) -> "LinksResource":
-        if hasattr(self, "relationships"):
+        if self.relationships or "relationships" in self.model_fields_set:
             raise ValueError('"relationships" is not allowed for links resources')
         return self
