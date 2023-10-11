@@ -234,6 +234,9 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             "broken down by endpoint."
         ),
     )
+    supported_prefixes: List[str] = Field(
+        [], description="A list of all the prefixes that are supported by this server."
+    )
     aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
         {},
         description=(
@@ -308,6 +311,12 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         description="""If False, data from the database will not undergo validation before being emitted by the API, and
         only the mapping of aliases will occur.""",
     )
+
+    @validator("supported_prefixes")
+    def add_own_prefix_to_supported_prefixes(value, values):
+        if values["provider"].prefix not in value:
+            value.append(values["provider"].prefix)
+        return value
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):
