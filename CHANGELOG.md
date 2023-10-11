@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.25.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3) (2023-09-29)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.2...v0.25.3)
+
+**Merged pull requests:**
+
+- Add mp-api and emmet pins to avoid premature pydantic v2 upgrade [\#1795](https://github.com/Materials-Consortia/optimade-python-tools/pull/1795) ([ml-evs](https://github.com/ml-evs))
+- Debugging `links->next` issues [\#1794](https://github.com/Materials-Consortia/optimade-python-tools/pull/1794) ([ml-evs](https://github.com/ml-evs))
+- Add option for custom landing pages [\#1788](https://github.com/Materials-Consortia/optimade-python-tools/pull/1788) ([ml-evs](https://github.com/ml-evs))
+- Add config option `mongo_count_timeout` to skip the global count per request [\#1757](https://github.com/Materials-Consortia/optimade-python-tools/pull/1757) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.25.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.2) (2023-09-12)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.1...v0.25.2)
