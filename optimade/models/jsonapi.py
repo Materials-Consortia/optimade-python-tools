@@ -354,11 +354,11 @@ class Response(BaseModel):
     @model_validator(mode="after")
     def either_data_meta_or_errors_must_be_set(self) -> "Response":
         required_fields = ("data", "meta", "errors")
-        if not any(hasattr(self, field) for field in required_fields):
+        if not any(field in self.model_fields_set for field in required_fields):
             raise ValueError(
                 f"At least one of {required_fields} MUST be specified in the top-level response"
             )
-        if hasattr(self, "errors") and not self.errors:
+        if "errors" in self.model_fields_set and not self.errors:
             raise ValueError("Errors MUST NOT be an empty or 'null' value.")
         return self
 

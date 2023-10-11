@@ -343,7 +343,7 @@ class BaseResourceMapper:
         """
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}
-        reals = {real for alias, real in cls.all_aliases()}
+        reals = {real for _, real in cls.all_aliases()}
         for key in doc:
             if key not in reals:
                 newdoc[key] = doc[key]
