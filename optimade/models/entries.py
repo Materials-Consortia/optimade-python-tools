@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel, field_validator  # pylint: disable=no-name-in-module
 
@@ -18,10 +18,9 @@ __all__ = (
 
 
 class TypedRelationship(Relationship):
-    # This may be updated when moving to Python 3.8
     @field_validator("data")
     @classmethod
-    def check_rel_type(cls, data):
+    def check_rel_type(cls, data: list) -> list:
         if not isinstance(data, list):
             # All relationships at this point are empty-to-many relationships in JSON:API:
             # https://jsonapi.org/format/1.0/#document-resource-object-linkage
@@ -94,7 +93,7 @@ class EntryResourceAttributes(Attributes):
 
     @field_validator("immutable_id", mode="before")
     @classmethod
-    def cast_immutable_id_to_str(cls, value):
+    def cast_immutable_id_to_str(cls, value: Any) -> str:
         """Convenience validator for casting `immutable_id` to a string."""
         if value is not None and not isinstance(value, str):
             value = str(value)

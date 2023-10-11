@@ -2,9 +2,17 @@
 import re
 import warnings
 from enum import Enum, IntEnum
-from typing import Annotated, Optional, Union
+from typing import Annotated, Any, Optional, Union
 
-from pydantic import BaseModel, BeforeValidator, Field, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    BeforeValidator,
+    ConfigDict,
+    Field,
+    ValidationInfo,
+    field_validator,
+    model_validator,
+)
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.types import ChemicalSymbol
@@ -143,55 +151,58 @@ Note: With regards to "source database", we refer to the immediate source being 
         queryable=SupportLevel.OPTIONAL,
     )
 
-    @field_validator("concentration", "mass")
-    def validate_concentration_and_mass(cls, v, info):
-        if not v:
-            return v
+    @field_validator("concentration", "mass", mode="after")
+    def validate_concentration_and_mass(
+        cls, value: Optional[list[float]], info: ValidationInfo
+    ) -> Optional[list[float]]:
+        if not value:
+            return value
+
         if info.data.get("chemical_symbols"):
-            if len(v) != len(info.data["chemical_symbols"]):
+            if len(value) != len(info.data["chemical_symbols"]):
                 raise ValueError(
-                    f"Length of concentration ({len(v)}) MUST equal length of chemical_symbols "
-                    f"({len(info.data.get('chemical_symbols', []))})"
+                    f"Length of concentration ({len(value)}) MUST equal length of "
+                    f"chemical_symbols ({len(info.data['chemical_symbols'])})"
                 )
-            return v
+            return value
 
         raise ValueError(
             f"Could not validate {info.field_name!r} as 'chemical_symbols' is missing/invalid."
         )
 
-    @field_validator("attached", "nattached")
+    @field_validator("attached", "nattached", mode="after")
     @classmethod
-    def validate_minimum_list_length(cls, v):
-        if v is not None and len(v) < 1:
+    def validate_minimum_list_length(
+        cls, value: Optional[Union[list[str], list[int]]]
+    ) -> Optional[list[Union[str, int]]]:
+        if value is not None and len(value) < 1:
             raise ValueError(
-                f"The list's length MUST be 1 or more, instead it was found to be {len(v)}"
+                "The list's length MUST be 1 or more, instead it was found to be "
+                f"{len(value)}"
             )
-        return v
+        return value
 
-    @model_validator(mode="before")
-    @classmethod
-    def attached_nattached_mutually_exclusive(cls, values):
-        attached, nattached = (
-            values.get("attached", None),
-            values.get("nattached", None),
-        )
-        if (attached is None and nattached is not None) or (
-            attached is not None and nattached is None
+    @model_validator(mode="after")
+    def attached_nattached_mutually_exclusive(self) -> "Species":
+        if (self.attached is None and self.nattached is not None) or (
+            self.attached is not None and self.nattached is None
         ):
             raise ValueError(
-                f"Either both or none of attached ({attached}) and nattached ({nattached}) MUST be set."
+                f"Either both or none of attached ({self.attached}) and nattached "
+                f"({self.nattached}) MUST be set."
             )
 
         if (
-            attached is not None
-            and nattached is not None
-            and len(attached) != len(nattached)
+            self.attached is not None
+            and self.nattached is not None
+            and len(self.attached) != len(self.nattached)
         ):
             raise ValueError(
-                f"attached ({attached}) and nattached ({nattached}) MUST be lists of equal length."
+                f"attached ({self.attached}) and nattached ({self.nattached}) MUST be "
+                "lists of equal length."
             )
 
-        return values
+        return self
 
 
 class Assembly(BaseModel):
@@ -227,26 +238,30 @@ The possible reasons for the values not to sum to one are the same as already sp
         queryable=SupportLevel.OPTIONAL,
     )
 
-    @field_validator("sites_in_groups")
+    @field_validator("sites_in_groups", mode="after")
     @classmethod
-    def validate_sites_in_groups(cls, v):
+    def validate_sites_in_groups(cls, value: list[list[int]]) -> list[list[int]]:
         sites = []
-        for group in v:
+        for group in value:
             sites.extend(group)
         if len(set(sites)) != len(sites):
             raise ValueError(
-                f"A site MUST NOT appear in more than one group. Given value: {v}"
+                f"A site MUST NOT appear in more than one group. Given value: {value}"
             )
-        return v
+        return value
 
-    @field_validator("group_probabilities")
-    def check_self_consistency(cls, v, info):
-        if len(v) != len(info.data.get("sites_in_groups", [])):
+    @field_validator("group_probabilities", mode="after")
+    @classmethod
+    def check_self_consistency(
+        cls, value: list[float], info: ValidationInfo
+    ) -> list[float]:
+        if len(value) != len(info.data["sites_in_groups"]):
             raise ValueError(
                 f"sites_in_groups and group_probabilities MUST be of same length, "
-                f"but are {len(info.data.get('sites_in_groups', []))} and {len(v)}, respectively"
+                f"but are {len(info.data['sites_in_groups'])} and {len(value)}, "
+                "respectively"
             )
-        return v
+        return value
 
 
 CORRELATED_STRUCTURE_FIELDS = (
@@ -257,8 +272,36 @@ CORRELATED_STRUCTURE_FIELDS = (
 )
 
 
+def structure_json_schema_extra(
+    schema: dict[str, Any], model: type["StructureResourceAttributes"]
+) -> None:
+    """Two things need to be added to the schema:
+
+    1. Constrained types in pydantic do not currently play nicely with
+    "Required Optional" fields, i.e. fields must be specified but can be null.
+    The two contrained list fields, `dimension_types` and `lattice_vectors`,
+    are OPTIMADE 'SHOULD' fields, which means that they are allowed to be null.
+
+    2. All OPTIMADE 'SHOULD' fields are allowed to be null, so we manually set them
+    to be `nullable` according to the OpenAPI definition.
+
+    """
+    schema["required"].insert(7, "dimension_types")
+    schema["required"].insert(9, "lattice_vectors")
+
+    nullable_props = (
+        prop
+        for prop in schema["required"]
+        if schema["properties"][prop].get("x-optimade-support") == SupportLevel.SHOULD
+    )
+    for prop in nullable_props:
+        schema["properties"][prop]["nullable"] = True
+
+
 class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
+
+    model_config = ConfigDict(json_schema_extra=structure_json_schema_extra)
 
     elements: Optional[list[str]] = OptimadeField(
         None,
@@ -790,56 +833,37 @@ The properties of the species are found in the property `species`.
         queryable=SupportLevel.MUST,
     )
 
-    class Config:
-        def json_schema_extra(schema, model):
-            """Two things need to be added to the schema:
-
-            1. Constrained types in pydantic do not currently play nicely with
-            "Required Optional" fields, i.e. fields must be specified but can be null.
-            The two contrained list fields, `dimension_types` and `lattice_vectors`,
-            are OPTIMADE 'SHOULD' fields, which means that they are allowed to be null.
-
-            2. All OPTIMADE 'SHOULD' fields are allowed to be null, so we manually set them
-            to be `nullable` according to the OpenAPI definition.
-
-            """
-            schema["required"].insert(7, "dimension_types")
-            schema["required"].insert(9, "lattice_vectors")
-
-            nullable_props = (
-                prop
-                for prop in schema["required"]
-                if schema["properties"][prop].get("x-optimade-support")
-                == SupportLevel.SHOULD
-            )
-            for prop in nullable_props:
-                schema["properties"][prop]["nullable"] = True
-
-    @model_validator(mode="before")
-    @classmethod
-    def warn_on_missing_correlated_fields(cls, values):
+    @model_validator(mode="after")
+    def warn_on_missing_correlated_fields(self) -> "StructureResourceAttributes":
         """Emit warnings if a field takes a null value when a value
         was expected based on the value/nullity of another field.
         """
         accumulated_warnings = []
         for field_set in CORRELATED_STRUCTURE_FIELDS:
-            missing_fields = {f for f in field_set if values.get(f) is None}
+            missing_fields = {
+                field for field in field_set if getattr(self, field, None) is None
+            }
             if missing_fields and len(missing_fields) != len(field_set):
                 accumulated_warnings += [
-                    f"Structure with values {values} is missing fields {missing_fields} which are required if {field_set - missing_fields} are present."
+                    "Structure with attributes {self} is missing fields "
+                    f"{missing_fields} which are required if "
+                    f"{field_set - missing_fields} are present."
                 ]
 
         for warn in accumulated_warnings:
             warnings.warn(warn, MissingExpectedField)
 
-        return values
+        return self
 
-    @field_validator("chemical_formula_reduced", "chemical_formula_hill")
-    def check_ordered_formula(cls, v, info):
-        if v is None:
-            return v
+    @field_validator("chemical_formula_reduced", "chemical_formula_hill", mode="after")
+    @classmethod
+    def check_ordered_formula(
+        cls, value: Optional[str], info: ValidationInfo
+    ) -> Optional[str]:
+        if value is None:
+            return value
 
-        elements = re.findall(r"[A-Z][a-z]?", v)
+        elements = re.findall(r"[A-Z][a-z]?", value)
         expected_elements = sorted(elements)
 
         if info.field_name == "chemical_formula_hill":
@@ -863,16 +887,16 @@ The properties of the species are found in the property `species`.
                 f"Elements in {info.field_name!r} must appear in {order} order: {expected_elements} not {elements}."
             )
 
-        return v
+        return value
 
-    @field_validator("chemical_formula_anonymous")
+    @field_validator("chemical_formula_anonymous", mode="after")
     @classmethod
-    def check_anonymous_formula(cls, v):
-        if v is None:
-            return v
+    def check_anonymous_formula(cls, value: Optional[str]) -> Optional[str]:
+        if value is None:
+            return value
 
-        elements = tuple(re.findall(r"[A-Z][a-z]*", v))
-        numbers = re.split(r"[A-Z][a-z]*", v)[1:]
+        elements = tuple(re.findall(r"[A-Z][a-z]*", value))
+        numbers = re.split(r"[A-Z][a-z]*", value)[1:]
         numbers = [int(i) if i else 1 for i in numbers]
 
         expected_labels = ANONYMOUS_ELEMENTS[: len(elements)]
@@ -880,219 +904,278 @@ The properties of the species are found in the property `species`.
 
         if expected_numbers != numbers:
             raise ValueError(
-                f"'chemical_formula_anonymous' {v} has wrong order: elements with highest proportion should appear first: {numbers} vs expected {expected_numbers}"
+                f"'chemical_formula_anonymous' {value} has wrong order: elements with "
+                f"highest proportion should appear first: {numbers} vs expected "
+                f"{expected_numbers}"
             )
         if elements != expected_labels:
             raise ValueError(
-                f"'chemical_formula_anonymous' {v} has wrong labels: {elements} vs expected {expected_labels}."
+                f"'chemical_formula_anonymous' {value} has wrong labels: {elements} vs"
+                f" expected {expected_labels}."
             )
 
-        return v
+        return value
 
-    @field_validator("chemical_formula_anonymous", "chemical_formula_reduced")
-    def check_reduced_formulae(cls, v, info):
-        if v is None:
-            return v
-
-        reduced_formula = reduce_formula(v)
-        if reduced_formula != v:
-            raise ValueError(
-                f"{info.field_name} {v!r} is not properly reduced: expected {reduced_formula!r}."
-            )
-
-        return v
-
-    @field_validator("elements")
+    @field_validator(
+        "chemical_formula_anonymous", "chemical_formula_reduced", mode="after"
+    )
     @classmethod
-    def elements_must_be_alphabetical(cls, v):
-        if v is None:
-            return v
+    def check_reduced_formulae(
+        cls, value: Optional[str], info: ValidationInfo
+    ) -> Optional[str]:
+        if value is None:
+            return value
 
-        if sorted(v) != v:
-            raise ValueError(f"elements must be sorted alphabetically, but is: {v}")
-        return v
-
-    @field_validator("elements_ratios")
-    @classmethod
-    def ratios_must_sum_to_one(cls, v):
-        if v is None:
-            return v
-
-        if abs(sum(v) - 1) > EPS:
+        reduced_formula = reduce_formula(value)
+        if reduced_formula != value:
             raise ValueError(
-                f"elements_ratios MUST sum to 1 within (at least single precision) floating point accuracy. It sums to: {sum(v)}"
+                f"{info.field_name} {value!r} is not properly reduced: expected "
+                f"{reduced_formula!r}."
             )
-        return v
 
-    @field_validator("nperiodic_dimensions")
-    def check_periodic_dimensions(cls, v, info):
-        if v is None:
-            return v
+        return value
 
-        if info.data.get("dimension_types") and v != sum(
+    @field_validator("elements", mode="after")
+    @classmethod
+    def elements_must_be_alphabetical(
+        cls, value: Optional[list[str]]
+    ) -> Optional[list[str]]:
+        if value is None:
+            return value
+
+        if sorted(value) != value:
+            raise ValueError(f"elements must be sorted alphabetically, but is: {value}")
+        return value
+
+    @field_validator("elements_ratios", mode="after")
+    @classmethod
+    def ratios_must_sum_to_one(
+        cls, value: Optional[list[float]]
+    ) -> Optional[list[float]]:
+        if value is None:
+            return value
+
+        if abs(sum(value) - 1) > EPS:
+            raise ValueError(
+                "elements_ratios MUST sum to 1 within (at least single precision) "
+                f"floating point accuracy. It sums to: {sum(value)}"
+            )
+        return value
+
+    @field_validator("nperiodic_dimensions", mode="after")
+    @classmethod
+    def check_periodic_dimensions(
+        cls, value: Optional[int], info: ValidationInfo
+    ) -> Optional[int]:
+        if value is None:
+            return value
+
+        if info.data.get("dimension_types") and value != sum(
             info.data.get("dimension_types")
         ):
             raise ValueError(
-                f"nperiodic_dimensions ({v}) does not match expected value of {sum(info.data['dimension_types'])} "
-                f"from dimension_types ({info.data['dimension_types']})"
+                f"nperiodic_dimensions ({value}) does not match expected value of "
+                f"{sum(info.data['dimension_types'])} from dimension_types "
+                f"({info.data['dimension_types']})"
             )
 
-        return v
+        return value
 
-    @field_validator("lattice_vectors")
-    def required_if_dimension_types_has_one(cls, v, info):
-        if v is None:
-            return v
+    @field_validator("lattice_vectors", mode="after")
+    @classmethod
+    def required_if_dimension_types_has_one(
+        cls,
+        value: Optional[
+            Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]
+        ],
+        info: ValidationInfo,
+    ) -> Optional[Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]]:
+        if value is None:
+            return value
 
         if info.data.get("dimension_types"):
-            for dim_type, vector in zip(
-                info.data.get("dimension_types", (None,) * 3), v
-            ):
+            dimension_types: Optional[
+                Annotated[list[Periodicity], Field(min_length=3, max_length=3)]
+            ] = info.data["dimension_types"]
+
+            for dim_type, vector in zip(dimension_types, value):
                 if None in vector and dim_type == Periodicity.PERIODIC.value:
                     raise ValueError(
-                        f"Null entries in lattice vectors are only permitted when the corresponding dimension type is {Periodicity.APERIODIC.value}. "
-                        f"Here: dimension_types = {tuple(getattr(_, 'value', None) for _ in info.data.get('dimension_types', []))}, lattice_vectors = {v}"
+                        f"Null entries in lattice vectors are only permitted when the "
+                        "corresponding dimension type is "
+                        f"{Periodicity.APERIODIC.value}. Here: dimension_types = "
+                        f"{tuple(getattr(_, 'value', None) for _ in dimension_types)},"
+                        f" lattice_vectors = {value}"
                     )
 
-        return v
+        return value
 
-    @field_validator("lattice_vectors")
+    @field_validator("lattice_vectors", mode="after")
     @classmethod
-    def null_values_for_whole_vector(cls, v):
-        if v is None:
-            return v
+    def null_values_for_whole_vector(
+        cls,
+        value: Optional[
+            Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]
+        ],
+    ) -> Optional[Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]]:
+        if value is None:
+            return value
 
-        for vector in v:
-            if None in vector and any(isinstance(_, float) for _ in vector):
+        for vector in value:
+            if None in vector and any((isinstance(_, float) for _ in vector)):
                 raise ValueError(
-                    f"A lattice vector MUST be either all `null` or all numbers (vector: {vector}, all vectors: {v})"
+                    "A lattice vector MUST be either all `null` or all numbers "
+                    f"(vector: {vector}, all vectors: {value})"
                 )
-        return v
+        return value
 
-    @field_validator("nsites")
-    def validate_nsites(cls, v, info):
-        if v is None:
-            return v
+    @field_validator("nsites", mode="after")
+    @classmethod
+    def validate_nsites(
+        cls, value: Optional[int], info: ValidationInfo
+    ) -> Optional[int]:
+        if value is None:
+            return value
 
-        if info.data.get("cartesian_site_positions") and v != len(
-            info.data.get("cartesian_site_positions", [])
+        if info.data.get("cartesian_site_positions") and value != len(
+            info.data["cartesian_site_positions"]
         ):
             raise ValueError(
-                f"nsites (value: {v}) MUST equal length of cartesian_site_positions "
-                f"(value: {len(info.data.get('cartesian_site_positions', []))})"
+                f"nsites (value: {value}) MUST equal length of "
+                "cartesian_site_positions (value: "
+                f"{len(info.data['cartesian_site_positions'])})"
             )
-        return v
+        return value
 
-    @field_validator("species_at_sites")
-    def validate_species_at_sites(cls, v, info):
-        if v is None:
-            return v
+    @field_validator("species_at_sites", mode="after")
+    @classmethod
+    def validate_species_at_sites(
+        cls, value: Optional[list[str]], info: ValidationInfo
+    ) -> Optional[list[str]]:
+        if value is None:
+            return value
 
-        if info.data.get("nsites") and len(v) != info.data.get("nsites"):
+        if info.data.get("nsites") and len(value) != info.data["nsites"]:
             raise ValueError(
-                f"Number of species_at_sites (value: {len(v)}) MUST equal number of sites "
-                f"(value: {info.data.get('nsites', 'Not specified')})"
+                f"Number of species_at_sites (value: {len(value)}) MUST equal number "
+                f"of sites (value: {info.data['nsites']})"
             )
         if info.data.get("species"):
-            all_species_names = {
-                getattr(_, "name", None) for _ in info.data.get("species", [{}])
-            }
-            all_species_names -= {None}
-            for value in v:
-                if value not in all_species_names:
+            all_species_names: set[str] = {_.name for _ in info.data["species"]}
+
+            for species_at_site in value:
+                if species_at_site not in all_species_names:
                     raise ValueError(
                         "species_at_sites MUST be represented by a species' name, "
-                        f"but {value} was not found in the list of species names: {all_species_names}"
+                        f"but {species_at_site} was not found in the list of species "
+                        f"names: {all_species_names}"
                     )
-        return v
+        return value
 
-    @field_validator("species")
+    @field_validator("species", mode="after")
     @classmethod
-    def validate_species(cls, v):
-        if v is None:
-            return v
+    def validate_species(
+        cls, value: Optional[list[Species]]
+    ) -> Optional[list[Species]]:
+        if value is None:
+            return value
 
-        all_species = [_.name for _ in v]
+        all_species = [_.name for _ in value]
         unique_species = set(all_species)
         if len(all_species) != len(unique_species):
             raise ValueError(
                 f"Species MUST be unique based on their 'name'. Found species names: {all_species}"
             )
 
-        return v
+        return value
 
-    @field_validator("structure_features")
-    def validate_structure_features(cls, v, info):
-        if [StructureFeatures(value) for value in sorted((_.value for _ in v))] != v:
+    @model_validator(mode="after")
+    def validate_structure_features(self) -> "StructureResourceAttributes":
+        if [
+            StructureFeatures(value)
+            for value in sorted((_.value for _ in self.structure_features))
+        ] != self.structure_features:
             raise ValueError(
-                f"structure_features MUST be sorted alphabetically, given value: {v}"
+                "structure_features MUST be sorted alphabetically, structure_features: "
+                f"{self.structure_features}"
             )
 
         # assemblies
-        if info.data.get("assemblies") is not None:
-            if StructureFeatures.ASSEMBLIES not in v:
+        if self.assemblies is not None:
+            if StructureFeatures.ASSEMBLIES not in self.structure_features:
                 raise ValueError(
-                    f"{StructureFeatures.ASSEMBLIES.value} MUST be present, since the property of the same name is present"
+                    f"{StructureFeatures.ASSEMBLIES.value} MUST be present, since the "
+                    "property of the same name is present"
                 )
-        elif StructureFeatures.ASSEMBLIES in v:
+        elif StructureFeatures.ASSEMBLIES in self.structure_features:
             raise ValueError(
                 f"{StructureFeatures.ASSEMBLIES.value} MUST NOT be present, "
                 "since the property of the same name is not present"
             )
 
-        if info.data.get("species"):
+        if self.species:
             # disorder
-            for species in info.data.get("species", []):
+            for species in self.species:
                 if len(species.chemical_symbols) > 1:
-                    if StructureFeatures.DISORDER not in v:
+                    if StructureFeatures.DISORDER not in self.structure_features:
                         raise ValueError(
-                            f"{StructureFeatures.DISORDER.value} MUST be present when any one entry in species "
-                            "has a chemical_symbols list greater than one element"
+                            f"{StructureFeatures.DISORDER.value} MUST be present when "
+                            "any one entry in species has a chemical_symbols list "
+                            "greater than one element"
                         )
                     break
             else:
-                if StructureFeatures.DISORDER in v:
+                if StructureFeatures.DISORDER in self.structure_features:
                     raise ValueError(
-                        f"{StructureFeatures.DISORDER.value} MUST NOT be present, since all species' chemical_symbols "
-                        "lists are equal to or less than one element"
-                    )
-            # site_attachments
-            for species in info.data.get("species", []):
-                # There is no need to also test "nattached",
-                # since a Species validator makes sure either both are present or both are None.
-                if getattr(species, "attached", None) is not None:
-                    if StructureFeatures.SITE_ATTACHMENTS not in v:
-                        raise ValueError(
-                            f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST be present when any one entry "
-                            "in species includes attached and nattached"
-                        )
-                    break
-            else:
-                if StructureFeatures.SITE_ATTACHMENTS in v:
-                    raise ValueError(
-                        f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST NOT be present, since no species includes "
-                        "the attached and nattached fields"
-                    )
-            # implicit_atoms
-            species_names = [_.name for _ in info.data.get("species", [])]
-            for name in species_names:
-                if info.data.get(
-                    "species_at_sites"
-                ) is not None and name not in info.data.get("species_at_sites", []):
-                    if StructureFeatures.IMPLICIT_ATOMS not in v:
-                        raise ValueError(
-                            f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST be present when any one entry in species "
-                            "is not represented in species_at_sites"
-                        )
-                    break
-            else:
-                if StructureFeatures.IMPLICIT_ATOMS in v:
-                    raise ValueError(
-                        f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST NOT be present, since all species are "
-                        "represented in species_at_sites"
+                        f"{StructureFeatures.DISORDER.value} MUST NOT be present, "
+                        "since all species' chemical_symbols lists are equal to or "
+                        "less than one element"
                     )
 
-        return v
+            # site_attachments
+            for species in self.species:
+                # There is no need to also test "nattached",
+                # since a Species validator makes sure either both are present or both are None.
+                if species.attached is not None:
+                    if (
+                        StructureFeatures.SITE_ATTACHMENTS
+                        not in self.structure_features
+                    ):
+                        raise ValueError(
+                            f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST be "
+                            "present when any one entry in species includes attached "
+                            "and nattached"
+                        )
+                    break
+            else:
+                if StructureFeatures.SITE_ATTACHMENTS in self.structure_features:
+                    raise ValueError(
+                        f"{StructureFeatures.SITE_ATTACHMENTS.value} MUST NOT be "
+                        "present, since no species includes the attached and nattached"
+                        " fields"
+                    )
+
+            # implicit_atoms
+            for name in [_.name for _ in self.species]:
+                if (
+                    self.species_at_sites is not None
+                    and name not in self.species_at_sites
+                ):
+                    if StructureFeatures.IMPLICIT_ATOMS not in self.structure_features:
+                        raise ValueError(
+                            f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST be present"
+                            " when any one entry in species is not represented in "
+                            "species_at_sites"
+                        )
+                    break
+            else:
+                if StructureFeatures.IMPLICIT_ATOMS in self.structure_features:
+                    raise ValueError(
+                        f"{StructureFeatures.IMPLICIT_ATOMS.value} MUST NOT be "
+                        "present, since all species are represented in species_at_sites"
+                    )
+
+        return self
 
 
 class StructureResource(EntryResource):

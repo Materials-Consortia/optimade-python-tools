@@ -4,7 +4,14 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Optional, Union
 
-from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, model_validator
+from pydantic import (
+    AnyHttpUrl,
+    AnyUrl,
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    model_validator,
+)
 
 from optimade.models import jsonapi
 from optimade.models.types import SemanticVersion
@@ -131,6 +138,26 @@ class OptimadeError(jsonapi.Error):
     )
 
 
+def warnings_json_schema_extra(schema: dict[str, Any], model: type["Warnings"]) -> None:
+    """Update OpenAPI JSON schema model for `Warning`.
+
+    * Ensure `type` is in the list required properties and in the correct place.
+    * Remove `status` property.
+        This property is not allowed for `Warning`, nor is it a part of the OPTIMADE
+        definition of the `Warning` object.
+
+    Note:
+        Since `type` is the _last_ model field defined, it will simply be appended.
+
+    """
+    if "required" in schema:
+        if "type" not in schema["required"]:
+            schema["required"].append("type")
+        else:
+            schema["required"] = ["type"]
+    schema.get("properties", {}).pop("status", None)
+
+
 class Warnings(OptimadeError):
     """OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.
 
@@ -143,39 +170,19 @@ class Warnings(OptimadeError):
 
     """
 
+    model_config = ConfigDict(json_schema_extra=warnings_json_schema_extra)
+
     type: str = StrictField(
         "warning",
         description='Warnings must be of type "warning"',
         pattern="^warning$",
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def status_must_not_be_specified(cls, values):
-        if values.get("status", None) is not None:
+    @model_validator(mode="after")
+    def status_must_not_be_specified(self) -> "Warnings":
+        if hasattr(self, "status"):
             raise ValueError("status MUST NOT be specified for warnings")
-        return values
-
-    class Config:
-        @staticmethod
-        def json_schema_extra(schema: dict[str, Any], model: type["Warnings"]) -> None:
-            """Update OpenAPI JSON schema model for `Warning`.
-
-            * Ensure `type` is in the list required properties and in the correct place.
-            * Remove `status` property.
-              This property is not allowed for `Warning`, nor is it a part of the OPTIMADE
-              definition of the `Warning` object.
-
-            Note:
-                Since `type` is the _last_ model field defined, it will simply be appended.
-
-            """
-            if "required" in schema:
-                if "type" not in schema["required"]:
-                    schema["required"].append("type")
-                else:
-                    schema["required"] = ["type"]
-            schema.get("properties", {}).pop("status", None)
+        return self
 
 
 class ResponseMetaQuery(BaseModel):
@@ -337,21 +344,20 @@ class Success(jsonapi.Response):
         ..., description="A meta object containing non-standard information"
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def either_data_meta_or_errors_must_be_set(cls, values):
+    @model_validator(mode="after")
+    def either_data_meta_or_errors_must_be_set(self) -> "Success":
         """Overwriting the existing validation function, since 'errors' MUST NOT be set."""
         required_fields = ("data", "meta")
-        if not any(field in values for field in required_fields):
+        if not any(hasattr(self, field) for field in required_fields):
             raise ValueError(
                 f"At least one of {required_fields} MUST be specified in the top-level response."
             )
 
         # errors MUST be skipped
-        if "errors" in values:
+        if hasattr(self, "errors"):
             raise ValueError("'errors' MUST be skipped for a successful response.")
 
-        return values
+        return self
 
 
 class BaseRelationshipMeta(jsonapi.Meta):

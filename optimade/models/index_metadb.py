@@ -1,6 +1,6 @@
 # pylint: disable=no-self-argument
 from enum import Enum
-from typing import Union
+from typing import Literal, Union
 
 from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
 
@@ -34,7 +34,7 @@ class IndexInfoAttributes(BaseInfoAttributes):
 class RelatedLinksResource(BaseResource):
     """A related Links resource object"""
 
-    type: str = Field("links", pattern="^links$")
+    type: Literal["links"] = "links"
 
 
 class IndexRelationship(BaseModel):

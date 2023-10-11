@@ -40,12 +40,11 @@ class ErrorResponse(Response):
         uniqueItems=True,
     )
 
-    @model_validator(mode="before")
-    @classmethod
-    def data_must_be_skipped(cls, values):
-        if "data" in values:
+    @model_validator(mode="after")
+    def data_must_be_skipped(self) -> "ErrorResponse":
+        if hasattr(self, "data"):
             raise ValueError("data MUST be skipped for failures reporting errors.")
-        return values
+        return self
 
 
 class IndexInfoResponse(Success):
