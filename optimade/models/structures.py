@@ -174,7 +174,7 @@ Note: With regards to "source database", we refer to the immediate source being 
     @classmethod
     def validate_minimum_list_length(
         cls, value: Optional[Union[List[str], List[int]]]
-    ) -> Optional[List[Union[str, int]]]:
+    ) -> Optional[Union[List[str], List[int]]]:
         if value is not None and len(value) < 1:
             raise ValueError(
                 "The list's length MUST be 1 or more, instead it was found to be "
@@ -994,8 +994,8 @@ The properties of the species are found in the property `species`.
             return value
 
         if info.data.get("dimension_types"):
-            dimension_types: Optional[
-                Annotated[List[Periodicity], Field(min_length=3, max_length=3)]
+            dimension_types: Annotated[
+                List[Periodicity], Field(min_length=3, max_length=3)
             ] = info.data["dimension_types"]
 
             for dim_type, vector in zip(dimension_types, value):

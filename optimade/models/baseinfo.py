@@ -51,14 +51,14 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
     @model_validator(mode="after")
     def crosscheck_url_and_version(self) -> "AvailableApiVersion":
         """Check that URL version and API version are compatible."""
-        url_version = (
+        url = (
             str(self.url)
             .split("/")[-2 if str(self.url).endswith("/") else -1]
             .replace("v", "")
         )
         # as with version urls, we need to split any release tags or build metadata out of these URLs
         url_version = tuple(
-            int(val) for val in url_version.split("-")[0].split("+")[0].split(".")
+            int(val) for val in url.split("-")[0].split("+")[0].split(".")
         )
         api_version = tuple(
             int(val) for val in str(self.version).split("-")[0].split("+")[0].split(".")
