@@ -30,8 +30,12 @@ def get_info(request: Request) -> InfoResponse:
         """Cached closure that generates the info response for the implementation."""
 
         return BaseInfoResource(
-            id=BaseInfoResource.model_json_schema()["properties"]["id"]["default"],
-            type=BaseInfoResource.model_json_schema()["properties"]["type"]["default"],
+            id=BaseInfoResource.model_json_schema(mode="validation")["properties"][
+                "id"
+            ]["default"],
+            type=BaseInfoResource.model_json_schema(mode="validation")["properties"][
+                "type"
+            ]["default"],
             attributes=BaseInfoAttributes(
                 api_version=__api_version__,
                 available_api_versions=[
@@ -79,7 +83,7 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
                 detail=f"Entry info not found for {entry}, valid entry info endpoints are: {', '.join(valid_entry_info_endpoints)}",
             )
 
-        schema = ENTRY_INFO_SCHEMAS[entry]()
+        schema = ENTRY_INFO_SCHEMAS[entry](mode="validation")
         queryable_properties = {"id", "type", "attributes"}
         properties = retrieve_queryable_properties(
             schema, queryable_properties, entry_type=entry

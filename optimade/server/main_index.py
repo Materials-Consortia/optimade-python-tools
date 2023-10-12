@@ -53,6 +53,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
     redoc_url=f"{BASE_URL_PREFIXES['major']}/extensions/redoc",
     openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
     default_response_class=JSONAPIResponse,
+    separate_input_output_schemas=False,
 )
 
 

@@ -175,6 +175,7 @@ class EntryCollection(ABC):
         bad_provider_fields = set()
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
         all_attributes = self.resource_mapper.ALL_ATTRIBUTES
+        print(all_attributes)
         for field in include_fields:
             if field not in all_attributes:
                 if field.startswith("_"):
@@ -283,7 +284,7 @@ class EntryCollection(ABC):
 
         """
 
-        schema = self.resource_cls.model_json_schema()
+        schema = self.resource_cls.model_json_schema(mode="validation")
         attributes = schema["properties"]["attributes"]
         if "allOf" in attributes:
             allOf = attributes.pop("allOf")
