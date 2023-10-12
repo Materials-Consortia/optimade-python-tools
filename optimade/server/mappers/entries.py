@@ -157,7 +157,7 @@ class BaseResourceMapper:
         from optimade.server.schemas import retrieve_queryable_properties
 
         return retrieve_queryable_properties(
-            cls.ENTRY_RESOURCE_CLASS.model_json_schema()
+            cls.ENTRY_RESOURCE_CLASS.model_json_schema(mode="validation")
         )
 
     @classproperty
@@ -168,7 +168,7 @@ class BaseResourceMapper:
 
         """
         return (
-            cls.ENTRY_RESOURCE_CLASS.model_json_schema()
+            cls.ENTRY_RESOURCE_CLASS.model_json_schema(mode="validation")
             .get("properties", {})
             .get("type", {})
             .get("default", "")

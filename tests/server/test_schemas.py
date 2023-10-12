@@ -8,7 +8,7 @@ def test_schemas():
 
     """
     for entry in ("Structures", "References"):
-        schema = ENTRY_INFO_SCHEMAS[entry.lower()]()
+        schema = ENTRY_INFO_SCHEMAS[entry.lower()](mode="validation")
 
         top_level_props = ("id", "type", "attributes")
         properties = retrieve_queryable_properties(schema, top_level_props)
@@ -39,7 +39,7 @@ def test_provider_field_schemas():
     """
     entry = "structures"
     test_field = "chemsys"
-    schema = ENTRY_INFO_SCHEMAS[entry]()
+    schema = ENTRY_INFO_SCHEMAS[entry](mode="validation")
     top_level_props = ("id", "type", "attributes")
     properties = retrieve_queryable_properties(schema, top_level_props, entry)
     name = f"_exmpl_{test_field}"
