@@ -33,7 +33,6 @@ def mapper() -> "Callable[[str], BaseResourceMapper]":
             res: mappers.BaseResourceMapper = getattr(mappers, name)
         except AttributeError:
             pytest.fail(f"Could not retrieve {name!r} from optimade.server.mappers.")
-        else:
-            return res
+        return res
 
     return _mapper
